@@ -16,7 +16,6 @@ class PyDMApplication(QtGui.QApplication):
 	plugins = { "ca": EPICSPlugin() }
 	
 	def start_connections(self):
-		print self.plugins["ca"]
 		for widget in self.allWidgets():
 			if hasattr(widget, 'channel'):
 				self.add_connection(widget)
@@ -24,7 +23,6 @@ class PyDMApplication(QtGui.QApplication):
 	def add_connection(self, widget):
 		match = re.match('.*://', widget.channel)
 		if match:
-			print "Protocol detected: {0}".format(match.group(0)[:-3])
 			try:
 				protocol = match.group(0)[:-3]
 				plugin_to_use = self.plugins[protocol]
