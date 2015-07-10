@@ -11,7 +11,7 @@ class EPICSPlugin:
 		pv = widget.channel.split("ca://")[1]
 			
 		if pv in self.connections:
-			self.connections.listeners.append(widget)
+			self.connections[pv].add_listener(widget)
 		else:
 			self.connections[pv] = Connection(widget, pv)
 			
@@ -19,9 +19,8 @@ class Connection(QObject):
 	new_value_signal = pyqtSignal(float)
 	def __init__(self, widget, pv, parent=None):
 		super(Connection, self).__init__(parent)
-		self.listeners = [widget]
-		self.new_value_signal.connect(widget.recieveValue, Qt.QueuedConnection)
-		widget.send_value_signal.connect(self.put_value, Qt.QueuedConnection)
+		self.listeners = []
+		self.add_listener(widget)
 		self.pv = epics.PV(pv, callback=self.send_new_value)
 	
 	def send_new_value(self, pvname=None, value=None, **kw):
@@ -30,3 +29,8 @@ class Connection(QObject):
 	@pyqtSlot(float)
 	def put_value(self, new_val):
 		self.pv.put(new_val)
+		
+	def add_listener(self, widget):
+		self.listeners.append(widget)
+		self.new_value_signal.connect(widget.recieveValue, Qt.QueuedConnection)
+		widget.send_value_signal.connect(self.put_value, Qt.QueuedConnection)
