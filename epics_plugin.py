@@ -19,7 +19,6 @@ class Connection(QObject):
 	new_value_signal = pyqtSignal(float)
 	def __init__(self, widget, pv, parent=None):
 		super(Connection, self).__init__(parent)
-		self.listeners = []
 		self.add_listener(widget)
 		self.pv = epics.PV(pv, callback=self.send_new_value)
 	
@@ -31,6 +30,5 @@ class Connection(QObject):
 		self.pv.put(new_val)
 		
 	def add_listener(self, widget):
-		self.listeners.append(widget)
 		self.new_value_signal.connect(widget.recieveValue, Qt.QueuedConnection)
 		widget.send_value_signal.connect(self.put_value, Qt.QueuedConnection)
