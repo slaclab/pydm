@@ -63,7 +63,7 @@ class PyDMLabel(QLabel):
 		
 		#Add a cool fade animation to a state transition.
 		self.color_fade = QPropertyAnimation(self, "color", self)
-		self.color_fade.setDuration(250)
+		self.color_fade.setDuration(175)
 		self.state_machine.addDefaultAnimation(self.color_fade)
 		
 		self.state_machine.start()
