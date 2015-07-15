@@ -1,25 +1,11 @@
 import epics
 import numpy as np
-import re
+from .plugin import PyDMPlugin, PyDMConnection
 from PyQt4.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
 
-class EPICSPlugin:
-	def __init__(self):
-		self.connections = {}
-		
-	def add_connection(self, widget):	
-		pv = widget.channel.split("ca://")[1]
-		if pv in self.connections:
-			self.connections[pv].add_listener(widget)
-		else:
-			self.connections[pv] = Connection(widget, pv)
-			
-class Connection(QObject):
-	new_value_signal = pyqtSignal(str)
-	connection_state_signal = pyqtSignal(bool)
-	new_severity_signal = pyqtSignal(int)
+class Connection(PyDMConnection):
 	def __init__(self, widget, pv, parent=None):
-		super(Connection, self).__init__(parent)
+		super(Connection, self).__init__(widget, pv, parent)
 		self.add_listener(widget)
 		self.pv = epics.PV(pv, callback=self.send_new_value, connection_callback=self.send_connection_state, form='ctrl')
 	
@@ -40,3 +26,8 @@ class Connection(QObject):
 		self.new_value_signal.connect(widget.recieveValue, Qt.QueuedConnection)
 		self.new_severity_signal.connect(widget.alarmSeverityChanged, Qt.QueuedConnection)
 		widget.send_value_signal.connect(self.put_value, Qt.QueuedConnection)
+
+class EPICSPlugin(PyDMPlugin):
+	protocol = "ca://"
+	connection_class = Connection
+			
