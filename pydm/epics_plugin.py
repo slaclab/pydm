@@ -31,7 +31,7 @@ class Connection(QObject):
 	def send_connection_state(self, pvname=None, conn=None, *args, **kws):
 		self.connection_state_signal.emit(conn)
 	
-	@pyqtSlot(float)
+	@pyqtSlot(str)
 	def put_value(self, new_val):
 		self.pv.put(new_val)
 		

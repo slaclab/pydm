@@ -3,7 +3,7 @@ from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachi
 
 class PyDMLabel(QLabel):
 	#Emitted when the user changes the value.
-	send_value_signal = pyqtSignal(float)
+	send_value_signal = pyqtSignal(str)
 	
 	#Internal signals, used by the state machine
 	connected_signal = pyqtSignal()
