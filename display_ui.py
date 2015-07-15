@@ -93,6 +93,15 @@ class Ui_MainWindow(object):
         self.pvLabel10 = PyDMLabel("ca://BPMS:MATT:10:XTH", self.centralwidget)
         self.pvLabel10.setObjectName(_fromUtf8("pvLabel10"))
         self.formLayout.setWidget(9, QtGui.QFormLayout.FieldRole, self.pvLabel10)
+				
+        self.label_11 = QtGui.QLabel(self.centralwidget)
+        self.label_11.setObjectName(_fromUtf8("label_11"))
+        self.formLayout.setWidget(10, QtGui.QFormLayout.LabelRole, self.label_11)
+        self.pvLabel11 = PyDMLabel("fake://faketest", self.centralwidget)
+        self.pvLabel11.setObjectName(_fromUtf8("pvLabel11"))
+        self.formLayout.setWidget(10, QtGui.QFormLayout.FieldRole, self.pvLabel11)
+				
+				
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 482, 22))
@@ -127,4 +136,6 @@ class Ui_MainWindow(object):
         self.pvLabel9.setText(_translate("MainWindow", "TextLabel", None))
         self.label_10.setText(_translate("MainWindow", "BPMS:MATT:10:XTH", None))
         self.pvLabel10.setText(_translate("MainWindow", "TextLabel", None))
+        self.label_11.setText(_translate("MainWindow", "Fake Protocol", None))
+        self.pvLabel11.setText(_translate("MainWindow", "TextLabel", None))
 

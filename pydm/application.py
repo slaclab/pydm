@@ -1,9 +1,10 @@
 from PyQt4.QtGui import QApplication, QColor
 import re
 from .epics_plugin import EPICSPlugin
+from .fake_plugin import FakePlugin
 
 class PyDMApplication(QApplication):
-	plugins = { "ca": EPICSPlugin() }
+	plugins = { "ca": EPICSPlugin(), "fake": FakePlugin() }
 	
 	#HACK. To be replaced with some stylesheet stuff eventually.
 	alarm_severity_color_map = {
