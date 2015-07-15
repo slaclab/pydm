@@ -21,7 +21,7 @@ class PyDMLabel(QLabel):
 		
 	# Can the state machine be implemented at a lower level, like a QWidget subclass?	
 	def setup_state_machine(self):
-		self.state_machine = QStateMachine()
+		self.state_machine = QStateMachine(self)
 		
 		#We'll need to talk to the parent application to figure out what colors to use for a specific state.
 		app = QApplication.instance()
