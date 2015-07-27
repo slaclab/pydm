@@ -9,7 +9,7 @@ class PyDMApplication(QApplication):
 	#HACK. To be replaced with some stylesheet stuff eventually.
 	alarm_severity_color_map = {
 		0: QColor(0, 0, 0), #NO_ALARM
-		1: QColor(240, 240, 15), #MINOR_ALARM
+		1: QColor(200, 200, 20), #MINOR_ALARM
 		2: QColor(240, 0, 0), #MAJOR_ALARM
 		3: QColor(240, 240, 0) #INVALID_ALARM
 	}
