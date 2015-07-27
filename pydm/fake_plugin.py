@@ -19,11 +19,6 @@ class Connection(PyDMConnection):
 		
 	def send_connection_state(self, conn):
 		self.connection_state_signal.emit(conn)
-	
-	def add_listener(self, widget):
-		self.connection_state_signal.connect(widget.connectionStateChanged, Qt.QueuedConnection)
-		self.new_value_signal.connect(widget.recieveValue, Qt.QueuedConnection)
-		self.new_severity_signal.connect(widget.alarmSeverityChanged, Qt.QueuedConnection)
 
 class FakePlugin(PyDMPlugin):
 	protocol = "fake://"

@@ -22,9 +22,7 @@ class Connection(PyDMConnection):
 		self.pv.put(new_val)
 		
 	def add_listener(self, widget):
-		self.connection_state_signal.connect(widget.connectionStateChanged, Qt.QueuedConnection)
-		self.new_value_signal.connect(widget.recieveValue, Qt.QueuedConnection)
-		self.new_severity_signal.connect(widget.alarmSeverityChanged, Qt.QueuedConnection)
+		super(Connection, self).add_listener(widget)
 		widget.send_value_signal.connect(self.put_value, Qt.QueuedConnection)
 
 class EPICSPlugin(PyDMPlugin):

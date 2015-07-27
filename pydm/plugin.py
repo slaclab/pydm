@@ -8,7 +8,9 @@ class PyDMConnection(QObject):
 		super(PyDMConnection, self).__init__(parent)
 	
 	def add_listener(self, widget):
-		pass
+		self.connection_state_signal.connect(widget.connectionStateChanged, Qt.QueuedConnection)
+		self.new_value_signal.connect(widget.recieveValue, Qt.QueuedConnection)
+		self.new_severity_signal.connect(widget.alarmSeverityChanged, Qt.QueuedConnection)
 
 class PyDMPlugin:
 	protocol = None
