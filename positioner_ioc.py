@@ -1,15 +1,31 @@
 from pcaspy import SimpleServer, Driver
+import time
 
 prefix = 'MOTOR:'
 pvdb = {
 	'1:VAL': {
-		'prec': 2
+		'val': 0.0,
+		'prec': 2,
+		'hihi' : 180,
+		'high' : 170,
+		'low'  : -170,
+		'lolo' : -180
 	},
 	'2:VAL': {
-		'prec': 2
+		'val': 0.0,
+		'prec': 2,
+		'hihi' : 180,
+		'high' : 170,
+		'low'  : -170,
+		'lolo' : -180
 	},
 	'3:VAL': {
-		'prec': 2
+		'val': 0.0,
+		'prec': 2,
+		'hihi' : 180,
+		'high' : 170,
+		'low'  : -170,
+		'lolo' : -180
 	}
 }
 
