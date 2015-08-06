@@ -11,11 +11,11 @@ class PositionerWindow(QMainWindow):
 		super(PositionerWindow, self).__init__(parent)
 		self.ui = Ui_MainWindow()
 		self.ui.setupUi(self)
+		self.moving = False
 		self.ui.pushButton.clicked.connect(self.move_motors)
-	
-		self.motor1pv = epics.PV("MOTOR:1:VAL", callback=self.motors_changed, connection_callback=self.connection_changed)
-		self.motor2pv = epics.PV("MOTOR:2:VAL", callback=self.motors_changed, connection_callback=self.connection_changed)
-		self.motor3pv = epics.PV("MOTOR:3:VAL", callback=self.motors_changed, connection_callback=self.connection_changed)
+		self.motor1pv = epics.PV("MOTOR:1:VAL")
+		self.motor2pv = epics.PV("MOTOR:2:VAL")
+		self.motor3pv = epics.PV("MOTOR:3:VAL")
 		self.motor_pvs = (self.motor1pv, self.motor2pv, self.motor3pv)
 		self.ui.xPosTextEntry.textChanged.connect(self.desired_position_changed)
 		self.ui.yPosTextEntry.textChanged.connect(self.desired_position_changed)
@@ -24,9 +24,10 @@ class PositionerWindow(QMainWindow):
 	@pyqtSlot()
 	def move_motors(self):
 		self.statusBar().showMessage("Moving motors...")
-		self.motor1pv.put(self.m1des, callback=self.move_completed)
-		self.motor2pv.put(self.m2des, callback=self.move_completed)
-		self.motor3pv.put(self.m3des, callback=self.move_completed)
+		self.motor1pv.put(self.m1des)
+		self.motor2pv.put(self.m2des)
+		self.motor3pv.put(self.m3des)
+		
 		waiting = True
 		while waiting:
 			time.sleep(0.001)
@@ -54,23 +55,6 @@ class PositionerWindow(QMainWindow):
 		self.ui.motor2DesLabel.setText('%.3f' % self.m2des)
 		self.ui.motor3DesLabel.setText('%.3f' % self.m3des)
 		self.ui.pushButton.setEnabled(valid)
-	
-	def motors_changed(self, pvname=None, value=None, **kw):
-		if pvname=="MOTOR:1:VAL":
-			self.ui.motor1ReadbackLabel.setText(str(value))
-		if pvname=="MOTOR:2:VAL":
-			self.ui.motor2ReadbackLabel.setText(str(value))
-		if pvname=="MOTOR:3:VAL":
-			self.ui.motor3ReadbackLabel.setText(str(value))
-		
-	def connection_changed(self, pvname=None, conn=None, **kw):
-		if conn==False:
-			if pvname=="MOTOR:1:VAL":
-				self.ui.motor1ReadbackLabel.setText("Disconnected")
-			if pvname=="MOTOR:2:VAL":
-				self.ui.motor2ReadbackLabel.setText("Disconnected")
-			if pvname=="MOTOR:3:VAL":
-				self.ui.motor3ReadbackLabel.setText("Disconnected")
 		
 class PositionerApplication(PyDMApplication):
 	def __init__(self, args):

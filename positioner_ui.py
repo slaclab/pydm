@@ -8,7 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-
+from pydm import PyDMLabel
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -142,15 +142,19 @@ class Ui_MainWindow(object):
         self.label_6 = QtGui.QLabel(self.desGroupBox_2)
         self.label_6.setObjectName(_fromUtf8("label_6"))
         self.formLayout_2.setWidget(2, QtGui.QFormLayout.LabelRole, self.label_6)
-        self.motor1ReadbackLabel = QtGui.QLabel(self.desGroupBox_2)
+        
+        self.motor1ReadbackLabel = PyDMLabel("ca://MOTOR:1:VAL", self.desGroupBox_2)
         self.motor1ReadbackLabel.setObjectName(_fromUtf8("motor1ReadbackLabel"))
         self.formLayout_2.setWidget(0, QtGui.QFormLayout.FieldRole, self.motor1ReadbackLabel)
-        self.motor2ReadbackLabel = QtGui.QLabel(self.desGroupBox_2)
+        
+        self.motor2ReadbackLabel = PyDMLabel("ca://MOTOR:2:VAL", self.desGroupBox_2)
         self.motor2ReadbackLabel.setObjectName(_fromUtf8("motor2ReadbackLabel"))
         self.formLayout_2.setWidget(1, QtGui.QFormLayout.FieldRole, self.motor2ReadbackLabel)
-        self.motor3ReadbackLabel = QtGui.QLabel(self.desGroupBox_2)
+        
+        self.motor3ReadbackLabel = PyDMLabel("ca://MOTOR:3:VAL", self.desGroupBox_2)
         self.motor3ReadbackLabel.setObjectName(_fromUtf8("motor3ReadbackLabel"))
         self.formLayout_2.setWidget(2, QtGui.QFormLayout.FieldRole, self.motor3ReadbackLabel)
+        
         self.horizontalLayout_2.addWidget(self.desGroupBox_2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
@@ -175,11 +179,11 @@ class Ui_MainWindow(object):
         self.zPosTextEntry.setPlaceholderText(_translate("MainWindow", "Enter Value", None))
         self.groupBox.setTitle(_translate("MainWindow", "Desired Motor Values ", None))
         self.label_10.setText(_translate("MainWindow", "MOTOR:1", None))
-        self.motor1DesLabel.setText(_translate("MainWindow", "TextLabel", None))
+        self.motor1DesLabel.setText(_translate("MainWindow", "", None))
         self.label_11.setText(_translate("MainWindow", "MOTOR:2", None))
-        self.motor2DesLabel.setText(_translate("MainWindow", "TextLabel", None))
+        self.motor2DesLabel.setText(_translate("MainWindow", "", None))
         self.label_12.setText(_translate("MainWindow", "MOTOR:3", None))
-        self.motor3DesLabel.setText(_translate("MainWindow", "TextLabel", None))
+        self.motor3DesLabel.setText(_translate("MainWindow", "", None))
         self.pushButton.setText(_translate("MainWindow", "Move Motors To Desired Position", None))
         self.desGroupBox_2.setTitle(_translate("MainWindow", "Motor Readback Values", None))
         self.label_4.setText(_translate("MainWindow", "MOTOR:1:VAL", None))
