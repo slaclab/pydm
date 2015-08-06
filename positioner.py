@@ -1,4 +1,4 @@
-import sys
+import sys, time
 from pydm import PyDMApplication
 from positioner_ui import Ui_MainWindow
 from PyQt4.QtGui import QMainWindow
@@ -23,6 +23,11 @@ class PositionerWindow(QMainWindow):
 	
 	@pyqtSlot()
 	def move_motors(self):
+		if self.moving:
+			return
+		
+		self.moving = True
+		self.ui.pushButton.setEnabled(False)
 		self.statusBar().showMessage("Moving motors...")
 		self.motor1pv.put(self.m1des)
 		self.motor2pv.put(self.m2des)
@@ -32,7 +37,9 @@ class PositionerWindow(QMainWindow):
 		while waiting:
 			time.sleep(0.001)
 			waiting = not all([pv.put_complete for pv in self.motor_pvs])
-		self.statusBar().clearMessage("Motor move complete.", 2000)
+		self.statusBar().showMessage("Motor move complete.", 2000)
+		self.ui.pushButton.setEnabled(True)
+		self.moving = False
 		
 		
 	@pyqtSlot(QString)
