@@ -1,7 +1,16 @@
 from PyQt4.QtGui import QLabel, QApplication, QColor, QPalette
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
+from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, QString
 
 class PyDMLabel(QLabel):
+	#Tell Designer what signals are available.
+	__pyqtSignals__ = ("send_value_signal(QString)",
+										 "connected_signal()",
+										 "disconnected_signal()", 
+										 "no_alarm_signal()", 
+										 "minor_alarm_signal()", 
+										 "major_alarm_signal()", 
+										 "invalid_alarm_signal()")
+	
 	#Emitted when the user changes the value.
 	send_value_signal = pyqtSignal(str)
 	
@@ -107,7 +116,22 @@ class PyDMLabel(QLabel):
 		color.setAlphaF(old_alpha)
 		palette.setColor(QPalette.WindowText, color)
 		self.setPalette(palette)
-
+		
 	color = pyqtProperty(QColor, getColor, setColor)
+	
+	#def getChannel(self):
+		#return QString(self.channel)
+	
+	#def setChannel(self, value):
+		#if self.channel != value:
+			#self.channel = str(value)
+
+	#def resetChannel(self):
+		#if self.channel != None:
+			#self.channel = None
+		
+	#channel = pyqtProperty("QString", getChannel, setChannel, resetChannel)
+
+	
 		
 		
