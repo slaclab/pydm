@@ -11,6 +11,9 @@ a = 139.6238
 dx = 74.55
 dy = 245.47
 
+#Silence invalid arcsin arguments, we deal with that ourselves.
+np.seterr(invalid='ignore')
+
 def real2cams(coords):
 	(x,y,theta) = coords
 	theta = theta * 1.e-3 #Convert to rad from mrad
