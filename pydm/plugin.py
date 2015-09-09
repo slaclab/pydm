@@ -19,7 +19,7 @@ class PyDMPlugin:
 		self.connections = {}
 		
 	def add_connection(self, widget):	
-		address = widget.channel.split(self.protocol)[1]
+		address = str(widget.channel.split(self.protocol)[1])
 		if address in self.connections:
 			self.connections[address].add_listener(widget)
 		else:

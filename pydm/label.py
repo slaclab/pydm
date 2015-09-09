@@ -22,10 +22,10 @@ class PyDMLabel(QLabel):
 	major_alarm_signal = pyqtSignal()
 	invalid_alarm_signal = pyqtSignal()
 	
-	def __init__(self, channel, parent=None):
+	def __init__(self, init_channel=None, parent=None):
 		super(PyDMLabel, self).__init__(parent)
 		self.setup_state_machine()
-		self.channel = channel
+		self._channel = init_channel
 		
 		
 	# Can the state machine be implemented at a lower level, like a QWidget subclass?	
@@ -119,18 +119,18 @@ class PyDMLabel(QLabel):
 		
 	color = pyqtProperty(QColor, getColor, setColor)
 	
-	#def getChannel(self):
-		#return QString(self.channel)
+	def getChannel(self):
+		return QString(self._channel)
 	
-	#def setChannel(self, value):
-		#if self.channel != value:
-			#self.channel = str(value)
+	def setChannel(self, value):
+		if self._channel != value:
+			self._channel = str(value)
 
-	#def resetChannel(self):
-		#if self.channel != None:
-			#self.channel = None
+	def resetChannel(self):
+		if self._channel != None:
+			self._channel = None
 		
-	#channel = pyqtProperty("QString", getChannel, setChannel, resetChannel)
+	channel = pyqtProperty("QString", getChannel, setChannel, resetChannel)
 
 	
 		
