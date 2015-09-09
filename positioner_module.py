@@ -4,7 +4,7 @@ import time
 from PyQt4 import uic
 from PyQt4.QtCore import QObject, pyqtSlot, pyqtSignal, QString
 from PyQt4.QtGui import QWidget
-from positioner_widget_ui import Ui_Form
+
 class Positioner(QObject):
   def __init__(self, display_manager_window):
     super(Positioner, self).__init__(display_manager_window)

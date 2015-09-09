@@ -6,6 +6,7 @@ from .pydm_ui import Ui_MainWindow
 from PyQt4 import uic
 from os import path
 import imp
+import sys
 
 class PyDMMainWindow(QMainWindow):
   def __init__(self, parent=None):
@@ -21,7 +22,7 @@ class PyDMApplication(QApplication):
     0: QColor(0, 0, 0), #NO_ALARM
     1: QColor(200, 200, 20), #MINOR_ALARM
     2: QColor(240, 0, 0), #MAJOR_ALARM
-    3: QColor(240, 240, 0) #INVALID_ALARM
+    3: QColor(240, 0, 240) #INVALID_ALARM
   }
   
   #HACK. To be replaced with some stylesheet stuff eventually.
@@ -32,6 +33,9 @@ class PyDMApplication(QApplication):
   
   def __init__(self, command_line_args):
     super(PyDMApplication, self).__init__(command_line_args)
+    #Add the path to the widgets module, so that qt knows where to find custom widgets.  This seems like a really awful way to do this.
+    sys.path.append(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
+    
     try:
       self.main_window = PyDMMainWindow()
       ui_file = command_line_args[1]
@@ -56,7 +60,6 @@ class PyDMApplication(QApplication):
     self.start_connections()
   
   def start_connections(self):
-    print self.plugins
     for widget in self.allWidgets():
       if hasattr(widget, 'channel'):
         self.add_connection(widget)

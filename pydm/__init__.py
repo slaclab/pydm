@@ -1,2 +1,2 @@
 from .application import PyDMApplication
-from .label import PyDMLabel
+from widgets import PyDMLabel

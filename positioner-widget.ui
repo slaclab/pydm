@@ -231,23 +231,41 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLabel" name="motor1ReadbackLabel">
-        <property name="text">
-         <string>Disconnected</string>
+       <widget class="PyDMLabel" name="pydmLabel">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string>Displays the value from an EPICS PV.</string>
+        </property>
+        <property name="channel">
+         <string>ca://MOTOR:1:VAL</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLabel" name="motor2ReadbackLabel">
-        <property name="text">
-         <string>Disconnected</string>
+       <widget class="PyDMLabel" name="pydmLabel_2">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string>Displays the value from an EPICS PV.</string>
+        </property>
+        <property name="channel">
+         <string>ca://MOTOR:2:VAL</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLabel" name="motor3ReadbackLabel">
-        <property name="text">
-         <string>Disconnected</string>
+       <widget class="PyDMLabel" name="pydmLabel_3">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string>Displays the value from an EPICS PV.</string>
+        </property>
+        <property name="channel">
+         <string>ca://MOTOR:3:VAL</string>
         </property>
        </widget>
       </item>
@@ -256,6 +274,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMLabel</class>
+   <extends>QLabel</extends>
+   <header>label</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
