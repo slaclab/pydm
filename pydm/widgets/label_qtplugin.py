@@ -31,6 +31,9 @@ class PyDMLabelPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
 
   def isContainer(self):
     return False
+    
+  def icon(self):
+    return QtGui.QIcon()
 
   def domXml(self):
     return (
