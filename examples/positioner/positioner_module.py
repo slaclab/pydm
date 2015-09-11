@@ -4,6 +4,7 @@ import time
 from PyQt4 import uic
 from PyQt4.QtCore import QObject, pyqtSlot, pyqtSignal, QString
 from PyQt4.QtGui import QWidget
+from os import path
 
 class Positioner(QObject):
   def __init__(self, display_manager_window):
@@ -62,7 +63,7 @@ class Positioner(QObject):
     self.ui().pushButton.setEnabled(valid)
   
   def ui_filename(self):
-    return 'positioner-widget.ui'
+    return path.join(path.dirname(path.realpath(__file__)),'positioner-widget.ui')
   
   def ui(self, parent=None):
     if self._ui:

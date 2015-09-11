@@ -53,6 +53,11 @@ class PyDMApplication(QApplication):
     self.main_window.verticalLayout.addWidget(display_widget)
     
   def load_py_file(self, pyfile):
+    #Add the intelligence module directory to the python path, so that submodules can be loaded.  Eventually, this should go away, and intelligence modules should behave as real python modules.
+    module_dir = path.dirname(path.abspath(pyfile))
+    sys.path.append(module_dir)
+
+    #Now load the intelligence module.
     module = imp.load_source('intelclass', pyfile)
     intelligence_instance = module.intelclass(self.main_window)
     self.main_window.ui.verticalLayout.addWidget(intelligence_instance.ui())
