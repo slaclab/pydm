@@ -2,6 +2,7 @@ from PyQt4.QtGui import QApplication, QMainWindow, QColor
 import re
 from .epics_plugin import EPICSPlugin
 from .fake_plugin import FakePlugin
+from .archiver_plugin import ArchiverPlugin
 from .pydm_ui import Ui_MainWindow
 from PyQt4 import uic
 from os import path
@@ -15,7 +16,7 @@ class PyDMMainWindow(QMainWindow):
     self.ui.setupUi(self)
 
 class PyDMApplication(QApplication):
-  plugins = { "ca": EPICSPlugin(), "fake": FakePlugin() }
+  plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
   
   #HACK. To be replaced with some stylesheet stuff eventually.
   alarm_severity_color_map = {
