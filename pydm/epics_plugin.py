@@ -9,8 +9,11 @@ class Connection(PyDMConnection):
 		self.add_listener(widget)
 		self.pv = epics.PV(pv, callback=self.send_new_value, connection_callback=self.send_connection_state, form='ctrl')
 	
-	def send_new_value(self, pvname=None, value=None, severity=None, *args, **kws):
-		self.new_value_signal.emit(str(value))
+	def send_new_value(self, pvname=None, value=None, severity=None, count=None, *args, **kws):
+		if count > 1:
+			self.new_waveform_signal.emit(value)
+		else:
+			self.new_value_signal.emit(str(value))
 		if severity != None:
 			self.new_severity_signal.emit(int(severity))
 			
@@ -28,4 +31,3 @@ class Connection(PyDMConnection):
 class EPICSPlugin(PyDMPlugin):
 	protocol = "ca://"
 	connection_class = Connection
-			
