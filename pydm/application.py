@@ -49,8 +49,8 @@ class PyDMApplication(QApplication):
       pass
   
   def load_ui_file(self, uifile):
-    display_widget = uic.loadUiType(uifile)
-    self.main_window.verticalLayout.addWidget(display_widget)
+    display_widget = uic.loadUi(uifile)
+    self.main_window.ui.verticalLayout.addWidget(display_widget)
     
   def load_py_file(self, pyfile):
     #Add the intelligence module directory to the python path, so that submodules can be loaded.  Eventually, this should go away, and intelligence modules should behave as real python modules.
