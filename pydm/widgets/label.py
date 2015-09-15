@@ -11,9 +11,6 @@ class PyDMLabel(QLabel):
                      "major_alarm_signal()", 
                      "invalid_alarm_signal()")
   
-  #Emitted when the user changes the value.
-  send_value_signal = pyqtSignal(str)
-  
   #Internal signals, used by the state machine
   connected_signal = pyqtSignal()
   disconnected_signal = pyqtSignal()
