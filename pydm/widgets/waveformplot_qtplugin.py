@@ -15,7 +15,7 @@ class WaveformPlotWidgetPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
     return self.initialized
 
   def createWidget(self, parent):
-    return WaveformPlot(None, parent)
+    return WaveformPlot(None, parent=parent)
 
   def name(self):
     return "WaveformPlot"

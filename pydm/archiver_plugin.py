@@ -5,9 +5,9 @@ import json
 import numpy as np
 
 class Connection(PyDMConnection):
-  def __init__(self, widget, address, parent=None):
-    super(Connection, self).__init__(widget, address, parent)
-    self.add_listener(widget)
+  def __init__(self, channel, address, parent=None):
+    super(Connection, self).__init__(channel, address, parent)
+    self.add_listener(channel)
     url_string = "http://lcls-archapp.slac.stanford.edu/retrieval/data/getData.json?{params}".format(params=address)
     r = requests.get(url_string) #blocking.  BAD!
     if r.status_code == 200 and r.headers['content-type'] == 'application/json':

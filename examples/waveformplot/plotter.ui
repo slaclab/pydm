@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>616</width>
-    <height>406</height>
+    <width>515</width>
+    <height>359</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,15 +22,8 @@
      <property name="whatsThis">
       <string>Plots a waveform.</string>
      </property>
-     <property name="channel">
-      <string>archiver://pv=MC00:ASTS:OUTSIDET</string>
-     </property>
-     <property name="curveColor">
-      <color>
-       <red>255</red>
-       <green>189</green>
-       <blue>0</blue>
-      </color>
+     <property name="yChannel">
+      <string>ca://BPMS:LI24:801:REDW</string>
      </property>
     </widget>
    </item>

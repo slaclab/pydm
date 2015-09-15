@@ -5,21 +5,26 @@ class PyDMConnection(QObject):
 	new_waveform_signal = pyqtSignal(ndarray)
 	connection_state_signal = pyqtSignal(bool)
 	new_severity_signal = pyqtSignal(int)
-	def __init__(self, widget, address, parent=None):
+	def __init__(self, channel, address, parent=None):
 		super(PyDMConnection, self).__init__(parent)
 	
-	def add_listener(self, widget):
-		self.connection_state_signal.connect(widget.connectionStateChanged, Qt.QueuedConnection)
+	def add_listener(self, channel):
+    try:
+		  self.connection_state_signal.connect(channel.connection_slot, Qt.QueuedConnection)
+    except:
+      pass
 		try:
-			self.new_value_signal.connect(widget.recieveValue, Qt.QueuedConnection)
+			self.new_value_signal.connect(channel.value_slot, Qt.QueuedConnection)
 		except:
 			pass
-
 		try:
-			self.new_waveform_signal.connect(widget.recieveWaveform, Qt.QueuedConnection)
+			self.new_waveform_signal.connect(channel.waveform_slot, Qt.QueuedConnection)
 		except:
 			pass
-		self.new_severity_signal.connect(widget.alarmSeverityChanged, Qt.QueuedConnection)
+    try:
+		  self.new_severity_signal.connect(channel.severity_slot, Qt.QueuedConnection)
+    except:
+      pass
 
 class PyDMPlugin:
 	protocol = None
@@ -27,10 +32,10 @@ class PyDMPlugin:
 	def __init__(self):
 		self.connections = {}
 		
-	def add_connection(self, widget):	
-		address = str(widget.channel.split(self.protocol)[1])
+	def add_connection(self, channel):	
+		address = str(channel.address.split(self.protocol)[1])
 		if address in self.connections:
-			self.connections[address].add_listener(widget)
+			self.connections[address].add_listener(channel)
 		else:
-			self.connections[address] = self.connection_class(widget, address)
+			self.connections[address] = self.connection_class(channel, address)
 			

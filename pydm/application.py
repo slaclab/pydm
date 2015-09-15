@@ -67,15 +67,16 @@ class PyDMApplication(QApplication):
   
   def start_connections(self):
     for widget in self.allWidgets():
-      if hasattr(widget, 'channel'):
-        self.add_connection(widget)
+      if hasattr(widget, 'channels'):
+        for channel in widget.channels():
+          self.add_connection(channel)
   
-  def add_connection(self, widget):
-    match = re.match('.*://', widget.channel)
+  def add_connection(self, channel):
+    match = re.match('.*://', channel.address)
     if match:
       try:
         protocol = match.group(0)[:-3]
         plugin_to_use = self.plugins[str(protocol)]
-        plugin_to_use.add_connection(widget)
+        plugin_to_use.add_connection(channel)
       except KeyError:
         print "Couldn't find plugin: {0}".format(match.group(0)[:-3])
