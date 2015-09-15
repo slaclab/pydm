@@ -5,7 +5,6 @@ import numpy as np
 from channel import PyDMChannel
 
 class WaveformPlot(pg.PlotWidget):
-  send_value_signal = pyqtSignal(str)
   def __init__(self, init_x_channel=None, init_y_channel=None, parent=None, background='default'):
     super(WaveformPlot, self).__init__(parent, background)
     self._ychannel = init_x_channel
