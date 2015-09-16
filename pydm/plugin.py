@@ -8,8 +8,10 @@ class PyDMConnection(QObject):
   write_access_signal = pyqtSignal(bool)
   def __init__(self, channel, address, parent=None):
     super(PyDMConnection, self).__init__(parent)
+    self.listener_count = 0
   
   def add_listener(self, channel):
+    self.listener_count = self.listener_count + 1
     try:
       self.connection_state_signal.connect(channel.connection_slot, Qt.QueuedConnection)
     except:
@@ -30,17 +32,35 @@ class PyDMConnection(QObject):
       self.write_access_signal.connect(channel.write_access_slot, Qt.QueuedConnection)
     except:
       pass
+      
+  def remove_listener(self):
+    self.listener_count = self.listener_count - 1
+    if self.listener_count < 1:
+      self.close()
+  
+  def close(self):
+    pass
 
 class PyDMPlugin:
   protocol = None
   connection_class = PyDMConnection
   def __init__(self):
     self.connections = {}
+  
+  def get_address(self, channel):
+    return str(channel.address.split(self.protocol)[1])
     
   def add_connection(self, channel):  
-    address = str(channel.address.split(self.protocol)[1])
+    address = self.get_address(channel)
     if address in self.connections:
       self.connections[address].add_listener(channel)
     else:
       self.connections[address] = self.connection_class(channel, address)
+  
+  def remove_connection(self, channel):
+    address = self.get_address(channel)
+    if address in self.connections:
+      self.connections[address].remove_listener()
+      if self.connections[address].listener_count < 1:
+        del self.connections[address]
       

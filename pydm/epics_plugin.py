@@ -32,6 +32,9 @@ class Connection(PyDMConnection):
       channel.value_signal.connect(self.put_value, Qt.QueuedConnection)
     except:
       pass
+      
+  def close(self):
+    self.pv.disconnect()
 
 class EPICSPlugin(PyDMPlugin):
   protocol = "ca://"
