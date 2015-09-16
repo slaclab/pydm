@@ -68,6 +68,8 @@ class Positioner(QObject):
   def ui(self, parent=None):
     if self._ui:
       return self._ui
+    if not parent:
+      parent = self.display_manager_window
     display_widget = QWidget(parent)
     self._ui = uic.loadUi(self.ui_filename(), baseinstance=display_widget)
     return self._ui
