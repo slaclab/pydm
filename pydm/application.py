@@ -15,7 +15,13 @@ class PyDMMainWindow(QMainWindow):
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)
     self._display_widget = None
-    self.ui.homeButton.clicked.connect(self.clear_display_widget) #Just for debug purposes.
+    self.ui.homeButton.clicked.connect(self.home)
+    self.home_file = '/Users/mgibbs/Documents/dev/pydm/examples/positioner/positioner_module.py'
+    self.back_stack = []
+    self.forward_stack = []
+    self.ui.backButton.clicked.connect(self.back)
+    self.ui.forwardButton.clicked.connect(self.forward)
+    self.ui.goButton.clicked.connect(self.go_button_pressed)
     
   def set_display_widget(self, new_widget):
     if new_widget == self._display_widget:
@@ -32,7 +38,21 @@ class PyDMMainWindow(QMainWindow):
       self._display_widget.deleteLater()
       self.close_widget_connections(self._display_widget)
       self._display_widget = None
-      
+  
+  def load_ui_file(self, uifile):
+    display_widget = uic.loadUi(uifile)
+    self.set_display_widget(display_widget)
+    
+  def load_py_file(self, pyfile):
+    #Add the intelligence module directory to the python path, so that submodules can be loaded.  Eventually, this should go away, and intelligence modules should behave as real python modules.
+    module_dir = path.dirname(path.abspath(pyfile))
+    sys.path.append(module_dir)
+
+    #Now load the intelligence module.
+    module = imp.load_source('intelclass', pyfile)
+    intelligence_instance = module.intelclass(self)
+    self.set_display_widget(intelligence_instance.ui())
+  
   def establish_widget_connections(self, widget):
     for child_widget in widget.findChildren(QWidget):
       if hasattr(child_widget, 'channels'):
@@ -44,7 +64,38 @@ class PyDMMainWindow(QMainWindow):
       if hasattr(child_widget, 'channels'):
         for channel in child_widget.channels():
           QApplication.instance().remove_connection(channel)
-      
+  
+  def open_file(self, ui_file):
+    (filename, extension) = path.splitext(ui_file)
+    if extension == '.ui':
+      self.load_ui_file(ui_file)
+    elif extension == '.py':
+      self.load_py_file(ui_file)
+    if (len(self.back_stack) == 0) or (self.back_stack[-1] != ui_file):
+      self.back_stack.append(ui_file)
+    self.ui.forwardButton.setEnabled(len(self.forward_stack) > 0)
+    self.ui.backButton.setEnabled(len(self.back_stack) > 1)
+  
+  def go_button_pressed(self):
+    self.go(str(self.ui.panelSearchLineEdit.text()))
+  
+  def go(self, ui_file):
+    self.open_file(ui_file)
+    self.forward_stack = []
+    
+  def back(self):
+    if len(self.back_stack) > 1:
+      self.forward_stack.append(self.back_stack.pop())
+      self.open_file(self.back_stack[-1])
+  
+  def forward(self):
+    if len(self.forward_stack) > 0:
+      self.open_file(self.forward_stack.pop())
+  
+  def home(self):
+    self.go(self.home_file)
+    
+  
 class PyDMApplication(QApplication):
   plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
   
@@ -71,30 +122,12 @@ class PyDMApplication(QApplication):
       main_window = PyDMMainWindow()
       self.windows.append(main_window)
       ui_file = command_line_args[1]
-      (filename, extension) = path.splitext(ui_file)
-      if extension == '.ui':
-        self.load_ui_file(ui_file, main_window)
-      elif extension == '.py':
-        self.load_py_file(ui_file, main_window)
+      main_window.open_file(ui_file)
       main_window.show()
     except IndexError:
       #This must be an old-style, stand-alone PyDMApplication.  Do nothing!
       pass
-  
-  def load_ui_file(self, uifile, target_window):
-    display_widget = uic.loadUi(uifile)
-    target_window.set_display_widget(display_widget)
-    
-  def load_py_file(self, pyfile, target_window):
-    #Add the intelligence module directory to the python path, so that submodules can be loaded.  Eventually, this should go away, and intelligence modules should behave as real python modules.
-    module_dir = path.dirname(path.abspath(pyfile))
-    sys.path.append(module_dir)
-
-    #Now load the intelligence module.
-    module = imp.load_source('intelclass', pyfile)
-    intelligence_instance = module.intelclass(target_window)
-    target_window.set_display_widget(intelligence_instance.ui())
-  
+      
   def plugin_for_channel(self, channel):
     match = re.match('.*://', channel.address)
     if match:
