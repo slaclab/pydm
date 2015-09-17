@@ -79,9 +79,11 @@ class PyDMMainWindow(QMainWindow):
   def go_button_pressed(self):
     self.go(str(self.ui.panelSearchLineEdit.text()))
   
+  #Note: in go(), back(), and forward(), always do history stack manipulation *before* opening the file.
+  #That way, the navigation button enable/disable state will work correctly.  This is stupid, and will be fixed eventually.
   def go(self, ui_file):
-    self.open_file(ui_file)
     self.forward_stack = []
+    self.open_file(ui_file)
     
   def back(self):
     if len(self.back_stack) > 1:
