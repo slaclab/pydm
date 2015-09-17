@@ -51,7 +51,7 @@ class PyDMMainWindow(QMainWindow):
     #Now load the intelligence module.
     module = imp.load_source('intelclass', pyfile)
     intelligence_instance = module.intelclass(self)
-    self.set_display_widget(intelligence_instance.ui())
+    self.set_display_widget(intelligence_instance)
   
   def establish_widget_connections(self, widget):
     for child_widget in widget.findChildren(QWidget):
