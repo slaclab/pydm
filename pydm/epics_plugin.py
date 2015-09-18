@@ -28,6 +28,13 @@ class Connection(PyDMConnection):
     
   def add_listener(self, channel):
     super(Connection, self).add_listener(channel)
+    #If we are adding a listener to an already existing PV, we need to
+    #manually send the signals indicating that the PV is connected, what the latest value is, etc.
+    if (self.listener_count > 1):
+      if self.pv.status == 1: #1 means 'connected'
+        self.send_connection_state(conn=True)
+      self.pv.run_callbacks()
+      
     try:
       channel.value_signal.connect(self.put_value, Qt.QueuedConnection)
     except:
