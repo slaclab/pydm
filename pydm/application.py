@@ -120,15 +120,23 @@ class PyDMApplication(QApplication):
     #Add the path to the widgets module, so that qt knows where to find custom widgets.  This seems like a really awful way to do this.
     sys.path.append(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
     self.windows = []
+    ui_file = None
     try:
-      main_window = PyDMMainWindow()
-      self.windows.append(main_window)
       ui_file = command_line_args[1]
-      main_window.open_file(ui_file)
-      main_window.show()
     except IndexError:
       #This must be an old-style, stand-alone PyDMApplication.  Do nothing!
       pass
+    if ui_file:  
+      self.new_window(ui_file)
+  
+  def new_window(self, ui_file):
+    main_window = PyDMMainWindow()  
+    self.windows.append(main_window)
+    main_window.open_file(ui_file)
+    main_window.show()
+    #If we are launching a new window, we don't want it to sit right on top of an existing window.
+    if len(self.windows) > 1:
+      main_window.move(main_window.x() + 10, main_window.y() + 10)
       
   def plugin_for_channel(self, channel):
     match = re.match('.*://', channel.address)
