@@ -1,12 +1,17 @@
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QString
+from PyQt4.QtGui import QPushButton, QApplication
+from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QString, Qt
 
 class PyDMRelatedDisplayButton(QPushButton):
   __pyqtSignals__ = ("request_open_signal(QString)")
+  
+  #Constants for determining where to open the display.
+  EXISTING_WINDOW = 0;
+  NEW_WINDOW = 1;
+  
   def __init__(self, filename=None, parent=None):
     super(PyDMRelatedDisplayButton, self).__init__(parent)
     self._display_filename = filename
-    self.clicked.connect(self.open_display)
+    #self.clicked.connect(self.open_display)
     
   def getDisplayFilename(self):
     return QString.fromAscii(self._display_filename)
@@ -18,9 +23,19 @@ class PyDMRelatedDisplayButton(QPushButton):
   def resetDisplayFilename(self):
     if self._display_filename != None:
       self._display_filename = None
+  
+  def mouseReleaseEvent(self, mouse_event):
+    if mouse_event.modifiers() == Qt.ShiftModifier:
+      self.open_display(target=self.NEW_WINDOW)
+    else:
+      self.open_display()
+    super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
       
   @pyqtSlot()
-  def open_display(self):
-    self.window().go(str(self.displayFilename))
+  def open_display(self, target=EXISTING_WINDOW):
+    if target == self.EXISTING_WINDOW:
+      self.window().go(str(self.displayFilename))
+    if target == self.NEW_WINDOW:
+      QApplication.instance().new_window(str(self.displayFilename))
     
   displayFilename = pyqtProperty("QString", getDisplayFilename, setDisplayFilename, resetDisplayFilename)
