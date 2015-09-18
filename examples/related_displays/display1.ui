@@ -49,7 +49,7 @@
       <string>Open Display 2...</string>
      </property>
      <property name="displayFilename">
-      <string>/Users/mgibbs/Documents/dev/pydm/examples/related_displays/display2.ui</string>
+      <string>examples/related_displays/display2.ui</string>
      </property>
     </widget>
    </item>

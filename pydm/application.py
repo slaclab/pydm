@@ -16,7 +16,7 @@ class PyDMMainWindow(QMainWindow):
     self.ui.setupUi(self)
     self._display_widget = None
     self.ui.homeButton.clicked.connect(self.home)
-    self.home_file = '/Users/mgibbs/Documents/dev/pydm/examples/positioner/positioner_module.py'
+    self.home_file = 'examples/positioner/positioner_module.py'
     self.back_stack = []
     self.forward_stack = []
     self.ui.backButton.clicked.connect(self.back)
