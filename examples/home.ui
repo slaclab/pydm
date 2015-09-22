@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>406</width>
+    <height>308</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Example Displays</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>42</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Example Displays</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Indicators</string>
+     </property>
+     <property name="displayFilename">
+      <string>examples/indicator/indicators.ui</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton_2">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Line Edit</string>
+     </property>
+     <property name="displayFilename">
+      <string>examples/line_edit/line_edit.ui</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton_3">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Positioner Example</string>
+     </property>
+     <property name="displayFilename">
+      <string>examples/positioner/positioner_module.py</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton_4">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Related Displays</string>
+     </property>
+     <property name="displayFilename">
+      <string>examples/related_displays/display1.ui</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton_5">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Waveform Plot (from a PV)</string>
+     </property>
+     <property name="displayFilename">
+      <string>examples/waveformplot/pv-plotter.ui</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton_6">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Waveform Plot (from the Archiver)</string>
+     </property>
+     <property name="displayFilename">
+      <string>examples/waveformplot/archive-plotter.ui</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMRelatedDisplayButton</class>
+   <extends>QPushButton</extends>
+   <header>related_display_button</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
