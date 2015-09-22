@@ -101,12 +101,7 @@ class PyDMIndicator(QWidget):
     self.color_fade.valueChanged.connect(self.force_redraw)
     self.state_machine.addDefaultAnimation(self.color_fade)
     self.state_machine.start()
-    
-  # -2 to +2, -2 is LOLO, -1 is LOW, 0 is OK, etc.  
-  @pyqtSlot(int)
-  def alarmStatusChanged(self, new_alarm_state):
-    pass
-  
+      
   #0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID  
   @pyqtSlot(int)
   def alarmSeverityChanged(self, new_alarm_severity):
