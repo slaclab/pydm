@@ -141,7 +141,8 @@ class PyDMIndicator(QWidget):
     if new_color != self._color:
       old_alpha = self.brush.color().alphaF()
       new_color.setAlphaF(old_alpha)
-      self.brush.setColor(new_color)
+      self._color = new_color
+      self.brush.setColor(self._color)
     
   color = pyqtProperty(QColor, getColor, setColor)
   
