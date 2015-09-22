@@ -1,4 +1,5 @@
 from PyQt4.QtGui import QApplication, QMainWindow, QColor, QWidget
+from PyQt4.QtCore import Qt
 import re
 from .epics_plugin import EPICSPlugin
 from .fake_plugin import FakePlugin
@@ -77,7 +78,11 @@ class PyDMMainWindow(QMainWindow):
     self.ui.backButton.setEnabled(len(self.back_stack) > 1)
   
   def go_button_pressed(self):
-    self.go(str(self.ui.panelSearchLineEdit.text()))
+    filename = str(self.ui.panelSearchLineEdit.text())
+    if QApplication.keyboardModifiers() == Qt.ShiftModifier:
+      QApplication.instance().new_window(filename)
+    else:
+      self.go(filename)
   
   #Note: in go(), back(), and forward(), always do history stack manipulation *before* opening the file.
   #That way, the navigation button enable/disable state will work correctly.  This is stupid, and will be fixed eventually.
@@ -87,16 +92,24 @@ class PyDMMainWindow(QMainWindow):
     
   def back(self):
     if len(self.back_stack) > 1:
-      self.forward_stack.append(self.back_stack.pop())
-      self.open_file(self.back_stack[-1])
+      if QApplication.keyboardModifiers() == Qt.ShiftModifier:
+        QApplication.instance().new_window(self.back_stack[-2])
+      else:
+        self.forward_stack.append(self.back_stack.pop())
+        self.open_file(self.back_stack[-1])
   
   def forward(self):
     if len(self.forward_stack) > 0:
-      self.open_file(self.forward_stack.pop())
+      if QApplication.keyboardModifiers() == Qt.ShiftModifier:
+        QApplication.instance().new_window(self.forward_stack[-1])
+      else:
+        self.open_file(self.forward_stack.pop())
   
   def home(self):
-    self.go(self.home_file)
-    
+    if QApplication.keyboardModifiers() == Qt.ShiftModifier:
+      QApplication.instance().new_window(self.home_file)
+    else:
+      self.go(self.home_file)
   
 class PyDMApplication(QApplication):
   plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
