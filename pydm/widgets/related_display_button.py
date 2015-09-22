@@ -31,8 +31,10 @@ class PyDMRelatedDisplayButton(QPushButton):
       self.open_display()
     super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
       
-  @pyqtSlot()
+  @pyqtSlot() 
   def open_display(self, target=EXISTING_WINDOW):
+    if self.displayFilename == None:
+      return
     if target == self.EXISTING_WINDOW:
       self.window().go(str(self.displayFilename))
     if target == self.NEW_WINDOW:
