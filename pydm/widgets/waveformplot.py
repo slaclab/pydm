@@ -1,17 +1,18 @@
 from PyQt4.QtGui import QLabel, QApplication, QColor
 from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QString
-import pyqtgraph as pg
+from pyqtgraph import PlotWidget
+from pyqtgraph import PlotCurveItem
 import numpy as np
 from channel import PyDMChannel
 
-class WaveformPlot(pg.PlotWidget):
+class PyDMWaveformPlot(PlotWidget):
   def __init__(self, init_x_channel=None, init_y_channel=None, parent=None, background='default'):
-    super(WaveformPlot, self).__init__(parent, background)
+    super(PyDMWaveformPlot, self).__init__(parent, background)
     self._ychannel = init_x_channel
     self._xchannel = init_y_channel
     self.showGrid(x=False, y=False)
     self._curveColor=QColor(255,255,255)
-    self.curve = pg.PlotCurveItem(pen=self._curveColor)
+    self.curve = PlotCurveItem(pen=self._curveColor)
     self.addItem(self.curve)
     self.plotItem = self.getPlotItem()
     self.plotItem.hideButtons()

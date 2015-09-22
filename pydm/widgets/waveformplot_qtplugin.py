@@ -1,5 +1,5 @@
 from PyQt4 import QtGui, QtDesigner
-from waveformplot import WaveformPlot
+from waveformplot import PyDMWaveformPlot
 
 class WaveformPlotWidgetPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
   def __init__(self, parent = None):
@@ -15,10 +15,10 @@ class WaveformPlotWidgetPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
     return self.initialized
 
   def createWidget(self, parent):
-    return WaveformPlot(None, parent=parent)
+    return PyDMWaveformPlot(None, parent=parent)
 
   def name(self):
-    return "WaveformPlot"
+    return "PyDMWaveformPlot"
 
   def group(self):
     return "PyDM Widgets"
@@ -37,7 +37,7 @@ class WaveformPlotWidgetPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
 
   def domXml(self):
     return (
-               '<widget class="WaveformPlot" name=\"waveformPlot\">\n'
+               '<widget class="PyDMWaveformPlot" name=\"pydmWaveformPlot\">\n'
                " <property name=\"toolTip\" >\n"
                "  <string></string>\n"
                " </property>\n"
