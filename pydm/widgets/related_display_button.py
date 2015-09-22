@@ -11,7 +11,6 @@ class PyDMRelatedDisplayButton(QPushButton):
   def __init__(self, filename=None, parent=None):
     super(PyDMRelatedDisplayButton, self).__init__(parent)
     self._display_filename = filename
-    #self.clicked.connect(self.open_display)
     
   def getDisplayFilename(self):
     return QString.fromAscii(self._display_filename)
