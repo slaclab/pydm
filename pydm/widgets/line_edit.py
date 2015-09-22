@@ -17,11 +17,18 @@ class PyDMLineEdit(QLineEdit):
   def __init__(self, channel=None, parent=None):
     super(PyDMLineEdit, self).__init__(parent)
     self._channel = channel
+    self.value = None
     self.returnPressed.connect(self.sendValue)
   
+  def focusOutEvent(self, event):
+    self.setText(self.value)
+    super(PyDMLineEdit, self).focusOutEvent(event)
+    
   @pyqtSlot(str)
   def recieveValue(self, new_val):
-    self.setText(new_val)
+    self.value = new_val
+    if not self.hasFocus():
+      self.setText(self.value)
   
   @pyqtSlot()
   def sendValue(self):
