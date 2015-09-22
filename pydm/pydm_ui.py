@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pydm.ui'
 #
-# Created: Thu Aug  6 16:06:42 2015
+# Created: Mon Sep 21 18:12:59 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(504, 113)
+        MainWindow.resize(672, 112)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
@@ -39,9 +39,10 @@ class Ui_MainWindow(object):
         self.panelSearchLineEdit.setObjectName(_fromUtf8("panelSearchLineEdit"))
         self.horizontalLayout.addWidget(self.panelSearchLineEdit)
         self.goButton = QtGui.QPushButton(self.centralwidget)
+        self.goButton.setFlat(False)
         self.goButton.setObjectName(_fromUtf8("goButton"))
         self.horizontalLayout.addWidget(self.goButton)
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.backButton = QtGui.QPushButton(self.centralwidget)
         self.backButton.setObjectName(_fromUtf8("backButton"))
@@ -60,7 +61,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.line)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 504, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 672, 22))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
