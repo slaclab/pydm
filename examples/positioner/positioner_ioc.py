@@ -6,26 +6,35 @@ pvdb = {
 	'1:VAL': {
 		'val': 0.0,
 		'prec': 2,
-		'hihi' : 180,
-		'high' : 170,
-		'low'  : -170,
-		'lolo' : -180
+    'hilim' : 180,
+		'hihi' : 140,
+		'high' : 100,
+		'low'  : -100,
+		'lolo' : -140,
+    'lolim' : -180,
+    'unit' : 'deg'
 	},
 	'2:VAL': {
 		'val': 0.0,
 		'prec': 2,
-		'hihi' : 180,
-		'high' : 170,
-		'low'  : -170,
-		'lolo' : -180
+    'hilim' : 180,
+		'hihi' : 140,
+		'high' : 100,
+		'low'  : -100,
+		'lolo' : -140,
+    'lolim' : -180,
+    'unit' : 'deg'
 	},
 	'3:VAL': {
 		'val': 0.0,
 		'prec': 2,
-		'hihi' : 180,
-		'high' : 170,
-		'low'  : -170,
-		'lolo' : -180
+    'hilim' : 180,
+		'hihi' : 140,
+		'high' : 100,
+		'low'  : -100,
+		'lolo' : -140,
+    'lolim' : -180,
+    'unit' : 'deg'
 	}
 }
 
