@@ -76,6 +76,9 @@
      <property name="whatsThis">
       <string>Displays the alarm severity from an EPICS PV.</string>
      </property>
+     <property name="has_border" stdset="0">
+      <bool>false</bool>
+     </property>
      <property name="channel">
       <string>ca://MOTOR:1:VAL</string>
      </property>
@@ -101,6 +104,9 @@
      <property name="whatsThis">
       <string>Displays the alarm severity from an EPICS PV.</string>
      </property>
+     <property name="has_border" stdset="0">
+      <bool>false</bool>
+     </property>
      <property name="channel">
       <string>ca://MOTOR:3:VAL</string>
      </property>
@@ -125,6 +131,9 @@
      </property>
      <property name="whatsThis">
       <string>Displays the alarm severity from an EPICS PV.</string>
+     </property>
+     <property name="has_border" stdset="0">
+      <bool>false</bool>
      </property>
      <property name="channel">
       <string>ca://MOTOR:2:VAL</string>

@@ -1,4 +1,4 @@
-from PyQt4.QtGui import QWidget, QApplication, QColor, QPainter, QBrush
+from PyQt4.QtGui import QWidget, QApplication, QColor, QPainter, QBrush, QPen
 from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, QString, Qt
 from channel import PyDMChannel
 
@@ -33,8 +33,12 @@ class PyDMIndicator(QWidget):
   
   def __init__(self, init_channel=None, parent=None):
     self._color = self.local_connection_status_color_map[False]
+    self._border_thickness = 0
+    self._border_color = QColor(0,0,0)
+    self._has_border = False
     self.painter = QPainter()
     self.brush = QBrush(self._color)
+    self.pen = QPen(Qt.NoPen)
     super(PyDMIndicator, self).__init__(parent)
     self.setup_state_machine()
     self._channel = init_channel
@@ -129,9 +133,8 @@ class PyDMIndicator(QWidget):
 
   def paintEvent(self, event):
     self.painter.begin(self)
-    self.brush.setColor(self.getColor())
     self.painter.setBrush(self.brush)
-    self.painter.setPen(Qt.NoPen)
+    self.painter.setPen(self.pen)
     self.painter.drawRect(0,0,self.width(), self.height())
     self.painter.end()
     
@@ -141,11 +144,59 @@ class PyDMIndicator(QWidget):
 
   def setColor(self, new_color):
     if new_color != self._color:
-      old_alpha = self._color.alphaF()
+      old_alpha = self.brush.color().alphaF()
       new_color.setAlphaF(old_alpha)
-      self._color = new_color
+      self.brush.setColor(new_color)
     
   color = pyqtProperty(QColor, getColor, setColor)
+  
+  def getBorderColor(self):
+    return self._border_color
+  
+  def setBorderColor(self, new_color):
+    if new_color != self._border_color:
+      self._border_color = new_color
+      self.pen.setColor(new_color)
+  
+  def resetBorderColor(self):
+    self._border_color = QColor(0,0,0)
+    
+  border_color = pyqtProperty(QColor, getBorderColor, setBorderColor, resetBorderColor)
+  
+  def getBorderThickness(self):
+    return self._border_thickness
+  
+  def setBorderThickness(self, new_thickness):
+    if new_thickness != self._border_thickness:
+      self._border_thickness = new_thickness
+      self.pen.setWidth(self._border_thickness)
+      self.update()
+  
+  def resetBorderThickness(self):
+    self._border_thickness = 0.0
+    self.pen.setWidth(self._border_thickness)
+    self.update()
+    
+  border_thickness = pyqtProperty(float, getBorderThickness, setBorderThickness, resetBorderThickness)
+  
+  def getHasBorder(self):
+    return self._has_border
+  
+  def setHasBorder(self, val):
+    self._has_border = val
+    if self._has_border:
+      self.pen = QPen(QBrush(self.getBorderColor()), self.getBorderThickness())
+    else:
+      self.pen = QPen(Qt.NoPen)
+    self.update()
+  
+  def resetHasBorder(self):
+    if self._has_border:
+      self._has_border = False
+      self.pen = QPen(Qt.NoPen)
+      self.update()
+  
+  has_border = pyqtProperty(bool, getHasBorder, setHasBorder)
   
   def getChannel(self):
     return QString.fromAscii(self._channel)
