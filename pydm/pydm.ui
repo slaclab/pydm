@@ -109,7 +109,15 @@
     <addaction name="actionEdit_in_Designer"/>
     <addaction name="actionReload_Display"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionIncrease_Font_Size"/>
+    <addaction name="actionDecrease_Font_Size"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuView"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionEdit_in_Designer">
@@ -131,6 +139,22 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionIncrease_Font_Size">
+   <property name="text">
+    <string>Increase Font Size</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+=</string>
+   </property>
+  </action>
+  <action name="actionDecrease_Font_Size">
+   <property name="text">
+    <string>Decrease Font Size</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
    </property>
   </action>
  </widget>

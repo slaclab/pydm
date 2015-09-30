@@ -27,6 +27,8 @@ class PyDMMainWindow(QMainWindow):
     self.ui.goButton.clicked.connect(self.go_button_pressed)
     self.ui.actionEdit_in_Designer.triggered.connect(self.edit_in_designer)
     self.ui.actionReload_Display.triggered.connect(self.reload_display)
+    self.ui.actionIncrease_Font_Size.triggered.connect(self.increase_font_size)
+    self.ui.actionDecrease_Font_Size.triggered.connect(self.decrease_font_size)
     self.designer_path = None
     if environ.get('QTHOME') == None:
       self.ui.actionEdit_in_Designer.setEnabled(False)
@@ -146,6 +148,24 @@ class PyDMMainWindow(QMainWindow):
   def reload_display(self, checked):
     self.statusBar().showMessage("Reloading '{0}'...".format(self.current_file()), 5000)
     self.go(self.current_file())
+  
+  @pyqtSlot(bool)
+  def increase_font_size(self, checked):
+    current_font = QApplication.instance().font()
+    current_font.setPointSizeF(current_font.pointSizeF() * 1.1)
+    QApplication.instance().setFont(current_font)
+    for child_widget in self.findChildren(QWidget):
+      child_widget.updateGeometry()
+    self.updateGeometry()
+  
+  @pyqtSlot(bool)
+  def decrease_font_size(self, checked):
+    current_font = QApplication.instance().font()
+    current_font.setPointSizeF(current_font.pointSizeF() / 1.1)
+    QApplication.instance().setFont(current_font)
+    for child_widget in self.findChildren(QWidget):
+      child_widget.updateGeometry()
+    self.updateGeometry()
   
 class PyDMApplication(QApplication):
   plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }

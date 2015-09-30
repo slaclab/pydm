@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pydm.ui'
 #
-# Created: Wed Sep 23 09:52:41 2015
+# Created: Wed Sep 30 13:44:51 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -65,6 +65,8 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
+        self.menuView = QtGui.QMenu(self.menubar)
+        self.menuView.setObjectName(_fromUtf8("menuView"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
@@ -76,11 +78,18 @@ class Ui_MainWindow(object):
         self.actionAbout_DIM.setObjectName(_fromUtf8("actionAbout_DIM"))
         self.actionReload_Display = QtGui.QAction(MainWindow)
         self.actionReload_Display.setObjectName(_fromUtf8("actionReload_Display"))
+        self.actionIncrease_Font_Size = QtGui.QAction(MainWindow)
+        self.actionIncrease_Font_Size.setObjectName(_fromUtf8("actionIncrease_Font_Size"))
+        self.actionDecrease_Font_Size = QtGui.QAction(MainWindow)
+        self.actionDecrease_Font_Size.setObjectName(_fromUtf8("actionDecrease_Font_Size"))
         self.menuFile.addAction(self.actionAbout_DIM)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionEdit_in_Designer)
         self.menuFile.addAction(self.actionReload_Display)
+        self.menuView.addAction(self.actionIncrease_Font_Size)
+        self.menuView.addAction(self.actionDecrease_Font_Size)
         self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuView.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -93,8 +102,13 @@ class Ui_MainWindow(object):
         self.forwardButton.setText(_translate("MainWindow", "Forward", None))
         self.homeButton.setText(_translate("MainWindow", "Home", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
+        self.menuView.setTitle(_translate("MainWindow", "View", None))
         self.actionEdit_in_Designer.setText(_translate("MainWindow", "Edit in Designer", None))
         self.actionAbout_DIM.setText(_translate("MainWindow", "About PyDM", None))
         self.actionReload_Display.setText(_translate("MainWindow", "Reload Display", None))
         self.actionReload_Display.setShortcut(_translate("MainWindow", "Ctrl+R", None))
+        self.actionIncrease_Font_Size.setText(_translate("MainWindow", "Increase Font Size", None))
+        self.actionIncrease_Font_Size.setShortcut(_translate("MainWindow", "Ctrl+=", None))
+        self.actionDecrease_Font_Size.setText(_translate("MainWindow", "Decrease Font Size", None))
+        self.actionDecrease_Font_Size.setShortcut(_translate("MainWindow", "Ctrl+-", None))
 
