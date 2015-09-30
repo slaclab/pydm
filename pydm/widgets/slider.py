@@ -24,22 +24,16 @@ class PyDMSlider(QSlider):
     self._maxrange = '10'
     self._minrange = '-10'
     self.setupRange(self._step)
-    #self.value = None
 
   #accounts for the fact that the silider only works with integer numbers
-
   def mapStepSize(self):
       pass
 
   def setupRange(self,step_size):
-      
     upper_range_int = int((1/float(step_size))*float(self._maxrange))
     lower_range_int = int((1/float(step_size))*float(self._minrange))
     self.setMaximum(upper_range_int)
     self.setMinimum(lower_range_int)
-
-    print upper_range_int
-    print lower_range_int
     
   #step size property
   def getStep(self):
@@ -55,7 +49,7 @@ class PyDMSlider(QSlider):
     return QString(self._maxrange)
 
   def setMaxrange(self,value):
-      self._maxrange = str(value)
+    self._maxrange = str(value)
 
   maxrange = pyqtProperty("QString",fget=getMaxrange,fset=setMaxrange)
 
@@ -64,10 +58,9 @@ class PyDMSlider(QSlider):
     return QString(self._minrange)
 
   def setMinrange(self,value):
-      self._minrange = str(value)
+    self._minrange = str(value)
 
   minrange = pyqtProperty("QString",fget=getMinrange,fset=setMinrange)
-
 
   #overwrite wheel event to fire only when slider is in focus
   def wheelEvent(self,event):
@@ -77,18 +70,15 @@ class PyDMSlider(QSlider):
   #if the slider is not in focus, dont set slider to new position
   @pyqtSlot(str)
   def recieveValue(self, new_val):
-
     if not self.hasFocus():
       self.setSliderPosition(int(float(new_val)))
 
   #send out new value to channel 
   @pyqtSlot()
   def sendValue(self):
-
     if self.hasFocus():
       val = QString(str(float(self.value())*float(self._step)))
       self.send_value_signal.emit(val)
-      print self.value()
 
   #false = disconnected, true = connected
   @pyqtSlot(bool)
