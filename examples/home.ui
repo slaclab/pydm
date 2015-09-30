@@ -133,6 +133,22 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton_7">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Slider</string>
+     </property>
+     <property name="displayFilename">
+      <string>examples/slider/slider.ui</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
