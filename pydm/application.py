@@ -1,5 +1,5 @@
 from PyQt4.QtGui import QApplication, QMainWindow, QColor, QWidget
-from PyQt4.QtCore import Qt, pyqtSlot
+from PyQt4.QtCore import Qt, pyqtSlot, QTimer
 import re
 from .epics_plugin import EPICSPlugin
 from .fake_plugin import FakePlugin
@@ -49,6 +49,8 @@ class PyDMMainWindow(QMainWindow):
     self.ui.verticalLayout.addWidget(self._display_widget)
     self.setWindowTitle(self._display_widget.windowTitle() + " - PyDM")
     self.establish_widget_connections(self._display_widget)
+    QTimer.singleShot(0, self.resizeToMinimum)
+    
     
   def clear_display_widget(self):
     if self._display_widget != None:
@@ -154,19 +156,18 @@ class PyDMMainWindow(QMainWindow):
     current_font = QApplication.instance().font()
     current_font.setPointSizeF(current_font.pointSizeF() * 1.1)
     QApplication.instance().setFont(current_font)
-    for child_widget in self.findChildren(QWidget):
-      child_widget.updateGeometry()
-    self.updateGeometry()
+    QTimer.singleShot(0, self.resizeToMinimum)
   
   @pyqtSlot(bool)
   def decrease_font_size(self, checked):
     current_font = QApplication.instance().font()
     current_font.setPointSizeF(current_font.pointSizeF() / 1.1)
     QApplication.instance().setFont(current_font)
-    for child_widget in self.findChildren(QWidget):
-      child_widget.updateGeometry()
-    self.updateGeometry()
+    QTimer.singleShot(0, self.resizeToMinimum)
   
+  def resizeToMinimum(self):
+    self.resize(self.minimumSizeHint())
+    
 class PyDMApplication(QApplication):
   plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
   
