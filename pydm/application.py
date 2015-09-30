@@ -1,14 +1,16 @@
 from PyQt4.QtGui import QApplication, QMainWindow, QColor, QWidget
-from PyQt4.QtCore import Qt
+from PyQt4.QtCore import Qt, pyqtSlot
 import re
 from .epics_plugin import EPICSPlugin
 from .fake_plugin import FakePlugin
 from .archiver_plugin import ArchiverPlugin
 from .pydm_ui import Ui_MainWindow
 from PyQt4 import uic
-from os import path
+from os import path, environ
 import imp
 import sys
+import subprocess
+import platform
 
 class PyDMMainWindow(QMainWindow):
   def __init__(self, parent=None):
@@ -23,6 +25,19 @@ class PyDMMainWindow(QMainWindow):
     self.ui.backButton.clicked.connect(self.back)
     self.ui.forwardButton.clicked.connect(self.forward)
     self.ui.goButton.clicked.connect(self.go_button_pressed)
+    self.ui.actionEdit_in_Designer.triggered.connect(self.edit_in_designer)
+    self.ui.actionReload_Display.triggered.connect(self.reload_display)
+    self.designer_path = None
+    if environ.get('QTHOME') == None:
+      self.ui.actionEdit_in_Designer.setEnabled(False)
+    else:
+      qt_path = environ.get('QTHOME')
+      if platform.system() == 'Darwin':
+        #On OS X we have to launch designer in this ugly way if we want it to get access to environment variables.  Ugh.
+        self.designer_path = path.join(qt_path, 'Designer.app/Contents/MacOS/Designer')
+      else:
+        #This assumes some non-OS X unix.  No windows support right now.
+        self.designer_path = path.join(qt_path, 'bin/designer')
     
   def set_display_widget(self, new_widget):
     if new_widget == self._display_widget:
@@ -72,7 +87,7 @@ class PyDMMainWindow(QMainWindow):
       self.load_ui_file(ui_file)
     elif extension == '.py':
       self.load_py_file(ui_file)
-    if (len(self.back_stack) == 0) or (self.back_stack[-1] != ui_file):
+    if (len(self.back_stack) == 0) or (self.current_file() != ui_file):
       self.back_stack.append(ui_file)
     self.ui.forwardButton.setEnabled(len(self.forward_stack) > 0)
     self.ui.backButton.setEnabled(len(self.back_stack) > 1)
@@ -110,6 +125,27 @@ class PyDMMainWindow(QMainWindow):
       QApplication.instance().new_window(self.home_file)
     else:
       self.go(self.home_file)
+  
+  def current_file(self):
+    if len(self.back_stack) == 0:
+      raise IndexError("The display manager does not have a display loaded.")
+    return self.back_stack[-1]
+      
+  @pyqtSlot(bool)
+  def edit_in_designer(self, checked):
+    if not self.designer_path:
+      return
+    filename, extension = path.splitext(self.current_file())
+    if extension == '.ui':
+      process = subprocess.Popen('{0} "{1}"'.format(self.designer_path, self.current_file()), shell=True)
+      self.statusBar().showMessage("Launching '{0}' in Qt Designer...".format(self.current_file()), 5000)
+    else:
+      self.statusBar().showMessage("{0} is a Python file, and cannot be edited in Qt Designer.".format(self.current_file()), 5000)
+  
+  @pyqtSlot(bool)
+  def reload_display(self, checked):
+    self.statusBar().showMessage("Reloading '{0}'...".format(self.current_file()), 5000)
+    self.go(self.current_file())
   
 class PyDMApplication(QApplication):
   plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }

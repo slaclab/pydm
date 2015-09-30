@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pydm.ui'
 #
-# Created: Mon Sep 21 18:12:59 2015
+# Created: Wed Sep 23 09:52:41 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -71,14 +71,15 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.actionEdit_in_Designer = QtGui.QAction(MainWindow)
         self.actionEdit_in_Designer.setObjectName(_fromUtf8("actionEdit_in_Designer"))
-        self.actionSave_Screenshot = QtGui.QAction(MainWindow)
-        self.actionSave_Screenshot.setObjectName(_fromUtf8("actionSave_Screenshot"))
         self.actionAbout_DIM = QtGui.QAction(MainWindow)
+        self.actionAbout_DIM.setEnabled(False)
         self.actionAbout_DIM.setObjectName(_fromUtf8("actionAbout_DIM"))
+        self.actionReload_Display = QtGui.QAction(MainWindow)
+        self.actionReload_Display.setObjectName(_fromUtf8("actionReload_Display"))
         self.menuFile.addAction(self.actionAbout_DIM)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionEdit_in_Designer)
-        self.menuFile.addAction(self.actionSave_Screenshot)
+        self.menuFile.addAction(self.actionReload_Display)
         self.menubar.addAction(self.menuFile.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -93,6 +94,7 @@ class Ui_MainWindow(object):
         self.homeButton.setText(_translate("MainWindow", "Home", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.actionEdit_in_Designer.setText(_translate("MainWindow", "Edit in Designer", None))
-        self.actionSave_Screenshot.setText(_translate("MainWindow", "Save Screenshot", None))
         self.actionAbout_DIM.setText(_translate("MainWindow", "About PyDM", None))
+        self.actionReload_Display.setText(_translate("MainWindow", "Reload Display", None))
+        self.actionReload_Display.setShortcut(_translate("MainWindow", "Ctrl+R", None))
 
