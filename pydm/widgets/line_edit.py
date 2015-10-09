@@ -18,6 +18,8 @@ class PyDMLineEdit(QLineEdit):
     super(PyDMLineEdit, self).__init__(parent)
     self._channel = channel
     self.value = None
+    self._prec = 0
+    self.format_string = None
     self.returnPressed.connect(self.sendValue)
   
   def focusOutEvent(self, event):
@@ -25,13 +27,27 @@ class PyDMLineEdit(QLineEdit):
     super(PyDMLineEdit, self).focusOutEvent(event)
   
   
+  #@pyqtSlot(float)
+  #@pyqtSlot(int)  
+  #@pyqtSlot(str)
+  #def receiveValue(self, new_val):
+  #  self.value = str(new_val)
+  #  if not self.hasFocus():
+  #    self.setText(self.value)
+  
   @pyqtSlot(float)
-  @pyqtSlot(int)  
+  @pyqtSlot(int)
   @pyqtSlot(str)
-  def receiveValue(self, new_val):
-    self.value = str(new_val)
+  def receiveValue(self, new_value):
+    if isinstance(new_value, str):
+      self.value = new_value
+    elif isinstance(new_value, float) and self.format_string != None:
+      self.value = self.format_string.format(new_value) 
+    else:
+      self.value = str(new_value)
     if not self.hasFocus():
       self.setText(self.value)
+  
   
   @pyqtSlot()
   def sendValue(self):
@@ -58,6 +74,21 @@ class PyDMLineEdit(QLineEdit):
       self._channel = None
     
   channel = pyqtProperty("QString", getChannel, setChannel, resetChannel)
+  
+  def getPrecision(self):
+    return self._prec
+  
+  def setPrecision(self, new_prec):
+    if self._prec != int(new_prec) and new_prec >= 0:
+      self._prec = int(new_prec)
+      self.format_string = "{:." + str(self._prec) + "f}"
+      
+  def resetPrecision(self):
+    if self._prec != 0:
+      self._prec = 0
+      self.format_string = None
+      
+  precision = pyqtProperty("int", getPrecision, setPrecision, resetPrecision)
 
   def channels(self):
     return [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, write_access_slot=self.writeAccessChanged, value_signal=self.send_value_signal)]
