@@ -23,10 +23,13 @@ class PyDMLineEdit(QLineEdit):
   def focusOutEvent(self, event):
     self.setText(self.value)
     super(PyDMLineEdit, self).focusOutEvent(event)
-    
+  
+  
+  @pyqtSlot(float)
+  @pyqtSlot(int)  
   @pyqtSlot(str)
-  def recieveValue(self, new_val):
-    self.value = new_val
+  def receiveValue(self, new_val):
+    self.value = str(new_val)
     if not self.hasFocus():
       self.setText(self.value)
   
@@ -57,4 +60,4 @@ class PyDMLineEdit(QLineEdit):
   channel = pyqtProperty("QString", getChannel, setChannel, resetChannel)
 
   def channels(self):
-    return [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.recieveValue, write_access_slot=self.writeAccessChanged, value_signal=self.send_value_signal)]
+    return [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, write_access_slot=self.writeAccessChanged, value_signal=self.send_value_signal)]

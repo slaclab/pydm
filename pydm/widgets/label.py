@@ -34,7 +34,10 @@ class PyDMLabel(QLabel):
   def __init__(self, init_channel=None, parent=None):
     super(PyDMLabel, self).__init__(parent)
     self.setup_state_machine()
+    self._channels = None
     self._channel = init_channel
+    self._prec = 0
+    self.format_string = None
     self.setText("PyDMLabel")
     
     
@@ -96,9 +99,18 @@ class PyDMLabel(QLabel):
     
     self.state_machine.start()
     
+  @pyqtSlot(float)
+  @pyqtSlot(int)
   @pyqtSlot(str)
-  def recieveValue(self, new_value):
-    self.setText(new_value)
+  def receiveValue(self, new_value):
+    if isinstance(new_value, str):
+      self.setText(new_value)
+      return
+    if isinstance(new_value, float):
+      if self.format_string:
+        self.setText(self.format_string.format(new_value))
+        return
+    self.setText(str(new_value))
     
   # -2 to +2, -2 is LOLO, -1 is LOW, 0 is OK, etc.  
   @pyqtSlot(int)
@@ -150,6 +162,24 @@ class PyDMLabel(QLabel):
       self._channel = None
     
   channel = pyqtProperty("QString", getChannel, setChannel, resetChannel)
+  
+  def getPrecision(self):
+    return self._prec
+  
+  def setPrecision(self, new_prec):
+    if self._prec != int(new_prec) and new_prec >= 0:
+      self._prec = int(new_prec)
+      self.format_string = "{:." + str(self._prec) + "f}"
+      
+  def resetPrecision(self):
+    if self._prec != 0:
+      self._prec = 0
+      self.format_string = None
+      
+  precision = pyqtProperty("int", getPrecision, setPrecision, resetPrecision)
 
   def channels(self):
-    return [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.recieveValue, severity_slot=self.alarmSeverityChanged)]
+    if self._channels != None:
+      return self._channels
+    self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, severity_slot=self.alarmSeverityChanged)]
+    return self._channels

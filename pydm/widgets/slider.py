@@ -17,7 +17,7 @@ class PyDMSlider(QSlider):
   def __init__(self, channel=None, parent=None):
     super(PyDMSlider, self).__init__(parent)
     self._channel = channel
-    self.actionTriggered.connect(self.sendValue)
+    self.valueChanged.connect(self.sendValue)
     self._des_max = None
     self._des_min = None
     self._step = '1'
@@ -69,7 +69,7 @@ class PyDMSlider(QSlider):
   #set slider to new position
   #if the slider is not in focus, dont set slider to new position
   @pyqtSlot(str)
-  def recieveValue(self, new_val):
+  def receiveValue(self, new_val):
     if not self.hasFocus():
       self.setSliderPosition(int(float(new_val)))
 
@@ -101,4 +101,4 @@ class PyDMSlider(QSlider):
   channel = pyqtProperty("QString", getChannel, setChannel, resetChannel)
 
   def channels(self):
-    return [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.recieveValue, value_signal=self.send_value_signal)]
+    return [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, value_signal=self.send_value_signal)]

@@ -1,7 +1,7 @@
 from PyQt4.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
 from numpy import ndarray
 class PyDMConnection(QObject):
-  new_value_signal = pyqtSignal(str)
+  new_value_signal = pyqtSignal([float],[int],[str])
   new_waveform_signal = pyqtSignal(ndarray)
   connection_state_signal = pyqtSignal(bool)
   new_severity_signal = pyqtSignal(int)
@@ -17,7 +17,15 @@ class PyDMConnection(QObject):
     except:
       pass
     try:
-      self.new_value_signal.connect(channel.value_slot, Qt.QueuedConnection)
+      self.new_value_signal[int].connect(channel.value_slot, Qt.QueuedConnection)
+    except:
+      pass
+    try:
+      self.new_value_signal[float].connect(channel.value_slot, Qt.QueuedConnection)
+    except:
+      pass
+    try:
+      self.new_value_signal[str].connect(channel.value_slot, Qt.QueuedConnection)
     except:
       pass
     try:
