@@ -1,10 +1,10 @@
-from pcaspy import SimpleServer, Driver
+from pcaspy import SimpleServer, Driver, Severity
 import time
 
 prefix = 'MOTOR:'
 pvdb = {
 	'1:VAL': {
-		'val': 0.0,
+		'value': 0.0,
 		'prec': 2,
     'hilim' : 180,
 		'hihi' : 140,
@@ -14,8 +14,16 @@ pvdb = {
     'lolim' : -180,
     'unit' : 'deg'
 	},
+	'1:STR': {
+    'type': 'string',
+		'value': 'Hello'
+	},
+	'1:INT': {
+    'type': 'int',
+		'value': 5
+	},
 	'2:VAL': {
-		'val': 0.0,
+		'value': 0.0,
 		'prec': 2,
     'hilim' : 180,
 		'hihi' : 140,
@@ -26,7 +34,7 @@ pvdb = {
     'unit' : 'deg'
 	},
 	'3:VAL': {
-		'val': 0.0,
+		'value': 0.0,
 		'prec': 2,
     'hilim' : 180,
 		'hihi' : 140,
@@ -35,7 +43,12 @@ pvdb = {
 		'lolo' : -140,
     'lolim' : -180,
     'unit' : 'deg'
-	}
+	},
+  'STATUS': {
+    'type': 'enum',
+    'enums': ['Off', 'On'],
+    'states': [Severity.MINOR_ALARM, Severity.NO_ALARM],
+  }
 }
 
 class myDriver(Driver):
