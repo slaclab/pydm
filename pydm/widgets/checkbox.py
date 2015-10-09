@@ -17,6 +17,8 @@ class PyDMCheckbox(QCheckBox):
   def __init__(self, channel=None, parent=None):
     super(PyDMCheckbox, self).__init__(parent)
     self._channel = channel
+    self._connected = False
+    self._write_access = False
     self.clicked.connect(self.sendValue)
       
   @pyqtSlot(int)
@@ -35,11 +37,16 @@ class PyDMCheckbox(QCheckBox):
     
   @pyqtSlot(bool)
   def connectionStateChanged(self, connected):
-    self.setEnabled(connected)
+    self._connected = connected
+    self.checkEnableState()
   
   @pyqtSlot(bool)
   def writeAccessChanged(self, write_access):
-    self.setCheckable(write_access)
+    self._write_access = write_access
+    self.checkEnableState()
+  
+  def checkEnableState(self):
+    self.setEnabled(self._write_access and self._connected)
   
   def getChannel(self):
     return QString.fromAscii(self._channel)
