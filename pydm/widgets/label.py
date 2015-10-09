@@ -37,6 +37,7 @@ class PyDMLabel(QLabel):
     self._channels = None
     self._channel = init_channel
     self._prec = 0
+    self.enum_strings = None
     self.format_string = None
     self.setText("PyDMLabel")
     
@@ -110,6 +111,9 @@ class PyDMLabel(QLabel):
       if self.format_string:
         self.setText(self.format_string.format(new_value))
         return
+    if self.enum_strings != None:
+      self.setText(self.enum_strings[new_value])
+      return
     self.setText(str(new_value))
     
   # -2 to +2, -2 is LOLO, -1 is LOW, 0 is OK, etc.  
@@ -136,6 +140,10 @@ class PyDMLabel(QLabel):
       self.connected_signal.emit()
     else:
       self.disconnected_signal.emit()
+  
+  @pyqtSlot(tuple)
+  def enumStringsChanged(self, enum_strings):
+    self.enum_strings = enum_strings
     
   #Define setter and getter for the "color" property, used by the state machine to change color based on alarm severity and connection.
   def getColor(self):
@@ -181,5 +189,5 @@ class PyDMLabel(QLabel):
   def channels(self):
     if self._channels != None:
       return self._channels
-    self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, severity_slot=self.alarmSeverityChanged)]
+    self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, severity_slot=self.alarmSeverityChanged, enum_strings_slot=self.enumStringsChanged)]
     return self._channels
