@@ -9,20 +9,23 @@ class Connection(PyDMConnection):
     self.pv = epics.PV(pv, callback=self.send_new_value, connection_callback=self.send_connection_state, form='ctrl')
     self.add_listener(channel)
   
-  def send_new_value(self, pvname=None, value=None, severity=None, count=None, write_access=None, ftype=None, *args, **kws):
-    if count > 1:
-      self.new_waveform_signal.emit(value)
-    else:
-      if ftype == epics.dbr.INT or ftype == epics.dbr.CTRL_INT or ftype == epics.dbr.TIME_INT:
-        self.new_value_signal[int].emit(int(value))
-      elif ftype == epics.dbr.CTRL_FLOAT or ftype == epics.dbr.FLOAT or ftype == epics.dbr.TIME_FLOAT or ftype == epics.dbr.CTRL_DOUBLE or ftype == epics.dbr.DOUBLE or ftype == epics.dbr.TIME_DOUBLE:
-        self.new_value_signal[float].emit(float(value))
-      else:
-        self.new_value_signal[str].emit(str(value))
+  def send_new_value(self, pvname=None, value=None, char_value=None, enum_strs=None, severity=None, count=None, write_access=None, ftype=None, *args, **kws):
     if severity != None:
       self.new_severity_signal.emit(int(severity))
     if write_access != None:
       self.write_access_signal.emit(write_access)
+    if enum_strs != None:
+      self.enum_strings_signal.emit(enum_strs)
+    if count > 1:
+      self.new_waveform_signal.emit(value)
+    else:
+      if ftype in (epics.dbr.INT, epics.dbr.CTRL_INT, epics.dbr.TIME_INT, epics.dbr.ENUM, epics.dbr.CTRL_ENUM, epics.dbr.TIME_ENUM):
+        self.new_value_signal[int].emit(int(value))
+      elif ftype in (epics.dbr.CTRL_FLOAT, epics.dbr.FLOAT, epics.dbr.TIME_FLOAT, epics.dbr.CTRL_DOUBLE, epics.dbr.DOUBLE, epics.dbr.TIME_DOUBLE):
+        self.new_value_signal[float].emit(float(value))
+      else:
+        self.new_value_signal[str].emit(char_value)
+    
       
   def send_connection_state(self, pvname=None, conn=None, *args, **kws):
     self.connection_state_signal.emit(conn)
