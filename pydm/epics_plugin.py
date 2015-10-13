@@ -6,7 +6,7 @@ from PyQt4.QtCore import pyqtSlot, pyqtSignal, QObject, Qt, QString
 class Connection(PyDMConnection):
   def __init__(self, channel, pv, parent=None):
     super(Connection, self).__init__(channel, pv, parent)
-    self.pv = epics.PV(pv, callback=self.send_new_value, connection_callback=self.send_connection_state, form='ctrl')
+    self.pv = epics.PV(pv, callback=self.send_new_value, connection_callback=self.send_connection_state, form='ctrl', auto_monitor=True)
     self.add_listener(channel)
   
   def send_new_value(self, pvname=None, value=None, char_value=None, enum_strs=None, severity=None, count=None, write_access=None, ftype=None, *args, **kws):
