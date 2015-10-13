@@ -23,10 +23,10 @@
       <string>Displays an image from a PV.</string>
      </property>
      <property name="imageChannel">
-      <string>ca://CAMR:LR20:114:IMAGE</string>
+      <string>ca://CAMR:LR20:114:Image:ArrayData</string>
      </property>
      <property name="widthChannel">
-      <string>ca://CAMR:LR20:114:N_OF_COL</string>
+      <string>ca://CAMR:LR20:114:Image:ArraySize0_RBV</string>
      </property>
     </widget>
    </item>
@@ -55,10 +55,10 @@
       <string>Displays an image from a PV.</string>
      </property>
      <property name="imageChannel">
-      <string>ca://CAMR:LR20:113:IMAGE</string>
+      <string>ca://CAMR:LR20:113:Image:ArrayData</string>
      </property>
      <property name="widthChannel">
-      <string>ca://CAMR:LR20:113:N_OF_COL</string>
+      <string>ca://CAMR:LR20:113:Image:ArraySize0_RBV</string>
      </property>
     </widget>
    </item>
@@ -71,10 +71,10 @@
       <string>Displays an image from a PV.</string>
      </property>
      <property name="imageChannel">
-      <string>ca://CAMR:LR20:119:IMAGE</string>
+      <string>ca://CAMR:LR20:119:Image:ArrayData</string>
      </property>
      <property name="widthChannel">
-      <string>ca://CAMR:LR20:119:N_OF_COL</string>
+      <string>ca://CAMR:LR20:119:Image:ArraySize0_RBV</string>
      </property>
     </widget>
    </item>
@@ -87,10 +87,10 @@
       <string>Displays an image from a PV.</string>
      </property>
      <property name="imageChannel">
-      <string>ca://CAMR:LR20:120:IMAGE</string>
+      <string>ca://CAMR:LR20:120:Image:ArrayData</string>
      </property>
      <property name="widthChannel">
-      <string>ca://CAMR:LR20:120:N_OF_COL</string>
+      <string>ca://CAMR:LR20:120:Image:ArraySize0_RBV</string>
      </property>
     </widget>
    </item>
