@@ -23,10 +23,10 @@ class PyDMImageView(ImageView):
     self.image_width = new_width
     self.redrawImage()
   
-  def redrawPlot(self):
-    if self.image_waveform == None or self.image_width == None:
+  def redrawImage(self):
+    if self.image_waveform.any() and self.image_width:
       return
-    self.setImage(self.image_waveform.reshape((self.image_width, -1)))
+    self.setImage(self.image_waveform.reshape((-1, self.image_width)))
   
   # -2 to +2, -2 is LOLO, -1 is LOW, 0 is OK, etc.  
   @pyqtSlot(int)
