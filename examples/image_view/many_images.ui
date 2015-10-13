@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>691</width>
+    <height>452</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Image View (VCC)</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="2">
+    <widget class="PyDMImageView" name="pydmImageView_3">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>Displays an image from a PV.</string>
+     </property>
+     <property name="imageChannel">
+      <string>ca://CAMR:LR20:114:IMAGE</string>
+     </property>
+     <property name="widthChannel">
+      <string>ca://CAMR:LR20:114:N_OF_COL</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="PyDMImageView" name="pydmImageView">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>Displays an image from a PV.</string>
+     </property>
+     <property name="imageChannel">
+      <string>ca://CAMR:IN20:186:IMAGE</string>
+     </property>
+     <property name="widthChannel">
+      <string>ca://CAMR:IN20:186:N_OF_COL</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="PyDMImageView" name="pydmImageView_2">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>Displays an image from a PV.</string>
+     </property>
+     <property name="imageChannel">
+      <string>ca://CAMR:LR20:113:IMAGE</string>
+     </property>
+     <property name="widthChannel">
+      <string>ca://CAMR:LR20:113:N_OF_COL</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="PyDMImageView" name="pydmImageView_4">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>Displays an image from a PV.</string>
+     </property>
+     <property name="imageChannel">
+      <string>ca://CAMR:LR20:119:IMAGE</string>
+     </property>
+     <property name="widthChannel">
+      <string>ca://CAMR:LR20:119:N_OF_COL</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="PyDMImageView" name="pydmImageView_5">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>Displays an image from a PV.</string>
+     </property>
+     <property name="imageChannel">
+      <string>ca://CAMR:LR20:120:IMAGE</string>
+     </property>
+     <property name="widthChannel">
+      <string>ca://CAMR:LR20:120:N_OF_COL</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="PyDMImageView" name="pydmImageView_6">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>Displays an image from a PV.</string>
+     </property>
+     <property name="imageChannel">
+      <string>ca://CAMR:IN20:461:IMAGE</string>
+     </property>
+     <property name="widthChannel">
+      <string>ca://CAMR:IN20:461:N_OF_COL</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMImageView</class>
+   <extends>QWidget</extends>
+   <header>image</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
