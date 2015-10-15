@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>901</width>
-    <height>618</height>
+    <width>630</width>
+    <height>366</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,6 +37,12 @@
    </item>
    <item row="1" column="0">
     <widget class="PyDMImageView" name="pydmImageView">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>150</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string/>
      </property>
@@ -53,6 +59,12 @@
    </item>
    <item row="1" column="1">
     <widget class="PyDMImageView" name="pydmImageView_2">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>150</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string/>
      </property>
@@ -69,6 +81,12 @@
    </item>
    <item row="1" column="2">
     <widget class="PyDMImageView" name="pydmImageView_3">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>150</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string/>
      </property>
@@ -106,6 +124,12 @@
    </item>
    <item row="3" column="0">
     <widget class="PyDMImageView" name="pydmImageView_4">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>150</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string/>
      </property>
@@ -122,6 +146,12 @@
    </item>
    <item row="3" column="1">
     <widget class="PyDMImageView" name="pydmImageView_5">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>150</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string/>
      </property>
@@ -138,6 +168,12 @@
    </item>
    <item row="3" column="2">
     <widget class="PyDMImageView" name="pydmImageView_6">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>150</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string/>
      </property>
