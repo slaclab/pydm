@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>406</width>
+    <width>576</width>
     <height>308</height>
    </rect>
   </property>
@@ -146,6 +146,22 @@
      </property>
      <property name="displayFilename">
       <string>examples/slider/slider.ui</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton_8">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Image Views</string>
+     </property>
+     <property name="displayFilename">
+      <string>examples/image_view/many_images.ui</string>
      </property>
     </widget>
    </item>
