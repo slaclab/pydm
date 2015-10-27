@@ -60,7 +60,8 @@ class CamViewer(Display):
     self.yLineoutPlot.setMaximumWidth(80)
     self.yLineoutPlot.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
     self.yLineoutPlot.getPlotItem().invertY()
-    self.yLineoutPlot.setYLink(self.ui.imageView.getView())
+    self.yLineoutPlot.hideAxis('bottom')
+    #self.yLineoutPlot.setYLink(self.ui.imageView.getView())
     self.ui.imageGridLayout.addWidget(self.yLineoutPlot, 0, 0)
     self.yLineoutPlot.hide()
     #We do some mangling of the .ui file here and move the imageView over a cell, kind of ugly.
@@ -71,10 +72,14 @@ class CamViewer(Display):
     self.xLineoutPlot = PlotWidget()
     self.xLineoutPlot.setMaximumHeight(80)
     self.xLineoutPlot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
-    
+    self.xLineoutPlot.hideAxis('left')
+    #self.xLineoutPlot.setXLink(self.ui.imageView.getView())
     self.ui.imageGridLayout.addWidget(self.xLineoutPlot, 1, 1)
     self.xLineoutPlot.hide()
-    
+
+    #Update the lineout plot ranges when the image gets panned or zoomed
+    self.ui.imageView.getView().sigRangeChanged.connect(self.updateLineoutRange) 
+
     #Instantiate markers.
     self.marker_dict = {1:{}, 2:{}, 3:{}, 4:{}}
     marker_size = QPointF(20.,20.)
@@ -97,7 +102,6 @@ class CamViewer(Display):
     self.marker_dict[4]['button'] = self.ui.marker4Button
     self.marker_dict[4]['xlineedit'] = self.ui.marker4XPosLineEdit
     self.marker_dict[4]['ylineedit'] = self.ui.marker4YPosLineEdit
-    
     #Disable auto-ranging the image (it feels strange when the zoom changes as you move markers around.)
     self.ui.imageView.getView().disableAutoRange()
     for d in self.marker_dict:
@@ -135,7 +139,7 @@ class CamViewer(Display):
   def zoomToActualSize(self):
     if len(self.image_data) == 0:
       return
-    self.ui.imageView.getView().setRange(xRange=(0,self.image_data.shape[0]),yRange=(0,self.image_data.shape[1]))
+    self.ui.imageView.getView().setRange(xRange=(0,self.image_data.shape[0]),yRange=(0,self.image_data.shape[1]),padding=0.0)
   
   def disable_all_markers(self):
     for d in self.marker_dict:
@@ -192,6 +196,11 @@ class CamViewer(Display):
       x_line_edit.setText(str(coords[0]))
       y_line_edit.setText(str(coords[1]))
   
+  @pyqtSlot(object, object)
+  def updateLineoutRange(self, view, new_ranges):
+    self.ui.xLineoutPlot.setRange(xRange=new_ranges[0], padding=0.0)
+    self.ui.yLineoutPlot.setRange(yRange=new_ranges[1], padding=0.0)
+
   def updateLineouts(self):
     for marker_index in self.marker_dict:
       marker = self.marker_dict[marker_index]['marker']
@@ -376,9 +385,8 @@ class CamViewer(Display):
     self.ui.imageView.receiveImageWaveform(self.image_data)
     self.calculateStats()
     if self._needs_auto_range:
-      self.ui.imageView.getView().autoRange()
+      self.ui.imageView.getView().autoRange(padding=0.0)
       current_range = self.ui.imageView.getView().viewRange()
-      self.xLineoutPlot.setXLink(self.ui.imageView.getView())
       self._needs_auto_range = False
   
   def calculateStats(self):
