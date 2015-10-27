@@ -94,7 +94,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLabel" name="label_6">
+           <widget class="QLabel" name="dataRateLabel">
             <property name="text">
              <string>X Hz</string>
             </property>
@@ -108,7 +108,7 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QLabel" name="label_7">
+           <widget class="QLabel" name="displayRateLabel">
             <property name="text">
              <string>Y Hz</string>
             </property>

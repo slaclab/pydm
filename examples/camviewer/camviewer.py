@@ -7,6 +7,7 @@ from pydm import Display, PyDMChannel, PyDMImageView
 import numpy as np
 from pyqtgraph import PlotWidget, mkPen
 from marker import ImageMarker
+import time
 
 class CamViewer(Display):
   #Emitted when the user changes the value.
@@ -233,6 +234,8 @@ class CamViewer(Display):
   def initializeCamera(self, new_camera):
     new_camera = str(new_camera)
     self._color_map_limit_sliders_need_config = True
+    self.times = np.zeros(10)
+    self.old_timestamp = 0
     self.image_width = 0 #current width (width of ROI)
     self.image_max_width = 0 #full width.  Only used to reset ROI to full.
     self.image_max_height = 0 #full height.  Only used to reset ROI to full.
@@ -366,9 +369,24 @@ class CamViewer(Display):
   def receiveImageWaveform(self, new_waveform):
     if not self.image_width:
       return
+
+    #Calculate the average rate
+    new_timestamp = time.time()
+    if not (self.old_timestamp == 0):
+      delta = new_timestamp - self.old_timestamp
+      self.times = np.roll(self.times,1)
+      self.times[0] = delta
+      avg_delta = np.mean(self.times)
+      self.ui.dataRateLabel.setText("{:.1f} Hz".format((1.0/avg_delta)))
+      self.ui.displayRateLabel.setText("{:.1f} Hz".format((1.0/avg_delta)))
+    self.old_timestamp = new_timestamp
+    
+    #If this is the first image, set up the color map slider limits
     if self._color_map_limit_sliders_need_config:
       max_int = np.iinfo(new_waveform.dtype).max
       self.configureColorMapLimitSliders(max_int)
+    
+    #If we are in average mode, add this image to the circular averaging buffer, otherwise just display it.
     if self._average_mode_enabled:
       if len(self._average_buffer) == 0:
         self._average_buffer = self.createAverageBuffer(len(new_waveform), new_waveform.dtype, new_waveform)
