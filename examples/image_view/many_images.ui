@@ -7,31 +7,24 @@
     <x>0</x>
     <y>0</y>
     <width>630</width>
-    <height>366</height>
+    <height>484</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Injector Profile Monitors</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" alignment="Qt::AlignHCenter">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>VCC</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1" alignment="Qt::AlignHCenter">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>C1</string>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="2" alignment="Qt::AlignHCenter">
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>C2</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" alignment="Qt::AlignHCenter">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>VCC</string>
      </property>
     </widget>
    </item>
@@ -54,6 +47,13 @@
      </property>
      <property name="widthChannel">
       <string>ca://CAMR:IN20:186:N_OF_COL</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" alignment="Qt::AlignHCenter">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>C1</string>
      </property>
     </widget>
    </item>
