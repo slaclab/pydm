@@ -6,17 +6,19 @@ from pyqtgraph import ColorMap
 import numpy as np
 from channel import PyDMChannel
 
-color_maps = {}
-color_maps["Jet"] = np.array([[0,0,127,255],[0,0,255,255],[0,127,255,255],[0,255,255,255],[127,255,127,255],[255,255,0,255],[255,127,0,255],[255,0,0,255], [127,0,0,255]], dtype=np.ubyte)
-color_maps["Monochrome"] = np.array([[0,0,0,255],[255,255,255,255]], dtype=np.ubyte)
-color_maps["Hot"] = np.array([[0,0,0,255],[255,0,0,255],[255,127,0,255],[255,255,0,255],[255,255,255,255]], dtype=np.ubyte)
 class PyDMImageView(ImageView):
-  def __init__(self, image_channel=None, width_channel=None, parent=None):
+  color_maps = {}
+  color_maps["Jet"] = np.array([[0,0,127,255],[0,0,255,255],[0,127,255,255],[0,255,255,255],[127,255,127,255],[255,255,0,255],[255,127,0,255],[255,0,0,255], [127,0,0,255]], dtype=np.ubyte)
+  color_maps["Monochrome"] = np.array([[0,0,0,255],[255,255,255,255]], dtype=np.ubyte)
+  color_maps["Hot"] = np.array([[0,0,0,255],[255,0,0,255],[255,255,0,255],[255,255,255,255]], dtype=np.ubyte)
+  #color_maps["Cool"] = np.array([[0,255,255,255],[255,0,255,255]], dtype=np.ubyte)
+  
+  def __init__(self, parent=None, image_channel=None, width_channel=None):
     super(PyDMImageView, self).__init__(parent)
     self._imagechannel = image_channel
     self._widthchannel = width_channel
-    self.image_waveform = None
-    self.image_width = None
+    self.image_waveform = np.zeros(0)
+    self.image_width = 0
     self.ui.histogram.hide()
     self.ui.roiBtn.hide()
     self.ui.menuBtn.hide()
@@ -28,7 +30,7 @@ class PyDMImageView(ImageView):
     self.setColorMapToPreset(self._colormapname)
     cm_menu = self.getView().getMenu(None).addMenu("Color Map")
     cm_group = QActionGroup(self)
-    for map_name in color_maps:
+    for map_name in self.color_maps:
       action = cm_group.addAction(map_name)
       action.setCheckable(True)
       cm_menu.addAction(action)
@@ -57,9 +59,14 @@ class PyDMImageView(ImageView):
       if self.cm_max < self.cm_min:
         self.cm_min = self.cm_max
       self.setColorMap()
-
+  
+  def setColorMapLimits(self, min, max):
+    self.cm_max = max
+    self.cm_min = min
+    self.setColorMap()
+    
   def setColorMapToPreset(self, name):
-    self._cm_colors = color_maps[name]
+    self._cm_colors = self.color_maps[str(name)]
     self.setColorMap()
 
   def setColorMap(self, map=None):
@@ -73,7 +80,12 @@ class PyDMImageView(ImageView):
 
   @pyqtSlot(np.ndarray)
   def receiveImageWaveform(self, new_waveform):
-    self.image_waveform = new_waveform
+    if self.image_width == 0:
+      return
+    if len(new_waveform.shape) == 1:
+      self.image_waveform = new_waveform.reshape((int(self.image_width),-1), order='F')
+    elif len(new_waveform.shape) == 2:
+      self.image_waveform = new_waveform
     self.data_max_int = np.iinfo(self.image_waveform.dtype).max
     self.redrawImage()
   
@@ -83,8 +95,8 @@ class PyDMImageView(ImageView):
     self.redrawImage()
   
   def redrawImage(self):
-    if self.image_waveform.any() and self.image_width:
-      self.getImageItem().setImage(self.image_waveform.reshape((-1, int(self.image_width))))
+    if len(self.image_waveform) > 0 and self.image_width > 0:
+      self.getImageItem().setImage(self.image_waveform, autoLevels=False)
   
   # -2 to +2, -2 is LOLO, -1 is LOW, 0 is OK, etc.  
   @pyqtSlot(int)
