@@ -74,13 +74,17 @@ class PyDMMainWindow(QMainWindow):
     self.set_display_widget(intelligence_instance)
   
   def establish_widget_connections(self, widget):
-    for child_widget in widget.findChildren(QWidget):
+    widgets = [widget]
+    widgets.extend(widget.findChildren(QWidget))
+    for child_widget in widgets:
       if hasattr(child_widget, 'channels'):
         for channel in child_widget.channels():
           QApplication.instance().add_connection(channel)
   
   def close_widget_connections(self, widget):
-    for child_widget in widget.findChildren(QWidget):
+    widgets = [widget]
+    widgets.extend(widget.findChildren(QWidget))
+    for child_widget in widgets:
       if hasattr(child_widget, 'channels'):
         for channel in child_widget.channels():
           QApplication.instance().remove_connection(channel)
