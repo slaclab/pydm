@@ -44,13 +44,13 @@
       <string>ca://BPMS:LTU1:250:XTH</string>
      </property>
      <property name="bufferSize">
-      <number>1333</number>
+      <number>3000</number>
      </property>
      <property name="updatesAsynchronously">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="timeSpan">
-      <double>20.000000000000000</double>
+      <double>30.000000000000000</double>
      </property>
      <property name="updateInterval">
       <double>0.015000000000000</double>
