@@ -9,13 +9,15 @@ class Connection(PyDMConnection):
     self.pv = epics.PV(pv, callback=self.send_new_value, connection_callback=self.send_connection_state, form='ctrl', auto_monitor=True)
     self.add_listener(channel)
   
-  def send_new_value(self, pvname=None, value=None, char_value=None, enum_strs=None, severity=None, count=None, write_access=None, ftype=None, *args, **kws):
+  def send_new_value(self, pvname=None, value=None, char_value=None, units=None, enum_strs=None, severity=None, count=None, write_access=None, ftype=None, *args, **kws):
     if severity != None:
       self.new_severity_signal.emit(int(severity))
     if write_access != None:
       self.write_access_signal.emit(write_access)
     if enum_strs != None:
       self.enum_strings_signal.emit(enum_strs)
+    if units != None and len(units) > 0:
+      self.unit_signal.emit(units)
     if count > 1:
       self.new_waveform_signal.emit(value)
     else:
