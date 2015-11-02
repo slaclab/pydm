@@ -55,6 +55,9 @@
      <property name="updateInterval">
       <double>0.015000000000000</double>
      </property>
+     <property name="title" stdset="0">
+      <string>BPMS:LTU1:250:XTH</string>
+     </property>
     </widget>
    </item>
   </layout>
