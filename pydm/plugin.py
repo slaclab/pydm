@@ -7,6 +7,7 @@ class PyDMConnection(QObject):
   new_severity_signal = pyqtSignal(int)
   write_access_signal = pyqtSignal(bool)
   enum_strings_signal = pyqtSignal(tuple)
+  unit_signal = pyqtSignal(str)
   def __init__(self, channel, address, parent=None):
     super(PyDMConnection, self).__init__(parent)
     self.listener_count = 0
@@ -43,6 +44,10 @@ class PyDMConnection(QObject):
       pass
     try:
       self.enum_strings_signal.connect(channel.enum_strings_slot, Qt.QueuedConnection)
+    except:
+      pass
+    try:
+      self.unit_signal.connect(channel.unit_slot, Qt.QueuedConnection)
     except:
       pass
       
