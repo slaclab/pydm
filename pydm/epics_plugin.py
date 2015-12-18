@@ -35,6 +35,10 @@ class Connection(PyDMConnection):
   @pyqtSlot(QString)
   def put_value(self, new_val):
     self.pv.put(str(new_val))
+  
+  @pyqtSlot(np.ndarray)
+  def put_value(self, new_waveform_val):
+    self.pv.put(new_waveform_val)
     
   def add_listener(self, channel):
     super(Connection, self).add_listener(channel)
