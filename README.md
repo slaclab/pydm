@@ -1,9 +1,21 @@
-# pydm
-Python Display Manager
+# pydm: Python Display Manager
+pydm is a PyQt-based framework for building user interfaces for control systems.  The goal is to provide a no-code, drag-and-drop system to make simple screens, as well as a straightforward python framework to build complex applications.
 
-# Running the Demos
-To run the 'positioner' demo in stand-alone application mode, run 'python positioner.py'.
-To run the 'positioner' demo in wrapped mode, run 'python pydm.py positioner_module.py'.
+# Prerequisites
+* Python 2
+* Qt 4.8 or higher
+* PyQt 4.11 or higher
+If you'd like to use Qt Designer (drag-and-drop tool to build interfaces) you'll need to make sure you have the PyQt plugin for Designer installed.  This usually happens automatically when you install PyQt.
+
+# Running the Examples
+There are various examples of some of the features of the display manager.
+To launch a particular display run 'python pydm.py <filename>'.
+
+There is a 'home' display in the examples directory with buttons to launch all the examples:
+run 'python pydm.py examples/home.ui'
+
+There isn't any documentation yet, hopefully looking at the examples can get you started.
 
 #Widget Designer Plugins
-Want to use the pydm plugins in Qt Designer?  Add the ./pydm/widgets/ directory to your PYQTDESIGNERPATH environment variable.  Eventually, this will happen automatically in some kind of setup script.
+pydm widgets are written in Python, and are loaded into Qt Designer via the PyQt Designer Plugin.
+If you want to use the pydm widgets in Qt Designer, add the pydm/widgets/ directory to your PYQTDESIGNERPATH environment variable.  Eventually, this will happen automatically in some kind of setup script.
