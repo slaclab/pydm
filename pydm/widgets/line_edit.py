@@ -23,7 +23,8 @@ class PyDMLineEdit(QLineEdit):
     self.returnPressed.connect(self.sendValue)
   
   def focusOutEvent(self, event):
-    self.setText(self.value)
+    if self.value != None:
+      self.setText(self.value)
     super(PyDMLineEdit, self).focusOutEvent(event)
   
   
