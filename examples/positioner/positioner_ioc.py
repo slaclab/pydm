@@ -1,5 +1,6 @@
 from pcaspy import SimpleServer, Driver, Severity
 import time
+import numpy
 
 prefix = 'MOTOR:'
 pvdb = {
@@ -48,6 +49,11 @@ pvdb = {
     'type': 'enum',
     'enums': ['Off', 'On'],
     'states': [Severity.MINOR_ALARM, Severity.NO_ALARM],
+  },
+  'WAVE': {
+    'count': 16,
+    'prec': 2,
+    'value': numpy.arange(16, dtype=float)
   }
 }
 
