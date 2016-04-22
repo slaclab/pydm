@@ -1,4 +1,4 @@
-from PyQt4.QtGui import QApplication, QMainWindow, QColor, QWidget, QToolTip
+from PyQt4.QtGui import QApplication, QMainWindow, QColor, QWidget, QToolTip, QClipboard
 from PyQt4.QtCore import Qt, pyqtSlot, QTimer, QEvent
 import re
 from .epics_plugin import EPICSPlugin
@@ -76,10 +76,13 @@ class PyDMMainWindow(QMainWindow):
   def eventFilter(self, obj, event):
     if event.type() == QEvent.MouseButtonPress:
       if event.button() == Qt.MiddleButton:
-        QToolTip.showText(event.globalPos(), obj.channels()[0].address)
+        addr = obj.channels()[0].address
+        QToolTip.showText(event.globalPos(), addr)
+        clipboard = QApplication.clipboard()
+        clipboard.setText(addr, mode=QClipboard.Selection)
         return True
     return False
-  
+ 
   def establish_widget_connections(self, widget):
     widgets = [widget]
     widgets.extend(widget.findChildren(QWidget))
