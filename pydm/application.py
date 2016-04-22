@@ -1,5 +1,5 @@
-from PyQt4.QtGui import QApplication, QMainWindow, QColor, QWidget
-from PyQt4.QtCore import Qt, pyqtSlot, QTimer
+from PyQt4.QtGui import QApplication, QMainWindow, QColor, QWidget, QToolTip
+from PyQt4.QtCore import Qt, pyqtSlot, QTimer, QEvent
 import re
 from .epics_plugin import EPICSPlugin
 from .fake_plugin import FakePlugin
@@ -72,6 +72,13 @@ class PyDMMainWindow(QMainWindow):
     module = imp.load_source('intelclass', pyfile)
     intelligence_instance = module.intelclass(self)
     self.set_display_widget(intelligence_instance)
+
+  def eventFilter(self, obj, event):
+    if event.type() == QEvent.MouseButtonPress:
+      if event.button() == Qt.MiddleButton:
+        QToolTip.showText(event.globalPos(), obj.channels()[0].address)
+        return True
+    return False
   
   def establish_widget_connections(self, widget):
     widgets = [widget]
@@ -80,6 +87,8 @@ class PyDMMainWindow(QMainWindow):
       if hasattr(child_widget, 'channels'):
         for channel in child_widget.channels():
           QApplication.instance().add_connection(channel)
+        #Take this opportunity to install a filter that intercepts middle-mouse clicks, which we use to display a tooltip with the address of the widget's first channel.
+        child_widget.installEventFilter(self)
   
   def close_widget_connections(self, widget):
     widgets = [widget]
