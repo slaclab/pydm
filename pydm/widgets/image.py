@@ -3,16 +3,12 @@ from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QString
 from pyqtgraph import ImageView
 from pyqtgraph import ImageItem
 from pyqtgraph import ColorMap
+from colormaps import cmaps
 import numpy as np
 from channel import PyDMChannel
 
 class PyDMImageView(ImageView):
-  color_maps = {}
-  color_maps["Jet"] = np.array([[0,0,127,255],[0,0,255,255],[0,127,255,255],[0,255,255,255],[127,255,127,255],[255,255,0,255],[255,127,0,255],[255,0,0,255], [127,0,0,255]], dtype=np.ubyte)
-  color_maps["Monochrome"] = np.array([[0,0,0,255],[255,255,255,255]], dtype=np.ubyte)
-  color_maps["Hot"] = np.array([[0,0,0,255],[255,0,0,255],[255,255,0,255],[255,255,255,255]], dtype=np.ubyte)
-  #color_maps["Cool"] = np.array([[0,255,255,255],[255,0,255,255]], dtype=np.ubyte)
-  
+  color_maps = cmaps  
   def __init__(self, parent=None, image_channel=None, width_channel=None):
     super(PyDMImageView, self).__init__(parent)
     self._imagechannel = image_channel
@@ -25,7 +21,7 @@ class PyDMImageView(ImageView):
     self.cm_min = 0.0
     self.cm_max = 255.0
     self.data_max_int = 255 #This is the max value for the image waveform's data type.  It gets set when the waveform updates.
-    self._colormapname = "Jet"
+    self._colormapname = "inferno"
     self._cm_colors = None
     self.setColorMapToPreset(self._colormapname)
     cm_menu = self.getView().getMenu(None).addMenu("Color Map")
