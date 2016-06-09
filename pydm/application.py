@@ -180,6 +180,9 @@ class PyDMMainWindow(QMainWindow):
   
   def resizeToMinimum(self):
     self.resize(self.minimumSizeHint())
+  
+  def closeEvent(self, event):
+    self.clear_display_widget()
     
 class PyDMApplication(QApplication):
   plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
