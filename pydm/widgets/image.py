@@ -23,6 +23,7 @@ class PyDMImageView(ImageView):
     self.data_max_int = 255 #This is the max value for the image waveform's data type.  It gets set when the waveform updates.
     self._colormapname = "inferno"
     self._cm_colors = None
+    self._needs_reshape = False
     self.setColorMapToPreset(self._colormapname)
     cm_menu = self.getView().getMenu(None).addMenu("Color Map")
     cm_group = QActionGroup(self)
@@ -77,6 +78,9 @@ class PyDMImageView(ImageView):
   @pyqtSlot(np.ndarray)
   def receiveImageWaveform(self, new_waveform):
     if self.image_width == 0:
+      self.image_waveform = new_waveform
+      self._needs_reshape = True
+      #We'll wait to draw the image until we get the width.
       return
     if len(new_waveform.shape) == 1:
       self.image_waveform = new_waveform.reshape((int(self.image_width),-1), order='F')
@@ -88,6 +92,9 @@ class PyDMImageView(ImageView):
   @pyqtSlot(int)
   def receiveImageWidth(self, new_width):
     self.image_width = new_width
+    if self._needs_reshape:
+      self.image_waveform = self.image_waveform.reshape((int(self.image_width),-1), order='F')
+      self._needs_reshape = False
     self.redrawImage()
   
   def redrawImage(self):
