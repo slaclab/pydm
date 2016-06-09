@@ -36,8 +36,7 @@ class PyDMImageView(ImageView):
     cm_menu.triggered.connect(self.changeColorMap)
 
   def changeColorMap(self, action):
-    self._colormapname = str(action.text())
-    self.setColorMapToPreset(self._colormapname)
+    self.setColorMapToPreset(str(action.text()))
 
   @pyqtSlot(int)
   def setColorMapMin(self, new_min):
@@ -63,6 +62,7 @@ class PyDMImageView(ImageView):
     self.setColorMap()
     
   def setColorMapToPreset(self, name):
+    self._colormapname = str(name)
     self._cm_colors = self.color_maps[str(name)]
     self.setColorMap()
 
@@ -73,7 +73,9 @@ class PyDMImageView(ImageView):
       pos = np.linspace(self.cm_min/float(self.data_max_int), self.cm_max/float(self.data_max_int), num=len(self._cm_colors))
       map = ColorMap(pos, self._cm_colors)
     self.getView().setBackgroundColor(map.map(0))
-    self.ui.histogram.gradient.setColorMap(map)
+    lut = map.getLookupTable(0.0,1.0,self.data_max_int, alpha=False)
+    self.getImageItem().setLookupTable(lut)
+    self.getImageItem().setLevels([self.cm_min/float(self.data_max_int),float(self.data_max_int)])
 
   @pyqtSlot(np.ndarray)
   def receiveImageWaveform(self, new_waveform):
