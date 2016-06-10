@@ -77,11 +77,15 @@ class PyDMMainWindow(QMainWindow):
     if event.type() == QEvent.MouseButtonPress:
       if event.button() == Qt.MiddleButton:
         addr = obj.channels()[0].address
-        QToolTip.showText(event.globalPos(), addr)
-        clipboard = QApplication.clipboard()
-        clipboard.setText(addr, mode=QClipboard.Selection)
+        self.show_address_tooltip(addr)
         return True
     return False
+
+  def show_address_tooltip(self,address):
+    QToolTip.showText(event.globalPos(), address)
+    #Strip the scheme out of the address before putting it in the clipboard.
+    m = re.match('(.+?):/{2,3}(.+?)$',address)
+    QApplication.clipboard().setText(m.group(2), mode=QClipboard.Selection)
  
   def establish_widget_connections(self, widget):
     widgets = [widget]
