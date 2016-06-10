@@ -3,16 +3,12 @@ from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QString
 from pyqtgraph import ImageView
 from pyqtgraph import ImageItem
 from pyqtgraph import ColorMap
+from colormaps import cmaps
 import numpy as np
 from channel import PyDMChannel
 
 class PyDMImageView(ImageView):
-  color_maps = {}
-  color_maps["Jet"] = np.array([[0,0,127,255],[0,0,255,255],[0,127,255,255],[0,255,255,255],[127,255,127,255],[255,255,0,255],[255,127,0,255],[255,0,0,255], [127,0,0,255]], dtype=np.ubyte)
-  color_maps["Monochrome"] = np.array([[0,0,0,255],[255,255,255,255]], dtype=np.ubyte)
-  color_maps["Hot"] = np.array([[0,0,0,255],[255,0,0,255],[255,255,0,255],[255,255,255,255]], dtype=np.ubyte)
-  #color_maps["Cool"] = np.array([[0,255,255,255],[255,0,255,255]], dtype=np.ubyte)
-  
+  color_maps = cmaps  
   def __init__(self, parent=None, image_channel=None, width_channel=None):
     super(PyDMImageView, self).__init__(parent)
     self._imagechannel = image_channel
@@ -25,8 +21,9 @@ class PyDMImageView(ImageView):
     self.cm_min = 0.0
     self.cm_max = 255.0
     self.data_max_int = 255 #This is the max value for the image waveform's data type.  It gets set when the waveform updates.
-    self._colormapname = "Jet"
+    self._colormapname = "inferno"
     self._cm_colors = None
+    self._needs_reshape = False
     self.setColorMapToPreset(self._colormapname)
     cm_menu = self.getView().getMenu(None).addMenu("Color Map")
     cm_group = QActionGroup(self)
@@ -39,8 +36,7 @@ class PyDMImageView(ImageView):
     cm_menu.triggered.connect(self.changeColorMap)
 
   def changeColorMap(self, action):
-    self._colormapname = str(action.text())
-    self.setColorMapToPreset(self._colormapname)
+    self.setColorMapToPreset(str(action.text()))
 
   @pyqtSlot(int)
   def setColorMapMin(self, new_min):
@@ -66,6 +62,7 @@ class PyDMImageView(ImageView):
     self.setColorMap()
     
   def setColorMapToPreset(self, name):
+    self._colormapname = str(name)
     self._cm_colors = self.color_maps[str(name)]
     self.setColorMap()
 
@@ -76,11 +73,16 @@ class PyDMImageView(ImageView):
       pos = np.linspace(self.cm_min/float(self.data_max_int), self.cm_max/float(self.data_max_int), num=len(self._cm_colors))
       map = ColorMap(pos, self._cm_colors)
     self.getView().setBackgroundColor(map.map(0))
-    self.ui.histogram.gradient.setColorMap(map)
+    lut = map.getLookupTable(0.0,1.0,self.data_max_int, alpha=False)
+    self.getImageItem().setLookupTable(lut)
+    self.getImageItem().setLevels([self.cm_min/float(self.data_max_int),float(self.data_max_int)])
 
   @pyqtSlot(np.ndarray)
   def receiveImageWaveform(self, new_waveform):
     if self.image_width == 0:
+      self.image_waveform = new_waveform
+      self._needs_reshape = True
+      #We'll wait to draw the image until we get the width.
       return
     if len(new_waveform.shape) == 1:
       self.image_waveform = new_waveform.reshape((int(self.image_width),-1), order='F')
@@ -92,6 +94,9 @@ class PyDMImageView(ImageView):
   @pyqtSlot(int)
   def receiveImageWidth(self, new_width):
     self.image_width = new_width
+    if self._needs_reshape:
+      self.image_waveform = self.image_waveform.reshape((int(self.image_width),-1), order='F')
+      self._needs_reshape = False
     self.redrawImage()
   
   def redrawImage(self):
