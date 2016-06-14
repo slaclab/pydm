@@ -119,7 +119,7 @@ class PyDMMainWindow(QMainWindow):
   def go_button_pressed(self):
     filename = str(self.ui.panelSearchLineEdit.text())
     if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-      QApplication.instance().new_window(filename)
+      QApplication.instance().new_pydm_process(filename)
     else:
       self.go(filename)
   
@@ -132,7 +132,7 @@ class PyDMMainWindow(QMainWindow):
   def back(self):
     if len(self.back_stack) > 1:
       if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-        QApplication.instance().new_window(self.back_stack[-2])
+        QApplication.instance().new_pydm_process(self.back_stack[-2])
       else:
         self.forward_stack.append(self.back_stack.pop())
         self.open_file(self.back_stack[-1])
@@ -140,13 +140,13 @@ class PyDMMainWindow(QMainWindow):
   def forward(self):
     if len(self.forward_stack) > 0:
       if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-        QApplication.instance().new_window(self.forward_stack[-1])
+        QApplication.instance().new_pydm_process(self.forward_stack[-1])
       else:
         self.open_file(self.forward_stack.pop())
   
   def home(self):
     if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-      QApplication.instance().new_window(self.home_file)
+      QApplication.instance().new_pydm_process(self.home_file)
     else:
       self.go(self.home_file)
   
@@ -221,6 +221,9 @@ class PyDMApplication(QApplication):
       pass
     if ui_file:  
       self.new_window(ui_file)
+  
+  def new_pydm_process(self, ui_file):
+    subprocess.Popen('python $PYDM_PATH/pydm.py "{file}"'.format(file=ui_file), shell=True)
   
   def new_window(self, ui_file):
     main_window = PyDMMainWindow()  
