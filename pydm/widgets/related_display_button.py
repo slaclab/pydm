@@ -37,6 +37,6 @@ class PyDMRelatedDisplayButton(QPushButton):
     if target == self.EXISTING_WINDOW:
       self.window().go(str(self.displayFilename))
     if target == self.NEW_WINDOW:
-      QApplication.instance().new_pydm_process(str(self.displayFilename))
+      QApplication.instance().new_window(str(self.displayFilename))
     
   displayFilename = pyqtProperty("QString", getDisplayFilename, setDisplayFilename, resetDisplayFilename)

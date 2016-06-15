@@ -223,7 +223,7 @@ class PyDMApplication(QApplication):
     """new_window() gets called whenever a request to open a new window is made."""
     (filename, extension) = path.splitext(ui_file)
     if extension == '.ui':
-      self.make_window(self, ui_file)
+      self.make_window(ui_file)
     elif extension == '.py':
       self.new_pydm_process(ui_file)
   
