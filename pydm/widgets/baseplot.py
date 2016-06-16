@@ -1,4 +1,4 @@
-from PyQt4.QtGui import QLabel, QApplication, QColor
+from PyQt4.QtGui import QLabel, QApplication, QColor, QBrush
 from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QString, QTimer
 from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
 from pyqtgraph import PlotCurveItem
@@ -17,6 +17,10 @@ class BasePlot(PlotWidget):
     self.setShowXGrid(True)
     self._show_y_grid = None
     self.setShowYGrid(True)
+    self._curveColor=QColor(255,255,255)
+    self.curve = PlotCurveItem(pen=self._curveColor)
+    self.addItem(self.curve)
+    self._title = None
   
   def getAutoRangeX(self):
     return self._auto_range_x
@@ -65,3 +69,47 @@ class BasePlot(PlotWidget):
     self.setShowYGrid(False)
     
   showYGrid = pyqtProperty("bool", getShowYGrid, setShowYGrid, resetShowYGrid)
+  
+  def getCurveColor(self):
+    return self._curveColor
+
+  def setCurveColor(self, color):
+    if self._curveColor != color:
+      self._curveColor = color
+      self.curve.setPen(self._curveColor)
+    
+  curveColor = pyqtProperty(QColor, getCurveColor, setCurveColor)
+  
+  def getBackgroundColor(self):
+    return self.backgroundBrush().color()
+
+  def setBackgroundColor(self, color):
+    if self.backgroundBrush().color() != color:
+      self.setBackgroundBrush(QBrush(color))
+    
+  backgroundColor = pyqtProperty(QColor, getBackgroundColor, setBackgroundColor)
+
+  def getAxisColor(self):
+    return self.getAxis('bottom')._pen.color()
+
+  def setAxisColor(self, color):
+    if self.getAxis('bottom')._pen.color() != color:
+      self.getAxis('bottom').setPen(color)
+      self.getAxis('left').setPen(color)
+      self.getAxis('top').setPen(color)
+      self.getAxis('right').setPen(color)
+      
+  axisColor = pyqtProperty(QColor, getAxisColor, setAxisColor)
+  
+  def getPlotTitle(self):
+    return QString.fromAscii(self._title)
+  
+  def setPlotTitle(self, value):
+    self._title = str(value)
+    self.setTitle(self._title)
+
+  def resetPlotTitle(self):
+    self._title = None
+    self.setTitle(self._title)
+    
+  title = pyqtProperty("QString", getPlotTitle, setPlotTitle, resetPlotTitle)

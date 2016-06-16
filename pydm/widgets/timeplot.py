@@ -2,11 +2,12 @@ from PyQt4.QtGui import QLabel, QApplication, QColor
 from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QString, QTimer
 from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
 from pyqtgraph import PlotCurveItem
+from baseplot import BasePlot
 import numpy as np
 import time
 from channel import PyDMChannel
 
-class PyDMTimePlot(PlotWidget):
+class PyDMTimePlot(BasePlot):
   SynchronousMode = 1
   AsynchronousMode = 2
   def __init__(self, init_y_channel=None, parent=None, background='default'):
@@ -14,12 +15,6 @@ class PyDMTimePlot(PlotWidget):
     self._left_axis = AxisItem('left')
     super(PyDMTimePlot, self).__init__(parent=parent, background=background, axisItems={'bottom': self._bottom_axis, 'left': self._left_axis})
     self._ychannel = init_y_channel
-    self.showGrid(x=False, y=False)
-    self._curveColor=QColor(255,255,255)
-    self.curve = PlotCurveItem(pen=self._curveColor)
-    self.addItem(self.curve)
-    self.plotItem = self.getPlotItem()
-    self.plotItem.hideButtons()
     self.plotItem.disableAutoRange(ViewBox.XAxis)
     self.y_waveform = None
     self._bufferSize = 1
@@ -30,7 +25,13 @@ class PyDMTimePlot(PlotWidget):
     self._time_span = 5.0 #This is in seconds
     self._update_interval = 100
     self._update_mode = PyDMTimePlot.SynchronousMode
-    self._title = None
+    #Due to a bug in pyqtgraph, we have to remove a bunch of leftover garbage axes.
+    #It looks like this bug will be fixed in a future version of pyqtgraph.
+    for child in self.getPlotItem().childItems():
+      if isinstance(child, AxisItem):
+        if child not in [self.getPlotItem().axes[k]['item'] for k in self.getPlotItem().axes]:
+          child.deleteLater()
+    
   
   def configure_timer(self):
     self.update_timer.stop()
@@ -196,28 +197,12 @@ class PyDMTimePlot(PlotWidget):
       
   updateInterval = pyqtProperty(float, getUpdateInterval, setUpdateInterval, resetUpdateInterval)
   
-  def getCurveColor(self):
-    return self._curveColor
-
-  def setCurveColor(self, color):
-    if self._curveColor != color:
-      self._curveColor = color
-      self.curve.setPen(self._curveColor)
-    
-  curveColor = pyqtProperty(QColor, getCurveColor, setCurveColor)
+  def getAutoRangeX(self):
+    return False
   
-  def getPlotTitle(self):
-    return QString.fromAscii(self._title)
-  
-  def setPlotTitle(self, value):
-    self._title = str(value)
-    self.setTitle(self._title)
-
-  def resetPlotTitle(self):
-    self._title = None
-    self.setTitle(self._title)
-    
-  title = pyqtProperty("QString", getPlotTitle, setPlotTitle, resetPlotTitle)
+  def setAutoRangeX(self, value):
+    self._auto_range_x = False
+    self.plotItem.enableAutoRange(ViewBox.XAxis,enable=self._auto_range_x)
   
   def channels(self):
     return [PyDMChannel(address=self.yChannel, connection_slot=self.connectionStateChanged, value_slot=self.receiveNewValue, severity_slot=self.alarmSeverityChanged, unit_slot=self.unitsChanged)]

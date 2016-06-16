@@ -2,20 +2,15 @@ from PyQt4.QtGui import QLabel, QApplication, QColor
 from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QString
 from pyqtgraph import PlotWidget
 from pyqtgraph import PlotCurveItem
+from baseplot import BasePlot
 import numpy as np
 from channel import PyDMChannel
 
-class PyDMWaveformPlot(PlotWidget):
+class PyDMWaveformPlot(BasePlot):
   def __init__(self, init_x_channel=None, init_y_channel=None, parent=None, background='default'):
     super(PyDMWaveformPlot, self).__init__(parent, background)
     self._ychannel = init_x_channel
     self._xchannel = init_y_channel
-    self.showGrid(x=False, y=False)
-    self._curveColor=QColor(255,255,255)
-    self.curve = PlotCurveItem(pen=self._curveColor)
-    self.addItem(self.curve)
-    self.plotItem = self.getPlotItem()
-    self.plotItem.hideButtons()
     self.x_waveform = None
     self.y_waveform = None
   
@@ -75,13 +70,3 @@ class PyDMWaveformPlot(PlotWidget):
   
   def channels(self):
     return [PyDMChannel(address=self.yChannel, connection_slot=self.connectionStateChanged, waveform_slot=self.receiveYWaveform, severity_slot=self.alarmSeverityChanged), PyDMChannel(address=self.xChannel, connection_slot=self.connectionStateChanged, waveform_slot=self.receiveXWaveform, severity_slot=self.alarmSeverityChanged)]
-  
-  def getCurveColor(self):
-    return self._curveColor
-
-  def setCurveColor(self, color):
-    if self._curveColor != color:
-      self._curveColor = color
-      self.curve.setPen(self._curveColor)
-    
-  curveColor = pyqtProperty(QColor, getCurveColor, setCurveColor)
