@@ -6,7 +6,6 @@ from pyqtgraph import PlotCurveItem
 class BasePlot(PlotWidget):
   def __init__(self, parent=None, background='default', axisItems=None):
     super(BasePlot, self).__init__(parent=parent, background=background, axisItems=axisItems)
-    self.showGrid(x=False, y=False)
     self.plotItem = self.getPlotItem()
     self.plotItem.hideButtons()
     self._auto_range_x = None
@@ -14,9 +13,9 @@ class BasePlot(PlotWidget):
     self._auto_range_y = None
     self.setAutoRangeY(True)
     self._show_x_grid = None
-    self.setShowXGrid(True)
+    self.setShowXGrid(False)
     self._show_y_grid = None
-    self.setShowYGrid(True)
+    self.setShowYGrid(False)
     self._curveColor=QColor(255,255,255)
     self.curve = PlotCurveItem(pen=self._curveColor)
     self.addItem(self.curve)
