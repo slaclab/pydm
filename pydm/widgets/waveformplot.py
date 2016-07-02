@@ -26,7 +26,8 @@ class PyDMWaveformPlot(BasePlot):
 
   def updateAxes(self):
     if self.x_waveform == None:
-      self.plotItem.setLimits(xMin=0, xMax=len(self.y_waveform), yMin=2.0*np.amin(self.y_waveform), yMax=2.0*np.amax(self.y_waveform))
+      yspan = float(np.amax(self.y_waveform)) - float(np.amin(self.y_waveform))
+      self.plotItem.setLimits(xMin=0, xMax=len(self.y_waveform), yMin=float(np.amin(self.y_waveform)-yspan), yMax=float(np.amax(self.y_waveform)+yspan))
     else:
       self.plotItem.setLimits(xMin=self.x_waveform.amin(), xMax=self.x_waveform.amax(), yMin=self.y_waveform.amin(), yMax=self.y_waveform.amax())
   
