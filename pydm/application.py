@@ -18,6 +18,7 @@ from PyQt4 import uic
 class PyDMMainWindow(QMainWindow):
   def __init__(self, parent=None):
     super(PyDMMainWindow, self).__init__(parent)
+    self.app = QApplication.instance()
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)
     self._display_widget = None
@@ -51,14 +52,13 @@ class PyDMMainWindow(QMainWindow):
     self._display_widget = new_widget
     self.ui.verticalLayout.addWidget(self._display_widget)
     self.setWindowTitle(self._display_widget.windowTitle() + " - PyDM")
-    self.establish_widget_connections(self._display_widget)
+    self.app.establish_widget_connections(self._display_widget)
     QTimer.singleShot(0, self.resizeToMinimum)
-    
     
   def clear_display_widget(self):
     if self._display_widget != None:
       self.ui.verticalLayout.removeWidget(self._display_widget)
-      self.close_widget_connections(self._display_widget)
+      self.app.close_widget_connections(self._display_widget)
       self._display_widget.deleteLater()
       self._display_widget = None
   
@@ -76,46 +76,6 @@ class PyDMMainWindow(QMainWindow):
     intelligence_instance = module.intelclass(self)
     self.set_display_widget(intelligence_instance)
 
-  def eventFilter(self, obj, event):
-    if event.type() == QEvent.MouseButtonPress:
-      if event.button() == Qt.MiddleButton:
-        self.show_address_tooltip(obj, event)
-        return True
-    return False
-
-  def show_address_tooltip(self, obj, event):
-    addr = obj.channels()[0].address
-    QToolTip.showText(event.globalPos(), addr)
-    #Strip the scheme out of the address before putting it in the clipboard.
-    m = re.match('(.+?):/{2,3}(.+?)$',addr)
-    QApplication.clipboard().setText(m.group(2), mode=QClipboard.Selection)
- 
-  def establish_widget_connections(self, widget):
-    widgets = [widget]
-    widgets.extend(widget.findChildren(QWidget))
-    for child_widget in widgets:
-      try:
-        for channel in child_widget.channels():
-          QApplication.instance().add_connection(channel)
-        #Take this opportunity to install a filter that intercepts middle-mouse clicks, which we use to display a tooltip with the address of the widget's first channel.
-        child_widget.installEventFilter(self)
-      except AttributeError:
-        pass
-      except NameError:
-        pass
-  
-  def close_widget_connections(self, widget):
-    widgets = [widget]
-    widgets.extend(widget.findChildren(QWidget))
-    for child_widget in widgets:
-      try:
-        for channel in child_widget.channels():
-          QApplication.instance().remove_connection(channel)
-      except AttributeError:
-        pass
-      except NameError:
-        pass
-  
   def open_file(self, ui_file):
     (filename, extension) = path.splitext(ui_file)
     if extension == '.ui':
@@ -130,7 +90,7 @@ class PyDMMainWindow(QMainWindow):
   def go_button_pressed(self):
     filename = str(self.ui.panelSearchLineEdit.text())
     if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-      QApplication.instance().new_window(filename)
+      self.app.new_window(filename)
     else:
       self.go(filename)
   
@@ -143,7 +103,7 @@ class PyDMMainWindow(QMainWindow):
   def back(self):
     if len(self.back_stack) > 1:
       if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-        QApplication.instance().new_window(self.back_stack[-2])
+        self.app.new_window(self.back_stack[-2])
       else:
         self.forward_stack.append(self.back_stack.pop())
         self.open_file(self.back_stack[-1])
@@ -151,13 +111,13 @@ class PyDMMainWindow(QMainWindow):
   def forward(self):
     if len(self.forward_stack) > 0:
       if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-        QApplication.instance().new_window(self.forward_stack[-1])
+        self.app.new_window(self.forward_stack[-1])
       else:
         self.open_file(self.forward_stack.pop())
   
   def home(self):
     if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-      QApplication.instance().new_window(self.home_file)
+      self.app.new_window(self.home_file)
     else:
       self.go(self.home_file)
   
@@ -269,4 +229,38 @@ class PyDMApplication(QApplication):
     plugin = self.plugin_for_channel(channel)
     if plugin:
       plugin.remove_connection(channel)
-    
+
+  def eventFilter(self, obj, event):
+    if event.type() == QEvent.MouseButtonPress:
+      if event.button() == Qt.MiddleButton:
+        self.show_address_tooltip(obj, event)
+        return True
+    return False
+  
+  #Not sure if showing the tooltip should be the job of the app,
+  #may want to revisit this.
+  def show_address_tooltip(self, obj, event):
+    addr = obj.channels()[0].address
+    QToolTip.showText(event.globalPos(), addr)
+    #Strip the scheme out of the address before putting it in the clipboard.
+    m = re.match('(.+?):/{2,3}(.+?)$',addr)
+    QApplication.clipboard().setText(m.group(2), mode=QClipboard.Selection)
+ 
+  def establish_widget_connections(self, widget):
+    widgets = [widget]
+    widgets.extend(widget.findChildren(QWidget))
+    for child_widget in widgets:
+      if hasattr(child_widget, 'channels'):
+        for channel in child_widget.channels():
+          self.add_connection(channel)
+        #Take this opportunity to install a filter that intercepts middle-mouse clicks, which we use to display a tooltip with the address of the widget's first channel.
+        child_widget.installEventFilter(self)
+  
+  def close_widget_connections(self, widget):
+    widgets = [widget]
+    widgets.extend(widget.findChildren(QWidget))
+    for child_widget in widgets:
+      if hasattr(child_widget, 'channels'):
+        for channel in child_widget.channels():
+          self.remove_connection(channel)
+  
