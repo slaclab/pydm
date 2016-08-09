@@ -1,9 +1,10 @@
 from os import path, environ
 import imp
 import sys
+import signal
 import subprocess
 import platform
-print(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
+#print(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
 sys.path.append(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
 from PyQt4.QtGui import QApplication, QMainWindow, QColor, QWidget, QToolTip, QClipboard
 from PyQt4.QtCore import Qt, pyqtSlot, QTimer, QEvent
@@ -13,7 +14,6 @@ from .fake_plugin import FakePlugin
 from .archiver_plugin import ArchiverPlugin
 from .pydm_ui import Ui_MainWindow
 from PyQt4 import uic
-
 
 class PyDMMainWindow(QMainWindow):
   def __init__(self, parent=None):
@@ -184,8 +184,12 @@ class PyDMApplication(QApplication):
     #Add the path to the widgets module, so that qt knows where to find custom widgets.  This seems like a really awful way to do this.
     
     self.windows = []
-    ui_file = command_line_args[1]
-    self.make_window(ui_file)
+    #Open a window if one was provided.
+    if len(command_line_args) > 1:
+      ui_file = command_line_args[1]
+      self.make_window(ui_file)
+    #Re-enable sigint (usually blocked by pyqt)
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
       
   def new_pydm_process(self, ui_file):
     subprocess.Popen('python $PYDM_PATH/pydm.py "{file}"'.format(file=ui_file), shell=True)
