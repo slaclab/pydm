@@ -65,8 +65,6 @@ class PyDMMainWindow(QMainWindow):
   def load_ui_file(self, uifile):
     display_widget = uic.loadUi(uifile)
     self.set_display_widget(display_widget)
-    if self.home_file is None:
-      self.home_file = uifile
     
   def load_py_file(self, pyfile):
     #Add the intelligence module directory to the python path, so that submodules can be loaded.  Eventually, this should go away, and intelligence modules should behave as real python modules.
@@ -88,6 +86,8 @@ class PyDMMainWindow(QMainWindow):
       self.back_stack.append(ui_file)
     self.ui.forwardButton.setEnabled(len(self.forward_stack) > 0)
     self.ui.backButton.setEnabled(len(self.back_stack) > 1)
+    if self.home_file is None:
+      self.home_file = ui_file
   
   def go_button_pressed(self):
     filename = str(self.ui.panelSearchLineEdit.text())
