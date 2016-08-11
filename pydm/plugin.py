@@ -1,13 +1,15 @@
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
 from numpy import ndarray
+from PyQt4.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
+
 class PyDMConnection(QObject):
-  new_value_signal = pyqtSignal([float],[int],[str])
-  new_waveform_signal = pyqtSignal(ndarray)
+  new_value_signal =        pyqtSignal([float],[int],[str])
+  new_waveform_signal =     pyqtSignal(ndarray)
   connection_state_signal = pyqtSignal(bool)
-  new_severity_signal = pyqtSignal(int)
-  write_access_signal = pyqtSignal(bool)
-  enum_strings_signal = pyqtSignal(tuple)
-  unit_signal = pyqtSignal(str)
+  new_severity_signal =     pyqtSignal(int)
+  write_access_signal =     pyqtSignal(bool)
+  enum_strings_signal =     pyqtSignal(tuple)
+  unit_signal =             pyqtSignal(str)
+
   def __init__(self, channel, address, parent=None):
     super(PyDMConnection, self).__init__(parent)
     self.listener_count = 0
