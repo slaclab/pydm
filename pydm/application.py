@@ -52,7 +52,6 @@ class PyDMMainWindow(QMainWindow):
     self._display_widget = new_widget
     self.ui.verticalLayout.addWidget(self._display_widget)
     self.setWindowTitle(self._display_widget.windowTitle() + " - PyDM")
-    self.app.establish_widget_connections(self._display_widget)
     QTimer.singleShot(0, self.resizeToMinimum)
     
   def clear_display_widget(self):
@@ -192,7 +191,17 @@ class PyDMApplication(QApplication):
       self.make_window(ui_file)
     #Re-enable sigint (usually blocked by pyqt)
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-      
+
+
+  def exec_(self):
+      """
+      Execute the QApplication
+      """
+      for widget in self.topLevelWidgets():
+        self.establish_widget_connections(widget)
+    
+      return super(PyDMApplication,self).exec_()
+ 
   def new_pydm_process(self, ui_file):
     subprocess.Popen('python $PYDM_PATH/pydm.py "{file}"'.format(file=ui_file), shell=True)
   
@@ -268,5 +277,11 @@ class PyDMApplication(QApplication):
     for child_widget in widgets:
       if hasattr(child_widget, 'channels'):
         for channel in child_widget.channels():
+<<<<<<< HEAD
           self.remove_connection(channel)
   
+=======
+          QApplication.instance().remove_connection(channel)
+ 
+
+>>>>>>> 304096a... application.pyChanged widget connection handling
