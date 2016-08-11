@@ -32,12 +32,14 @@ class Connection(PyDMConnection):
   def send_connection_state(self, pvname=None, conn=None, *args, **kws):
     self.connection_state_signal.emit(conn)
   
+  @pyqtSlot(int)
+  @pyqtSlot(float)
   @pyqtSlot(str)
   def put_value(self, new_val):
-    self.pv.put(str(new_val))
+    self.pv.put(new_val)
   
   @pyqtSlot(np.ndarray)
-  def put_value(self, new_waveform_val):
+  def put_waveform(self, new_waveform_val):
     self.pv.put(new_waveform_val)
     
   def add_listener(self, channel):
@@ -49,10 +51,17 @@ class Connection(PyDMConnection):
       self.pv.run_callbacks()
       
     try:
-      channel.value_signal.connect(self.put_value, Qt.QueuedConnection)
+      channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
+      channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
+      channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
     except:
       pass
       
+    try:
+      channel.waveform_signal.connect(self.put_waveform, Qt.QueuedConnection)
+    except:
+      pass
+
   def close(self):
     self.pv.disconnect()
 
