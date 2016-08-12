@@ -22,11 +22,19 @@ class PyDMPushButton(QPushButton):
     send_value_signal = pyqtSignal([int],[float],[str])
 
 
-    def __init__(self,button_label,parent=None,
-                 pressValue = None, relative = False, 
-                 init_channel = None):
-        super(PyDMPushButton,self).__init__(button_label,parent=parent)
-        
+    def __init__(self,parent=None,label=None,icon=None,
+                 pressValue=None,relative=False, 
+                 init_channel= None):
+        if icon:
+            print 'icon'
+            super(PyDMPushButton,self).__init__(icon,label,parent)
+        elif label:
+            print label
+            super(PyDMPushButton,self).__init__(label,parent)
+        else:
+            print 'None'
+            super(PyDMPushButton,self).__init__(parent)
+
         self._value       = None
         self._pressValue  = pressValue 
         self._relative    = relative
@@ -37,11 +45,11 @@ class PyDMPushButton(QPushButton):
         self.clicked.connect(self.sendValue)
 
 
-    @pyqtProperty(int)
-    @pyqtProperty(float)
-    @pyqtProperty(str)
+#    @pyqtProperty(int)
+#    @pyqtProperty(float)
+    @pyqtProperty('QString')
     def pressValue(self):
-        return self._pressValue
+        return QString.fromAscii(self._pressValue)
     
     @pressValue.setter
     def pressValue(self,value):
@@ -61,6 +69,9 @@ class PyDMPushButton(QPushButton):
         """
         Emit a :attr:`.send_value_signal` with the desired PV value
         """
+        if not self._pressValue or self._value is None:
+            return None
+
         if not self._relative or self._channeltype == str:
             self.send_value_signal[self._channeltype].emit(self._channeltype(self._pressValue))
         else:
@@ -77,13 +88,14 @@ class PyDMPushButton(QPushButton):
         if self._relative != choice:
             self._relative = choice
 
-    @pyqtProperty('QString')
+
+    @pyqtProperty(QString)
     def channel(self):
         return QString.fromAscii(self._channel)
 
 
     @channel.setter
-    def setChannel(self):
+    def channel(self,value):
         if self._channel != value:
             self._channel = str(value)
 
@@ -95,17 +107,17 @@ class PyDMPushButton(QPushButton):
 
     
     
-if __name__ == '__main__':
-    #Append Path
-    dir = path.join(path.dirname(path.abspath(__file__)),'../..')
-    sys.path.insert(0,dir)
-    
-    import pydm
-    app = pydm.PyDMApplication(sys.argv)
-    widget = PyDMPushButton('Push Me',
-                            init_channel='ca://TST:PYQT:FLOAT',
-                            pressValue='1002',
-                           )
-    widget.relativeChange = True
-    widget.show()
-    sys.exit(app.exec_())
+#if __name__ == '__main__':
+#    #Append Path
+#    dir = path.join(path.dirname(path.abspath(__file__)),'../..')
+#    sys.path.insert(0,dir)
+#    
+#    import pydm
+#    app = pydm.PyDMApplication(sys.argv)
+#    widget = PyDMPushButton(label='Push Me',
+#                            init_channel='ca://TST:PYQT:FLOAT',
+#                            pressValue='1002',
+#                           )
+#    widget.relativeChange = True
+#    widget.show()
+#    sys.exit(app.exec_())
