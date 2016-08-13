@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -30,14 +30,14 @@
         <property name="text">
          <string>+</string>
         </property>
+        <property name="channel" stdset="0">
+         <string>ca://TST:PYQT:FLOAT</string>
+        </property>
         <property name="pressValue" stdset="0">
          <string>10</string>
         </property>
         <property name="relativeChange" stdset="0">
          <bool>true</bool>
-        </property>
-        <property name="channel" stdset="0">
-         <string>ca://TST:PYQT:FLOAT</string>
         </property>
        </widget>
       </item>
@@ -55,10 +55,10 @@
         <property name="alignment">
          <set>Qt::AlignCenter</set>
         </property>
-        <property name="channel" stdset="0">
+        <property name="channel">
          <string>ca://TST:PYQT:FLOAT</string>
         </property>
-        <property name="precision" stdset="0">
+        <property name="precision">
          <number>7</number>
         </property>
        </widget>
@@ -68,14 +68,14 @@
         <property name="text">
          <string>-</string>
         </property>
+        <property name="channel" stdset="0">
+         <string>ca://TST:PYQT:FLOAT</string>
+        </property>
         <property name="pressValue" stdset="0">
          <string>-10</string>
         </property>
         <property name="relativeChange" stdset="0">
          <bool>true</bool>
-        </property>
-        <property name="channel" stdset="0">
-         <string>ca://TST:PYQT:FLOAT</string>
         </property>
        </widget>
       </item>
@@ -86,28 +86,78 @@
       <property name="text">
        <string>Set to 1000</string>
       </property>
+      <property name="channel" stdset="0">
+       <string>ca://TST:PYQT:FLOAT</string>
+      </property>
       <property name="pressValue" stdset="0">
        <string>1000.0</string>
-      </property>
-      <property name="channel" stdset="0">
-       <string>ca://TST:PYQT:FLOAT</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="PyDMPushButton" name="pydmpushbutton_2">
-      <property name="text">
-       <string>Reset</string>
-      </property>
-      <property name="pressValue" stdset="0">
-       <string>0.0</string>
-      </property>
-      <property name="channel" stdset="0">
-       <string>ca://TST:PYQT:FLOAT</string>
       </property>
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="PyDMLineEdit" name="pydmLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>130</y>
+     <width>127</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="channel" stdset="0">
+    <string>ca://TST:PYQT:STRING</string>
+   </property>
+  </widget>
+  <widget class="PyDMLineEdit" name="pydmLineEdit_2">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>160</y>
+     <width>127</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="channel" stdset="0">
+    <string>ca://TST:PYQT:FLOAT</string>
+   </property>
+  </widget>
+  <widget class="PyDMPushButton" name="pydmpushbutton_2">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>230</y>
+     <width>329</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Reset</string>
+   </property>
+   <property name="channel" stdset="0">
+    <string>ca://TST:PYQT:FLOAT</string>
+   </property>
+   <property name="pressValue" stdset="0">
+    <string>0.0</string>
+   </property>
   </widget>
  </widget>
  <customwidgets>
@@ -115,6 +165,11 @@
    <class>PyDMLabel</class>
    <extends>QLabel</extends>
    <header>label</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>line_edit</header>
   </customwidget>
   <customwidget>
    <class>PyDMPushButton</class>
