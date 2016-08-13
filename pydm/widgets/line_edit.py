@@ -1,95 +1,143 @@
-from PyQt4.QtGui import QLineEdit, QApplication, QColor, QPalette
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
 from channel import PyDMChannel
 
+from PyQt4.QtGui import QLineEdit, QApplication, QColor, QPalette
+from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
+
 class PyDMLineEdit(QLineEdit):
-  __pyqtSignals__ = ("send_value_signal(str)",
-                     "connected_signal()",
-                     "disconnected_signal()", 
-                     "no_alarm_signal()", 
-                     "minor_alarm_signal()", 
-                     "major_alarm_signal()", 
-                     "invalid_alarm_signal()")
+    """
+    Writeable text field to send and display channel values
+    """
+    __pyqtSignals__ = ("send_value_signal(str)",
+                       "connected_signal()",
+                       "disconnected_signal()", 
+                       "no_alarm_signal()", 
+                       "minor_alarm_signal()", 
+                       "major_alarm_signal()", 
+                       "invalid_alarm_signal()"
+                      )
                      
-  #Emitted when the user changes the value.
-  send_value_signal = pyqtSignal(str)
+    send_value_signal = pyqtSignal([int],[float],[str])
   
-  def __init__(self, channel=None, parent=None):
-    super(PyDMLineEdit, self).__init__(parent)
-    self._channel = channel
-    self.value = None
-    self._prec = 0
-    self.format_string = None
-    self.returnPressed.connect(self.sendValue)
-  
-  def focusOutEvent(self, event):
-    if self.value != None:
-      self.setText(self.value)
-    super(PyDMLineEdit, self).focusOutEvent(event)
-  
-  
-  #@pyqtSlot(float)
-  #@pyqtSlot(int)  
-  #@pyqtSlot(str)
-  #def receiveValue(self, new_val):
-  #  self.value = str(new_val)
-  #  if not self.hasFocus():
-  #    self.setText(self.value)
-  
-  @pyqtSlot(float)
-  @pyqtSlot(int)
-  @pyqtSlot(str)
-  def receiveValue(self, new_value):
-    if isinstance(new_value, str):
-      self.value = new_value
-    elif isinstance(new_value, float) and self.format_string != None:
-      self.value = self.format_string.format(new_value) 
-    else:
-      self.value = str(new_value)
-    if not self.hasFocus():
-      self.setText(self.value)
-  
-  
-  @pyqtSlot()
-  def sendValue(self):
-    self.send_value_signal.emit(self.text())
-    
-  #false = disconnected, true = connected
-  @pyqtSlot(bool)
-  def connectionStateChanged(self, connected):
-    self.setEnabled(connected)
-  
-  @pyqtSlot(bool)
-  def writeAccessChanged(self, write_access):
-    self.setReadOnly(not write_access)
-  
-  def getChannel(self):
-    return str(self._channel)
-  
-  def setChannel(self, value):
-    if self._channel != value:
-      self._channel = str(value)
+    def __init__(self,parent=None,channel=None):
+        super(PyDMLineEdit, self).__init__(parent)
+        self._value       = None
+        self._display     = None
+        self._channeltype = None
+        self._channel     = channel
 
-  def resetChannel(self):
-    if self._channel != None:
-      self._channel = None
+        self._useprec    = True
+        self._prec       = None
+        
+        self._userformat = None 
+        
+        self._scale      = 1
+        
+        self._useunits   = True
+        self._units      = None
+        self._unitformat = None
+        
+        self.returnPressed.connect(self.sendValue)
+  
     
-  channel = pyqtProperty(str, getChannel, setChannel, resetChannel)
-  
-  def getPrecision(self):
-    return self._prec
-  
-  def setPrecision(self, new_prec):
-    if self._prec != int(new_prec) and new_prec >= 0:
-      self._prec = int(new_prec)
-      self.format_string = "{:." + str(self._prec) + "f}"
-      
-  def resetPrecision(self):
-    if self._prec != 0:
-      self._prec = 0
-      self.format_string = None
-      
-  precision = pyqtProperty("int", getPrecision, setPrecision, resetPrecision)
+    def focusOutEvent(self, event):
+        """
+        Unselect PyDMLineEdit in PyDMApplication
 
-  def channels(self):
-    return [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, write_access_slot=self.writeAccessChanged, value_signal=self.send_value_signal)]
+        Called when a user leaves a PyDMLineEdit without pressing return.
+        Resets the value of the text field to the current channel value
+        """
+        if self._value != None:
+            self.setText(self._display)
+        super(PyDMLineEdit, self).focusOutEvent(event)
+ 
+
+    @pyqtSlot(float)
+    @pyqtSlot(int)
+    @pyqtSlot(str)
+    def receiveValue(self,value):
+        """
+        Receive and update the PyDMLineEdit for a new channel value
+        """
+        self._value       = value
+        self._channeltype = type(value)
+       
+        if not isinstance(value,str):
+            if self._scale:
+                value *= self._scale
+            
+            if self._prec and self._useprec:
+                value = self._prec.format(value)
+            else:
+                value = str(value)
+        
+        if self._userformat:
+            value = self._userformat.format(value)
+        
+        if self._units and self._useunits:
+            value = self._unitformat.format(value)
+        
+        self._display = str(value)
+        
+        if not self.hasFocus():
+            self.setText(self._display)
+  
+  
+    @pyqtSlot()
+    def sendValue(self):
+        """
+        Emit a :attr:`send_value_signal` to update channel value.
+        """
+        send_value = self.text()
+        
+        #Clean text of all formatting
+        if self._unitformat:
+            send_value.strip(self._unitformat)
+        
+        if self._userformat:
+            send_value.strip(self._userformat)
+        
+        #Remove scale factor
+        if self._scale and self._channeltype != str:
+            send_value = (self._channeltype(send_value)
+                          / self._channeltype(self._scale))
+         
+        self.send_value_signal[self._channeltype].emit(self._channeltype(send_value))
+   
+
+    @pyqtSlot(bool)
+    def writeAccessChanged(self, write_access):
+        """
+        Change the PyDMLineEdit to read only if write access is denied
+        """
+        self.setReadOnly(not write_access)
+ 
+
+    @pyqtSlot(int)
+    def receivePrecision(self,value):
+        """
+        Accept a precision to display a channel's value
+        """
+        self._prec = value
+
+
+    @pyqtProperty(str,doc=
+    """
+    The channel address to attach the PyDMPushButton
+
+    The actual signal/slot attachment is done at the application level of the
+    PyDM module.
+    """
+    )
+    def channel(self):
+        return str(self._channel)
+
+    @channel.setter
+    def channel(self,value):
+        if self._channel != value:
+            self._channel = str(value)
+   
+
+    def channels(self):
+        return [PyDMChannel(address=self.channel,value_slot=self.receiveValue,
+#                            write_access_slot=self.writeAccessChanged,
+                            value_signal=self.send_value_signal)]
