@@ -9,7 +9,6 @@ sys.path.append(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
 from PyQt4.QtGui import QApplication, QMainWindow, QColor, QWidget, QToolTip, QClipboard
 from PyQt4.QtCore import Qt, pyqtSlot, QTimer, QEvent
 import re
-from .epics_plugin import EPICSPlugin
 from .psp_plugin import PSPPlugin
 from .fake_plugin import FakePlugin
 from .archiver_plugin import ArchiverPlugin
@@ -166,7 +165,6 @@ class PyDMMainWindow(QMainWindow):
     
 class PyDMApplication(QApplication):
   plugins = { "ca": PSPPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
-  #plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
   
   #HACK. To be replaced with some stylesheet stuff eventually.
   alarm_severity_color_map = {

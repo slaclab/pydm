@@ -5,7 +5,7 @@ This is used instead of pyepics for better performance.
 import numpy as np
 from psp.Pv import Pv
 from PyQt4.QtCore import pyqtSlot, pyqtSignal, Qt
-from .plugin import PyDMPlugin, PyDMConnection
+from pydm.plugin import PyDMPlugin, PyDMConnection
 
 # Map how we will interpret EPICS types in python.
 type_map = dict(
