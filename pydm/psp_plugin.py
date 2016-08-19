@@ -39,10 +39,10 @@ def generic_cb(source, signal):
     :type signal:  pyqtSignal
     :rtype: function(errors=None)
     """
-    def cb(self, e=None):
-        if e is True:
+    def cb(e=None):
+        if e:
             source.monitor()
-        if e or e is None:
+        if e is None:
             try:
                 val = source.value
             except:
