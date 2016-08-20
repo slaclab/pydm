@@ -7,34 +7,105 @@
     <x>0</x>
     <y>0</y>
     <width>497</width>
-    <height>111</height>
+    <height>381</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
-   <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>MOTOR:1:VAL</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="PyDMLineEdit" name="pydmLineEdit">
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="whatsThis">
-      <string/>
-     </property>
-     <property name="channel">
-      <string>ca://MOTOR:1:VAL</string>
-     </property>
-    </widget>
-   </item>
-  </layout>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>90</y>
+     <width>264</width>
+     <height>106</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="PyDMLineEdit" name="pydmLineEdit">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
+        <property name="channel" stdset="0">
+         <string>ca://TST:PYQT:FLOAT</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="PyDMLineEdit" name="pydmLineEdit_2">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
+        <property name="showUnits" stdset="0">
+         <bool>true</bool>
+        </property>
+        <property name="channel" stdset="0">
+         <string>ca://TST:PYQT:FLOAT</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="PyDMLineEdit" name="pydmLineEdit_3">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
+        <property name="channel" stdset="0">
+         <string>ca://TST:PYQT:FLOAT</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="PyDMLineEdit" name="pydmLineEdit_5">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
+        <property name="userFormat" stdset="0">
+         <string/>
+        </property>
+        <property name="channel" stdset="0">
+         <string>ca://TST:PYQT:FLOAT</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="PyDMLineEdit" name="pydmLineEdit_4">
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
+       <string/>
+      </property>
+      <property name="usePrecision" stdset="0">
+       <bool>true</bool>
+      </property>
+      <property name="channel" stdset="0">
+       <string>ca://TST:PYQT:STRING</string>
+      </property>
+      <property name="useUnits" stdset="0">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
