@@ -1,8 +1,0 @@
-========================
-PyDM Channel
-========================
-
-
-.. autoclass:: channel.PyDMChannel
-    :members: address,connection_slot,value_slot,severity_slot,waveform_slot,write_access_slot,enum_strings_slot,unit_slot,value_signal,waveform_signal
-    :undoc-members:
