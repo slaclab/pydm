@@ -61,7 +61,7 @@ class PyDMConnection(QObject):
   def close(self):
     pass
 
-class PyDMPlugin:
+class PyDMPlugin(object):
   protocol = None
   connection_class = PyDMConnection
   def __init__(self):
