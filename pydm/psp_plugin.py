@@ -157,7 +157,13 @@ class Connection(PyDMConnection):
         except:
             rwacc = None
         if rwacc is not None:
-            self.write_access_signal.emit(rwacc)
+            # Two bit binary number, 11 = read and write, 01 = read-only
+            # presumably this could be other numbers, but in practice it is
+            # either 3 for read and write or 1 for just read
+            if rwacc == 3:
+                self.write_access_signal.emit(True)
+            else:
+                self.write_access_signal.emit(False)
 
         if self.count > 1:
             self.new_waveform_signal.emit(np.asarray(value))
