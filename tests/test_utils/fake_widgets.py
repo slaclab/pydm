@@ -12,9 +12,11 @@ class BasicValueWidget(QWidget):
     """
     Generic PyDM Widget for testing plugins. Contains a basic value Channel.
     """
-    __pyqtSignals__ = ("send_value_signal([int], [float], [str])",)
+    __pyqtSignals__ = ("send_value_signal([int], [float], [str])",
+                       "value_updated_signal()",)
 
     send_value_signal = pyqtSignal([int], [float], [str])
+    value_updated_signal = pyqtSignal()
 
     def __init__(self, channel=None, parent=None):
         """
@@ -40,6 +42,7 @@ class BasicValueWidget(QWidget):
         :type value:  int, float, or str
         """
         self.value = value
+        self.value_updated_signal.emit()
 
     @pyqtSlot(int)
     @pyqtSlot(float)
@@ -68,6 +71,22 @@ class ValueWidget(BasicValueWidget):
     Generic PyDM Widget for testing plugins. Contains a more thorough value
     Channel.
     """
+    __pyqtSignals__ = ("send_value_signal([int], [float], [str])",
+                       "value_updated_signal()",
+                       "conn_updated_signal()",
+                       "sevr_updated_signal()",
+                       "rwacc_updated_signal()",
+                       "enums_updated_signal()",
+                       "units_updated_signal()",
+                       "prec_updated_signal()",)
+
+    conn_updated_signal = pyqtSignal()
+    sevr_updated_signal = pyqtSignal()
+    rwacc_updated_signal = pyqtSignal()
+    enums_updated_signal = pyqtSignal()
+    units_updated_signal = pyqtSignal()
+    prec_updated_signal = pyqtSignal()
+
     def __init__(self, channel=None, parent=None):
         """
         Initialize channel and parent. Start all fields as None.
@@ -94,6 +113,7 @@ class ValueWidget(BasicValueWidget):
         :type conn:  bool
         """
         self.conn = conn
+        self.conn_updated_signal.emit()
 
     @pyqtSlot(int)
     def recv_sevr(self, sevr):
@@ -104,6 +124,7 @@ class ValueWidget(BasicValueWidget):
         :type sevr:  int
         """
         self.sevr = sevr
+        self.sevr_updated_signal.emit()
 
     @pyqtSlot(bool)
     def recv_rwacc(self, rwacc):
@@ -114,6 +135,7 @@ class ValueWidget(BasicValueWidget):
         :type rwacc:  bool
         """
         self.rwacc = rwacc
+        self.rwacc_updated_signal.emit()
 
     @pyqtSlot(tuple)
     def recv_enums(self, enums):
@@ -124,6 +146,7 @@ class ValueWidget(BasicValueWidget):
         :type enums:  tuple of str
         """
         self.enums = enums
+        self.enums_updated_signal.emit()
 
     @pyqtSlot(str)
     def recv_units(self, units):
@@ -134,6 +157,7 @@ class ValueWidget(BasicValueWidget):
         :type units:  str
         """
         self.units = units
+        self.units_updated_signal.emit()
 
     @pyqtSlot(int)
     def recv_prec(self, prec):
@@ -144,6 +168,7 @@ class ValueWidget(BasicValueWidget):
         :type prec:  int
         """
         self.prec = prec
+        self.prec_updated_signal.emit()
 
     def channels(self):
         """
@@ -166,9 +191,11 @@ class BasicWaveformWidget(BasicValueWidget):
     """
     Generic PyDM Widget for testing plugins. Contains a basic waveform Channel.
     """
-    __pyqtSignals__ = ("send_waveform_signal(np.ndarray)",)
+    __pyqtSignals__ = ("send_waveform_signal(np.ndarray)",
+                       "waveform_updated_signal()",)
 
     send_waveform_signal = pyqtSignal(np.ndarray)
+    waveform_updated_signal = pyqtSignal()
 
     def __init__(self, channel=None, parent=None):
         """
@@ -190,6 +217,7 @@ class BasicWaveformWidget(BasicValueWidget):
         :type waveform:  np.ndarray
         """
         self.value = waveform
+        self.waveform_updated_signal.emit()
 
     @pyqtSlot(np.ndarray)
     def send_waveform(self, waveform):
@@ -211,13 +239,48 @@ class BasicWaveformWidget(BasicValueWidget):
                         waveform_slot=self.recv_waveform,
                         waveform_signal=self.send_waveform_signal)]
 
-class WaveformWidget(BasicWaveformWidget, ValueWidget):
+class WaveformWidget(ValueWidget):
     """
     Generic PyDM Widget for testing plugins. Contains a more thorough waveform
     Channel.
+
+    Lots of copy/paste because pyqt multiple inheritance is broken.
     """
+    __pyqtSignals__ = ("send_waveform_signal(np.ndarray)",
+                       "waveform_updated_signal()",
+                       "conn_updated_signal()",
+                       "sevr_updated_signal()",
+                       "rwacc_updated_signal()",
+                       "enums_updated_signal()",
+                       "units_updated_signal()",
+                       "prec_updated_signal()",)
+
+    send_waveform_signal = pyqtSignal(np.ndarray)
+    waveform_updated_signal = pyqtSignal()
+
     def __init__(self, channel=None, parent=None):
         super(WaveformWidget, self).__init__(channel=channel, parent=parent)
+
+    @pyqtSlot(np.ndarray)
+    def recv_waveform(self, waveform):
+        """
+        Recieve waveform from plugin signal. Store in self.value.
+
+        :param waveform: waveform
+        :type waveform:  np.ndarray
+        """
+        self.value = waveform
+        self.waveform_updated_signal.emit()
+
+    @pyqtSlot(np.ndarray)
+    def send_waveform(self, waveform):
+        """
+        Send desired waveform to plugin slot.
+
+        :param value: waveform to send
+        :type value: np.ndarray
+        """
+        self.send_waveform_signal.emit(waveform)
 
     def channels(self):
         """

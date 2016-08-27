@@ -99,8 +99,9 @@ class Connection(PyDMConnection):
         """
         super(Connection,self).__init__(channel, pv, parent)
 
-        self.enum_strings = None
+        self.python_type = None
         self.pv = setup_pv(pv, self.connected_cb, self.monitor_cb)
+        self.enums = None
 
         # No pyca support for units, so we'll take from .EGU if it exists.
         self.units_pv = setup_pv(pv + ".EGU", signal=self.unit_signal)
@@ -125,7 +126,7 @@ class Connection(PyDMConnection):
             self.pv.monitor()
             self.epics_type = self.pv.type()
             if self.epics_type == "DBF_ENUM":
-                self.enum_strings = self.pv.get_enum_set()
+                self.pv.set_string_enum(True)
             self.python_type = type_map.get(self.epics_type)
             self.count = self.pv.count or 1
             if self.python_type is None:
@@ -151,7 +152,6 @@ class Connection(PyDMConnection):
         """
         if self.python_type is None:
             return
-
         try:
             rwacc = self.pv.rwaccess()
         except:
@@ -159,14 +159,8 @@ class Connection(PyDMConnection):
         if rwacc is not None:
             self.write_access_signal.emit(rwacc)
 
-        if self.enum_strings is not None:
-            try:
-                value = self.enum_strings[int(value)]
-            except IndexError:
-                value = ""
-
         if self.count > 1:
-            self.new_waveform_signal.emit(value)
+            self.new_waveform_signal.emit(np.asarray(value))
         else:
             self.new_value_signal[self.python_type].emit(self.python_type(value))
 
@@ -178,6 +172,16 @@ class Connection(PyDMConnection):
         :type conn:  bool
         """
         self.connection_state_signal.emit(conn)
+
+    def update_enums(self):
+        """
+        Send an update on our enum strings to every listener, if this is an
+        enum record.
+        """
+        if self.epics_type == "DBF_ENUM":
+            if self.enums is None:
+                self.enums = tuple(self.pv.get_enum_set())
+            self.enum_strings_signal.emit(self.enums)
 
     @pyqtSlot(int)
     @pyqtSlot(float)
@@ -192,19 +196,9 @@ class Connection(PyDMConnection):
                       record type.
         """
         if self.count > 1:
-            value = np.asarray(value)
+            value = tuple(value)
         else:
-            if self.enum_strings is None:
-                value = self.python_type(value)
-            else:
-                if isinstance(value, str):
-                    if value not in self.enum_strings:
-                        return
-                else:
-                    try:
-                        value = self.enum_strings[int(value)]
-                    except IndexError:
-                        return
+            value = self.python_type(value)
         self.pv.put(value)
 
     @pyqtSlot(np.ndarray)
@@ -231,6 +225,7 @@ class Connection(PyDMConnection):
         if self.pv.isconnected:
             self.send_connection_state(conn=True)
             self.monitor_cb()
+            self.update_enums()
         try:
             channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
             channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
