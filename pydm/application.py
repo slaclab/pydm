@@ -70,26 +70,9 @@ class PyDMMainWindow(QMainWindow):
       self._display_widget.deleteLater()
       self._display_widget = None
   
-  def load_ui_file(self, uifile):
-    display_widget = uic.loadUi(uifile)
-    self.set_display_widget(display_widget)
-    
-  def load_py_file(self, pyfile):
-    #Add the intelligence module directory to the python path, so that submodules can be loaded.  Eventually, this should go away, and intelligence modules should behave as real python modules.
-    module_dir = path.dirname(path.abspath(pyfile))
-    sys.path.append(module_dir)
-
-    #Now load the intelligence module.
-    module = imp.load_source('intelclass', pyfile)
-    intelligence_instance = module.intelclass(self)
-    self.set_display_widget(intelligence_instance)
-
   def open_file(self, ui_file):
-    (filename, extension) = path.splitext(ui_file)
-    if extension == '.ui':
-      self.load_ui_file(ui_file)
-    elif extension == '.py':
-      self.load_py_file(ui_file)
+    widget = self.app.open_file(ui_file)
+    self.set_display_widget(widget)
     if (len(self.back_stack) == 0) or (self.current_file() != ui_file):
       self.back_stack.append(ui_file)
     self.ui.forwardButton.setEnabled(len(self.forward_stack) > 0)
@@ -194,6 +177,7 @@ class PyDMApplication(QApplication):
     #Add the path to the widgets module, so that qt knows where to find custom widgets.  This seems like a really awful way to do this.
     
     self.windows = []
+    self.sources = {}
     #Open a window if one was provided.
     if len(command_line_args) > 1:
       ui_file = command_line_args[1]
@@ -233,7 +217,50 @@ class PyDMApplication(QApplication):
     #If we are launching a new window, we don't want it to sit right on top of an existing window.
     if len(self.windows) > 1:
       main_window.move(main_window.x() + 10, main_window.y() + 10)
-      
+
+  def load_ui_file(self, uifile):
+    return uic.loadUi(uifile)
+    
+  def load_py_file(self, pyfile):
+    #Add the intelligence module directory to the python path, so that submodules can be loaded.  Eventually, this should go away, and intelligence modules should behave as real python modules.
+    module_dir = path.dirname(path.abspath(pyfile))
+    sys.path.append(module_dir)
+
+    #Now load the intelligence module.
+    module = imp.load_source('intelclass', pyfile)
+    return module.intelclass(self)
+
+  def open_file(self, ui_file):
+    (filename, extension) = path.splitext(ui_file)
+    if extension == '.ui':
+      widget = self.load_ui_file(ui_file)
+    elif extension == '.py':
+      widget = self.load_py_file(ui_file)
+    else:
+      raise Exception("invalid file type: {}".format(extension))
+    self.sources[widget] = path.dirname(ui_file)
+    return widget
+
+  def get_source_dir(self, widget):
+    dirname = None
+    while dirname is None:
+      try:
+        dirname = self.sources[widget]
+      except:
+        widget = widget.parentWidget()
+      if not widget:
+        return ""
+    return dirname
+
+  def get_path(self, ui_file, widget):
+    dirname = self.get_source_dir(widget)
+    full_path = path.join(dirname, str(ui_file))
+    return full_path
+
+  def open_relative(self, ui_file, widget):
+    full_path = self.get_path(ui_file, widget)
+    return self.open_file(full_path)
+
   def plugin_for_channel(self, channel):
     match = re.match('.*://', channel.address)
     if match:
