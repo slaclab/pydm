@@ -4,8 +4,10 @@ This is used instead of pyepics for better performance.
 """
 import numpy as np
 from psp.Pv import Pv
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, Qt
+from PyQt4.QtCore import pyqtSlot, pyqtSignal, Qt, QTimer
 from pydm.plugin import PyDMPlugin, PyDMConnection
+
+import datetime
 
 # Map how we will interpret EPICS types in python.
 type_map = dict(
@@ -26,6 +28,20 @@ type_map = dict(
     DBF_FWDLINK = None,
     DBF_NOACCESS = None,
 )
+
+# .SCAN mapping to override throttle
+scan_list = [
+    float("inf"), #passive
+    float("inf"), #event
+    float("inf"), #IO Intr
+    10.0,
+    5.0,
+    2.0,
+    1.0,
+    0.5,
+    0.2,
+    0.1,
+]
 
 def generic_cb(source, signal):
     """
@@ -69,7 +85,7 @@ def setup_pv(pvname, conn_cb=None, mon_cb=None, signal=None):
     :type signal:  pyqtSignal
     :rtype: Pv
     """
-    pv = Pv(pvname, monitor=True)
+    pv = Pv(pvname)
 
     if signal is None:
         default_cb = lambda e: None
@@ -80,6 +96,7 @@ def setup_pv(pvname, conn_cb=None, mon_cb=None, signal=None):
     pv.add_monitor_callback(mon_cb or default_cb)
     pv.connect(None)
     return pv
+
 
 class Connection(PyDMConnection):
     """
@@ -112,6 +129,11 @@ class Connection(PyDMConnection):
         # Sevr is just broken in pyca, .state() always returns 2...
         self.sevr_pv = setup_pv(pv + ".SEVR", signal=self.new_severity_signal)
 
+        # Auxilliary info to help with throttling
+        self.scan_pv = setup_pv(pv + ".SCAN")
+        self.throttle = QTimer(self)
+        self.throttle.timeout.connect(self.throttle_cb)
+
         self.add_listener(channel)
 
     def connected_cb(self, isconnected):
@@ -123,12 +145,15 @@ class Connection(PyDMConnection):
         """
         self.send_connection_state(isconnected)
         if isconnected:
-            self.pv.monitor()
             self.epics_type = self.pv.type()
             if self.epics_type == "DBF_ENUM":
                 self.pv.set_string_enum(True)
+            self.pv.monitor()
             self.python_type = type_map.get(self.epics_type)
             self.count = self.pv.count or 1
+            throttle = 10.0 * 1000000/self.count # Max data flux
+            if throttle < 120:
+                self.set_throttle(throttle)
             if self.python_type is None:
                 raise Exception("Unsupported EPICS type {0} for pv {1}".format(
                                 self.epics_type, self.pv.name))
@@ -141,6 +166,12 @@ class Connection(PyDMConnection):
         """
         if e is None:
             self.send_new_value(self.pv.value)
+
+    def throttle_cb(self):
+        """
+        Callback to run when the throttle timer times out.
+        """
+        self.send_new_value(self.pv.get())
 
     def send_new_value(self, value=None):
         """
@@ -166,7 +197,7 @@ class Connection(PyDMConnection):
                 self.write_access_signal.emit(False)
 
         if self.count > 1:
-            self.new_waveform_signal.emit(np.asarray(value))
+            self.new_waveform_signal.emit(value)
         else:
             self.new_value_signal[self.python_type].emit(self.python_type(value))
 
@@ -201,9 +232,7 @@ class Connection(PyDMConnection):
         :type value:  int or float or str or np.ndarray, depending on our
                       record type.
         """
-        if self.count > 1:
-            value = tuple(value)
-        else:
+        if self.count == 1:
             value = self.python_type(value)
         self.pv.put(value)
 
@@ -217,6 +246,28 @@ class Connection(PyDMConnection):
         :type value:  np.ndarray
         """
         self.put_value(value)
+
+    @pyqtSlot(int)
+    @pyqtSlot(float)
+    def set_throttle(self, refresh_rate):
+        """
+        Throttle our update rate. This is useful when the data is large (e.g.
+        image waveforms). Set to zero to disable throttling.
+
+        :param delay: frequency of pv updates
+        :type delay:  float or int
+        """
+        try:
+            scan = scan_list[self.scan_pv.value]
+        except:
+            scan = float("inf")
+        if 0 < 1/refresh_rate < scan:
+            self.pv.monitor_stop()
+            self.throttle.setInterval(1000.0/refresh_rate)
+            self.throttle.start()
+        else:
+            self.throttle.stop()
+            self.pv.monitor()
 
     def add_listener(self, channel):
         """
@@ -247,6 +298,7 @@ class Connection(PyDMConnection):
         """
         Clean up all open Pv objects.
         """
+        self.throttle.stop()
         self.pv.disconnect()
         self.units_pv.disconnect()
         self.prec_pv.disconnect()

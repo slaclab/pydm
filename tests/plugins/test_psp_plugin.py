@@ -269,11 +269,11 @@ class BasicTestCase(PvSetupCase):
         self.assertEqual(tuple(self.waveform_widget.value), waveform)
 
     def test_put_waveform(self):
-        waveform = tuple([x+1 for x in range(self.pv_waveform.count)])
+        waveform = np.asarray([x+1 for x in range(self.pv_waveform.count)])
         self.waveform_widget.send_waveform(np.asarray(waveform))
         self.event_loop(0)
         ok = self.pv_waveform.wait_for_value(waveform, timeout=2)
-        self.assertTrue(ok)
+        self.assertTrue(ok, "pv_waveform value was {}".format(self.pv_waveform.value))
 
 
 class AuxTestCase(PSPPluginTest):
@@ -306,6 +306,7 @@ class AuxTestCase(PSPPluginTest):
                     self.signal_wait(self.long_widget.conn_updated_signal,
                         timeout=10)
             raise
+        time.sleep(10) # Extra sleep to make sure things reinit correctly
 
     def test_sevr(self):
         # Currently implemented based on .SEVR field. Will change if we
