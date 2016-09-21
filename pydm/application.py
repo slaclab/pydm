@@ -1,3 +1,10 @@
+from os import path, environ
+import imp
+import sys
+import subprocess
+import platform
+print(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
+sys.path.append(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
 from PyQt4.QtGui import QApplication, QMainWindow, QColor, QWidget, QToolTip, QClipboard
 from PyQt4.QtCore import Qt, pyqtSlot, QTimer, QEvent
 import re
@@ -6,11 +13,7 @@ from .fake_plugin import FakePlugin
 from .archiver_plugin import ArchiverPlugin
 from .pydm_ui import Ui_MainWindow
 from PyQt4 import uic
-from os import path, environ
-import imp
-import sys
-import subprocess
-import platform
+
 
 class PyDMMainWindow(QMainWindow):
   def __init__(self, parent=None):
@@ -211,7 +214,7 @@ class PyDMApplication(QApplication):
   def __init__(self, command_line_args):
     super(PyDMApplication, self).__init__(command_line_args)
     #Add the path to the widgets module, so that qt knows where to find custom widgets.  This seems like a really awful way to do this.
-    sys.path.append(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
+    
     self.windows = []
     ui_file = command_line_args[1]
     self.make_window(ui_file)
@@ -246,7 +249,7 @@ class PyDMApplication(QApplication):
         plugin_to_use = self.plugins[str(protocol)]
         return plugin_to_use
       except KeyError:
-        print "Couldn't find plugin: {0}".format(match.group(0)[:-3])
+        print("Couldn't find plugin: {0}".format(match.group(0)[:-3]))
     return None
   
   def add_connection(self, channel):
