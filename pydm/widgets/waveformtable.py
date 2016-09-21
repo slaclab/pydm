@@ -1,5 +1,5 @@
 from PyQt4.QtGui import QTableWidget, QTableWidgetItem, QApplication, QColor, QPalette
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QString, Qt
+from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt
 from channel import PyDMChannel
 import numpy as np
 
@@ -63,7 +63,7 @@ class PyDMWaveformTable(QTableWidget):
     pass
   
   def getWaveformChannel(self):
-    return QString.fromAscii(self._waveformchannel)
+    return str(self._waveformchannel)
   
   def setWaveformChannel(self, value):
     if self._waveformchannel != value:
@@ -73,7 +73,7 @@ class PyDMWaveformTable(QTableWidget):
     if self._waveformchannel != None:
       self._waveformchannel = None
     
-  waveformChannel = pyqtProperty("QString", getWaveformChannel, setWaveformChannel, resetWaveformChannel)
+  waveformChannel = pyqtProperty(str, getWaveformChannel, setWaveformChannel, resetWaveformChannel)
   
   def channels(self):
     return [PyDMChannel(address=self.waveformChannel, connection_slot=self.connectionStateChanged, waveform_slot=self.receiveWaveform, severity_slot=self.alarmSeverityChanged, value_signal=self.send_value_signal)]

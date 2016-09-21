@@ -1,5 +1,5 @@
 from PyQt4.QtGui import QLabel, QApplication, QColor, QBrush
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QString, QTimer
+from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer
 from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
 from pyqtgraph import PlotCurveItem
 
@@ -101,7 +101,7 @@ class BasePlot(PlotWidget):
   axisColor = pyqtProperty(QColor, getAxisColor, setAxisColor)
   
   def getPlotTitle(self):
-    return QString.fromAscii(self._title)
+    return str(self._title)
   
   def setPlotTitle(self, value):
     self._title = str(value)
@@ -111,4 +111,4 @@ class BasePlot(PlotWidget):
     self._title = None
     self.setTitle(self._title)
     
-  title = pyqtProperty("QString", getPlotTitle, setPlotTitle, resetPlotTitle)
+  title = pyqtProperty(str, getPlotTitle, setPlotTitle, resetPlotTitle)

@@ -1,9 +1,9 @@
 from PyQt4.QtGui import QCheckBox, QApplication, QColor, QPalette
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, QString
+from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
 from channel import PyDMChannel
 
 class PyDMCheckbox(QCheckBox):
-  __pyqtSignals__ = ("send_value_signal(QString)",
+  __pyqtSignals__ = ("send_value_signal(str)",
                      "connected_signal()",
                      "disconnected_signal()", 
                      "no_alarm_signal()", 
@@ -12,7 +12,7 @@ class PyDMCheckbox(QCheckBox):
                      "invalid_alarm_signal()")
                      
   #Emitted when the user changes the value.
-  send_value_signal = pyqtSignal(QString)
+  send_value_signal = pyqtSignal(str)
   
   def __init__(self, channel=None, parent=None):
     super(PyDMCheckbox, self).__init__(parent)
@@ -31,9 +31,9 @@ class PyDMCheckbox(QCheckBox):
   @pyqtSlot(bool)
   def sendValue(self, checked):
     if checked:
-      self.send_value_signal.emit(QString.number(1))
+      self.send_value_signal.emit(str(1))
     else:
-      self.send_value_signal.emit(QString.number(0))
+      self.send_value_signal.emit(str(0))
     
   @pyqtSlot(bool)
   def connectionStateChanged(self, connected):
@@ -49,7 +49,7 @@ class PyDMCheckbox(QCheckBox):
     self.setEnabled(self._write_access and self._connected)
   
   def getChannel(self):
-    return QString.fromAscii(self._channel)
+    return str(self._channel)
   
   def setChannel(self, value):
     if self._channel != value:
@@ -59,7 +59,7 @@ class PyDMCheckbox(QCheckBox):
     if self._channel != None:
       self._channel = None
     
-  channel = pyqtProperty("QString", getChannel, setChannel, resetChannel)
+  channel = pyqtProperty(str, getChannel, setChannel, resetChannel)
 
   def channels(self):
     return [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, write_access_slot=self.writeAccessChanged, value_signal=self.send_value_signal)]

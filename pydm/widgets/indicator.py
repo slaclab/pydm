@@ -1,5 +1,5 @@
 from PyQt4.QtGui import QWidget, QApplication, QColor, QPainter, QBrush, QPen
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, QString, Qt
+from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, Qt
 from channel import PyDMChannel
 
 class PyDMIndicator(QWidget):
@@ -195,7 +195,7 @@ class PyDMIndicator(QWidget):
   has_border = pyqtProperty(bool, getHasBorder, setHasBorder)
   
   def getChannel(self):
-    return QString.fromAscii(self._channel)
+    return str(self._channel)
   
   def setChannel(self, value):
     if self._channel != value:
@@ -205,7 +205,7 @@ class PyDMIndicator(QWidget):
     if self._channel != None:
       self._channel = None
     
-  channel = pyqtProperty("QString", getChannel, setChannel, resetChannel)
+  channel = pyqtProperty(str, getChannel, setChannel, resetChannel)
 
   def channels(self):
     return [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, severity_slot=self.alarmSeverityChanged)]

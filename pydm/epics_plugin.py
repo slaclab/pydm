@@ -1,7 +1,7 @@
 import epics
 import numpy as np
 from .plugin import PyDMPlugin, PyDMConnection
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, QObject, Qt, QString
+from PyQt4.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
 
 class Connection(PyDMConnection):
   def __init__(self, channel, pv, parent=None):
@@ -32,7 +32,7 @@ class Connection(PyDMConnection):
   def send_connection_state(self, pvname=None, conn=None, *args, **kws):
     self.connection_state_signal.emit(conn)
   
-  @pyqtSlot(QString)
+  @pyqtSlot(str)
   def put_value(self, new_val):
     self.pv.put(str(new_val))
   

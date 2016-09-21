@@ -1,9 +1,9 @@
 from PyQt4.QtGui import QLineEdit, QApplication, QColor, QPalette, QSlider
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, QString
+from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
 from channel import PyDMChannel
 
 class PyDMSlider(QSlider):
-  __pyqtSignals__ = ("send_value_signal(QString)",
+  __pyqtSignals__ = ("send_value_signal(str)",
                      "connected_signal()",
                      "disconnected_signal()", 
                      "no_alarm_signal()", 
@@ -12,7 +12,7 @@ class PyDMSlider(QSlider):
                      "invalid_alarm_signal()")
                      
   #Emitted when the user changes the value.
-  send_value_signal = pyqtSignal(QString)
+  send_value_signal = pyqtSignal(str)
   
   def __init__(self, channel=None, parent=None):
     super(PyDMSlider, self).__init__(parent)
@@ -37,30 +37,30 @@ class PyDMSlider(QSlider):
     
   #step size property
   def getStep(self):
-    return QString(self._step)
+    return str(self._step)
 
   def setStep(self,value):
     self._step = str(value)
 
-  step = pyqtProperty("QString",fget=getStep,fset=setStep)
+  step = pyqtProperty(str,fget=getStep,fset=setStep)
 
   #max range property
   def getMaxrange(self):
-    return QString(self._maxrange)
+    return str(self._maxrange)
 
   def setMaxrange(self,value):
     self._maxrange = str(value)
 
-  maxrange = pyqtProperty("QString",fget=getMaxrange,fset=setMaxrange)
+  maxrange = pyqtProperty(str,fget=getMaxrange,fset=setMaxrange)
 
   #min range property
   def getMinrange(self):
-    return QString(self._minrange)
+    return str(self._minrange)
 
   def setMinrange(self,value):
     self._minrange = str(value)
 
-  minrange = pyqtProperty("QString",fget=getMinrange,fset=setMinrange)
+  minrange = pyqtProperty(str,fget=getMinrange,fset=setMinrange)
 
   #overwrite wheel event to fire only when slider is in focus
   def wheelEvent(self,event):
@@ -77,7 +77,7 @@ class PyDMSlider(QSlider):
   @pyqtSlot()
   def sendValue(self):
     if self.hasFocus():
-      val = QString(str(float(self.value())*float(self._step)))
+      val = str(float(self.value())*float(self._step))
       self.send_value_signal.emit(val)
 
   #false = disconnected, true = connected
@@ -88,7 +88,7 @@ class PyDMSlider(QSlider):
       self.setupRange(self._step)
     
   def getChannel(self):
-    return QString.fromAscii(self._channel)
+    return str(self._channel)
   
   def setChannel(self, value):
     if self._channel != value:
@@ -98,7 +98,7 @@ class PyDMSlider(QSlider):
     if self._channel != None:
       self._channel = None
     
-  channel = pyqtProperty("QString", getChannel, setChannel, resetChannel)
+  channel = pyqtProperty(str, getChannel, setChannel, resetChannel)
 
   def channels(self):
     return [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, value_signal=self.send_value_signal)]

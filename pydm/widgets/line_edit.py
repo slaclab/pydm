@@ -1,9 +1,9 @@
 from PyQt4.QtGui import QLineEdit, QApplication, QColor, QPalette
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, QString
+from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
 from channel import PyDMChannel
 
 class PyDMLineEdit(QLineEdit):
-  __pyqtSignals__ = ("send_value_signal(QString)",
+  __pyqtSignals__ = ("send_value_signal(str)",
                      "connected_signal()",
                      "disconnected_signal()", 
                      "no_alarm_signal()", 
@@ -12,7 +12,7 @@ class PyDMLineEdit(QLineEdit):
                      "invalid_alarm_signal()")
                      
   #Emitted when the user changes the value.
-  send_value_signal = pyqtSignal(QString)
+  send_value_signal = pyqtSignal(str)
   
   def __init__(self, channel=None, parent=None):
     super(PyDMLineEdit, self).__init__(parent)
@@ -64,7 +64,7 @@ class PyDMLineEdit(QLineEdit):
     self.setReadOnly(not write_access)
   
   def getChannel(self):
-    return QString.fromAscii(self._channel)
+    return str(self._channel)
   
   def setChannel(self, value):
     if self._channel != value:
@@ -74,7 +74,7 @@ class PyDMLineEdit(QLineEdit):
     if self._channel != None:
       self._channel = None
     
-  channel = pyqtProperty("QString", getChannel, setChannel, resetChannel)
+  channel = pyqtProperty(str, getChannel, setChannel, resetChannel)
   
   def getPrecision(self):
     return self._prec

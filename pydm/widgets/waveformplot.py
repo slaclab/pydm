@@ -1,5 +1,5 @@
 from PyQt4.QtGui import QLabel, QApplication, QColor
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QString
+from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 from pyqtgraph import PlotWidget
 from pyqtgraph import PlotCurveItem
 from baseplot import BasePlot
@@ -51,7 +51,7 @@ class PyDMWaveformPlot(BasePlot):
     pass
   
   def getYChannel(self):
-    return QString.fromAscii(self._ychannel)
+    return str(self._ychannel)
   
   def setYChannel(self, value):
     if self._ychannel != value:
@@ -61,10 +61,10 @@ class PyDMWaveformPlot(BasePlot):
     if self._ychannel != None:
       self._ychannel = None
     
-  yChannel = pyqtProperty("QString", getYChannel, setYChannel, resetYChannel)
+  yChannel = pyqtProperty(str, getYChannel, setYChannel, resetYChannel)
   
   def getXChannel(self):
-    return QString.fromAscii(self._xchannel)
+    return str(self._xchannel)
   
   def setXChannel(self, value):
     if self._xchannel != value:
@@ -74,7 +74,7 @@ class PyDMWaveformPlot(BasePlot):
     if self._xchannel != None:
       self._xchannel = None
     
-  xChannel = pyqtProperty("QString", getXChannel, setXChannel, resetXChannel)
+  xChannel = pyqtProperty(str, getXChannel, setXChannel, resetXChannel)
   
   def channels(self):
     return [PyDMChannel(address=self.yChannel, connection_slot=self.connectionStateChanged, waveform_slot=self.receiveYWaveform, severity_slot=self.alarmSeverityChanged), PyDMChannel(address=self.xChannel, connection_slot=self.connectionStateChanged, waveform_slot=self.receiveXWaveform, severity_slot=self.alarmSeverityChanged)]

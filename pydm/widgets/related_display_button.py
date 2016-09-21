@@ -1,8 +1,8 @@
 from PyQt4.QtGui import QPushButton, QApplication
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QString, Qt
+from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt
 
 class PyDMRelatedDisplayButton(QPushButton):
-  __pyqtSignals__ = ("request_open_signal(QString)")
+  __pyqtSignals__ = ("request_open_signal(str)")
   
   #Constants for determining where to open the display.
   EXISTING_WINDOW = 0;
@@ -13,7 +13,7 @@ class PyDMRelatedDisplayButton(QPushButton):
     self._display_filename = filename
     
   def getDisplayFilename(self):
-    return QString.fromAscii(self._display_filename)
+    return self._display_filename
   
   def setDisplayFilename(self, value):
     if self._display_filename != value:
@@ -39,4 +39,4 @@ class PyDMRelatedDisplayButton(QPushButton):
     if target == self.NEW_WINDOW:
       QApplication.instance().new_window(str(self.displayFilename))
     
-  displayFilename = pyqtProperty("QString", getDisplayFilename, setDisplayFilename, resetDisplayFilename)
+  displayFilename = pyqtProperty(str, getDisplayFilename, setDisplayFilename, resetDisplayFilename)

@@ -1,5 +1,5 @@
 from PyQt4.QtGui import QLabel, QApplication, QColor, QActionGroup
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QString
+from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 from pyqtgraph import ImageView
 from pyqtgraph import ImageItem
 from pyqtgraph import ColorMap
@@ -119,7 +119,7 @@ class PyDMImageView(ImageView):
     pass
 
   def getImageChannel(self):
-    return QString.fromAscii(self._imagechannel)
+    return str(self._imagechannel)
   
   def setImageChannel(self, value):
     if self._imagechannel != value:
@@ -129,10 +129,10 @@ class PyDMImageView(ImageView):
     if self._imagechannel != None:
       self._imagechannel = None
     
-  imageChannel = pyqtProperty("QString", getImageChannel, setImageChannel, resetImageChannel)
+  imageChannel = pyqtProperty(str, getImageChannel, setImageChannel, resetImageChannel)
   
   def getWidthChannel(self):
-    return QString.fromAscii(self._widthchannel)
+    return str(self._widthchannel)
   
   def setWidthChannel(self, value):
     if self._widthchannel != value:
@@ -142,7 +142,7 @@ class PyDMImageView(ImageView):
     if self._widthchannel != None:
       self._widthchannel = None
     
-  widthChannel = pyqtProperty("QString", getWidthChannel, setWidthChannel, resetWidthChannel)
+  widthChannel = pyqtProperty(str, getWidthChannel, setWidthChannel, resetWidthChannel)
   
   def channels(self):
     return [PyDMChannel(address=self.imageChannel, connection_slot=self.connectionStateChanged, waveform_slot=self.receiveImageWaveform, severity_slot=self.alarmSeverityChanged),

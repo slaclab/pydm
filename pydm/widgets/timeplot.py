@@ -1,5 +1,5 @@
 from PyQt4.QtGui import QLabel, QApplication, QColor
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QString, QTimer
+from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer
 from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
 from pyqtgraph import PlotCurveItem
 from baseplot import BasePlot
@@ -112,7 +112,7 @@ class PyDMTimePlot(BasePlot):
     self._left_axis.showLabel()
   
   def getYChannel(self):
-    return QString.fromAscii(self._ychannel)
+    return str(self._ychannel)
   
   def setYChannel(self, value):
     if self._ychannel != value:
@@ -122,7 +122,7 @@ class PyDMTimePlot(BasePlot):
     if self._ychannel != None:
       self._ychannel = None
     
-  yChannel = pyqtProperty("QString", getYChannel, setYChannel, resetYChannel)
+  yChannel = pyqtProperty(str, getYChannel, setYChannel, resetYChannel)
   
   def getBufferSize(self):
     return int(self._bufferSize)

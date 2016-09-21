@@ -1,6 +1,6 @@
 #import epics
 #from PyQt4 import uic
-from PyQt4.QtCore import QObject, pyqtSlot, pyqtSignal, QString, QPointF, QRectF
+from PyQt4.QtCore import QObject, pyqtSlot, pyqtSignal, QPointF, QRectF
 from PyQt4.QtGui import QWidget, QSizePolicy, QPen
 from os import path
 from pydm import Display, PyDMChannel, PyDMImageView
@@ -11,10 +11,10 @@ import time
 
 class CamViewer(Display):
   #Emitted when the user changes the value.
-  roi_x_signal = pyqtSignal(QString)
-  roi_y_signal = pyqtSignal(QString)
-  roi_w_signal = pyqtSignal(QString)
-  roi_h_signal = pyqtSignal(QString)
+  roi_x_signal = pyqtSignal(str)
+  roi_y_signal = pyqtSignal(str)
+  roi_w_signal = pyqtSignal(str)
+  roi_h_signal = pyqtSignal(str)
   def __init__(self, display_manager_window):
     super(CamViewer, self).__init__(display_manager_window)
     
@@ -34,14 +34,14 @@ class CamViewer(Display):
     self.initializeCamera(self.ui.cameraComboBox.currentText())
     
     #When the camera combo box changes, disconnect from PVs, re-initialize, then reconnect.
-    self.ui.cameraComboBox.activated[QString].connect(self.cameraChanged)
+    self.ui.cameraComboBox.activated[str].connect(self.cameraChanged)
 
     #Set up the color map combo box.
     self.ui.colorMapComboBox.clear()
     for map_name in self.ui.imageView.color_maps:
       self.ui.colorMapComboBox.addItem(map_name)
     self.ui.imageView.setColorMapToPreset(self.ui.colorMapComboBox.currentText())
-    self.ui.colorMapComboBox.activated[QString].connect(self.colorMapChanged)
+    self.ui.colorMapComboBox.activated[str].connect(self.colorMapChanged)
       
     #Set up the color map limit sliders and line edits.
     #self._color_map_limit_sliders_need_config = True
@@ -222,7 +222,7 @@ class CamViewer(Display):
   def enableAverageMode(self):
     self._average_mode_enabled = True
   
-  @pyqtSlot(QString)
+  @pyqtSlot(str)
   def cameraChanged(self, new_camera):
     new_camera = str(new_camera)
     if self.imageChannel == self.cameras[new_camera]["image"]:
@@ -285,12 +285,12 @@ class CamViewer(Display):
   
   @pyqtSlot()
   def resetROI(self):
-    self.roi_x_signal.emit(QString.number(0))
-    self.roi_y_signal.emit(QString.number(0))
-    self.roi_w_signal.emit(QString.number(self.image_max_width))
-    self.roi_h_signal.emit(QString.number(self.image_max_height))
+    self.roi_x_signal.emit(str(0))
+    self.roi_y_signal.emit(str(0))
+    self.roi_w_signal.emit(str(self.image_max_width))
+    self.roi_h_signal.emit(str(self.image_max_height))
       
-  @pyqtSlot(QString)
+  @pyqtSlot(str)
   def colorMapChanged(self, new_map_name):
     self.ui.imageView.setColorMapToPreset(new_map_name)
   
