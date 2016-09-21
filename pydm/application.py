@@ -94,19 +94,23 @@ class PyDMMainWindow(QMainWindow):
     widgets = [widget]
     widgets.extend(widget.findChildren(QWidget))
     for child_widget in widgets:
-      if hasattr(child_widget, 'channels'):
+      try:
         for channel in child_widget.channels():
           QApplication.instance().add_connection(channel)
         #Take this opportunity to install a filter that intercepts middle-mouse clicks, which we use to display a tooltip with the address of the widget's first channel.
         child_widget.installEventFilter(self)
+      except AttributeError:
+        pass
   
   def close_widget_connections(self, widget):
     widgets = [widget]
     widgets.extend(widget.findChildren(QWidget))
     for child_widget in widgets:
-      if hasattr(child_widget, 'channels'):
+      try:
         for channel in child_widget.channels():
           QApplication.instance().remove_connection(channel)
+      except AttributeError:
+        pass
   
   def open_file(self, ui_file):
     (filename, extension) = path.splitext(ui_file)
