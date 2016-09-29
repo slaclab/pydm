@@ -43,7 +43,21 @@ scan_list = [
     0.1,
 ]
 
-def generic_cb(source, signal):
+def generic_con_cb(pv_obj):
+    """
+    Create a generic callback to set up a monitor on connection.
+
+    :param pv_obj: Object representing the EPICS PV data source. This object
+                   needs to have not been connected yet.
+    :type pv_obj:  Pv
+    :rtype: function(is_connected)
+    """
+    def cb(is_connected):
+        if is_connected and not pv_obj.ismonitored:
+            pv_obj.monitor()
+    return cb
+
+def generic_mon_cb(source, signal):
     """
     Create a generic callback for sending a signal from source value.
 
@@ -56,44 +70,42 @@ def generic_cb(source, signal):
     :rtype: function(errors=None)
     """
     def cb(e=None):
-        if e:
-            source.monitor()
         if e is None:
             try:
-                val = source.value
-            except:
-                val = None
-            if val is not None:
-                signal.emit(val)
+                signal.emit(source.value)
+            except AttributeError:
+                raise
     return cb
 
-def setup_pv(pvname, conn_cb=None, mon_cb=None, signal=None):
+def setup_pv(pvname, con_cb=None, mon_cb=None, signal=None, mon_cb_once=False):
     """
     Initialize an EPICS PV using psp with proper callbacks.
 
     :param pvname: EPICS PV name
     :type pvname:  str
-    :param conn_cb: Connection callback. If left as None and provided with
+    :param con_cb: Connection callback. If left as None and provided with
                     signal, emit our value from signal as the callback.
-    :type conn_cb:  function(isconnected=None)
+    :type con_cb:  function(isconnected=None)
     :param mon_cb: Monitor callback. If left as None and provided with signal,
                    emit our value from signal as the callback.
     :type mon_cb:  function(errors=None)
     :param signal: Signal to emit our value on as the default callback when
-                   conn_cb or mon_cb are left as None. Check the base
+                   con_cb or mon_cb are left as None. Check the base
                    :class:`PyDMConnection` class for available signals.
     :type signal:  pyqtSignal
+    :param mon_cb_once: True if we only want the monitor callback to run once.
+    :type mon_cb_once: bool
     :rtype: Pv
     """
-    pv = Pv(pvname)
+    pv = Pv(pvname, use_numpy=True)
 
     if signal is None:
-        default_cb = lambda e: None
+        default_mon_cb = lambda e: None
     else:
-        default_cb = generic_cb(pv, signal)
+        default_mon_cb = generic_mon_cb(pv, signal)
 
-    pv.add_connection_callback(conn_cb or default_cb)
-    pv.add_monitor_callback(mon_cb or default_cb)
+    pv.add_connection_callback(con_cb or generic_con_cb(pv))
+    pv.add_monitor_callback(mon_cb or default_mon_cb, once=mon_cb_once)
     pv.connect(None)
     return pv
 
@@ -130,7 +142,8 @@ class Connection(PyDMConnection):
         self.sevr_pv = setup_pv(pv + ".SEVR", signal=self.new_severity_signal)
 
         # Auxilliary info to help with throttling
-        self.scan_pv = setup_pv(pv + ".SCAN")
+        self.scan_pv = setup_pv(pv + ".SCAN", mon_cb=self.scan_pv_cb,
+            mon_cb_once=True)
         self.throttle = QTimer(self)
         self.throttle.timeout.connect(self.throttle_cb)
 
@@ -148,12 +161,10 @@ class Connection(PyDMConnection):
             self.epics_type = self.pv.type()
             if self.epics_type == "DBF_ENUM":
                 self.pv.set_string_enum(True)
-            self.pv.monitor()
-            self.python_type = type_map.get(self.epics_type)
             self.count = self.pv.count or 1
-            throttle = 10.0 * 1000000/self.count # Max data flux
-            if throttle < 120:
-                self.set_throttle(throttle)
+            if not self.pv.ismonitored:
+                self.pv.monitor()
+            self.python_type = type_map.get(self.epics_type)
             if self.python_type is None:
                 raise Exception("Unsupported EPICS type {0} for pv {1}".format(
                                 self.epics_type, self.pv.name))
@@ -247,6 +258,24 @@ class Connection(PyDMConnection):
         """
         self.put_value(value)
 
+    def scan_pv_cb(self, e=None):
+        """
+        Call set_throttle once we have a value from the scan_pv. We need this
+        value inside set_throttle to decide if we can ignore the throttle
+        request (i.e. our pv updates more slowly than our throttle)
+
+        :param e: Error state. Should be None under normal circumstances.
+        """
+        if e is None:
+            self.pv.wait_ready()
+            count = self.pv.count or 1
+            if count > 1:
+                max_data_rate = 1000000. # bytes/s
+                bytes = self.pv.value.itemsize # bytes
+                throttle = max_data_rate/(bytes*count) # Hz
+                if throttle < 120:
+                    self.set_throttle(throttle)
+
     @pyqtSlot(int)
     @pyqtSlot(float)
     def set_throttle(self, refresh_rate):
@@ -261,13 +290,14 @@ class Connection(PyDMConnection):
             scan = scan_list[self.scan_pv.value]
         except:
             scan = float("inf")
-        if 0 < 1/refresh_rate < scan:
+        if 0 < refresh_rate < 1/scan:
             self.pv.monitor_stop()
             self.throttle.setInterval(1000.0/refresh_rate)
             self.throttle.start()
         else:
             self.throttle.stop()
-            self.pv.monitor()
+            if not self.pv.ismonitored:
+                self.pv.monitor()
 
     def add_listener(self, channel):
         """
@@ -296,13 +326,19 @@ class Connection(PyDMConnection):
 
     def close(self):
         """
-        Clean up all open Pv objects.
+        Clean up.
         """
         self.throttle.stop()
+        self.pv.monitor_stop()
         self.pv.disconnect()
+        self.units_pv.monitor_stop()
         self.units_pv.disconnect()
+        self.prec_pv.monitor_stop()
         self.prec_pv.disconnect()
+        self.sevr_pv.monitor_stop()
         self.sevr_pv.disconnect()
+        self.scan_pv.monitor_stop()
+        self.scan_pv.disconnect()
 
 class PSPPlugin(PyDMPlugin):
     """
