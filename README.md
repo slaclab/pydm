@@ -2,7 +2,7 @@
 pydm is a PyQt-based framework for building user interfaces for control systems.  The goal is to provide a no-code, drag-and-drop system to make simple screens, as well as a straightforward python framework to build complex applications.
 
 # Prerequisites
-* Python 2
+* Python 2.7 or 3.5
 * Qt 4.8 or higher
 * PyQt 4.11 or higher
 If you'd like to use Qt Designer (drag-and-drop tool to build interfaces) you'll need to make sure you have the PyQt plugin for Designer installed.  This usually happens automatically when you install PyQt.
