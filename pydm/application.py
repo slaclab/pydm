@@ -101,6 +101,8 @@ class PyDMMainWindow(QMainWindow):
         child_widget.installEventFilter(self)
       except AttributeError:
         pass
+      except NameError:
+        pass
   
   def close_widget_connections(self, widget):
     widgets = [widget]
@@ -110,6 +112,8 @@ class PyDMMainWindow(QMainWindow):
         for channel in child_widget.channels():
           QApplication.instance().remove_connection(channel)
       except AttributeError:
+        pass
+      except NameError:
         pass
   
   def open_file(self, ui_file):
