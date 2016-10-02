@@ -2,7 +2,7 @@ import epics
 import cams
 import time
 from PyQt4 import uic
-from PyQt4.QtCore import QObject, pyqtSlot, pyqtSignal, QString
+from PyQt4.QtCore import QObject, pyqtSlot, pyqtSignal
 from PyQt4.QtGui import QWidget
 from os import path
 from pydm import Display
@@ -41,7 +41,7 @@ class Positioner(Display):
     self.ui.pushButton.setEnabled(True)
     self.moving = False
   
-  @pyqtSlot(QString)
+  @pyqtSlot(str)
   def desired_position_changed(self):
     x = self.ui.xPosTextEntry.text()
     y = self.ui.yPosTextEntry.text()
