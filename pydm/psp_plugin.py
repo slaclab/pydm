@@ -309,7 +309,7 @@ class Connection(PyDMConnection):
         super(Connection, self).add_listener(channel)
         #If we are adding a listener to an already existing PV, we need to
         #manually send the signals indicating that the PV is connected, what the latest value is, etc.
-        if self.pv.isconnected:
+        if self.pv.isconnected and self.pv.isinitialized:
             self.send_connection_state(conn=True)
             self.monitor_cb()
             self.update_enums()
