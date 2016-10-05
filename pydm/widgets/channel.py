@@ -25,42 +25,45 @@ class PyDMChannel:
     Widget that can do either interchangeably, all the user has to do is
     specify the correct address signature and the rest of the work is done by
     the underlying plugins.  
-
-    :param address: The name of the address to be used by the plugin. This
-                    should usually be a user inputted field when a specific
-                    PyDM widget is initialized 
-    :type  address: str
-
-    :param connection_slot: A function to be run when the connection state
-                            changes
-    :type connection_slot:  pyqtSlot        
-
-    :param value_slot: A function to be run when the value updates
-    :type  value_slot: pyqtSlot
-
-    :param severity_slot: A function to be run when the severity changes
-    :type  severity_slot: pyqtSlot
-
-    :param waveform_slot: A function to be run when the waveform value changes
-    :type  waveform_slot: pyqtSlot
-
-    :param write_access_slot: A function to be run when the write access changes
-    :type  write_access_slot: pyqtSlot
-
-    :param enum_strings_slot: A function to be run when the enum_strings change
-    :type  enum_strings_slot: pyqtSlot
-
-    :param unit_slot: A function to be run when the unit changes
-    :type  unit_slot: pyqtSlot
-
-    :param value_signal: Attach a signal here that emits a desired value
-    :type  value_signal: pyqtSignal
-
-    :param waveform_signal: Attach a signal here that emits a desired waveform
-    :type  waveform_signal: pyqtSignal
     
-    :param prec_slot: A function to be run when the precision value changes
-    :type  prec_slot: pyqtSlot
+    Parameters
+    ----------
+    address : str, optional
+        The name of the address to be used by the plugin. This
+        should usually be a user inputted field when a specific
+        PyDM widget is initialized 
+
+    connection_slot : pyqtSlot, optional
+        A function to be run when the connection state
+        changes
+
+    value_slot : pyqtSlot, optional
+        A function to be run when the value updates
+
+    severity_slot : pyqtSlot, optional
+        A function to be run when the severity changes
+
+    waveform_slot : pyqtSlot, optional
+        A function to be run when the waveform value changes
+
+    write_access_slot : pyqtSlot, optional
+        A function to be run when the write access changes
+
+    enum_strings_slot : pyqtSlot, optional
+        A function to be run when the enum_strings change
+
+    unit_slot : pyqtSlot, optional 
+        A function to be run when the unit changes
+    
+    prec_slot : pyqtSlot, optional
+        A function to be run when the precision value changes
+
+    value_signal : pyqtSignal, optional 
+        Attach a signal here that emits a desired value to be sent through the
+        plugin
+
+    waveform_signal : pyqtSlot, optional
+        Attach a signal here that emits a desired waveform
     """
     def __init__(self, address=None, connection_slot=None, value_slot=None, 
                  waveform_slot=None, severity_slot=None, write_access_slot=None, 
