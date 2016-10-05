@@ -19,14 +19,35 @@ class PyDMPushButton(QPushButton):
     fixed value can be given to the :attr:`.pressValue` attribute, whenever the
     button is clicked a signal containing this value will be sent to the
     connected channel. This is the default behavior of the button. However, if
-    the :attr:`.relativeChange` is set to True, the fixed will value will be
-    added to the current value of the channel. This means that the button will
-    increment a channel by a fixed amount with every click
+    the :attr:`.relativeChange` is set to True, the fixed value will be added
+    to the current value of the channel. This means that the button will
+    increment a channel by a fixed amount with every click, a consistent
+    relative move
+    
+    Parameters
+    ----------
+    pressValue : int, float, str
+        Value to be sent when the button is clicked
+    
+    channel : str
+        ID of channel to manipulate
+
+    parent : QObject, optional
+        Parent of PyDMPushButton
+
+    label : str, optional
+        String to place on button
+
+    icon : QIcon, optional
+        An Icon to display on the PyDMPushButton
+
+
+    relative : bool, optional
+        Choice to have the button peform a relative put, instead of always
+        setting to an absolute value
     """
     __pyqtSignals__ = ("send_value_signal(str)",)
-
     send_value_signal = pyqtSignal([int],[float],[str])
-
 
     def __init__(self,parent=None,label=None,icon=None,
                  pressValue=None,relative=False, 
