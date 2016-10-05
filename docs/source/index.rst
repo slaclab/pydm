@@ -9,10 +9,11 @@ Welcome to PyDM's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    channel.rst
-
+   pushbutton.rst
+   lineedit.rst
 Indices and tables
 ==================
 

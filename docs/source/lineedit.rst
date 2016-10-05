@@ -1,7 +1,7 @@
 #######################
-PyDMPushButton
+PyDMLineEdit
 #######################
 
-.. autoclass:: pushbutton.PyDMPushButton
+.. autoclass:: line_edit.PyDMLineEdit
    :members:
 
