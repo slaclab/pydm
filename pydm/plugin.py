@@ -1,4 +1,4 @@
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
 from numpy import ndarray
 class PyDMConnection(QObject):
   new_value_signal = pyqtSignal([float],[int],[str])

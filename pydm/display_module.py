@@ -1,6 +1,6 @@
 from os import path
-from PyQt4 import uic
-from PyQt4.QtGui import QWidget
+from PyQt5 import uic
+from PyQt5.QtWidgets import QWidget
 
 class Display(QWidget):
   def __init__(self, display_manager_window):

@@ -1,7 +1,7 @@
 import epics
 import numpy as np
 from .plugin import PyDMPlugin, PyDMConnection
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
 
 class Connection(PyDMConnection):
   def __init__(self, channel, pv, parent=None):

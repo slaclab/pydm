@@ -1,5 +1,5 @@
 from .plugin import PyDMPlugin, PyDMConnection
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
 import requests
 import json
 import numpy as np

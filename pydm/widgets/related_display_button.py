@@ -1,5 +1,5 @@
-from PyQt4.QtGui import QPushButton, QApplication
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt
+from PyQt5.QtWidgets import QPushButton, QApplication
+from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt
 
 class PyDMRelatedDisplayButton(QPushButton):
   __pyqtSignals__ = ("request_open_signal(str)")
