@@ -1,6 +1,13 @@
 from os import path
-from PyQt5 import uic
-from PyQt5.QtWidgets import QWidget
+# Try PyQt5
+try:
+    pyqt5 = True
+    from PyQt5 import uic
+    from PyQt5.QtWidgets import QWidget
+except ImportError:
+    pyqt5 = False
+    from PyQt4 import uic
+    from PyQt4.QtGui import QWidget
 
 class Display(QWidget):
   def __init__(self, display_manager_window):

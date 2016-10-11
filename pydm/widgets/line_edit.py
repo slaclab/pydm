@@ -1,5 +1,15 @@
-from PyQt4.QtGui import QLineEdit, QApplication, QColor, QPalette
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
+# Try PyQt5
+try:
+    pyqt5 = True
+    from PyQt5.QtWidgets import QLineEdit, QApplication
+    from PyQt5.QtGui import QColor, QPalette
+    from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
+except ImportError:
+    pyqt5 =  False
+    # Imports for Pyqt4
+    from PyQt4.QtGui import QLineEdit, QApplication, QColor, QPalette
+    from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
+
 from channel import PyDMChannel
 
 class PyDMLineEdit(QLineEdit):

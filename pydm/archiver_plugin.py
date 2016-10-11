@@ -1,5 +1,14 @@
 from .plugin import PyDMPlugin, PyDMConnection
-from PyQt5.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
+
+# Try PyQt5
+try:
+    pyqt5 = True
+    from PyQt5.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
+except ImportError:
+    pyqt5 = False
+    # Import for PyQt4
+    from PyQt4.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
+
 import requests
 import json
 import numpy as np

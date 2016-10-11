@@ -1,5 +1,14 @@
-from PyQt4.QtGui import QTableWidget, QTableWidgetItem, QApplication, QColor, QPalette
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt
+# Try PyQt5
+try:
+    pyqt5 = True
+    from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QApplication
+    from PyQt5.QtGui import QColor, QPalette
+    from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt
+except ImportError:
+    pyqt5 =  False
+    # Imports for Pyqt4
+    from PyQt4.QtGui import QTableWidget, QTableWidgetItem, QApplication, QColor, QPalette
+    from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt
 from channel import PyDMChannel
 import numpy as np
 

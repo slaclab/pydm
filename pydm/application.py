@@ -5,16 +5,26 @@ import subprocess
 import platform
 print(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
 sys.path.append(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QToolTip
-from PyQt5.QtGui import QColor, QClipboard
-from PyQt5.QtCore import Qt, pyqtSlot, QTimer, QEvent
 import re
 from .epics_plugin import EPICSPlugin
 from .fake_plugin import FakePlugin
 from .archiver_plugin import ArchiverPlugin
-from .pydm_ui import Ui_MainWindow
-from PyQt5 import uic
 
+# Try PyQt5
+try:
+    pyqt5 = True
+    from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QToolTip
+    from PyQt5.QtGui import QColor, QClipboard
+    from PyQt5.QtCore import Qt, pyqtSlot, QTimer, QEvent
+    from PyQt5 import uic
+    from .pydm_ui5 import Ui_MainWindow
+except ImportError:
+    pyqt5 =  False
+    # Imports for Pyqt4
+    from PyQt4.QtGui import QApplication, QMainWindow, QColor, QWidget, QToolTip, QClipboard
+    from PyQt4.QtCore import Qt, pyqtSlot, QTimer, QEvent
+    from PyQt4 import uic
+    from .pydm_ui import Ui_MainWindow
 
 class PyDMMainWindow(QMainWindow):
   def __init__(self, parent=None):

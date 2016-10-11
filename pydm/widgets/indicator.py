@@ -1,3 +1,10 @@
+# Try PyQt5
+try:
+    pyqt5 = True
+    from PyQt5.QtGui import QColor, QPainter, QBrush, QPen
+    from PyQt5.QtWidgets import QWidget, QApplication
+    from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, Qt
+
 from PyQt4.QtGui import QWidget, QApplication, QColor, QPainter, QBrush, QPen
 from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, Qt
 from channel import PyDMChannel
