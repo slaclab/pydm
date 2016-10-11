@@ -103,7 +103,10 @@ class PyDMLabel(QLabel):
     invalid_alarm_state.addTransition(self.major_alarm_signal, major_alarm_state)
     
     #Add a cool fade animation to a state transition.
-    self.color_fade = QPropertyAnimation(self, "color", self)
+    if pyqt5:
+        self.color_fade = QPropertyAnimation(self,bytearray("color","utf-8"), self)
+    else:
+        self.color_fade = QPropertyAnimation(self, "color", self)
     self.color_fade.setDuration(175)
     self.state_machine.addDefaultAnimation(self.color_fade)
     
