@@ -1,7 +1,18 @@
 #import epics
 #from PyQt4 import uic
-from PyQt4.QtCore import QObject, pyqtSlot, pyqtSignal, QPointF, QRectF
-from PyQt4.QtGui import QWidget, QSizePolicy, QPen
+
+# Try PyQt5
+try:
+    pyqt5 = True
+    from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal, QPointF, QRectF
+    from PyQt5.QtGui import QPen
+    from PyQt5.QtWidgets import QWidget, QSizePolicy
+except ImportError:
+    pyqt5 =  False
+    # Imports for Pyqt4
+    from PyQt4.QtCore import QObject, pyqtSlot, pyqtSignal, QPointF, QRectF
+    from PyQt4.QtGui import QWidget, QSizePolicy, QPen
+
 from os import path
 from pydm import Display, PyDMChannel, PyDMImageView
 import numpy as np

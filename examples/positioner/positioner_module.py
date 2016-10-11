@@ -1,9 +1,20 @@
 import epics
 import cams
 import time
-from PyQt4 import uic
-from PyQt4.QtCore import QObject, pyqtSlot, pyqtSignal
-from PyQt4.QtGui import QWidget
+
+# Try PyQt5
+try:
+    pyqt5 = True
+    from PyQt5 import uic
+    from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
+    from PyQt5.QtWidgets import QWidget
+except ImportError:
+    pyqt5 =  False
+    # Imports for Pyqt4
+    from PyQt4 import uic
+    from PyQt4.QtCore import QObject, pyqtSlot, pyqtSignal
+    from PyQt4.QtGui import QWidget
+
 from os import path
 from pydm import Display
 

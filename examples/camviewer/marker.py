@@ -1,4 +1,12 @@
-from PyQt4 import QtCore, QtGui
+# Try PyQt5
+try:
+    pyqt5 = True
+    from PyQt5 import QtCore, QtGui
+except ImportError:
+    pyqt5 =  False
+    # Imports for Pyqt4
+    from PyQt4 import QtCore, QtGui
+
 from pyqtgraph import Point, ROI
 from pyqtgraph import functions as fn
 import numpy as np

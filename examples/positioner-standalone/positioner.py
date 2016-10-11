@@ -1,8 +1,19 @@
+# Try PyQt5
+try:
+    pyqt5 = True
+    from PyQt5.QtWidgets import QMainWindow
+    from PyQt5.QtCore import pyqtSlot, pyqtSignal, QString
+    from positioner_ui5 import Ui_MainWindow
+
+except ImportError:
+    pyqt5 =  False
+    # Imports for Pyqt4
+    from PyQt4.QtGui import QMainWindow
+    from PyQt4.QtCore import pyqtSlot, pyqtSignal, QString
+    from positioner_ui import Ui_MainWindow
+
 import sys, time
 from pydm import PyDMApplication
-from positioner_ui import Ui_MainWindow
-from PyQt4.QtGui import QMainWindow
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, QString
 import epics
 import cams
 
