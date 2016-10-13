@@ -4,7 +4,8 @@ from pyqtgraph import PlotCurveItem
 # Try PyQt5
 try:
     pyqt5 = True
-    from PyQt5.QtWidgets import QLabel, QApplication, QColor, QBrush
+    from PyQt5.QtWidgets import QLabel, QApplication
+    from PyQt5.QtGui import QColor, QBrush
     from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer
 except ImportError:
     pyqt5 =  False
