@@ -1,6 +1,8 @@
 # pydm: Python Display Manager
 pydm is a PyQt-based framework for building user interfaces for control systems.  The goal is to provide a no-code, drag-and-drop system to make simple screens, as well as a straightforward python framework to build complex applications.
 
+This version is a try to convert pydm to work with PyQt5
+
 # Prerequisites
 * Python 2.7 or 3.5
 * Qt 4.8 or higher
