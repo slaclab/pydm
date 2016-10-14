@@ -1,8 +1,8 @@
 # Try PyQt5
 try:
     pyqt5 = True
-    from PyQt5.QtWidgets import QCheckBox, QApplication, QColor
-    from PyQt5.QtGui import QPalette
+    from PyQt5.QtWidgets import QCheckBox, QApplication
+    from PyQt5.QtGui import QPalette, QColor
     from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
 except ImportError:
     pyqt5 =  False
@@ -73,3 +73,4 @@ class PyDMCheckbox(QCheckBox):
 
   def channels(self):
     return [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, write_access_slot=self.writeAccessChanged, value_signal=self.send_value_signal)]
+
