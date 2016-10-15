@@ -5,7 +5,7 @@ from os import path
 
 from channel import PyDMChannel
 from PyQt4.QtGui import QPushButton
-from PyQt4.QtCore import QString,pyqtSignal, pyqtSlot, pyqtProperty
+from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +23,7 @@ class PyDMPushButton(QPushButton):
     added to the current value of the channel. This means that the button will
     increment a channel by a fixed amount with every click
     """
-    __pyqtSignals__ = ("send_value_signal(Qstring)",)
+    __pyqtSignals__ = ("send_value_signal(str)",)
 
     send_value_signal = pyqtSignal([int],[float],[str])
 
@@ -48,7 +48,7 @@ class PyDMPushButton(QPushButton):
         self.clicked.connect(self.sendValue)
 
 
-    @pyqtProperty(QString,doc=
+    @pyqtProperty(str,doc=
     """
     The channel address to attach the PyDMPushButton
 
@@ -57,7 +57,7 @@ class PyDMPushButton(QPushButton):
     """
     )
     def channel(self):
-        return QString.fromAscii(self._channel)
+        return str(self._channel)
 
     @channel.setter
     def channel(self,value):
@@ -65,7 +65,7 @@ class PyDMPushButton(QPushButton):
             self._channel = str(value)
 
 
-    @pyqtProperty('QString',doc=
+    @pyqtProperty(str,doc=
     """
     This property holds the value to send back through the channel.
 
@@ -75,14 +75,14 @@ class PyDMPushButton(QPushButton):
     """
     )
     def pressValue(self):
-        return QString.fromAscii(self._pressValue)
+        return str(self._pressValue)
     
     @pressValue.setter
     def pressValue(self,value):
         if value != self._pressValue:
             self._pressValue = value 
    
-
+    
     @pyqtProperty(bool,doc=
     """
     The mode of operation of the PyDMPushButton
@@ -120,7 +120,7 @@ class PyDMPushButton(QPushButton):
         """
         self._value       = new_value
         self._channeltype = type(new_value)
-
+    
 
     @pyqtSlot()
     def sendValue(self):
@@ -139,6 +139,24 @@ class PyDMPushButton(QPushButton):
             send_value = self._value + self._channeltype(self._pressValue)
             self.send_value_signal[self._channeltype].emit(send_value)
 
+
+    @pyqtSlot(int)
+    @pyqtSlot(float)
+    @pyqtSlot(str)
+    def updatePressValue(self,value):
+        """
+        Update the pressValue of a function by passing a signal to the
+        PyDMPushButton
+
+        This is useful to dynmamically change the pressValue of the button
+        during runtime. This enables the applied value to be linked to the
+        state of a different widget, say a QLineEdit or QSlider
+        """
+        try:
+            self._pressValue = self._channeltype(value)
+        except ValueError:
+            logger.warn('{:} is not a valid pressValue '\
+                        'for {:}'.format(value,self.channel))
 
     def channels(self):
         """
