@@ -33,7 +33,7 @@ class PyDMChannel:
 
     :param connection_slot: A function to be run when the connection state
                             changes
-    :type connection_slot: pyqtSlot        
+    :type connection_slot:  pyqtSlot        
 
     :param value_slot: A function to be run when the value updates
     :type  value_slot: pyqtSlot
@@ -58,6 +58,9 @@ class PyDMChannel:
 
     :param waveform_signal: Attach a signal here that emits a desired waveform
     :type  waveform_signal: pyqtSignal
+    
+    :param prec_slot: A function to be run when the precision value changes
+    :type  prec_slot: pyqtSlot
     """
     def __init__(self, address=None, connection_slot=None, value_slot=None, 
                  waveform_slot=None, severity_slot=None, write_access_slot=None, 
