@@ -188,15 +188,29 @@ class PyDMApplication(QApplication):
     if len(command_line_args) > 1:
       ui_file = command_line_args[1]
       self.make_window(ui_file)
+      self.had_file = True
+    else:
+      self.had_file = False
     #Re-enable sigint (usually blocked by pyqt)
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
   def exec_(self):
+<<<<<<< HEAD
     """
     Execute the QApplication
     """
     self.make_connections()
     return super(PyDMApplication,self).exec_()
+=======
+      """
+      Execute the QApplication
+      """
+      # Connect to top-level widgets that were not loaded from file
+      # These are usually testing/debug widgets
+      if not self.had_file:
+        self.make_connections()
+      return super(PyDMApplication,self).exec_()
+>>>>>>> 5359950... Incorporated psp numpy features into psp_plugin.
 
   def make_connections(self):
     for widget in self.topLevelWidgets():
@@ -234,7 +248,7 @@ class PyDMApplication(QApplication):
 
     #Now load the intelligence module.
     module = imp.load_source('intelclass', pyfile)
-    return module.intelclass(self)
+    return module.intelclass()
 
   def open_file(self, ui_file):
     (filename, extension) = path.splitext(ui_file)
@@ -245,6 +259,7 @@ class PyDMApplication(QApplication):
     else:
       raise Exception("invalid file type: {}".format(extension))
     self.sources[widget] = path.dirname(ui_file)
+    self.establish_widget_connections(widget)
     return widget
 
   def get_source_dir(self, widget):
@@ -313,7 +328,7 @@ class PyDMApplication(QApplication):
           self.add_connection(channel)
         #Take this opportunity to install a filter that intercepts middle-mouse clicks, which we use to display a tooltip with the address of the widget's first channel.
         child_widget.installEventFilter(self)
-  
+
   def close_widget_connections(self, widget):
     widgets = [widget]
     widgets.extend(widget.findChildren(QWidget))
@@ -321,3 +336,7 @@ class PyDMApplication(QApplication):
       if hasattr(child_widget, 'channels'):
         for channel in child_widget.channels():
           self.remove_connection(channel)
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> 5359950... Incorporated psp numpy features into psp_plugin.

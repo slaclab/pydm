@@ -8,9 +8,8 @@ from os import path
 from pydm import Display
 
 class Positioner(Display):
-  def __init__(self, display_manager_window):
-    super(Positioner, self).__init__(display_manager_window)
-    self.display_manager_window = display_manager_window
+  def __init__(self, parent=None):
+    super(Positioner, self).__init__(parent=parent)
     self.moving = False
     self.ui.pushButton.clicked.connect(self.move_motors)
     self.motor1pv = epics.PV("MOTOR:1:VAL")
@@ -21,6 +20,10 @@ class Positioner(Display):
     self.ui.yPosTextEntry.textChanged.connect(self.desired_position_changed)
     self.ui.zPosTextEntry.textChanged.connect(self.desired_position_changed)
   
+  @property
+  def display_manager_window(self):
+    return self.window()
+
   @pyqtSlot()
   def move_motors(self):
     if self.moving:
