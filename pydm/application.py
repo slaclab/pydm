@@ -9,7 +9,16 @@ sys.path.append(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
 from PyQt4.QtGui import QApplication, QMainWindow, QColor, QWidget, QToolTip, QClipboard
 from PyQt4.QtCore import Qt, pyqtSlot, QTimer, QEvent
 import re
-from .psp_plugin import PSPPlugin
+
+#If the user has PSS and pyca installed, use psp, which is faster.
+#Otherwise, use PyEPICS, which is slower, but more commonly used.
+try:
+  from .psp_plugin import PSPPlugin
+  EPICSPlugin = PSPPlugin
+except ImportError:
+  from .pyepics_plugin import PyEPICSPlugin
+  EPICSPlugin = PyEPICSPlugin
+  
 from .fake_plugin import FakePlugin
 from .archiver_plugin import ArchiverPlugin
 from .pydm_ui import Ui_MainWindow
@@ -164,7 +173,7 @@ class PyDMMainWindow(QMainWindow):
     self.clear_display_widget()
     
 class PyDMApplication(QApplication):
-  plugins = { "ca": PSPPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
+  plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
   
   #HACK. To be replaced with some stylesheet stuff eventually.
   alarm_severity_color_map = {
@@ -277,11 +286,4 @@ class PyDMApplication(QApplication):
     for child_widget in widgets:
       if hasattr(child_widget, 'channels'):
         for channel in child_widget.channels():
-<<<<<<< HEAD
           self.remove_connection(channel)
-  
-=======
-          QApplication.instance().remove_connection(channel)
- 
-
->>>>>>> 304096a... application.pyChanged widget connection handling

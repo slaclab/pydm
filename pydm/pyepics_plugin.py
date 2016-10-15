@@ -65,6 +65,6 @@ class Connection(PyDMConnection):
   def close(self):
     self.pv.disconnect()
 
-class EPICSPlugin(PyDMPlugin):
+class PyEPICSPlugin(PyDMPlugin):
   protocol = "ca://"
   connection_class = Connection
