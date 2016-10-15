@@ -11,13 +11,13 @@ NOTE: PyDMDesignerPlugin is a valid plugin, so designer will try to pick it up
       module that defines a qtplugin.
 
 If you do not heed this warning, you will get a one-line traceback:
-TypeError: __init__() takes exactly 2 arguments (1 given)
+TypeError: __init__() takes exactly 3 arguments (1 given)
 for each PyDMDesignerPlugin that Qt Designer tries to use. This will not
 affect any of your widgets, but it will be annoying.
 """
 from PyQt4 import QtGui, QtDesigner
 
-def qtplugin_factory(cls):
+def qtplugin_factory(cls, is_container=False):
     """
     Helper function to create a generic PyDMDesignerPlugin class.
 
@@ -27,7 +27,7 @@ def qtplugin_factory(cls):
     class Plugin(PyDMDesignerPlugin):
         __doc__ = "PyDMDesigner Plugin for {}".format(cls.__name__)
         def __init__(self):
-            super(Plugin, self).__init__(cls)
+            super(Plugin, self).__init__(cls, is_container)
     return Plugin
 
 class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
@@ -35,7 +35,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
     Parent class to standardize how pydm plugins are accessed in qt designer.
     All functions have default returns that can be overriden as necessary.
     """
-    def __init__(self, cls):
+    def __init__(self, cls, is_container=False):
         """
         Set up the plugin using the class info in cls
 
@@ -44,6 +44,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         """
         QtDesigner.QPyDesignerCustomWidgetPlugin.__init__(self)
         self.initialized = False
+        self.is_container = is_container
         self.cls = cls
 
     def initialize(self, core):
@@ -89,19 +90,10 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
 
     def toolTip(self):
         """
-        A short description to help users identify the widget in Qt Designer.
-        By default, this is the first line of the class docstring.
+        A short description to pop up on mouseover. If we leave this as an
+        empty string, we'll have no tooltip by default and can override this
+        on a case-by-case basis.
         """
-        try:
-            if isinstance(self.cls.__doc__, basestring):
-                lines = self.cls.__doc__.split("\n")
-                for line in lines:
-                    txt = line.strip()
-                    if len(txt) > 0:
-                        return txt
-                return ""
-        except AttributeError:
-            pass
         return ""
 
     def whatsThis(self):
@@ -120,7 +112,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         """
         Return True if this widget can contain other widgets.
         """
-        return isinstance(self.cls, QtGui.QLayoutItem)
+        return self.is_container
 
     def icon(self):
         """
