@@ -1,3 +1,9 @@
+"""
+Main Application Module
+
+Contains our PyDMApplication class with core connection and loading logic and
+our PyDMMainWindow class with navigation logic.
+"""
 from os import path, environ
 import imp
 import sys
