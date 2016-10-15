@@ -201,15 +201,16 @@ class PyDMApplication(QApplication):
     #Re-enable sigint (usually blocked by pyqt)
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-
   def exec_(self):
-      """
-      Execute the QApplication
-      """
-      for widget in self.topLevelWidgets():
-        self.establish_widget_connections(widget)
-    
-      return super(PyDMApplication,self).exec_()
+    """
+    Execute the QApplication
+    """
+    self.make_connections()
+    return super(PyDMApplication,self).exec_()
+
+  def make_connections(self):
+    for widget in self.topLevelWidgets():
+      self.establish_widget_connections(widget)
  
   def new_pydm_process(self, ui_file):
     subprocess.Popen('python $PYDM_PATH/pydm.py "{file}"'.format(file=ui_file), shell=True)
