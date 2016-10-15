@@ -19,10 +19,10 @@ class PyDMPushButton(QPushButton):
     fixed value can be given to the :attr:`.pressValue` attribute, whenever the
     button is clicked a signal containing this value will be sent to the
     connected channel. This is the default behavior of the button. However, if
-    the :attr:.relativeChange' is set to True, the fixed will value will be
+    the :attr:`.relativeChange` is set to True, the fixed will value will be
     added to the current value of the channel. This means that the button will
-    increment a channel by a fixed amount with every click  """
-    
+    increment a channel by a fixed amount with every click
+    """
     __pyqtSignals__ = ("send_value_signal(Qstring)",)
 
     send_value_signal = pyqtSignal([int],[float],[str])
@@ -30,7 +30,7 @@ class PyDMPushButton(QPushButton):
 
     def __init__(self,parent=None,label=None,icon=None,
                  pressValue=None,relative=False, 
-                 init_channel= None):
+                 channel= None):
         if icon:
             super(PyDMPushButton,self).__init__(icon,label,parent)
         elif label:
@@ -42,21 +42,39 @@ class PyDMPushButton(QPushButton):
         self._pressValue  = pressValue 
         self._relative    = relative
 
-        self._channel     = init_channel
+        self._channel     = channel
         self._channeltype = type(self._value)
 
         self.clicked.connect(self.sendValue)
 
 
-    @pyqtProperty('QString')
-    def pressValue(self):
-        """ 
-        This property holds the value to send back through the channel.
+    @pyqtProperty(QString,doc=
+    """
+    The channel address to attach the PyDMPushButton
 
-        The type of this value does not matter because it is automatically
-        converted to match the prexisting value type of the channel. However,
-        the sign of the value matters for both the fixed and relative modes.
-        """
+    The actual signal/slot attachment is done at the application level of the
+    PyDM module.
+    """
+    )
+    def channel(self):
+        return QString.fromAscii(self._channel)
+
+    @channel.setter
+    def channel(self,value):
+        if self._channel != value:
+            self._channel = str(value)
+
+
+    @pyqtProperty('QString',doc=
+    """
+    This property holds the value to send back through the channel.
+
+    The type of this value does not matter because it is automatically
+    converted to match the prexisting value type of the channel. However, the
+    sign of the value matters for both the fixed and relative modes.
+    """
+    )
+    def pressValue(self):
         return QString.fromAscii(self._pressValue)
     
     @pressValue.setter
@@ -65,20 +83,21 @@ class PyDMPushButton(QPushButton):
             self._pressValue = value 
    
 
-    @pyqtProperty(bool)
+    @pyqtProperty(bool,doc=
+    """
+    The mode of operation of the PyDMPushButton
+
+    If set to True, the :attr:`pressValue` will be added to the current value
+    of the channel. If False, the :attr:`pressValue` will be sent without any
+    operation.
+
+    This flag will be ignored if the connected channel sends a str type value
+    to :meth:`.receiveValue`. This is designed to eliminate the undesirable
+    behavior of concantenating strings as opposed to doing mathematical
+    addition. 
+    """
+    )
     def relativeChange(self):
-        """
-        The mode of operation of the PyDMPushButton
-
-        If set to True, the :attr:`pressValue` will be added to the current
-        value of the channel. If False, the :attr:`pressValue will be sent
-        without any operation.
-
-        This flag will be ignored if the connected channel sends a str type
-        value to :meth:`.receiveValue`. This is designed to eliminate the
-        undesirable behavior of concantenating strings as opposed to doing
-        mathematical addition. 
-        """
         return self._relative
 
     @relativeChange.setter
@@ -119,22 +138,6 @@ class PyDMPushButton(QPushButton):
         else:
             send_value = self._value + self._channeltype(self._pressValue)
             self.send_value_signal[self._channeltype].emit(send_value)
-
-
-    @pyqtProperty(QString)
-    def channel(self):
-        """
-        The channel address to attach the PyDMPushButton
-
-        The actual signal/slot attachment is done at the application level of
-        the PyDM module.
-        """
-        return QString.fromAscii(self._channel)
-
-    @channel.setter
-    def channel(self,value):
-        if self._channel != value:
-            self._channel = str(value)
 
 
     def channels(self):
