@@ -1,5 +1,14 @@
-from PyQt4.QtGui import QLabel, QApplication, QColor
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer
+# Try PyQt5
+try:
+    pyqt5 = True
+    from PyQt5.QtWidgets import QLabel, QApplication
+    from PyQt5.QtGui import QColor
+    from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer
+except ImportError:
+    pyqt5 =  False
+    # Imports for Pyqt4
+    from PyQt4.QtGui import QLabel, QApplication, QColor
+    from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer
 from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
 from pyqtgraph import PlotCurveItem
 from baseplot import BasePlot

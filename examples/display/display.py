@@ -1,8 +1,18 @@
 #!/usr/local/lcls/package/python/current/bin/python
 
+# Try PyQt5
+try:
+    pyqt5 = True
+    from PyQt5 import QtCore, QtGui
+    from display_ui5 import Ui_MainWindow
+
+except ImportError:
+    pyqt5 =  False
+    # Imports for Pyqt4
+    from PyQt4 import QtCore, QtGui
+    from display_ui import Ui_MainWindow
+
 import sys, os
-from PyQt4 import QtCore, QtGui
-from display_ui import Ui_MainWindow
 from pydm import PyDMApplication
 
 class DisplayWindow(QtGui.QMainWindow):

@@ -1,5 +1,14 @@
-from PyQt4.QtGui import QLabel, QApplication, QColor, QActionGroup
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
+# Try PyQt5
+try:
+    pyqt5 = True
+    from PyQt5.QtWidgets import QLabel, QApplication, QActionGroup
+    from PyQt5.QtGui import QColor
+    from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
+except ImportError:
+    pyqt5 =  False
+    # Imports for Pyqt4
+    from PyQt4.QtGui import QLabel, QApplication, QColor, QActionGroup
+    from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 from pyqtgraph import ImageView
 from pyqtgraph import ImageItem
 from pyqtgraph import ColorMap

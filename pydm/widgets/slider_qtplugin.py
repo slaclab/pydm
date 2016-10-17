@@ -1,4 +1,12 @@
-from PyQt4 import QtGui, QtDesigner
+# Try PyQt5
+try:
+    pyqt5 = True
+    from PyQt5 import QtGui, QtDesigner
+except ImportError:
+    pyqt5 =  False
+    # Imports for Pyqt4
+    from PyQt4 import QtGui, QtDesigner
+
 from slider import PyDMSlider
 
 class PyDMSliderPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):

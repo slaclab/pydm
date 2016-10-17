@@ -1,5 +1,11 @@
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
 from numpy import ndarray
+try:
+    pqt5 = True
+    from PyQt5.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
+except ImportError:
+    pyqt5 = False
+    from PyQt4.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
+
 class PyDMConnection(QObject):
   new_value_signal = pyqtSignal([float],[int],[str])
   new_waveform_signal = pyqtSignal(ndarray)

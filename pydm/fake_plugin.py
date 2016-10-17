@@ -1,5 +1,10 @@
 from .plugin import PyDMPlugin, PyDMConnection
-from PyQt4.QtCore import QTimer, pyqtSignal, Qt
+try:
+    pyqt5 = True
+    from PyQt5.QtCore import QTimer, pyqtSignal, Qt
+except ImportError:
+    from PyQt4.QtCore import QTimer, pyqtSignal, Qt
+
 import random
 
 class Connection(PyDMConnection):

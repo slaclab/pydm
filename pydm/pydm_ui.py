@@ -2,86 +2,72 @@
 
 # Form implementation generated from reading ui file 'pydm.ui'
 #
-# Created: Wed Sep 30 13:44:51 2015
-#      by: PyQt4 UI code generator 4.11.3
+# Created: Mon Oct 10 13:18:51 2016
+#      by: PyQt4 UI code generator 4.6.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
 
-try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-    def _fromUtf8(s):
-        return s
-
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName(_fromUtf8("MainWindow"))
+        MainWindow.setObjectName("MainWindow")
         MainWindow.resize(672, 112)
         self.centralwidget = QtGui.QWidget(MainWindow)
-        self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
+        self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setSizeConstraint(QtGui.QLayout.SetMaximumSize)
-        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.horizontalLayout.setObjectName("horizontalLayout")
         self.panelSearchLineEdit = QtGui.QLineEdit(self.centralwidget)
         self.panelSearchLineEdit.setMinimumSize(QtCore.QSize(150, 0))
-        self.panelSearchLineEdit.setObjectName(_fromUtf8("panelSearchLineEdit"))
+        self.panelSearchLineEdit.setObjectName("panelSearchLineEdit")
         self.horizontalLayout.addWidget(self.panelSearchLineEdit)
         self.goButton = QtGui.QPushButton(self.centralwidget)
         self.goButton.setFlat(False)
-        self.goButton.setObjectName(_fromUtf8("goButton"))
+        self.goButton.setObjectName("goButton")
         self.horizontalLayout.addWidget(self.goButton)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.backButton = QtGui.QPushButton(self.centralwidget)
-        self.backButton.setObjectName(_fromUtf8("backButton"))
+        self.backButton.setObjectName("backButton")
         self.horizontalLayout.addWidget(self.backButton)
         self.forwardButton = QtGui.QPushButton(self.centralwidget)
-        self.forwardButton.setObjectName(_fromUtf8("forwardButton"))
+        self.forwardButton.setObjectName("forwardButton")
         self.horizontalLayout.addWidget(self.forwardButton)
         self.homeButton = QtGui.QPushButton(self.centralwidget)
-        self.homeButton.setObjectName(_fromUtf8("homeButton"))
+        self.homeButton.setObjectName("homeButton")
         self.horizontalLayout.addWidget(self.homeButton)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.line = QtGui.QFrame(self.centralwidget)
         self.line.setFrameShape(QtGui.QFrame.HLine)
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
-        self.line.setObjectName(_fromUtf8("line"))
+        self.line.setObjectName("line")
         self.verticalLayout.addWidget(self.line)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 672, 22))
-        self.menubar.setObjectName(_fromUtf8("menubar"))
+        self.menubar.setObjectName("menubar")
         self.menuFile = QtGui.QMenu(self.menubar)
-        self.menuFile.setObjectName(_fromUtf8("menuFile"))
+        self.menuFile.setObjectName("menuFile")
         self.menuView = QtGui.QMenu(self.menubar)
-        self.menuView.setObjectName(_fromUtf8("menuView"))
+        self.menuView.setObjectName("menuView")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
-        self.statusbar.setObjectName(_fromUtf8("statusbar"))
+        self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.actionEdit_in_Designer = QtGui.QAction(MainWindow)
-        self.actionEdit_in_Designer.setObjectName(_fromUtf8("actionEdit_in_Designer"))
+        self.actionEdit_in_Designer.setObjectName("actionEdit_in_Designer")
         self.actionAbout_DIM = QtGui.QAction(MainWindow)
         self.actionAbout_DIM.setEnabled(False)
-        self.actionAbout_DIM.setObjectName(_fromUtf8("actionAbout_DIM"))
+        self.actionAbout_DIM.setObjectName("actionAbout_DIM")
         self.actionReload_Display = QtGui.QAction(MainWindow)
-        self.actionReload_Display.setObjectName(_fromUtf8("actionReload_Display"))
+        self.actionReload_Display.setObjectName("actionReload_Display")
         self.actionIncrease_Font_Size = QtGui.QAction(MainWindow)
-        self.actionIncrease_Font_Size.setObjectName(_fromUtf8("actionIncrease_Font_Size"))
+        self.actionIncrease_Font_Size.setObjectName("actionIncrease_Font_Size")
         self.actionDecrease_Font_Size = QtGui.QAction(MainWindow)
-        self.actionDecrease_Font_Size.setObjectName(_fromUtf8("actionDecrease_Font_Size"))
+        self.actionDecrease_Font_Size.setObjectName("actionDecrease_Font_Size")
         self.menuFile.addAction(self.actionAbout_DIM)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionEdit_in_Designer)
@@ -95,20 +81,30 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "PyDM Main Window", None))
-        self.panelSearchLineEdit.setPlaceholderText(_translate("MainWindow", "Search for a display...", None))
-        self.goButton.setText(_translate("MainWindow", "Go", None))
-        self.backButton.setText(_translate("MainWindow", "Back", None))
-        self.forwardButton.setText(_translate("MainWindow", "Forward", None))
-        self.homeButton.setText(_translate("MainWindow", "Home", None))
-        self.menuFile.setTitle(_translate("MainWindow", "File", None))
-        self.menuView.setTitle(_translate("MainWindow", "View", None))
-        self.actionEdit_in_Designer.setText(_translate("MainWindow", "Edit in Designer", None))
-        self.actionAbout_DIM.setText(_translate("MainWindow", "About PyDM", None))
-        self.actionReload_Display.setText(_translate("MainWindow", "Reload Display", None))
-        self.actionReload_Display.setShortcut(_translate("MainWindow", "Ctrl+R", None))
-        self.actionIncrease_Font_Size.setText(_translate("MainWindow", "Increase Font Size", None))
-        self.actionIncrease_Font_Size.setShortcut(_translate("MainWindow", "Ctrl+=", None))
-        self.actionDecrease_Font_Size.setText(_translate("MainWindow", "Decrease Font Size", None))
-        self.actionDecrease_Font_Size.setShortcut(_translate("MainWindow", "Ctrl+-", None))
+        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "PyDM Main Window", None, QtGui.QApplication.UnicodeUTF8))
+        self.panelSearchLineEdit.setPlaceholderText(QtGui.QApplication.translate("MainWindow", "Search for a display...", None, QtGui.QApplication.UnicodeUTF8))
+        self.goButton.setText(QtGui.QApplication.translate("MainWindow", "Go", None, QtGui.QApplication.UnicodeUTF8))
+        self.backButton.setText(QtGui.QApplication.translate("MainWindow", "Back", None, QtGui.QApplication.UnicodeUTF8))
+        self.forwardButton.setText(QtGui.QApplication.translate("MainWindow", "Forward", None, QtGui.QApplication.UnicodeUTF8))
+        self.homeButton.setText(QtGui.QApplication.translate("MainWindow", "Home", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuView.setTitle(QtGui.QApplication.translate("MainWindow", "View", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionEdit_in_Designer.setText(QtGui.QApplication.translate("MainWindow", "Edit in Designer", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAbout_DIM.setText(QtGui.QApplication.translate("MainWindow", "About PyDM", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionReload_Display.setText(QtGui.QApplication.translate("MainWindow", "Reload Display", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionReload_Display.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+R", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionIncrease_Font_Size.setText(QtGui.QApplication.translate("MainWindow", "Increase Font Size", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionIncrease_Font_Size.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+=", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionDecrease_Font_Size.setText(QtGui.QApplication.translate("MainWindow", "Decrease Font Size", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionDecrease_Font_Size.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+-", None, QtGui.QApplication.UnicodeUTF8))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtGui.QApplication(sys.argv)
+    MainWindow = QtGui.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
 
