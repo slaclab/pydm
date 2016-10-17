@@ -2,8 +2,8 @@
 try:
     pyqt5 = True
     from PyQt5.QtWidgets import QLabel, QApplication
-    from PyQt5.QtGui import QLabel, QColor
-    from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer
+    from PyQt5.QtGui import QColor
+    from PyQt5.QtCore import QLabel, pyqtSignal, pyqtSlot, pyqtProperty, QTimer
 except ImportError:
     pyqt5 =  False
     # Imports for Pyqt4
