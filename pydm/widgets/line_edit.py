@@ -1,9 +1,8 @@
 from functools import partial
 from PyQt4.QtGui import QLineEdit, QApplication, QColor, QPalette, QMenu
 from PyQt4.QtCore import Qt,pyqtSignal,pyqtSlot,pyqtProperty
-import pydm.utilities
 from channel import PyDMChannel
-
+from pydm import utilities
 class PyDMLineEdit(QLineEdit):
     """
     Writeable text field to send and display channel values
@@ -59,7 +58,7 @@ class PyDMLineEdit(QLineEdit):
         return str(self._channel)
 
     @channel.setter
-    def channel(self,value):
+    def channel(self, value):
         if self._channel != value:
             self._channel = str(value)
     
@@ -224,7 +223,7 @@ class PyDMLineEdit(QLineEdit):
         user that there are no available conversions
         """
         self.unitMenu.clear()
-        units = pydm.utilities.find_unit_options(self._units)
+        units = utilities.find_unit_options(self._units)
         if units and self._useunits:
             for choice in units:
                 self.unitMenu.addAction(choice,partial(self.apply_conversion,choice))
@@ -249,7 +248,7 @@ class PyDMLineEdit(QLineEdit):
                            'initial units supplied')
             return None
 
-        scale = pydm.utilities.convert(str(self._units),unit) 
+        scale = utilities.convert(str(self._units),unit) 
         if scale:
             self._scale = scale*float(self._scale)
             self._units = unit
