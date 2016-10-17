@@ -40,7 +40,9 @@ class PyDMTimePlot(BasePlot):
       if isinstance(child, AxisItem):
         if child not in [self.getPlotItem().axes[k]['item'] for k in self.getPlotItem().axes]:
           child.deleteLater()
-    
+
+    if pyqt5:
+      self.initialize_buffer() # Make sure data buffer is initialized in PyQt5. Maybe there is a better way to do that!
   
   def configure_timer(self):
     self.update_timer.stop()
