@@ -49,7 +49,7 @@
       <string>Open Display 1...</string>
      </property>
      <property name="displayFilename">
-      <string>examples/related_displays/display1.ui</string>
+      <string>display1.ui</string>
      </property>
     </widget>
    </item>
