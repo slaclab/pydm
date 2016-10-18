@@ -14,7 +14,7 @@ class PyDMRelatedDisplayButton(QPushButton):
     self.app = QApplication.instance()
     
   def getDisplayFilename(self):
-    return self._display_filename
+    return str(self._display_filename)
   
   def setDisplayFilename(self, value):
     if self._display_filename != value:
@@ -40,7 +40,7 @@ class PyDMRelatedDisplayButton(QPushButton):
     else:
       filename = self.app.get_path(self.displayFilename, self)
     if target == self.EXISTING_WINDOW:
-      self.window().go(str(self.displayFilename))
+      self.window().go(filename)
     if target == self.NEW_WINDOW:
       self.app.new_window(filename)
     
