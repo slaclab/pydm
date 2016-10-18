@@ -195,13 +195,6 @@ class PyDMApplication(QApplication):
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
   def exec_(self):
-<<<<<<< HEAD
-    """
-    Execute the QApplication
-    """
-    self.make_connections()
-    return super(PyDMApplication,self).exec_()
-=======
       """
       Execute the QApplication
       """
@@ -210,7 +203,6 @@ class PyDMApplication(QApplication):
       if not self.had_file:
         self.make_connections()
       return super(PyDMApplication,self).exec_()
->>>>>>> 5359950... Incorporated psp numpy features into psp_plugin.
 
   def make_connections(self):
     for widget in self.topLevelWidgets():
@@ -336,7 +328,3 @@ class PyDMApplication(QApplication):
       if hasattr(child_widget, 'channels'):
         for channel in child_widget.channels():
           self.remove_connection(channel)
-<<<<<<< HEAD
-=======
- 
->>>>>>> 5359950... Incorporated psp numpy features into psp_plugin.
