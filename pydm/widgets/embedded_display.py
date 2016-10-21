@@ -1,5 +1,5 @@
-from PyQt4.QtGui import QStackedWidget
-from PyQt4.QtCore import Qt, QCoreApplication, QString, QStringList
+from PyQt4.QtGui import QStackedWidget, QApplication
+from PyQt4.QtCore import Qt, QString, QStringList
 from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 
 class PyDMEmbeddedDisplay(QStackedWidget):
@@ -8,42 +8,44 @@ class PyDMEmbeddedDisplay(QStackedWidget):
     Requires a list of filenames, either absolute paths or relative to the the
     gui this widget is in.
     """
-    def __init__(self, parent=None, filenames=[], initial_display=0):
+    def __init__(self, parent=None, filenames=None, initial_display=0):
         super(PyDMEmbeddedDisplay, self).__init__(parent)
-        self.app = QCoreApplication.instance()
+        self.app = QApplication.instance()
         self.widget_files = []
-        self.display_filenames = filenames
-        self.setCurrentIndex(initial_display)
+        #if filenames is not None:
+        #    self.display_filenames = filenames
+        #self.setCurrentIndex(initial_display)
 
     def update_widgets(self):
         """
         Remove defunct widgets and load new widgets.
         """
         # Block updating in designer, where only a normal QApplication exists
-        if hasattr(self.app, "open_file"):
-            i = 0
-            for i, filename in enumerate(self.display_filenames):
-                user_file = str(filename)
-                try:
-                    widget_file = self.widget_files[i]
-                except:
-                    widget_file = None
-                    self.widget_files.append(None)
-                if user_file != widget_file:
-                    new_widget = self.open_file(user_file)
-                    old_widget = self.widget(i) or None
-                    if old_widget is not None:
-                        self.app.close_widget_connections(old_widget)
-                        self.removeWidget(old_widget)
-                    self.app.establish_widget_connections(new_widget)
-                    self.insertWidget(i, new_widget)
-                    self.widget_files[i] = user_file
-            n_widgets = i+1
-            while self.count() > n_widgets:
-                widget = self.widget(n_widgets)
-                self.app.close_widget_connections(widget)
-                self.removeWidget(widget)
-            self.widget_files = self.widget_files[:i]
+        if not hasattr(self.app, "open_file"):
+            return
+        i=0
+        for i, filename in enumerate(self.display_filenames):
+            user_file = str(filename)
+            try:
+                widget_file = self.widget_files[i]
+            except IndexError:
+                widget_file = None
+                self.widget_files.append(None)
+            if user_file != widget_file:
+                new_widget = self.open_file(user_file)
+                old_widget = self.widget(i)
+                if old_widget is not None:
+                    self.app.close_widget_connections(old_widget)
+                    self.removeWidget(old_widget)
+                self.app.establish_widget_connections(new_widget)
+                self.insertWidget(i, new_widget)
+                self.widget_files[i] = user_file
+        n_widgets = i+1
+        while self.count() > n_widgets:
+            widget = self.widget(n_widgets)
+            self.app.close_widget_connections(widget)
+            self.removeWidget(widget)
+        self.widget_files = self.widget_files[:i]
 
     def open_file(self, filename):
         """
@@ -126,6 +128,7 @@ class PyDMEmbeddedDisplay(QStackedWidget):
 
     @active_display_filename.setter
     def active_display_filename(self, filename):
-        index = self.currentIndex()
-        self.update_display_at_index(index, filename)
+        if filename is not None and len(filename) > 0:
+            index = self.currentIndex()
+            self.update_display_at_index(index, filename)
 
