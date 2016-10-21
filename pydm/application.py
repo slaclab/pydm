@@ -117,7 +117,7 @@ class PyDMApplication(QApplication):
       widget = self.load_py_file(ui_file)
     else:
       raise Exception("invalid file type: {}".format(extension))
-    #self.establish_widget_connections(widget)
+    self.establish_widget_connections(widget)
     self.directory_stack.pop()
     return widget
 
