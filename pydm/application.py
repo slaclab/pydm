@@ -4,163 +4,28 @@ Main Application Module
 Contains our PyDMApplication class with core connection and loading logic and
 our PyDMMainWindow class with navigation logic.
 """
-from os import path, environ
+from os import path
 import imp
 import sys
 import signal
 import subprocess
-import platform
-#print(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
-sys.path.append(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
-from PyQt4.QtGui import QApplication, QMainWindow, QColor, QWidget, QToolTip, QClipboard
-from PyQt4.QtCore import Qt, pyqtSlot, QTimer, QEvent
+from PyQt4.QtCore import Qt, QEvent
+from PyQt4.QtGui import QApplication, QColor, QWidget
+from PyQt4 import uic
+from .main_window import PyDMMainWindow
 import re
 
-#If the user has PSS and pyca installed, use psp, which is faster.
+#If the user has PSP and pyca installed, use psp, which is faster.
 #Otherwise, use PyEPICS, which is slower, but more commonly used.
 try:
   from .psp_plugin import PSPPlugin
   EPICSPlugin = PSPPlugin
 except ImportError:
   from .pyepics_plugin import PyEPICSPlugin
-  EPICSPlugin = PyEPICSPlugin
-  
+  EPICSPlugin = PyEPICSPlugin  
 from .fake_plugin import FakePlugin
 from .archiver_plugin import ArchiverPlugin
-from .pydm_ui import Ui_MainWindow
-from PyQt4 import uic
-
-class PyDMMainWindow(QMainWindow):
-  def __init__(self, parent=None):
-    super(PyDMMainWindow, self).__init__(parent)
-    self.app = QApplication.instance()
-    self.ui = Ui_MainWindow()
-    self.ui.setupUi(self)
-    self._display_widget = None
-    self.ui.homeButton.clicked.connect(self.home)
-    self.home_file = None
-    self.back_stack = []
-    self.forward_stack = []
-    self.ui.backButton.clicked.connect(self.back)
-    self.ui.forwardButton.clicked.connect(self.forward)
-    self.ui.goButton.clicked.connect(self.go_button_pressed)
-    self.ui.actionEdit_in_Designer.triggered.connect(self.edit_in_designer)
-    self.ui.actionReload_Display.triggered.connect(self.reload_display)
-    self.ui.actionIncrease_Font_Size.triggered.connect(self.increase_font_size)
-    self.ui.actionDecrease_Font_Size.triggered.connect(self.decrease_font_size)
-    self.designer_path = None
-    if environ.get('QTHOME') == None:
-      self.ui.actionEdit_in_Designer.setEnabled(False)
-    else:
-      qt_path = environ.get('QTHOME')
-      if platform.system() == 'Darwin':
-        #On OS X we have to launch designer in this ugly way if we want it to get access to environment variables.  Ugh.
-        self.designer_path = path.join(qt_path, 'Designer.app/Contents/MacOS/Designer')
-      else:
-        #This assumes some non-OS X unix.  No windows support right now.
-        self.designer_path = path.join(qt_path, 'bin/designer')
-    
-  def set_display_widget(self, new_widget):
-    if new_widget == self._display_widget:
-      return
-    self.clear_display_widget()
-    self._display_widget = new_widget
-    self.ui.verticalLayout.addWidget(self._display_widget)
-    self.setWindowTitle(self._display_widget.windowTitle() + " - PyDM")
-    QTimer.singleShot(0, self.resizeToMinimum)
-    
-  def clear_display_widget(self):
-    if self._display_widget != None:
-      self.ui.verticalLayout.removeWidget(self._display_widget)
-      self.app.close_widget_connections(self._display_widget)
-      self._display_widget.deleteLater()
-      self._display_widget = None
   
-  def open_file(self, ui_file):
-    widget = self.app.open_file(ui_file)
-    self.set_display_widget(widget)
-    if (len(self.back_stack) == 0) or (self.current_file() != ui_file):
-      self.back_stack.append(ui_file)
-    self.ui.forwardButton.setEnabled(len(self.forward_stack) > 0)
-    self.ui.backButton.setEnabled(len(self.back_stack) > 1)
-    if self.home_file is None:
-      self.home_file = ui_file
-  
-  def go_button_pressed(self):
-    filename = str(self.ui.panelSearchLineEdit.text())
-    if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-      self.app.new_window(filename)
-    else:
-      self.go(filename)
-  
-  #Note: in go(), back(), and forward(), always do history stack manipulation *before* opening the file.
-  #That way, the navigation button enable/disable state will work correctly.  This is stupid, and will be fixed eventually.
-  def go(self, ui_file):
-    self.forward_stack = []
-    self.open_file(ui_file)
-    
-  def back(self):
-    if len(self.back_stack) > 1:
-      if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-        self.app.new_window(self.back_stack[-2])
-      else:
-        self.forward_stack.append(self.back_stack.pop())
-        self.open_file(self.back_stack[-1])
-  
-  def forward(self):
-    if len(self.forward_stack) > 0:
-      if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-        self.app.new_window(self.forward_stack[-1])
-      else:
-        self.open_file(self.forward_stack.pop())
-  
-  def home(self):
-    if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-      self.app.new_window(self.home_file)
-    else:
-      self.go(self.home_file)
-  
-  def current_file(self):
-    if len(self.back_stack) == 0:
-      raise IndexError("The display manager does not have a display loaded.")
-    return self.back_stack[-1]
-      
-  @pyqtSlot(bool)
-  def edit_in_designer(self, checked):
-    if not self.designer_path:
-      return
-    filename, extension = path.splitext(self.current_file())
-    if extension == '.ui':
-      process = subprocess.Popen('{0} "{1}"'.format(self.designer_path, self.current_file()), shell=True)
-      self.statusBar().showMessage("Launching '{0}' in Qt Designer...".format(self.current_file()), 5000)
-    else:
-      self.statusBar().showMessage("{0} is a Python file, and cannot be edited in Qt Designer.".format(self.current_file()), 5000)
-  
-  @pyqtSlot(bool)
-  def reload_display(self, checked):
-    self.statusBar().showMessage("Reloading '{0}'...".format(self.current_file()), 5000)
-    self.go(self.current_file())
-  
-  @pyqtSlot(bool)
-  def increase_font_size(self, checked):
-    current_font = QApplication.instance().font()
-    current_font.setPointSizeF(current_font.pointSizeF() * 1.1)
-    QApplication.instance().setFont(current_font)
-    QTimer.singleShot(0, self.resizeToMinimum)
-  
-  @pyqtSlot(bool)
-  def decrease_font_size(self, checked):
-    current_font = QApplication.instance().font()
-    current_font.setPointSizeF(current_font.pointSizeF() / 1.1)
-    QApplication.instance().setFont(current_font)
-    QTimer.singleShot(0, self.resizeToMinimum)
-  
-  def resizeToMinimum(self):
-    self.resize(self.minimumSizeHint())
-  
-  def closeEvent(self, event):
-    self.clear_display_widget()
-    
 class PyDMApplication(QApplication):
   plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
   
@@ -175,15 +40,13 @@ class PyDMApplication(QApplication):
   #HACK. To be replaced with some stylesheet stuff eventually.
   connection_status_color_map = {
     False: QColor(255, 255, 255),
-    True: QColor(0, 0, 0,)
+    True: QColor(0, 0, 0)
   }
   
   def __init__(self, command_line_args):
     super(PyDMApplication, self).__init__(command_line_args)
-    #Add the path to the widgets module, so that qt knows where to find custom widgets.  This seems like a really awful way to do this.
-    
-    self.windows = []
-    self.sources = {}
+    self.directory_stack = ['']
+    self.windows = {}
     #Open a window if one was provided.
     if len(command_line_args) > 1:
       ui_file = command_line_args[1]
@@ -223,12 +86,15 @@ class PyDMApplication(QApplication):
     """make_window instantiates a new PyDMMainWindow, adds it to the
     application's list of windows, and opens ui_file in the window."""
     main_window = PyDMMainWindow()
-    self.windows.append(main_window)
     main_window.open_file(ui_file)
     main_window.show()
+    self.windows[main_window] = path.dirname(ui_file)
     #If we are launching a new window, we don't want it to sit right on top of an existing window.
     if len(self.windows) > 1:
       main_window.move(main_window.x() + 10, main_window.y() + 10)
+
+  def close_window(self, window):
+    del self.windows[window]
 
   def load_ui_file(self, uifile):
     return uic.loadUi(uifile)
@@ -243,6 +109,7 @@ class PyDMApplication(QApplication):
     return module.intelclass()
 
   def open_file(self, ui_file):
+    self.directory_stack.append(path.dirname(ui_file))
     (filename, extension) = path.splitext(ui_file)
     if extension == '.ui':
       widget = self.load_ui_file(ui_file)
@@ -250,27 +117,18 @@ class PyDMApplication(QApplication):
       widget = self.load_py_file(ui_file)
     else:
       raise Exception("invalid file type: {}".format(extension))
-    self.sources[widget] = path.dirname(ui_file)
-    self.establish_widget_connections(widget)
+    #self.establish_widget_connections(widget)
+    self.directory_stack.pop()
     return widget
 
-  def get_source_dir(self, widget):
-    dirname = None
-    while dirname is None:
-      try:
-        dirname = self.sources[widget]
-      except:
-        widget = widget.parentWidget()
-      if not widget:
-        return ""
-    return dirname
-
   def get_path(self, ui_file, widget):
-    dirname = self.get_source_dir(widget)
+    dirname = self.directory_stack[-1]
     full_path = path.join(dirname, str(ui_file))
     return full_path
 
   def open_relative(self, ui_file, widget):
+    """open_relative opens a ui file with a relative path.  This is
+    really only used by embedded displays."""
     full_path = self.get_path(ui_file, widget)
     return self.open_file(full_path)
 
