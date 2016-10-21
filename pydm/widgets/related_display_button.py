@@ -35,7 +35,6 @@ class PyDMRelatedDisplayButton(QPushButton):
   def open_display(self, target=EXISTING_WINDOW):
     if self.displayFilename == None:
       return
-    print("Button wants to open " + self.displayFilename)
     if target == self.EXISTING_WINDOW:
       self.window().go(self.displayFilename)
     if target == self.NEW_WINDOW:
