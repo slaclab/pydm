@@ -38,16 +38,6 @@ class Connection(PyDMConnection):
       
   def send_connection_state(self, pvname=None, conn=None, *args, **kws):
     self.connection_state_signal.emit(conn)
-  
-  '''
-  @pyqtSlot(str)
-  def put_value(self, new_val):
-    self.pv.put(str(new_val))
-  
-  @pyqtSlot(np.ndarray)
-  def put_value(self, new_waveform_val):
-    self.pv.put(new_waveform_val)
-  '''
 
   @pyqtSlot(str)
   @pyqtSlot(np.ndarray)
