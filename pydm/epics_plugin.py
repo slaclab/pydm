@@ -38,15 +38,15 @@ class Connection(PyDMConnection):
       
   def send_connection_state(self, pvname=None, conn=None, *args, **kws):
     self.connection_state_signal.emit(conn)
-  
+
   @pyqtSlot(str)
-  def put_value(self, new_val):
-    self.pv.put(str(new_val))
-  
   @pyqtSlot(np.ndarray)
-  def put_value(self, new_waveform_val):
-    self.pv.put(new_waveform_val)
-    
+  def put_value(self, new_val):
+    if isinstance(new_val, np.ndarray):
+      self.pv.put(new_val)
+    elif isinstance(new_val, str):
+      self.pv.put(str(new_val))
+
   def add_listener(self, channel):
     super(Connection, self).add_listener(channel)
     #If we are adding a listener to an already existing PV, we need to
