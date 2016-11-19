@@ -1,6 +1,6 @@
 from ..PyQt.QtGui import QWidget, QApplication, QColor, QPainter, QBrush, QPen
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, Qt
-from channel import PyDMChannel
+from .channel import PyDMChannel
 
 class PyDMIndicator(QWidget):
   #Tell Designer what signals are available.

@@ -29,6 +29,6 @@ class PyDMShellCommand(QPushButton):
       args = shlex.split(self._command)
       self.process = subprocess.Popen(args)
     else:
-      print "Command already active."
+      print("Command already active.")
 
   command = pyqtProperty(str, getCommand, setCommand, resetCommand)

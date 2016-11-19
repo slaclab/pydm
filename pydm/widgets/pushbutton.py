@@ -3,7 +3,7 @@ import logging
 from os import path
 
 
-from channel import PyDMChannel
+from .channel import PyDMChannel
 from ..PyQt.QtGui import QPushButton
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 

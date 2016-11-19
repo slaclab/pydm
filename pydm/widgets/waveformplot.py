@@ -2,9 +2,9 @@ from ..PyQt.QtGui import QLabel, QApplication, QColor
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 from pyqtgraph import PlotWidget
 from pyqtgraph import PlotCurveItem
-from baseplot import BasePlot
 import numpy as np
-from channel import PyDMChannel
+from .baseplot import BasePlot
+from .channel import PyDMChannel
 
 class PyDMWaveformPlot(BasePlot):
   def __init__(self, init_x_channel=None, init_y_channel=None, parent=None, background='default'):

@@ -3,9 +3,9 @@ from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 from pyqtgraph import ImageView
 from pyqtgraph import ImageItem
 from pyqtgraph import ColorMap
-from colormaps import cmaps
 import numpy as np
-from channel import PyDMChannel
+from .channel import PyDMChannel
+from .colormaps import cmaps
 
 class PyDMImageView(ImageView):
   color_maps = cmaps  

@@ -2,10 +2,10 @@ from ..PyQt.QtGui import QLabel, QApplication, QColor
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer
 from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
 from pyqtgraph import PlotCurveItem
-from baseplot import BasePlot
 import numpy as np
 import time
-from channel import PyDMChannel
+from .baseplot import BasePlot
+from .channel import PyDMChannel
 
 class PyDMTimePlot(BasePlot):
   SynchronousMode = 1

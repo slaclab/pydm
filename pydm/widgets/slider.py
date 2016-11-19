@@ -1,6 +1,6 @@
 from ..PyQt.QtGui import QLineEdit, QApplication, QColor, QPalette, QSlider
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
-from channel import PyDMChannel
+from .channel import PyDMChannel
 
 class PyDMSlider(QSlider):
   __pyqtSignals__ = ("send_value_signal(str)",
