@@ -4,8 +4,8 @@ Module that defines useful testing classes for PyDM unit tests.
 import unittest
 import Queue
 from pydm.application import PyDMApplication
-from PyQt4.QtCore import QEventLoop, QTimer, QObject, pyqtSignal, pyqtSlot
-from PyQt4.QtGui import QWidget
+from pydm.PyQt.QtCore import QEventLoop, QTimer, QObject, pyqtSignal, pyqtSlot
+from pydm.PyQt.QtGui import QWidget
 
 class PyDMTest(unittest.TestCase):
     """

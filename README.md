@@ -18,4 +18,4 @@ There isn't any documentation yet, hopefully looking at the examples can get you
 
 #Widget Designer Plugins
 pydm widgets are written in Python, and are loaded into Qt Designer via the PyQt Designer Plugin.
-If you want to use the pydm widgets in Qt Designer, add the pydm/widgets/ directory to your PYQTDESIGNERPATH environment variable.  Eventually, this will happen automatically in some kind of setup script.
+If you want to use the pydm widgets in Qt Designer, add the pydm directory (which holds designer_plugin.py) to your PYQTDESIGNERPATH environment variable.  Eventually, this will happen automatically in some kind of setup script.

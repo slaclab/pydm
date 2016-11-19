@@ -4,8 +4,8 @@ These widgets do not have draw routines or analogues in designer, they simply
 send and recieve signals and store values in their fields.
 """
 import numpy as np
-from PyQt4.QtGui import QWidget
-from PyQt4.QtCore import pyqtSignal, pyqtSlot
+from pydm.PyQt.QtGui import QWidget
+from pydm.PyQt.QtCore import pyqtSignal, pyqtSlot
 from pydm.widgets.channel import PyDMChannel as Channel
 
 class BasicValueWidget(QWidget):

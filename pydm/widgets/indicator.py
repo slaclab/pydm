@@ -1,5 +1,5 @@
-from PyQt4.QtGui import QWidget, QApplication, QColor, QPainter, QBrush, QPen
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, Qt
+from ..PyQt.QtGui import QWidget, QApplication, QColor, QPainter, QBrush, QPen
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, Qt
 from channel import PyDMChannel
 
 class PyDMIndicator(QWidget):

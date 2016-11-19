@@ -1,5 +1,5 @@
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtCore import pyqtSlot, pyqtProperty, QString
+from ..PyQt.QtGui import QPushButton
+from ..PyQt.QtCore import pyqtSlot, pyqtProperty
 import shlex, subprocess
 
 class PyDMShellCommand(QPushButton):
@@ -9,7 +9,7 @@ class PyDMShellCommand(QPushButton):
     self.process = None
 
   def getCommand(self):
-    return QString.fromAscii(self._command)
+    return str(self._command)
 
   def setCommand(self, value):
     if self._command != value:
@@ -31,4 +31,4 @@ class PyDMShellCommand(QPushButton):
     else:
       print "Command already active."
 
-  command = pyqtProperty("QString", getCommand, setCommand, resetCommand)
+  command = pyqtProperty(str, getCommand, setCommand, resetCommand)

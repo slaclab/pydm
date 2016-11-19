@@ -1,5 +1,5 @@
-from PyQt4.QtGui import QCheckBox, QApplication, QColor, QPalette
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
+from ..PyQt.QtGui import QCheckBox, QApplication, QColor, QPalette
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
 from channel import PyDMChannel
 
 class PyDMCheckbox(QCheckBox):

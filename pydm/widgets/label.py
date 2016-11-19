@@ -1,5 +1,5 @@
-from PyQt4.QtGui import QLabel, QApplication, QColor, QPalette
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
+from ..PyQt.QtGui import QLabel, QApplication, QColor, QPalette
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
 from channel import PyDMChannel
 class PyDMLabel(QLabel):
   #Tell Designer what signals are available.

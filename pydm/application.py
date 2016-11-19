@@ -9,11 +9,11 @@ import imp
 import sys
 import signal
 import subprocess
-from PyQt4.QtCore import Qt, QEvent
-from PyQt4.QtGui import QApplication, QColor, QWidget
-from PyQt4 import uic
-from .main_window import PyDMMainWindow
 import re
+from .PyQt.QtCore import Qt, QEvent
+from .PyQt.QtGui import QApplication, QColor, QWidget
+from .PyQt import uic
+from .main_window import PyDMMainWindow
 
 #If the user has PSP and pyca installed, use psp, which is faster.
 #Otherwise, use PyEPICS, which is slower, but more commonly used.

@@ -1,5 +1,5 @@
-from PyQt4.QtGui import QLabel, QApplication, QColor
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
+from ..PyQt.QtGui import QLabel, QApplication, QColor
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 from pyqtgraph import PlotWidget
 from pyqtgraph import PlotCurveItem
 from baseplot import BasePlot

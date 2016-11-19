@@ -1,6 +1,6 @@
 from functools import partial
-from PyQt4.QtGui import QLineEdit, QApplication, QColor, QPalette, QMenu
-from PyQt4.QtCore import Qt,pyqtSignal,pyqtSlot,pyqtProperty
+from ..PyQt.QtGui import QLineEdit, QApplication, QColor, QPalette, QMenu
+from ..PyQt.QtCore import Qt,pyqtSignal,pyqtSlot,pyqtProperty
 from channel import PyDMChannel
 from pydm import utilities
 class PyDMLineEdit(QLineEdit):

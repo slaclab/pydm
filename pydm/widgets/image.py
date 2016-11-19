@@ -1,5 +1,5 @@
-from PyQt4.QtGui import QLabel, QApplication, QColor, QActionGroup
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
+from ..PyQt.QtGui import QLabel, QApplication, QColor, QActionGroup
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 from pyqtgraph import ImageView
 from pyqtgraph import ImageItem
 from pyqtgraph import ColorMap

@@ -1,5 +1,5 @@
-from PyQt4.QtGui import QTableWidget, QTableWidgetItem, QApplication, QColor, QPalette
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt
+from ..PyQt.QtGui import QTableWidget, QTableWidgetItem, QApplication, QColor, QPalette
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt
 from channel import PyDMChannel
 import numpy as np
 

@@ -6,7 +6,7 @@ from pydm.local_plugin import LocalPlugin
 import time
 import math
 import numpy as np
-from PyQt4.QtCore import QObject, pyqtSignal
+from pydm.PyQt.QtCore import QObject, pyqtSignal
 
 """
 Missing Tests:

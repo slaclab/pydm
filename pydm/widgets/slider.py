@@ -1,5 +1,5 @@
-from PyQt4.QtGui import QLineEdit, QApplication, QColor, QPalette, QSlider
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
+from ..PyQt.QtGui import QLineEdit, QApplication, QColor, QPalette, QSlider
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
 from channel import PyDMChannel
 
 class PyDMSlider(QSlider):
