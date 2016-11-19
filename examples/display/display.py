@@ -1,7 +1,7 @@
 #!/usr/local/lcls/package/python/current/bin/python
 
 import sys, os
-from PyQt4 import QtCore, QtGui
+from pydm.PyQt import QtCore, QtGui
 from display_ui import Ui_MainWindow
 from pydm import PyDMApplication
 

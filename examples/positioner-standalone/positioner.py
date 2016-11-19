@@ -1,8 +1,8 @@
 import sys, time
 from pydm import PyDMApplication
 from positioner_ui import Ui_MainWindow
-from PyQt4.QtGui import QMainWindow
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, QString
+from pydm.PyQt.QtGui import QMainWindow
+from pydm.PyQt.QtCore import pyqtSlot, pyqtSignal, QString
 import epics
 import cams
 

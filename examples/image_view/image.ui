@@ -36,7 +36,7 @@
   <customwidget>
    <class>PyDMImageView</class>
    <extends>QWidget</extends>
-   <header>image</header>
+   <header>pydm.widgets.image</header>
   </customwidget>
  </customwidgets>
  <resources/>

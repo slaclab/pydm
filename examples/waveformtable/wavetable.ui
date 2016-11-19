@@ -34,7 +34,7 @@
   <customwidget>
    <class>PyDMWaveformTable</class>
    <extends>QTableWidget</extends>
-   <header>waveformtable</header>
+   <header>pydm.widgets.waveformtable</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -6,30 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>424</width>
-    <height>324</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Waveform PV Plot</string>
+   <string>Form</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="PyDMWaveformPlot" name="pydmWaveformPlot">
-     <property name="minimumSize">
-      <size>
-       <width>400</width>
-       <height>300</height>
-      </size>
-     </property>
+    <widget class="PyDMShellCommand" name="PyDMShellCommand">
      <property name="toolTip">
       <string/>
      </property>
      <property name="whatsThis">
-      <string>Plots a waveform.</string>
+      <string/>
      </property>
-     <property name="yChannel">
-      <string>ca://BPMS:LI24:801:REDW</string>
+     <property name="text">
+      <string>Shell Command</string>
+     </property>
+     <property name="command">
+      <string>echo &quot;Hello World!&quot;</string>
      </property>
     </widget>
    </item>
@@ -37,9 +34,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PyDMWaveformPlot</class>
-   <extends>QGraphicsView</extends>
-   <header>pydm.widgets.waveformplot</header>
+   <class>PyDMShellCommand</class>
+   <extends>QPushButton</extends>
+   <header>pydm.widgets.shell_command</header>
   </customwidget>
  </customwidgets>
  <resources/>
