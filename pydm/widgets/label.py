@@ -111,7 +111,7 @@ class PyDMLabel(QLabel):
       if self.format_string:
         self.setText(self.format_string.format(new_value))
         return
-    if self.enum_strings != None:
+    if self.enum_strings is not None and isinstance(new_value, int):
       self.setText(self.enum_strings[new_value])
       return
     self.setText(str(new_value))
