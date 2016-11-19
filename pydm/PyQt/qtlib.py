@@ -3,7 +3,7 @@ import os, sys
 QT_LIB = os.getenv("PYDM_QT_LIB")
 
 if QT_LIB is None:
-    lib_order = ['PyQt5', 'PyQt4']
+    lib_order = ['PyQt4', 'PyQt5']
     for lib in lib_order:
         if lib in sys.modules:
             QT_LIB = lib
