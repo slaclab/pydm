@@ -228,7 +228,7 @@ class Connection(PyDMConnection):
         """
         if self.epics_type == "DBF_ENUM":
             if self.enums is None:
-                self.enums = tuple(self.pv.get_enum_set())
+                self.enums = tuple(b.decode(encoding='ascii') for b in self.pv.get_enum_set())
             self.enum_strings_signal.emit(self.enums)
 
     @pyqtSlot(int)

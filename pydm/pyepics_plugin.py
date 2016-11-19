@@ -15,6 +15,7 @@ class Connection(PyDMConnection):
     if write_access != None:
       self.write_access_signal.emit(write_access)
     if enum_strs != None:
+      enum_strs = tuple(b.decode(encoding='ascii') for b in enum_strs)
       self.enum_strings_signal.emit(enum_strs)
     if units != None and len(units) > 0:
       self.unit_signal.emit(units)
