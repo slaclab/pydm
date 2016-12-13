@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QLabel, QApplication, QColor, QPalette
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, QByteArray
 from .channel import PyDMChannel
 class PyDMLabel(QLabel):
   #Tell Designer what signals are available.
@@ -94,7 +94,7 @@ class PyDMLabel(QLabel):
     invalid_alarm_state.addTransition(self.major_alarm_signal, major_alarm_state)
     
     #Add a cool fade animation to a state transition.
-    self.color_fade = QPropertyAnimation(self, "color", self)
+    self.color_fade = QPropertyAnimation(self, QByteArray(b'color'), self)
     self.color_fade.setDuration(175)
     self.state_machine.addDefaultAnimation(self.color_fade)
     
