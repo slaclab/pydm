@@ -92,6 +92,8 @@ class PyDMImageView(ImageView):
     self.redrawImage()
   
   @pyqtSlot(int)
+  @pyqtSlot(float)
+  @pyqtSlot(str)
   def receiveImageWidth(self, new_width):
     self.image_width = int(new_width)
     if self._needs_reshape:

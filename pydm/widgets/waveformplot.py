@@ -7,7 +7,7 @@ from .baseplot import BasePlot
 from .channel import PyDMChannel
 
 class PyDMWaveformPlot(BasePlot):
-  def __init__(self, init_x_channel=None, init_y_channel=None, parent=None, background='default'):
+  def __init__(self, parent=None, init_x_channel=None, init_y_channel=None, background='default'):
     super(PyDMWaveformPlot, self).__init__(parent, background)
     self._ychannel = init_x_channel
     self._xchannel = init_y_channel

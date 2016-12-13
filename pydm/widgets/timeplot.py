@@ -10,7 +10,7 @@ from .channel import PyDMChannel
 class PyDMTimePlot(BasePlot):
   SynchronousMode = 1
   AsynchronousMode = 2
-  def __init__(self, init_y_channel=None, parent=None, background='default'):
+  def __init__(self, parent=None, init_y_channel=None, background='default'):
     self._bottom_axis = TimeAxisItem('bottom')
     self._left_axis = AxisItem('left')
     super(PyDMTimePlot, self).__init__(parent=parent, background=background, axisItems={'bottom': self._bottom_axis, 'left': self._left_axis})
@@ -52,6 +52,7 @@ class PyDMTimePlot(BasePlot):
   
   @pyqtSlot(float)
   @pyqtSlot(int)
+  @pyqtSlot(str)
   def receiveNewValue(self, new_value):
     if self._update_mode == PyDMTimePlot.SynchronousMode:
       self.data_buffer = np.roll(self.data_buffer,-1)

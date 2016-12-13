@@ -14,7 +14,7 @@ class PyDMSlider(QSlider):
   #Emitted when the user changes the value.
   send_value_signal = pyqtSignal(str)
   
-  def __init__(self, channel=None, parent=None):
+  def __init__(self, parent=None, channel=None):
     super(PyDMSlider, self).__init__(parent)
     self._channel = channel
     self.valueChanged.connect(self.sendValue)
@@ -68,6 +68,8 @@ class PyDMSlider(QSlider):
   
   #set slider to new position
   #if the slider is not in focus, dont set slider to new position
+  @pyqtSlot(float)
+  @pyqtSlot(int)
   @pyqtSlot(str)
   def receiveValue(self, new_val):
     if not self.hasFocus():
