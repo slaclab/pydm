@@ -72,3 +72,8 @@ class PyDMPlugin(object):
             self.connections[address].remove_listener()
         if self.connections[address].listener_count < 1:
             del self.connections[address]
+            
+    def remove_all_connections(self):
+      for (address, connection) in self.connections.iteritems():
+        connection.close()
+        del connection
