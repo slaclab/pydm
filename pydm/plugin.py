@@ -1,79 +1,153 @@
-from numpy import ndarray
-from .PyQt.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
+import numpy as np
+from .PyQt.QtCore import pyqtSlot, pyqtSignal, QObject, Qt, QByteArray
+import os
+import capnp
+import time
+capnp.remove_import_hook()
+ipc_protocol = capnp.load(os.path.join(os.path.dirname(__file__),'ipc_protocol.capnp'))
 
 class PyDMConnection(QObject):
-    new_value_signal =        pyqtSignal([float],[int],[str])
-    new_waveform_signal =     pyqtSignal(ndarray)
-    connection_state_signal = pyqtSignal(bool)
-    new_severity_signal =     pyqtSignal(int)
-    write_access_signal =     pyqtSignal(bool)
-    enum_strings_signal =     pyqtSignal(tuple)
-    unit_signal =             pyqtSignal(str)
-    prec_signal =             pyqtSignal(int)
-
-    def __init__(self, channel, address, parent=None):
+    """PyDMConnection represents a connection to a plugin data channel."""
+    protocol = None
+    data_message_signal =     pyqtSignal(object)
+    severity_map = {0: "noAlarm",
+                    1: "minor",
+                    2: "major",
+                    3: "invalid",
+                    4: "disconnected"}
+    
+    def __init__(self, channel_name, parent=None):
+        self.channel_name = str(channel_name)
+        self.address = self.get_address(channel_name)
         super(PyDMConnection, self).__init__(parent)
         self.listener_count = 0
   
-    def add_listener(self, channel):
+    def get_address(self, channel):
+        return str(channel.split(self.protocol)[1])
+  
+    def add_listener(self):
         self.listener_count = self.listener_count + 1
-        if channel.connection_slot is not None:
-          self.connection_state_signal.connect(channel.connection_slot, Qt.QueuedConnection)
-        if channel.value_slot is not None:
-            self.new_value_signal[int].connect(channel.value_slot, Qt.QueuedConnection)
-            self.new_value_signal[float].connect(channel.value_slot, Qt.QueuedConnection)
-            self.new_value_signal[str].connect(channel.value_slot, Qt.QueuedConnection)
-
-        if channel.waveform_slot is not None:
-            self.new_waveform_signal.connect(channel.waveform_slot, Qt.QueuedConnection)
-    
-        if channel.severity_slot is not None:
-          self.new_severity_signal.connect(channel.severity_slot, Qt.QueuedConnection)
-
-        if channel.write_access_slot is not None:
-          self.write_access_signal.connect(channel.write_access_slot, Qt.QueuedConnection)
-
-        if channel.enum_strings_slot is not None:
-          self.enum_strings_signal.connect(channel.enum_strings_slot, Qt.QueuedConnection)
-
-        if channel.unit_slot is not None:
-          self.unit_signal.connect(channel.unit_slot, Qt.QueuedConnection)
-
-        if channel.prec_slot is not None:
-          self.prec_signal.connect(channel.prec_slot, Qt.QueuedConnection)
-      
+        
     def remove_listener(self):
         self.listener_count = self.listener_count - 1
         if self.listener_count < 1:
             self.close()
   
+    def new_value_message(self, val, timestamp=None):
+        msg = ipc_protocol.ServerMessage.new_message()
+        msg.channelName = self.channel_name
+        val_msg = msg.init('value')
+        if isinstance(val, int):
+            val_msg.value.int = val
+        elif isinstance(val, float):
+            val_msg.value.double = val
+        elif isinstance(val, str):
+            val_msg.value.string = val
+        elif isinstance(val, np.ndarray):
+            if val.dtype == np.float64:
+                val_msg.value.init('floatWaveform', len(val))
+                for i, v in enumerate(val):
+                    val_msg.value.floatWaveform[i] = float(v)
+            elif val.dtype == np.int64:
+                val_msg.value.init('intWaveform', len(val))
+                for i, v in enumerate(val):
+                    val_msg.value.floatWaveform[i] = int(v)
+            else:
+                raise Exception("Unhandled dtype for waveform: {}".format(val.dtype))
+        else:
+            raise Exception("Unhandled val type: {}".format(type(val)))  
+        if timestamp is None:
+            timestamp = time.time()
+        msg.timestamp = timestamp
+        return msg
+    
+    def connection_state_message(self, state, timestamp=None):
+        msg = ipc_protocol.ServerMessage.new_message()
+        msg.channelName = self.channel_name
+        msg.connectionState = state
+        if timestamp is None:
+            timestamp = time.time()
+        msg.timestamp = timestamp
+        return msg
+        
+    def severity_message(self, severity, timestamp=None):
+        msg = ipc_protocol.ServerMessage.new_message()
+        msg.channelName = self.channel_name
+        msg.severity = self.severity_map[severity]
+        msg.timestamp = timestamp
+        return msg
+    
+    def write_access_message(self, write_access, timestamp=None):
+        msg = ipc_protocol.ServerMessage.new_message()
+        msg.channelName = self.channel_name
+        msg.writeAccess = write_access
+        if timestamp is None:
+            timestamp = time.time()
+        msg.timestamp = timestamp
+        return msg
+    
+    def enum_strings_message(self, enum_strings, timestamp=None):
+        msg = ipc_protocol.ServerMessage.new_message()
+        msg.channelName = self.channel_name
+        msg.init('enumStrings', len(enum_strings))
+        for i, v in enumerate(enum_strings):
+          msg.enumStrings[i] = v
+        #msg.enumStrings = enum_strings
+        msg.timestamp = timestamp
+        return msg
+    
+    def unit_message(self, unit, timestamp=None):
+        msg = ipc_protocol.ServerMessage.new_message()
+        msg.channelName = self.channel_name
+        msg.unit = unit
+        msg.timestamp = timestamp
+        return msg
+    
+    def precision_message(self, prec, timestamp=None):
+        msg = ipc_protocol.ServerMessage.new_message()
+        msg.channelName = self.channel_name
+        msg.precision = prec
+        msg.timestamp = timestamp
+        return msg
+        
     def close(self):
         pass
+    
+    def put_value(self, value):
+        raise NotImplementedError("Put Value not implemented.")
 
-class PyDMPlugin(object):
+class PyDMPlugin(QObject):
     protocol = None
     connection_class = PyDMConnection
-    def __init__(self):
-        self.connections = {}
-  
-    def get_address(self, channel):
-        return str(channel.address.split(self.protocol)[1])
+    data_message_signal = pyqtSignal(object)
     
-    def add_connection(self, channel):  
-        address = self.get_address(channel)
-        if address in self.connections:
-            self.connections[address].add_listener(channel)
+    def __init__(self, parent=None):
+        super(PyDMPlugin, self).__init__(parent)
+        self.connections = {}
+
+    def add_connection(self, channel):
+        if channel in self.connections:
+            self.connections[channel].add_listener()
         else:
-            self.connections[address] = self.connection_class(channel, address)
-  
+            conn = self.connection_class(channel, parent=self)
+            self.connections[channel] = conn
+            conn.data_message_signal.connect(self.send_data_message)
+            
     def remove_connection(self, channel):
-        address = self.get_address(channel)
-        if address in self.connections:
-            self.connections[address].remove_listener()
-        if self.connections[address].listener_count < 1:
-            del self.connections[address]
+        if channel in self.connections:
+            self.connections[channel].remove_listener()
+        if self.connections[channel].listener_count < 1:
+            del self.connections[channel]
             
     def remove_all_connections(self):
-      for (address, connection) in self.connections.iteritems():
+      for (channel, connection) in self.connections.iteritems():
         connection.close()
         del connection
+    
+    def put_value_for_channel(self, channel, value):
+        conn = self.connections[channel]
+        conn.put_value(value)
+    
+    @pyqtSlot(object)
+    def send_data_message(self, msg):
+        self.data_message_signal.emit(msg)

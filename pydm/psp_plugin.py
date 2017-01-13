@@ -111,35 +111,35 @@ def setup_pv(pvname, con_cb=None, mon_cb=None, signal=None, mon_cb_once=False):
 
 
 class Connection(PyDMConnection):
+    protocol = "ca://"
     """
     Class that manages channel access connections using pyca through psp.
     See :class:`PyDMConnection` class.
     """
-    def __init__(self, channel, pv, parent=None):
+    def __init__(self, channel_name, parent=None):
         """
         Instantiate Pv object and set up the channel access connections.
 
-        :param channel: :class:`PyDMChannel` object as the first listener.
-        :type channel:  :class:`PyDMChannel`
-        :param pv: Name of the pv to connect to.
-        :type pv:  str
-        :param parent: PyQt widget that this widget is inside of.
-        :type parent:  QWidget
+        :param channel_name: Name of the pv to connect to (ca://PV_NAME_HERE).
+        :type channel_name:  str
+        :param parent: PyQt object that owns this connection.
+        :type parent:  QObject
         """
-        super(Connection,self).__init__(channel, pv, parent)
-
+        super(Connection,self).__init__(channel_name, parent)
+        pv = self.address
         self.python_type = None
         self.pv = setup_pv(pv, self.connected_cb, self.monitor_cb)
         self.enums = None
+        self.rwacc = None
 
         # No pyca support for units, so we'll take from .EGU if it exists.
-        self.units_pv = setup_pv(pv + ".EGU", signal=self.unit_signal)
+        self.units_pv = setup_pv(pv + ".EGU", mon_cb=self.send_units)
 
         # Ditto for precision
-        self.prec_pv = setup_pv(pv + ".PREC", signal=self.prec_signal)
+        self.prec_pv = setup_pv(pv + ".PREC", mon_cb=self.send_prec)
 
         # Sevr is just broken in pyca, .state() always returns 2...
-        self.sevr_pv = setup_pv(pv + ".SEVR", signal=self.new_severity_signal)
+        self.sevr_pv = setup_pv(pv + ".SEVR", mon_cb=self.send_sevr)
 
         # Auxilliary info to help with throttling
         self.scan_pv = setup_pv(pv + ".SCAN", mon_cb=self.scan_pv_cb,
@@ -147,7 +147,7 @@ class Connection(PyDMConnection):
         self.throttle = QTimer(self)
         self.throttle.timeout.connect(self.throttle_cb)
 
-        self.add_listener(channel)
+        self.add_listener()
 
     def connected_cb(self, isconnected):
         """
@@ -184,6 +184,28 @@ class Connection(PyDMConnection):
         """
         self.send_new_value(self.pv.get())
 
+    def timestamp(self):
+        try:
+            secs, nanos = self.pv.timestamp()
+        except KeyError:
+            return None
+        return float(secs + nanos/1.0e9)
+
+    def send_units(self, e=None):
+        if e is None:
+            unit_val = self.units_pv.value
+            self.data_message_signal.emit(self.unit_message(unit_val, self.timestamp()))
+    
+    def send_prec(self, e=None):
+        if e is None:
+            prec_val = self.prec_pv.value
+            self.data_message_signal.emit(self.precision_message(prec_val, self.timestamp()))
+    
+    def send_sevr(self, e=None):
+        if e is None:
+            sevr_val = self.sevr_pv.value
+            self.data_message_signal.emit(self.severity_message(prec_val, self.timestamp()))
+
     def send_new_value(self, value=None):
         """
         Send a value to every channel listening for our Pv.
@@ -201,16 +223,16 @@ class Connection(PyDMConnection):
         if rwacc is not None:
             # Two bit binary number, 11 = read and write, 01 = read-only
             # presumably this could be other numbers, but in practice it is
-            # either 3 for read and write or 1 for just read
-            if rwacc == 3:
-                self.write_access_signal.emit(True)
-            else:
-                self.write_access_signal.emit(False)
+            # either 3 for read and write or 1 for just read.
+            # Only send the write access state if it has changed, don't send it every time the PV updates.
+            if rwacc != self.rwacc:
+                self.rwacc = rwacc
+                self.data_message_signal.emit(self.write_access_message(rwacc==3, self.timestamp()))
 
         if self.count > 1:
-            self.new_waveform_signal.emit(value)
+            self.data_message_signal.emit(self.new_value_message(value, self.timestamp()))
         else:
-            self.new_value_signal[self.python_type].emit(self.python_type(value))
+            self.data_message_signal.emit(self.new_value_message(self.python_type(value), self.timestamp()))
 
     def send_connection_state(self, conn=None):
         """
@@ -219,8 +241,8 @@ class Connection(PyDMConnection):
         :param conn: True if we are connected, False if we are disconnected.
         :type conn:  bool
         """
-        self.connection_state_signal.emit(conn)
-
+        self.data_message_signal.emit(self.connection_state_message(conn, self.timestamp()))
+        
     def update_enums(self):
         """
         Send an update on our enum strings to every listener, if this is an
@@ -229,7 +251,7 @@ class Connection(PyDMConnection):
         if self.epics_type == "DBF_ENUM":
             if self.enums is None:
                 self.enums = tuple(b.decode(encoding='ascii') for b in self.pv.get_enum_set())
-            self.enum_strings_signal.emit(self.enums)
+            self.data_message_signal.emit(self.enum_strings_message(self.enums, self.timestamp()))
 
     @pyqtSlot(int)
     @pyqtSlot(float)
@@ -299,30 +321,30 @@ class Connection(PyDMConnection):
             if not self.pv.ismonitored:
                 self.pv.monitor()
 
-    def add_listener(self, channel):
+    def add_listener(self):
         """
         Connect a channel's signals and slots with this object's signals and slots.
 
         :param channel: The channel to connect.
         :type channel:  :class:`PyDMChannel`
         """
-        super(Connection, self).add_listener(channel)
+        super(Connection, self).add_listener()
         #If we are adding a listener to an already existing PV, we need to
         #manually send the signals indicating that the PV is connected, what the latest value is, etc.
         if self.pv.isconnected and self.pv.isinitialized:
             self.send_connection_state(conn=True)
             self.monitor_cb()
             self.update_enums()
-        try:
-            channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
-            channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
-            channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
-        except:
-            pass
-        try:
-            channel.waveform_signal.connect(self.put_value, Qt.QueuedConnection)
-        except:
-            pass
+        #try:
+        #    channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
+        #    channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
+        #    channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
+        #except:
+        #    pass
+        #try:
+        #    channel.waveform_signal.connect(self.put_value, Qt.QueuedConnection)
+        #except:
+        #    pass
 
     def close(self):
         """

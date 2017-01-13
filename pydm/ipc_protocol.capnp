@@ -1,12 +1,12 @@
 @0xb4020e7ba1433510;
 
-struct Message {
+struct ClientMessage {
   union {
-    data @0 :NewDataMessage;
+    initialize @0 :InitializeConnectionMessage;
     channelRequest @1 :Text;
     channelDisconnect @2 :Text;
     newWindowRequest @3 :NewWindowRequestMessage;
-    initialize @4 :InitializeConnectionMessage;
+    putRequest @4 :PutRequestMessage;
   }
 }
 
@@ -14,20 +14,26 @@ struct InitializeConnectionMessage {
   clientPid @0 :Int32;
 }
 
-struct NewDataMessage {
+struct NewWindowRequestMessage {
+  filename @0 :Text;
+}
+
+struct PutRequestMessage {
   channelName @0 :Text;
-  value :union {
-    string @1 :Text;
-    int @2 :Int32;
-    float @3 :Float32;
-    double @4 :Float64;
-    char @5 :Data;
-    intWaveform @6 :List(Int32);
-    floatWaveform @7 :List(Float32);
-    doubleWaveform @8 :List(Float64);
-    charWaveform @9 :List(Data);
+  value @1 :ValueMessage;
+}
+
+struct ServerMessage {
+  channelName @0 :Text;
+  union {
+    value @1 :ValueMessage;
+    connectionState @2 :Bool;
+    severity @3 :AlarmSeverity;
+    writeAccess @4 :Bool;
+    enumStrings @5 :List(Text);
+    unit @6 :Text;
+    precision @7 :Int8;
   }
-  severity @10 :AlarmSeverity;
   enum AlarmSeverity {
     noAlarm @0;
     minor @1;
@@ -35,19 +41,18 @@ struct NewDataMessage {
     invalid @3;
     disconnected @4;
   }
-  timestamp @11 :Int32;
-  units @12 :Text;
+  timestamp @8 :Float64;
 }
 
-struct ChannelRequestMessage {
-  channelName @0 :Text;
+struct ValueMessage {
+  value :union {
+    string @0 :Text;
+    int @1 :Int64;
+    float @2 :Float32;
+    double @3 :Float64;
+    char @4 :Data;
+    intWaveform @5 :List(Int64);
+    floatWaveform @6 :List(Float64);
+    charWaveform @7 :List(Data);
+  }
 }
-
-struct ChannelDisconnectMessage {
-  channelName @0 :Text;
-}
-
-struct NewWindowRequestMessage {
-  filename @0 :Text;
-}
-
