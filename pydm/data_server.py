@@ -198,58 +198,85 @@ class DataClientConnection(QLocalSocket):
     self.pid = None
     self.channels = set()
     self.buffer = QByteArray()
+    self.max_buffer_size = 100000000 #100 MB limit on the message buffer.
+    self.inc_message_size = 0
     self.stream = QDataStream(self)
     self.stream.setVersion(QDataStream.Qt_4_8)
-    self.readyRead.connect(self.process_incoming_socket_data)
+    self.readyRead.connect(self.read_from_socket)
     self.error.connect(self.handle_socket_error)
     
   @pyqtSlot()
-  def process_incoming_socket_data(self):
-    while self.bytesAvailable() > 0:
-      self.stream >> self.buffer
-      message = ipc_protocol.ClientMessage.from_bytes(str(self.buffer))
-      which = message.which()
-      if which == "initialize":
-        if self.pid is not None:
-          print("Initialize message sent, but client is already initialized.")
-          continue
-        self.pid = message.initialize.clientPid
-        #print("Local socket established to client with pid={}".format(self.pid))
-      elif which == "channelRequest":
-        chan = message.channelRequest
-        #print("Channel requested from client {pid}: {channel}".format(pid=self.pid, channel=chan))
-        self.channelConnectRequested.emit(chan)
-      elif which == "channelDisconnect":
-        chan = message.channelDisconnect
-        #print("Channel disconnect requested from client {pid}: {channel}".format(pid=self.pid, channel=chan))
-        if chan in self.channels:
-          self.channelDisconnectRequested.emit(chan)
-          self.channels.remove(chan)
-      elif which == "newWindowRequest":
-        self.newWindowRequested.emit(message.newWindowRequest.filename)
-      elif which == "putRequest":
-        chan = message.putRequest.channelName
-        #print("Put requested from client {pid} for channel {channel}".format(pid=self.pid, channel=chan))
-        valtype = message.putRequest.value.value.which()
-        val = None
-        if valtype == "string":
-          val = message.putRequest.value.value.string
-        elif valtype == "int":
-          val = message.putRequest.value.value.int
-        elif valtype == "float":
-          val = message.putRequest.value.value.float
-        elif valtype == "double":
-          val = message.putRequest.value.value.double
-        elif valtype == "intWaveform":
-          val = np.array(message.putRequest.value.value.intWaveform)
-        elif valtype == "floatWaveform":
-          val = np.array(message.putRequest.value.value.floatWaveform)
-        else:
-          print("Client sent unhandled value type for put request: {}".format(valtype))
-        self.channelPutRequested.emit(chan, val)
+  def read_from_socket(self):
+    if self.inc_message_size == 0:
+      self.inc_message_size = self.stream.readInt32()
+    
+    while (self.bytesAvailable() > 0) and (self.buffer.size() < self.inc_message_size):
+      self.buffer.append(self.read(1))
+      if self.buffer.size() > self.max_buffer_size:
+        raise Exception("Data message size exceeded buffer capacity.")
+        self.buffer.clear()
+        break
+    
+    if self.buffer.size() < self.inc_message_size:
+      #We are out of bytes at this point, but still don't have the complete message.
+      #Keep what we have in the buffer, return, and wait for more bytes to come in.
+      return
+    
+    #If we get this far, we have a complete message.
+    try:
+      msg = ipc_protocol.ClientMessage.from_bytes(str(self.buffer))
+      self.process_message(msg)
+    except capnp.lib.capnp.KjException:
+      print("Failed to decode message of length {}".format(self.buffer.size()))
+    self.inc_message_size = 0
+    self.buffer.clear()
+    #If there are still bytes available, we'll read more from the socket.
+    if self.bytesAvailable() > 0:
+      self.read_from_socket()    
+  
+  def process_message(self, message):
+    which = message.which()
+    if which == "initialize":
+      if self.pid is not None:
+        print("Initialize message sent, but client is already initialized.")
+        return
+      self.pid = message.initialize.clientPid
+      #print("Local socket established to client with pid={}".format(self.pid))
+    elif which == "channelRequest":
+      chan = message.channelRequest
+      #print("Channel requested from client {pid}: {channel}".format(pid=self.pid, channel=chan))
+      self.channelConnectRequested.emit(chan)
+    elif which == "channelDisconnect":
+      chan = message.channelDisconnect
+      #print("Channel disconnect requested from client {pid}: {channel}".format(pid=self.pid, channel=chan))
+      if chan in self.channels:
+        self.channelDisconnectRequested.emit(chan)
+        self.channels.remove(chan)
+    elif which == "newWindowRequest":
+      self.newWindowRequested.emit(message.newWindowRequest.filename)
+    elif which == "putRequest":
+      chan = message.putRequest.channelName
+      #print("Put requested from client {pid} for channel {channel}".format(pid=self.pid, channel=chan))
+      valtype = message.putRequest.value.value.which()
+      val = None
+      if valtype == "string":
+        val = message.putRequest.value.value.string
+      elif valtype == "int":
+        val = message.putRequest.value.value.int
+      elif valtype == "float":
+        val = message.putRequest.value.value.float
+      elif valtype == "double":
+        val = message.putRequest.value.value.double
+      elif valtype == "intWaveform":
+        val = np.array(message.putRequest.value.value.intWaveform)
+      elif valtype == "floatWaveform":
+        val = np.array(message.putRequest.value.value.floatWaveform)
       else:
-        print("Client sent unknown message type.")
-      self.buffer.clear()
+        print("Client sent unhandled value type for put request: {}".format(valtype))
+      self.channelPutRequested.emit(chan, val)
+    else:
+      print("Client sent unknown message type: {}".format(which))
+    self.buffer.clear()
   
   def send_bytes(self, b):
     #This only works with QByteArray.
