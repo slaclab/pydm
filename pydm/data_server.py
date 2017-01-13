@@ -157,7 +157,6 @@ class PyDMDataServer(QCoreApplication):
   
   @pyqtSlot(str)
   def disconnect_from_channel(self, channel):
-    print("Data server is disconnecting from {}".format(channel))
     channel = str(channel)
     client = self.sender()
     plugin = self.plugin_for_channel(channel)
@@ -215,14 +214,14 @@ class DataClientConnection(QLocalSocket):
           print("Initialize message sent, but client is already initialized.")
           continue
         self.pid = message.initialize.clientPid
-        print("Local socket established to client with pid={}".format(self.pid))
+        #print("Local socket established to client with pid={}".format(self.pid))
       elif which == "channelRequest":
         chan = message.channelRequest
-        print("Channel requested from client {pid}: {channel}".format(pid=self.pid, channel=chan))
+        #print("Channel requested from client {pid}: {channel}".format(pid=self.pid, channel=chan))
         self.channelConnectRequested.emit(chan)
       elif which == "channelDisconnect":
         chan = message.channelDisconnect
-        print("Channel disconnect requested from client {pid}: {channel}".format(pid=self.pid, channel=chan))
+        #print("Channel disconnect requested from client {pid}: {channel}".format(pid=self.pid, channel=chan))
         if chan in self.channels:
           self.channelDisconnectRequested.emit(chan)
           self.channels.remove(chan)
@@ -230,7 +229,7 @@ class DataClientConnection(QLocalSocket):
         self.newWindowRequested.emit(message.newWindowRequest.filename)
       elif which == "putRequest":
         chan = message.putRequest.channelName
-        print("Put requested from client {pid} for channel {channel}".format(pid=self.pid, channel=chan))
+        #print("Put requested from client {pid} for channel {channel}".format(pid=self.pid, channel=chan))
         valtype = message.putRequest.value.value.which()
         val = None
         if valtype == "string":

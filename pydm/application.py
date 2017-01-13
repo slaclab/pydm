@@ -78,7 +78,7 @@ class PyDMApplication(QApplication):
   
   @pyqtSlot()
   def socket_connected(self):
-    print("Client successfully connected to server!")
+    #print("Client successfully connected to server!")
     msg = ipc_protocol.ClientMessage.new_message()
     init_msg = msg.init('initialize')
     init_msg.clientPid = self.applicationPid()
@@ -285,7 +285,7 @@ class PyDMApplication(QApplication):
       self.data_emitters[address] = e
     emitter = self.data_emitters[address]
     emitter.add_listener(channel)
-    print("Sending channel request for: {}".format(address))
+    #print("Sending channel request for: {}".format(address))
     msg = ipc_protocol.ClientMessage.new_message()
     msg.channelRequest = address
     self.send_msg(msg)
@@ -308,7 +308,7 @@ class PyDMApplication(QApplication):
     emitter.remove_listener(channel)
     if emitter.listener_count < 1:
       del self.data_emitters[address]
-    print("Sending channel disconnect request for: {}".format(address))
+    #print("Sending channel disconnect request for: {}".format(address))
     msg = ipc_protocol.ClientMessage.new_message()
     msg.channelDisconnect = address
     self.send_msg(msg)
