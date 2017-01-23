@@ -40,25 +40,13 @@ class Connection(PyDMConnection):
   def put_value(self, new_val):
     self.pv.put(new_val)
     
-  def add_listener(self, channel):
+  def add_listener(self):
     super(Connection, self).add_listener()
     #If we are adding a listener to an already existing PV, we need to
     #manually send the signals indicating that the PV is connected, what the latest value is, etc.
     if epics.ca.isConnected(self.pv.chid):
       self.send_connection_state(conn=True)
       self.pv.run_callbacks()
-      
-    #try:
-    #  channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
-    #  channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
-    #  channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
-    #except:
-    #  pass
-      
-    #try:
-    #  channel.waveform_signal.connect(self.put_waveform, Qt.QueuedConnection)
-    #except:
-    #  pass
 
   def close(self):
     self.pv.disconnect()
