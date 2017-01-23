@@ -14,9 +14,9 @@ class DataClientConnection(QLocalSocket):
   
   def __init__(self, parent=None):
     super(DataClientConnection,self).__init__(parent)
-    #NOTE: Arbitrarily setting a read buffer size of 100 kB.  This is to protect us from something
+    #NOTE: Arbitrarily setting a read buffer size of 1000 kB.  This is to protect us from something
     #happening that ends up allocating a huge amount of memory.  When transmitting large waveforms, this might be too small.
-    self.setReadBufferSize(100000)
+    self.setReadBufferSize(1000000)
     self.pid = None
     self.channels = set()
     self.buffer = QByteArray()
