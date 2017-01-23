@@ -138,7 +138,10 @@ class PyDMApplication(QApplication):
       self.read_from_socket()  
       
   def process_message(self, msg):
-    emitter = self.data_emitters[msg.channelName]
+    try:
+      emitter = self.data_emitters[msg.channelName]
+    except KeyError:
+      return
     w = msg.which()
     #print("Recieved {} message for {} of size {}".format(w, msg.channelName, self.buffer.size()))
     which = msg.which()
