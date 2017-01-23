@@ -164,7 +164,19 @@ class PyDMApplication(QApplication):
     elif which == "connectionState":
       emitter.connection_state_signal.emit(msg.connectionState)
     elif which == "severity":
-      emitter.new_severity_signal.emit(self.severity_map[msg.severity])
+      #emitter.new_severity_signal.emit(self.severity_map[str(msg.severity)])
+      #NOTE: This doesn't use the severity_map we define at the top, because capnp enums can't be used as dictionary keys right now.
+      #If this gets fixed (looks like it is in the pycapnp dev branch but not released as of 1/23/2017), use that map!
+      if msg.severity == "noAlarm":
+        emitter.new_severity_signal.emit(0)
+      elif msg.severity == "minor":
+        emitter.new_severity_signal.emit(1)
+      elif msg.severity == "major":
+        emitter.new_severity_signal.emit(2)
+      elif msg.severity == "invalid":
+        emitter.new_severity_signal.emit(3)
+      elif msg.severity == "disconnected":
+        emitter.new_severity_signal.emit(4)
     elif which == "writeAccess":
       emitter.write_access_signal.emit(msg.writeAccess)
     elif which == "enumStrings":
