@@ -157,6 +157,8 @@ class PyDMApplication(QApplication):
         emitter.new_waveform_signal.emit(np.array(v.value.intWaveform))
       elif vtype == "floatWaveform":
         emitter.new_waveform_signal.emit(np.array(v.value.floatWaveform))
+      elif vtype == "charWaveform":
+        emitter.new_waveform_signal.emit(np.array(v.value.charWaveform, dtype=np.uint8))
       else:
         raise Exception("Server sent value message with unhandled value type: {}".format(vtype))
     elif which == "connectionState":

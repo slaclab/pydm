@@ -53,6 +53,6 @@ struct ValueMessage {
     char @4 :Data;
     intWaveform @5 :List(Int64);
     floatWaveform @6 :List(Float64);
-    charWaveform @7 :List(Data);
+    charWaveform @7 :List(UInt8);
   }
 }
