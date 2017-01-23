@@ -204,7 +204,7 @@ class Connection(PyDMConnection):
     def send_sevr(self, e=None):
         if e is None:
             sevr_val = self.sevr_pv.value
-            self.data_message_signal.emit(self.severity_message(prec_val, self.timestamp()))
+            self.data_message_signal.emit(self.severity_message(sevr_val, self.timestamp()))
 
     def send_new_value(self, value=None):
         """
