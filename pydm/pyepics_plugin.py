@@ -28,7 +28,7 @@ class Connection(PyDMConnection):
       elif ftype in (epics.dbr.CTRL_FLOAT, epics.dbr.FLOAT, epics.dbr.TIME_FLOAT, epics.dbr.CTRL_DOUBLE, epics.dbr.DOUBLE, epics.dbr.TIME_DOUBLE):
         self.data_message_signal.emit(self.new_value_message(float(value), timestamp))
       else:
-        self.data_message_signal.emit(self.new_value_message(char_value, str, timestamp))
+        self.data_message_signal.emit(self.new_value_message(char_value, timestamp))
     
   def send_connection_state(self, pvname=None, conn=None, *args, **kws):
     self.data_message_signal.emit(self.connection_state_message(conn))
