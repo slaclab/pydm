@@ -1,7 +1,7 @@
 import epics
 import numpy as np
 from .plugin import PyDMPlugin, PyDMConnection
-from .PyQt.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
+from ..PyQt.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
 
 class Connection(PyDMConnection):
   protocol = "ca://"

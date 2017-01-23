@@ -1,5 +1,5 @@
 from .plugin import PyDMPlugin, PyDMConnection
-from .PyQt.QtCore import QTimer, pyqtSignal, Qt
+from ..PyQt.QtCore import QTimer, pyqtSignal, Qt
 import random
 import time
 class Connection(PyDMConnection):
@@ -11,7 +11,7 @@ class Connection(PyDMConnection):
 		self.rand = 0
 		self.timer = QTimer(self)
 		self.timer.timeout.connect(self.send_new_value)
-		self.timer.start(1000)
+		self.timer.start(100)
 		self.send_connection_state(True)
 
 	def send_new_value(self):

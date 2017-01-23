@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import sys
 import argparse
-from pydm import PyDMDataServer, PyDMApplication
+from pydm.application import PyDMApplication
+from pydm.data_server import PyDMDataServer
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="Python Display Manager", epilog="All other arguments are forwarded to a QApplication instance.")

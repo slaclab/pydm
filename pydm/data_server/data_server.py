@@ -18,31 +18,31 @@ import sys
 import signal
 import subprocess
 import re
-from .PyQt.QtCore import Qt, QObject, QTimer, QCoreApplication, QDataStream, QByteArray, pyqtSlot, pyqtSignal
-from .PyQt.QtNetwork import QLocalServer, QLocalSocket
-from .widgets.channel import PyDMChannel
+from ..PyQt.QtCore import Qt, QObject, QTimer, QCoreApplication, QDataStream, QByteArray, pyqtSlot, pyqtSignal
+from ..PyQt.QtNetwork import QLocalServer, QLocalSocket
+from ..widgets.channel import PyDMChannel
 import capnp
 import binascii
 capnp.remove_import_hook()
-ipc_protocol = capnp.load(os.path.join(os.path.dirname(__file__),'ipc_protocol.capnp'))
+ipc_protocol = capnp.load(os.path.join(os.path.dirname(__file__),'../ipc_protocol.capnp'))
 #If the user has PSP and pyca installed, use psp, which is faster.
 #Otherwise, use PyEPICS, which is slower, but more commonly used.
 EPICS_LIB = os.getenv("PYDM_EPICS_LIB")
 if EPICS_LIB == "pyepics":
-  from .pyepics_plugin import PyEPICSPlugin
+  from ..data_plugins.pyepics_plugin import PyEPICSPlugin
   EPICSPlugin = PyEPICSPlugin
 elif EPICS_LIB == "pyca":
-  from .psp_plugin import PSPPlugin
+  from ..data_plugins.psp_plugin import PSPPlugin
   EPICSPlugin = PSPPlugin
 else:
   try:
-    from .psp_plugin import PSPPlugin
+    from ..data_plugins.psp_plugin import PSPPlugin
     EPICSPlugin = PSPPlugin
   except ImportError:
-    from .pyepics_plugin import PyEPICSPlugin
+    from ..data_plugins.pyepics_plugin import PyEPICSPlugin
     EPICSPlugin = PyEPICSPlugin  
-from .fake_plugin import FakePlugin
-from .archiver_plugin import ArchiverPlugin
+from ..data_plugins.fake_plugin import FakePlugin
+from ..data_plugins.archiver_plugin import ArchiverPlugin
 
 class PyDMDataServer(QCoreApplication):
   plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
@@ -91,7 +91,7 @@ class PyDMDataServer(QCoreApplication):
     conn.channels.clear()
     self.connections.remove(conn)
     if len(self.connections) < 1:
-      print("No remaining client connections, server is quitting in 1 second...")
+      print("No remaining client connections, server is quitting in 1 second.")
       QTimer.singleShot(1000, self.exit)
       #self.exit(0)
   
@@ -100,21 +100,13 @@ class PyDMDataServer(QCoreApplication):
       plugin.remove_all_connections()
     self.server.close()
     super(PyDMDataServer, self).exit(return_code)
-    
-  @pyqtSlot()
-  def handle_socket_error(self, err):
-    pass
-    
-  @pyqtSlot()
-  def read_channel_request(self):
-    pass
   
   @pyqtSlot(object)
   def send_data_message_to_clients(self, msg):
     b = QByteArray(msg.to_bytes())
     for client in self.clients_for_channel[msg.channelName]:
       client.send_bytes(b)
-  
+      
   @pyqtSlot(str, object)
   def put_value_for_channel(self, channel, val):
     channel = str(channel)

@@ -1,10 +1,10 @@
 import numpy as np
-from .PyQt.QtCore import pyqtSlot, pyqtSignal, QObject, Qt, QByteArray
+from ..PyQt.QtCore import pyqtSlot, pyqtSignal, QObject, Qt, QByteArray
 import os
 import capnp
 import time
 capnp.remove_import_hook()
-ipc_protocol = capnp.load(os.path.join(os.path.dirname(__file__),'ipc_protocol.capnp'))
+ipc_protocol = capnp.load(os.path.join(os.path.dirname(__file__),'../ipc_protocol.capnp'))
 
 class PyDMConnection(QObject):
     """PyDMConnection represents a connection to a plugin data channel."""
