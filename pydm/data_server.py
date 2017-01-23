@@ -27,12 +27,20 @@ capnp.remove_import_hook()
 ipc_protocol = capnp.load(os.path.join(os.path.dirname(__file__),'ipc_protocol.capnp'))
 #If the user has PSP and pyca installed, use psp, which is faster.
 #Otherwise, use PyEPICS, which is slower, but more commonly used.
-try:
+EPICS_LIB = os.getenv("PYDM_EPICS_LIB")
+if EPICS_LIB == "pyepics":
+  from .pyepics_plugin import PyEPICSPlugin
+  EPICSPlugin = PyEPICSPlugin
+elif EPICS_LIB == "pyca":
   from .psp_plugin import PSPPlugin
   EPICSPlugin = PSPPlugin
-except ImportError:
-  from .pyepics_plugin import PyEPICSPlugin
-  EPICSPlugin = PyEPICSPlugin  
+else:
+  try:
+    from .psp_plugin import PSPPlugin
+    EPICSPlugin = PSPPlugin
+  except ImportError:
+    from .pyepics_plugin import PyEPICSPlugin
+    EPICSPlugin = PyEPICSPlugin  
 from .fake_plugin import FakePlugin
 from .archiver_plugin import ArchiverPlugin
 
