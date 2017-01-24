@@ -11,17 +11,19 @@ import signal
 import subprocess
 import re
 import numpy as np
-from .PyQt.QtCore import Qt, QObject, QEvent, QByteArray, QDataStream, QIODevice, pyqtSlot, pyqtSignal
-from .PyQt.QtNetwork import QLocalSocket
-from .PyQt.QtGui import QApplication, QColor, QWidget
-from .PyQt import uic
+from ..PyQt.QtCore import Qt, QObject, QTimer, QThread, QEvent, QReadLocker, pyqtSlot, pyqtSignal
+from ..PyQt.QtGui import QApplication, QColor, QWidget
+from ..PyQt import uic
 from .main_window import PyDMMainWindow
-import capnp
-import binascii
-capnp.remove_import_hook()
-ipc_protocol = capnp.load(path.join(path.dirname(__file__),'ipc_protocol.capnp'))
+from .message_handler import ServerConnection
+
+class PyDMApplication(QApplication):
+  new_process = pyqtSignal(str)
+  connect_to_channel = pyqtSignal(str)
+  disconnect_from_channel = pyqtSignal(str)
+  put_to_channel = pyqtSignal(str, object)
+  disconnect_from_server = pyqtSignal()
   
-class PyDMApplication(QApplication):  
   severity_map = {"noAlarm": 0,
                   "minor": 1,
                   "major": 2,
@@ -44,10 +46,24 @@ class PyDMApplication(QApplication):
   
   def __init__(self, servername, ui_file=None, command_line_args=[]):
     super(PyDMApplication, self).__init__(command_line_args)
+    self.setQuitOnLastWindowClosed(False)
     self.directory_stack = ['']
     self.windows = {}
-    self.socket = QLocalSocket(self)
-    self.socket.setReadBufferSize(100000)
+    self.pydm_widgets = set()
+    self._connected = False
+    self.network_thread = QThread(self)
+    self.server_connection = ServerConnection(servername, self.applicationPid())
+    self.server_connection.server_connection_established.connect(self.make_connections)
+    self.new_process.connect(self.server_connection.new_pydm_process)
+    self.connect_to_channel.connect(self.server_connection.connect_to_data_channel)
+    self.disconnect_from_channel.connect(self.server_connection.disconnect_from_data_channel)
+    self.disconnect_from_server.connect(self.server_connection.disconnect)
+    self.aboutToQuit.connect(self.server_connection.disconnect)
+    self.server_connection.disconnected.connect(self.network_thread.quit)
+    self.lock = self.server_connection.lock
+    self.network_thread.started.connect(self.server_connection.start_connection)
+    self.network_thread.finished.connect(self.network_thread.deleteLater)
+    self.server_connection.moveToThread(self.network_thread)
     #Open a window if a file was provided.
     if ui_file is not None:
       self.make_window(ui_file)
@@ -55,141 +71,14 @@ class PyDMApplication(QApplication):
     else:
       self.had_file = False
     #Re-enable sigint (usually blocked by pyqt)
-    signal.signal(signal.SIGINT, signal.SIG_DFL)
-    self.data_emitters = {}
+    #signal.signal(signal.SIGINT, signal.SIG_DFL)
+    self.network_thread.start()
+    self.update_timer = QTimer(self)
+    self.update_timer.setInterval(17)
+    self.update_timer.timeout.connect(self.update_widgets)
     
-    self.stream = QDataStream(self.socket)
-    self.inc_message_size = 0
-    self.buffer = QByteArray()
-    self.max_buffer_size = 100000000 #100 Mb max buffer size, really big but probably not large enough to really screw anything up.
-    self.stream.setVersion(QDataStream.Qt_4_8)
-    self.socket.connected.connect(self.socket_connected)
-    self.socket.readyRead.connect(self.read_from_socket)
-    self.socket.error.connect(self.handle_socket_error)
-    self.socket.connectToServer(servername)
-  
   def is_connected(self):
-    return self.socket.state() == QLocalSocket.ConnectedState
-  
-  @pyqtSlot(object)
-  def send_msg(self, msg):
-    b = msg.to_bytes()
-    self.stream << QByteArray(b)
-  
-  @pyqtSlot()
-  def socket_connected(self):
-    #print("Client successfully connected to server!")
-    msg = ipc_protocol.ClientMessage.new_message()
-    init_msg = msg.init('initialize')
-    init_msg.clientPid = self.applicationPid()
-    self.send_msg(msg)
-    self.make_connections()
-  
-  @pyqtSlot(int)
-  def handle_socket_error(self, err):
-    if err == QLocalSocket.ConnectionRefusedError:
-      print("CLIENT ERROR: Socket connection refused.")
-    elif err == QLocalSocket.PeerClosedError:
-      print("CLIENT ERROR: Socket closed by host.")
-    elif err == QLocalSocket.ServerNotFoundError:
-      print("CLIENT ERROR: Server not found.")
-    elif err == QLocalSocket.SocketAccessError:
-      print("CLIENT ERROR: Client process doesn't have sufficient privileges.")
-    elif err == QLocalSocket.SocketResourceError:
-      print("CLIENT ERROR: System out of resources (Probably too many sockets open).")
-    elif err == QLocalSocket.SocketTimeoutError:
-      print("CLIENT ERROR: Socket operation timed out.")
-    elif err == QLocalSocket.DatagramTooLargeError:
-      print("CLIENT ERROR: Datagram too large.")
-    elif err == QLocalSocket.ConnectionError:
-      print("CLIENT ERROR: An error occured with the connection.")
-    elif err == QLocalSocket.UnsupportedSocketOperationError:
-      print("CLIENT ERROR: Socket operation not supported by operating system.")
-    elif err == QLocalSocket.UnknownSocketError:
-      print("CLIENT ERROR: An unknown socket error occured.")
-  
-  @pyqtSlot()
-  def read_from_socket(self):
-    if self.inc_message_size == 0:
-      self.inc_message_size = self.stream.readInt32()
-    
-    while (self.socket.bytesAvailable() > 0) and (self.buffer.size() < self.inc_message_size):
-      self.buffer.append(self.socket.read(1))
-      if self.buffer.size() > self.max_buffer_size:
-        raise Exception("Data message size exceeded buffer capacity.")
-        self.buffer.clear()
-        break
-    
-    if self.buffer.size() < self.inc_message_size:
-      #We are out of bytes at this point, but still don't have the complete message.
-      #Return and wait for more bytes to come in.
-      return
-    
-    #If we get this far, we have a complete message.
-    try:
-      msg = ipc_protocol.ServerMessage.from_bytes(str(self.buffer))
-      self.process_message(msg)
-    except capnp.lib.capnp.KjException:
-      print("Failed to decode message of length {}".format(self.buffer.size()))
-    self.inc_message_size = 0
-    self.buffer.clear()
-    #If there are still bytes available, we'll read more from the socket.
-    if self.socket.bytesAvailable() > 0:
-      self.read_from_socket()  
-      
-  def process_message(self, msg):
-    try:
-      emitter = self.data_emitters[msg.channelName]
-    except KeyError:
-      return
-    w = msg.which()
-    #print("Recieved {} message for {} of size {}".format(w, msg.channelName, self.buffer.size()))
-    which = msg.which()
-    if which == "value":
-      v = msg.value
-      vtype = v.value.which()
-      if vtype == "string":
-        emitter.new_value_signal[str].emit(v.value.string)
-      elif vtype == "int":
-        emitter.new_value_signal[int].emit(v.value.int)
-      elif vtype == "float":
-        emitter.new_value_signal[float].emit(v.value.float)
-      elif vtype == "double":
-        emitter.new_value_signal[float].emit(v.value.double)
-      elif vtype == "intWaveform":
-        emitter.new_waveform_signal.emit(np.array(v.value.intWaveform))
-      elif vtype == "floatWaveform":
-        emitter.new_waveform_signal.emit(np.array(v.value.floatWaveform))
-      elif vtype == "charWaveform":
-        emitter.new_waveform_signal.emit(np.array(v.value.charWaveform, dtype=np.uint8))
-      else:
-        raise Exception("Server sent value message with unhandled value type: {}".format(vtype))
-    elif which == "connectionState":
-      emitter.connection_state_signal.emit(msg.connectionState)
-    elif which == "severity":
-      #emitter.new_severity_signal.emit(self.severity_map[str(msg.severity)])
-      #NOTE: This doesn't use the severity_map we define at the top, because capnp enums can't be used as dictionary keys right now.
-      #If this gets fixed (looks like it is in the pycapnp dev branch but not released as of 1/23/2017), use that map!
-      if msg.severity == "noAlarm":
-        emitter.new_severity_signal.emit(0)
-      elif msg.severity == "minor":
-        emitter.new_severity_signal.emit(1)
-      elif msg.severity == "major":
-        emitter.new_severity_signal.emit(2)
-      elif msg.severity == "invalid":
-        emitter.new_severity_signal.emit(3)
-      elif msg.severity == "disconnected":
-        emitter.new_severity_signal.emit(4)
-    elif which == "writeAccess":
-      emitter.write_access_signal.emit(msg.writeAccess)
-    elif which == "enumStrings":
-      pass
-    elif which == "unit":
-      emitter.unit_signal.emit(msg.unit)
-    elif which == "precision":
-      emitter.prec_signal.emit(msg.precision)
-    else:
-      print("Server sent unknown message type: {}".format(which))
+    return self._connected
       
   def exec_(self):
       """
@@ -201,14 +90,18 @@ class PyDMApplication(QApplication):
         self.make_connections()
       return super(PyDMApplication,self).exec_()
 
-  def exit(self, return_code):
-    self.socket.flush()
-    self.socket.disconnectFromServer()
+  def exit(self, return_code=0):
+    print("Application quitting")
+    self.disconnect_from_server.emit()
+    self.network_thread.wait()
     super(PyDMApplication, self).exit(return_code)
 
+  @pyqtSlot()
   def make_connections(self):
+    self._connected = True
     for widget in self.topLevelWidgets():
       self.establish_widget_connections(widget)
+    self.update_timer.start()
   
   def new_window(self, ui_file):
     """new_window() gets called whenever a request to open a new window is made."""
@@ -231,13 +124,16 @@ class PyDMApplication(QApplication):
 
   def new_pydm_process(self, ui_file):
     print("Requesting to launch new display process for file {}".format(ui_file))
-    msg = ipc_protocol.ClientMessage.new_message()
-    win_msg = msg.init('newWindowRequest')
-    win_msg.filename = ui_file
-    self.send_msg(msg)
+    self.new_process.emit(str(ui_file))
     
   def close_window(self, window):
+    print("Closing window.")
     del self.windows[window]
+    if len(self.windows) < 1:
+      self.disconnect_from_server.emit()
+      self.network_thread.quit()
+      self.network_thread.wait()
+      self.quit()
 
   def load_ui_file(self, uifile):
     return uic.loadUi(uifile)
@@ -296,16 +192,7 @@ class PyDMApplication(QApplication):
     if channel is None:
       return
     address = str(channel.address)
-    if address not in self.data_emitters:
-      e = DataEmitter(address, parent=self)
-      e.put_value_signal.connect(self.send_msg)
-      self.data_emitters[address] = e
-    emitter = self.data_emitters[address]
-    emitter.add_listener(channel)
-    #print("Sending channel request for: {}".format(address))
-    msg = ipc_protocol.ClientMessage.new_message()
-    msg.channelRequest = address
-    self.send_msg(msg)
+    self.connect_to_channel.emit(address)
  
   def establish_widget_connections(self, widget):
     widgets = [widget]
@@ -316,19 +203,13 @@ class PyDMApplication(QApplication):
           self.connect_to_data_channel(channel)
         #Take this opportunity to install a filter that intercepts middle-mouse clicks, which we use to display a tooltip with the address of the widget's first channel.
         child_widget.installEventFilter(self)
+        self.pydm_widgets.add(child_widget)
         
   def disconnect_from_data_channel(self, channel): 
     if channel is None:
       return
     address = str(channel.address)
-    emitter = self.data_emitters[address]
-    emitter.remove_listener(channel)
-    if emitter.listener_count < 1:
-      del self.data_emitters[address]
-    #print("Sending channel disconnect request for: {}".format(address))
-    msg = ipc_protocol.ClientMessage.new_message()
-    msg.channelDisconnect = address
-    self.send_msg(msg)
+    self.disconnect_from_channel.emit(address)
     
   def close_widget_connections(self, widget):
     widgets = [widget]
@@ -337,6 +218,22 @@ class PyDMApplication(QApplication):
       if hasattr(child_widget, 'channels'):
         for channel in child_widget.channels():
           self.disconnect_from_data_channel(channel)
+        self.pydm_widgets.remove(child_widget)
+          
+  @pyqtSlot()
+  def update_widgets(self):
+    for child_widget in self.pydm_widgets:
+      for channel in child_widget.channels():
+        with QReadLocker(self.lock):
+          try:
+            cd = self.server_connection.data_for_channel[str(channel.address)]
+            child_widget.receiveValue(cd.value)
+            child_widget.alarmSeverityChanged(cd.severity)
+            child_widget.connectionStateChanged(cd.connection_state)
+          except KeyError:
+            pass
+          except AttributeError:
+            pass
 
 class DataEmitter(QObject):
   """DataEmitter emits signals whenever a data channel updates.
