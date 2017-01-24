@@ -51,6 +51,7 @@ class PyDMDataServer(QCoreApplication):
     self.child_processes = {}
     self.connections = []
     self.clients_for_channel = {}
+    self.standalone_mode = False
     #Re-enable sigint (usually blocked by pyqt)
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     #This regex is used to separate a protocol specifier from a channel address
@@ -61,11 +62,15 @@ class PyDMDataServer(QCoreApplication):
     if not self.server.listen(self.socket_name()):
       print("Local socket server could not start listening on socket named {}".format(self.socket_name()))
       print("Server error: {}".format(self.server.errorString()))
-    for (protocol, plugin) in self.plugins.iteritems():
+    for (protocol, plugin) in self.plugins.items():
       plugin.data_message_signal.connect(self.send_data_message_to_clients)
     #Open a child window if a filename was provided.
     if ui_file is not None:
       self.spawn_window(ui_file)
+    else:
+      #If no filename was provided we enter standalone mode, which just means the server won't close itself when it has no connected clients
+      print("Server started with name: {}".format(self.socket_name()))
+      self.standalone_mode = True
     #QTimer.singleShot(10000, self.test_spawn)
       
   def socket_name(self):
@@ -88,13 +93,13 @@ class PyDMDataServer(QCoreApplication):
       self.disconnect_from_channel(channel)
     conn.channels.clear()
     self.connections.remove(conn)
-    if len(self.connections) < 1:
+    if len(self.connections) < 1 and not self.standalone_mode:
       print("No remaining client connections, server is quitting in 1 second.")
       QTimer.singleShot(1000, self.exit)
       #self.exit(0)
   
   def exit(self, return_code=0):
-    for name, plugin in self.plugins.iteritems():
+    for name, plugin in self.plugins.items():
       plugin.remove_all_connections()
     self.server.close()
     super(PyDMDataServer, self).exit(return_code)

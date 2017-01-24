@@ -31,7 +31,7 @@ class DataClientConnection(QLocalSocket):
   def read_from_socket(self):
     if self.inc_message_size == 0:
       self.inc_message_size = self.stream.readInt32()
-    
+      self.buffer.reserve(self.inc_message_size)
     while (self.bytesAvailable() > 0) and (self.buffer.size() < self.inc_message_size):
       self.buffer.append(self.read(1))
       if self.buffer.size() > self.max_buffer_size:
@@ -46,7 +46,7 @@ class DataClientConnection(QLocalSocket):
     
     #If we get this far, we have a complete message.
     try:
-      msg = ipc_protocol.ClientMessage.from_bytes(str(self.buffer))
+      msg = ipc_protocol.ClientMessage.from_bytes(bytes(self.buffer))
       self.process_message(msg)
     except capnp.lib.capnp.KjException:
       print("Failed to decode message of length {}".format(self.buffer.size()))
@@ -109,7 +109,7 @@ class DataClientConnection(QLocalSocket):
     #print("Sending {0} message for channel {1} of size {2} to client.".format(msg.which(), msg.channelName, len(b)))
     self.stream << QByteArray(b)
     
-  @pyqtSlot(int)
+  @pyqtSlot(QLocalSocket.LocalSocketError)
   def handle_socket_error(self, err):
     if err == QLocalSocket.ConnectionRefusedError:
       print("SERVER ERROR: Socket connection refused.")

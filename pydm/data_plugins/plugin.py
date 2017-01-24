@@ -144,7 +144,7 @@ class PyDMPlugin(QObject):
             del self.connections[channel]
             
     def remove_all_connections(self):
-      for (channel, connection) in self.connections.iteritems():
+      for (channel, connection) in self.connections.items():
         connection.close()
         del connection
     
