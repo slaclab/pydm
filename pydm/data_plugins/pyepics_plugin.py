@@ -8,7 +8,6 @@ class Connection(PyDMConnection):
   def __init__(self, channel_name, parent=None):
     super(Connection, self).__init__(channel_name, parent)
     self.pv = epics.PV(self.address, callback=self.send_new_value, connection_callback=self.send_connection_state, form='ctrl', auto_monitor=True)
-    self.add_listener()
   
   def send_new_value(self, pvname=None, value=None, char_value=None, units=None, enum_strs=None, severity=None, count=None, write_access=None, ftype=None, timestamp=None, *args, **kws):
     if severity != None:

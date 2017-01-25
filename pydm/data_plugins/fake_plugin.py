@@ -8,18 +8,25 @@ class Connection(PyDMConnection):
 		super(Connection, self).__init__(channel_name, parent)
 		self.add_listener()
 		self.value = self.address
-		self.rand = 0
 		self.timer = QTimer(self)
 		self.timer.timeout.connect(self.send_new_value)
-		self.timer.start(100)
-		self.send_connection_state(True)
-
+		self.timer.start(10000)
+		
 	def send_new_value(self):
-		val_to_send = "{0}-{1}".format(self.value, random.randint(0,9))
+		#val_to_send = "{0}-{1}".format(self.value, random.randint(0,9))
+		val_to_send = "{0}".format(random.randint(0,9))
 		self.data_message_signal.emit(self.new_value_message(str(val_to_send), time.time()))
 		
 	def send_connection_state(self, conn):
 		self.data_message_signal.emit(self.connection_state_message(conn, time.time()))
+
+	def send_severity(self, sevr):
+		self.data_message_signal.emit(self.severity_message(sevr, time.time()))
+		
+	def add_listener(self):
+		self.send_connection_state(True)
+		self.send_severity(0)
+		super(Connection, self).add_listener()
 
 class FakePlugin(PyDMPlugin):
 	protocol = "fake://"

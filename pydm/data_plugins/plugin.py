@@ -130,12 +130,11 @@ class PyDMPlugin(QObject):
         self.connections = {}
 
     def add_connection(self, channel):
-        if channel in self.connections:
-            self.connections[channel].add_listener()
-        else:
-            conn = self.connection_class(channel, parent=self)
-            self.connections[channel] = conn
-            conn.data_message_signal.connect(self.send_data_message)
+        if channel not in self.connections:
+          conn = self.connection_class(channel, parent=self)
+          self.connections[channel] = conn
+          conn.data_message_signal.connect(self.send_data_message)
+        self.connections[channel].add_listener()
             
     def remove_connection(self, channel):
         if channel in self.connections:

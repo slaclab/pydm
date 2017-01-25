@@ -146,9 +146,7 @@ class Connection(PyDMConnection):
             mon_cb_once=True)
         self.throttle = QTimer(self)
         self.throttle.timeout.connect(self.throttle_cb)
-
-        self.add_listener()
-
+        
     def connected_cb(self, isconnected):
         """
         Callback to run whenever the connection state of our pv changes.

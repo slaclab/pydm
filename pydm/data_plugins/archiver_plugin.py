@@ -8,7 +8,6 @@ class Connection(PyDMConnection):
     protocol = "archiver://"
     def __init__(self, channel_name, parent=None):
         super(Connection, self).__init__(channel_name, parent)
-        self.add_listener()
         url_string = "http://lcls-archapp.slac.stanford.edu/retrieval/data/getData.json?{params}".format(params=self.address)
         r = requests.get(url_string) #blocking.  BAD!
         if r.status_code == 200 and r.headers['content-type'] == 'application/json':

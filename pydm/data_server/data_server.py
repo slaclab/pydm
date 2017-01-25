@@ -151,12 +151,12 @@ class PyDMDataServer(QCoreApplication):
     client = self.sender()
     plugin = self.plugin_for_channel(channel)
     if plugin:
-      plugin.add_connection(channel)
       if channel in self.clients_for_channel:
         self.clients_for_channel[channel].add(client)
       else:
         self.clients_for_channel[channel] = set([client])
       client.channels.add(channel)
+      plugin.add_connection(channel)
   
   @pyqtSlot(str)
   def disconnect_from_channel(self, channel):
