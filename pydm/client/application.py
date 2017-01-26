@@ -227,19 +227,20 @@ class PyDMApplication(QApplication):
         #It may be dangerous to do this without a lock, however, I have never seen any problems due to that.
         cd = self.server_connection.data_for_channel[str(channel.address)]
         if cd.needs_update:
-          if channel.value_slot:
-            channel.value_slot(cd.value)
-          if channel.connection_slot:
-            channel.connection_slot(cd.connection_state)
-          if channel.severity_slot:
-            channel.severity_slot(cd.severity)
-          if channel.write_access_slot:
-            channel.write_access_slot(cd.write_access)
-          if channel.unit_slot and cd.units is not None:
-            #channel.enum_strings_slot(cd.enum_strings)
-            channel.unit_slot(cd.units)
-          if channel.prec_slot:
-            channel.prec_slot(cd.precision)
+          with QReadLocker(self.lock):
+            if channel.value_slot and cd.value is not None:
+              channel.value_slot(cd.value)
+            if channel.connection_slot and cd.connection_state is not None:
+              channel.connection_slot(cd.connection_state)
+            if channel.severity_slot and cd.severity is not None:
+              channel.severity_slot(cd.severity)
+            if channel.write_access_slot and cd.write_access is not None:
+              channel.write_access_slot(cd.write_access)
+            if channel.unit_slot and cd.units is not None:
+              #channel.enum_strings_slot(cd.enum_strings)
+              channel.unit_slot(cd.units)
+            if channel.prec_slot and cd.precision is not None:
+              channel.prec_slot(cd.precision)
           with QWriteLocker(self.lock):
             cd.needs_update = False
           
