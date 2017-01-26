@@ -76,4 +76,4 @@ class PyDMWaveformTable(QTableWidget):
   waveformChannel = pyqtProperty(str, getWaveformChannel, setWaveformChannel, resetWaveformChannel)
   
   def channels(self):
-    return [PyDMChannel(address=self.waveformChannel, connection_slot=self.connectionStateChanged, waveform_slot=self.receiveWaveform, severity_slot=self.alarmSeverityChanged, value_signal=self.send_value_signal)]
+    return [PyDMChannel(address=self.waveformChannel, connection_slot=self.connectionStateChanged, value_slot=self.receiveWaveform, severity_slot=self.alarmSeverityChanged, value_signal=self.send_value_signal)]
