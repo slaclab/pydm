@@ -36,6 +36,7 @@ class PyDMLabel(QLabel):
     self.setTextFormat(Qt.PlainText)
     self.setTextInteractionFlags(Qt.NoTextInteraction)
     self.setup_state_machine()
+    self.value = None
     self._channels = None
     self._channel = init_channel
     self._prec = 0
@@ -106,6 +107,7 @@ class PyDMLabel(QLabel):
   @pyqtSlot(int)
   @pyqtSlot(str)
   def receiveValue(self, new_value):
+    self.value = new_value
     if isinstance(new_value, str):
       self.setText(new_value)
       return
@@ -145,7 +147,9 @@ class PyDMLabel(QLabel):
   
   @pyqtSlot(tuple)
   def enumStringsChanged(self, enum_strings):
-    self.enum_strings = enum_strings
+    if enum_strings != self.enum_strings:
+      self.enum_strings = enum_strings
+      self.receiveValue(self.value)
     
   #Define setter and getter for the "color" property, used by the state machine to change color based on alarm severity and connection.
   def getColor(self):
