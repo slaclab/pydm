@@ -46,16 +46,13 @@ class PyDMConnection(QObject):
         elif isinstance(val, np.ndarray):
             if val.dtype == np.float64:
                 val_msg.value.init('floatWaveform', len(val))
-                for i, v in enumerate(val):
-                    val_msg.value.floatWaveform[i] = float(v)
+                val_msg.value.floatWaveform = val.tolist()
             elif val.dtype == np.int64:
                 val_msg.value.init('intWaveform', len(val))
-                for i, v in enumerate(val):
-                    val_msg.value.floatWaveform[i] = int(v)
+                val_msg.value.intWaveform = val.tolist()
             elif val.dtype == np.uint8:
                 val_msg.value.init('charWaveform', len(val))
-                for i, v in enumerate(val):
-                    val_msg.value.charWaveform[i] = int(v)
+                val_msg.value.charWaveform = val.tolist()
             else:
                 raise Exception("Unhandled dtype for waveform: {}".format(val.dtype))
         else:
