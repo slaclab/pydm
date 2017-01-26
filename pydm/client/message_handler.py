@@ -173,7 +173,8 @@ class ServerConnection(QLocalSocket):
         cd.write_access = msg.writeAccess
         cd.needs_update = True
     elif which == "enumStrings":
-      pass
+      with QWriteLocker(self.lock):
+        cd.enum_strings = tuple(msg.enumStrings)
     elif which == "unit":
       with QWriteLocker(self.lock):
         cd.units = msg.unit
@@ -236,6 +237,7 @@ class ChannelData(object):
     self.write_access = False
     self.units = None
     self.precision = None
+    self.enum_strings = None
     self.listeners = 0
     self.needs_update = False
   

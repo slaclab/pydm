@@ -237,8 +237,9 @@ class PyDMApplication(QApplication):
             if channel.write_access_slot and cd.write_access is not None:
               channel.write_access_slot(cd.write_access)
             if channel.unit_slot and cd.units is not None:
-              #channel.enum_strings_slot(cd.enum_strings)
               channel.unit_slot(cd.units)
+            if channel.enum_strings_slot and cd.enum_strings is not None:
+              channel.enum_strings_slot(cd.enum_strings)
             if channel.prec_slot and cd.precision is not None:
               channel.prec_slot(cd.precision)
           with QWriteLocker(self.lock):

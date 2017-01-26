@@ -91,9 +91,7 @@ class PyDMConnection(QObject):
         msg = ipc_protocol.ServerMessage.new_message()
         msg.channelName = self.channel_name
         msg.init('enumStrings', len(enum_strings))
-        for i, v in enumerate(enum_strings):
-          msg.enumStrings[i] = v
-        #msg.enumStrings = enum_strings
+        msg.enumStrings = list(enum_strings)
         msg.timestamp = timestamp
         return msg
     
