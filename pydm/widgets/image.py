@@ -95,6 +95,8 @@ class PyDMImageView(ImageView):
   
   @pyqtSlot(int)
   def receiveImageWidth(self, new_width):
+    if new_width == None:
+      return
     self.image_width = int(new_width)
     if self._needs_reshape:
       self.image_waveform = self.image_waveform.reshape((int(self.image_width),-1), order='F')
