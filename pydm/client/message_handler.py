@@ -77,15 +77,12 @@ class ServerConnection(QLocalSocket):
     
     while (self.bytesAvailable() > 0) and (self.buffer.size() < self.inc_message_size):
       bytes_remaining = self.inc_message_size - self.buffer.size()
-      if self.bytesAvailable() >= bytes_remaining:
+      if self.bytesAvailable() >= bytes_remaining and (self.buffer.size() + bytes_remaining) < self.max_buffer_size:
         self.buffer.append(self.read(bytes_remaining))
-      else:
+      elif (self.buffer.size() + self.bytesAvailable()) < self.max_buffer_size:
         self.buffer.append(self.readAll())  
-      #self.buffer.append(self.read(1))
-      #if self.buffer.size() > self.max_buffer_size:
-      #  raise Exception("Data message size exceeded buffer capacity.")
-      #  self.buffer.clear()
-      #  break
+      else:
+        break
     
     if self.buffer.size() < self.inc_message_size:
       #We are out of bytes at this point, but still don't have the complete message.
@@ -106,7 +103,7 @@ class ServerConnection(QLocalSocket):
   
   def process_message(self, msg):
     try:
-      #May need a read lock here, supposedly fetching from a dict is thread safe in python though.
+      #Probably don't need a read lock here since this thread is the only one that writes to the structure.
       cd = self.data_for_channel[msg.channelName]
     except KeyError:
       return
@@ -119,56 +116,72 @@ class ServerConnection(QLocalSocket):
       if vtype == "string":
         with QWriteLocker(self.lock):
           cd.value = v.value.string
+          cd.needs_update = True
       elif vtype == "int":
         with QWriteLocker(self.lock):
           cd.value = v.value.int
+          cd.needs_update = True
       elif vtype == "float":
         with QWriteLocker(self.lock):
           cd.value = v.value.float
+          cd.needs_update = True
       elif vtype == "double":
         with QWriteLocker(self.lock):
           cd.value = v.value.double
+          cd.needs_update = True
       elif vtype == "intWaveform":
         with QWriteLocker(self.lock):
           cd.value = np.array(v.value.intWaveform)
+          cd.needs_update = True
       elif vtype == "floatWaveform":
         with QWriteLocker(self.lock):
           cd.value = np.array(v.value.floatWaveform)
+          cd.needs_update = True
       elif vtype == "charWaveform":
         with QWriteLocker(self.lock):
           cd.value = np.array(v.value.charWaveform, dtype=np.uint8)
+          cd.needs_update = True
       else:
         raise Exception("Server sent value message with unhandled value type: {}".format(vtype))
     elif which == "connectionState":
       with QWriteLocker(self.lock):
         cd.connection_state = msg.connectionState
+        cd.needs_update = True
     elif which == "severity":
       if msg.severity == "noAlarm":
         with QWriteLocker(self.lock):
           cd.severity = 0
+          cd.needs_update = True
       elif msg.severity == "minor":
         with QWriteLocker(self.lock):
           cd.severity = 1
+          cd.needs_update = True
       elif msg.severity == "major":
         with QWriteLocker(self.lock):
           cd.severity = 2
+          cd.needs_update = True
       elif msg.severity == "invalid":
         with QWriteLocker(self.lock):
           cd.severity = 3
+          cd.needs_update = True
       elif msg.severity == "disconnected":
         with QWriteLocker(self.lock):
           cd.severity = 4
+          cd.needs_update = True
     elif which == "writeAccess":
       with QWriteLocker(self.lock):
         cd.write_access = msg.writeAccess
+        cd.needs_update = True
     elif which == "enumStrings":
       pass
     elif which == "unit":
       with QWriteLocker(self.lock):
         cd.units = msg.unit
+        cd.needs_update = True
     elif which == "precision":
       with QWriteLocker(self.lock):
         cd.precision = msg.precision
+        cd.needs_update = True
     else:
       print("Server sent unknown message type: {}".format(which))
 
@@ -215,7 +228,14 @@ class ServerConnection(QLocalSocket):
     self.send_msg(msg)
 
 class ChannelData(object):
-  __slots__ = ('value', 'connection_state', 'severity', 'write_access', 'units', 'precision', 'enum_strings', 'listeners')
+  __slots__ = ('value', 'connection_state', 'severity', 'write_access', 'units', 'precision', 'enum_strings', 'listeners', 'needs_update')
   def __init__(self):
+    self.value = None
+    self.connection_state = False
+    self.severity = 4
+    self.write_access = False
+    self.units = None
+    self.precision = None
     self.listeners = 0
+    self.needs_update = False
   

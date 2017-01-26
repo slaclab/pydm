@@ -11,7 +11,7 @@ import signal
 import subprocess
 import re
 import numpy as np
-from ..PyQt.QtCore import Qt, QObject, QTimer, QThread, QEvent, QReadLocker, pyqtSlot, pyqtSignal
+from ..PyQt.QtCore import Qt, QObject, QTimer, QThread, QEvent, QReadLocker, QWriteLocker, pyqtSlot, pyqtSignal
 from ..PyQt.QtGui import QApplication, QColor, QWidget
 from ..PyQt import uic
 from .main_window import PyDMMainWindow
@@ -224,131 +224,22 @@ class PyDMApplication(QApplication):
   def update_widgets(self):
     for child_widget in self.pydm_widgets:
       for channel in child_widget.channels():
-        with QReadLocker(self.lock):
-          try:
-            cd = self.server_connection.data_for_channel[str(channel.address)]
-            child_widget.receiveValue(cd.value)
-            child_widget.alarmSeverityChanged(cd.severity)
-            child_widget.connectionStateChanged(cd.connection_state)
-          except KeyError:
-            pass
-          except AttributeError:
-            pass
-
-class DataEmitter(QObject):
-  """DataEmitter emits signals whenever a data channel updates.
-  Multiple PyDMChannels may be connected to the same DataEmitter.
-  The DataEmitter also recieves put value signals from PyDMChannels,
-  and generates an IPC message, and emits a signal with the message."""
-  #These signals get connected to PyDMChannels
-  new_value_signal =        pyqtSignal([float],[int],[str])
-  new_waveform_signal =     pyqtSignal(np.ndarray)
-  connection_state_signal = pyqtSignal(bool)
-  new_severity_signal =     pyqtSignal(int)
-  write_access_signal =     pyqtSignal(bool)
-  enum_strings_signal =     pyqtSignal(tuple)
-  unit_signal =             pyqtSignal(str)
-  prec_signal =             pyqtSignal(int)
-  
-  #This signal gets connected to the application
-  put_value_signal = pyqtSignal(object)
-  
-  def __init__(self, channel_name, parent=None):
-    super(DataEmitter, self).__init__(parent)
-    self.listener_count = 0
-    self.channel_name = channel_name
-    
-  def add_listener(self, channel):
-    self.listener_count += 1
-    #Hook this channel up to the appropriate data emitter
-    if channel.connection_slot is not None:
-      self.connection_state_signal.connect(channel.connection_slot)
-      
-    if channel.value_slot is not None:
-        self.new_value_signal[int].connect(channel.value_slot)
-        self.new_value_signal[float].connect(channel.value_slot)
-        self.new_value_signal[str].connect(channel.value_slot)
-
-    if channel.waveform_slot is not None:
-        self.new_waveform_signal.connect(channel.waveform_slot)
-
-    if channel.severity_slot is not None:
-      self.new_severity_signal.connect(channel.severity_slot)
-
-    if channel.write_access_slot is not None:
-      self.write_access_signal.connect(channel.write_access_slot)
-
-    if channel.enum_strings_slot is not None:
-      self.enum_strings_signal.connect(channel.enum_strings_slot)
-
-    if channel.unit_slot is not None:
-      self.unit_signal.connect(channel.unit_slot)
-
-    if channel.prec_slot is not None:
-      self.prec_signal.connect(channel.prec_slot)
-    
-    if channel.value_signal is not None:
-      channel.value_signal[str].connect(self.put_value)
-      channel.value_signal[int].connect(self.put_value)
-      channel.value_signal[float].connect(self.put_value)
-    if channel.waveform_signal is not None:
-      channel.waveform_signal.connect(self.put_value)
-      
-  @pyqtSlot(int)
-  @pyqtSlot(float)
-  @pyqtSlot(str)
-  @pyqtSlot(np.ndarray)
-  def put_value(self, val):
-    msg = ipc_protocol.ClientMessage.new_message()
-    put_msg = msg.init('putRequest')
-    put_msg.channelName = self.channel_name
-    val_msg = put_msg.init('value')
-    if isinstance(val, int):
-      val_msg.value.int = val
-    elif isinstance(val, float):
-      val_msg.value.double = val
-    elif isinstance(val, str):
-      val_msg.value.string = val
-    elif isinstance(val, np.ndarray):
-      w = None
-      if val.dtype == np.float64:
-        w = val_msg.value.init('floatWaveform', len(val))
-      elif val.dtype == np.int64:
-        w = val_msg.value.init('intWaveform', len(val))
-      if w:
-        for i, v in enumerate(list(val)):
-          w[i] = v
-      else:
-        raise Exception("Unhandled dtype for waveform put: {}".format(val.dtype))  
-    self.put_value_signal.emit(msg)
-      
-  def remove_listener(self, channel):
-    if self.listener_count < 1:
-      return
-    #Disconnect channel from the data emitter.  Maybe not really necessary to do this.
-    if channel.connection_slot is not None:
-      self.connection_state_signal.disconnect(channel.connection_slot)
-      
-    if channel.value_slot is not None:
-        self.new_value_signal[int].disconnect(channel.value_slot)
-        self.new_value_signal[float].disconnect(channel.value_slot)
-        self.new_value_signal[str].disconnect(channel.value_slot)
-
-    if channel.waveform_slot is not None:
-        self.new_waveform_signal.disconnect(channel.waveform_slot)
-
-    if channel.severity_slot is not None:
-      self.new_severity_signal.disconnect(channel.severity_slot)
-
-    if channel.write_access_slot is not None:
-      self.write_access_signal.disconnect(channel.write_access_slot)
-
-    if channel.enum_strings_slot is not None:
-      self.enum_strings_signal.disconnect(channel.enum_strings_slot)
-
-    if channel.unit_slot is not None:
-      self.unit_signal.disconnect(channel.unit_slot)
-
-    if channel.prec_slot is not None:
-      self.prec_signal.disconnect(channel.prec_slot)
-    self.listener_count -= 1
+        #It may be dangerous to do this without a lock, however, I have never seen any problems due to that.
+        cd = self.server_connection.data_for_channel[str(channel.address)]
+        if cd.needs_update:
+          if channel.value_slot:
+            channel.value_slot(cd.value)
+          if channel.connection_slot:
+            channel.connection_slot(cd.connection_state)
+          if channel.severity_slot:
+            channel.severity_slot(cd.severity)
+          if channel.write_access_slot:
+            channel.write_access_slot(cd.write_access)
+          if channel.unit_slot and cd.units is not None:
+            #channel.enum_strings_slot(cd.enum_strings)
+            channel.unit_slot(cd.units)
+          if channel.prec_slot:
+            channel.prec_slot(cd.precision)
+          with QWriteLocker(self.lock):
+            cd.needs_update = False
+          
