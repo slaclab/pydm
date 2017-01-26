@@ -131,11 +131,11 @@ class ServerConnection(QLocalSocket):
           cd.needs_update = True
       elif vtype == "intWaveform":
         with QWriteLocker(self.lock):
-          cd.value = np.array(v.value.intWaveform)
+          cd.value = np.array(v.value.intWaveform, dtype=np.int64)
           cd.needs_update = True
       elif vtype == "floatWaveform":
         with QWriteLocker(self.lock):
-          cd.value = np.array(v.value.floatWaveform)
+          cd.value = np.array(v.value.floatWaveform, dtype=np.float64)
           cd.needs_update = True
       elif vtype == "charWaveform":
         with QWriteLocker(self.lock):
