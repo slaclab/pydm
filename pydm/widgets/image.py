@@ -79,6 +79,8 @@ class PyDMImageView(ImageView):
 
   @pyqtSlot(np.ndarray)
   def receiveImageWaveform(self, new_waveform):
+    if new_waveform is None:
+      return
     if self.image_width == 0:
       self.image_waveform = new_waveform
       self._needs_reshape = True
@@ -145,5 +147,5 @@ class PyDMImageView(ImageView):
   widthChannel = pyqtProperty(str, getWidthChannel, setWidthChannel, resetWidthChannel)
   
   def channels(self):
-    return [PyDMChannel(address=self.imageChannel, connection_slot=self.connectionStateChanged, waveform_slot=self.receiveImageWaveform, severity_slot=self.alarmSeverityChanged),
+    return [PyDMChannel(address=self.imageChannel, connection_slot=self.connectionStateChanged, value_slot=self.receiveImageWaveform, severity_slot=self.alarmSeverityChanged),
             PyDMChannel(address=self.widthChannel, connection_slot=self.connectionStateChanged, value_slot=self.receiveImageWidth, severity_slot=self.alarmSeverityChanged)]
