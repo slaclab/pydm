@@ -7,7 +7,7 @@ import inspect
 import numpy as np
 from ..PyQt.QtGui import QWidget
 from ..PyQt.QtCore import pyqtSlot, pyqtSignal, Qt, QCoreApplication, QTimer
-from pydm.plugin import PyDMPlugin, PyDMConnection
+from .plugin import PyDMPlugin, PyDMConnection
 
 class LocalPlugin(PyDMPlugin):
     """
