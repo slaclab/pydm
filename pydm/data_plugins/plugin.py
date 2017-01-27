@@ -44,10 +44,10 @@ class PyDMConnection(QObject):
         elif isinstance(val, str):
             val_msg.value.string = val
         elif isinstance(val, np.ndarray):
-            if val.dtype == np.float64:
+            if np.issubdtype(val.dtype, np.floating):
                 val_msg.value.init('floatWaveform', len(val))
                 val_msg.value.floatWaveform = val.tolist()
-            elif val.dtype == np.int64:
+            elif np.issubdtype(val.dtype, np.signedinteger):
                 val_msg.value.init('intWaveform', len(val))
                 val_msg.value.intWaveform = val.tolist()
             elif val.dtype == np.uint8:
