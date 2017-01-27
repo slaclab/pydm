@@ -16,6 +16,7 @@ from ..PyQt.QtGui import QApplication, QColor, QWidget
 from ..PyQt import uic
 from .main_window import PyDMMainWindow
 from .message_handler import ServerConnection
+from .data_emitter import DataEmitter
 
 class PyDMApplication(QApplication):
   new_process = pyqtSignal(str)
@@ -50,6 +51,7 @@ class PyDMApplication(QApplication):
     self.directory_stack = ['']
     self.windows = {}
     self.pydm_widgets = set()
+    self.data_emitters = {}
     self._connected = False
     self.network_thread = QThread(self)
     self.server_connection = ServerConnection(servername, self.applicationPid())
@@ -201,6 +203,13 @@ class PyDMApplication(QApplication):
       if hasattr(child_widget, 'channels'):
         for channel in child_widget.channels():
           self.connect_to_data_channel(channel)
+          if channel.address not in self.data_emitters:
+            emitter = DataEmitter(channel.address)
+            self.data_emitters[channel.address] = emitter
+          else:
+            emitter = self.data_emitters[channel.address]
+          emitter.put_value_signal.connect(self.server_connection.send_msg)
+          emitter.add_listener(channel)
         #Take this opportunity to install a filter that intercepts middle-mouse clicks, which we use to display a tooltip with the address of the widget's first channel.
         child_widget.installEventFilter(self)
         self.pydm_widgets.add(child_widget)
@@ -217,9 +226,21 @@ class PyDMApplication(QApplication):
     for child_widget in widgets:
       if hasattr(child_widget, 'channels'):
         for channel in child_widget.channels():
+          try:
+            emitter = self.data_emitters[channel.address]
+            emitter.remove_listener()
+            if emitter.listener_count < 1:
+              del emitter
+          except KeyError:
+            pass
           self.disconnect_from_data_channel(channel)
         self.pydm_widgets.remove(child_widget)
-          
+  
+  @pyqtSlot(object)
+  def send_put_request(self, val):
+    channel = self.sender()
+    self.server_connection.send_put_request(channel.address, val)
+  
   @pyqtSlot()
   def update_widgets(self):
     for child_widget in self.pydm_widgets:
