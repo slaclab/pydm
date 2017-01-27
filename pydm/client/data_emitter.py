@@ -31,9 +31,19 @@ class DataEmitter(QObject):
   def add_listener(self, channel):
     self.listener_count += 1    
     if channel.value_signal is not None:
-      channel.value_signal[str].connect(self.put_value)
-      channel.value_signal[int].connect(self.put_value)
-      channel.value_signal[float].connect(self.put_value)
+      try:
+        channel.value_signal[str].connect(self.put_value)
+      except KeyError:
+        pass
+      try:
+        channel.value_signal[int].connect(self.put_value)
+      except KeyError:
+        pass
+      try:
+        channel.value_signal[float].connect(self.put_value)
+      except KeyError:
+        pass
+      
     if channel.waveform_signal is not None:
       channel.waveform_signal.connect(self.put_value)
       
