@@ -68,6 +68,8 @@ class PyDMSlider(QSlider):
   
   #set slider to new position
   #if the slider is not in focus, dont set slider to new position
+  @pyqtSlot(float)
+  @pyqtSlot(int)
   @pyqtSlot(str)
   def receiveValue(self, new_val):
     if not self.hasFocus():
