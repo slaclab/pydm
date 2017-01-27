@@ -134,8 +134,8 @@ class PyDMPlugin(QObject):
     def remove_connection(self, channel):
         if channel in self.connections:
             self.connections[channel].remove_listener()
-        if self.connections[channel].listener_count < 1:
-            del self.connections[channel]
+            if self.connections[channel].listener_count < 1:
+                del self.connections[channel]
             
     def remove_all_connections(self):
       for (channel, connection) in self.connections.items():
