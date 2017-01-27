@@ -222,6 +222,7 @@ class ServerConnection(QLocalSocket):
     
   @pyqtSlot(str)
   def new_pydm_process(self, ui_file):
+    ui_file = str(ui_file)
     print("Requesting to launch new display process for file {}".format(ui_file))
     msg = self.ipc_protocol.ClientMessage.new_message()
     win_msg = msg.init('newWindowRequest')
