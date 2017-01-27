@@ -129,7 +129,6 @@ class PyDMApplication(QApplication):
     self.new_process.emit(str(ui_file))
     
   def close_window(self, window):
-    print("Closing window.")
     del self.windows[window]
     if len(self.windows) < 1:
       self.disconnect_from_server.emit()

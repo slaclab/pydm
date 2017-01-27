@@ -32,6 +32,7 @@ class ServerConnection(QLocalSocket):
   def disconnect(self):
     print("Disconnecting")
     self.disconnectFromServer()
+    self.waitForDisconnected()
     
   @pyqtSlot()
   def socket_connected(self):
