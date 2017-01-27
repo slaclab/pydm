@@ -10,7 +10,7 @@ class Connection(PyDMConnection):
 		self.value = self.address
 		self.timer = QTimer(self)
 		self.timer.timeout.connect(self.send_new_value)
-		self.timer.start(10000)
+		self.timer.start(100)
 		
 	def send_new_value(self):
 		#val_to_send = "{0}-{1}".format(self.value, random.randint(0,9))
