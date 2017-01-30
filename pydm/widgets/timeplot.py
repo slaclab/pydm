@@ -52,6 +52,7 @@ class PyDMTimePlot(BasePlot):
   
   @pyqtSlot(float)
   @pyqtSlot(int)
+  @pyqtSlot(str)
   def receiveNewValue(self, new_value):
     if self._update_mode == PyDMTimePlot.SynchronousMode:
       self.data_buffer = np.roll(self.data_buffer,-1)
