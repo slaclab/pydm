@@ -1,6 +1,7 @@
 from ..PyQt.QtGui import QLabel, QApplication, QColor, QPalette, QWidget
 from ..PyQt.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
 from .channel import PyDMChannel
+from ..client.application import PyDMApplication
 class PyDMLabel(QLabel):
   #Tell Designer what signals are available.
   __pyqtSignals__ = ("send_value_signal(str)",
@@ -88,7 +89,9 @@ class PyDMLabel(QLabel):
     self.enum_strings = None
     self.format_string = None
     self.setText("PyDMLabel")
-    self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
+    app = QApplication.instance()
+    if isinstance(app, PyDMApplication):
+      self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
         
   @pyqtSlot(float)
   @pyqtSlot(int)
