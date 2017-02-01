@@ -11,6 +11,19 @@ class PyDMSlider(QFrame):
   sliderReleased = pyqtSignal()
   valueChanged = pyqtSignal(float)
   
+  ALARM_NONE = 0
+  ALARM_MINOR = 1
+  ALARM_MAJOR = 2
+  ALARM_INVALID = 3
+  ALARM_DISCONNECTED = 4
+  alarm_style_sheet_map = {
+      ALARM_NONE: "QLabel {color: black;}",
+      ALARM_MINOR: "QLabel {color: yellow;}",
+      ALARM_MAJOR: "QLabel {color: red;}",
+      ALARM_INVALID: "QLabel {color: purple;}",
+      ALARM_DISCONNECTED: "QLabel {color: white;}"
+  }
+  
   def __init__(self, parent=None):
     super(PyDMSlider, self).__init__(parent=parent)
     #Set up all the internal widgets that make up a PyDMSlider
@@ -94,13 +107,22 @@ class PyDMSlider(QFrame):
     
   @pyqtSlot(bool)
   def connectionStateChanged(self, connected):
+    print("Slider Connected")
     self._connected = connected
     self.set_enable_state()
   
   @pyqtSlot(bool)
   def writeAccessChanged(self, write_access):
-    self._write_access = connected
+    self._write_access = write_access
     self.set_enable_state()
+  
+  @pyqtSlot(int)
+  def alarmSeverityChanged(self, new_alarm_severity):
+    print("Severity is now: {}".format(new_alarm_severity))
+    if not self._connected:
+      new_alarm_severity = self.ALARM_DISCONNECTED
+    self.value_label.setStyleSheet(self.alarm_style_sheet_map[new_alarm_severity])
+  
   
   def set_enable_state(self):
     self.setEnabled(self._write_access and self._connected)
@@ -219,7 +241,7 @@ class PyDMSlider(QFrame):
 
   def channels(self):
     if self._channels is None:
-      self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, write_access_slot=self.writeAccessChanged, value_signal=self.valueChanged)]
+      self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, severity_slot=self.alarmSeverityChanged, write_access_slot=self.writeAccessChanged, value_signal=self.valueChanged)]
     return self._channels
 
 
