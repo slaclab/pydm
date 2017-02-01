@@ -131,15 +131,13 @@ class Connection(PyDMConnection):
         self.pv = setup_pv(pv, self.connected_cb, self.monitor_cb)
         self.enums = None
         self.rwacc = None
+        self.sevr = None
 
         # No pyca support for units, so we'll take from .EGU if it exists.
         self.units_pv = setup_pv(pv + ".EGU", mon_cb=self.send_units)
 
         # Ditto for precision
         self.prec_pv = setup_pv(pv + ".PREC", mon_cb=self.send_prec)
-
-        # Sevr is just broken in pyca, .state() always returns 2...
-        self.sevr_pv = setup_pv(pv + ".SEVR", mon_cb=self.send_sevr)
 
         # Auxilliary info to help with throttling
         self.scan_pv = setup_pv(pv + ".SCAN", mon_cb=self.scan_pv_cb,
@@ -198,11 +196,6 @@ class Connection(PyDMConnection):
         if e is None:
             prec_val = self.prec_pv.value
             self.data_message_signal.emit(self.precision_message(prec_val, self.timestamp()))
-    
-    def send_sevr(self, e=None):
-        if e is None:
-            sevr_val = self.sevr_pv.value
-            self.data_message_signal.emit(self.severity_message(sevr_val, self.timestamp()))
 
     def send_new_value(self, value=None):
         """
@@ -226,6 +219,11 @@ class Connection(PyDMConnection):
             if rwacc != self.rwacc:
                 self.rwacc = rwacc
                 self.data_message_signal.emit(self.write_access_message(rwacc==3, self.timestamp()))
+        
+        sevr = self.pv.severity
+        if sevr != self.sevr:
+          self.sevr = sevr
+          self.data_message_signal.emit(self.severity_message(self.sevr, self.timestamp()))
 
         if self.count > 1:
             self.data_message_signal.emit(self.new_value_message(value, self.timestamp()))
@@ -355,8 +353,6 @@ class Connection(PyDMConnection):
         self.units_pv.disconnect()
         self.prec_pv.monitor_stop()
         self.prec_pv.disconnect()
-        self.sevr_pv.monitor_stop()
-        self.sevr_pv.disconnect()
         self.scan_pv.monitor_stop()
         self.scan_pv.disconnect()
 
