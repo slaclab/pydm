@@ -102,7 +102,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         is the entire class docstring.
         """
         try:
-            if isinstance(self.cls.__doc__, basestring):
+            if isinstance(self.cls.__doc__, str):
                 return self.cls.__doc__
         except AttributeError:
             pass
