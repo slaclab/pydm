@@ -49,7 +49,7 @@
   <customwidget>
    <class>PyDMWaveformPlot</class>
    <extends>QGraphicsView</extends>
-   <header>waveformplot</header>
+   <header>pydm.widgets.waveformplot</header>
   </customwidget>
  </customwidgets>
  <resources/>

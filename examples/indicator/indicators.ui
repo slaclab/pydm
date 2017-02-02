@@ -183,14 +183,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PyDMIndicator</class>
-   <extends>QWidget</extends>
-   <header>indicator</header>
-  </customwidget>
-  <customwidget>
    <class>PyDMLineEdit</class>
    <extends>QLineEdit</extends>
-   <header>line_edit</header>
+   <header>pydm.widgets.line_edit</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMIndicator</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.indicator</header>
   </customwidget>
  </customwidgets>
  <resources/>

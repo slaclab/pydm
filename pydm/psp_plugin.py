@@ -4,7 +4,7 @@ This is used instead of pyepics for better performance.
 """
 import numpy as np
 from psp.Pv import Pv
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, Qt, QTimer
+from .PyQt.QtCore import pyqtSlot, pyqtSignal, Qt, QTimer
 from pydm.plugin import PyDMPlugin, PyDMConnection
 
 import datetime
@@ -228,7 +228,7 @@ class Connection(PyDMConnection):
         """
         if self.epics_type == "DBF_ENUM":
             if self.enums is None:
-                self.enums = tuple(self.pv.get_enum_set())
+                self.enums = tuple(b.decode(encoding='ascii') for b in self.pv.get_enum_set())
             self.enum_strings_signal.emit(self.enums)
 
     @pyqtSlot(int)

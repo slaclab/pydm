@@ -15,7 +15,7 @@ TypeError: __init__() takes exactly 3 arguments (1 given)
 for each PyDMDesignerPlugin that Qt Designer tries to use. This will not
 affect any of your widgets, but it will be annoying.
 """
-from PyQt4 import QtGui, QtDesigner
+from ..PyQt import QtGui, QtDesigner
 
 def qtplugin_factory(cls, is_container=False):
     """

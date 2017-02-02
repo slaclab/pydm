@@ -429,7 +429,7 @@
   <customwidget>
    <class>PyDMLineEdit</class>
    <extends>QLineEdit</extends>
-   <header>line_edit</header>
+   <header>pydm.widgets.line_edit</header>
   </customwidget>
  </customwidgets>
  <resources/>

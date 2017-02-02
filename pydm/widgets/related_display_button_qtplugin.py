@@ -1,5 +1,5 @@
-from qtplugin_base import qtplugin_factory
-from related_display_button import PyDMRelatedDisplayButton
+from .qtplugin_base import qtplugin_factory
+from .related_display_button import PyDMRelatedDisplayButton
 
 PyDMRelatedDisplayButtonPlugin = qtplugin_factory(PyDMRelatedDisplayButton)
 

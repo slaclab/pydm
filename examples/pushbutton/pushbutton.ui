@@ -19,7 +19,7 @@
      <x>30</x>
      <y>30</y>
      <width>331</width>
-     <height>141</height>
+     <height>147</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -141,25 +141,17 @@
     </item>
    </layout>
   </widget>
-  <zorder>layoutWidget</zorder>
-  <zorder>lineEdit</zorder>
-  <zorder>lineEdit_2</zorder>
-  <zorder>positiveButton_2</zorder>
-  <zorder>positiveButton</zorder>
-  <zorder></zorder>
-  <zorder>pydmLabel</zorder>
-  <zorder>positiveButton</zorder>
  </widget>
  <customwidgets>
   <customwidget>
    <class>PyDMLabel</class>
    <extends>QLabel</extends>
-   <header>label</header>
+   <header>pydm.widgets.label</header>
   </customwidget>
   <customwidget>
    <class>PyDMPushButton</class>
    <extends>QPushButton</extends>
-   <header>pushbutton</header>
+   <header>pydm.widgets.pushbutton</header>
   </customwidget>
  </customwidgets>
  <resources/>

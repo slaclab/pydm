@@ -1,6 +1,6 @@
-from PyQt4.QtGui import QLineEdit, QApplication, QColor, QPalette, QSlider
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
-from channel import PyDMChannel
+from ..PyQt.QtGui import QLineEdit, QApplication, QColor, QPalette, QSlider
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
+from .channel import PyDMChannel
 
 class PyDMSlider(QSlider):
   __pyqtSignals__ = ("send_value_signal(str)",
@@ -68,6 +68,8 @@ class PyDMSlider(QSlider):
   
   #set slider to new position
   #if the slider is not in focus, dont set slider to new position
+  @pyqtSlot(float)
+  @pyqtSlot(int)
   @pyqtSlot(str)
   def receiveValue(self, new_val):
     if not self.hasFocus():

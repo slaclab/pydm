@@ -1,11 +1,11 @@
-from PyQt4.QtGui import QLabel, QApplication, QColor
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer
+from ..PyQt.QtGui import QLabel, QApplication, QColor
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer
 from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
 from pyqtgraph import PlotCurveItem
-from baseplot import BasePlot
 import numpy as np
 import time
-from channel import PyDMChannel
+from .baseplot import BasePlot
+from .channel import PyDMChannel
 
 class PyDMTimePlot(BasePlot):
   SynchronousMode = 1
@@ -52,6 +52,7 @@ class PyDMTimePlot(BasePlot):
   
   @pyqtSlot(float)
   @pyqtSlot(int)
+  @pyqtSlot(str)
   def receiveNewValue(self, new_value):
     if self._update_mode == PyDMTimePlot.SynchronousMode:
       self.data_buffer = np.roll(self.data_buffer,-1)

@@ -1,12 +1,10 @@
 import sys
 from os import path, environ
-sys.path.append(path.join(path.dirname(path.realpath(__file__)), 'widgets'))
-from PyQt4.QtGui import QApplication, QMainWindow, QWidget, QToolTip, QClipboard
-from PyQt4.QtCore import Qt, QTimer, pyqtSlot
+from .PyQt.QtGui import QApplication, QMainWindow, QWidget, QToolTip, QClipboard
+from .PyQt.QtCore import Qt, QTimer, pyqtSlot
 from .pydm_ui import Ui_MainWindow
 import subprocess
 import platform
-
 
 class PyDMMainWindow(QMainWindow):
   def __init__(self, parent=None):

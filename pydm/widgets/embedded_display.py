@@ -1,6 +1,6 @@
-from PyQt4.QtGui import QStackedWidget, QApplication
-from PyQt4.QtCore import Qt, QString, QStringList
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
+from ..PyQt.QtGui import QStackedWidget, QApplication
+from ..PyQt.QtCore import Qt
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 
 class PyDMEmbeddedDisplay(QStackedWidget):
     """
@@ -68,35 +68,35 @@ class PyDMEmbeddedDisplay(QStackedWidget):
         :param index: index of the filename to update
         :type index:  int
         :param new_filename: path of the new file to use
-        :type new_filename:  QString
+        :type new_filename:  str
         """
         filenames = self.display_filenames
         filenames[index] = new_filename
         self.display_filenames = filenames
 
-    @pyqtSlot(QString)
+    @pyqtSlot(str)
     def add_display(self, new_filename):
         """
         Append a new filename to the list of available filenames.
 
         :param new_filename: path of the file to append
-        :type new_filename:  QString
+        :type new_filename:  str
         """
         filenames = self.display_filenames
         filenames.append(new_filename)
         self.display_filenames = filenames
 
-    @pyqtSlot(QString)
+    @pyqtSlot(str)
     def edit_filename(self, name):
         """
         Unload the current file and load a new file.
 
         :param name: path to the file to replace the current file
-        :type name:  QString
+        :type name:  str
         """
         self.active_display_filename = name
 
-    @pyqtProperty(QStringList, doc=
+    @pyqtProperty("QStringList", doc=
     """
     List of filenames accessible through the embedded display.
     """
@@ -105,16 +105,16 @@ class PyDMEmbeddedDisplay(QStackedWidget):
         try:
             return self._display_filenames
         except AttributeError:
-            return QStringList()
+            return []
 
     @display_filenames.setter
     def display_filenames(self, filename_list):
-        self._display_filenames = QStringList()
+        self._display_filenames = []
         for file in filename_list:
             self._display_filenames.append(file)
         self.update_widgets()
 
-    @pyqtProperty(QString, doc=
+    @pyqtProperty(str, doc=
     """
     Filename of the current active display.
     """
@@ -124,7 +124,7 @@ class PyDMEmbeddedDisplay(QStackedWidget):
         index = self.currentIndex()
         if 0 <= index < len(filenames):
             return filenames[index]
-        return QString()
+        return ""
 
     @active_display_filename.setter
     def active_display_filename(self, filename):

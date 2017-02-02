@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>418</width>
-    <height>318</height>
+    <width>424</width>
+    <height>324</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,7 +39,7 @@
   <customwidget>
    <class>PyDMWaveformPlot</class>
    <extends>QGraphicsView</extends>
-   <header>waveformplot</header>
+   <header>pydm.widgets.waveformplot</header>
   </customwidget>
  </customwidgets>
  <resources/>

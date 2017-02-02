@@ -86,7 +86,7 @@
      <property name="whatsThis">
       <string/>
      </property>
-     <property name="channel">
+     <property name="channel" stdset="0">
       <string>ca://MOTOR:1:VAL</string>
      </property>
     </widget>
@@ -144,24 +144,24 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PyDMIndicator</class>
-   <extends>QWidget</extends>
-   <header>indicator</header>
+   <class>PyDMLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>pydm.widgets.line_edit</header>
   </customwidget>
   <customwidget>
    <class>PyDMLabel</class>
    <extends>QLabel</extends>
-   <header>label</header>
-  </customwidget>
-  <customwidget>
-   <class>PyDMLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>line_edit</header>
+   <header>pydm.widgets.label</header>
   </customwidget>
   <customwidget>
    <class>PyDMSlider</class>
    <extends>QSlider</extends>
-   <header>slider</header>
+   <header>pydm.widgets.slider</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMIndicator</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.indicator</header>
   </customwidget>
  </customwidgets>
  <resources/>

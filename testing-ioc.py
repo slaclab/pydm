@@ -33,7 +33,8 @@ pvdb = {
         'XPos'             : { 'prec' : 2, 'value' : 0.0 },
         'YPos'             : { 'prec' : 2, 'value' : 0.0 },
         'Image'            : { 'type' : 'char', 'count': IMAGE_SIZE**2, 'value': numpy.zeros(IMAGE_SIZE**2,dtype=numpy.uint8) },
-        'ImageWidth'       : { 'type' : 'int', 'value' : IMAGE_SIZE }
+        'ImageWidth'       : { 'type' : 'int', 'value' : IMAGE_SIZE },
+        'String'           : { 'type' : 'string', 'value': "Test String"}
 }
 
 def gaussian_2d(x, y, x0, y0, xsig, ysig):

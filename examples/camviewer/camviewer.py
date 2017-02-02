@@ -1,7 +1,7 @@
 #import epics
-#from PyQt4 import uic
-from PyQt4.QtCore import QObject, pyqtSlot, pyqtSignal, QPointF, QRectF
-from PyQt4.QtGui import QWidget, QSizePolicy, QPen
+#from pydm.PyQt import uic
+from pydm.PyQt.QtCore import QObject, pyqtSlot, pyqtSignal, QPointF, QRectF
+from pydm.PyQt.QtGui import QWidget, QSizePolicy, QPen
 from os import path
 from pydm import Display, PyDMChannel, PyDMImageView
 import numpy as np

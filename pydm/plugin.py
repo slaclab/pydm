@@ -1,5 +1,5 @@
 from numpy import ndarray
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
+from .PyQt.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
 
 class PyDMConnection(QObject):
     new_value_signal =        pyqtSignal([float],[int],[str])

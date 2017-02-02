@@ -1,6 +1,6 @@
-from PyQt4.QtGui import QWidget, QApplication, QColor, QPainter, QBrush, QPen
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, Qt
-from channel import PyDMChannel
+from ..PyQt.QtGui import QWidget, QApplication, QColor, QPainter, QBrush, QPen
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, Qt, QByteArray
+from .channel import PyDMChannel
 
 class PyDMIndicator(QWidget):
   #Tell Designer what signals are available.
@@ -96,7 +96,7 @@ class PyDMIndicator(QWidget):
     invalid_alarm_state.addTransition(self.major_alarm_signal, major_alarm_state)
     
     #Add a cool fade animation to a state transition.
-    self.color_fade = QPropertyAnimation(self, "color", self)
+    self.color_fade = QPropertyAnimation(self, QByteArray(b'color'), self)
     self.color_fade.setDuration(175)
     self.color_fade.valueChanged.connect(self.force_redraw)
     self.state_machine.addDefaultAnimation(self.color_fade)

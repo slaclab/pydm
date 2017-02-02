@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>576</width>
-    <height>308</height>
+    <height>338</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -171,7 +171,7 @@
   <customwidget>
    <class>PyDMRelatedDisplayButton</class>
    <extends>QPushButton</extends>
-   <header>related_display_button</header>
+   <header>pydm.widgets.related_display_button</header>
   </customwidget>
  </customwidgets>
  <resources/>

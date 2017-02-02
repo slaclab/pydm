@@ -3,9 +3,9 @@ import logging
 from os import path
 
 
-from channel import PyDMChannel
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
+from .channel import PyDMChannel
+from ..PyQt.QtGui import QPushButton
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 
 logger = logging.getLogger(__name__)
 
