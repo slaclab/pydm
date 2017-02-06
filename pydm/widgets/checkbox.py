@@ -19,6 +19,7 @@ class PyDMCheckbox(QCheckBox):
     self._channel = channel
     self._connected = False
     self._write_access = False
+    self.checkEnableState()
     self.clicked.connect(self.sendValue)
       
   @pyqtSlot(int)
