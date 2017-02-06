@@ -65,7 +65,9 @@ class PyDMPushButton(QPushButton):
 
         self._channel     = channel
         self._channeltype = type(self._value)
-
+        self._connected = False
+        self._write_access = False
+        self.update_enabled_state()
         self.clicked.connect(self.sendValue)
 
 
@@ -134,7 +136,7 @@ class PyDMPushButton(QPushButton):
         """
         Receive and store both the value and type of the channel
 
-        While the channel value is not displayed inherentely in the Widget, the
+        While the channel value is not displayed inherently in the Widget, the
         value is stored in order to accomadate the relative mode of operation.
         Also, the type of the incoming value is stored as well. This allows the
         Widget to send back the same Python type as received from the plugin. 
@@ -142,6 +144,18 @@ class PyDMPushButton(QPushButton):
         self._value       = new_value
         self._channeltype = type(new_value)
     
+    @pyqtSlot(bool)
+    def connectionStateChanged(self, connected):
+      self._connected = connected
+      self.update_enabled_state()
+    
+    @pyqtSlot(bool)
+    def writeAccessChanged(self, write_access):
+      self._write_access = write_access
+      self.update_enabled_state()
+    
+    def update_enabled_state(self):
+      self.setEnabled(self._write_access and self._connected)
 
     @pyqtSlot()
     def sendValue(self):
@@ -185,6 +199,8 @@ class PyDMPushButton(QPushButton):
         """
         return [PyDMChannel(address      = self.channel,
                             value_slot   = self.receiveValue,
-                            value_signal = self.send_value_signal),
+                            value_signal = self.send_value_signal,
+                            connection_slot = self.connectionStateChanged,
+                            write_access_slot = self.writeAccessChanged),
                ]
 
