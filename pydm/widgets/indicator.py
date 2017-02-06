@@ -31,7 +31,7 @@ class PyDMIndicator(QWidget):
     True: QColor(0, 0, 0,)
   }
   
-  def __init__(self, init_channel=None, parent=None):
+  def __init__(self, parent=None, init_channel=None):
     self._color = self.local_connection_status_color_map[False]
     self._border_thickness = 0
     self._border_color = QColor(0,0,0)

@@ -8,7 +8,7 @@ class PyDMRelatedDisplayButton(QPushButton):
   EXISTING_WINDOW = 0;
   NEW_WINDOW = 1;
   
-  def __init__(self, filename=None, parent=None):
+  def __init__(self, parent=None, filename=None):
     super(PyDMRelatedDisplayButton, self).__init__(parent)
     self._display_filename = filename
     self.app = QApplication.instance()

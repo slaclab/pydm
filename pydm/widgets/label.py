@@ -31,7 +31,7 @@ class PyDMLabel(QLabel):
     True: QColor(0, 0, 0,)
   }
   
-  def __init__(self, init_channel=None, parent=None):
+  def __init__(self, parent=None, init_channel=None):
     super(PyDMLabel, self).__init__(parent)
     self.setup_state_machine()
     self._channels = None

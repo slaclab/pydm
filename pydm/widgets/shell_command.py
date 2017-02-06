@@ -3,7 +3,7 @@ from ..PyQt.QtCore import pyqtSlot, pyqtProperty
 import shlex, subprocess
 
 class PyDMShellCommand(QPushButton):
-  def __init__(self, command=None, parent=None):
+  def __init__(self, parent=None, command=None):
     super(PyDMShellCommand, self).__init__(parent)
     self._command = command
     self.process = None
