@@ -79,7 +79,12 @@ class PyDMSlider(QSlider):
   @pyqtSlot()
   def sendValue(self):
     if self.hasFocus():
-      val = str(float(self.value())*float(self._step))
+      # if steps is int, return a int value
+      if (float(self._step)).is_integer() :
+        val = str(int(self.value())*int(self._step))
+      else:
+        val = str(float(self.value())*float(self._step))
+
       self.send_value_signal.emit(val)
 
   #false = disconnected, true = connected
