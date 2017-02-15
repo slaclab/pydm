@@ -22,6 +22,8 @@ class PyDMCheckbox(QCheckBox):
     self.clicked.connect(self.sendValue)
       
   @pyqtSlot(int)
+  @pyqtSlot(float)
+  @pyqtSlot(str)
   def receiveValue(self, new_val):
     if new_val > 0:
       self.setChecked(True)
