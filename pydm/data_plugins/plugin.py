@@ -70,5 +70,5 @@ class PyDMPlugin(object):
         address = self.get_address(channel)
         if address in self.connections:
             self.connections[address].remove_listener()
-        if self.connections[address].listener_count < 1:
-            del self.connections[address]
+            if self.connections[address].listener_count < 1:
+              del self.connections[address]
