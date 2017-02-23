@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>743</width>
-    <height>524</height>
+    <width>671</width>
+    <height>485</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,6 +43,12 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QGroupBox" name="groupBox_3">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="title">
         <string>Status</string>
        </property>
@@ -51,14 +57,7 @@
          <enum>QFormLayout::FieldsStayAtSizeHint</enum>
         </property>
         <item row="0" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Processing:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="PyDMLabel" name="PyDMLabel">
+         <widget class="PyDMEnumComboBox" name="PyDMEnumComboBox">
           <property name="toolTip">
            <string/>
           </property>
@@ -89,7 +88,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox_2">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+        <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -159,7 +158,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+        <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -237,14 +236,14 @@
    <header>pydm.widgets.line_edit</header>
   </customwidget>
   <customwidget>
-   <class>PyDMLabel</class>
-   <extends>QLabel</extends>
-   <header>pydm.widgets.label</header>
-  </customwidget>
-  <customwidget>
    <class>PyDMWaveformPlot</class>
    <extends>QGraphicsView</extends>
    <header>pydm.widgets.waveformplot</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMEnumComboBox</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.enum_combo_box</header>
   </customwidget>
  </customwidgets>
  <resources/>
