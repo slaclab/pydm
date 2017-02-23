@@ -4,7 +4,7 @@ Main Application Module
 Contains our PyDMApplication class with core connection and loading logic and
 our PyDMMainWindow class with navigation logic.
 """
-from os import path
+import os
 import imp
 import sys
 import signal
@@ -21,18 +21,20 @@ from .main_window import PyDMMainWindow
 #variable to either pyepics or pyca.
 EPICS_LIB = os.getenv("PYDM_EPICS_LIB")
 if EPICS_LIB == "pyepics":
-  from ..data_plugins.pyepics_plugin import PyEPICSPlugin
+  from .data_plugins.pyepics_plugin import PyEPICSPlugin
   EPICSPlugin = PyEPICSPlugin
 elif EPICS_LIB == "pyca":
-  from ..data_plugins.psp_plugin import PSPPlugin
+  from .data_plugins.psp_plugin import PSPPlugin
   EPICSPlugin = PSPPlugin
 else:
   try:
-    from ..data_plugins.psp_plugin import PSPPlugin
+    from .data_plugins.psp_plugin import PSPPlugin
     EPICSPlugin = PSPPlugin
   except ImportError:
-    from ..data_plugins.pyepics_plugin import PyEPICSPlugin
+    from .data_plugins.pyepics_plugin import PyEPICSPlugin
     EPICSPlugin = PyEPICSPlugin
+from .data_plugins.fake_plugin import FakePlugin
+from .data_plugins.archiver_plugin import ArchiverPlugin
   
 class PyDMApplication(QApplication):
   plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
@@ -84,7 +86,7 @@ class PyDMApplication(QApplication):
   
   def new_window(self, ui_file):
     """new_window() gets called whenever a request to open a new window is made."""
-    (filename, extension) = path.splitext(ui_file)
+    (filename, extension) = os.path.splitext(ui_file)
     if extension == '.ui':
       self.make_window(ui_file)
     elif extension == '.py':
@@ -96,7 +98,7 @@ class PyDMApplication(QApplication):
     main_window = PyDMMainWindow()
     main_window.open_file(ui_file)
     main_window.show()
-    self.windows[main_window] = path.dirname(ui_file)
+    self.windows[main_window] = os.path.dirname(ui_file)
     #If we are launching a new window, we don't want it to sit right on top of an existing window.
     if len(self.windows) > 1:
       main_window.move(main_window.x() + 10, main_window.y() + 10)
@@ -109,7 +111,7 @@ class PyDMApplication(QApplication):
     
   def load_py_file(self, pyfile):
     #Add the intelligence module directory to the python path, so that submodules can be loaded.  Eventually, this should go away, and intelligence modules should behave as real python modules.
-    module_dir = path.dirname(path.abspath(pyfile))
+    module_dir = os.path.dirname(os.path.abspath(pyfile))
     sys.path.append(module_dir)
 
     #Now load the intelligence module.
@@ -117,8 +119,8 @@ class PyDMApplication(QApplication):
     return module.intelclass()
 
   def open_file(self, ui_file):
-    self.directory_stack.append(path.dirname(ui_file))
-    (filename, extension) = path.splitext(ui_file)
+    self.directory_stack.append(os.path.dirname(ui_file))
+    (filename, extension) = os.path.splitext(ui_file)
     if extension == '.ui':
       widget = self.load_ui_file(ui_file)
     elif extension == '.py':
@@ -131,7 +133,7 @@ class PyDMApplication(QApplication):
 
   def get_path(self, ui_file, widget):
     dirname = self.directory_stack[-1]
-    full_path = path.join(dirname, str(ui_file))
+    full_path = os.path.join(dirname, str(ui_file))
     return full_path
 
   def open_relative(self, ui_file, widget):

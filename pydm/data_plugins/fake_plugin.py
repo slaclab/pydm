@@ -1,5 +1,5 @@
 from .plugin import PyDMPlugin, PyDMConnection
-from .PyQt.QtCore import QTimer, pyqtSignal, Qt
+from ..PyQt.QtCore import QTimer, pyqtSignal, Qt
 import random
 
 class Connection(PyDMConnection):
