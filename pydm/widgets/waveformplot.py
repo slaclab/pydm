@@ -7,7 +7,7 @@ from .baseplot import BasePlot
 from .channel import PyDMChannel
 
 class PyDMWaveformPlot(BasePlot):
-  def __init__(self, init_x_channel=None, init_y_channel=None, parent=None, background='default'):
+  def __init__(self, parent=None, init_x_channel=None, init_y_channel=None, background='default'):
     super(PyDMWaveformPlot, self).__init__(parent, background)
     self._ychannel = init_x_channel
     self._xchannel = init_y_channel
@@ -17,7 +17,9 @@ class PyDMWaveformPlot(BasePlot):
   @pyqtSlot(np.ndarray)
   def receiveXWaveform(self, new_waveform):
     self.x_waveform = new_waveform
-    self.redrawPlot()
+    # just call redraw if y_waveform has vale
+    if self.y_waveform is not None:
+        self.redrawPlot()
   
   @pyqtSlot(np.ndarray)
   def receiveYWaveform(self, new_waveform):
@@ -29,6 +31,11 @@ class PyDMWaveformPlot(BasePlot):
       yspan = float(np.amax(self.y_waveform)) - float(np.amin(self.y_waveform))
       self.plotItem.setLimits(xMin=0, xMax=len(self.y_waveform), yMin=float(np.amin(self.y_waveform)-yspan), yMax=float(np.amax(self.y_waveform)+yspan))
     else:
+      # let the y and x shapes equals
+      if self.x_waveform.shape[0] > self.y_waveform.shape[0]:
+          self.x_waveform = self.x_waveform[:self.y_waveform.shape[0]]
+      elif self.x_waveform.shape[0] < self.y_waveform.shape[0]:
+          self.y_waveform = self.y_waveform[:self.x_waveform.shape[0]]
       self.plotItem.setLimits(xMin=np.amin(self.x_waveform), xMax=np.amax(self.x_waveform), yMin=np.amin(self.y_waveform), yMax=np.amax(self.y_waveform))
   
   def redrawPlot(self):

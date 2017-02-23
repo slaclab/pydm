@@ -14,7 +14,7 @@ class PyDMCheckbox(QCheckBox):
   #Emitted when the user changes the value.
   send_value_signal = pyqtSignal(str)
   
-  def __init__(self, channel=None, parent=None):
+  def __init__(self, parent=None, channel=None):
     super(PyDMCheckbox, self).__init__(parent)
     self._channel = channel
     self._connected = False
@@ -23,6 +23,8 @@ class PyDMCheckbox(QCheckBox):
     self.clicked.connect(self.sendValue)
       
   @pyqtSlot(int)
+  @pyqtSlot(float)
+  @pyqtSlot(str)
   def receiveValue(self, new_val):
     if new_val > 0:
       self.setChecked(True)
