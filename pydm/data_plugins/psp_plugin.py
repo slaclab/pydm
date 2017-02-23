@@ -3,6 +3,7 @@ Plugin to handle EPICS connections using pyca through psp.Pv.
 This is used instead of pyepics for better performance.
 """
 import numpy as np
+import pyca
 from psp.Pv import Pv
 from ..PyQt.QtCore import pyqtSlot, pyqtSignal, Qt, QTimer
 from .plugin import PyDMPlugin, PyDMConnection
@@ -20,7 +21,7 @@ type_map = dict(
     DBF_ULONG = int,
     DBF_FLOAT = float,
     DBF_DOUBLE = float,
-    DBF_ENUM = str,
+    DBF_ENUM = int,
     DBF_MENU = None,
     DBF_DEVICE = None,
     DBF_INLINK = None,
@@ -131,15 +132,14 @@ class Connection(PyDMConnection):
         self.python_type = None
         self.pv = setup_pv(pv, self.connected_cb, self.monitor_cb)
         self.enums = None
+        self.rwacc = None
+        self.sevr = None
 
         # No pyca support for units, so we'll take from .EGU if it exists.
         self.units_pv = setup_pv(pv + ".EGU", signal=self.unit_signal)
 
         # Ditto for precision
         self.prec_pv = setup_pv(pv + ".PREC", signal=self.prec_signal)
-
-        # Sevr is just broken in pyca, .state() always returns 2...
-        self.sevr_pv = setup_pv(pv + ".SEVR", signal=self.new_severity_signal)
 
         # Auxilliary info to help with throttling
         self.scan_pv = setup_pv(pv + ".SCAN", mon_cb=self.scan_pv_cb,
@@ -159,9 +159,11 @@ class Connection(PyDMConnection):
         self.send_connection_state(isconnected)
         if isconnected:
             self.epics_type = self.pv.type()
-            if self.epics_type == "DBF_ENUM":
-                self.pv.set_string_enum(True)
             self.count = self.pv.count or 1
+            if self.epics_type == "DBF_ENUM":
+                self.pv.get_data(True, -1.0, self.count)
+                pyca.flush_io()
+                self.pv.get_enum_strings(-1.0)
             if not self.pv.ismonitored:
                 self.pv.monitor()
             self.python_type = type_map.get(self.epics_type)
@@ -184,6 +186,13 @@ class Connection(PyDMConnection):
         """
         self.send_new_value(self.pv.get())
 
+    def timestamp(self):
+        try:
+            secs, nanos = self.pv.timestamp()
+        except KeyError:
+            return None
+        return float(secs + nanos/1.0e9)
+
     def send_new_value(self, value=None):
         """
         Send a value to every channel listening for our Pv.
@@ -201,11 +210,22 @@ class Connection(PyDMConnection):
         if rwacc is not None:
             # Two bit binary number, 11 = read and write, 01 = read-only
             # presumably this could be other numbers, but in practice it is
-            # either 3 for read and write or 1 for just read
-            if rwacc == 3:
-                self.write_access_signal.emit(True)
-            else:
-                self.write_access_signal.emit(False)
+            # either 3 for read and write or 1 for just read.
+            # Only send the write access state if it has changed, don't send it every time the PV updates.
+            if rwacc != self.rwacc:
+                self.rwacc = rwacc
+                self.write_access_signal.emit(rwacc == 3)
+        
+        if self.enums is None:
+            try:
+                self.update_enums()
+            except KeyError:
+                self.pv.get_enum_strings(-1.0)
+        
+        sevr = self.pv.severity
+        if sevr != self.sevr:
+          self.sevr = sevr
+          self.new_severity_signal.emit(self.sevr)
 
         if self.count > 1:
             self.new_waveform_signal.emit(value)
@@ -228,7 +248,7 @@ class Connection(PyDMConnection):
         """
         if self.epics_type == "DBF_ENUM":
             if self.enums is None:
-                self.enums = tuple(b.decode(encoding='ascii') for b in self.pv.get_enum_set())
+                self.enums = tuple(b.decode(encoding='ascii') for b in self.pv.data["enum_set"])
             self.enum_strings_signal.emit(self.enums)
 
     @pyqtSlot(int)
@@ -313,16 +333,24 @@ class Connection(PyDMConnection):
             self.send_connection_state(conn=True)
             self.monitor_cb()
             self.update_enums()
-        try:
-            channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
-            channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
-            channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
-        except:
-            pass
-        try:
-            channel.waveform_signal.connect(self.put_value, Qt.QueuedConnection)
-        except:
-            pass
+        if channel.value_signal is not None:
+            try:
+                channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
+            try:
+                channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
+            try:
+                channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
+        if channel.waveform_signal is not None:
+            try:
+                channel.waveform_signal.connect(self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
 
     def close(self):
         """
@@ -335,8 +363,6 @@ class Connection(PyDMConnection):
         self.units_pv.disconnect()
         self.prec_pv.monitor_stop()
         self.prec_pv.disconnect()
-        self.sevr_pv.monitor_stop()
-        self.sevr_pv.disconnect()
         self.scan_pv.monitor_stop()
         self.scan_pv.disconnect()
 
