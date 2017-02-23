@@ -1,6 +1,8 @@
 from ..PyQt.QtGui import QLabel, QApplication, QColor, QPalette, QWidget
 from ..PyQt.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, QByteArray
 from .channel import PyDMChannel
+from ..application import PyDMApplication
+
 class PyDMLabel(QLabel):
   #Tell Designer what signals are available.
   __pyqtSignals__ = ("send_value_signal(str)",
@@ -88,70 +90,10 @@ class PyDMLabel(QLabel):
     self.enum_strings = None
     self.format_string = None
     self.setText("PyDMLabel")
-    self.setup_state_machine()
     #If this label is inside a PyDMApplication (not Designer) start it in the disconnected state.
     app = QApplication.instance()
     if isinstance(app, PyDMApplication):
       self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
-    
-    
-  # Can the state machine be implemented at a lower level, like a QWidget subclass? 
-  def setup_state_machine(self):
-    self.state_machine = QStateMachine(self)
-    
-    #We'll need to talk to the parent application to figure out what colors to use for a specific state.  If the parent application doesn't have a color map (this is true when we are in Designer) then use the local colors defined above.
-    app = QApplication.instance()
-    try:
-      connection_status_color_map = app.connection_status_color_map
-      alarm_severity_color_map = app.alarm_severity_color_map
-    except AttributeError:
-      connection_status_color_map = self.local_connection_status_color_map
-      alarm_severity_color_map = self.local_alarm_severity_color_map
-    
-    #There are two connection states: Disconnected, and Connected.
-    disconnected_state = QState(self.state_machine)
-    disconnected_state.assignProperty(self, "color", connection_status_color_map[False])
-    #connected_state is parallel because it will have sub-states for alarm severity.
-    connected_state = QState(self.state_machine)
-    #connected_state itself doesn't have any particular color, that is all defined by the alarm severity.
-    
-    self.state_machine.setInitialState(disconnected_state)
-    
-    disconnected_state.addTransition(self.connected_signal, connected_state)
-    connected_state.addTransition(self.disconnected_signal, disconnected_state)
-    
-    #Now lets add the alarm severity states.
-    no_alarm_state = QState(connected_state)
-    no_alarm_state.assignProperty(self, "color", alarm_severity_color_map[0])
-    minor_alarm_state = QState(connected_state)
-    minor_alarm_state.assignProperty(self, "color", alarm_severity_color_map[1])
-    major_alarm_state = QState(connected_state)
-    major_alarm_state.assignProperty(self, "color", alarm_severity_color_map[2])
-    invalid_alarm_state = QState(connected_state)
-    invalid_alarm_state.assignProperty(self, "color", alarm_severity_color_map[3])
-    connected_state.setInitialState(no_alarm_state)
-    
-    #Add the transitions between different severities.
-    #This is a bunch, since any severity can transition to any other.
-    no_alarm_state.addTransition(self.minor_alarm_signal, minor_alarm_state)
-    no_alarm_state.addTransition(self.major_alarm_signal, major_alarm_state)
-    no_alarm_state.addTransition(self.invalid_alarm_signal, invalid_alarm_state)
-    minor_alarm_state.addTransition(self.no_alarm_signal, no_alarm_state)
-    minor_alarm_state.addTransition(self.major_alarm_signal, major_alarm_state)
-    minor_alarm_state.addTransition(self.invalid_alarm_signal, invalid_alarm_state)
-    major_alarm_state.addTransition(self.no_alarm_signal, no_alarm_state)
-    major_alarm_state.addTransition(self.minor_alarm_signal, minor_alarm_state)
-    major_alarm_state.addTransition(self.invalid_alarm_signal, invalid_alarm_state)
-    invalid_alarm_state.addTransition(self.no_alarm_signal, no_alarm_state)
-    invalid_alarm_state.addTransition(self.minor_alarm_signal, minor_alarm_state)
-    invalid_alarm_state.addTransition(self.major_alarm_signal, major_alarm_state)
-    
-    #Add a cool fade animation to a state transition.
-    self.color_fade = QPropertyAnimation(self, QByteArray(b'color'), self)
-    self.color_fade.setDuration(175)
-    self.state_machine.addDefaultAnimation(self.color_fade)
-    
-    self.state_machine.start()
     
   @pyqtSlot(float)
   @pyqtSlot(int)
