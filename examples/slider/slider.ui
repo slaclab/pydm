@@ -6,137 +6,60 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>383</width>
-    <height>309</height>
+    <width>568</width>
+    <height>112</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Slider</string>
+   <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="PyDMSlider" name="theSlider">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="text">
-      <string>MOTOR:1:VAL</string>
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="tickPosition" stdset="0">
+      <enum>QSlider::TicksBelow</enum>
+     </property>
+     <property name="minimum" stdset="0">
+      <double>-1.500000000000000</double>
+     </property>
+     <property name="maximum" stdset="0">
+      <double>1.500000000000000</double>
+     </property>
+     <property name="channel">
+      <string>ca://MTEST:Float</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="PyDMIndicator" name="pydmIndicator">
+   <item>
+    <widget class="PyDMLineEdit" name="theLineEdit">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>100</height>
-      </size>
-     </property>
      <property name="toolTip">
       <string/>
      </property>
      <property name="whatsThis">
-      <string>Displays the alarm severity from an EPICS PV.</string>
-     </property>
-     <property name="has_border" stdset="0">
-      <bool>false</bool>
-     </property>
-     <property name="channel">
-      <string>ca://MOTOR:1:VAL</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="PyDMLabel" name="pydmLabel">
-     <property name="font">
-      <font>
-       <pointsize>24</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="whatsThis">
-      <string>Displays the value from an EPICS PV.</string>
-     </property>
-     <property name="text">
-      <string>0</string>
-     </property>
-     <property name="channel">
-      <string>ca://MOTOR:1:VAL</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="PyDMLineEdit" name="pydmLineEdit">
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="whatsThis">
-      <string/>
+      <string>
+    Writeable text field to send and display channel values
+    </string>
      </property>
      <property name="channel" stdset="0">
-      <string>ca://MOTOR:1:VAL</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1" rowspan="3">
-    <widget class="PyDMSlider" name="pydmSlider">
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="whatsThis">
-      <string>Displays the value from an EPICS PV.</string>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <property name="minimum">
-      <number>-23</number>
-     </property>
-     <property name="maximum">
-      <number>45</number>
-     </property>
-     <property name="value">
-      <number>0</number>
-     </property>
-     <property name="sliderPosition">
-      <number>0</number>
-     </property>
-     <property name="invertedAppearance">
-      <bool>false</bool>
-     </property>
-     <property name="invertedControls">
-      <bool>false</bool>
-     </property>
-     <property name="tickPosition">
-      <enum>QSlider::TicksAbove</enum>
-     </property>
-     <property name="tickInterval">
-      <number>0</number>
-     </property>
-     <property name="step">
-      <string>5.374</string>
-     </property>
-     <property name="maxrange">
-      <string>200</string>
-     </property>
-     <property name="minrange">
-      <string>-150</string>
-     </property>
-     <property name="channel">
-      <string>ca://MOTOR:1:VAL</string>
+      <string>ca://MTEST:Float</string>
      </property>
     </widget>
    </item>
@@ -149,19 +72,9 @@
    <header>pydm.widgets.line_edit</header>
   </customwidget>
   <customwidget>
-   <class>PyDMLabel</class>
-   <extends>QLabel</extends>
-   <header>pydm.widgets.label</header>
-  </customwidget>
-  <customwidget>
    <class>PyDMSlider</class>
-   <extends>QSlider</extends>
+   <extends>QFrame</extends>
    <header>pydm.widgets.slider</header>
-  </customwidget>
-  <customwidget>
-   <class>PyDMIndicator</class>
-   <extends>QWidget</extends>
-   <header>pydm.widgets.indicator</header>
   </customwidget>
  </customwidgets>
  <resources/>
