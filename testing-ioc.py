@@ -102,7 +102,7 @@ class myDriver(Driver):
             xsig = 1.0 - 0.2*numpy.random.rand()
             ysig = 1.0 - 0.2*numpy.random.rand()
             z = gaussian_2d(xgrid,ygrid, x0, y0, xsig, ysig)
-            image_data = numpy.abs(256.0*(z)).flatten(order='C')
+            image_data = numpy.abs(256.0*(z)).flatten(order='C').astype(numpy.uint8, copy=False)
             self.setParam('Image', image_data)
             
             # do updates so clients see the changes
