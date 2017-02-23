@@ -16,6 +16,7 @@ class PyDMImageView(ImageView):
     self.image_waveform = np.zeros(0)
     self.image_width = 0
     self.ui.histogram.hide()
+    del self.ui.histogram
     self.ui.roiBtn.hide()
     self.ui.menuBtn.hide()
     self.cm_min = 0.0
