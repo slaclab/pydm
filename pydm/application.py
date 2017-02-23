@@ -17,14 +17,22 @@ from .main_window import PyDMMainWindow
 
 #If the user has PSP and pyca installed, use psp, which is faster.
 #Otherwise, use PyEPICS, which is slower, but more commonly used.
-try:
-  from .psp_plugin import PSPPlugin
+#To force a particular library, set the PYDM_EPICS_LIB environment
+#variable to either pyepics or pyca.
+EPICS_LIB = os.getenv("PYDM_EPICS_LIB")
+if EPICS_LIB == "pyepics":
+  from ..data_plugins.pyepics_plugin import PyEPICSPlugin
+  EPICSPlugin = PyEPICSPlugin
+elif EPICS_LIB == "pyca":
+  from ..data_plugins.psp_plugin import PSPPlugin
   EPICSPlugin = PSPPlugin
-except ImportError:
-  from .pyepics_plugin import PyEPICSPlugin
-  EPICSPlugin = PyEPICSPlugin  
-from .fake_plugin import FakePlugin
-from .archiver_plugin import ArchiverPlugin
+else:
+  try:
+    from ..data_plugins.psp_plugin import PSPPlugin
+    EPICSPlugin = PSPPlugin
+  except ImportError:
+    from ..data_plugins.pyepics_plugin import PyEPICSPlugin
+    EPICSPlugin = PyEPICSPlugin
   
 class PyDMApplication(QApplication):
   plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
