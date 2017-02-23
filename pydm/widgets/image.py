@@ -79,6 +79,8 @@ class PyDMImageView(ImageView):
 
   @pyqtSlot(np.ndarray)
   def receiveImageWaveform(self, new_waveform):
+    if new_waveform is None:
+      return
     if self.image_width == 0:
       self.image_waveform = new_waveform
       self._needs_reshape = True
