@@ -3,7 +3,7 @@ from .PyQt import uic
 from .PyQt.QtGui import QWidget
 
 class Display(QWidget):
-  def __init__(self, parent=None):
+  def __init__(self, parent=None, args=None):
     super(Display, self).__init__(parent=parent)
     self.ui = None
     self.load_ui(parent=parent)

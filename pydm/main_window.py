@@ -54,17 +54,17 @@ class PyDMMainWindow(QMainWindow):
   
   def join_to_current_file_path(self, ui_file):
     filename = None
-    if ui_file[0] == "/" or len(self.back_stack) == 0:
+    if path.isabs(ui_file) or len(self.back_stack) == 0:
       return str(ui_file)
     else:
       return path.join(path.dirname(self.current_file()), ui_file)
   
-  def open_file(self, ui_file):
+  def open_file(self, ui_file, command_line_args=[]):
     filename = self.join_to_current_file_path(ui_file)
-    self.open_abs_file(filename)
+    self.open_abs_file(filename, command_line_args)
   
-  def open_abs_file(self, filename):
-    widget = self.app.open_file(filename)
+  def open_abs_file(self, filename, command_line_args=[]):
+    widget = self.app.open_file(filename, command_line_args)
     self.set_display_widget(widget)
     if (len(self.back_stack) == 0) or (self.current_file() != filename):
       self.back_stack.append(filename)
