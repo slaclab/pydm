@@ -10,6 +10,7 @@ import sys
 import signal
 import subprocess
 import re
+import shlex
 from .PyQt.QtCore import Qt, QEvent
 from .PyQt.QtGui import QApplication, QColor, QWidget
 from .PyQt import uic
@@ -53,14 +54,14 @@ class PyDMApplication(QApplication):
     True: QColor(0, 0, 0)
   }
   
-  def __init__(self, command_line_args):
+  def __init__(self, ui_file=None, command_line_args=[], display_args=[]):
     super(PyDMApplication, self).__init__(command_line_args)
     self.directory_stack = ['']
     self.windows = {}
+    self.display_args = display_args
     #Open a window if one was provided.
-    if len(command_line_args) > 1:
-      ui_file = command_line_args[1]
-      self.make_window(ui_file)
+    if ui_file is not None:
+      self.make_window(ui_file, command_line_args)
       self.had_file = True
     else:
       self.had_file = False
@@ -82,7 +83,16 @@ class PyDMApplication(QApplication):
       self.establish_widget_connections(widget)
  
   def new_pydm_process(self, ui_file):
-    subprocess.Popen('python $PYDM_PATH/pydm.py "{file}"'.format(file=ui_file), shell=True)
+    path_and_args = shlex.split(str(ui_file))
+    filepath = path_and_args[0]
+    filepath_args = path_and_args[1:]
+    pydm_display_app_path = "pydm.py"
+    if os.environ.get("PYDM_PATH") is not None:
+      pydm_display_app_path = os.path.join(os.environ["PYDM_PATH"], pydm_display_app_path)
+    args = [sys.executable, pydm_display_app_path, filepath]
+    args.extend(self.display_args)
+    args.extend(filepath_args)
+    subprocess.Popen(args, shell=False)
   
   def new_window(self, ui_file):
     """new_window() gets called whenever a request to open a new window is made."""
@@ -92,11 +102,11 @@ class PyDMApplication(QApplication):
     elif extension == '.py':
       self.new_pydm_process(ui_file)
   
-  def make_window(self, ui_file):
+  def make_window(self, ui_file, command_line_args=None):
     """make_window instantiates a new PyDMMainWindow, adds it to the
     application's list of windows, and opens ui_file in the window."""
     main_window = PyDMMainWindow()
-    main_window.open_file(ui_file)
+    main_window.open_file(ui_file, command_line_args)
     main_window.show()
     self.windows[main_window] = os.path.dirname(ui_file)
     #If we are launching a new window, we don't want it to sit right on top of an existing window.
@@ -109,22 +119,27 @@ class PyDMApplication(QApplication):
   def load_ui_file(self, uifile):
     return uic.loadUi(uifile)
     
-  def load_py_file(self, pyfile):
+  def load_py_file(self, pyfile, args=None):
     #Add the intelligence module directory to the python path, so that submodules can be loaded.  Eventually, this should go away, and intelligence modules should behave as real python modules.
     module_dir = os.path.dirname(os.path.abspath(pyfile))
     sys.path.append(module_dir)
 
     #Now load the intelligence module.
     module = imp.load_source('intelclass', pyfile)
-    return module.intelclass()
+    return module.intelclass(args=args)
 
-  def open_file(self, ui_file):
-    self.directory_stack.append(os.path.dirname(ui_file))
-    (filename, extension) = os.path.splitext(ui_file)
+  def open_file(self, ui_file, command_line_args=[]):
+    #First split the ui_file string into a filepath and arguments
+    args = command_line_args
+    split = shlex.split(ui_file)
+    filepath = split[0]
+    args.extend(split[1:])
+    self.directory_stack.append(os.path.dirname(filepath))
+    (filename, extension) = os.path.splitext(filepath)
     if extension == '.ui':
-      widget = self.load_ui_file(ui_file)
+      widget = self.load_ui_file(filepath)
     elif extension == '.py':
-      widget = self.load_py_file(ui_file)
+      widget = self.load_py_file(filepath, args)
     else:
       raise Exception("invalid file type: {}".format(extension))
     self.establish_widget_connections(widget)
