@@ -54,7 +54,7 @@ class PyDMMainWindow(QMainWindow):
   
   def join_to_current_file_path(self, ui_file):
     filename = None
-    if ui_file[0] == "/" or len(self.back_stack) == 0:
+    if path.isabs(ui_file) or len(self.back_stack) == 0:
       return str(ui_file)
     else:
       return path.join(path.dirname(self.current_file()), ui_file)
