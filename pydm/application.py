@@ -11,7 +11,8 @@ import signal
 import subprocess
 import re
 import shlex
-from .PyQt.QtCore import Qt, QEvent
+import psutil
+from .PyQt.QtCore import Qt, QEvent, QTimer
 from .PyQt.QtGui import QApplication, QColor, QWidget
 from .PyQt import uic
 from .main_window import PyDMMainWindow
@@ -67,6 +68,9 @@ class PyDMApplication(QApplication):
       self.had_file = False
     #Re-enable sigint (usually blocked by pyqt)
     signal.signal(signal.SIGINT, signal.SIG_DFL)
+    perf_timer = QTimer()
+    perf_timer.setInterval(2000)
+    perf_timer.timeout.connect(self.get_CPU_usage)
 
   def exec_(self):
       """
@@ -77,6 +81,11 @@ class PyDMApplication(QApplication):
       if not self.had_file:
         self.make_connections()
       return super(PyDMApplication,self).exec_()
+
+
+  @pyqtSlot()
+  def get_CPU_usage(self):
+    print(psutil.cpu_percent(interval=None, percpu=True))
 
   def make_connections(self):
     for widget in self.topLevelWidgets():
@@ -98,7 +107,7 @@ class PyDMApplication(QApplication):
     """new_window() gets called whenever a request to open a new window is made."""
     (filename, extension) = os.path.splitext(ui_file)
     if extension == '.ui':
-      self.make_window(ui_file)
+      self.new_pydm_process(ui_file)
     elif extension == '.py':
       self.new_pydm_process(ui_file)
   
