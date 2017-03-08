@@ -68,6 +68,9 @@ class PyDMApplication(QApplication):
       self.had_file = False
     #Re-enable sigint (usually blocked by pyqt)
     signal.signal(signal.SIGINT, signal.SIG_DFL)
+    
+    #Performance monitoring
+    self.perf = psutil.Process()
     self.perf_timer = QTimer()
     self.perf_timer.setInterval(2000)
     self.perf_timer.timeout.connect(self.get_CPU_usage)
@@ -86,7 +89,11 @@ class PyDMApplication(QApplication):
 
   @pyqtSlot()
   def get_CPU_usage(self):
-    print(psutil.cpu_percent(interval=None, percpu=True))
+    with self.perf.oneshot():
+        total_percent = self.perf.cpu_percent(interval=None)
+        total_time = sum(self.perf.cpu_times())
+        usage = [total_percent * ((t.system_time + t.user_time)/total_time) for t in self.perf.threads()]
+    print("Total: {tot}, Per CPU: {percpu}".format(tot=total_percent, percpu=usage))
 
   def make_connections(self):
     for widget in self.topLevelWidgets():
