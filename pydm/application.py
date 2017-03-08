@@ -12,7 +12,7 @@ import subprocess
 import re
 import shlex
 import psutil
-from .PyQt.QtCore import Qt, QEvent, QTimer
+from .PyQt.QtCore import Qt, QEvent, QTimer, pyqtSlot
 from .PyQt.QtGui import QApplication, QColor, QWidget
 from .PyQt import uic
 from .main_window import PyDMMainWindow
@@ -68,9 +68,10 @@ class PyDMApplication(QApplication):
       self.had_file = False
     #Re-enable sigint (usually blocked by pyqt)
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-    perf_timer = QTimer()
-    perf_timer.setInterval(2000)
-    perf_timer.timeout.connect(self.get_CPU_usage)
+    self.perf_timer = QTimer()
+    self.perf_timer.setInterval(2000)
+    self.perf_timer.timeout.connect(self.get_CPU_usage)
+    self.perf_timer.start()
 
   def exec_(self):
       """
