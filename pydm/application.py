@@ -55,7 +55,7 @@ class PyDMApplication(QApplication):
     True: QColor(0, 0, 0)
   }
   
-  def __init__(self, ui_file=None, command_line_args=[], display_args=[]):
+  def __init__(self, ui_file=None, command_line_args=[], display_args=[], perfmon=False):
     super(PyDMApplication, self).__init__(command_line_args)
     self.directory_stack = ['']
     self.windows = {}
@@ -70,11 +70,12 @@ class PyDMApplication(QApplication):
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     
     #Performance monitoring
-    self.perf = psutil.Process()
-    self.perf_timer = QTimer()
-    self.perf_timer.setInterval(2000)
-    self.perf_timer.timeout.connect(self.get_CPU_usage)
-    self.perf_timer.start()
+    if perfmon:
+      self.perf = psutil.Process()
+      self.perf_timer = QTimer()
+      self.perf_timer.setInterval(2000)
+      self.perf_timer.timeout.connect(self.get_CPU_usage)
+      self.perf_timer.start()
 
   def exec_(self):
       """
@@ -93,7 +94,7 @@ class PyDMApplication(QApplication):
         total_percent = self.perf.cpu_percent(interval=None)
         total_time = sum(self.perf.cpu_times())
         usage = [total_percent * ((t.system_time + t.user_time)/total_time) for t in self.perf.threads()]
-    print("Total: {tot}, Per CPU: {percpu}".format(tot=total_percent, percpu=usage))
+    print("Total: {tot}, Per Thread: {percpu}".format(tot=total_percent, percpu=usage))
 
   def make_connections(self):
     for widget in self.topLevelWidgets():
