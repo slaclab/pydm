@@ -14,6 +14,8 @@ Contents:
    channel.rst
    pushbutton.rst
    lineedit.rst
+   macros.rst
+   
 Indices and tables
 ==================
 
