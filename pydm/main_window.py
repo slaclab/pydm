@@ -59,26 +59,26 @@ class PyDMMainWindow(QMainWindow):
     else:
       return path.join(path.dirname(self.current_file()), ui_file)
   
-  def open_file(self, ui_file, command_line_args=[]):
+  def open_file(self, ui_file, macros=None, command_line_args=[]):
     filename = self.join_to_current_file_path(ui_file)
-    self.open_abs_file(filename, command_line_args)
+    self.open_abs_file(filename, macros, command_line_args)
   
-  def open_abs_file(self, filename, command_line_args=[]):
-    widget = self.app.open_file(filename, command_line_args)
+  def open_abs_file(self, filename, macros=None, command_line_args=[]):
+    widget = self.app.open_file(filename, macros, command_line_args)
     self.set_display_widget(widget)
     if (len(self.back_stack) == 0) or (self.current_file() != filename):
-      self.back_stack.append(filename)
+      self.back_stack.append((filename, macros, command_line_args))
     self.ui.forwardButton.setEnabled(len(self.forward_stack) > 0)
     self.ui.backButton.setEnabled(len(self.back_stack) > 1)
     if self.home_file is None:
-      self.home_file = filename
+      self.home_file = (filename, macros, command_line_args)
       
-  def new_window(self, ui_file):
+  def new_window(self, ui_file, macros=None, command_line_args=None):
     filename = self.join_to_current_file_path(ui_file)
-    self.new_abs_window(filename)
+    self.new_abs_window(filename, macros, command_line_args)
   
-  def new_abs_window(self, filename):
-    self.app.new_window(filename)
+  def new_abs_window(self, filename, macros=None, command_line_args=None):
+    self.app.new_window(filename, macros, command_line_args)
   
   def go_button_pressed(self):
     filename = str(self.ui.panelSearchLineEdit.text())
@@ -93,35 +93,39 @@ class PyDMMainWindow(QMainWindow):
     self.forward_stack = []
     self.open_file(ui_file)
   
-  def go_abs(self, ui_file):
+  def go_abs(self, ui_file, macros=None, command_line_args=None):
     self.forward_stack = []
-    self.open_abs_file(ui_file)
+    self.open_abs_file(filename=ui_file, macros=macros, command_line_args=command_line_args)
     
   def back(self):
     if len(self.back_stack) > 1:
       if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-        self.new_abs_window(self.back_stack[-2])
+        stack_item = self.back_stack[-2]
+        self.new_abs_window(filename=stack_item[0], macros=stack_item[1], command_line_args=stack_item[2])
       else:
         self.forward_stack.append(self.back_stack.pop())
-        self.open_abs_file(self.back_stack[-1])
+        stack_item = self.back_stack[-1]
+        self.open_abs_file(filename=stack_item[0], macros=stack_item[1], command_line_args=stack_item[2])
   
   def forward(self):
     if len(self.forward_stack) > 0:
       if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-        self.new_abs_window(self.forward_stack[-1])
+        stack_item = self.forward_stack[-1]
+        self.new_abs_window(filename=stack_item[0], macros=stack_item[1], command_line_args=stack_item[2])
       else:
-        self.open_abs_file(self.forward_stack.pop())
+        stack_item = self.forward_stack.pop()
+        self.open_abs_file(filename=stack_item[0], macros=stack_item[1], command_line_args=stack_item[2])
   
   def home(self):
     if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-      self.new_abs_window(self.home_file)
+      self.new_abs_window(filename=self.home_file[0], macros=self.home_file[1], command_line_args=self.home_file[2])
     else:
-      self.go_abs(self.home_file)
+      self.go_abs(self.home_file[0], macros=self.home_file[1], command_line_args=self.home_file[2])
   
   def current_file(self):
     if len(self.back_stack) == 0:
       raise IndexError("The display manager does not have a display loaded.")
-    return self.back_stack[-1]
+    return self.back_stack[-1][0]
       
   @pyqtSlot(bool)
   def edit_in_designer(self, checked):
