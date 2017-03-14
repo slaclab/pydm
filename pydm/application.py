@@ -175,11 +175,11 @@ class PyDMApplication(QApplication):
     full_path = os.path.join(dirname, str(ui_file))
     return full_path
 
-  def open_relative(self, ui_file, widget):
+  def open_relative(self, ui_file, widget, macros=None, command_line_args=[]):
     """open_relative opens a ui file with a relative path.  This is
     really only used by embedded displays."""
     full_path = self.get_path(ui_file, widget)
-    return self.open_file(full_path)
+    return self.open_file(full_path, macros=macros, command_line_args=command_line_args)
 
   def plugin_for_channel(self, channel):
     match = re.match('.*://', channel.address)
