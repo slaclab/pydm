@@ -12,7 +12,7 @@ class PyDMRelatedDisplayButton(QPushButton):
   def __init__(self, parent=None, filename=None):
     super(PyDMRelatedDisplayButton, self).__init__(parent)
     self._display_filename = filename
-    self._macros = {}
+    self._macro_string = None
     self.app = QApplication.instance()
     
   def getDisplayFilename(self):
@@ -29,21 +29,16 @@ class PyDMRelatedDisplayButton(QPushButton):
   displayFilename = pyqtProperty(str, getDisplayFilename, setDisplayFilename, resetDisplayFilename)
   
   def getMacros(self):
-    if len(self._macros) < 1:
-      return ""
-    return json.dumps(self._macros)
+    return self._macro_string
   
   def setMacros(self, new_macros):
     if len(new_macros) < 1:
-      self._macros = {}
+      self._macro_string = None
     else:
-      try:
-        self._macros = json.loads(str(new_macros))
-      except ValueError:
-        pass
+      self._macro_string = new_macros
   
   def resetMacros(self):
-    self._macros = {}
+    self._macro_string = None
   
   macros = pyqtProperty(str, getMacros, setMacros, resetMacros, doc=
   """
@@ -61,9 +56,12 @@ class PyDMRelatedDisplayButton(QPushButton):
   def open_display(self, target=EXISTING_WINDOW):
     if self.displayFilename == None:
       return
+    macros = None
+    if self._macro_string is not None:
+      macros = json.loads(self._macro_string)
     if target == self.EXISTING_WINDOW:
-      self.window().go(self.displayFilename, macros=self._macros)
+      self.window().go(self.displayFilename, macros=macros)
     if target == self.NEW_WINDOW:
-      self.window().new_window(self.displayFilename, macros=self._macros)
+      self.window().new_window(self.displayFilename, macros=macros)
     
   
