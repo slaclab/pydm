@@ -12,6 +12,8 @@ class PyDMEmbeddedDisplay(QFrame):
 		self._filename = None
 		self._macros = None
 		self._embedded_widget = None
+		self._disconnect_when_hidden = True
+		self._is_connected = False
 		self.layout = QVBoxLayout(self)
 		self.err_label = QLabel(self)
 		self.err_label.setAlignment(Qt.AlignHCenter)
@@ -99,4 +101,31 @@ class PyDMEmbeddedDisplay(QFrame):
 		self.err_label.hide()
 		self._embedded_widget.show()
 		self.app.establish_widget_connections(self._embedded_widget)
+		self._is_connected = True
+	
+	def connect(self):
+		if self._is_connected or self.embedded_widget is None:
+			return
+		self.app.establish_widget_connections(self.embedded_widget)
+	
+	def disconnect(self):
+		if not self._is_connected or self.embedded_widget is None:
+			return
+		self.app.close_widget_connections(self.embedded_widget)
+	
+	@pyqtProperty(bool, doc="""Disconnect from PVs when this widget is not visible.""")
+	def disconnectWhenHidden(self):
+		return self._disconnect_when_hidden
+	
+	@disconnectWhenHidden.setter
+	def disconnectWhenHidden(self, disconnect_when_hidden):
+		self._disconnect_when_hidden = disconnect_when_hidden
+		
+	def showEvent(self, e):
+		if self.disconnectWhenHidden:
+			self.connect()
+	
+	def hideEvent(self, e):
+		if self.disconnectWhenHidden:
+			self.disconnect()
 		
