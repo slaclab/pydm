@@ -29,6 +29,8 @@ class PyDMRelatedDisplayButton(QPushButton):
   displayFilename = pyqtProperty(str, getDisplayFilename, setDisplayFilename, resetDisplayFilename)
   
   def getMacros(self):
+    if self._macro_string is None:
+      return ""
     return self._macro_string
   
   def setMacros(self, new_macros):
