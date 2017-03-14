@@ -73,11 +73,11 @@ class PyDMMainWindow(QMainWindow):
     if self.home_file is None:
       self.home_file = (filename, macros, command_line_args)
       
-  def new_window(self, ui_file, macros=None, command_line_args=None):
+  def new_window(self, ui_file, macros=None, command_line_args=[]):
     filename = self.join_to_current_file_path(ui_file)
     self.new_abs_window(filename, macros, command_line_args)
   
-  def new_abs_window(self, filename, macros=None, command_line_args=None):
+  def new_abs_window(self, filename, macros=None, command_line_args=[]):
     self.app.new_window(filename, macros, command_line_args)
   
   def go_button_pressed(self):
@@ -89,11 +89,11 @@ class PyDMMainWindow(QMainWindow):
   
   #Note: in go(), back(), and forward(), always do history stack manipulation *before* opening the file.
   #That way, the navigation button enable/disable state will work correctly.  This is stupid, and will be fixed eventually.
-  def go(self, ui_file):
+  def go(self, ui_file, macros=None, command_line_args=[]):
     self.forward_stack = []
-    self.open_file(ui_file)
+    self.open_file(ui_file, macros, command_line_args)
   
-  def go_abs(self, ui_file, macros=None, command_line_args=None):
+  def go_abs(self, ui_file, macros=None, command_line_args=[]):
     self.forward_stack = []
     self.open_abs_file(filename=ui_file, macros=macros, command_line_args=command_line_args)
     
