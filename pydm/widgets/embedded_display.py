@@ -1,134 +1,102 @@
-from ..PyQt.QtGui import QStackedWidget, QApplication
+from ..PyQt.QtGui import QFrame, QApplication, QLabel, QVBoxLayout
 from ..PyQt.QtCore import Qt
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
+import json
+import os.path
+from ..application import PyDMApplication
 
-class PyDMEmbeddedDisplay(QStackedWidget):
-    """
-    Widget to display other pydm guis inside of the current window.
-    Requires a list of filenames, either absolute paths or relative to the the
-    gui this widget is in.
-    """
-    def __init__(self, parent=None, filenames=None, initial_display=0):
-        super(PyDMEmbeddedDisplay, self).__init__(parent)
-        self.app = QApplication.instance()
-        self.widget_files = []
-        #if filenames is not None:
-        #    self.display_filenames = filenames
-        #self.setCurrentIndex(initial_display)
+class PyDMEmbeddedDisplay(QFrame):
+	def __init__(self, parent=None):
+		super(PyDMEmbeddedDisplay, self).__init__(parent=parent)
+		self.app = QApplication.instance()
+		self._filename = None
+		self._macros = None
+		self._embedded_widget = None
+		self.layout = QVBoxLayout(self)
+		self.err_label = QLabel(self)
+		self.err_label.setAlignment(Qt.AlignHCenter)
+		self.layout.addWidget(self.err_label)
+		self.layout.setContentsMargins(0,0,0,0)
+		self.err_label.hide()
+		if not isinstance(self.app, PyDMApplication):
+			self.setFrameShape(QFrame.Box)
+		else:
+			self.setFrameShape(QFrame.NoFrame)
+	
+	@pyqtProperty(str, doc=
+	"""
+	JSON-formatted string containing macro variables to pass to the embedded file.
+	""")
+	def macros(self):
+		if self._macros is None:
+			return ""
+		return self._macros
+	
+	@macros.setter
+	def macros(self, new_macros):
+		self._macros = str(new_macros)
+	
+	# WARNING:  If the macros property is not defined before the filename property,
+	# The widget will not have any macros defined when it loads the embedded file.
+	# Yeah, this is stupid.  It needs to be fixed.
+	
+	@pyqtProperty(str, doc=
+	"""
+	Filename of the display to embed.
+	"""
+	)
+	def filename(self):
+		if self._filename is None:
+			return ""
+		return self._filename
 
-    def update_widgets(self):
-        """
-        Remove defunct widgets and load new widgets.
-        """
-        # Block updating in designer, where only a normal QApplication exists
-        if not hasattr(self.app, "open_file"):
-            return
-        i=0
-        for i, filename in enumerate(self.display_filenames):
-            user_file = str(filename)
-            try:
-                widget_file = self.widget_files[i]
-            except IndexError:
-                widget_file = None
-                self.widget_files.append(None)
-            if user_file != widget_file:
-                new_widget = self.open_file(user_file)
-                old_widget = self.widget(i)
-                if old_widget is not None:
-                    self.app.close_widget_connections(old_widget)
-                    self.removeWidget(old_widget)
-                self.app.establish_widget_connections(new_widget)
-                self.insertWidget(i, new_widget)
-                self.widget_files[i] = user_file
-        n_widgets = i+1
-        while self.count() > n_widgets:
-            widget = self.widget(n_widgets)
-            self.app.close_widget_connections(widget)
-            self.removeWidget(widget)
-        self.widget_files = self.widget_files[:i]
-
-    def open_file(self, filename):
-        """
-        Opens the widget specified in filename, relative to the file that this
-        widget is instantiated in, or absolute path.
-
-        :param filename: relative or absolute filepath
-        :type filename:  string
-        :rtyp: QWidget
-        """
-        if filename[0] == "/":
-            return self.app.open_file(filename)
-        else:
-            return self.app.open_relative(filename, self)
-
-    def update_display_at_index(self, index, new_filename):
-        """
-        Change the filename of the display at index.
-
-        :param index: index of the filename to update
-        :type index:  int
-        :param new_filename: path of the new file to use
-        :type new_filename:  str
-        """
-        filenames = self.display_filenames
-        filenames[index] = new_filename
-        self.display_filenames = filenames
-
-    @pyqtSlot(str)
-    def add_display(self, new_filename):
-        """
-        Append a new filename to the list of available filenames.
-
-        :param new_filename: path of the file to append
-        :type new_filename:  str
-        """
-        filenames = self.display_filenames
-        filenames.append(new_filename)
-        self.display_filenames = filenames
-
-    @pyqtSlot(str)
-    def edit_filename(self, name):
-        """
-        Unload the current file and load a new file.
-
-        :param name: path to the file to replace the current file
-        :type name:  str
-        """
-        self.active_display_filename = name
-
-    @pyqtProperty("QStringList", doc=
-    """
-    List of filenames accessible through the embedded display.
-    """
-    )
-    def display_filenames(self):
-        try:
-            return self._display_filenames
-        except AttributeError:
-            return []
-
-    @display_filenames.setter
-    def display_filenames(self, filename_list):
-        self._display_filenames = []
-        for file in filename_list:
-            self._display_filenames.append(file)
-        self.update_widgets()
-
-    @pyqtProperty(str, doc=
-    """
-    Filename of the current active display.
-    """
-    )
-    def active_display_filename(self):
-        filenames = self.display_filenames
-        index = self.currentIndex()
-        if 0 <= index < len(filenames):
-            return filenames[index]
-        return ""
-
-    @active_display_filename.setter
-    def active_display_filename(self, filename):
-        if filename is not None and len(filename) > 0:
-            index = self.currentIndex()
-            self.update_display_at_index(index, filename)
-
+	@filename.setter
+	def filename(self, filename):
+		filename = str(filename)
+		if filename != self._filename:
+			self._filename = filename
+			#If we arent in a PyDMApplication (usually that means we are in Qt Designer),
+			# don't try to load the file, just show text with the filename.
+			if not isinstance(self.app, PyDMApplication):
+				self.err_label.setText(self._filename)
+				self.err_label.show()
+				return				
+			try:
+				self.embedded_widget = self.open_file()					
+			except ValueError as e:
+				self.err_label.setText("Could not parse macro string.\nError: {}".format(e))
+				self.err_label.show()
+			except IOError as e:
+				self.err_label.setText("Could not open {filename}.\nError: {err}".format(filename=self._filename, err=e))
+				self.err_label.show()
+		
+	def open_file(self):
+		"""
+		Opens the widget specified in the widget's filename property.
+		:rtyp: QWidget
+		"""
+		parsed_macros = None
+		if self.macros is not None and len(self.macros) > 0:
+			parsed_macros = json.loads(self.macros)
+		if os.path.isabs(self.filename):
+			return self.app.open_file(self.filename, macros=parsed_macros)
+		else:
+			return self.app.open_relative(self.filename, self, macros=parsed_macros)
+	
+	@property
+	def embedded_widget(self):
+		return self._embedded_widget
+	
+	@embedded_widget.setter
+	def embedded_widget(self, new_widget):
+		if new_widget is self._embedded_widget:
+			return
+		if self._embedded_widget is not None:
+			self.app.close_widget_connections(self._embedded_widget)
+		self._embedded_widget = new_widget
+		self._embedded_widget.setParent(self)
+		self.layout.addWidget(self._embedded_widget)
+		self.err_label.hide()
+		self._embedded_widget.show()
+		self.app.establish_widget_connections(self._embedded_widget)
+		

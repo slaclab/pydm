@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>590</width>
-    <height>406</height>
+    <width>536</width>
+    <height>354</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,23 +20,13 @@
       <string/>
      </property>
      <property name="whatsThis">
-      <string>
-    Widget to display other pydm guis inside of the current window.
-    Requires a list of filenames, either absolute paths or relative to the the
-    gui this widget is in.
-    </string>
+      <string/>
+     </property>
+     <property name="macros" stdset="0">
+      <string>{&quot;prefix&quot;: &quot;MTEST&quot;}</string>
      </property>
      <property name="filename" stdset="0">
-      <string>waveplot.ui</string>
-     </property>
-     <property name="display_filenames" stdset="0">
-      <stringlist>
-       <string>waveplot.ui</string>
-       <string>somethingelse.ui</string>
-      </stringlist>
-     </property>
-     <property name="active_display_filename" stdset="0">
-      <string/>
+      <string>macro_pv.ui</string>
      </property>
     </widget>
    </item>
@@ -46,7 +36,7 @@
   <customwidget>
    <class>PyDMEmbeddedDisplay</class>
    <extends>QFrame</extends>
-   <header>pydm.widgets.embedded_display</header>
+   <header>pydm.widgets.new_embedded_display</header>
   </customwidget>
  </customwidgets>
  <resources/>
