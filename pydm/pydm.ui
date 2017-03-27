@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>672</width>
+    <width>673</width>
     <height>112</height>
    </rect>
   </property>
@@ -15,6 +15,9 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>-1</number>
+    </property>
     <property name="sizeConstraint">
      <enum>QLayout::SetMaximumSize</enum>
     </property>
@@ -96,7 +99,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>672</width>
+     <width>673</width>
      <height>22</height>
     </rect>
    </property>
@@ -115,6 +118,7 @@
     </property>
     <addaction name="actionIncrease_Font_Size"/>
     <addaction name="actionDecrease_Font_Size"/>
+    <addaction name="actionShow_File_Path_in_Title_Bar"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -155,6 +159,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actionShow_File_Path_in_Title_Bar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show File Path in Title Bar</string>
    </property>
   </action>
  </widget>

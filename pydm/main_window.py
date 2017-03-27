@@ -13,6 +13,7 @@ class PyDMMainWindow(QMainWindow):
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)
     self._display_widget = None
+    self._showing_file_path_in_title_bar = False
     self.ui.homeButton.clicked.connect(self.home)
     self.home_file = None
     self.back_stack = []
@@ -24,6 +25,7 @@ class PyDMMainWindow(QMainWindow):
     self.ui.actionReload_Display.triggered.connect(self.reload_display)
     self.ui.actionIncrease_Font_Size.triggered.connect(self.increase_font_size)
     self.ui.actionDecrease_Font_Size.triggered.connect(self.decrease_font_size)
+    self.ui.actionShow_File_Path_in_Title_Bar.triggered.connect(self.toggle_file_path_in_title_bar)
     self.designer_path = None
     if environ.get('QTHOME') == None:
       self.ui.actionEdit_in_Designer.setEnabled(False)
@@ -42,7 +44,7 @@ class PyDMMainWindow(QMainWindow):
     self.clear_display_widget()
     self._display_widget = new_widget
     self.ui.verticalLayout.addWidget(self._display_widget)
-    self.setWindowTitle(self._display_widget.windowTitle() + " - PyDM")
+    self.update_window_title()
     QTimer.singleShot(0, self.resizeToMinimum)
     
   def clear_display_widget(self):
@@ -65,9 +67,9 @@ class PyDMMainWindow(QMainWindow):
   
   def open_abs_file(self, filename, macros=None, command_line_args=[]):
     widget = self.app.open_file(filename, macros, command_line_args)
-    self.set_display_widget(widget)
     if (len(self.back_stack) == 0) or (self.current_file() != filename):
       self.back_stack.append((filename, macros, command_line_args))
+    self.set_display_widget(widget)
     self.ui.forwardButton.setEnabled(len(self.forward_stack) > 0)
     self.ui.backButton.setEnabled(len(self.back_stack) > 1)
     if self.home_file is None:
@@ -126,6 +128,25 @@ class PyDMMainWindow(QMainWindow):
     if len(self.back_stack) == 0:
       raise IndexError("The display manager does not have a display loaded.")
     return self.back_stack[-1][0]
+  
+  def update_window_title(self):
+    if self.showing_file_path_in_title_bar:
+      self.setWindowTitle(self.current_file() + " - PyDM")
+    else:
+      self.setWindowTitle(self._display_widget.windowTitle() + " - PyDM")
+  
+  @property
+  def showing_file_path_in_title_bar(self):
+    return self._showing_file_path_in_title_bar
+  
+  @showing_file_path_in_title_bar.setter
+  def showing_file_path_in_title_bar(self, checked):
+    self._showing_file_path_in_title_bar = checked
+    self.update_window_title()
+  
+  @pyqtSlot(bool)
+  def toggle_file_path_in_title_bar(self, checked):
+    self.showing_file_path_in_title_bar = checked
       
   @pyqtSlot(bool)
   def edit_in_designer(self, checked):

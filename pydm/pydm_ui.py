@@ -27,7 +27,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(672, 112)
+        MainWindow.resize(673, 112)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
@@ -62,7 +62,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.line)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 672, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 673, 22))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -83,12 +83,16 @@ class Ui_MainWindow(object):
         self.actionIncrease_Font_Size.setObjectName(_fromUtf8("actionIncrease_Font_Size"))
         self.actionDecrease_Font_Size = QtGui.QAction(MainWindow)
         self.actionDecrease_Font_Size.setObjectName(_fromUtf8("actionDecrease_Font_Size"))
+        self.actionShow_File_Path_in_Title_Bar = QtGui.QAction(MainWindow)
+        self.actionShow_File_Path_in_Title_Bar.setCheckable(True)
+        self.actionShow_File_Path_in_Title_Bar.setObjectName(_fromUtf8("actionShow_File_Path_in_Title_Bar"))
         self.menuFile.addAction(self.actionAbout_DIM)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionEdit_in_Designer)
         self.menuFile.addAction(self.actionReload_Display)
         self.menuView.addAction(self.actionIncrease_Font_Size)
         self.menuView.addAction(self.actionDecrease_Font_Size)
+        self.menuView.addAction(self.actionShow_File_Path_in_Title_Bar)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuView.menuAction())
 
@@ -112,4 +116,5 @@ class Ui_MainWindow(object):
         self.actionIncrease_Font_Size.setShortcut(_translate("MainWindow", "Ctrl+=", None))
         self.actionDecrease_Font_Size.setText(_translate("MainWindow", "Decrease Font Size", None))
         self.actionDecrease_Font_Size.setShortcut(_translate("MainWindow", "Ctrl+-", None))
+        self.actionShow_File_Path_in_Title_Bar.setText(_translate("MainWindow", "Show File Path in Title Bar", None))
 
