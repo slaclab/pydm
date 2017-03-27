@@ -18,29 +18,38 @@ class PyDMConnection(QObject):
     def add_listener(self, channel):
         self.listener_count = self.listener_count + 1
         if channel.connection_slot is not None:
-          self.connection_state_signal.connect(channel.connection_slot, Qt.QueuedConnection)
+            self.connection_state_signal.connect(channel.connection_slot, Qt.QueuedConnection)
         if channel.value_slot is not None:
-            self.new_value_signal[int].connect(channel.value_slot, Qt.QueuedConnection)
-            self.new_value_signal[float].connect(channel.value_slot, Qt.QueuedConnection)
-            self.new_value_signal[str].connect(channel.value_slot, Qt.QueuedConnection)
+          try:
+              self.new_value_signal[int].connect(channel.value_slot, Qt.QueuedConnection)
+          except TypeError:
+              pass
+          try:
+              self.new_value_signal[float].connect(channel.value_slot, Qt.QueuedConnection)
+          except TypeError:
+              pass
+          try:
+              self.new_value_signal[str].connect(channel.value_slot, Qt.QueuedConnection)
+          except TypeError:
+              pass
 
         if channel.waveform_slot is not None:
             self.new_waveform_signal.connect(channel.waveform_slot, Qt.QueuedConnection)
     
         if channel.severity_slot is not None:
-          self.new_severity_signal.connect(channel.severity_slot, Qt.QueuedConnection)
+            self.new_severity_signal.connect(channel.severity_slot, Qt.QueuedConnection)
 
         if channel.write_access_slot is not None:
-          self.write_access_signal.connect(channel.write_access_slot, Qt.QueuedConnection)
+            self.write_access_signal.connect(channel.write_access_slot, Qt.QueuedConnection)
 
         if channel.enum_strings_slot is not None:
-          self.enum_strings_signal.connect(channel.enum_strings_slot, Qt.QueuedConnection)
+            self.enum_strings_signal.connect(channel.enum_strings_slot, Qt.QueuedConnection)
 
         if channel.unit_slot is not None:
-          self.unit_signal.connect(channel.unit_slot, Qt.QueuedConnection)
+            self.unit_signal.connect(channel.unit_slot, Qt.QueuedConnection)
 
         if channel.prec_slot is not None:
-          self.prec_signal.connect(channel.prec_slot, Qt.QueuedConnection)
+            self.prec_signal.connect(channel.prec_slot, Qt.QueuedConnection)
       
     def remove_listener(self):
         self.listener_count = self.listener_count - 1
