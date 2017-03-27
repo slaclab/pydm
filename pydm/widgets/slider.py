@@ -1,4 +1,4 @@
-from ..PyQt.QtGui import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy
+from ..PyQt.QtGui import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
 from ..PyQt.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
 from .channel import PyDMChannel
 import numpy as np
@@ -26,32 +26,6 @@ class PyDMSlider(QFrame):
   
   def __init__(self, parent=None):
     super(PyDMSlider, self).__init__(parent=parent)
-    #Set up all the internal widgets that make up a PyDMSlider
-    self.vertical_layout = QVBoxLayout(self)
-    self.vertical_layout.setContentsMargins(4,0,4,4)
-    self.horizontal_layout = QHBoxLayout()
-    label_size_policy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
-    self.low_lim_label = QLabel(self)
-    self.low_lim_label.setSizePolicy(label_size_policy)
-    self.low_lim_label.setAlignment(Qt.AlignLeft|Qt.AlignTrailing|Qt.AlignVCenter)
-    self.horizontal_layout.addWidget(self.low_lim_label)
-    self.horizontal_layout.addStretch(0)
-    self.value_label = QLabel(self)
-    self.value_label.setAlignment(Qt.AlignHCenter|Qt.AlignVCenter)
-    self.horizontal_layout.addWidget(self.value_label)
-    self.horizontal_layout.addStretch(0)
-    self.high_lim_label = QLabel(self)
-    self.high_lim_label.setSizePolicy(label_size_policy)
-    self.high_lim_label.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-    self.horizontal_layout.addWidget(self.high_lim_label)
-    self.vertical_layout.addLayout(self.horizontal_layout)
-    self._slider = QSlider(parent=self)
-    self._slider.setOrientation(Qt.Horizontal)
-    self._slider.sliderMoved.connect(self.internal_slider_moved)
-    self._slider.sliderPressed.connect(self.internal_slider_pressed)
-    self._slider.sliderReleased.connect(self.internal_slider_released)
-    self._slider.valueChanged.connect(self.internal_slider_value_changed)
-    self.vertical_layout.addWidget(self._slider)
     #Internal values for properties
     self._connected = False
     self._write_access = False
@@ -64,8 +38,69 @@ class PyDMSlider(QFrame):
     self._minimum = -10.0
     self._maximum = 10.0
     self._num_steps = 101
+    self._orientation = Qt.Horizontal
+    # Set up all the internal widgets that make up a PyDMSlider.
+    # We'll add all these things to layouts when we call setup_widgets_for_orientation
+    label_size_policy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
+    self.low_lim_label = QLabel(self)
+    self.low_lim_label.setSizePolicy(label_size_policy)
+    self.low_lim_label.setAlignment(Qt.AlignLeft|Qt.AlignTrailing|Qt.AlignVCenter)
+    self.value_label = QLabel(self)
+    self.value_label.setAlignment(Qt.AlignHCenter|Qt.AlignVCenter)
+    self.high_lim_label = QLabel(self)
+    self.high_lim_label.setSizePolicy(label_size_policy)
+    self.high_lim_label.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+    self._slider = QSlider(parent=self)
+    self._slider.setOrientation(Qt.Horizontal)
+    self._slider.sliderMoved.connect(self.internal_slider_moved)
+    self._slider.sliderPressed.connect(self.internal_slider_pressed)
+    self._slider.sliderReleased.connect(self.internal_slider_released)
+    self._slider.valueChanged.connect(self.internal_slider_value_changed)
+    #self.vertical_layout.addWidget(self._slider)
+    #Other internal variables and final setup steps
     self._slider_position_to_value_map = None
+    self.setup_widgets_for_orientation(self._orientation)
     self.reset_slider_limits()
+  
+  @pyqtProperty(Qt.Orientation)
+  def orientation(self):
+    return self._orientation
+	
+  @orientation.setter
+  def orientation(self, new_orientation):
+    self._orientation = new_orientation
+    self.setup_widgets_for_orientation(new_orientation)
+    
+  def setup_widgets_for_orientation(self, new_orientation):
+    layout = None
+    if new_orientation == Qt.Horizontal:
+      layout = QVBoxLayout()
+      layout.setContentsMargins(4,0,4,4)
+      label_layout = QHBoxLayout()
+      label_layout.addWidget(self.low_lim_label)
+      label_layout.addStretch(0)
+      label_layout.addWidget(self.value_label)
+      label_layout.addStretch(0)
+      label_layout.addWidget(self.high_lim_label)
+      layout.addLayout(label_layout)
+      self._slider.setOrientation(new_orientation)
+      layout.addWidget(self._slider)
+    elif new_orientation == Qt.Vertical:
+      layout = QHBoxLayout()
+      layout.setContentsMargins(0,4,4,4)
+      label_layout = QVBoxLayout()
+      label_layout.addWidget(self.high_lim_label)
+      label_layout.addStretch(0)
+      label_layout.addWidget(self.value_label)
+      label_layout.addStretch(0)
+      label_layout.addWidget(self.low_lim_label)
+      layout.addLayout(label_layout)
+      self._slider.setOrientation(new_orientation)
+      layout.addWidget(self._slider)
+    if self.layout() is not None:
+      # Trick to remove the existing layout by reparenting it in an empty widget.
+      QWidget().setLayout(self.layout())
+    self.setLayout(layout)
   
   def reset_slider_limits(self):
     self._slider.setMinimum(0)
