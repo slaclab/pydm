@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'pydm.ui'
-#
-# Created: Wed Sep 30 13:44:51 2015
-#      by: .PyQt UI code generator 4.11.3
-#
-# WARNING! All changes made in this file will be lost!
-
+# This file was originally constructed in Designer from the
+# pydm.ui file, and converted to python via pyuic4. However,
+# to maintain compatibility with both PyQt4 and PyQt5,
+# the output file must be modified by hand to change the
+# import statements to import the PyQt compatibility layer
+# from .PyQt.  If you use pyuic to change this file, you MUST
+# edit by hand to re-include this message and the following
+# import line.
 from .PyQt import QtCore, QtGui
 
 try:
