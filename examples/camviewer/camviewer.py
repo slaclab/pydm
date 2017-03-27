@@ -3,7 +3,9 @@
 from pydm.PyQt.QtCore import QObject, pyqtSlot, pyqtSignal, QPointF, QRectF
 from pydm.PyQt.QtGui import QWidget, QSizePolicy, QPen
 from os import path
-from pydm import Display, PyDMChannel, PyDMImageView
+from pydm import Display
+from pydm.widgets.channel import PyDMChannel
+from pydm.widgets.image import PyDMImageView
 import numpy as np
 from pyqtgraph import PlotWidget, mkPen
 from marker import ImageMarker
@@ -15,8 +17,8 @@ class CamViewer(Display):
   roi_y_signal = pyqtSignal(str)
   roi_w_signal = pyqtSignal(str)
   roi_h_signal = pyqtSignal(str)
-  def __init__(self, display_manager_window):
-    super(CamViewer, self).__init__(display_manager_window)
+  def __init__(self, parent=None, args=None):
+    super(CamViewer, self).__init__(parent=parent, args=args)
     
     #Set up the list of cameras, and all the PVs
     vcc_dict = { "image": "ca://CAMR:IN20:186:IMAGE", "max_width": "ca://CAMR:IN20:186:N_OF_COL", "max_height": "ca://CAMR:IN20:186:N_OF_ROW", "roi_x": None, "roi_y": None, "roi_width": None, "roi_height": None }
