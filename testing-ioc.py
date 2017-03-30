@@ -33,13 +33,17 @@ pvdb = {
         'XPos'             : { 'prec' : 2, 'value' : 0.0 },
         'YPos'             : { 'prec' : 2, 'value' : 0.0 },
         'Image'            : { 'type' : 'char', 'count': IMAGE_SIZE**2, 'value': numpy.zeros(IMAGE_SIZE**2,dtype=numpy.uint8) },
+        'TwoSpotImage'     : { 'type' : 'char', 'count': IMAGE_SIZE**2, 'value': numpy.zeros(IMAGE_SIZE**2,dtype=numpy.uint8) },
         'ImageWidth'       : { 'type' : 'int', 'value' : IMAGE_SIZE },
         'String'           : { 'type' : 'string', 'value': "Test String"},
         'Float'            : { 'type' : 'float', 'value': 0.0, 'lolim': -1.2, 'lolo': -1.0, 'low': -0.8, 'high': 0.8, 'hihi': 1.0, 'hilim': 1.2 }
 }
 
+def double_gaussian_2d(x, y, x0, y0, xsig, ysig):
+    return numpy.exp(-0.5*(((x-x0) / xsig)**2 + ((y-y0) / ysig)**2)) + numpy.exp(-0.5*(((x+3) / xsig)**2 + ((y+3) / ysig)**2)) 
+    
 def gaussian_2d(x, y, x0, y0, xsig, ysig):
-    return numpy.exp(-0.5*(((x-x0) / xsig)**2 + ((y-y0) / ysig)**2))
+    return numpy.exp(-0.5*(((x-x0) / xsig)**2 + ((y-y0) / ysig)**2)) 
  
 class myDriver(Driver):
     def __init__(self):
@@ -100,11 +104,14 @@ class myDriver(Driver):
             #Generate the image data
             x0 = 0.5*(numpy.random.rand()-0.5) + self.getParam('XPos')
             y0 = 0.5*(numpy.random.rand()-0.5) - self.getParam('YPos')
-            xsig = 1.0 - 0.2*numpy.random.rand()
-            ysig = 1.0 - 0.2*numpy.random.rand()
+            xsig = 0.8 - 0.2*numpy.random.rand()
+            ysig = 0.8 - 0.2*numpy.random.rand()
             z = gaussian_2d(xgrid,ygrid, x0, y0, xsig, ysig)
             image_data = numpy.abs(256.0*(z)).flatten(order='C').astype(numpy.uint8, copy=False)
             self.setParam('Image', image_data)
+            two_spots = double_gaussian_2d(xgrid, ygrid, x0, y0, xsig, ysig)
+            two_spot_image = numpy.abs(256.0*(two_spots)).flatten(order='C').astype(numpy.uint8, copy=False)
+            self.setParam('TwoSpotImage', two_spot_image)
             
             # do updates so clients see the changes
             self.updatePVs()
