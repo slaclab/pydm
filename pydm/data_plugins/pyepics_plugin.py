@@ -50,18 +50,25 @@ class Connection(PyDMConnection):
     if epics.ca.isConnected(self.pv.chid):
       self.send_connection_state(conn=True)
       self.pv.run_callbacks()
-      
-    try:
-      channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
-      channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
-      channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
-    except:
-      pass
-      
-    try:
-      channel.waveform_signal.connect(self.put_waveform, Qt.QueuedConnection)
-    except:
-      pass
+    #If the channel is used for writing to PVs, hook it up to the 'put' methods.  
+    if channel.value_signal is not None:
+        try:
+            channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
+        except KeyError:
+            pass
+        try:
+            channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
+        except KeyError:
+            pass
+        try:
+            channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
+        except KeyError:
+            pass
+    if channel.waveform_signal is not None:
+        try:
+            channel.waveform_signal.connect(self.put_value, Qt.QueuedConnection)
+        except KeyError:
+            pass
 
   def close(self):
     self.pv.disconnect()
