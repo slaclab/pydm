@@ -116,7 +116,6 @@ class PyDMEnumComboBox(QWidget):
   @pyqtSlot(int)
   def internal_combo_box_activated_int(self, index):
     if self._value != index:
-      self._value = index
       self.valueChanged.emit(index)
     self.activated[int].emit(index)
   
