@@ -8,7 +8,7 @@ class PyDMConnection(QObject):
     new_severity_signal =     pyqtSignal(int)
     write_access_signal =     pyqtSignal(bool)
     enum_strings_signal =     pyqtSignal(tuple)
-    unit_signal =             pyqtSignal([str],[bytes])
+    unit_signal =             pyqtSignal(str)
     prec_signal =             pyqtSignal(int)
 
     def __init__(self, channel, address, parent=None):
