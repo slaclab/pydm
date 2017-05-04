@@ -10,6 +10,8 @@ class Connection(PyDMConnection):
     self.add_listener(channel)
   
   def send_new_value(self, pvname=None, value=None, char_value=None, units=None, enum_strs=None, severity=None, count=None, write_access=None, ftype=None, *args, **kws):
+    if value is None:
+      return
     if severity != None:
       self.new_severity_signal.emit(int(severity))
     if write_access != None:
