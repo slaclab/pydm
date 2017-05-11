@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>865</width>
+    <height>492</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>TimePlot with Multiple Curves</string>
+  </property>
+  <widget class="PyDMTimePlot" name="multiplePlot">
+   <property name="geometry">
+    <rect>
+     <x>15</x>
+     <y>15</y>
+     <width>831</width>
+     <height>451</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="autoRangeY">
+    <bool>true</bool>
+   </property>
+   <property name="curveColor">
+    <color>
+     <red>255</red>
+     <green>236</green>
+     <blue>4</blue>
+    </color>
+   </property>
+   <property name="title" stdset="0">
+    <string>Multiple PVs</string>
+   </property>
+   <property name="yChannel">
+    <string>ca://EX:FUNC1</string>
+   </property>
+   <property name="bufferSize">
+    <number>300</number>
+   </property>
+   <property name="updatesAsynchronously">
+    <bool>true</bool>
+   </property>
+   <property name="timeSpan">
+    <double>30.000000000000000</double>
+   </property>
+   <property name="updateInterval">
+    <double>0.100000000000000</double>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMTimePlot</class>
+   <extends>QGraphicsView</extends>
+   <header>pydm.widgets.timeplot</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
