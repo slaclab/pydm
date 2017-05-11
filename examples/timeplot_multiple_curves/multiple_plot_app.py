@@ -2,8 +2,6 @@
 import sys
 from os import path
 from pydm import PyDMApplication
-#from pydm.PyQt import uic
-#from pydm.PyQt.QtGui import QWidget
 from pydm import Display
 
 # Display Class -----------------------------------------------------------------
