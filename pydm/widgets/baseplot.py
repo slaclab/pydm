@@ -20,6 +20,8 @@ class BasePlot(PlotWidget):
     self.curve = PlotCurveItem(pen=self._curveColor)
     self.addItem(self.curve)
     self._title = None
+    self._show_legend = False
+    self._legend = None
   
   def getAutoRangeX(self):
     return self._auto_range_x
@@ -112,3 +114,22 @@ class BasePlot(PlotWidget):
     self.setTitle(self._title)
     
   title = pyqtProperty(str, getPlotTitle, setPlotTitle, resetPlotTitle)
+
+  def getShowLegend(self):
+    return self._show_legend
+  
+  def setShowLegend(self, value):
+    self._show_legend = value
+    if self._show_legend:
+      if self._legend is None:
+        self._legend = self.addLegend()
+      else:
+        self._legend.show()
+    else:
+      if self._legend is not None:
+        self._legend.hide()
+
+  def resetShowLegend(self):
+    self._show_legend = False
+    
+  showLegend = pyqtProperty(bool, getShowLegend, setShowLegend, resetShowLegend)

@@ -48,11 +48,9 @@ class PyDMTimePlot(BasePlot):
     self._bottom_axis = TimeAxisItem('bottom')
     self._left_axis = AxisItem('left')
     super(PyDMTimePlot, self).__init__(parent=parent, background=background, axisItems={'bottom': self._bottom_axis, 'left': self._left_axis})
-    
     self._ychannel = init_y_channel
     self.curve_list = []
     self.curve_list.append(self.curve)
-    
     self.plotItem.disableAutoRange(ViewBox.XAxis)
     self.y_waveform = None
     self._bufferSize = 1
@@ -92,11 +90,15 @@ class PyDMTimePlot(BasePlot):
     self.data_listener.append(DataListener(new_channel_id, ychannel))
     self.data_listener[-1].new_value_on_channel_signal.connect(self.receiveNewValueOnChannel)
     self.data_listener[-1].connection_changed_on_channel_signal.connect(self.connectionStateChangedOnChannel)
-    # and add a new curve if a color is provided
+    # add a new curve if a color is provided
     if curve_color is not None:
       new_curve = PlotCurveItem(pen=curve_color)
       self.curve_list.append(new_curve)
       self.addItem(self.curve_list[-1])
+    # and add legend if necessary
+    if self._show_legend:
+      prefix, ychannel_name = ychannel.split('://')
+      self._legend.addItem(self.curve_list[-1], ychannel_name)
     if self.num_of_channels > 1 and self._update_mode == PyDMTimePlot.SynchronousMode:
       self._update_mode = PyDMTimePlot.AsynchronousMode
       self.configure_timer()
@@ -114,8 +116,6 @@ class PyDMTimePlot(BasePlot):
   @pyqtSlot(int, int)
   @pyqtSlot(str, int)
   def receiveNewValueOnChannel(self, new_value, channel_id):
-    #if not self.data_listener[channel_id-1].connected:  # Channel_id starts at 1, but DataListener array index starts at 0. Fix this.
-    #  return
     if self._update_mode == PyDMTimePlot.SynchronousMode:
       self.data_buffer = np.roll(self.data_buffer,-1)
       self.data_buffer[0,self._bufferSize - 1] = time.time()
