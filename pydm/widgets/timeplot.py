@@ -80,7 +80,7 @@ class PyDMTimePlot(BasePlot):
       self.update_timer.timeout.connect(self.asyncUpdate)
   
   # Adds a new curve to the current plot
-  def addYChannel(self, ychannel, curve_color=None):
+  def addYChannel(self, ychannel='', curve_color=None):
     # Allocate space for a new data buffer
     self.num_of_channels = self.num_of_channels + 1
     new_channel_id = self.num_of_channels
@@ -110,7 +110,7 @@ class PyDMTimePlot(BasePlot):
     self.data_buffer = np.zeros((1,self._bufferSize), order='f',dtype=float)
     self.data_buffer[0].fill(time.time())
     self.data_listener = []
-    self.addYChannel(self._ychannel)
+    if self._ychannel != '': self.addYChannel(self._ychannel)
 
   @pyqtSlot(float, int)
   @pyqtSlot(int, int)
