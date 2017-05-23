@@ -50,7 +50,6 @@ class PyDMTimePlot(BasePlot):
     super(PyDMTimePlot, self).__init__(parent=parent, background=background, axisItems={'bottom': self._bottom_axis, 'left': self._left_axis})
     self._ychannel = init_y_channel
     self.curve_list = []
-    self.curve_list.append(self.curve)
     self.plotItem.disableAutoRange(ViewBox.XAxis)
     self.y_waveform = None
     self._bufferSize = 1
@@ -81,24 +80,29 @@ class PyDMTimePlot(BasePlot):
   
   # Adds a new curve to the current plot
   def addYChannel(self, ychannel='', curve_color=None):
-    # Allocate space for a new data buffer
-    self.num_of_channels = self.num_of_channels + 1
-    new_channel_id = self.num_of_channels
+    # Add curve
+    if ychannel == self._ychannel:
+      new_curve = self.curve
+    else:
+      if curve_color is None:
+        raise Exception('[Error] Parameter curve_color should be defined for a new curve.')
+      new_curve = PlotCurveItem(pen=curve_color)
+    self.curve_list.append(new_curve)
+    self.addItem(self.curve_list[-1])
+    # allocate space for a new data buffer
     new_data_buffer = np.zeros((1,self._bufferSize), order='f',dtype=float)
     self.data_buffer = np.append(self.data_buffer, new_data_buffer, axis=0)
     # add new data listener
+    self.num_of_channels = self.num_of_channels + 1
+    new_channel_id = self.num_of_channels
     self.data_listener.append(DataListener(new_channel_id, ychannel))
     self.data_listener[-1].new_value_on_channel_signal.connect(self.receiveNewValueOnChannel)
-    self.data_listener[-1].connection_changed_on_channel_signal.connect(self.connectionStateChangedOnChannel)
-    # add a new curve if a color is provided
-    if curve_color is not None:
-      new_curve = PlotCurveItem(pen=curve_color)
-      self.curve_list.append(new_curve)
-      self.addItem(self.curve_list[-1])
-    # and add legend if necessary
+    self.data_listener[-1].connection_changed_on_channel_signal.connect(self.connectionStateChangedOnChannel)  
+    # add legend if necessary
     if self._show_legend:
       prefix, ychannel_name = ychannel.split('://')
       self._legend.addItem(self.curve_list[-1], ychannel_name)
+    # and change to Asynchronous if more than one ychannel
     if self.num_of_channels > 1 and self._update_mode == PyDMTimePlot.SynchronousMode:
       self._update_mode = PyDMTimePlot.AsynchronousMode
       self.configure_timer()

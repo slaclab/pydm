@@ -4,11 +4,13 @@ from os import path
 from pydm import PyDMApplication
 from pydm import Display
 
+purple = '9304FE'
+
 # Display Class -----------------------------------------------------------------
 class PlotControl(Display):
   def __init__(self, parent=None, args=None):
     super(PlotControl, self).__init__(parent=parent, args=None)
-    self.multiplePlot.addYChannel('ca://EX:FUNC2', '#9304FE')	# Add a new curve with defined color
+    self.multiplePlot.addYChannel('ca://EX:FUNC2', purple)	# Add a new curve with defined color
 
   def ui_filename(self):
     return 'plot.ui'
