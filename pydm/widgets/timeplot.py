@@ -80,6 +80,8 @@ class PyDMTimePlot(BasePlot):
   
   # Adds a new curve to the current plot
   def addYChannel(self, ychannel='', curve_color=None):
+    if ychannel == '':
+      raise Exception('[Error] Parameter ychannel should be defined for a new curve.')
     # Add curve
     if ychannel == self._ychannel:
       new_curve = self.curve
