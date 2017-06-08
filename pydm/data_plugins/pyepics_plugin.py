@@ -21,15 +21,16 @@ class Connection(PyDMConnection):
       if type(units) == bytes:
         units = units.decode()
       self.unit_signal.emit(units)
-    if count > 1:
-      self.new_waveform_signal.emit(value)
-    else:
-      if ftype in (epics.dbr.INT, epics.dbr.CTRL_INT, epics.dbr.TIME_INT, epics.dbr.ENUM, epics.dbr.CTRL_ENUM, epics.dbr.TIME_ENUM):
-        self.new_value_signal[int].emit(int(value))
-      elif ftype in (epics.dbr.CTRL_FLOAT, epics.dbr.FLOAT, epics.dbr.TIME_FLOAT, epics.dbr.CTRL_DOUBLE, epics.dbr.DOUBLE, epics.dbr.TIME_DOUBLE):
-        self.new_value_signal[float].emit(float(value))
+    if value is not None:
+      if count > 1:
+        self.new_waveform_signal.emit(value)
       else:
-        self.new_value_signal[str].emit(char_value)
+        if ftype in (epics.dbr.INT, epics.dbr.CTRL_INT, epics.dbr.TIME_INT, epics.dbr.ENUM, epics.dbr.CTRL_ENUM, epics.dbr.TIME_ENUM):
+          self.new_value_signal[int].emit(int(value))
+        elif ftype in (epics.dbr.CTRL_FLOAT, epics.dbr.FLOAT, epics.dbr.TIME_FLOAT, epics.dbr.CTRL_DOUBLE, epics.dbr.DOUBLE, epics.dbr.TIME_DOUBLE):
+          self.new_value_signal[float].emit(float(value))
+        else:
+          self.new_value_signal[str].emit(char_value)
     
       
   def send_connection_state(self, pvname=None, conn=None, *args, **kws):
