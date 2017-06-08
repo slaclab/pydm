@@ -1,11 +1,45 @@
 from ..PyQt.QtGui import QLabel, QApplication, QColor
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer, QObject
 from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
 from pyqtgraph import PlotCurveItem
 import numpy as np
 import time
 from .baseplot import BasePlot
 from .channel import PyDMChannel
+
+class DataListener(QObject):
+  new_value_on_channel_signal = pyqtSignal([float,int],[int,int],[str,int])
+  connection_changed_on_channel_signal = pyqtSignal(bool)
+
+  def __init__(self, channel_id, ychannel):
+    super(QObject, self).__init__()
+    self.channel_id = channel_id
+    self.ychannel = ychannel
+    self.latest_value = None
+    self.connected = False
+
+  @pyqtSlot(float)
+  @pyqtSlot(int)
+  @pyqtSlot(str)
+  def receiveNewValue(self, new_value):
+    self.latest_value = new_value
+    self.new_value_on_channel_signal.emit(new_value, self.channel_id)
+  
+  #false = disconnected, true = connected
+  @pyqtSlot(bool)
+  def connectionStateChanged(self, connected):
+    self.connected = connected
+    self.connection_changed_on_channel_signal.emit(connected)
+  
+  # -2 to +2, -2 is LOLO, -1 is LOW, 0 is OK, etc.  
+  @pyqtSlot(int)
+  def alarmStatusChanged(self, new_alarm_state):
+    pass
+  
+  #0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID  
+  @pyqtSlot(int)
+  def alarmSeverityChanged(self, new_alarm_severity):
+    pass
 
 class PyDMTimePlot(BasePlot):
   SynchronousMode = 1
@@ -15,6 +49,7 @@ class PyDMTimePlot(BasePlot):
     self._left_axis = AxisItem('left')
     super(PyDMTimePlot, self).__init__(parent=parent, background=background, axisItems={'bottom': self._bottom_axis, 'left': self._left_axis})
     self._ychannel = init_y_channel
+    self.curve_list = []
     self.plotItem.disableAutoRange(ViewBox.XAxis)
     self.y_waveform = None
     self._bufferSize = 1
@@ -31,7 +66,6 @@ class PyDMTimePlot(BasePlot):
       if isinstance(child, AxisItem):
         if child not in [self.getPlotItem().axes[k]['item'] for k in self.getPlotItem().axes]:
           child.deleteLater()
-    
   
   def configure_timer(self):
     self.update_timer.stop()
@@ -43,31 +77,66 @@ class PyDMTimePlot(BasePlot):
       self.latest_value = None
       self.update_timer.setInterval(self._update_interval)
       self.update_timer.timeout.connect(self.asyncUpdate)
-    
+  
+  # Adds a new curve to the current plot
+  def addYChannel(self, ychannel='', curve_color=None):
+    if ychannel == '':
+      raise Exception('[Error] Parameter ychannel should be defined for a new curve.')
+    # Add curve
+    if ychannel == self._ychannel:
+      new_curve = self.curve
+    else:
+      if curve_color is None:
+        raise Exception('[Error] Parameter curve_color should be defined for a new curve.')
+      new_curve = PlotCurveItem(pen=curve_color)
+    self.curve_list.append(new_curve)
+    self.addItem(self.curve_list[-1])
+    # allocate space for a new data buffer
+    new_data_buffer = np.zeros((1,self._bufferSize), order='f',dtype=float)
+    self.data_buffer = np.append(self.data_buffer, new_data_buffer, axis=0)
+    # add new data listener
+    self.num_of_channels = self.num_of_channels + 1
+    new_channel_id = self.num_of_channels
+    self.data_listener.append(DataListener(new_channel_id, ychannel))
+    self.data_listener[-1].new_value_on_channel_signal.connect(self.receiveNewValueOnChannel)
+    self.data_listener[-1].connection_changed_on_channel_signal.connect(self.connectionStateChangedOnChannel)  
+    # add legend if necessary
+    if self._show_legend:
+      prefix, ychannel_name = ychannel.split('://')
+      self._legend.addItem(self.curve_list[-1], ychannel_name)
+    # and change to Asynchronous if more than one ychannel
+    if self.num_of_channels > 1 and self._update_mode == PyDMTimePlot.SynchronousMode:
+      self._update_mode = PyDMTimePlot.AsynchronousMode
+      self.configure_timer()
+
   def initialize_buffer(self):
+    self.num_of_channels = 0
     self.points_accumulated = 0
     #If you don't specify dtype=float, you don't have enough resolution for the timestamp data.
-    self.data_buffer = np.zeros((2,self._bufferSize), order='f',dtype=float)
-    self.data_buffer[1].fill(time.time())
-  
-  @pyqtSlot(float)
-  @pyqtSlot(int)
-  @pyqtSlot(str)
-  def receiveNewValue(self, new_value):
+    self.data_buffer = np.zeros((1,self._bufferSize), order='f',dtype=float)
+    self.data_buffer[0].fill(time.time())
+    self.data_listener = []
+    if self._ychannel != '': self.addYChannel(self._ychannel)
+
+  @pyqtSlot(float, int)
+  @pyqtSlot(int, int)
+  @pyqtSlot(str, int)
+  def receiveNewValueOnChannel(self, new_value, channel_id):
     if self._update_mode == PyDMTimePlot.SynchronousMode:
       self.data_buffer = np.roll(self.data_buffer,-1)
-      self.data_buffer[0,self._bufferSize - 1] = new_value
-      self.data_buffer[1,self._bufferSize - 1] = time.time()
+      self.data_buffer[0,self._bufferSize - 1] = time.time()
+      self.data_buffer[channel_id,self._bufferSize - 1] = new_value
       if self.points_accumulated < self._bufferSize:
         self.points_accumulated = self.points_accumulated + 1
-    elif self._update_mode == PyDMTimePlot.AsynchronousMode:
-      self.latest_value = new_value
-  
+    #elif self._update_mode == PyDMTimePlot.AsynchronousMode:
+    #  self.latest_value = new_value
+
   @pyqtSlot()
   def asyncUpdate(self):
     self.data_buffer = np.roll(self.data_buffer,-1)
-    self.data_buffer[0,self._bufferSize - 1] = self.latest_value
-    self.data_buffer[1,self._bufferSize - 1] = time.time()
+    self.data_buffer[0,self._bufferSize - 1] = time.time()
+    for i in range(0,self.num_of_channels):
+      self.data_buffer[i+1,self._bufferSize - 1] = self.data_listener[i].latest_value
     if self.points_accumulated < self._bufferSize:
       self.points_accumulated = self.points_accumulated + 1
     #self.redrawPlot()
@@ -75,43 +144,35 @@ class PyDMTimePlot(BasePlot):
   @pyqtSlot()
   def redrawPlot(self):
     self.updateXAxis()
-    self.curve.setData(y=self.data_buffer[0,-self.points_accumulated:],x=self.data_buffer[1,-self.points_accumulated:])
-  
+    for i in range(self.num_of_channels):
+      if self.data_listener[i].connected:
+        self.curve_list[i].setData(y=self.data_buffer[i+1,-self.points_accumulated:],x=self.data_buffer[0,-self.points_accumulated:])
+
   def updateXAxis(self, update_immediately=False):
     if self._update_mode == PyDMTimePlot.SynchronousMode:
-      maxrange = self.data_buffer[1, -1]
+      maxrange = self.data_buffer[0,-1]
     else:
       maxrange = time.time()
     minrange = maxrange - self._time_span 
     self.plotItem.setXRange(minrange,maxrange,padding=0.0,update=update_immediately)
-  
-  # -2 to +2, -2 is LOLO, -1 is LOW, 0 is OK, etc.  
-  @pyqtSlot(int)
-  def alarmStatusChanged(self, new_alarm_state):
-    pass
-  
-  #0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID  
-  @pyqtSlot(int)
-  def alarmSeverityChanged(self, new_alarm_severity):
-    pass
-    
-  #false = disconnected, true = connected
+
   @pyqtSlot(bool)
-  def connectionStateChanged(self, connected):
-    if connected:
-      self.redraw_timer.start()
-      if self._update_mode == PyDMTimePlot.AsynchronousMode:
-        self.update_timer.start()
-    else:
-      self.redraw_timer.stop()
-      self.update_timer.stop()
-  
+  def connectionStateChangedOnChannel(self, connected):
+    for dl in self.data_listener:
+      if dl.connected:
+        self.redraw_timer.start()
+        if self._update_mode == PyDMTimePlot.AsynchronousMode:
+          self.update_timer.start()
+        return
+    self.redraw_timer.stop()
+    self.update_timer.stop()
+
   @pyqtSlot(str)
   def unitsChanged(self, units):
     self._left_axis.enableAutoSIPrefix(enable=False)
     self._left_axis.setLabel(units=units)
     self._left_axis.showLabel()
-  
+
   def getYChannel(self):
     return str(self._ychannel)
   
@@ -124,7 +185,7 @@ class PyDMTimePlot(BasePlot):
       self._ychannel = None
     
   yChannel = pyqtProperty(str, getYChannel, setYChannel, resetYChannel)
-  
+
   def getBufferSize(self):
     return int(self._bufferSize)
   
@@ -144,7 +205,7 @@ class PyDMTimePlot(BasePlot):
     return self._update_mode==PyDMTimePlot.AsynchronousMode
   
   def setUpdatesAsynchronously(self, value):
-    if value == True:
+    if value == True or self.num_of_channels > 1:
       self._update_mode = PyDMTimePlot.AsynchronousMode
     else:
       self._update_mode = PyDMTimePlot.SynchronousMode
@@ -206,7 +267,11 @@ class PyDMTimePlot(BasePlot):
     self.plotItem.enableAutoRange(ViewBox.XAxis,enable=self._auto_range_x)
   
   def channels(self):
-    return [PyDMChannel(address=self.yChannel, connection_slot=self.connectionStateChanged, value_slot=self.receiveNewValue, severity_slot=self.alarmSeverityChanged, unit_slot=self.unitsChanged)]
+    ychannels = []
+    for i in range(0,self.num_of_channels):
+      dl = self.data_listener[i]
+      ychannels.append(PyDMChannel(address=dl.ychannel, connection_slot=dl.connectionStateChanged, value_slot=dl.receiveNewValue, severity_slot=dl.alarmSeverityChanged, unit_slot=self.unitsChanged))  
+    return ychannels
     
 class TimeAxisItem(AxisItem):
   def tickStrings(self, values, scale, spacing):
