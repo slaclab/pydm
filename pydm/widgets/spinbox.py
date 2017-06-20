@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QDoubleSpinBox, QApplication, QColor, QPalette
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, QEvent, Qt
 from .channel import PyDMChannel
 
 class PyDMSpinbox(QDoubleSpinBox):
@@ -20,19 +20,51 @@ class PyDMSpinbox(QDoubleSpinBox):
     self._connected = False
 
     self.valueChanged.connect(self.sendValue)
-    #self.valueChanged.connect(self.on_valueChanged)
-
     self._units = None
-
     self.valueBeingSet = False
+
+    self._show_step_exponent = False
+    self.step_exponent = 0
+
+    self._prec = 5
+    self.setDecimals(self._prec)
+
+  ### START: Left, right Arrow: changeing stepsize
+
+  def event(self, event):
+    if (event.type()==QEvent.KeyPress) and (event.key()== Qt.Key_Left):
+        self.step_exponent = self.step_exponent + 1
+        self.update_step_size()
+        return True
+
+    if (event.type()==QEvent.KeyPress) and (event.key()== Qt.Key_Right):
+        self.step_exponent = self.step_exponent - 1
+
+        if self.step_exponent < -self.decimals():
+          self.step_exponent = -self.decimals()
+
+        self.update_step_size()
+        return True
+
+    return QDoubleSpinBox.event(self, event)
+
+  def update_step_size(self):
+    self.setSingleStep(10**self.step_exponent)
+    self.update_suffix()
+
+ ### END: Left, right Arrow: changeing stepsize
+
+  def update_suffix(self):
+    if self._show_step_exponent:
+      self.setSuffix(" " + self._units + " 1E" + str(self.step_exponent))
+    else:
+      self.setSuffix(" " + self._units)
 
   @pyqtSlot(float)
   def receiveValue(self, new_val):
     self.valueBeingSet = True
     self.setValue(new_val)
     self.valueBeingSet = False
-
-    #self.value = new_val # otherwise there is a loop
 
   @pyqtSlot(float)
   def sendValue(self, value):
@@ -42,15 +74,10 @@ class PyDMSpinbox(QDoubleSpinBox):
   @pyqtSlot(bool)
   def connectionStateChanged(self, connected):
     self._connected = connected
-    #self.checkEnableState()
 
   @pyqtSlot(bool)
   def writeAccessChanged(self, write_access):
     self._write_access = write_access
-  #  self.checkEnableState()
-
-  #def checkEnableState(self):
-  #  self.setEnabled(self._write_access and self._connected)
 
   @pyqtSlot(str)
   def receiveUnits(self,unit):
@@ -63,7 +90,7 @@ class PyDMSpinbox(QDoubleSpinBox):
       """
       self._units = str(unit)
       self._scale = 1
-      self.setSuffix(" " + self._units)
+      self.update_suffix()
 
   @pyqtSlot(int)
   @pyqtSlot(float)
@@ -87,6 +114,19 @@ class PyDMSpinbox(QDoubleSpinBox):
       self._channel = None
 
   channel = pyqtProperty(str, getChannel, setChannel, resetChannel)
+
+  def getShow_step_exponent(self):
+    return self._show_step_exponent
+  
+  def setShow_step_exponent(self, val):
+    self._show_step_exponent = val
+    self.update()
+  
+  def resetShow_step_exponent(self):
+    if self._show_step_exponent:
+      self._show_step_exponent = False
+
+  show_step_exponent = pyqtProperty(bool, getShow_step_exponent, setShow_step_exponent, resetShow_step_exponent)
 
   def channels(self):
     return [PyDMChannel(address=self.channel,
