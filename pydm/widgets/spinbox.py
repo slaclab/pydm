@@ -23,7 +23,7 @@ class PyDMSpinbox(QDoubleSpinBox):
     self._units = None
     self.valueBeingSet = False
 
-    self._show_step_exponent = False
+    self._show_step_exponent = True
     self.step_exponent = 0
 
     self._prec = 5
@@ -56,7 +56,7 @@ class PyDMSpinbox(QDoubleSpinBox):
 
   def update_suffix(self):
     if self._show_step_exponent:
-      self.setSuffix(" " + self._units + " 1E" + str(self.step_exponent))
+      self.setSuffix(" " + self._units + " Step: 1E" + str(self.step_exponent))
     else:
       self.setSuffix(" " + self._units)
 
