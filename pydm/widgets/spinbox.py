@@ -30,7 +30,7 @@ class PyDMSpinbox(QDoubleSpinBox):
     self._prec = 5
     self.setDecimals(self._prec)
 
-  ### START: Left, right Arrow: changeing stepsize
+  ### START: Left, right Arrow: changing stepsize
 
   def event(self, event):
     if (event.type()==QEvent.KeyPress) and (event.key()== Qt.Key_Left):
@@ -53,13 +53,17 @@ class PyDMSpinbox(QDoubleSpinBox):
     self.setSingleStep(10**self.step_exponent)
     self.update_suffix()
 
- ### END: Left, right Arrow: changeing stepsize
+ ### END: Left, right Arrow: changing stepsize
 
   def update_suffix(self):
-    if self._show_step_exponent:
-      self.setSuffix(" " + self._units + " Step: 1E" + str(self.step_exponent))
+    if self._units is None:
+      units = ""
     else:
-      self.setSuffix(" " + self._units)
+      units = " {}".format(self._units)
+    if self._show_step_exponent:
+      self.setSuffix("{units} Step: 1E{exp}".format(units=units, exp=self.step_exponent))
+    else:
+      self.setSuffix(units)
 
   @pyqtSlot(float)
   def receiveValue(self, new_val):
