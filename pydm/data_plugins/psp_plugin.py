@@ -134,12 +134,10 @@ class Connection(PyDMConnection):
         self.enums = None
         self.rwacc = None
         self.sevr = None
-
-        # No pyca support for units, so we'll take from .EGU if it exists.
-        self.units_pv = setup_pv(pv + ".EGU", signal=self.unit_signal)
-
-        # Ditto for precision
-        self.prec_pv = setup_pv(pv + ".PREC", signal=self.prec_signal)
+        self.ctrl_llim = None
+        self.ctrl_hlim = None
+        self.units = None
+        self.prec = None
 
         # Auxilliary info to help with throttling
         self.scan_pv = setup_pv(pv + ".SCAN", mon_cb=self.scan_pv_cb,
@@ -160,9 +158,11 @@ class Connection(PyDMConnection):
         if isconnected:
             self.epics_type = self.pv.type()
             self.count = self.pv.count or 1
+            
+            #Get the control info for the PV.
+            self.pv.get_data(True, -1.0, self.count)
+            pyca.flush_io()
             if self.epics_type == "DBF_ENUM":
-                self.pv.get_data(True, -1.0, self.count)
-                pyca.flush_io()
                 self.pv.get_enum_strings(-1.0)
             if not self.pv.ismonitored:
                 self.pv.monitor()
@@ -222,10 +222,25 @@ class Connection(PyDMConnection):
             except KeyError:
                 self.pv.get_enum_strings(-1.0)
         
-        sevr = self.pv.severity
-        if sevr != self.sevr:
-          self.sevr = sevr
+        if self.pv.severity != self.sevr:
+          self.sevr = self.pv.severity
           self.new_severity_signal.emit(self.sevr)
+
+        if self.prec is None:
+          self.prec = self.pv.data['precision']
+          self.prec_signal.emit(int(self.prec))
+        
+        if self.units is None:
+          self.units = self.pv.data['units']
+          self.unit_signal.emit(self.units.decode(encoding='ascii'))
+        
+        if self.ctrl_llim is None:
+          self.ctrl_llim = self.pv.data['ctrl_llim']
+          self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
+          
+        if self.ctrl_hlim is None:
+          self.ctrl_hlim = self.pv.data['ctrl_hlim']
+          self.upper_ctrl_limit_signal.emit(self.ctrl_hlim)
 
         if self.count > 1:
             self.new_waveform_signal.emit(value)
@@ -359,10 +374,6 @@ class Connection(PyDMConnection):
         self.throttle.stop()
         self.pv.monitor_stop()
         self.pv.disconnect()
-        self.units_pv.monitor_stop()
-        self.units_pv.disconnect()
-        self.prec_pv.monitor_stop()
-        self.prec_pv.disconnect()
         self.scan_pv.monitor_stop()
         self.scan_pv.disconnect()
 
