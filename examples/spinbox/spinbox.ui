@@ -23,7 +23,7 @@
       <string/>
      </property>
      <property name="channel">
-      <string>ca://MTEST1:Float</string>
+      <string>ca://MTEST:Float</string>
      </property>
     </widget>
    </item>
@@ -44,7 +44,7 @@
     </string>
      </property>
      <property name="channel" stdset="0">
-      <string>ca://MTEST1:Float</string>
+      <string>ca://MTEST:Float</string>
      </property>
     </widget>
    </item>
