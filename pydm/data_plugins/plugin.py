@@ -10,6 +10,8 @@ class PyDMConnection(QObject):
     enum_strings_signal =     pyqtSignal(tuple)
     unit_signal =             pyqtSignal(str)
     prec_signal =             pyqtSignal(int)
+    upper_ctrl_limit_signal = pyqtSignal([float],[int])
+    lower_ctrl_limit_signal = pyqtSignal([float],[int])
 
     def __init__(self, channel, address, parent=None):
         super(PyDMConnection, self).__init__(parent)
@@ -47,6 +49,12 @@ class PyDMConnection(QObject):
 
         if channel.unit_slot is not None:
             self.unit_signal.connect(channel.unit_slot, Qt.QueuedConnection)
+
+        if channel.upper_ctrl_limit_slot is not None:
+            self.upper_ctrl_limit_signal.connect(channel.upper_ctrl_limit_slot, Qt.QueuedConnection)
+
+        if channel.lower_ctrl_limit_slot is not None:
+            self.lower_ctrl_limit_signal.connect(channel.lower_ctrl_limit_slot, Qt.QueuedConnection)
 
         if channel.prec_slot is not None:
             self.prec_signal.connect(channel.prec_slot, Qt.QueuedConnection)

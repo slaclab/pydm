@@ -9,7 +9,7 @@ class Connection(PyDMConnection):
     self.pv = epics.PV(pv, callback=self.send_new_value, connection_callback=self.send_connection_state, form='ctrl', auto_monitor=True)
     self.add_listener(channel)
   
-  def send_new_value(self, pvname=None, value=None, char_value=None, units=None, enum_strs=None, severity=None, count=None, write_access=None, ftype=None, *args, **kws):
+  def send_new_value(self, pvname=None, value=None, char_value=None, units=None, enum_strs=None, severity=None, count=None, write_access=None, ftype=None, upper_ctrl_limit=None, lower_ctrl_limit=None, *args, **kws):
     if severity != None:
       self.new_severity_signal.emit(int(severity))
     if write_access != None:
@@ -31,6 +31,12 @@ class Connection(PyDMConnection):
           self.new_value_signal[float].emit(float(value))
         else:
           self.new_value_signal[str].emit(char_value)
+
+    if upper_ctrl_limit != None:
+      self.upper_ctrl_limit_signal.emit(upper_ctrl_limit)
+
+    if lower_ctrl_limit != None:
+      self.lower_ctrl_limit_signal.emit(lower_ctrl_limit)
     
       
   def send_connection_state(self, pvname=None, conn=None, *args, **kws):

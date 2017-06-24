@@ -68,6 +68,7 @@ class PyDMChannel:
     def __init__(self, address=None, connection_slot=None, value_slot=None, 
                  waveform_slot=None, severity_slot=None, write_access_slot=None, 
                  enum_strings_slot=None, unit_slot=None, prec_slot=None,
+                 upper_ctrl_limit_slot = None, lower_ctrl_limit_slot = None,
                  value_signal=None, waveform_signal=None):
 
         self.address = address
@@ -80,6 +81,10 @@ class PyDMChannel:
         self.enum_strings_slot = enum_strings_slot
         self.unit_slot         = unit_slot
         self.prec_slot         = prec_slot
+
+        #TODO: added following slots
+        self.upper_ctrl_limit_slot = upper_ctrl_limit_slot
+        self.lower_ctrl_limit_slot = lower_ctrl_limit_slot
         
         self.value_signal    = value_signal
         self.waveform_signal = waveform_signal
