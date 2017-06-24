@@ -1,5 +1,5 @@
-from ..PyQt.QtGui import QDoubleSpinBox, QApplication, QColor, QPalette
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, QEvent, Qt
+from ..PyQt.QtGui import QDoubleSpinBox
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QEvent, Qt
 from .channel import PyDMChannel
 
 class PyDMSpinbox(QDoubleSpinBox):
