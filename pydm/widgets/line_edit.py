@@ -275,6 +275,8 @@ class PyDMLineEdit(QLineEdit):
         format, and the current units. If the user is currently entering a
         value in the PyDMLineEdit the text will not be changed.
         """
+        if self._value is None:
+          return
         value = self._value
         if not isinstance(value,str):
             if self._scale and value:
