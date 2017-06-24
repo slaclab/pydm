@@ -19,6 +19,7 @@ class PyDMSpinbox(QDoubleSpinBox):
     self._channel = channel
     self._connected = False
     self._write_access = False
+    self.setEnabled(False)
 
     self.valueChanged.connect(self.sendValue)
     self._units = None
