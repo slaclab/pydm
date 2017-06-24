@@ -37,7 +37,7 @@ class PyDMLineEdit(QLineEdit):
         self._unitformat = None
 
         self.returnPressed.connect(self.sendValue)
-        
+        self.setEnabled(False)
         #Create Context Menu upon Right Click
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.launchMenu)
@@ -129,6 +129,12 @@ class PyDMLineEdit(QLineEdit):
         if self._userformat != str(value):
             self._userformat = str(value)
 
+    @pyqtSlot(bool)
+    def connectionStateChanged(self, conn):
+      if conn:
+        self.setEnabled(True)
+      else:
+        self.setEnabled(False)
 
     @pyqtSlot(float)
     @pyqtSlot(int)
@@ -275,6 +281,8 @@ class PyDMLineEdit(QLineEdit):
         format, and the current units. If the user is currently entering a
         value in the PyDMLineEdit the text will not be changed.
         """
+        if self._value is None:
+          return
         value = self._value
         if not isinstance(value,str):
             if self._scale and value:
@@ -311,6 +319,7 @@ class PyDMLineEdit(QLineEdit):
     def channels(self):
         return [PyDMChannel(address=self.channel,
                             value_slot=self.receiveValue,
+                            connection_slot=self.connectionStateChanged,
                             value_signal=self.send_value_signal,
                             prec_slot = self.receivePrecision,
                             unit_slot = self.receiveUnits,
