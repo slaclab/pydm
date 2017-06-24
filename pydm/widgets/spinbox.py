@@ -18,6 +18,7 @@ class PyDMSpinbox(QDoubleSpinBox):
     super(PyDMSpinbox, self).__init__(parent)
     self._channel = channel
     self._connected = False
+    self._write_access = False
 
     self.valueChanged.connect(self.sendValue)
     self._units = None
@@ -74,10 +75,15 @@ class PyDMSpinbox(QDoubleSpinBox):
   @pyqtSlot(bool)
   def connectionStateChanged(self, connected):
     self._connected = connected
+    self.set_enable_state()
 
   @pyqtSlot(bool)
   def writeAccessChanged(self, write_access):
     self._write_access = write_access
+    self.set_enable_state()
+
+  def set_enable_state(self):
+    self.setEnabled(self._write_access and self._connected)
 
   @pyqtSlot(str)
   def receiveUnits(self,unit):
