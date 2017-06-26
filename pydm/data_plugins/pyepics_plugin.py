@@ -3,7 +3,7 @@ import numpy as np
 from .plugin import PyDMPlugin, PyDMConnection
 from ..PyQt.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
 
-int_types = set((epics.dbr.INT, epics.dbr.CTRL_INT, epics.dbr.TIME_INT, epics.dbr.ENUM, epics.dbr.CTRL_ENUM, epics.dbr.TIME_ENUM, epics.dbr.TIME_LONG, epics.dbr.LONG, epics.dbr.CTRL_LONG))
+int_types = set((epics.dbr.INT, epics.dbr.CTRL_INT, epics.dbr.TIME_INT, epics.dbr.ENUM, epics.dbr.CTRL_ENUM, epics.dbr.TIME_ENUM, epics.dbr.TIME_LONG, epics.dbr.LONG, epics.dbr.CTRL_LONG, epics.dbr.CHAR, epics.dbr.TIME_CHAR, epics.dbr.CTRL_CHAR, epics.dbr.TIME_SHORT, epics.dbr.CTRL_SHORT))
 float_types = set((epics.dbr.CTRL_FLOAT, epics.dbr.FLOAT, epics.dbr.TIME_FLOAT, epics.dbr.CTRL_DOUBLE, epics.dbr.DOUBLE, epics.dbr.TIME_DOUBLE))
 class Connection(PyDMConnection):
   def __init__(self, channel, pv, parent=None):
