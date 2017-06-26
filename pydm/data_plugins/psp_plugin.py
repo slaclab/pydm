@@ -226,7 +226,7 @@ class Connection(PyDMConnection):
           self.sevr = self.pv.severity
           self.new_severity_signal.emit(self.sevr)
 
-        if self.prec is None:
+        if self.prec is None and 'precision' in self.pv.data:
           self.prec = self.pv.data['precision']
           self.prec_signal.emit(int(self.prec))
         
