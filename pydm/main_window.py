@@ -84,10 +84,15 @@ class PyDMMainWindow(QMainWindow):
   
   def go_button_pressed(self):
     filename = str(self.ui.panelSearchLineEdit.text())
-    if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-      self.app.new_window(filename)
-    else:
-      self.go(filename)
+    if not filename:
+        return
+    try:
+      if QApplication.keyboardModifiers() == Qt.ShiftModifier:
+        self.app.new_window(filename)
+      else:
+        self.go(filename)
+    except (FileNotFoundError, ValueError, ImportError) as e:
+      self.statusBar().showMessage("Cannot go to file: '{0}', reason: '{1}'...".format(filename, e), 5000)
   
   #Note: in go(), back(), and forward(), always do history stack manipulation *before* opening the file.
   #That way, the navigation button enable/disable state will work correctly.  This is stupid, and will be fixed eventually.
