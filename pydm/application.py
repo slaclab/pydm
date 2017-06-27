@@ -13,6 +13,9 @@ import re
 import shlex
 import psutil
 import json
+import inspect
+import warnings
+from .display_module import Display
 from .PyQt.QtCore import Qt, QEvent, QTimer, pyqtSlot
 from .PyQt.QtGui import QApplication, QColor, QWidget
 from .PyQt import uic
@@ -150,7 +153,20 @@ class PyDMApplication(QApplication):
 
     #Now load the intelligence module.
     module = imp.load_source('intelclass', pyfile)
-    return module.intelclass(args=args)
+    if hasattr(module, 'intelclass'):
+        cls = module.intelclass
+    else:
+        classes = [obj for name, obj in inspect.getmembers(module) if inspect.isclass(obj) and issubclass(obj, Display) and obj != Display]
+        if len(classes) > 0:
+            warnings.warn("More than one Display class in file {}. Loading the first occurence: {}".format(pyfile, classes[0].__name__), RuntimeWarning)
+        cls = classes[0]
+
+    module_params = inspect.signature(cls).parameters
+
+    if 'args' in module_params:
+        return cls(args=args)
+    else:
+        return cls()
 
   def open_file(self, ui_file, macros=None, command_line_args=[]):
     #First split the ui_file string into a filepath and arguments
