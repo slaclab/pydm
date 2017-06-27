@@ -154,19 +154,23 @@ class PyDMApplication(QApplication):
     #Now load the intelligence module.
     module = imp.load_source('intelclass', pyfile)
     if hasattr(module, 'intelclass'):
-        cls = module.intelclass
+      cls = module.intelclass
+      if not issubclass(cls, Display):
+        raise ValueError("Invalid class definition at file {}. {} does not inherit from Display. Nothing to open at this time.".format(pyfile, cls.__name__))
     else:
-        classes = [obj for name, obj in inspect.getmembers(module) if inspect.isclass(obj) and issubclass(obj, Display) and obj != Display]
-        if len(classes) > 0:
-            warnings.warn("More than one Display class in file {}. Loading the first occurence: {}".format(pyfile, classes[0].__name__), RuntimeWarning)
-        cls = classes[0]
+      classes = [obj for name, obj in inspect.getmembers(module) if inspect.isclass(obj) and issubclass(obj, Display) and obj != Display]
+      if len(classes) == 0:
+        raise ValueError("Invalid File Format. {} has no class inheriting from Display. Nothing to open at this time.".format(pyfile))
+      if len(classes) > 1:
+        warnings.warn("More than one Display class in file {}. Loading the first occurence: {}".format(pyfile, classes[0].__name__), RuntimeWarning, stacklevel=2)
+      cls = classes[0]
 
     module_params = inspect.signature(cls).parameters
 
     if 'args' in module_params:
-        return cls(args=args)
+      return cls(args=args)
     else:
-        return cls()
+      return cls()
 
   def open_file(self, ui_file, macros=None, command_line_args=[]):
     #First split the ui_file string into a filepath and arguments
@@ -181,7 +185,8 @@ class PyDMApplication(QApplication):
     elif extension == '.py':
       widget = self.load_py_file(filepath, args)
     else:
-      raise Exception("invalid file type: {}".format(extension))
+      self.directory_stack.pop()
+      raise ValueError("invalid file type: {}".format(extension))
     self.establish_widget_connections(widget)
     self.directory_stack.pop()
     return widget
