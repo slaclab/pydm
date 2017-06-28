@@ -162,8 +162,7 @@ class PyDMApplication(QApplication):
       if len(classes) == 0:
         raise ValueError("Invalid File Format. {} has no class inheriting from Display. Nothing to open at this time.".format(pyfile))
       if len(classes) > 1:
-        warnings.warn("More than one Display class in file {}. The first one (in alphabetical order) will be opened: {}".format(pyfile, classes[0].__name__), RuntimeWarning, stacklevel=2)
-      #First occurence in code corresponds to last item in the list.
+        warnings.warn("More than one Display class in file {}. The first occurence (in alphabetical order) will be opened: {}".format(pyfile, classes[0].__name__), RuntimeWarning, stacklevel=2)
       cls = classes[0]
 
     try:
