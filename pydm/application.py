@@ -162,10 +162,16 @@ class PyDMApplication(QApplication):
       if len(classes) == 0:
         raise ValueError("Invalid File Format. {} has no class inheriting from Display. Nothing to open at this time.".format(pyfile))
       if len(classes) > 1:
-        warnings.warn("More than one Display class in file {}. Loading the first occurence: {}".format(pyfile, classes[0].__name__), RuntimeWarning, stacklevel=2)
+        warnings.warn("More than one Display class in file {}. The first one (in alphabetical order) will be opened: {}".format(pyfile, classes[0].__name__), RuntimeWarning, stacklevel=2)
+      #First occurence in code corresponds to last item in the list.
       cls = classes[0]
 
-    module_params = inspect.signature(cls).parameters
+    try:
+      #This only works in python 3 and up.
+      module_params = inspect.signature(cls).parameters
+    except AttributeError:
+      #Works in python 2, deprecated in 3.0 and up.
+      module_params = inspect.getargspec(cls.__init__).args
 
     if 'args' in module_params:
       return cls(args=args)
