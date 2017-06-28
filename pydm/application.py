@@ -13,6 +13,9 @@ import re
 import shlex
 import psutil
 import json
+import inspect
+import warnings
+from .display_module import Display
 from .PyQt.QtCore import Qt, QEvent, QTimer, pyqtSlot
 from .PyQt.QtGui import QApplication, QColor, QWidget
 from .PyQt import uic
@@ -150,7 +153,30 @@ class PyDMApplication(QApplication):
 
     #Now load the intelligence module.
     module = imp.load_source('intelclass', pyfile)
-    return module.intelclass(args=args)
+    if hasattr(module, 'intelclass'):
+      cls = module.intelclass
+      if not issubclass(cls, Display):
+        raise ValueError("Invalid class definition at file {}. {} does not inherit from Display. Nothing to open at this time.".format(pyfile, cls.__name__))
+    else:
+      classes = [obj for name, obj in inspect.getmembers(module) if inspect.isclass(obj) and issubclass(obj, Display) and obj != Display]
+      if len(classes) == 0:
+        raise ValueError("Invalid File Format. {} has no class inheriting from Display. Nothing to open at this time.".format(pyfile))
+      if len(classes) > 1:
+        warnings.warn("More than one Display class in file {}. The first one (in alphabetical order) will be opened: {}".format(pyfile, classes[0].__name__), RuntimeWarning, stacklevel=2)
+      #First occurence in code corresponds to last item in the list.
+      cls = classes[0]
+
+    try:
+      #This only works in python 3 and up.
+      module_params = inspect.signature(cls).parameters
+    except AttributeError:
+      #Works in python 2, deprecated in 3.0 and up.
+      module_params = inspect.getargspec(cls.__init__).args
+
+    if 'args' in module_params:
+      return cls(args=args)
+    else:
+      return cls()
 
   def open_file(self, ui_file, macros=None, command_line_args=[]):
     #First split the ui_file string into a filepath and arguments
@@ -165,7 +191,8 @@ class PyDMApplication(QApplication):
     elif extension == '.py':
       widget = self.load_py_file(filepath, args)
     else:
-      raise Exception("invalid file type: {}".format(extension))
+      self.directory_stack.pop()
+      raise ValueError("invalid file type: {}".format(extension))
     self.establish_widget_connections(widget)
     self.directory_stack.pop()
     return widget
