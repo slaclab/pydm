@@ -21,6 +21,8 @@ class PyDMRelatedDisplayButton(QPushButton):
   def setDisplayFilename(self, value):
     if self._display_filename != value:
       self._display_filename = str(value)
+      if self._display_filename is None or len(self._display_filename) < 1:
+        self.setEnabled(False)
 
   def resetDisplayFilename(self):
     if self._display_filename != None:
