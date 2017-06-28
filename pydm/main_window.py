@@ -91,8 +91,8 @@ class PyDMMainWindow(QMainWindow):
         self.app.new_window(filename)
       else:
         self.go(filename)
-    except (FileNotFoundError, ValueError, ImportError) as e:
-      self.statusBar().showMessage("Cannot go to file: '{0}', reason: '{1}'...".format(filename, e), 5000)
+    except (IOError, OSError, ValueError, ImportError) as e:
+      self.statusBar().showMessage("Cannot go to file: '{0}'. Reason: '{1}'.".format(filename, e), 5000)
   
   #Note: in go(), back(), and forward(), always do history stack manipulation *before* opening the file.
   #That way, the navigation button enable/disable state will work correctly.  This is stupid, and will be fixed eventually.
