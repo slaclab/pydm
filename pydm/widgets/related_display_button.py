@@ -61,9 +61,12 @@ class PyDMRelatedDisplayButton(QPushButton):
     macros = None
     if self._macro_string is not None:
       macros = json.loads(self._macro_string)
-    if target == self.EXISTING_WINDOW:
-      self.window().go(self.displayFilename, macros=macros)
-    if target == self.NEW_WINDOW:
-      self.window().new_window(self.displayFilename, macros=macros)
+    try:
+      if target == self.EXISTING_WINDOW:
+        self.window().go(self.displayFilename, macros=macros)
+      if target == self.NEW_WINDOW:
+        self.window().new_window(self.displayFilename, macros=macros)
+    except (IOError, OSError, ValueError, ImportError) as e:
+      self.window().statusBar().showMessage("Cannot open file: '{0}'. Reason: '{1}'.".format(self.displayFilename, e), 5000)
     
   
