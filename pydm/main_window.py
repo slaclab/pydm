@@ -178,7 +178,7 @@ class PyDMMainWindow(QMainWindow):
             self.app.new_window(filename)
           else:
             self.open_file(filename)
-        except (FileNotFoundError, ValueError, ImportError) as e:
+        except (IOError, OSError, ValueError, ImportError) as e:
           self.handle_open_file_error(filename, e)
 
   @pyqtSlot(bool)
