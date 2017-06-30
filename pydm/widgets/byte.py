@@ -4,32 +4,19 @@ from PyQt5.QtGui import QPainter, QColor, QFont, QPen, QBrush, QLinearGradient
 from PyQt5.QtCore import pyqtProperty, Qt, QPoint
 
 class PyDMByte(QWidget):
-	def __init__(self, parent=None):
+	def __init__(self, parent=None, init_channel=None):
 		super(PyDMByte, self).__init__(parent)
-		self._ledColor = []
-		self._text = []
+		self._channel = init_channel
+		self._value = ['0', '1']
+		self._text = ['off', 'on']
+		self._ledColor = ['r', 'g']
 		self._squareLed = False
-		self._lineWidth = 1
-		self._imagePath = []
 		self._useImage = False
+		self._imagePath = []
+		self._lineWidth = 1
 
 		self.resize(100,100)
-		self._text.append('on')
 		self.show()
-
-	def getSquareLed(self):
-		return self._squareLed
-
-	def setSquareLed(self, value):
-		if value != self._squareLed:
-			self._squareLed = value
-			self.repaint()
-
-	def resetSquareLed(self):
-		if self._squareLed != False:
-			self._squareLed = False
-
-	squareLed = pyqtProperty(bool, getSquareLed, setSquareLed, resetSquareLed)
 
 	def paintEvent(self, event):
 		qp = QPainter()
@@ -90,6 +77,90 @@ class PyDMByte(QWidget):
 			center = QPoint(x, y)
 			qp.drawEllipse(center, radx, rady)
 
+	def getChannel(self):
+		return str(self._channel)
+
+	def setChannel(self, value):
+		if self._channel != value:
+  			self._channel = str(value)
+
+	def resetChannel(self):
+		self._channel = None
+
+	channel = pyqtProperty(str, getChannel, setChannel, resetChannel)
+
+	def getValue(self):
+		return self._value
+
+	def setValue(self, value):
+		if value != self._value:
+			self._value = value
+
+	def resetValue(self):
+		self._value = ['0', '1']
+
+	value = pyqtProperty("QStringList", getValue, setValue, resetValue)
+
+	def getText(self):
+		return self._text
+
+	def setText(self, value):
+		if value != self._text:
+			self._text = value
+
+	def resetText(self):
+		self._text = ['off', 'on']
+
+	text = pyqtProperty("QStringList", getText, setText, resetText)
+
+	def getLedColor(self):
+		return self._ledColor
+
+	def setLedColor(self, value):
+		if value != self._ledColor:
+			self._ledColor = value
+
+	def resetLedColor(self):
+		self._ledColor = ['r', 'g']
+
+	ledColor = pyqtProperty("QStringList", getLedColor, setLedColor, resetLedColor)
+
+	def getSquareLed(self):
+		return self._squareLed
+
+	def setSquareLed(self, value):
+		if value != self._squareLed:
+			self._squareLed = value
+			self.repaint()
+
+	def resetSquareLed(self):
+		self._squareLed = False
+
+	squareLed = pyqtProperty(bool, getSquareLed, setSquareLed, resetSquareLed)
+
+	def getUseImage(self):
+		return self._useImage
+
+	def setUseImage(self, value):
+		if value != self._useImage:
+			self._useImage = value
+
+	def resetUseImage(self):
+		self._useImage = False
+
+	useImage = pyqtProperty(bool, getUseImage, setUseImage, resetUseImage)
+
+	def getImagePath(self):
+		return self._imagePath
+
+	def setImagePath(self, value):
+		if value != self._imagePath:
+			self._imagePath = value
+
+	def resetImagePath(self):
+		self._imagePath = []
+
+	imagePath = pyqtProperty("QStringList", getImagePath, setImagePath, resetImagePath)
 
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
