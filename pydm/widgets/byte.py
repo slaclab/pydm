@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QWidget, QApplication
 from PyQt5.QtGui import QPainter, QColor, QFont, QPen, QBrush, QLinearGradient, QPixmap
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt, QPoint
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt, QPoint, QRect
 from .channel import PyDMChannel
 
 class PyDMByte(QWidget):
@@ -106,6 +106,7 @@ class PyDMByte(QWidget):
 		else:
 			pixmap = QPixmap(self.current_image_path)
 		qp.drawPixmap(event.rect(), pixmap)
+		qp.drawRect(QRect(0, 0, self.width()-1, self.height()-1)) # Border
 
 	@pyqtSlot(tuple)
 	def enumStringsChanged(self, enum_strings):
@@ -259,6 +260,19 @@ class PyDMByte(QWidget):
 		self._imagePath = []
 
 	imagePath = pyqtProperty("QStringList", getImagePath, setImagePath, resetImagePath)
+
+	def getLineWidth(self):
+		return self._lineWidth
+
+	def setLineWidth(self, value):
+		if value != self._lineWidth:
+			self._lineWidth = value
+			self.repaint()
+
+	def resetLineWidth(self):
+		self._lineWidth = 1
+
+	lineWidth = pyqtProperty(int, getLineWidth, setLineWidth, resetLineWidth)
 
 	def channels(self):
 		if self._channels != None:
