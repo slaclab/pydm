@@ -18,15 +18,19 @@ class PyDMByte(QWidget):
 		self.value = None
 		self._channels = None
 		self._connected = False
+		self.enum_strings = None
 		self._channel = init_channel
 		self._byte = ['0', '1']
-		self._text = ['off', 'on']
+		self._showLabel = True
+		self._label = ['off', 'on']
 		self._ledColor = ['r', 'g']
 		self._squareLed = False
 		self._useImage = False
 		self._imagePath = []
 		self._lineWidth = 1
 
+		self.current_label = ''
+		self.current_color = ''
 		self.resize(100,100)
 		self.show()
 
@@ -41,7 +45,7 @@ class PyDMByte(QWidget):
 	def drawText(self, qp, event):
 		qp.setPen(QColor(0, 0, 0))
 		qp.setFont(self.font())
-		qp.drawText(event.rect(), Qt.AlignCenter, self._text[0])
+		qp.drawText(event.rect(), Qt.AlignCenter, self.current_label)
 
 	def drawLedIndicator(self, qp, event):
 		# Define main brush
@@ -89,28 +93,36 @@ class PyDMByte(QWidget):
 			center = QPoint(x, y)
 			qp.drawEllipse(center, radx, rady)
 
+	@pyqtSlot(tuple)
+	def enumStringsChanged(self, enum_strings):
+		if enum_strings != self.enum_strings:
+			self.enum_strings = enum_strings
+			self.receiveValue(self.value)
+
+	def updateCurrentLabel(self, new_value):
+		if isinstance(new_value, int) and str(new_value) in self._byte:
+			try:
+				self.current_label = self._label[new_value]
+			except:
+				self.current_label = ''
+		elif isinstance(new_value, int) and self.enum_strings is not None:
+		  	self.current_label = self.enum_strings[new_value]
+		else:
+			self.current_label = str(new_value)
+
 	@pyqtSlot(float)
 	@pyqtSlot(int)
 	@pyqtSlot(str)
 	def receiveValue(self, new_value):
 		self.value = new_value
-		'''
-		if isinstance(new_value, str):
-		  self.setText(new_value)
-		  return
-		if isinstance(new_value, float):
-		  if self.format_string:
-		    self.setText(self.format_string.format(new_value))
-		    return
-		if self.enum_strings is not None and isinstance(new_value, int):
-		  self.setText(self.enum_strings[new_value])
-		  return
-		self.setText(str(new_value))
-		'''
+		#if not self._useImage:
+		#	self.current_color = QColor().setNamedColor()
+		if self._showLabel:
+			self.updateCurrentLabel(new_value)
+		self.repaint()
 
 	@pyqtSlot(bool)
 	def connectionStateChanged(self, connected):
-		print('connected = ' + str(connected))
 		self._connected = connected
 		if connected:
 			self.connected_signal.emit()
@@ -141,17 +153,29 @@ class PyDMByte(QWidget):
 
 	byte = pyqtProperty("QStringList", getByte, setByte, resetByte)
 
-	def getText(self):
-		return self._text
+	def getShowLabel(self):
+		return self._showLabel
 
-	def setText(self, value):
-		if value != self._text:
-			self._text = value
+	def setShowLabel(self, value):
+		if value != self._showLabel:
+			self._showLabel = value
 
-	def resetText(self):
-		self._text = ['off', 'on']
+	def resetShowLabel(self):
+		self._showLabel = True
 
-	text = pyqtProperty("QStringList", getText, setText, resetText)
+	ShowLabel = pyqtProperty(bool, getShowLabel, setShowLabel, resetShowLabel)
+
+	def getLabel(self):
+		return self._label
+
+	def setLabel(self, value):
+		if value != self._label:
+			self._label = value
+
+	def resetLabel(self):
+		self._label = ['off', 'on']
+
+	label = pyqtProperty("QStringList", getLabel, setLabel, resetLabel)
 
 	def getLedColor(self):
 		return self._ledColor
@@ -205,7 +229,7 @@ class PyDMByte(QWidget):
 	def channels(self):
 		if self._channels != None:
 			return self._channels
-		self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue)]
+		self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, enum_strings_slot=self.enumStringsChanged)]
 		return self._channels
 
 if __name__ == '__main__':
