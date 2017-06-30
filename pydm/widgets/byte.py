@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QWidget, QApplication
-from PyQt5.QtGui import QPainter, QColor, QFont, QPen, QBrush, QLinearGradient
+from PyQt5.QtGui import QPainter, QColor, QFont, QPen, QBrush, QLinearGradient, QPixmap
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt, QPoint
 from .channel import PyDMChannel
 
@@ -26,12 +26,14 @@ class PyDMByte(QWidget):
 		self._ledColor = ['red', 'green']
 		self._squareLed = False
 		self._useImage = False
-		self._imagePath = []
+		self._imagePath = ['']
 		self._lineWidth = 1
 
 		self.current_label = ''
-		self.defalt_color = 'grey'
-		self.current_color = ''
+		self.default_color = 'grey'
+		self.current_color = self.default_color
+		self.default_image_path = ''
+		self.current_image_path = self.default_image_path
 		self.resize(100,100)
 		self.show()
 
@@ -39,21 +41,25 @@ class PyDMByte(QWidget):
 		qp = QPainter()
 		qp.begin(self)
 		qp.setRenderHint(QPainter.Antialiasing)
-		self.drawLedIndicator(qp, event)
-		self.drawText(qp, event)
-		qp.end()
-
-	def drawText(self, qp, event):
-		qp.setPen(QColor(0, 0, 0))
-		qp.setFont(self.font())
-		qp.drawText(event.rect(), Qt.AlignCenter, self.current_label)
-
-	def drawLedIndicator(self, qp, event):
-		# Define main brush
 		if self._lineWidth > 0:
 			qp.setPen(QPen(QColor(0, 0, 0),self._lineWidth))
 		else:
 			qp.setPen(QPen(Qt.transparent))
+		if self._useImage:
+			self.drawImage(qp, event)
+		else:
+			self.drawLed(qp, event)
+		if self._showLabel:
+			self.drawLabel(qp, event)
+		qp.end()
+
+	def drawLabel(self, qp, event):
+		qp.setPen(QColor(0, 0, 0))
+		qp.setFont(self.font())
+		qp.drawText(event.rect(), Qt.AlignCenter, self.current_label)
+
+	def drawLed(self, qp, event):
+		# Define main brush
 		gradient = QLinearGradient(0, 0, 0, self.height())
 		gradient.setColorAt(0.0, QColor(self.current_color))
 		gradient.setColorAt(1.0, QColor(255, 255, 255))
@@ -93,6 +99,14 @@ class PyDMByte(QWidget):
 			center = QPoint(x, y)
 			qp.drawEllipse(center, radx, rady)
 
+	def drawImage(self, qp, event):
+		if self.current_image_path == self.default_image_path:
+			pixmap = QPixmap(self.width(), self.height())
+			pixmap.fill(QColor('black'))
+		else:
+			pixmap = QPixmap(self.current_image_path)
+		qp.drawPixmap(event.rect(), pixmap)
+
 	@pyqtSlot(tuple)
 	def enumStringsChanged(self, enum_strings):
 		if enum_strings != self.enum_strings:
@@ -117,15 +131,25 @@ class PyDMByte(QWidget):
 				byte_index = self._byte.index(str(new_value))
 				self.current_color = self._ledColor[byte_index]
 			except:
-				self.current_label = self.defalt_color
+				self.current_label = self.default_color
+
+	def updateCurrentImagePath(self, new_value):
+		if str(new_value) in self._byte:
+			try:
+				byte_index = self._byte.index(str(new_value))
+				self.current_image_path = self._imagePath[byte_index]
+			except:
+				self.current_image_path = self.default_image_path
 
 	@pyqtSlot(float)
 	@pyqtSlot(int)
 	@pyqtSlot(str)
 	def receiveValue(self, new_value):
 		self.value = new_value
-		#if not self._useImage:
-		self.updateCurrentColor(new_value)
+		if self._useImage:
+			self.updateCurrentImagePath(new_value)
+		else:
+			self.updateCurrentColor(new_value)
 		if self._showLabel:
 			self.updateCurrentLabel(new_value)
 		self.repaint()
@@ -217,6 +241,7 @@ class PyDMByte(QWidget):
 	def setUseImage(self, value):
 		if value != self._useImage:
 			self._useImage = value
+			self.repaint()
 
 	def resetUseImage(self):
 		self._useImage = False
