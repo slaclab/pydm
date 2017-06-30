@@ -1,14 +1,23 @@
 import sys
 from PyQt5.QtWidgets import QWidget, QApplication
 from PyQt5.QtGui import QPainter, QColor, QFont, QPen, QBrush, QLinearGradient
-from PyQt5.QtCore import pyqtProperty, pyqtSlot, Qt, QPoint
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt, QPoint
 from .channel import PyDMChannel
 
 class PyDMByte(QWidget):
+
+	#Tell Designer what signals are available.
+	__pyqtSignals__ = ("connected_signal()",
+                     "disconnected_signal()")
+	
+	connected_signal = pyqtSignal()
+	disconnected_signal = pyqtSignal()
+
 	def __init__(self, parent=None, init_channel=None):
 		super(PyDMByte, self).__init__(parent)
 		self.value = None
 		self._channels = None
+		self._connected = False
 		self._channel = init_channel
 		self._byte = ['0', '1']
 		self._text = ['off', 'on']
@@ -84,7 +93,6 @@ class PyDMByte(QWidget):
 	@pyqtSlot(int)
 	@pyqtSlot(str)
 	def receiveValue(self, new_value):
-		print('value = ' + str(self.value))
 		self.value = new_value
 		'''
 		if isinstance(new_value, str):
@@ -99,6 +107,15 @@ class PyDMByte(QWidget):
 		  return
 		self.setText(str(new_value))
 		'''
+
+	@pyqtSlot(bool)
+	def connectionStateChanged(self, connected):
+		print('connected = ' + str(connected))
+		self._connected = connected
+		if connected:
+			self.connected_signal.emit()
+		else:
+			self.disconnected_signal.emit()
 
 	def getChannel(self):
 		return str(self._channel)
@@ -188,7 +205,7 @@ class PyDMByte(QWidget):
 	def channels(self):
 		if self._channels != None:
 			return self._channels
-		self._channels = [PyDMChannel(address=self.channel, value_slot=self.receiveValue)]
+		self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue)]
 		return self._channels
 
 if __name__ == '__main__':
