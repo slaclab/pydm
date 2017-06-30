@@ -1,13 +1,16 @@
 import sys
 from PyQt5.QtWidgets import QWidget, QApplication
 from PyQt5.QtGui import QPainter, QColor, QFont, QPen, QBrush, QLinearGradient
-from PyQt5.QtCore import pyqtProperty, Qt, QPoint
+from PyQt5.QtCore import pyqtProperty, pyqtSlot, Qt, QPoint
+from .channel import PyDMChannel
 
 class PyDMByte(QWidget):
 	def __init__(self, parent=None, init_channel=None):
 		super(PyDMByte, self).__init__(parent)
+		self.value = None
+		self._channels = None
 		self._channel = init_channel
-		self._value = ['0', '1']
+		self._byte = ['0', '1']
 		self._text = ['off', 'on']
 		self._ledColor = ['r', 'g']
 		self._squareLed = False
@@ -77,6 +80,26 @@ class PyDMByte(QWidget):
 			center = QPoint(x, y)
 			qp.drawEllipse(center, radx, rady)
 
+	@pyqtSlot(float)
+	@pyqtSlot(int)
+	@pyqtSlot(str)
+	def receiveValue(self, new_value):
+		print('value = ' + str(self.value))
+		self.value = new_value
+		'''
+		if isinstance(new_value, str):
+		  self.setText(new_value)
+		  return
+		if isinstance(new_value, float):
+		  if self.format_string:
+		    self.setText(self.format_string.format(new_value))
+		    return
+		if self.enum_strings is not None and isinstance(new_value, int):
+		  self.setText(self.enum_strings[new_value])
+		  return
+		self.setText(str(new_value))
+		'''
+
 	def getChannel(self):
 		return str(self._channel)
 
@@ -89,17 +112,17 @@ class PyDMByte(QWidget):
 
 	channel = pyqtProperty(str, getChannel, setChannel, resetChannel)
 
-	def getValue(self):
-		return self._value
+	def getByte(self):
+		return self._byte
 
-	def setValue(self, value):
-		if value != self._value:
-			self._value = value
+	def setByte(self, value):
+		if value != self._byte:
+			self._byte = value
 
-	def resetValue(self):
-		self._value = ['0', '1']
+	def resetByte(self):
+		self._byte = ['0', '1']
 
-	value = pyqtProperty("QStringList", getValue, setValue, resetValue)
+	byte = pyqtProperty("QStringList", getByte, setByte, resetByte)
 
 	def getText(self):
 		return self._text
@@ -161,6 +184,12 @@ class PyDMByte(QWidget):
 		self._imagePath = []
 
 	imagePath = pyqtProperty("QStringList", getImagePath, setImagePath, resetImagePath)
+
+	def channels(self):
+		if self._channels != None:
+			return self._channels
+		self._channels = [PyDMChannel(address=self.channel, value_slot=self.receiveValue)]
+		return self._channels
 
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
