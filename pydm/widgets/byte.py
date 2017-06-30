@@ -23,13 +23,14 @@ class PyDMByte(QWidget):
 		self._byte = ['0', '1']
 		self._showLabel = True
 		self._label = ['off', 'on']
-		self._ledColor = ['r', 'g']
+		self._ledColor = ['red', 'green']
 		self._squareLed = False
 		self._useImage = False
 		self._imagePath = []
 		self._lineWidth = 1
 
 		self.current_label = ''
+		self.defalt_color = 'grey'
 		self.current_color = ''
 		self.resize(100,100)
 		self.show()
@@ -54,7 +55,7 @@ class PyDMByte(QWidget):
 		else:
 			qp.setPen(QPen(Qt.transparent))
 		gradient = QLinearGradient(0, 0, 0, self.height())
-		gradient.setColorAt(0.0, QColor(0, 255, 0))
+		gradient.setColorAt(0.0, QColor(self.current_color))
 		gradient.setColorAt(1.0, QColor(255, 255, 255))
 		qp.setBrush(QBrush(gradient))
 		# Draw led
@@ -75,7 +76,6 @@ class PyDMByte(QWidget):
 		qp.setPen(Qt.transparent)
 		shine_gradient = QLinearGradient(0, 0, 0, self.height()*0.4)
 		gradient.setColorAt(0.0, QColor(255, 255, 255))
-		#gradient.setColorAt(0.7, Qt.transparent)
 		gradient.setColorAt(1.0, Qt.transparent)
 		qp.setBrush(QBrush(gradient))
 		# Draw shine
@@ -102,7 +102,8 @@ class PyDMByte(QWidget):
 	def updateCurrentLabel(self, new_value):
 		if isinstance(new_value, int) and str(new_value) in self._byte:
 			try:
-				self.current_label = self._label[new_value]
+				byte_index = self._byte.index(str(new_value))
+				self.current_label = self._label[byte_index]
 			except:
 				self.current_label = ''
 		elif isinstance(new_value, int) and self.enum_strings is not None:
@@ -110,13 +111,21 @@ class PyDMByte(QWidget):
 		else:
 			self.current_label = str(new_value)
 
+	def updateCurrentColor(self, new_value):
+		if isinstance(new_value, int) and str(new_value) in self._byte:
+			try:
+				byte_index = self._byte.index(str(new_value))
+				self.current_color = self._ledColor[byte_index]
+			except:
+				self.current_label = self.defalt_color
+
 	@pyqtSlot(float)
 	@pyqtSlot(int)
 	@pyqtSlot(str)
 	def receiveValue(self, new_value):
 		self.value = new_value
 		#if not self._useImage:
-		#	self.current_color = QColor().setNamedColor()
+		self.updateCurrentColor(new_value)
 		if self._showLabel:
 			self.updateCurrentLabel(new_value)
 		self.repaint()
@@ -163,7 +172,7 @@ class PyDMByte(QWidget):
 	def resetShowLabel(self):
 		self._showLabel = True
 
-	ShowLabel = pyqtProperty(bool, getShowLabel, setShowLabel, resetShowLabel)
+	showLabel = pyqtProperty(bool, getShowLabel, setShowLabel, resetShowLabel)
 
 	def getLabel(self):
 		return self._label
