@@ -100,7 +100,7 @@ class PyDMByte(QWidget):
 			self.receiveValue(self.value)
 
 	def updateCurrentLabel(self, new_value):
-		if isinstance(new_value, int) and str(new_value) in self._byte:
+		if str(new_value) in self._byte:
 			try:
 				byte_index = self._byte.index(str(new_value))
 				self.current_label = self._label[byte_index]
@@ -112,7 +112,7 @@ class PyDMByte(QWidget):
 			self.current_label = str(new_value)
 
 	def updateCurrentColor(self, new_value):
-		if isinstance(new_value, int) and str(new_value) in self._byte:
+		if str(new_value) in self._byte:
 			try:
 				byte_index = self._byte.index(str(new_value))
 				self.current_color = self._ledColor[byte_index]
