@@ -195,15 +195,15 @@ class PyDMByte(QWidget):
 			self.receiveValue(self.value)
 
 	def updateCurrentLabel(self, new_value):
-		if str(new_value) in self._byte:
-			try:
-				byte_index = self._byte.index(str(new_value))
-				self.current_label = self._label[byte_index]
-			except:
-				self.current_label = ''
-		elif isinstance(new_value, int) and self.enum_strings is not None:
-		  	self.current_label = self.enum_strings[new_value]
-		else:
+		try:
+			byte_index = self._byte.index(str(new_value))
+			self.current_label = self._label[byte_index]
+			return
+		except:
+			pass
+		try:
+			self.current_label = self.enum_strings[new_value]
+		except:
 			self.current_label = str(new_value)
 
 	def updateCurrentColor(self, new_value):
