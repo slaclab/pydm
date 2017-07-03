@@ -1,8 +1,10 @@
 import sys
+import re
 from PyQt5.QtWidgets import QWidget, QApplication
-from PyQt5.QtGui import QPainter, QColor, QFont, QPen, QBrush, QLinearGradient, QPixmap
+from PyQt5.QtGui import QPainter, QColor, QFont, QPen, QBrush, QLinearGradient, QPixmap, QPainterPath,QFontMetrics
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt, QPoint, QRect
 from .channel import PyDMChannel
+from ..application import PyDMApplication
 
 class PyDMByte(QWidget):
 
@@ -12,6 +14,48 @@ class PyDMByte(QWidget):
 	
 	connected_signal = pyqtSignal()
 	disconnected_signal = pyqtSignal()
+
+	NO_ALARM = 0x0
+	ALARM_TEXT = 0x1
+	ALARM_BORDER = 0x2
+
+	ALARM_NONE = 0
+	ALARM_MINOR = 1
+	ALARM_MAJOR = 2
+	ALARM_INVALID = 3
+	ALARM_DISCONNECTED = 4
+
+	#We put all this in a big dictionary to try to avoid constantly allocating and deallocating new stylesheet strings.
+	alarm_style_sheet_map = {
+		NO_ALARM: {
+			ALARM_NONE: "PyDMByte {}",
+			ALARM_MINOR: "PyDMByte {}",
+			ALARM_MAJOR: "PyDMByte {}",
+			ALARM_INVALID: "PyDMByte {}",
+			ALARM_DISCONNECTED: "PyDMByte {}"
+		},
+		ALARM_TEXT: {
+			ALARM_NONE: "PyDMByte {color: black;}",
+			ALARM_MINOR: "PyDMByte {color: yellow;}",
+			ALARM_MAJOR: "PyDMByte {color: red;}",
+			ALARM_INVALID: "PyDMByte {color: purple;}",
+			ALARM_DISCONNECTED: "PyDMByte {color: white;}"
+		},
+		ALARM_BORDER: {
+			ALARM_NONE: "PyDMByte {border-width: 2px; border-style: hidden;}",
+			ALARM_MINOR: "PyDMByte {border: 2px solid yellow;}",
+			ALARM_MAJOR: "PyDMByte {border: 2px solid red;}",
+			ALARM_INVALID: "PyDMByte {border: 2px solid purple;}",
+			ALARM_DISCONNECTED: "PyDMByte {border: 2px solid white;}"
+		},
+		ALARM_TEXT | ALARM_BORDER: {
+			ALARM_NONE: "PyDMByte {color: black; border-width: 2px; border-style: hidden;}",
+			ALARM_MINOR: "PyDMByte {color: yellow; border: 2px solid yellow;}",
+			ALARM_MAJOR: "PyDMByte {color: red; border: 2px solid red;}",
+			ALARM_INVALID: "PyDMByte {color: purple; border: 2px solid purple;}",
+			ALARM_DISCONNECTED: "PyDMByte {color: white; border: 2px solid white;}"
+		}
+	}
 
 	def __init__(self, parent=None, init_channel=None):
 		super(PyDMByte, self).__init__(parent)
@@ -28,6 +72,9 @@ class PyDMByte(QWidget):
 		self._useImage = False
 		self._imagePath = ['']
 		self._lineWidth = 1
+		self._alarm_sensitive_text = True
+		self._alarm_sensitive_border = False
+		self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
 
 		self.current_label = ''
 		self.default_color = 'grey'
@@ -35,7 +82,11 @@ class PyDMByte(QWidget):
 		self.default_image_path = ''
 		self.current_image_path = self.default_image_path
 		self.resize(100,100)
-		self.show()
+		self.setFont(QFont('Arial', pointSize=14, weight=QFont.Bold))	# Default font
+		#If this label is inside a PyDMApplication (not Designer) start it in the disconnected state.
+		app = QApplication.instance()
+		if isinstance(app, PyDMApplication):
+			self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
 
 	def paintEvent(self, event):
 		qp = QPainter()
@@ -53,10 +104,28 @@ class PyDMByte(QWidget):
 			self.drawLabel(qp, event)
 		qp.end()
 
+	def getLabelColor(self):
+		stylesheet = self.styleSheet()
+		stylesheet_raw = stylesheet.replace(' ', '').replace('\n', '')
+		reg_ex = '((?<=^color:)|(?<=;color:)|(?<={color:)).*?((?=$)|(?=;)|(?=}))'
+		try:
+			color_property = re.search(reg_ex, stylesheet_raw).group(0)
+		except:
+			color_property = 'black'
+		return color_property
+
 	def drawLabel(self, qp, event):
-		qp.setPen(QColor(0, 0, 0))
-		qp.setFont(self.font())
-		qp.drawText(event.rect(), Qt.AlignCenter, self.current_label)
+		text_color = self.getLabelColor()
+		text_line_width = 1
+		qp.setBrush(QColor(text_color))
+		qp.setPen(QPen(QColor('black'), text_line_width))
+		text_width = QFontMetrics(self.font()).width(self.current_label)
+		text_height = QFontMetrics(self.font()).height()
+		text_pos_x = (event.rect().width()- text_width)*0.5
+		text_pos_y = event.rect().center().y() + text_height*0.5
+		qp_path = QPainterPath()
+		qp_path.addText(text_pos_x, text_pos_y, self.font(), self.current_label);
+		qp.drawPath(qp_path)
 
 	def drawLed(self, qp, event):
 		# Define main brush
@@ -78,7 +147,7 @@ class PyDMByte(QWidget):
 			rady = self.height()*0.5 - 2*self._lineWidth
 			center = QPoint(x, y)
 			qp.drawEllipse(center, radx, rady)
-		# Draw shine brush
+		# Define shine brush
 		qp.setPen(Qt.transparent)
 		shine_gradient = QLinearGradient(0, 0, 0, self.height()*0.4)
 		gradient.setColorAt(0.0, QColor(255, 255, 255))
@@ -102,7 +171,7 @@ class PyDMByte(QWidget):
 	def drawImage(self, qp, event):
 		if self.current_image_path == self.default_image_path:
 			pixmap = QPixmap(self.width(), self.height())
-			pixmap.fill(QColor('black'))
+			pixmap.fill(QColor('white'))
 		else:
 			pixmap = QPixmap(self.current_image_path)
 		qp.drawPixmap(event.rect(), pixmap)
@@ -163,6 +232,47 @@ class PyDMByte(QWidget):
 		else:
 			self.disconnected_signal.emit()
 
+	# -2 to +2, -2 is LOLO, -1 is LOW, 0 is OK, etc.  
+	@pyqtSlot(int)
+	def alarmStatusChanged(self, new_alarm_state):
+		pass
+
+	#0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID  
+	@pyqtSlot(int)
+	def alarmSeverityChanged(self, new_alarm_severity):
+		if not self._connected:
+			new_alarm_severity = self.ALARM_DISCONNECTED
+		self.setStyleSheet(self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity])
+
+	@pyqtProperty(bool, doc=
+	"""
+	Whether or not the label's text color changes when alarm severity changes.
+	"""
+	)
+	def alarmSensitiveText(self):
+		return self._alarm_sensitive_text
+
+	@alarmSensitiveText.setter
+	def alarmSensitiveText(self, checked):
+		self._alarm_sensitive_text = checked
+		self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
+
+	'''
+	@pyqtProperty(bool, doc=
+	"""
+	Whether or not the label's border color changes when alarm severity changes.
+	"""
+	)
+	def alarmSensitiveBorder(self):
+	return self._alarm_sensitive_border
+
+	@alarmSensitiveBorder.setter
+	def alarmSensitiveBorder(self, checked):
+	self._alarm_sensitive_border = checked
+	self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
+	'''
+
+	# Properties
 	def getChannel(self):
 		return str(self._channel)
 
@@ -277,7 +387,7 @@ class PyDMByte(QWidget):
 	def channels(self):
 		if self._channels != None:
 			return self._channels
-		self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, enum_strings_slot=self.enumStringsChanged)]
+		self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, severity_slot=self.alarmSeverityChanged, enum_strings_slot=self.enumStringsChanged)]
 		return self._channels
 
 if __name__ == '__main__':
