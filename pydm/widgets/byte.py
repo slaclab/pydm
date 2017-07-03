@@ -207,20 +207,18 @@ class PyDMByte(QWidget):
 			self.current_label = str(new_value)
 
 	def updateCurrentColor(self, new_value):
-		if str(new_value) in self._byte:
-			try:
-				byte_index = self._byte.index(str(new_value))
-				self.current_color = self._ledColor[byte_index]
-			except:
-				self.current_label = self.default_color
+		try:
+			byte_index = self._byte.index(str(new_value))
+			self.current_color = self._ledColor[byte_index]
+		except:
+			self.current_color = self.default_color
 
 	def updateCurrentImagePath(self, new_value):
-		if str(new_value) in self._byte:
-			try:
-				byte_index = self._byte.index(str(new_value))
-				self.current_image_path = self._imagePath[byte_index]
-			except:
-				self.current_image_path = self.default_image_path
+		try:
+			byte_index = self._byte.index(str(new_value))
+			self.current_image_path = self._imagePath[byte_index]
+		except:
+			self.current_image_path = self.default_image_path
 
 	@pyqtSlot(float)
 	@pyqtSlot(int)
