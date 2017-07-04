@@ -77,7 +77,7 @@ class PyDMByte(QWidget):
 		self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
 
 		self.current_label = ''
-		self.default_color = 'grey'
+		self.default_color = 'black'
 		self.current_color = self.default_color
 		self.default_image_path = ''
 		self.current_image_path = self.default_image_path
@@ -122,42 +122,64 @@ class PyDMByte(QWidget):
 		qp.drawPath(qp_path)
 
 	def drawLed(self, qp, event):
-		# Define main brush
-		gradient = QLinearGradient(0, 0, 0, self.height())
-		gradient.setColorAt(0.0, QColor(self.current_color))
-		gradient.setColorAt(1.0, QColor(255, 255, 255))
-		qp.setBrush(QBrush(gradient))
-		# Draw led
+		# Define shadow brushgradient = QLinearGradient(0, 0, 0, self.height())
+		gradient_shadow = QLinearGradient(0, 0, 0, self.height())
+		gradient_shadow.setColorAt(0.0, QColor('darkgrey'))
+		gradient_shadow.setColorAt(1.0, QColor('lightgrey'))
+		qp.setBrush(QBrush(gradient_shadow))
+		# Draw shadow
 		if self._squareLed:
 			x = 0
 			y = 0
-			lenx = self.width() - 2*self._lineWidth
-			leny = self.height() - 2*self._lineWidth
+			lenx = self.width()
+			leny = self.height()
 			qp.drawRect(x, y, lenx, leny)
 		else:
 			x = self.width()*0.5
 			y = self.height()*0.5
-			radx = self.width()*0.5 - 2*self._lineWidth
-			rady = self.height()*0.5 - 2*self._lineWidth
+			radx = self.width()*0.5 - 1
+			rady = self.height()*0.5 - 1
+			center = QPoint(x, y)
+			qp.drawEllipse(center, radx, rady)
+		# Define led color brush
+		qp.setPen(QPen(QColor('gray'), self.width()*0.02))
+		gradient_led = QLinearGradient(0, 0, 0, self.height())
+		gradient_led.setColorAt(0.0, QColor(self.current_color))
+		gradient_led.setColorAt(1.0, QColor(255, 255, 255))
+		qp.setBrush(QBrush(gradient_led))
+		# Draw led
+		if self._squareLed:
+			x = round(self.width()*0.15)
+			y = round(self.height()*0.15)
+			lenx = self.width() - 2*x
+			leny = self.height() - 2*y
+			qp.drawRect(x, y, lenx, leny)
+		else:
+			x = self.width()*0.5
+			y = self.height()*0.5
+			radx = self.width()*0.35
+			rady = self.height()*0.35
 			center = QPoint(x, y)
 			qp.drawEllipse(center, radx, rady)
 		# Define shine brush
 		qp.setPen(Qt.transparent)
-		shine_gradient = QLinearGradient(0, 0, 0, self.height()*0.4)
-		gradient.setColorAt(0.0, QColor(255, 255, 255))
-		gradient.setColorAt(1.0, Qt.transparent)
-		qp.setBrush(QBrush(gradient))
+		gradient_shine = QLinearGradient(0, 0, 0, self.height()*0.4)
+		gradient_shine.setColorAt(0.0, QColor('white'))
+		gradient_shine.setColorAt(1.0, Qt.transparent)
+		qp.setBrush(QBrush(gradient_shine))
 		# Draw shine
 		if self._squareLed:
-			x = self.width()*0.1
-			y = self.height()*0.1
-			lenx = self.width()*0.8
-			leny = self.height()*0.4
-			qp.drawRect(x, y, lenx, leny)
+			x = round(self.width()*0.23)
+			y = round(self.height()*0.23)
+			lenx = self.width() - 2*x
+			leny = self.height() - 2*y
+			radx = self.width()*0.05
+			rady = self.height()*0.05
+			qp.drawRoundedRect(x, y, lenx, leny, radx, rady)
 		else:
 			x = self.width()*0.5
-			y = self.height()*0.35
-			radx = self.width()*0.3
+			y = self.height()*0.42
+			radx = self.width()*0.25
 			rady = self.height()*0.2
 			center = QPoint(x, y)
 			qp.drawEllipse(center, radx, rady)
