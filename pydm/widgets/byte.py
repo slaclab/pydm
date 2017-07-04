@@ -65,15 +65,15 @@ class PyDMByte(QWidget):
 		self.enum_strings = None
 		self._channel = init_channel
 		self._byte = ['0', '1']
-		self._showLabel = True
 		self._label = ['off', 'on']
 		self._ledColor = ['red', 'green']
+		self._imagePath = ['']
+		self._showLabel = True
 		self._squareLed = False
 		self._useImage = False
-		self._imagePath = ['']
-		self._borderWidth = 2
 		self._alarm_sensitive_text = True
 		self._alarm_sensitive_border = True
+		self._borderWidth = 2
 		self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
 
 		self.current_label = ''
@@ -81,7 +81,6 @@ class PyDMByte(QWidget):
 		self.current_color = self.default_color
 		self.default_image_path = ''
 		self.current_image_path = self.default_image_path
-		self.resize(100,100)
 		self.setFont(QFont('Arial', pointSize=14, weight=QFont.Bold))	# Default font
 		#If this label is inside a PyDMApplication (not Designer) start it in the disconnected state.
 		app = QApplication.instance()
@@ -287,38 +286,12 @@ class PyDMByte(QWidget):
 		self.setStyleSheet(self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity])
 
 	# Properties
-	@pyqtProperty(bool, doc=
-	"""
-	Whether or not the label's text color changes when alarm severity changes.
-	"""
-	)
-	def alarmSensitiveText(self):
-		return self._alarm_sensitive_text
-
-	@alarmSensitiveText.setter
-	def alarmSensitiveText(self, checked):
-		self._alarm_sensitive_text = checked
-		self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
-
-	@pyqtProperty(bool, doc=
-	"""
-	Whether or not the label's border color changes when alarm severity changes.
-	"""
-	)
-	def alarmSensitiveBorder(self):
-		return self._alarm_sensitive_border
-
-	@alarmSensitiveBorder.setter
-	def alarmSensitiveBorder(self, checked):
-		self._alarm_sensitive_border = checked
-		self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
-
 	def getChannel(self):
 		return str(self._channel)
 
 	def setChannel(self, value):
 		if self._channel != value:
-  			self._channel = str(value)
+			self._channel = str(value)
 
 	def resetChannel(self):
 		self._channel = None
@@ -336,18 +309,6 @@ class PyDMByte(QWidget):
 		self._byte = ['0', '1']
 
 	byte = pyqtProperty("QStringList", getByte, setByte, resetByte)
-
-	def getShowLabel(self):
-		return self._showLabel
-
-	def setShowLabel(self, value):
-		if value != self._showLabel:
-			self._showLabel = value
-
-	def resetShowLabel(self):
-		self._showLabel = True
-
-	showLabel = pyqtProperty(bool, getShowLabel, setShowLabel, resetShowLabel)
 
 	def getLabel(self):
 		return self._label
@@ -372,6 +333,30 @@ class PyDMByte(QWidget):
 		self._ledColor = ['r', 'g']
 
 	ledColor = pyqtProperty("QStringList", getLedColor, setLedColor, resetLedColor)
+
+	def getImagePath(self):
+		return self._imagePath
+
+	def setImagePath(self, value):
+		if value != self._imagePath:
+			self._imagePath = value
+
+	def resetImagePath(self):
+		self._imagePath = []
+
+	imagePath = pyqtProperty("QStringList", getImagePath, setImagePath, resetImagePath)
+
+	def getShowLabel(self):
+		return self._showLabel
+
+	def setShowLabel(self, value):
+		if value != self._showLabel:
+			self._showLabel = value
+
+	def resetShowLabel(self):
+		self._showLabel = True
+
+	showLabel = pyqtProperty(bool, getShowLabel, setShowLabel, resetShowLabel)
 
 	def getSquareLed(self):
 		return self._squareLed
@@ -398,18 +383,32 @@ class PyDMByte(QWidget):
 		self._useImage = False
 
 	useImage = pyqtProperty(bool, getUseImage, setUseImage, resetUseImage)
+	
+	@pyqtProperty(bool, doc=
+	"""
+	Whether or not the label's text color changes when alarm severity changes.
+	"""
+	)
+	def alarmSensitiveText(self):
+		return self._alarm_sensitive_text
 
-	def getImagePath(self):
-		return self._imagePath
+	@alarmSensitiveText.setter
+	def alarmSensitiveText(self, checked):
+		self._alarm_sensitive_text = checked
+		self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
 
-	def setImagePath(self, value):
-		if value != self._imagePath:
-			self._imagePath = value
+	@pyqtProperty(bool, doc=
+	"""
+	Whether or not the label's border color changes when alarm severity changes.
+	"""
+	)
+	def alarmSensitiveBorder(self):
+		return self._alarm_sensitive_border
 
-	def resetImagePath(self):
-		self._imagePath = []
-
-	imagePath = pyqtProperty("QStringList", getImagePath, setImagePath, resetImagePath)
+	@alarmSensitiveBorder.setter
+	def alarmSensitiveBorder(self, checked):
+		self._alarm_sensitive_border = checked
+		self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
 
 	def getBorderWidth(self):
 		return self._borderWidth
