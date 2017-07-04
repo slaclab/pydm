@@ -271,6 +271,7 @@ class PyDMByte(QWidget):
 		if connected:
 			self.connected_signal.emit()
 		else:
+			self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
 			self.disconnected_signal.emit()
 
 	# -2 to +2, -2 is LOLO, -1 is LOW, 0 is OK, etc.  
@@ -281,8 +282,6 @@ class PyDMByte(QWidget):
 	#0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID  
 	@pyqtSlot(int)
 	def alarmSeverityChanged(self, new_alarm_severity):
-		if not self._connected:
-			new_alarm_severity = self.ALARM_DISCONNECTED
 		self.setStyleSheet(self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity])
 
 	# Properties
