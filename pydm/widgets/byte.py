@@ -71,7 +71,7 @@ class PyDMByte(QWidget):
 		self._squareLed = False
 		self._useImage = False
 		self._imagePath = ['']
-		self._lineWidth = 2
+		self._borderWidth = 2
 		self._alarm_sensitive_text = True
 		self._alarm_sensitive_border = True
 		self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
@@ -122,12 +122,12 @@ class PyDMByte(QWidget):
 		qp.drawPath(qp_path)
 
 	def drawLed(self, qp, event):
-		# Define shadow brushgradient = QLinearGradient(0, 0, 0, self.height())
+		# Define shadow brush
 		gradient_shadow = QLinearGradient(0, 0, 0, self.height())
 		gradient_shadow.setColorAt(0.0, QColor('darkgrey'))
 		gradient_shadow.setColorAt(1.0, QColor('lightgrey'))
 		qp.setBrush(QBrush(gradient_shadow))
-		# Draw shadow
+		# Draw shadow and alarm border
 		if self._squareLed:
 			x = 0
 			y = 0
@@ -141,6 +141,16 @@ class PyDMByte(QWidget):
 			rady = self.height()*0.5 - 1
 			center = QPoint(x, y)
 			qp.drawEllipse(center, radx, rady)
+		# Define alarm border brush/pen
+		border_property = self.getBorderColor()
+		qp.setPen(QPen(QColor(border_property), self._borderWidth))
+		qp.setBrush(Qt.transparent)
+		offset = self._borderWidth - 1
+		# Draw alarm border
+		if self._squareLed:
+			qp.drawRect(x + offset, y + offset, lenx - 2*offset, leny - 2*offset)
+		else:
+			qp.drawEllipse(center, radx - offset, rady - offset)
 		# Define led color brush
 		qp.setPen(QPen(QColor('gray'), self.width()*0.02))
 		gradient_led = QLinearGradient(0, 0, 0, self.height())
@@ -191,17 +201,18 @@ class PyDMByte(QWidget):
 		else:
 			pixmap = QPixmap(self.current_image_path)
 		qp.drawPixmap(event.rect(), pixmap)
+		# Define alarm border brush/pen
+		border_property = self.getBorderColor()
+		qp.setPen(QPen(QColor(border_property),self._borderWidth))
+		qp.setBrush(Qt.transparent)
+		# Draw alarm border
 		qp.drawRect(QRect(0, 0, self.width()-1, self.height()-1)) # Border
 
 	def paintEvent(self, event):
 		qp = QPainter()
 		qp.begin(self)
 		qp.setRenderHint(QPainter.Antialiasing)
-		border_property = self.getBorderColor()
-		if self._lineWidth > 0:
-			qp.setPen(QPen(QColor(border_property),self._lineWidth))
-		else:
-			qp.setPen(QPen(Qt.transparent))
+		qp.setPen(Qt.transparent)
 		if self._useImage:
 			self.drawImage(qp, event)
 		else:
@@ -400,18 +411,18 @@ class PyDMByte(QWidget):
 
 	imagePath = pyqtProperty("QStringList", getImagePath, setImagePath, resetImagePath)
 
-	def getLineWidth(self):
-		return self._lineWidth
+	def getBorderWidth(self):
+		return self._borderWidth
 
-	def setLineWidth(self, value):
-		if value != self._lineWidth:
-			self._lineWidth = value
+	def setBorderWidth(self, value):
+		if value != self._borderWidth:
+			self._borderWidth = value
 			self.repaint()
 
-	def resetLineWidth(self):
-		self._lineWidth = 1
+	def resetBorderWidth(self):
+		self._borderWidth = 1
 
-	lineWidth = pyqtProperty(int, getLineWidth, setLineWidth, resetLineWidth)
+	borderWidth = pyqtProperty(int, getBorderWidth, setBorderWidth, resetBorderWidth)
 
 	def channels(self):
 		if self._channels != None:
