@@ -73,7 +73,7 @@ class PyDMByte(QWidget):
 		self._useImage = False
 		self._alarm_sensitive_text = True
 		self._alarm_sensitive_border = True
-		self._borderWidth = 2
+		self._alarmAlarmBorderWidth = 2
 		self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
 
 		self.current_label = ''
@@ -126,6 +126,7 @@ class PyDMByte(QWidget):
 		gradient_shadow.setColorAt(0.0, QColor('darkgrey'))
 		gradient_shadow.setColorAt(1.0, QColor('lightgrey'))
 		qp.setBrush(QBrush(gradient_shadow))
+		LED_BORDER = 5
 		# Draw shadow and alarm border
 		if self._squareLed:
 			x = 0
@@ -138,38 +139,34 @@ class PyDMByte(QWidget):
 			y = self.height()*0.5
 			radx = self.width()*0.5 - 1
 			rady = self.height()*0.5 - 1
-			center = QPoint(x, y)
-			qp.drawEllipse(center, radx, rady)
+			qp.drawEllipse(QPoint(x, y), radx, rady)
 		# Define alarm border brush/pen
 		border_property = self.getBorderColor()
-		qp.setPen(QPen(QColor(border_property), self._borderWidth))
+		qp.setPen(QPen(QColor(border_property), self._alarmAlarmBorderWidth))
 		qp.setBrush(Qt.transparent)
-		offset = self._borderWidth - 1
 		# Draw alarm border
+		offset = self._alarmAlarmBorderWidth - 1
 		if self._squareLed:
 			qp.drawRect(x + offset, y + offset, lenx - 2*offset, leny - 2*offset)
 		else:
-			qp.drawEllipse(center, radx - offset, rady - offset)
+			qp.drawEllipse(QPoint(x, y), radx - offset, rady - offset)
 		# Define led color brush
-		qp.setPen(QPen(QColor('gray'), self.width()*0.02))
+		qp.setPen(QPen(QColor('gray'), 2))
 		gradient_led = QLinearGradient(0, 0, 0, self.height())
 		gradient_led.setColorAt(0.0, QColor(self.current_color))
 		gradient_led.setColorAt(1.0, QColor(255, 255, 255))
 		qp.setBrush(QBrush(gradient_led))
 		# Draw led
 		if self._squareLed:
-			x = round(self.width()*0.15)
-			y = round(self.height()*0.15)
-			lenx = self.width() - 2*x
-			leny = self.height() - 2*y
-			qp.drawRect(x, y, lenx, leny)
+			x_led = LED_BORDER
+			y_led = LED_BORDER
+			lenx_led = self.width() - 2*x_led
+			leny_led = self.height() - 2*y_led
+			qp.drawRect(x_led, y_led, lenx_led, leny_led)
 		else:
-			x = self.width()*0.5
-			y = self.height()*0.5
-			radx = self.width()*0.35
-			rady = self.height()*0.35
-			center = QPoint(x, y)
-			qp.drawEllipse(center, radx, rady)
+			radx_led = radx - LED_BORDER
+			rady_led = rady - LED_BORDER
+			qp.drawEllipse(QPoint(x, y), radx_led, rady_led)
 		# Define shine brush
 		qp.setPen(Qt.transparent)
 		gradient_shine = QLinearGradient(0, 0, 0, self.height()*0.4)
@@ -178,20 +175,17 @@ class PyDMByte(QWidget):
 		qp.setBrush(QBrush(gradient_shine))
 		# Draw shine
 		if self._squareLed:
-			x = round(self.width()*0.23)
-			y = round(self.height()*0.23)
-			lenx = self.width() - 2*x
-			leny = self.height() - 2*y
-			radx = self.width()*0.05
-			rady = self.height()*0.05
-			qp.drawRoundedRect(x, y, lenx, leny, radx, rady)
+			x_shine = x_led + 5
+			y_shine = y_led + 5
+			lenx_shine = lenx_led - 2*(x_shine - x_led)
+			leny_shine = leny_led - 2*(y_shine - y_led)
+			qp.drawRoundedRect(x_shine, y_shine, lenx_shine, leny_shine, 5, 5)
 		else:
-			x = self.width()*0.5
-			y = self.height()*0.42
-			radx = self.width()*0.25
-			rady = self.height()*0.2
-			center = QPoint(x, y)
-			qp.drawEllipse(center, radx, rady)
+			radx_shine = radx_led*0.65
+			rady_shine = rady_led*0.60
+			x_shine = x
+			y_shine = rady_shine + LED_BORDER + 5
+			qp.drawEllipse(QPoint(x_shine, y_shine), radx_shine, rady_shine)
 
 	def drawImage(self, qp, event):
 		if self.current_image_path == self.default_image_path:
@@ -202,7 +196,7 @@ class PyDMByte(QWidget):
 		qp.drawPixmap(event.rect(), pixmap)
 		# Define alarm border brush/pen
 		border_property = self.getBorderColor()
-		qp.setPen(QPen(QColor(border_property),self._borderWidth))
+		qp.setPen(QPen(QColor(border_property),self._alarmAlarmBorderWidth))
 		qp.setBrush(Qt.transparent)
 		# Draw alarm border
 		qp.drawRect(QRect(0, 0, self.width()-1, self.height()-1)) # Border
@@ -409,18 +403,18 @@ class PyDMByte(QWidget):
 		self._alarm_sensitive_border = checked
 		self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
 
-	def getBorderWidth(self):
-		return self._borderWidth
+	def getAlarmBorderWidth(self):
+		return self._alarmAlarmBorderWidth
 
-	def setBorderWidth(self, value):
-		if value != self._borderWidth:
-			self._borderWidth = value
+	def setAlarmBorderWidth(self, value):
+		if value != self._alarmAlarmBorderWidth:
+			self._alarmAlarmBorderWidth = value
 			self.repaint()
 
-	def resetBorderWidth(self):
-		self._borderWidth = 1
+	def resetAlarmBorderWidth(self):
+		self._alarmAlarmBorderWidth = 1
 
-	borderWidth = pyqtProperty(int, getBorderWidth, setBorderWidth, resetBorderWidth)
+	alarmAlarmBorderWidth = pyqtProperty(int, getAlarmBorderWidth, setAlarmBorderWidth, resetAlarmBorderWidth)
 
 	def channels(self):
 		if self._channels != None:
