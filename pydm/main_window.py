@@ -57,7 +57,7 @@ class PyDMMainWindow(QMainWindow):
       self._display_widget = None
   
   def join_to_current_file_path(self, ui_file):
-    filename = None
+    ui_file = str(ui_file)
     if path.isabs(ui_file) or len(self.back_stack) == 0:
       return str(ui_file)
     else:
@@ -171,8 +171,9 @@ class PyDMMainWindow(QMainWindow):
 
   @pyqtSlot(bool)
   def open_file_action(self, checked):
-    filename = QFileDialog.getOpenFileName(self, 'Open File...', os.path.dirname(self.current_file()), 'PyDM Display Files (*.ui *.py)')[0]
+    filename = QFileDialog.getOpenFileName(self, 'Open File...', os.path.dirname(self.current_file()), 'PyDM Display Files (*.ui *.py)')
     if filename:
+        filename = str(filename)
         try:
           if QApplication.keyboardModifiers() == Qt.ShiftModifier:
             self.app.new_window(filename)
