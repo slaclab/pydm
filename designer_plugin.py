@@ -10,7 +10,7 @@ from pydm.widgets.related_display_button_qtplugin import PyDMRelatedDisplayButto
 from pydm.widgets.shell_command_qtplugin import PyDMShellCommandPlugin
 from pydm.widgets.slider_qtplugin import PyDMSliderPlugin
 from pydm.widgets.timeplot_qtplugin import PyDMTimePlotPlugin
-from pydm.widgets.waveformplot_qtplugin import PyDMWaveformPlotPlugin
+#from pydm.widgets.waveformplot_qtplugin import PyDMWaveformPlotPlugin
 from pydm.widgets.waveformtable_qtplugin import PyDMWaveformTablePlugin
 from pydm.widgets.enum_combo_box_qtplugin import PyDMEnumComboBoxPlugin
 

@@ -19,41 +19,53 @@ class BasePlot(PlotWidget):
     self._show_y_grid = None
     self.setShowYGrid(False)
     
-    self._curves = OrderedDict()   
+    self._curves = []
     self._title = None
     self._show_legend = False
     self._legend = self.addLegend()
     self._legend.hide()
-    self._pending_colors = []
   
-  def addCurve(self, curve_name, plot_item=None, curve_color=None):
-    if curve_name in self._curves:
-      raise ValueError("Curve name already exists in plot, curve names must be unique.")
-    if plot_item is None:
-      plot_item = PlotCurveItem()
-    if len(self._pending_colors) > 0:
-      curve_color = self._pending_colors.pop(0)
+  def addCurve(self, plot_item, curve_color=None):
     if curve_color is None:
       curve_color = utilities.colors.default_colors[len(self._curves) % len(utilities.colors.default_colors)]
     plot_item.setPen(QColor(curve_color))
-    self._curves[curve_name] = plot_item
-    self.addItem(self._curves[curve_name])
-    self._legend.addItem(self._curves[curve_name], curve_name)
+    self._curves.append(plot_item)
+    self.addItem(plot_item)
+    self._legend.addItem(plot_item, plot_item.curve_name)
   
-  def removeCurve(self, curve_name):
-    if curve_name not in self._curves:
-      raise ValueError("Curve name does not exist in plot.")
-    self._legend.removeItem(curve_name)
-    self.removeItem(self._curves[curve_name])
-    del self._curves[curve_name]
+  def removeCurve(self, plot_item):
+    print("Removing curve named {}".format(plot_item.curve_name))
+    self.removeItem(plot_item)
+    self._legend.removeItem(plot_item.curve_name)
+    self._curves.remove(plot_item)
   
-  def plotItemForCurve(self, curve_name):
-    return self._curves[curve_name]
+  def removeCurveWithName(self, name):
+    for curve in self._curves:
+      if curve.curve_name == name:
+        self.removeCurve(curve)
+  
+  def removeCurveAtIndex(self, index):
+    curve_to_remove = self._curves[index]
+    self.removeCurve(curve_to_remove)
+    
+  def setCurveAtIndex(self, index, new_curve):
+    old_curve = self._curves[index]
+    self._curves[index] = new_curve
+    self._legend.addItem(new_curve, new_curve.curve_name)
+    self.removeCurve(old_curve)
+      
+  def curveAtIndex(self, index):
+    return self._curves[index]
+  
+  def curves(self):
+    return self._curves
   
   def clear(self):
-    for curve_name in self._curves:
-      self._legend.removeItem(curve_name)
-    super(BasePlot, self).clear()
+    print("Baseplot clearing.")
+    for curve in self._curves:
+      self._legend.removeItem(curve.curve_name)
+    self.plotItem.clear()
+    self._curves = []
   
   def getAutoRangeX(self):
     return self._auto_range_x
@@ -102,32 +114,6 @@ class BasePlot(PlotWidget):
     self.setShowYGrid(False)
     
   showYGrid = pyqtProperty("bool", getShowYGrid, setShowYGrid, resetShowYGrid)
-  
-  def getCurveColorList(self):
-    colors = []
-    for curve in self._curves.values():
-      color_string = curve.opts['pen'].color().name()
-      try:
-        color_string = utilities.colors.svg_color_from_hex(color_string)
-      except KeyError:
-        pass
-      colors.append(color_string)
-    return colors
-  
-  def setCurveColorList(self, color_string_list):
-    if len(self._curves) == 0:
-      # When loading a plot widget from a .ui file, the curveColorList property might get set
-      # before self._curves has been populated.  We check for that case here.  If there aren't
-      # any curves yet, save the list of colors to self._pending_colors, which will get consumed
-      # as new curves are added in self.addCurve().
-      self._pending_colors = [str(color) for color in list(color_string_list)]
-      return
-    if len(color_string_list) != len(self._curves):
-      raise ValueError("Number of items in color string list must match number of curves.  {colorcount} colors, {curvecount} curves.".format(colorcount=len(color_string_list), curvecount=len(self._curves)))
-    for (curve, color_string) in zip(self._curves.values(), color_string_list):
-      curve.setPen(QColor(color_string))
-    
-  curveColorList = pyqtProperty("QStringList", getCurveColorList, setCurveColorList)
   
   def getBackgroundColor(self):
     return self.backgroundBrush().color()
@@ -178,6 +164,6 @@ class BasePlot(PlotWidget):
         self._legend.hide()
 
   def resetShowLegend(self):
-    self._show_legend = False
+    self.setShowLegend(False)
     
   showLegend = pyqtProperty(bool, getShowLegend, setShowLegend, resetShowLegend)
