@@ -143,6 +143,8 @@ class PyDMSlider(QFrame):
   def connectionStateChanged(self, connected):
     self._connected = connected
     self.set_enable_state()
+    if not self._connected:
+      self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
   
   @pyqtSlot(bool)
   def writeAccessChanged(self, write_access):
@@ -151,8 +153,6 @@ class PyDMSlider(QFrame):
   
   @pyqtSlot(int)
   def alarmSeverityChanged(self, new_alarm_severity):
-    if not self._connected:
-      new_alarm_severity = self.ALARM_DISCONNECTED
     self.value_label.setStyleSheet(self.alarm_style_sheet_map[new_alarm_severity])
   
   def set_enable_state(self):
