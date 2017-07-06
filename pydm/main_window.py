@@ -171,7 +171,7 @@ class PyDMMainWindow(QMainWindow):
 
   @pyqtSlot(bool)
   def open_file_action(self, checked):
-    filename = QFileDialog.getOpenFileName(self, 'Open File...', os.path.dirname(self.current_file()), 'PyDM Display Files (*.ui *.py)')
+    filename = QFileDialog.getOpenFileName(self, 'Open File...', os.path.dirname(self.current_file()), 'PyDM Display Files (*.ui *.py)')[0]
     if filename:
         filename = str(filename)
         try:
