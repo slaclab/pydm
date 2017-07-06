@@ -497,4 +497,3 @@ class PyDMDrawingChord(PyDMDrawingArc):
         x, y, w, h = self.get_bounds(maxsize=maxsize)
         self._painter.drawChord(x, y, w, h, self._start_angle, self._span_angle)
 
-
