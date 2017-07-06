@@ -1,6 +1,7 @@
+import os
 import sys
 from os import path, environ
-from .PyQt.QtGui import QApplication, QMainWindow, QWidget, QToolTip, QClipboard
+from .PyQt.QtGui import QApplication, QMainWindow, QWidget, QToolTip, QClipboard, QFileDialog
 from .PyQt.QtCore import Qt, QTimer, pyqtSlot
 from .pydm_ui import Ui_MainWindow
 import subprocess
@@ -22,6 +23,7 @@ class PyDMMainWindow(QMainWindow):
     self.ui.forwardButton.clicked.connect(self.forward)
     self.ui.goButton.clicked.connect(self.go_button_pressed)
     self.ui.actionEdit_in_Designer.triggered.connect(self.edit_in_designer)
+    self.ui.actionOpen_File.triggered.connect(self.open_file_action)
     self.ui.actionReload_Display.triggered.connect(self.reload_display)
     self.ui.actionIncrease_Font_Size.triggered.connect(self.increase_font_size)
     self.ui.actionDecrease_Font_Size.triggered.connect(self.decrease_font_size)
@@ -92,8 +94,11 @@ class PyDMMainWindow(QMainWindow):
       else:
         self.go(filename)
     except (IOError, OSError, ValueError, ImportError) as e:
-      self.statusBar().showMessage("Cannot go to file: '{0}'. Reason: '{1}'.".format(filename, e), 5000)
+      self.handle_open_file_error(filename, e)
   
+  def handle_open_file_error(self, filename, error):
+      self.statusBar().showMessage("Cannot open file: '{0}', reason: '{1}'...".format(filename, error), 5000)
+
   #Note: in go(), back(), and forward(), always do history stack manipulation *before* opening the file.
   #That way, the navigation button enable/disable state will work correctly.  This is stupid, and will be fixed eventually.
   def go(self, ui_file, macros=None, command_line_args=[]):
@@ -163,7 +168,19 @@ class PyDMMainWindow(QMainWindow):
       self.statusBar().showMessage("Launching '{0}' in Qt Designer...".format(self.current_file()), 5000)
     else:
       self.statusBar().showMessage("{0} is a Python file, and cannot be edited in Qt Designer.".format(self.current_file()), 5000)
-  
+
+  @pyqtSlot(bool)
+  def open_file_action(self, checked):
+    filename = QFileDialog.getOpenFileName(self, 'Open File...', os.path.dirname(self.current_file()), 'PyDM Display Files (*.ui *.py)')[0]
+    if filename:
+        try:
+          if QApplication.keyboardModifiers() == Qt.ShiftModifier:
+            self.app.new_window(filename)
+          else:
+            self.open_file(filename)
+        except (IOError, OSError, ValueError, ImportError) as e:
+          self.handle_open_file_error(filename, e)
+
   @pyqtSlot(bool)
   def reload_display(self, checked):
     self.statusBar().showMessage("Reloading '{0}'...".format(self.current_file()), 5000)
