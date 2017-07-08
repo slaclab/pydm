@@ -46,7 +46,7 @@ class PyDMTimePlotCurvesModel(QAbstractTableModel):
 			return QVariant()
 		column_name = self._column_names[index.column()]
 		curve = self.plot._curves[index.row()]
-		if role == Qt.DisplayRole:
+		if role == Qt.DisplayRole or role == Qt.EditRole:
 			if column_name == "Channel":
 				return str(curve.channel.address)
 			elif column_name == "Label":
@@ -101,6 +101,6 @@ class PyDMTimePlotCurvesModel(QAbstractTableModel):
 		self.endInsertRows()
 
 	def removeAtIndex(self, index):
-		self.beginRemoveRows(QModelIndex(), len(self._plot._curves), len(self._plot._curves))
+		self.beginRemoveRows(QModelIndex(), index.row(), index.row())
 		self._plot.removeYChannelAtIndex(index.row())
 		self.endRemoveRows()
