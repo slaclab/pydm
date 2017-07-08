@@ -37,7 +37,7 @@ class TimePlotCurveItem(PlotCurveItem):
   
   @property
   def color_string(self):
-    return utilities.colors.svg_color_from_hex(self.color.name(), hex_on_fail=True)
+    return str(utilities.colors.svg_color_from_hex(self.color.name(), hex_on_fail=True))
   
   @color_string.setter
   def color_string(self, new_color_string):
