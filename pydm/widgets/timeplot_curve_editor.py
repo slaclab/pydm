@@ -1,16 +1,22 @@
-from ..PyQt.QtGui import QDialog, QVBoxLayout, QHBoxLayout, QTableView, QAbstractItemView, QSpacerItem, QSizePolicy, QDialogButtonBox
-from ..PyQt.QtCore import Qt
+from ..PyQt.QtGui import QDialog, QVBoxLayout, QHBoxLayout, QTableView, QAbstractItemView, QSpacerItem, QSizePolicy, QDialogButtonBox, QPushButton, QItemSelection
+from ..PyQt.QtCore import Qt, pyqtSlot
+from ..PyQt.QtDesigner import QDesignerFormWindowInterface
 from timeplot_table_model import PyDMTimePlotCurvesModel
-class PlotCurveEditorDialog(QDialog):
+
+class TimePlotCurveEditorDialog(QDialog):
   def __init__(self, plot, parent=None):
-    super(PlotCurveEditorDialog, self).__init__(parent)
+    super(TimePlotCurveEditorDialog, self).__init__(parent)
     self.plot = plot
     self.setup_ui()
     self.column_names = ("Channel", "Label", "Color")
     self.table_model = PyDMTimePlotCurvesModel(self.plot)
-    self.table_view.setModel(self.table_model, edit_method=self.edit_curve)
-    self.table_model.list = plot.curves()
+    self.table_view.setModel(self.table_model)
+    self.table_model.plot = plot
     self.table_view.resizeColumnsToContents()
+    self.add_button.clicked.connect(self.addCurve)
+    self.remove_button.clicked.connect(self.removeSelectedCurve)
+    self.remove_button.setEnabled(False)
+    self.table_view.selectionModel().selectionChanged.connect(self.handleSelectionChange)
     
   def setup_ui(self):
     self.vertical_layout = QVBoxLayout(self)
@@ -38,7 +44,19 @@ class PlotCurveEditorDialog(QDialog):
     self.vertical_layout.addWidget(self.button_box)
     self.button_box.accepted.connect(self.saveChanges)
     self.button_box.rejected.connect(self.reject)
+  
+  @pyqtSlot()
+  def addCurve(self):
+    self.table_model.append("")
+  
+  @pyqtSlot()
+  def removeSelectedCurve(self):
+    self.table_model.removeAtIndex(self.table_view.currentIndex())
     
+  @pyqtSlot(QItemSelection, QItemSelection)
+  def handleSelectionChange(self, selected, deselected):
+    self.remove_button.setEnabled(self.table_view.selectionModel().hasSelection())
+  
   @pyqtSlot()
   def saveChanges(self):
     formWindow = QDesignerFormWindowInterface.findFormWindow(self.plot)

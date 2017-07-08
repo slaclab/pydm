@@ -31,17 +31,16 @@ class BasePlot(PlotWidget):
     plot_item.setPen(QColor(curve_color))
     self._curves.append(plot_item)
     self.addItem(plot_item)
-    self._legend.addItem(plot_item, plot_item.curve_name)
+    #self._legend.addItem(plot_item, plot_item.curve_name)
   
   def removeCurve(self, plot_item):
-    print("Removing curve named {}".format(plot_item.curve_name))
     self.removeItem(plot_item)
-    self._legend.removeItem(plot_item.curve_name)
+    #self._legend.removeItem(plot_item.name())
     self._curves.remove(plot_item)
   
   def removeCurveWithName(self, name):
     for curve in self._curves:
-      if curve.curve_name == name:
+      if curve.name() == name:
         self.removeCurve(curve)
   
   def removeCurveAtIndex(self, index):
@@ -51,7 +50,7 @@ class BasePlot(PlotWidget):
   def setCurveAtIndex(self, index, new_curve):
     old_curve = self._curves[index]
     self._curves[index] = new_curve
-    self._legend.addItem(new_curve, new_curve.curve_name)
+    #self._legend.addItem(new_curve, new_curve.name())
     self.removeCurve(old_curve)
       
   def curveAtIndex(self, index):
@@ -61,9 +60,9 @@ class BasePlot(PlotWidget):
     return self._curves
   
   def clear(self):
-    print("Baseplot clearing.")
-    for curve in self._curves:
-      self._legend.removeItem(curve.curve_name)
+    legend_items = [label.text for (sample, label) in self._legend.items]
+    for item in legend_items:
+      self._legend.removeItem(item)
     self.plotItem.clear()
     self._curves = []
   

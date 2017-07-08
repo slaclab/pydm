@@ -12,12 +12,11 @@ from .. import utilities
 
 class TimePlotCurveItem(PlotCurveItem):
   def __init__(self, channel_address, **kws):
-    self.curve_name = kws.pop('name', None)
+    if not 'name' in kws:
+      kws['name'] = channel.name
     self._bufferSize = 1200
     self._update_mode = PyDMTimePlot.SynchronousMode
     self.data_buffer = np.zeros((2,self._bufferSize), order='f',dtype=float)
-    if self.curve_name is None:
-      self.curve_name = channel.name
     self.connected = False
     self.points_accumulated = 0
     self.latest_value = None
@@ -26,7 +25,7 @@ class TimePlotCurveItem(PlotCurveItem):
     super(TimePlotCurveItem, self).__init__(**kws)
   
   def to_dict(self):
-    return OrderedDict([("channel", self.address), ("name", self.curve_name), ("color", self.color_string)])
+    return OrderedDict([("channel", self.address), ("name", self.name()), ("color", self.color_string)])
     
   @property
   def address(self):
@@ -42,7 +41,7 @@ class TimePlotCurveItem(PlotCurveItem):
   
   @color_string.setter
   def color_string(self, new_color_string):
-    self.setPen(QColor(new_color_string))
+    self.setPen(QColor(str(new_color_string)))
   
   @property
   def color(self):
@@ -181,7 +180,6 @@ class PyDMTimePlot(BasePlot):
     self.plotItem.setXRange(minrange,maxrange,padding=0.0,update=update_immediately)
 
   def clearCurves(self):
-    print("Clearing time!")
     super(PyDMTimePlot, self).clear()
 
   def getCurves(self):
