@@ -87,12 +87,6 @@ class PyDMTimePlotCurvesModel(QAbstractTableModel):
 			return str(self._column_names[section])
 		elif orientation == Qt.Vertical and section < self.rowCount():
 			return section
-
-	#def sort(self, col, order=Qt.AscendingOrder):
-	# self.layoutAboutToBeChanged.emit()
-	# sort_reversed = (order == Qt.AscendingOrder)
-	# self._list.sort(key=itemgetter(col), reverse=sort_reversed)
-	# self.layoutChanged.emit()
 	#End QAbstractItemModel implementation.
 
 	def append(self, value, name=None, color=None):
