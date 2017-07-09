@@ -1,7 +1,7 @@
 from ..PyQt.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
 from ..PyQt.QtGui import QAction
 from ..PyQt.QtCore import pyqtSlot
-from .qtplugin_base import PyDMDesignerPlugin, qtplugin_factory
+from .qtplugin_base import PyDMDesignerPlugin
 from .timeplot import PyDMTimePlot
 from timeplot_curve_editor import TimePlotCurveEditorDialog
 Q_TYPEID = {'QPyDesignerContainerExtension':     'com.trolltech.Qt.Designer.Container',
