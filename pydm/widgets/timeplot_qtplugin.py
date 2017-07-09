@@ -4,7 +4,6 @@ from ..PyQt.QtCore import pyqtSlot
 from .qtplugin_base import PyDMDesignerPlugin, qtplugin_factory
 from .timeplot import PyDMTimePlot
 from timeplot_curve_editor import TimePlotCurveEditorDialog
-#PyDMTimePlotPlugin = qtplugin_factory(PyDMTimePlot)
 Q_TYPEID = {'QPyDesignerContainerExtension':     'com.trolltech.Qt.Designer.Container',
             'QPyDesignerPropertySheetExtension': 'com.trolltech.Qt.Designer.PropertySheet',
             'QPyDesignerTaskMenuExtension':      'com.trolltech.Qt.Designer.TaskMenu',
@@ -29,10 +28,8 @@ class PyDMTimePlotPlugin(PyDMDesignerPlugin):
     manager = core.extensionManager()
     if manager:
       self.factory = PyDMTimePlotExtensionFactory(manager)
-      manager.registerExtensions(self.factory, 'org.qt-project.Qt.Designer.TaskMenu')
-      manager.registerExtensions(self.factory, 'com.trolltech.Qt.Designer.TaskMenu')
-    #print("About to try and figure out what extensions are available.")
-    #print(manager.extension(PyDMTimePlot(), 'org.qt-project.Qt.Designer.TaskMenu'))
+      manager.registerExtensions(self.factory, 'org.qt-project.Qt.Designer.TaskMenu') #Qt5
+      manager.registerExtensions(self.factory, 'com.trolltech.Qt.Designer.TaskMenu') #Qt4
     self.initialized = True
 
 
