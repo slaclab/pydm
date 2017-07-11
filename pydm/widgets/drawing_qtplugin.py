@@ -1,9 +1,11 @@
 from .qtplugin_base import qtplugin_factory
-from .drawing import (PyDMDrawingLine, PyDMDrawingRectangle, PyDMDrawingEllipse, 
-                      PyDMDrawingCircle, PyDMDrawingArc, PyDMDrawingPie, PyDMDrawingChord)
+from .drawing import (PyDMDrawingLine, PyDMDrawingRectangle, PyDMDrawingTriangle,
+                      PyDMDrawingEllipse, PyDMDrawingCircle, PyDMDrawingArc,
+                      PyDMDrawingPie, PyDMDrawingChord)
 
 PyDMDrawingLinePlugin = qtplugin_factory(PyDMDrawingLine)
 PyDMDrawingRectanglePlugin = qtplugin_factory(PyDMDrawingRectangle)
+PyDMDrawingTrianglePlugin = qtplugin_factory(PyDMDrawingTriangle)
 PyDMDrawingEllipsePlugin = qtplugin_factory(PyDMDrawingEllipse)
 PyDMDrawingCirclePlugin = qtplugin_factory(PyDMDrawingCircle)
 PyDMDrawingArcPlugin = qtplugin_factory(PyDMDrawingArc)

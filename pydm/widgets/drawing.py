@@ -1,5 +1,6 @@
-from ..PyQt.QtGui import QWidget, QApplication, QColor, QPainter, QBrush, QPen, QTransform
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, Qt, QByteArray
+import math
+from ..PyQt.QtGui import QWidget, QApplication, QColor, QPainter, QBrush, QPen, QTransform, QPolygon
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, Qt, QByteArray, QPoint
 from .channel import PyDMChannel
 
 def deg_to_qt(deg):
@@ -44,11 +45,13 @@ class PyDMDrawing(QWidget):
     self._border_thickness = 0
     self._rotation = 0.0
     self._border_color = QColor(0,0,0)
-    self._has_border = True
+    self._has_border = False
     self.painter = QPainter()
     self.brush = QBrush(self._color)
     self.pen = QPen(Qt.NoPen)
     super(PyDMDrawing, self).__init__(parent)
+    self._width = self.width()
+    self._height = self.height()
     self.setup_state_machine()
     self._channel = init_channel
     
@@ -137,18 +140,70 @@ class PyDMDrawing(QWidget):
 
   def paintEvent(self, event):
     self.painter.begin(self)
+    self.painter.setRenderHint(QPainter.Antialiasing)
     self.painter.setBrush(self.brush)
     self.painter.setPen(self.pen)
     self.drawItem()
     self.painter.end()
 
   def drawItem(self):
-    transform = QTransform()
     xc, yc = self.width()*0.5, self.height()*0.5
-    transform.translate(xc, yc)
-    transform.rotate(-self._rotation)
-    transform.translate(-xc, -yc)
-    self.painter.setTransform(transform)
+    self.painter.translate(xc, yc)
+    self.painter.rotate(-self._rotation)
+
+  def getBounds(self, maxsize=False):
+    w, h = self.width(), self.height()
+
+    if maxsize:
+      w, h = self.getMaxWidthHeight()
+
+    xc, yc = w* 0.5, h*0.5
+
+    if self._has_border:
+      w = max(0, w - 2*self._border_thickness)
+      h = max(0, h - 2*self._border_thickness)
+      x = max(0, self._border_thickness)
+      y = max(0, self._border_thickness)
+    else:
+      x = 0
+      y = 0
+
+    return x-xc, y-yc, w, h
+
+  def isSquare(self):
+    return self.height() == self.width()
+
+  def getMaxWidthHeight(self):
+    # Based on https://stackoverflow.com/a/18402507
+    w0 = 0
+    h0 = 0
+    angle = math.radians(self._rotation)
+    origWidth = self.width()
+    origHeight = self.height()
+
+    if (origWidth <= origHeight):
+        w0 = origWidth
+        h0 = origHeight
+    else:
+        w0 = origHeight
+        h0 = origWidth
+
+    #Angle normalization in range [-PI..PI)
+    ang = angle - math.floor((angle + math.pi) / (2*math.pi)) * 2*math.pi
+    ang = math.fabs(ang)
+    if (ang > math.pi / 2):
+        ang = math.pi - ang
+    c = w0 / (h0 * math.sin(ang) + w0 * math.cos(ang))
+    w = 0
+    h = 0
+    if (origWidth <= origHeight):
+        w = w0 * c
+        h = h0 * c
+    else:
+        w = h0 * c
+        h = w0 * c
+
+    return w, h
 
   #Define setter and getter for the "color" property, used by the state machine to change color based on alarm severity and connection.
   def getColor(self):
@@ -200,6 +255,8 @@ class PyDMDrawing(QWidget):
   def setHasBorder(self, val):
     self._has_border = val
     if self._has_border:
+      if self._border_thickness == 0:
+          self.setBorderThickness(1)
       self.pen = QPen(QBrush(self.getBorderColor()), self.getBorderThickness())
     else:
       self.pen = QPen(Qt.NoPen)
@@ -247,11 +304,12 @@ class PyDMDrawing(QWidget):
 class PyDMDrawingLine(PyDMDrawing):
   def __init__(self, parent=None, init_channel=None):
     super(PyDMDrawingLine, self).__init__(parent, init_channel)
-    self.setHasBorder(True)
+    self.setHasBorder(False)
 
   def drawItem(self):
     super(PyDMDrawingLine, self).drawItem()
-    self.painter.drawLine(0, self.height()/2, self.width(), self.height()/2)
+    x, y, w, h = self.getBounds()
+    self.painter.drawRect(x, 0, w, 1)
 
 class PyDMDrawingRectangle(PyDMDrawing):
   def __init__(self, parent=None, init_channel=None):
@@ -259,8 +317,23 @@ class PyDMDrawingRectangle(PyDMDrawing):
 
   def drawItem(self):
     super(PyDMDrawingRectangle, self).drawItem()
-    w, h = self.width(), self.height()
-    self.painter.drawRect(0, 0, w, h)
+    x, y, w, h = self.getBounds(maxsize=True)
+    self.painter.drawRect(x, y, w, h)
+
+
+class PyDMDrawingTriangle(PyDMDrawing):
+  def __init__(self, parent=None, init_channel=None):
+    super(PyDMDrawingTriangle, self).__init__(parent, init_channel)
+
+  def drawItem(self):
+    super(PyDMDrawingTriangle, self).drawItem()
+    x, y, w, h = self.getBounds(maxsize=True)
+    points = [
+        QPoint(x, h/2.0),
+        QPoint(x, y),
+        QPoint(w/2.0, y)
+    ]
+    self.painter.drawPolygon(QPolygon(points))
 
 
 class PyDMDrawingEllipse(PyDMDrawing):
@@ -269,7 +342,9 @@ class PyDMDrawingEllipse(PyDMDrawing):
 
   def drawItem(self):
     super(PyDMDrawingEllipse, self).drawItem()
-    self.painter.drawEllipse(0, 0, self.width(), self.height())
+    maxsize = not self.isSquare()
+    x, y, w, h = self.getBounds(maxsize=maxsize)
+    self.painter.drawEllipse(QPoint(0,0), w/2.0, h/2.0)
 
 
 class PyDMDrawingCircle(PyDMDrawing):
@@ -278,8 +353,9 @@ class PyDMDrawingCircle(PyDMDrawing):
 
   def drawItem(self):
     super(PyDMDrawingCircle, self).drawItem()
-    r = min(self.width(), self.height())
-    self.painter.drawEllipse(0, 0, r, r)
+    x, y, w, h = self.getBounds()
+    r = min(w, h)/2.0
+    self.painter.drawEllipse(QPoint(0, 0), r, r)
 
 
 class PyDMDrawingArc(PyDMDrawing):
@@ -311,7 +387,9 @@ class PyDMDrawingArc(PyDMDrawing):
 
   def drawItem(self):
     super(PyDMDrawingArc, self).drawItem()
-    self.painter.drawArc(0, 0, self.width(), self.height(), self._start_angle, self._span_angle)
+    maxsize = not self.isSquare()
+    x, y, w, h = self.getBounds(maxsize=maxsize)
+    self.painter.drawArc(x, y, w, h, self._start_angle, self._span_angle)
 
 
 class PyDMDrawingPie(PyDMDrawingArc):
@@ -320,7 +398,9 @@ class PyDMDrawingPie(PyDMDrawingArc):
 
   def drawItem(self):
     super(PyDMDrawingPie, self).drawItem()
-    self.painter.drawPie(0, 0, self.width(), self.height(), self._start_angle, self._span_angle)
+    maxsize = not self.isSquare()
+    x, y, w, h = self.getBounds(maxsize=maxsize)
+    self.painter.drawPie(x, y, w, h, self._start_angle, self._span_angle)
 
 
 class PyDMDrawingChord(PyDMDrawingArc):
@@ -329,6 +409,8 @@ class PyDMDrawingChord(PyDMDrawingArc):
 
   def drawItem(self):
     super(PyDMDrawingChord, self).drawItem()
-    self.painter.drawChord(0, 0, self.width(), self.height(), self._start_angle, self._span_angle)
+    maxsize = not self.isSquare()
+    x, y, w, h = self.getBounds(maxsize=maxsize)
+    self.painter.drawChord(x, y, w, h, self._start_angle, self._span_angle)
 
 

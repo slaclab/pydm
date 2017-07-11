@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>920</width>
+    <height>747</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="PyDMDrawingLine" name="PyDMDrawingLine">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>70</y>
+     <width>120</width>
+     <height>120</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+  </widget>
+  <widget class="PyDMDrawingRectangle" name="PyDMDrawingRectangle">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>70</y>
+     <width>120</width>
+     <height>120</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="color">
+    <color>
+     <red>0</red>
+     <green>0</green>
+     <blue>0</blue>
+    </color>
+   </property>
+  </widget>
+  <widget class="PyDMDrawingEllipse" name="PyDMDrawingEllipse">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>70</y>
+     <width>201</width>
+     <height>120</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="color">
+    <color>
+     <red>0</red>
+     <green>0</green>
+     <blue>0</blue>
+    </color>
+   </property>
+   <property name="rotation">
+    <double>0.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="PyDMDrawingCircle" name="PyDMDrawingCircle">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>290</y>
+     <width>211</width>
+     <height>120</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="rotation">
+    <double>0.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="PyDMDrawingArc" name="PyDMDrawingArc">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>310</y>
+     <width>120</width>
+     <height>120</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="has_border" stdset="0">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="PyDMDrawingPie" name="PyDMDrawingPie">
+   <property name="geometry">
+    <rect>
+     <x>610</x>
+     <y>300</y>
+     <width>120</width>
+     <height>120</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="color">
+    <color>
+     <red>0</red>
+     <green>0</green>
+     <blue>0</blue>
+    </color>
+   </property>
+  </widget>
+  <widget class="PyDMDrawingChord" name="PyDMDrawingChord">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>510</y>
+     <width>120</width>
+     <height>120</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="color">
+    <color>
+     <red>0</red>
+     <green>0</green>
+     <blue>0</blue>
+    </color>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>480</y>
+     <width>69</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Chord</string>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_2">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>260</y>
+     <width>69</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Circle</string>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_3">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>260</y>
+     <width>69</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Arc</string>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_4">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>260</y>
+     <width>69</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Pie</string>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_5">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>40</y>
+     <width>69</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Ellipse</string>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_6">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>40</y>
+     <width>69</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Rectangle</string>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_7">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>40</y>
+     <width>69</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Line</string>
+   </property>
+  </widget>
+  <widget class="PyDMDrawingTriangle" name="PyDMDrawingTriangle">
+   <property name="geometry">
+    <rect>
+     <x>620</x>
+     <y>510</y>
+     <width>120</width>
+     <height>120</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="color">
+    <color>
+     <red>255</red>
+     <green>0</green>
+     <blue>0</blue>
+    </color>
+   </property>
+   <property name="border_thickness" stdset="0">
+    <double>5.000000000000000</double>
+   </property>
+   <property name="has_border" stdset="0">
+    <bool>true</bool>
+   </property>
+   <property name="rotation">
+    <double>0.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_8">
+   <property name="geometry">
+    <rect>
+     <x>650</x>
+     <y>480</y>
+     <width>69</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Triangle</string>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMLabel</class>
+   <extends>QLabel</extends>
+   <header>pydm.widgets.label</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingLine</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingRectangle</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingTriangle</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingEllipse</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingCircle</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingArc</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingPie</class>
+   <extends>PyDMDrawingArc</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingChord</class>
+   <extends>PyDMDrawingArc</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
