@@ -31,7 +31,17 @@ class PyDMTimePlotPlugin(PyDMDesignerPlugin):
       manager.registerExtensions(self.factory, 'org.qt-project.Qt.Designer.TaskMenu') #Qt5
       manager.registerExtensions(self.factory, 'com.trolltech.Qt.Designer.TaskMenu') #Qt4
     self.initialized = True
+  
+  def createWidget(self, parent):
+      """
+      Instantiate a widget with the given parent.
 
+      :param parent: Parent widget of instantiated widget
+      :type parent:  QWidget
+      """
+      timeplot = self.cls(parent=parent)
+      timeplot.initialize_for_designer()
+      return timeplot
 
 class PyDMTimePlotExtensionFactory(QExtensionFactory):
   def __init__(self, parent=None):

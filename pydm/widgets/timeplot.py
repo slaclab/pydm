@@ -123,8 +123,7 @@ class PyDMTimePlot(BasePlot):
       self.addYChannel(channel)
     self.plotItem.disableAutoRange(ViewBox.XAxis)
     self.getViewBox().setMouseEnabled(x=False)
-    self.y_waveform = None
-    self._bufferSize = 1
+    self._bufferSize = 1200
     self.redraw_timer = QTimer(self)
     self.redraw_timer.setInterval(20)
     self.redraw_timer.timeout.connect(self.redrawPlot)
@@ -140,6 +139,11 @@ class PyDMTimePlot(BasePlot):
       if isinstance(child, AxisItem):
         if child not in [self.getPlotItem().axes[k]['item'] for k in self.getPlotItem().axes]:
           child.deleteLater()
+  
+  def initialize_for_designer(self):
+    #If we are in Qt Designer, don't update the plot continuously.
+    #This function gets called by PyDMTimePlot's designer plugin.
+    self.redraw_timer.setSingleShot(True)
   
   # Adds a new curve to the current plot
   def addYChannel(self, ychannel, name=None, color=None):
@@ -167,11 +171,15 @@ class PyDMTimePlot(BasePlot):
   
   @pyqtSlot()
   def redrawPlot(self):
+    if len(self._curves) == 0:
+      return
     self.updateXAxis()
     for curve in self._curves:
       curve.redrawCurve()
 
   def updateXAxis(self, update_immediately=False):
+    if len(self._curves) == 0:
+      return
     if self._update_mode == PyDMTimePlot.SynchronousMode:
       maxrange = max([curve.max_x() for curve in self._curves])
     else:
@@ -208,8 +216,8 @@ class PyDMTimePlot(BasePlot):
         curve.setBufferSize(value)
 
   def resetBufferSize(self):
-    if self._bufferSize != 1:
-      self._bufferSize = 1
+    if self._bufferSize != 1200:
+      self._bufferSize = 1200
       for curve in self._curves:
         curve.resetBufferSize()
     
