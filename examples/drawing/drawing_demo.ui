@@ -28,6 +28,9 @@
    <property name="whatsThis">
     <string/>
    </property>
+   <property name="rotation" stdset="0">
+    <double>0.000000000000000</double>
+   </property>
   </widget>
   <widget class="PyDMDrawingRectangle" name="PyDMDrawingRectangle">
    <property name="geometry">
@@ -44,7 +47,10 @@
    <property name="whatsThis">
     <string/>
    </property>
-   <property name="color">
+   <property name="rotation" stdset="0">
+    <double>0.000000000000000</double>
+   </property>
+   <property name="color" stdset="0">
     <color>
      <red>0</red>
      <green>0</green>
@@ -67,15 +73,30 @@
    <property name="whatsThis">
     <string/>
    </property>
-   <property name="color">
+   <property name="brush" stdset="0">
+    <brush brushstyle="SolidPattern">
+     <color alpha="255">
+      <red>255</red>
+      <green>0</green>
+      <blue>0</blue>
+     </color>
+    </brush>
+   </property>
+   <property name="rotation" stdset="0">
+    <double>0.000000000000000</double>
+   </property>
+   <property name="border_thickness" stdset="0">
+    <double>16.000000000000000</double>
+   </property>
+   <property name="has_border" stdset="0">
+    <bool>true</bool>
+   </property>
+   <property name="color" stdset="0">
     <color>
      <red>0</red>
      <green>0</green>
      <blue>0</blue>
     </color>
-   </property>
-   <property name="rotation">
-    <double>0.000000000000000</double>
    </property>
   </widget>
   <widget class="PyDMDrawingCircle" name="PyDMDrawingCircle">
@@ -93,7 +114,7 @@
    <property name="whatsThis">
     <string/>
    </property>
-   <property name="rotation">
+   <property name="rotation" stdset="0">
     <double>0.000000000000000</double>
    </property>
   </widget>
@@ -102,7 +123,7 @@
     <rect>
      <x>360</x>
      <y>310</y>
-     <width>120</width>
+     <width>261</width>
      <height>120</height>
     </rect>
    </property>
@@ -111,6 +132,9 @@
    </property>
    <property name="whatsThis">
     <string/>
+   </property>
+   <property name="rotation" stdset="0">
+    <double>0.000000000000000</double>
    </property>
    <property name="has_border" stdset="0">
     <bool>true</bool>
@@ -131,7 +155,7 @@
    <property name="whatsThis">
     <string/>
    </property>
-   <property name="color">
+   <property name="color" stdset="0">
     <color>
      <red>0</red>
      <green>0</green>
@@ -154,7 +178,7 @@
    <property name="whatsThis">
     <string/>
    </property>
-   <property name="color">
+   <property name="color" stdset="0">
     <color>
      <red>0</red>
      <green>0</green>
@@ -310,12 +334,8 @@
    <property name="whatsThis">
     <string/>
    </property>
-   <property name="color">
-    <color>
-     <red>255</red>
-     <green>0</green>
-     <blue>0</blue>
-    </color>
+   <property name="rotation" stdset="0">
+    <double>0.000000000000000</double>
    </property>
    <property name="border_thickness" stdset="0">
     <double>5.000000000000000</double>
@@ -323,8 +343,12 @@
    <property name="has_border" stdset="0">
     <bool>true</bool>
    </property>
-   <property name="rotation">
-    <double>0.000000000000000</double>
+   <property name="color" stdset="0">
+    <color>
+     <red>0</red>
+     <green>0</green>
+     <blue>0</blue>
+    </color>
    </property>
   </widget>
   <widget class="PyDMLabel" name="PyDMLabel_8">
@@ -346,12 +370,55 @@
     <string>Triangle</string>
    </property>
   </widget>
+  <widget class="PyDMDrawingImage" name="PyDMDrawingImage">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>500</y>
+     <width>100</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="filename" stdset="0">
+    <string>./examples/drawing/SLAC_logo.jpeg</string>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_9">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>470</y>
+     <width>69</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Image</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
    <class>PyDMLabel</class>
    <extends>QLabel</extends>
    <header>pydm.widgets.label</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingImage</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
   </customwidget>
   <customwidget>
    <class>PyDMDrawingLine</class>

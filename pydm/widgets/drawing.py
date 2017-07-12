@@ -1,6 +1,6 @@
 import math
-from ..PyQt.QtGui import QWidget, QApplication, QColor, QPainter, QBrush, QPen, QTransform, QPolygon
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, Qt, QByteArray, QPoint
+from ..PyQt.QtGui import QWidget, QApplication, QColor, QPainter, QBrush, QPen, QTransform, QPolygon, QPixmap
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, Qt, QByteArray, QPoint, QFile
 from .channel import PyDMChannel
 
 def deg_to_qt(deg):
@@ -42,77 +42,15 @@ class PyDMDrawing(QWidget):
   
   def __init__(self, parent=None, init_channel=None):
     self._color = self.local_connection_status_color_map[False]
-    self._border_thickness = 0
     self._rotation = 0.0
-    self._border_color = QColor(0,0,0)
-    self._has_border = False
-    self.painter = QPainter()
-    self.brush = QBrush(self._color)
-    self.pen = QPen(Qt.NoPen)
+    self._brush = QBrush(Qt.SolidPattern)
+    self._painter = QPainter()
+    self._pen = QPen(Qt.NoPen)
+    self._pen_style = Qt.NoPen
+    self._pen_width = 0
+    self._pen_color = QColor(0,0,0)
     super(PyDMDrawing, self).__init__(parent)
-    self._width = self.width()
-    self._height = self.height()
-    self.setup_state_machine()
     self._channel = init_channel
-    
-    
-  # Can the state machine be implemented at a lower level, like a QWidget subclass? 
-  def setup_state_machine(self):
-    self.state_machine = QStateMachine(self)
-    
-    #We'll need to talk to the parent application to figure out what colors to use for a specific state.  If the parent application doesn't have a color map (this is true when we are in Designer) then use the local colors defined above.
-    app = QApplication.instance()
-    try:
-      connection_status_color_map = app.connection_status_color_map
-      alarm_severity_color_map = app.alarm_severity_color_map
-    except AttributeError:
-      connection_status_color_map = self.local_connection_status_color_map
-      alarm_severity_color_map = self.local_alarm_severity_color_map
-    
-    #There are two connection states: Disconnected, and Connected.
-    disconnected_state = QState(self.state_machine)
-    disconnected_state.assignProperty(self, "color", connection_status_color_map[False])
-    #connected_state is parallel because it will have sub-states for alarm severity.
-    connected_state = QState(self.state_machine)
-    #connected_state itself doesn't have any particular color, that is all defined by the alarm severity.
-    
-    self.state_machine.setInitialState(disconnected_state)
-    
-    disconnected_state.addTransition(self.connected_signal, connected_state)
-    connected_state.addTransition(self.disconnected_signal, disconnected_state)
-    
-    #Now lets add the alarm severity states.
-    no_alarm_state = QState(connected_state)
-    no_alarm_state.assignProperty(self, "color", alarm_severity_color_map[0])
-    minor_alarm_state = QState(connected_state)
-    minor_alarm_state.assignProperty(self, "color", alarm_severity_color_map[1])
-    major_alarm_state = QState(connected_state)
-    major_alarm_state.assignProperty(self, "color", alarm_severity_color_map[2])
-    invalid_alarm_state = QState(connected_state)
-    invalid_alarm_state.assignProperty(self, "color", alarm_severity_color_map[3])
-    connected_state.setInitialState(no_alarm_state)
-    
-    #Add the transitions between different severities.
-    #This is a bunch, since any severity can transition to any other.
-    no_alarm_state.addTransition(self.minor_alarm_signal, minor_alarm_state)
-    no_alarm_state.addTransition(self.major_alarm_signal, major_alarm_state)
-    no_alarm_state.addTransition(self.invalid_alarm_signal, invalid_alarm_state)
-    minor_alarm_state.addTransition(self.no_alarm_signal, no_alarm_state)
-    minor_alarm_state.addTransition(self.major_alarm_signal, major_alarm_state)
-    minor_alarm_state.addTransition(self.invalid_alarm_signal, invalid_alarm_state)
-    major_alarm_state.addTransition(self.no_alarm_signal, no_alarm_state)
-    major_alarm_state.addTransition(self.minor_alarm_signal, minor_alarm_state)
-    major_alarm_state.addTransition(self.invalid_alarm_signal, invalid_alarm_state)
-    invalid_alarm_state.addTransition(self.no_alarm_signal, no_alarm_state)
-    invalid_alarm_state.addTransition(self.minor_alarm_signal, minor_alarm_state)
-    invalid_alarm_state.addTransition(self.major_alarm_signal, major_alarm_state)
-    
-    #Add a cool fade animation to a state transition.
-    self.color_fade = QPropertyAnimation(self, QByteArray(b'color'), self)
-    self.color_fade.setDuration(175)
-    self.color_fade.valueChanged.connect(self.force_redraw)
-    self.state_machine.addDefaultAnimation(self.color_fade)
-    self.state_machine.start()
       
   #0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID  
   @pyqtSlot(int)
@@ -139,41 +77,50 @@ class PyDMDrawing(QWidget):
     self.update()
 
   def paintEvent(self, event):
-    self.painter.begin(self)
-    self.painter.setRenderHint(QPainter.Antialiasing)
-    self.painter.setBrush(self.brush)
-    self.painter.setPen(self.pen)
-    self.drawItem()
-    self.painter.end()
+    self._painter.begin(self)
+    self._painter.setRenderHint(QPainter.Antialiasing)
+    self._painter.setBrush(self._brush)
+    self._painter.setPen(self._pen)
+    self.draw_item()
+    self._painter.end()
 
-  def drawItem(self):
-    xc, yc = self.width()*0.5, self.height()*0.5
-    self.painter.translate(xc, yc)
-    self.painter.rotate(-self._rotation)
+  def draw_item(self):
+    xc, yc = self.get_center() 
+    self._painter.translate(xc, yc)
+    self._painter.rotate(-self._rotation)
 
-  def getBounds(self, maxsize=False):
+  def get_center(self):
+      return self.width()*0.5, self.height()*0.5
+
+  def get_bounds(self, maxsize=False, force_no_pen=False):
     w, h = self.width(), self.height()
 
     if maxsize:
-      w, h = self.getMaxWidthHeight()
+      w, h = self.get_inner_max()
 
     xc, yc = w* 0.5, h*0.5
 
-    if self._has_border:
-      w = max(0, w - 2*self._border_thickness)
-      h = max(0, h - 2*self._border_thickness)
-      x = max(0, self._border_thickness)
-      y = max(0, self._border_thickness)
+    if self.has_border() and not force_no_pen:
+      w = max(0, w - 2*self._pen_width)
+      h = max(0, h - 2*self._pen_width)
+      x = max(0, self._pen_width)
+      y = max(0, self._pen_width)
     else:
       x = 0
       y = 0
 
     return x-xc, y-yc, w, h
 
-  def isSquare(self):
+  def has_border(self):
+    if self._pen.style() != Qt.NoPen and self._pen.width() > 0:
+      return True
+    else:
+      return False
+
+  def is_square(self):
     return self.height() == self.width()
 
-  def getMaxWidthHeight(self):
+  def get_inner_max(self):
     # Based on https://stackoverflow.com/a/18402507
     w0 = 0
     h0 = 0
@@ -205,84 +152,72 @@ class PyDMDrawing(QWidget):
 
     return w, h
 
-  #Define setter and getter for the "color" property, used by the state machine to change color based on alarm severity and connection.
-  def getColor(self):
-    return self._color
+  def get_brush(self):
+    return self._brush
 
-  def setColor(self, new_color):
-    if new_color != self._color:
-      old_alpha = self.brush.color().alphaF()
-      new_color.setAlphaF(old_alpha)
-      self._color = new_color
-      self.brush.setColor(self._color)
+  def set_brush(self, new_brush):
+    if new_brush != self._brush:
+      self._brush = new_brush
       self.update()
-    
-  color = pyqtProperty(QColor, getColor, setColor)
-  
-  def getBorderColor(self):
-    return self._border_color
-  
-  def setBorderColor(self, new_color):
-    if new_color != self._border_color:
-      self._border_color = new_color
-      self.pen.setColor(new_color)
-      self.update()
-  
-  def resetBorderColor(self):
-    self._border_color = QColor(0,0,0)
-    
-  border_color = pyqtProperty(QColor, getBorderColor, setBorderColor, resetBorderColor)
-  
-  def getBorderThickness(self):
-    return self._border_thickness
-  
-  def setBorderThickness(self, new_thickness):
-    if new_thickness != self._border_thickness:
-      self._border_thickness = new_thickness
-      self.pen.setWidth(self._border_thickness)
-      self.update()
-  
-  def resetBorderThickness(self):
-    self._border_thickness = 0.0
-    self.pen.setWidth(self._border_thickness)
-    self.update()
-    
-  border_thickness = pyqtProperty(float, getBorderThickness, setBorderThickness, resetBorderThickness)
 
-  def getHasBorder(self):
-    return self._has_border
+  brush = pyqtProperty(QBrush, get_brush, set_brush)
+
+  def get_pen_style(self):
+    return self._pen_style
+
+  def set_pen_style(self, new_style):
+    if new_style != self._pen_style:
+      self._pen_style = new_style
+      self._pen.setStyle(new_style)
+      self.update()
+
+  def reset_pen_style(self):
+    self.set_pen_style(Qt.NoPen)
+
+  penStyle = pyqtProperty(Qt.PenStyle, get_pen_style, set_pen_style, reset_pen_style)
+
+  def get_pen_color(self):
+    return self._pen_color
   
-  def setHasBorder(self, val):
-    self._has_border = val
-    if self._has_border:
-      if self._border_thickness == 0:
-          self.setBorderThickness(1)
-      self.pen = QPen(QBrush(self.getBorderColor()), self.getBorderThickness())
-    else:
-      self.pen = QPen(Qt.NoPen)
-    self.update()
-  
-  def resetHasBorder(self):
-    if self._has_border:
-      self._has_border = False
-      self.pen = QPen(Qt.NoPen)
+  def set_pen_color(self, new_color):
+    if new_color != self._pen_color:
+      self._pen_color = new_color
+      self._pen.setColor(new_color)
       self.update()
   
-  has_border = pyqtProperty(bool, getHasBorder, setHasBorder)
+  def reset_pen_color(self):
+    self.set_pen_color(QColor(0,0,0))
+    
+  penColor = pyqtProperty(QColor, get_pen_color, set_pen_color, reset_pen_color)
   
-  def getRotation(self):
+  def get_pen_width(self):
+    return self._pen_width
+  
+  def set_pen_width(self, new_width):
+    if new_width < 0:
+      return
+    if new_width != self._pen_width:
+      self._pen_width = new_width
+      self._pen.setWidth(self._pen_width)
+      self.update()
+  
+  def reset_pen_width(self):
+    self.set_pen_width(0.0)
+    
+  penWidth = pyqtProperty(float, get_pen_width, set_pen_width, reset_pen_width)
+
+  def get_rotation(self):
     return self._rotation
   
-  def setRotation(self, new_angle):
+  def set_rotation(self, new_angle):
     if new_angle != self._rotation:
       self._rotation = new_angle
       self.update()
   
-  def resetRotation(self):
-    self._rotation = 0.0
-    self.update()
+  def reset_rotation(self):
+    self.set_rotation(0.0)
     
-  rotation = pyqtProperty(float, getRotation, setRotation, resetRotation)
+  rotation = pyqtProperty(float, get_rotation, set_rotation, reset_rotation)
   
   def getChannel(self):
     return str(self._channel)
@@ -304,113 +239,149 @@ class PyDMDrawing(QWidget):
 class PyDMDrawingLine(PyDMDrawing):
   def __init__(self, parent=None, init_channel=None):
     super(PyDMDrawingLine, self).__init__(parent, init_channel)
-    self.setHasBorder(False)
 
-  def drawItem(self):
-    super(PyDMDrawingLine, self).drawItem()
-    x, y, w, h = self.getBounds()
-    self.painter.drawRect(x, 0, w, 1)
+  def draw_item(self):
+    super(PyDMDrawingLine, self).draw_item()
+    x, y, w, h = self.get_bounds()
+    self._painter.drawRect(x, 0, w, 1)
+
+
+class PyDMDrawingImage(PyDMDrawing):
+  def __init__(self, parent=None, init_channel=None):
+    self._file = ""
+    super(PyDMDrawingImage, self).__init__(parent, init_channel)
+    self._pixmap = QPixmap()
+    self._aspect_ratio_mode = Qt.KeepAspectRatio
+ 
+  def get_file(self):
+    return self._file
+
+  def set_file(self, new_file):
+    if new_file != self._file:
+      self._file = new_file
+      self._pixmap = QPixmap(self._file)
+      self.update()
+
+  filename = pyqtProperty(str, get_file, set_file)
+
+  def get_aspect_ratio_mode(self):
+    return self._aspect_ratio_mode
+
+  def set_aspect_ratio_mode(self, new_mode):
+    if new_mode != self._aspect_ratio_mode:
+      self._aspect_ratio_mode = new_mode
+      self.update()
+
+  aspectRatioMode = pyqtProperty(Qt.AspectRatioMode, get_aspect_ratio_mode, set_aspect_ratio_mode)
+
+  def draw_item(self):
+    super(PyDMDrawingImage, self).draw_item()
+    x, y, w, h = self.get_bounds(maxsize=True, force_no_pen=True)
+    _scaled = self._pixmap.scaled(w, h, self._aspect_ratio_mode, Qt.SmoothTransformation)
+    self._painter.drawPixmap(x, y, _scaled)
+
 
 class PyDMDrawingRectangle(PyDMDrawing):
   def __init__(self, parent=None, init_channel=None):
     super(PyDMDrawingRectangle, self).__init__(parent, init_channel)
 
-  def drawItem(self):
-    super(PyDMDrawingRectangle, self).drawItem()
-    x, y, w, h = self.getBounds(maxsize=True)
-    self.painter.drawRect(x, y, w, h)
+  def draw_item(self):
+    super(PyDMDrawingRectangle, self).draw_item()
+    x, y, w, h = self.get_bounds(maxsize=True)
+    self._painter.drawRect(x, y, w, h)
 
 
 class PyDMDrawingTriangle(PyDMDrawing):
   def __init__(self, parent=None, init_channel=None):
     super(PyDMDrawingTriangle, self).__init__(parent, init_channel)
 
-  def drawItem(self):
-    super(PyDMDrawingTriangle, self).drawItem()
-    x, y, w, h = self.getBounds(maxsize=True)
+  def draw_item(self):
+    super(PyDMDrawingTriangle, self).draw_item()
+    x, y, w, h = self.get_bounds(maxsize=True)
     points = [
         QPoint(x, h/2.0),
         QPoint(x, y),
         QPoint(w/2.0, y)
     ]
-    self.painter.drawPolygon(QPolygon(points))
+    self._painter.drawPolygon(QPolygon(points))
 
 
 class PyDMDrawingEllipse(PyDMDrawing):
   def __init__(self, parent=None, init_channel=None):
     super(PyDMDrawingEllipse, self).__init__(parent, init_channel)
 
-  def drawItem(self):
-    super(PyDMDrawingEllipse, self).drawItem()
-    maxsize = not self.isSquare()
-    x, y, w, h = self.getBounds(maxsize=maxsize)
-    self.painter.drawEllipse(QPoint(0,0), w/2.0, h/2.0)
+  def draw_item(self):
+    super(PyDMDrawingEllipse, self).draw_item()
+    maxsize = not self.is_square()
+    x, y, w, h = self.get_bounds(maxsize=maxsize)
+    self._painter.drawEllipse(QPoint(0,0), w/2.0, h/2.0)
 
 
 class PyDMDrawingCircle(PyDMDrawing):
   def __init__(self, parent=None, init_channel=None):
     super(PyDMDrawingCircle, self).__init__(parent, init_channel)
 
-  def drawItem(self):
-    super(PyDMDrawingCircle, self).drawItem()
-    x, y, w, h = self.getBounds()
+  def draw_item(self):
+    super(PyDMDrawingCircle, self).draw_item()
+    x, y, w, h = self.get_bounds()
     r = min(w, h)/2.0
-    self.painter.drawEllipse(QPoint(0, 0), r, r)
+    self._painter.drawEllipse(QPoint(0, 0), r, r)
 
 
 class PyDMDrawingArc(PyDMDrawing):
   def __init__(self, parent=None, init_channel=None):
     super(PyDMDrawingArc, self).__init__(parent, init_channel)
-    self.setHasBorder(True)
+    self.set_pen_style(Qt.SolidLine)
+    self.set_pen_width(1.0)
     self._start_angle = 0
     self._span_angle = deg_to_qt(90)
 
-  def getStartAngle(self):
+  def get_start_angle(self):
     return qt_to_deg(self._start_angle)
 
-  def setStartAngle(self, new_angle):
+  def set_start_angle(self, new_angle):
     if deg_to_qt(new_angle) != self._start_angle:
       self._start_angle = deg_to_qt(new_angle)
       self.update()
 
-  start_angle = pyqtProperty(float, getStartAngle, setStartAngle)
+  startAngle = pyqtProperty(float, get_start_angle, set_start_angle)
 
-  def getSpanAngle(self):
+  def get_span_angle(self):
     return qt_to_deg(self._span_angle)
 
-  def setSpanAngle(self, new_angle):
+  def set_span_angle(self, new_angle):
     if deg_to_qt(new_angle) != self._span_angle:
       self._span_angle = deg_to_qt(new_angle)
       self.update()
 
-  span_angle = pyqtProperty(float, getSpanAngle, setSpanAngle)
+  spanAngle = pyqtProperty(float, get_span_angle, set_span_angle)
 
-  def drawItem(self):
-    super(PyDMDrawingArc, self).drawItem()
-    maxsize = not self.isSquare()
-    x, y, w, h = self.getBounds(maxsize=maxsize)
-    self.painter.drawArc(x, y, w, h, self._start_angle, self._span_angle)
+  def draw_item(self):
+    super(PyDMDrawingArc, self).draw_item()
+    maxsize = not self.is_square()
+    x, y, w, h = self.get_bounds(maxsize=maxsize)
+    self._painter.drawArc(x, y, w, h, self._start_angle, self._span_angle)
 
 
 class PyDMDrawingPie(PyDMDrawingArc):
   def __init__(self, parent=None, init_channel=None):
     super(PyDMDrawingPie, self).__init__(parent, init_channel)
 
-  def drawItem(self):
-    super(PyDMDrawingPie, self).drawItem()
-    maxsize = not self.isSquare()
-    x, y, w, h = self.getBounds(maxsize=maxsize)
-    self.painter.drawPie(x, y, w, h, self._start_angle, self._span_angle)
+  def draw_item(self):
+    super(PyDMDrawingPie, self).draw_item()
+    maxsize = not self.is_square()
+    x, y, w, h = self.get_bounds(maxsize=maxsize)
+    self._painter.drawPie(x, y, w, h, self._start_angle, self._span_angle)
 
 
 class PyDMDrawingChord(PyDMDrawingArc):
   def __init__(self, parent=None, init_channel=None):
     super(PyDMDrawingChord, self).__init__(parent, init_channel)
 
-  def drawItem(self):
-    super(PyDMDrawingChord, self).drawItem()
-    maxsize = not self.isSquare()
-    x, y, w, h = self.getBounds(maxsize=maxsize)
-    self.painter.drawChord(x, y, w, h, self._start_angle, self._span_angle)
+  def draw_item(self):
+    super(PyDMDrawingChord, self).draw_item()
+    maxsize = not self.is_square()
+    x, y, w, h = self.get_bounds(maxsize=maxsize)
+    self._painter.drawChord(x, y, w, h, self._start_angle, self._span_angle)
 
 
