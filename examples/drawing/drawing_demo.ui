@@ -392,6 +392,44 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
+  <widget class="PyDMDrawingImage" name="PyDMDrawingImage">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>500</y>
+     <width>100</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="filename" stdset="0">
+    <string>./examples/drawing/SLAC_logo.jpeg</string>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_9">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>470</y>
+     <width>69</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Image</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
