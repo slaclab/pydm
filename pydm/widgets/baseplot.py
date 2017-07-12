@@ -136,10 +136,14 @@ class BasePlot(PlotWidget):
   axisColor = pyqtProperty(QColor, getAxisColor, setAxisColor)
   
   def getPlotTitle(self):
+    if self._title is None:
+      return ""
     return str(self._title)
   
   def setPlotTitle(self, value):
     self._title = str(value)
+    if len(self._title) < 1:
+      self._title=None
     self.setTitle(self._title)
 
   def resetPlotTitle(self):
