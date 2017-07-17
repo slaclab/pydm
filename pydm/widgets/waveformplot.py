@@ -18,11 +18,11 @@ class WaveformCurveItem(PlotCurveItem):
 	def __init__(self, y_addr=None, x_addr=None, **kws):
 		if y_addr is None:
 			y_addr = ""
-		if 'name' not in kws:
+		if 'name' not in kws or kws['name'] is None:
 			try:
 				y_name = y_addr.split("://")[1]
 			except IndexError:
-				y_name = y_channel
+				y_name = y_addr
 			if x_addr is None:
 				kws['name'] = y_name
 			else:

@@ -47,15 +47,15 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
 		if role == Qt.DisplayRole or role == Qt.EditRole:
 			if column_name == "Y Channel":
 				if curve.y_address is None:
-					return ""
+					return QVariant()
 				return str(curve.y_address)
 			elif column_name == "X Channel":
 				if curve.x_address is None:
-					return ""
+					return QVariant()
 				return str(curve.x_address)
 			elif column_name == "Label":
 				if curve.name() is None:
-					return ""
+					return QVariant()
 				return str(curve.name())
 			elif column_name == "Color":
 				return curve.color_string

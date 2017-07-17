@@ -12,8 +12,12 @@ from .. import utilities
 
 class TimePlotCurveItem(PlotCurveItem):
   def __init__(self, channel_address, **kws):
-    if not 'name' in kws:
-      kws['name'] = channel.name
+    if not 'name' in kws or kws['name'] is None:
+      try:
+        name = channel_address.split("://")[1]
+      except IndexError:
+        name = channel_address
+      kws['name'] = name
     self._bufferSize = 1200
     self._update_mode = PyDMTimePlot.SynchronousMode
     self.data_buffer = np.zeros((2,self._bufferSize), order='f',dtype=float)
@@ -29,10 +33,15 @@ class TimePlotCurveItem(PlotCurveItem):
     
   @property
   def address(self):
+    if self.channel is None:
+      return None
     return self.channel.address
   
   @address.setter
   def address(self, new_address):
+    if new_address is None or len(str(new_address)) < 1:
+      self.channel = None
+      return
     self.channel = PyDMChannel(address=new_address, connection_slot=self.connectionStateChanged, value_slot=self.receiveNewValue)
   
   @property

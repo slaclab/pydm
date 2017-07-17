@@ -48,8 +48,12 @@ class PyDMTimePlotCurvesModel(QAbstractTableModel):
 		curve = self.plot._curves[index.row()]
 		if role == Qt.DisplayRole or role == Qt.EditRole:
 			if column_name == "Channel":
-				return str(curve.channel.address)
+				if curve.address is None:
+					return QVariant()
+				return str(curve.address)
 			elif column_name == "Label":
+				if curve.name() is None:
+					return QVariant()
 				return str(curve.name())
 			elif column_name == "Color":
 				return curve.color_string
