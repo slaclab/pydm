@@ -240,7 +240,12 @@ class PyDMApplication(QApplication):
   def show_address_tooltip(self, obj, event):
     addr = obj.channels()[0].address
     QToolTip.showText(event.globalPos(), addr)
-    QApplication.clipboard().setText(addr, mode=QClipboard.Selection)
+    #Strip the scheme out of the address before putting it in the clipboard.
+    m = re.match('(.+?):/{2,3}(.+?)$',addr)
+    if m is None:
+      QApplication.clipboard().setText(addr, mode=QClipboard.Selection)
+    else:
+      QApplication.clipboard().setText(m.group(2), mode=QClipboard.Selection)
  
   def establish_widget_connections(self, widget):
     widgets = [widget]
