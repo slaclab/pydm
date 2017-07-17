@@ -17,7 +17,7 @@ import inspect
 import warnings
 from .display_module import Display
 from .PyQt.QtCore import Qt, QEvent, QTimer, pyqtSlot
-from .PyQt.QtGui import QApplication, QColor, QWidget
+from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard
 from .PyQt import uic
 from .main_window import PyDMMainWindow
 from .utilities import macro
@@ -242,7 +242,10 @@ class PyDMApplication(QApplication):
     QToolTip.showText(event.globalPos(), addr)
     #Strip the scheme out of the address before putting it in the clipboard.
     m = re.match('(.+?):/{2,3}(.+?)$',addr)
-    QApplication.clipboard().setText(m.group(2), mode=QClipboard.Selection)
+    if m is None:
+      QApplication.clipboard().setText(addr, mode=QClipboard.Selection)
+    else:
+      QApplication.clipboard().setText(m.group(2), mode=QClipboard.Selection)
  
   def establish_widget_connections(self, widget):
     widgets = [widget]
@@ -252,11 +255,12 @@ class PyDMApplication(QApplication):
         if hasattr(child_widget, 'channels'):
           for channel in child_widget.channels():
             self.add_connection(channel)
+          # Take this opportunity to install a filter that intercepts middle-mouse clicks, 
+          # which we use to display a tooltip with the address of the widget's first channel.
+          child_widget.installEventFilter(self)
       except NameError:
         pass
-        #Take this opportunity to install a filter that intercepts middle-mouse clicks, which we use to display a tooltip with the address of the widget's first channel.
-        child_widget.installEventFilter(self)
-
+      
   def close_widget_connections(self, widget):
     widgets = [widget]
     widgets.extend(widget.findChildren(QWidget))
