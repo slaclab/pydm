@@ -12,13 +12,14 @@ class WaveformPlotCurveEditorDialog(QDialog):
     self.table_model = PyDMWaveformPlotCurvesModel(self.plot)
     self.table_view.setModel(self.table_model)
     self.table_model.plot = plot
-    self.table_view.resizeColumnsToContents()
+    #self.table_view.resizeColumnsToContents()
     self.add_button.clicked.connect(self.addCurve)
     self.remove_button.clicked.connect(self.removeSelectedCurve)
     self.remove_button.setEnabled(False)
     self.table_view.selectionModel().selectionChanged.connect(self.handleSelectionChange)
     
   def setup_ui(self):
+    self.resize(500, 300)
     self.vertical_layout = QVBoxLayout(self)
     self.table_view = QTableView(self)
     self.table_view.setEditTriggers(QAbstractItemView.DoubleClicked)
@@ -29,6 +30,10 @@ class WaveformPlotCurveEditorDialog(QDialog):
     self.table_view.setSortingEnabled(False)
     self.table_view.horizontalHeader().setStretchLastSection(True)
     self.table_view.verticalHeader().setVisible(False)
+    self.table_view.setColumnWidth(0, 160)
+    self.table_view.setColumnWidth(1, 160)
+    self.table_view.setColumnWidth(2, 160)
+    self.table_view.setColumnWidth(3, 20)
     self.vertical_layout.addWidget(self.table_view)
     self.add_remove_layout = QHBoxLayout()
     spacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
@@ -44,6 +49,7 @@ class WaveformPlotCurveEditorDialog(QDialog):
     self.vertical_layout.addWidget(self.button_box)
     self.button_box.accepted.connect(self.saveChanges)
     self.button_box.rejected.connect(self.reject)
+    self.setWindowTitle("Waveform Curve Editor")
   
   @pyqtSlot()
   def addCurve(self):
