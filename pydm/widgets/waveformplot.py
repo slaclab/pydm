@@ -78,7 +78,7 @@ class WaveformCurveItem(PlotCurveItem):
 		self.y_channel = PyDMChannel(address=new_address, connection_slot=self.yConnectionStateChanged, waveform_slot=self.receiveYWaveform)
 	
 	def to_dict(self):
-		return OrderedDict([("y_channel", self.x_address), ("x_channel", self.y_address), ("name", self.name()), ("color", self.color_string)])
+		return OrderedDict([("y_channel", self.y_address), ("x_channel", self.x_address), ("name", self.name()), ("color", self.color_string)])
 	
 	@pyqtSlot(bool)
 	def xConnectionStateChanged(self, connected):
