@@ -230,7 +230,7 @@ class Connection(PyDMConnection):
           self.prec = self.pv.data['precision']
           self.prec_signal.emit(int(self.prec))
         
-        if self.units is None:
+        if self.units is None and 'units' in self.pv.data:
           self.units = self.pv.data['units']
           self.unit_signal.emit(self.units.decode(encoding='ascii'))
         
