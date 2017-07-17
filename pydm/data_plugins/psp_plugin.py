@@ -226,21 +226,33 @@ class Connection(PyDMConnection):
           self.sevr = self.pv.severity
           self.new_severity_signal.emit(self.sevr)
 
-        if self.prec is None and 'precision' in self.pv.data:
-          self.prec = self.pv.data['precision']
-          self.prec_signal.emit(int(self.prec))
+        if self.prec is None:
+          try:
+            self.prec = self.pv.data['precision']
+            self.prec_signal.emit(int(self.prec))
+          except KeyError:
+            pass
         
-        if self.units is None and 'units' in self.pv.data:
-          self.units = self.pv.data['units']
-          self.unit_signal.emit(self.units.decode(encoding='ascii'))
+        if self.units is None:
+          try:
+            self.units = self.pv.data['units']
+            self.unit_signal.emit(self.units.decode(encoding='ascii'))
+          except KeyError:
+            pass
         
         if self.ctrl_llim is None:
-          self.ctrl_llim = self.pv.data['ctrl_llim']
-          self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
+          try:
+            self.ctrl_llim = self.pv.data['ctrl_llim']
+            self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
+          except KeyError:
+            pass
           
         if self.ctrl_hlim is None:
-          self.ctrl_hlim = self.pv.data['ctrl_hlim']
-          self.upper_ctrl_limit_signal.emit(self.ctrl_hlim)
+          try:
+            self.ctrl_hlim = self.pv.data['ctrl_hlim']
+            self.upper_ctrl_limit_signal.emit(self.ctrl_hlim)
+          except KeyError:
+            pass
 
         if self.count > 1:
             self.new_waveform_signal.emit(value)
