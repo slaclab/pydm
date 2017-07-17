@@ -208,6 +208,8 @@ class PyDMApplication(QApplication):
     return self.open_file(full_path, macros=macros, command_line_args=command_line_args)
 
   def plugin_for_channel(self, channel):
+    if channel.address is None:
+      return None
     match = re.match('.*://', channel.address)
     if match:
       try:

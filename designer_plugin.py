@@ -15,3 +15,5 @@ from pydm.widgets.waveformtable_qtplugin import PyDMWaveformTablePlugin
 from pydm.widgets.enum_combo_box_qtplugin import PyDMEnumComboBoxPlugin
 
 from pydm.widgets.spinbox_qtplugin import PyDMSpinboxplugin
+
+from pydm.widgets.drawing_qtplugin import * 
