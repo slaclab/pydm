@@ -23,6 +23,8 @@ pvdb = {
         'NoiseAmplitude'   : { 'prec' : 3, 'value' : 0.2   },
         'Waveform'         : { 'count': MAX_POINTS,
                                 'prec' : 5 },
+        'Cosine'         : { 'count': MAX_POINTS,
+                                'prec' : 5 },
         'TimeBase'         : { 'count': MAX_POINTS,
                                'prec' : 5,
                                'value': numpy.arange(MAX_POINTS, dtype=float) 
@@ -92,7 +94,8 @@ class myDriver(Driver):
             timeStep  = timePerDivision * NUM_DIVISIONS / MAX_POINTS
             timeWave  = timeStart + numpy.arange(MAX_POINTS) * timeStep 
             noise  = noiseAmplitude * numpy.random.random(MAX_POINTS)
-            data = AMPLITUDE * numpy.sin(timeWave * FREQUENCY * 2 * numpy.pi) + noise 
+            data = AMPLITUDE * numpy.sin(timeWave * FREQUENCY * 2 * numpy.pi) + noise
+            cos_data = AMPLITUDE * numpy.cos(timeWave * FREQUENCY * 2 * numpy.pi) + noise
             # calculate statistics
             self.setParam('MinValue',  data.min())
             self.setParam('MaxValue',  data.max())
@@ -100,7 +103,9 @@ class myDriver(Driver):
             # scale/offset
             yScale = 1.0 / voltsPerDivision
             data   = NUM_DIVISIONS/2.0 + yScale * (data + voltOffset)
+            cos_data = NUM_DIVISIONS/2.0 + yScale * (cos_data + voltOffset)
             self.setParam('Waveform',  data)
+            self.setParam('Cosine', cos_data)
             #Generate the image data
             x0 = 0.5*(numpy.random.rand()-0.5) + self.getParam('XPos')
             y0 = 0.5*(numpy.random.rand()-0.5) - self.getParam('YPos')
