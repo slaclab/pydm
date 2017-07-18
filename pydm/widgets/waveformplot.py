@@ -133,7 +133,7 @@ class PyDMWaveformPlot(BasePlot):
 			init_y_channels = [init_y_channels]
 		if len(init_x_channels) == 0:
 			init_x_channels = list(itertools.repeat(None, len(init_y_channels)))
-		if len(init_x_channels) > 0 and len(init_x_channels) != len(init_y_channels):
+		if len(init_x_channels) != len(init_y_channels):
 			raise ValueError("If lists are provided for both X and Y channels, they must be the same length.")
 		#self.channel_pairs is an ordered dictionary that is keyed on a (x_channel, y_channel) tuple, with WaveformCurveItem values.
 		#It gets populated in self.addChannel().
