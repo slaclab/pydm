@@ -1,5 +1,5 @@
-from PyQt4.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant
-from PyQt4.QtGui import QBrush, QColor
+from ..PyQt.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant
+from ..PyQt.QtGui import QBrush, QColor
 from operator import itemgetter
 
 from timeplot import TimePlotCurveItem
