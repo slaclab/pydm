@@ -38,7 +38,7 @@
     <double>0.000000000000000</double>
    </property>
    <property name="filename" stdset="0">
-    <string>examples/drawing/SLAC_logo.jpeg</string>
+    <string>SLAC_logo.jpeg</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -395,7 +395,17 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PyDMDrawingImage</class>
+   <class>PyDMDrawingRectangle</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingChord</class>
+   <extends>PyDMDrawingArc</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingCircle</class>
    <extends>QWidget</extends>
    <header>pydm.widgets.drawing</header>
   </customwidget>
@@ -405,22 +415,12 @@
    <header>pydm.widgets.drawing</header>
   </customwidget>
   <customwidget>
-   <class>PyDMDrawingRectangle</class>
-   <extends>QWidget</extends>
-   <header>pydm.widgets.drawing</header>
-  </customwidget>
-  <customwidget>
-   <class>PyDMDrawingTriangle</class>
-   <extends>QWidget</extends>
+   <class>PyDMDrawingPie</class>
+   <extends>PyDMDrawingArc</extends>
    <header>pydm.widgets.drawing</header>
   </customwidget>
   <customwidget>
    <class>PyDMDrawingEllipse</class>
-   <extends>QWidget</extends>
-   <header>pydm.widgets.drawing</header>
-  </customwidget>
-  <customwidget>
-   <class>PyDMDrawingCircle</class>
    <extends>QWidget</extends>
    <header>pydm.widgets.drawing</header>
   </customwidget>
@@ -430,13 +430,13 @@
    <header>pydm.widgets.drawing</header>
   </customwidget>
   <customwidget>
-   <class>PyDMDrawingPie</class>
-   <extends>PyDMDrawingArc</extends>
+   <class>PyDMDrawingImage</class>
+   <extends>QWidget</extends>
    <header>pydm.widgets.drawing</header>
   </customwidget>
   <customwidget>
-   <class>PyDMDrawingChord</class>
-   <extends>PyDMDrawingArc</extends>
+   <class>PyDMDrawingTriangle</class>
+   <extends>QWidget</extends>
    <header>pydm.widgets.drawing</header>
   </customwidget>
  </customwidgets>

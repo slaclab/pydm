@@ -342,6 +342,7 @@ class PyDMDrawingImage(PyDMDrawing):
     self._file = ""
     self._pixmap = QPixmap()
     self._aspect_ratio_mode = Qt.KeepAspectRatio
+    self.app = QApplication.instance()
  
   @pyqtProperty(str, doc=
   """
@@ -355,7 +356,13 @@ class PyDMDrawingImage(PyDMDrawing):
   def filename(self, new_file):
     if new_file != self._file:
       self._file = new_file
-      self._pixmap = QPixmap(self._file)
+      path_relative_to_ui_file = self._file
+      try:
+        #This could fail if we are in designer, where window() doesn't have the join_to_current_file_path method.
+        path_relative_to_ui_file = self.app.get_path(self._file)
+      except Exception as e:
+        pass
+      self._pixmap = QPixmap(path_relative_to_ui_file)
       self.update()
 
   @pyqtProperty(Qt.AspectRatioMode, doc=
