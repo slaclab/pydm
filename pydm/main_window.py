@@ -44,6 +44,8 @@ class PyDMMainWindow(QMainWindow):
     if new_widget == self._display_widget:
       return
     self.clear_display_widget()
+    if not new_widget.layout():
+      new_widget.setMinimumSize(new_widget.size())
     self._display_widget = new_widget
     self.ui.verticalLayout.addWidget(self._display_widget)
     self.update_window_title()
