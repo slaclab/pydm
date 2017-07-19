@@ -16,21 +16,15 @@ class NoDataError(Exception):
 class WaveformCurveItem(PlotCurveItem):
 	data_changed = pyqtSignal()
 	def __init__(self, y_addr=None, x_addr=None, **kws):
-		if y_addr is None:
-			y_addr = ""
-		if 'name' not in kws or kws['name'] is None:
-			try:
-				y_name = y_addr.split("://")[1]
-			except IndexError:
-				y_name = y_addr
+		y_addr = "" if y_addr is None else y_addr
+		if kws.get('name') is None:
+			y_name = utilities.remove_protocol(y_addr)
 			if x_addr is None:
-				kws['name'] = y_name
+				plot_name = y_name
 			else:
-				try:
-					x_name = x_addr.split("://")[1]
-				except IndexError:
-					x_name = x_addr
-				kws['name'] = "{y} vs. {x}".format(y=y_name, x=x_name)
+				x_name = utilities.remove_protocol(x_addr)
+				plot_name = "{y} vs. {x}".format(y=y_name, x=x_name)
+			kws['name'] = plot_name
 		self.x_channel = None
 		self.y_channel = None
 		self.x_address = x_addr
