@@ -75,12 +75,14 @@ class PyDMTimePlotCurvesModel(QAbstractTableModel):
 			return False
 		column_name = self._column_names[index.column()]
 		curve = self.plot._curves[index.row()]
+		if isinstance(value, QVariant):
+			value = value.toString()
 		if column_name == "Channel":
-			curve.address = str(value.toString())
+			curve.address = str(value)
 		elif column_name == "Label":
-			curve.setData(name=str(value.toString()))
+			curve.setData(name=str(value))
 		elif column_name == "Color":
-			curve.color_string = str(value.toString())
+			curve.color_string = str(value)
 		self.dataChanged.emit(index, index)
 		return True
 

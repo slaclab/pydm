@@ -77,14 +77,16 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
 			return False
 		column_name = self._column_names[index.column()]
 		curve = self.plot._curves[index.row()]
+		if isinstance(value, QVariant):
+			value = value.toString()
 		if column_name == "Y Channel":
-			curve.y_address = str(value.toString())
+			curve.y_address = str(value)
 		elif column_name == "X Channel":
-			curve.x_address = str(value.toString())
+			curve.x_address = str(value)
 		elif column_name == "Label":
-			curve.setData(name=str(value.toString()))
+			curve.setData(name=str(value))
 		elif column_name == "Color":
-			curve.color_string = str(value.toString())
+			curve.color_string = str(value)
 		self.dataChanged.emit(index, index)
 		return True
 
