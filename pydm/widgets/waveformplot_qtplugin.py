@@ -3,7 +3,7 @@ from ..PyQt.QtGui import QAction
 from ..PyQt.QtCore import pyqtSlot
 from .qtplugin_base import PyDMDesignerPlugin
 from .waveformplot import PyDMWaveformPlot
-from waveformplot_curve_editor import WaveformPlotCurveEditorDialog
+from .waveformplot_curve_editor import WaveformPlotCurveEditorDialog
 
 class PyDMWaveformPlotPlugin(PyDMDesignerPlugin):
   def __init__(self):

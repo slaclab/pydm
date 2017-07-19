@@ -1,7 +1,7 @@
 from ..PyQt.QtGui import QDialog, QVBoxLayout, QHBoxLayout, QTableView, QAbstractItemView, QSpacerItem, QSizePolicy, QDialogButtonBox, QPushButton, QItemSelection
 from ..PyQt.QtCore import Qt, pyqtSlot
 from ..PyQt.QtDesigner import QDesignerFormWindowInterface
-from waveformplot_table_model import PyDMWaveformPlotCurvesModel
+from .waveformplot_table_model import PyDMWaveformPlotCurvesModel
 
 class WaveformPlotCurveEditorDialog(QDialog):
   def __init__(self, plot, parent=None):
