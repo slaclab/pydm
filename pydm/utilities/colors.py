@@ -6,9 +6,9 @@ current_dir = os.path.dirname(os.path.realpath(__file__))
 
 svg_color_to_hex_map = None
 hex_to_svg_color_map = None
-with open(os.path.join(current_dir, 'hex2color.pkl', 'rb')) as f:
+with open(os.path.join(current_dir, 'hex2color.pkl'), 'rb') as f:
   hex_to_svg_color_map = pickle.load(f)
-with open(os.path.join(current_dir, 'color2hex.pkl', 'rb')) as f:
+with open(os.path.join(current_dir, 'color2hex.pkl'), 'rb') as f:
   svg_color_to_hex_map = pickle.load(f)
   
 def svg_color_from_hex(hex_string, hex_on_fail=False):
