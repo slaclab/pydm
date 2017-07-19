@@ -196,7 +196,12 @@ class PyDMApplication(QApplication):
     self.directory_stack.pop()
     return widget
 
-  def get_path(self, ui_file, widget):
+  #get_path gives you the path to ui_file relative to where you are running pydm from.
+  #Many widgets handle file paths (related display, embedded display, and drawing image come to mind)
+  #and the standard is that they expect paths to be given relative to the .ui or .py file in which the
+  #widget lives.  But, python and Qt want the file path relative to the directory you are running
+  #pydm from.  This function does that translation.
+  def get_path(self, ui_file):
     dirname = self.directory_stack[-1]
     full_path = os.path.join(dirname, str(ui_file))
     return full_path
@@ -204,10 +209,12 @@ class PyDMApplication(QApplication):
   def open_relative(self, ui_file, widget, macros=None, command_line_args=[]):
     """open_relative opens a ui file with a relative path.  This is
     really only used by embedded displays."""
-    full_path = self.get_path(ui_file, widget)
+    full_path = self.get_path(ui_file)
     return self.open_file(full_path, macros=macros, command_line_args=command_line_args)
 
   def plugin_for_channel(self, channel):
+    if channel.address is None:
+      return None
     match = re.match('.*://', channel.address)
     if match:
       try:
