@@ -41,10 +41,14 @@
       <string>Plots a channel vs time.</string>
      </property>
      <property name="title" stdset="0">
-      <string>BPMS:LTU1:250:XTH</string>
+      <string>Time Plot</string>
      </property>
-     <property name="yChannel">
-      <string>ca://BPMS:LTU1:250:XTH</string>
+     <property name="curves">
+      <stringlist>
+       <string>{&quot;channel&quot;: &quot;ca://MTEST:MeanValue&quot;, &quot;name&quot;: &quot;Curve 1&quot;, &quot;color&quot;: &quot;white&quot;}</string>
+       <string>{&quot;channel&quot;: &quot;ca://MTEST:MinValue&quot;, &quot;name&quot;: &quot;Curve 2&quot;, &quot;color&quot;: &quot;red&quot;}</string>
+       <string>{&quot;channel&quot;: &quot;ca://MTEST:MaxValue&quot;, &quot;name&quot;: &quot;Curve 3&quot;, &quot;color&quot;: &quot;dodgerblue&quot;}</string>
+      </stringlist>
      </property>
      <property name="bufferSize">
       <number>3000</number>

@@ -6,30 +6,30 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>424</width>
-    <height>324</height>
+    <width>626</width>
+    <height>533</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Waveform PV Plot</string>
+   <string>Form</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="PyDMWaveformPlot" name="pydmWaveformPlot">
-     <property name="minimumSize">
-      <size>
-       <width>400</width>
-       <height>300</height>
-      </size>
-     </property>
+    <widget class="PyDMWaveformPlot" name="PyDMWaveformPlot">
      <property name="toolTip">
       <string/>
      </property>
      <property name="whatsThis">
-      <string>Plots a waveform.</string>
+      <string/>
      </property>
-     <property name="yChannel">
-      <string>ca://BPMS:LI24:801:REDW</string>
+     <property name="showLegend">
+      <bool>true</bool>
+     </property>
+     <property name="curves">
+      <stringlist>
+       <string>{&quot;y_channel&quot;: &quot;ca://MTEST:Waveform&quot;, &quot;x_channel&quot;: &quot;ca://MTEST:TimeBase&quot;, &quot;name&quot;: &quot;Sine&quot;, &quot;color&quot;: &quot;white&quot;}</string>
+       <string>{&quot;y_channel&quot;: &quot;ca://MTEST:Cosine&quot;, &quot;x_channel&quot;: &quot;ca://MTEST:TimeBase&quot;, &quot;name&quot;: &quot;Cosine&quot;, &quot;color&quot;: &quot;red&quot;}</string>
+      </stringlist>
      </property>
     </widget>
    </item>

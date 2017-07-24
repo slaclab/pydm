@@ -31,10 +31,18 @@
      <property name="showYGrid">
       <bool>true</bool>
      </property>
-     <property name="yChannel">
+     <property name="showLegend">
+      <bool>false</bool>
+     </property>
+     <property name="curves">
+      <stringlist>
+       <string>{&quot;y_channel&quot;: &quot;ca://MTEST:Waveform&quot;, &quot;x_channel&quot;: &quot;ca://MTEST:TimeBase&quot;, &quot;name&quot;: &quot;Scope Trace&quot;, &quot;color&quot;: &quot;white&quot;}</string>
+      </stringlist>
+     </property>
+     <property name="yChannel" stdset="0">
       <string>ca://MTEST:Waveform</string>
      </property>
-     <property name="xChannel">
+     <property name="xChannel" stdset="0">
       <string>ca://MTEST:TimeBase</string>
      </property>
     </widget>
