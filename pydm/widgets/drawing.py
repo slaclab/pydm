@@ -1,8 +1,7 @@
 import math
-from ..PyQt.QtGui import QWidget, QApplication, QColor, QPainter, QBrush, QPen, QTransform, QPolygon, QPixmap, QStyle, QStyleOption
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation, Qt, QByteArray, QPoint, QFile
-from .channel import PyDMChannel
-from ..application import PyDMApplication
+from ..PyQt.QtGui import QWidget, QColor, QPainter, QBrush, QPen, QTransform, QPolygon, QPixmap, QStyle, QStyleOption
+from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, QFile
+from .base import PyDMWidget
 
 def deg_to_qt(deg):
     # Angles for Qt are in units of 1/16 of a degree
@@ -12,145 +11,17 @@ def qt_to_deg(deg):
     # Angles for Qt are in units of 1/16 of a degree
     return deg/16.0
 
-class PyDMDrawing(QWidget):
-    #Tell Designer what signals are available.
-    __pyqtSignals__ = ("connected_signal()",
-                       "disconnected_signal()", 
-                       "no_alarm_signal()", 
-                       "minor_alarm_signal()", 
-                       "major_alarm_signal()", 
-                       "invalid_alarm_signal()")
-
-    #Internal signals, used by the state machine
-    connected_signal = pyqtSignal()
-    disconnected_signal = pyqtSignal()
-    no_alarm_signal = pyqtSignal()
-    minor_alarm_signal = pyqtSignal()
-    major_alarm_signal = pyqtSignal()
-    invalid_alarm_signal = pyqtSignal()
-
-    #Usually, this widget will get this from its parent pydm application.  However, in Designer, the parent isnt a pydm application, and doesn't know what a color map is.  The following two color maps are provided for that scenario.
-    local_alarm_severity_color_map = {
-        0: QColor(0, 0, 0), #NO_ALARM
-        1: QColor(200, 200, 20), #MINOR_ALARM
-        2: QColor(240, 0, 0), #MAJOR_ALARM
-        3: QColor(240, 0, 240) #INVALID_ALARM
-    }
-    local_connection_status_color_map = {
-        False: QColor(0, 0, 0),
-        True: QColor(0, 0, 0,)
-    }
-    
-    NO_ALARM = 0x0
-    ALARM_TEXT = 0x1
-    ALARM_BORDER = 0x2
-
-    ALARM_NONE = 0
-    ALARM_MINOR = 1
-    ALARM_MAJOR = 2
-    ALARM_INVALID = 3
-    ALARM_DISCONNECTED = 4
-
-    #We put all this in a big dictionary to try to avoid constantly allocating and deallocating new stylesheet strings.
-    alarm_style_sheet_map = {
-        NO_ALARM: {
-            ALARM_NONE: "{}",
-            ALARM_MINOR: "{}",
-            ALARM_MAJOR: "{}",
-            ALARM_INVALID: "{}",
-            ALARM_DISCONNECTED: "{}"
-        },
-        ALARM_TEXT: {
-            ALARM_NONE: "QWidget {color: black;}",
-            ALARM_MINOR: "QWidget {color: yellow;}",
-            ALARM_MAJOR: "QWidget {color: red;}",
-            ALARM_INVALID: "QWidget {color: purple;}",
-            ALARM_DISCONNECTED: "QWidget {color: white;}"
-        },
-        ALARM_BORDER: {
-            ALARM_NONE: "QWidget {border-width: 2px; border-style: hidden;}",
-            ALARM_MINOR: "QWidget {border: 2px solid yellow;}",
-            ALARM_MAJOR: "QWidget {border: 2px solid red;}",
-            ALARM_INVALID: "QWidget {border: 2px solid purple;}",
-            ALARM_DISCONNECTED: "QWidget {border: 2px solid white;}"
-        },
-        ALARM_TEXT | ALARM_BORDER: {
-            ALARM_NONE: "QWidget {color: black; border-width: 2px; border-style: hidden;}",
-            ALARM_MINOR: "QWidget {color: yellow; border: 2px solid yellow;}",
-            ALARM_MAJOR: "QWidget {color: red; border: 2px solid red;}",
-            ALARM_INVALID: "QWidget {color: purple; border: 2px solid purple;}",
-            ALARM_DISCONNECTED: "QWidget {color: white; border: 2px solid white;}"
-        }
-    }
-
+class PyDMDrawing(QWidget, PyDMWidget):
     def __init__(self, parent=None, init_channel=None):
-        self._color = self.local_connection_status_color_map[False]
+        super().__init__(parent)
         self._rotation = 0.0
         self._brush = QBrush(Qt.SolidPattern)
+        self._default_color = QColor()
         self._painter = QPainter()
         self._pen = QPen(Qt.NoPen)
         self._pen_style = Qt.NoPen
         self._pen_width = 0
         self._pen_color = QColor(0,0,0)
-        super(PyDMDrawing, self).__init__(parent)
-        self._channel = init_channel
-        self._channels = None
-        self._alarm_sensitive_text = False
-        self._alarm_sensitive_border = True
-        self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
-        self._connected = False
-        #If this label is inside a PyDMApplication (not Designer) start it in the disconnected state.
-        app = QApplication.instance()
-        if isinstance(app, PyDMApplication):
-            self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
-
-    #0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID    
-    @pyqtSlot(int)
-    def alarmSeverityChanged(self, new_alarm_severity):
-        if self._channels is not None:
-            style = self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity]
-            self.setStyleSheet(style)
-            self.update()
-        
-    #false = disconnected, true = connected
-    @pyqtSlot(bool)
-    def connectionStateChanged(self, connected):
-        self._connected = connected
-        if connected:
-            self.connected_signal.emit()
-        else:
-            self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
-            self.disconnected_signal.emit()
-
-    @pyqtProperty(bool, doc=
-    """
-    Whether or not the text color changes when alarm severity changes.
-    """
-    )
-    def alarmSensitiveText(self):
-        return self._alarm_sensitive_text
-
-    @alarmSensitiveText.setter
-    def alarmSensitiveText(self, checked):
-        self._alarm_sensitive_text = checked
-        self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
-
-    @pyqtProperty(bool, doc=
-    """
-    Whether or not the border color changes when alarm severity changes.
-    """
-    )
-    def alarmSensitiveBorder(self):
-        return self._alarm_sensitive_border
-
-    @alarmSensitiveBorder.setter
-    def alarmSensitiveBorder(self, checked):
-        self._alarm_sensitive_border = checked
-        self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
-
-    @pyqtSlot()
-    def force_redraw(self):
-        self.update()
 
     def paintEvent(self, event):
         self._painter.begin(self)
@@ -158,8 +29,19 @@ class PyDMDrawing(QWidget):
         opt.initFrom(self)
         self.style().drawPrimitive(QStyle.PE_Widget, opt, self._painter, self)
         self._painter.setRenderHint(QPainter.Antialiasing)
+
+        if self._alarm_sensitive_content and self._alarm_state != 0:
+            alarm_color = self._style.get("color", None)
+            if alarm_color is not None:
+                color = QColor(alarm_color)
+            else:
+                color = self._default_color
+          
+        self._brush.setColor(color)
+
         self._painter.setBrush(self._brush)
         self._painter.setPen(self._pen)
+
         self.draw_item()
         self._painter.end()
 
@@ -243,6 +125,7 @@ class PyDMDrawing(QWidget):
     def brush(self, new_brush):
         if new_brush != self._brush:
             self._brush = new_brush
+            self._default_color = new_brush.color()
             self.update()
 
     @pyqtProperty(Qt.PenStyle, doc=
@@ -267,14 +150,14 @@ class PyDMDrawing(QWidget):
     )
     def penColor(self):
         return self._pen_color
-    
+
     @penColor.setter
     def penColor(self, new_color):
         if new_color != self._pen_color:
             self._pen_color = new_color
             self._pen.setColor(new_color)
             self.update()
-    
+  
     @pyqtProperty(float, doc=
     """
     Border width
@@ -282,7 +165,7 @@ class PyDMDrawing(QWidget):
     )
     def penWidth(self):
         return self._pen_width
-    
+
     @penWidth.setter
     def penWidth(self, new_width):
         if new_width < 0:
@@ -291,7 +174,7 @@ class PyDMDrawing(QWidget):
             self._pen_width = new_width
             self._pen.setWidth(self._pen_width)
             self.update()
-    
+
     @pyqtProperty(float, doc=
     """
     Counter-clockwise rotation in degrees to be applied to the drawing.
@@ -299,32 +182,12 @@ class PyDMDrawing(QWidget):
     )
     def rotation(self):
         return self._rotation
-    
+  
     @rotation.setter
     def rotation(self, new_angle):
         if new_angle != self._rotation:
             self._rotation = new_angle
             self.update()
-    
-    @pyqtProperty(str, doc=
-    """
-    The channel to be used 
-    """
-    )
-    def channel(self):
-        return str(self._channel)
-
-    @channel.setter  
-    def channel(self, value):
-        if self._channel != value:
-            self._channel = str(value)
-
-    def channels(self):
-        if self._channels is not None:
-            return self._channels
-        self._channels = [PyDMChannel(address=self._channel, connection_slot=self.connectionStateChanged, severity_slot=self.alarmSeverityChanged)]
-        return self._channels
-
 
 class PyDMDrawingLine(PyDMDrawing):
     def __init__(self, parent=None, init_channel=None):
@@ -496,4 +359,4 @@ class PyDMDrawingChord(PyDMDrawingArc):
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
         self._painter.drawChord(x, y, w, h, self._start_angle, self._span_angle)
-
+ 
