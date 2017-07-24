@@ -134,4 +134,3 @@ class PyDMEmbeddedDisplay(QFrame):
     def hideEvent(self, e):
         if self.disconnectWhenHidden:
             self.disconnect()
-        
