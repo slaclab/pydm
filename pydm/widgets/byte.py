@@ -42,13 +42,14 @@ class PyDMByteIndicator(QWidget):
   def __init__(self, parent=None, init_channel=None):
     super(PyDMByteIndicator, self).__init__(parent)
     self.setLayout(QGridLayout(self))
+    self._connected = False
     self._on_color = QColor(0,255,0)
     self._off_color = QColor(100,100,100)
+    self._disconnected_color = QColor(255,255,255)
+    self._invalid_color = QColor(255,0,255)
     self._pen_style = Qt.SolidLine
     self._line_pen = QPen(self._pen_style)
     self._orientation = Qt.Vertical
-    self.layout().setHorizontalSpacing(5)
-    self.layout().setVerticalSpacing(0)
     #This is kind of ridiculous, importing QTabWidget just to get a 4-item enum thats usable in Designer.
     #PyQt5 lets you define custom enums that you can use in designer with QtCore.Q_ENUMS(), doesnt exist in PyQt4.
     self._show_labels = True
@@ -60,8 +61,22 @@ class PyDMByteIndicator(QWidget):
     self._indicators = []
     self._value = 0
     self._circles = False
+    self.set_spacing()
+    self.layout().setOriginCorner(Qt.TopLeftCorner)
+    self._big_endian = False
+    self._shift = 0
     self.numBits = 1 #Need to set the property to initialize _labels and _indicators
-    #self.rebuild_layout()
+    #setting numBits there also performs the first rebuild_layout.
+  
+  def init_for_designer(self):
+    self._connected = True
+    self._value = 5
+    self.update_indicators()
+  
+  @pyqtSlot(bool)
+  def connectionStateChanged(self, connected):
+    self._connected = connected
+    self.update_indicators()
   
   def rebuild_layout(self):
     self.clear()
@@ -111,12 +126,17 @@ class PyDMByteIndicator(QWidget):
   
   def update_indicators(self):
     bits = np.unpackbits(np.array(self._value, dtype=np.uint8))
+    bits = np.roll(bits[::-1], -self._shift)
     for i in range(0,self._num_bits):
       w = self._indicators[i]
-      if bits[i] == 1:
-        w.setColor(self._on_color)
+      if self._connected:
+        if bits[i] == 1:
+          c = self._on_color
+        else:
+          c = self._off_color
       else:
-        w.setColor(self._off_color)
+        c = self._disconnected_color
+      w.setColor(c)
   
   @pyqtProperty(QColor, doc=
   """
@@ -187,6 +207,22 @@ class PyDMByteIndicator(QWidget):
   
   @pyqtProperty(bool, doc=
   """
+  Whether the most significant bit is at the start or end of the widget.
+  """)
+  def bigEndian(self):
+    return self._big_endian
+  
+  @bigEndian.setter
+  def bigEndian(self, is_big_endian):
+    self._big_endian = is_big_endian
+    if self._big_endian:
+      self.layout().setOriginCorner(Qt.BottomLeftCorner)
+    else:
+      self.layout().setOriginCorner(Qt.TopLeftCorner)
+    self.rebuild_layout()
+  
+  @pyqtProperty(bool, doc=
+  """
   Draw indicators as circles, rather than rectangles.
   """)
   def circles(self):
@@ -235,7 +271,18 @@ class PyDMByteIndicator(QWidget):
         break
       new_labels[i] = old_label
     self.labels = new_labels
-    
+  
+  @pyqtProperty(int, doc=
+  """
+  Bit shift.
+  """)
+  def shift(self):
+    return self._shift
+  
+  @shift.setter
+  def shift(self, new_shift):
+    self._shift = new_shift
+    self.update_indicators()
   
   @pyqtProperty(QStringList, doc=
   """
