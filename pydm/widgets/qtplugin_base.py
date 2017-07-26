@@ -76,7 +76,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         w = self.cls(parent=parent)
         try:
           w.init_for_designer()
-        except AttributeError:
+        except (AttributeError, NameError):
           pass
         return w
 
