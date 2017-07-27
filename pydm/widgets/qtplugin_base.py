@@ -73,7 +73,12 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         :param parent: Parent widget of instantiated widget
         :type parent:  QWidget
         """
-        return self.cls(parent=parent)
+        w = self.cls(parent=parent)
+        try:
+          w.init_for_designer()
+        except (AttributeError, NameError):
+          pass
+        return w
 
     def name(self):
         """
