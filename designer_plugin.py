@@ -13,9 +13,7 @@ from pydm.widgets.timeplot_qtplugin import PyDMTimePlotPlugin
 from pydm.widgets.waveformplot_qtplugin import PyDMWaveformPlotPlugin
 from pydm.widgets.waveformtable_qtplugin import PyDMWaveformTablePlugin
 from pydm.widgets.enum_combo_box_qtplugin import PyDMEnumComboBoxPlugin
-
 from pydm.widgets.spinbox_qtplugin import PyDMSpinboxplugin
-
 from pydm.widgets.drawing_qtplugin import * 
-
 from pydm.widgets.byte_qtplugin import PyDMByteIndicatorPlugin
+from pydm.widgets.symbol_qtplugin import PyDMSymbolPlugin
