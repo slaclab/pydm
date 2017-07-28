@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="210px" height="210px" viewBox="0 0 210 210" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45.2 (43514) - http://www.bohemiancoding.com/sketch -->
+    <title>Untitled 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M87.6586399,124.052038 L62.6066017,99 L52,109.606602 L77.0520382,134.65864 L77,134.710678 L87.6066017,145.31728 L158.31728,74.6066017 L147.710678,64 L87.6586399,124.052038 Z" id="path-1"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval" stroke="#979797" fill="#D8D8D8" cx="105" cy="105" r="104"></circle>
+        <g id="Combined-Shape">
+            <use fill="#1BD411" fill-rule="evenodd" xlink:href="#path-1"></use>
+            <path stroke="#979797" stroke-width="1" d="M62.6066017,99.7071068 L52.7071068,109.606602 L77.759145,134.65864 L77.7071068,134.710678 L87.6066017,144.610173 L157.610173,74.6066017 L147.710678,64.7071068 L87.6586399,124.759145 L62.6066017,99.7071068 Z"></path>
+        </g>
+    </g>
+</svg>
