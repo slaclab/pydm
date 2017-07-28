@@ -1,9 +1,25 @@
+import numpy as np
 from ..PyQt.QtGui import QApplication, QColor
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 from .channel import PyDMChannel
 from ..application import PyDMApplication
 
 def compose_stylesheet(style, base_class="QWidget"):
+    """
+    Creates a stylesheet string for a base class from a dictionary.
+    
+    Parameters
+    ----------
+    style : dict
+        A dictionary with key being the property and value being the property value to compose the stylesheet
+    base_class : str, optional
+        The QT base class to apply this stylesheet. Default: "QWidget"
+    
+    Returns
+    -------
+    style_str : str
+        The composed stylesheet with the proper base class.        
+    """
     style_str = base_class + " {"
     for k, v in style.items():
         style_str += "{}: {}; ".format(k, v)
@@ -13,22 +29,11 @@ def compose_stylesheet(style, base_class="QWidget"):
 
 
 class PyDMWidget():
-    # Tell Designer what signals are available.
-    __pyqtSignals__ = ("connected_signal()",
-                       "disconnected_signal()",
-                       "no_alarm_signal()",
-                       "minor_alarm_signal()",
-                       "major_alarm_signal()",
-                       "invalid_alarm_signal()")
-
-    # Internal signals, used by the state machine
-    connected_signal = pyqtSignal()
-    disconnected_signal = pyqtSignal()
-    no_alarm_signal = pyqtSignal()
-    minor_alarm_signal = pyqtSignal()
-    major_alarm_signal = pyqtSignal()
-    invalid_alarm_signal = pyqtSignal()
-
+    __pyqtSignals__ = ("send_value_signal(str)")
+    
+    # Emitted when the user changes the value.
+    send_value_signal = pyqtSignal(str)
+    
     # Usually, this widget will get this from its parent pydm application.  
     # However, in Designer, the parent isnt a pydm application, and doesn't know what a color map is.
     # The following two color maps are provided for that scenario.
@@ -85,7 +90,7 @@ class PyDMWidget():
         }
     }
 
-    def __init__(self, parent=None, init_channel=None):
+    def __init__(self, init_channel=None):
         self._color = self.local_connection_status_color_map[False]
         self._channel = init_channel
         self._channels = None
@@ -98,14 +103,124 @@ class PyDMWidget():
         self._prec = 0
         self.enum_strings = None
         self.format_string = None
+        
+        self.value = None
+        
+        self._value_signal = None
+        self._connection_changed = None
+        self._value_changed = None
+        self._alarm_severity_changed = None
+        self._write_access_changed = None
+        self._enum_strings_changed = None
+        self._unit_changed = None
+        self._precision_changed = None
+        self._ctrl_limit_changed = None        
+        
         # If this label is inside a PyDMApplication (not Designer) start it in the disconnected state.
         app = QApplication.instance()
         if isinstance(app, PyDMApplication):
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
 
-    # 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID  
+    """
+    CALLBACK PROPERTIES
+    """
+    @property
+    def value_signal(self):
+        return self._value_signal
+    
+    @value_signal.setter
+    def value_signal(self, callback):
+        if self._value_signal != callback:
+            self._value_signal = callback
+
+    @property
+    def connection_changed(self):
+        return self._connection_changed
+    
+    @connection_changed.setter
+    def connection_changed(self, callback):
+        if self._connection_changed != callback:
+            self._connection_changed = callback
+
+    @property
+    def value_changed(self):
+        return self._value_changed
+    
+    @value_changed.setter
+    def value_changed(self, callback):
+        if self._value_changed != callback:
+            self._value_changed = callback
+
+    @property
+    def alarm_severity_changed(self):
+        return self._alarm_severity_changed
+    
+    @alarm_severity_changed.setter
+    def alarm_severity_changed(self, callback):
+        if self._alarm_severity_changed != callback:
+            self._alarm_severity_changed = callback
+    
+    @property
+    def write_access_changed(self):
+        return self._write_access_changed
+    
+    @write_access_changed.setter
+    def write_access_changed(self, callback):
+        if self._write_access_changed != callback:
+            self._write_access_changed = callback
+    
+    @property
+    def enum_strings_changed(self):
+        return self._write_access_changed
+    
+    @enum_strings_changed.setter
+    def enum_strings_changed(self, callback):
+        if self._enum_strings_changed != callback:
+            self._enum_strings_changed = callback
+    
+    @property
+    def unit_changed(self):
+        return self._unit_changed
+    
+    @unit_changed.setter
+    def unit_changed(self, callback):
+        if self._unit_changed != callback:
+            self._unit_changed = callback
+
+    @property
+    def precision_changed(self):
+        return self._precision_changed
+    
+    @precision_changed.setter
+    def precision_changed(self, callback):
+        if self._precision_changed != callback:
+            self._precision_changed = callback
+
+    @property
+    def ctrl_limit_changed(self):
+        return self._ctrl_limit_changed
+    
+    @ctrl_limit_changed.setter
+    def ctrl_limit_changed(self, callback):
+        if self._ctrl_limit_changed != callback:
+            self._ctrl_limit_changed = callback
+
+    """
+    QT SLOTS
+    """
+    @pyqtSlot(int)
+    @pyqtSlot(float)
+    @pyqtSlot(str)
+    @pyqtSlot(bool)
+    @pyqtSlot(np.ndarray)
+    def valueChanged(self, new_val):
+        self.value = new_val
+        if self._value_changed is not None:
+            self._value_changed(new_val)
+
     @pyqtSlot(int)
     def alarmSeverityChanged(self, new_alarm_severity):
+        # 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID
         if self._channels is not None:
             self._alarm_state = new_alarm_severity
             self._style = dict(self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity])
@@ -117,12 +232,27 @@ class PyDMWidget():
     @pyqtSlot(bool)
     def connectionStateChanged(self, connected):
         self._connected = connected
-        if connected:
-            self.connected_signal.emit()
-        else:
+        if not connected:
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
-            self.disconnected_signal.emit()
 
+    @pyqtSlot(tuple)
+    def enumStringsChanged(self, enum_strings):
+        if enum_strings != self.enum_strings:
+            self.enum_strings = enum_strings
+            self.valueChanged(self.value)
+
+    @pyqtSlot(bool)
+    def writeAccessChanged(self, write_access):
+        self._write_access = write_access
+        self.checkEnableState()
+
+    @pyqtSlot()
+    def force_redraw(self):
+        self.update()
+    
+    """
+    PYQT PROPERTIES
+    """
     @pyqtProperty(bool, doc=
     """
     Whether or not the content color changes when alarm severity changes.
@@ -149,12 +279,6 @@ class PyDMWidget():
         self._alarm_sensitive_border = checked
         self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | (self.ALARM_BORDER * self._alarm_sensitive_border)
 
-    @pyqtSlot(tuple)
-    def enumStringsChanged(self, enum_strings):
-        if enum_strings != self.enum_strings:
-            self.enum_strings = enum_strings
-            self.receiveValue(self.value)
-
     @pyqtProperty(int, doc=
     """The precision to be used when formatting the output
     of the PV"""
@@ -168,10 +292,6 @@ class PyDMWidget():
             self._prec = int(new_prec)
             self.format_string = "{:." + str(self._prec) + "f}"
 
-    @pyqtSlot()
-    def force_redraw(self):
-        self.update()
-
     @pyqtProperty(str, doc=
     """
     The channel to be used 
@@ -184,6 +304,13 @@ class PyDMWidget():
     def channel(self, value):
         if self._channel != value:
             self._channel = str(value)
+        
+        
+    """
+    PyDMWidget methods
+    """
+    def checkEnableState(self):
+        self.setEnabled(self._write_access and self._connected)
     
     def channels(self):
         if self._channels != None:
@@ -192,16 +319,16 @@ class PyDMWidget():
         self._channels = [
             PyDMChannel(address=self.channel,
                         connection_slot=self.connectionStateChanged,
-                        value_slot=self.receiveValue,
+                        value_slot=self.valueChanged,
                         waveform_slot=None,
                         severity_slot=self.alarmSeverityChanged,
-                        write_access_slot=None,
                         enum_strings_slot=self.enumStringsChanged,
                         unit_slot=None,
                         prec_slot=None,
                         upper_ctrl_limit_slot=None,
                         lower_ctrl_limit_slot=None,
-                        value_signal=None,
-                        waveform_signal=None)
+                        value_signal=self.send_value_signal,
+                        waveform_signal=None,
+                        write_access_slot=self.writeAccessChanged)
         ]
         return self._channels
