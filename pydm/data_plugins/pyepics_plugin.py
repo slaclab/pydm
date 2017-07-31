@@ -85,5 +85,8 @@ class Connection(PyDMConnection):
     self.pv.disconnect()
 
 class PyEPICSPlugin(PyDMPlugin):
-  protocol = "ca://"
+  #NOTE: protocol is intentionally "None" to keep this plugin from getting directly imported.
+  #If this plugin is chosen as the One True EPICS Plugin in epics_plugin.py, the protocol will
+  #be properly set before it is used.
+  protocol = None
   connection_class = Connection

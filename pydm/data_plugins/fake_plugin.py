@@ -21,6 +21,6 @@ class Connection(PyDMConnection):
 		self.connection_state_signal.emit(conn)
 
 class FakePlugin(PyDMPlugin):
-	protocol = "fake://"
+	protocol = "fake"
 	connection_class = Connection
 			

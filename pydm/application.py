@@ -21,12 +21,13 @@ from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard
 from .PyQt import uic
 from .main_window import PyDMMainWindow
 from .utilities import macro
-import .data_plugins
+import data_plugins
 
 DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
   
 class PyDMApplication(QApplication):
-  plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
+  #Instantiate our plugins.
+  plugins = {plugin.protocol: plugin() for plugin in data_plugins.plugin_modules}
   
   #HACK. To be replaced with some stylesheet stuff eventually.
   alarm_severity_color_map = {

@@ -17,5 +17,5 @@ class Connection(PyDMConnection):
       self.new_waveform_signal.emit(y_data)
       
 class ArchiverPlugin(PyDMPlugin):
-  protocol = "archiver://"
+  protocol = "archiver"
   connection_class = Connection

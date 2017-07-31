@@ -17,3 +17,4 @@ else:
   except ImportError:
     from .pyepics_plugin import PyEPICSPlugin
     EPICSPlugin = PyEPICSPlugin
+EPICSPlugin.protocol = "ca"
