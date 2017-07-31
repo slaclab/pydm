@@ -94,7 +94,10 @@ class PyDMEmbeddedDisplay(QFrame):
 		if new_widget is self._embedded_widget:
 			return
 		if self._embedded_widget is not None:
+			self.layout.removeWidget(self._embedded_widget)
 			self.app.close_widget_connections(self._embedded_widget)
+			self._embedded_widget.deleteLater()
+			self._embedded_widget = None
 		self._embedded_widget = new_widget
 		self._embedded_widget.setParent(self)
 		self.layout.addWidget(self._embedded_widget)
