@@ -6,7 +6,7 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt, QPoint, QRect
 from .channel import PyDMChannel
 from ..application import PyDMApplication
 
-class PyDMByte(QWidget):
+class PyDMLed(QWidget):
 
 	#Tell Designer what signals are available.
 	__pyqtSignals__ = ("connected_signal()",
@@ -28,37 +28,37 @@ class PyDMByte(QWidget):
 	#We put all this in a big dictionary to try to avoid constantly allocating and deallocating new stylesheet strings.
 	alarm_style_sheet_map = {
 		NO_ALARM: {
-			ALARM_NONE: "PyDMByte {}",
-			ALARM_MINOR: "PyDMByte {}",
-			ALARM_MAJOR: "PyDMByte {}",
-			ALARM_INVALID: "PyDMByte {}",
-			ALARM_DISCONNECTED: "PyDMByte {}"
+			ALARM_NONE: "PyDMLed {}",
+			ALARM_MINOR: "PyDMLed {}",
+			ALARM_MAJOR: "PyDMLed {}",
+			ALARM_INVALID: "PyDMLed {}",
+			ALARM_DISCONNECTED: "PyDMLed {}"
 		},
 		ALARM_TEXT: {
-			ALARM_NONE: "PyDMByte {color: black;}",
-			ALARM_MINOR: "PyDMByte {color: yellow;}",
-			ALARM_MAJOR: "PyDMByte {color: red;}",
-			ALARM_INVALID: "PyDMByte {color: purple;}",
-			ALARM_DISCONNECTED: "PyDMByte {color: white;}"
+			ALARM_NONE: "PyDMLed {color: black;}",
+			ALARM_MINOR: "PyDMLed {color: yellow;}",
+			ALARM_MAJOR: "PyDMLed {color: red;}",
+			ALARM_INVALID: "PyDMLed {color: purple;}",
+			ALARM_DISCONNECTED: "PyDMLed {color: white;}"
 		},
 		ALARM_BORDER: {
-			ALARM_NONE: "PyDMByte {}",
-			ALARM_MINOR: "PyDMByte {border: yellow;}",
-			ALARM_MAJOR: "PyDMByte {border: red;}",
-			ALARM_INVALID: "PyDMByte {border: purple;}",
-			ALARM_DISCONNECTED: "PyDMByte {border: white;}"
+			ALARM_NONE: "PyDMLed {}",
+			ALARM_MINOR: "PyDMLed {border: yellow;}",
+			ALARM_MAJOR: "PyDMLed {border: red;}",
+			ALARM_INVALID: "PyDMLed {border: purple;}",
+			ALARM_DISCONNECTED: "PyDMLed {border: white;}"
 		},
 		ALARM_TEXT | ALARM_BORDER: {
-			ALARM_NONE: "PyDMByte {color: black;}",
-			ALARM_MINOR: "PyDMByte {color: yellow; border: yellow;}",
-			ALARM_MAJOR: "PyDMByte {color: red; border: red;}",
-			ALARM_INVALID: "PyDMByte {color: purple; border: purple;}",
-			ALARM_DISCONNECTED: "PyDMByte {color: white; border: white;}"
+			ALARM_NONE: "PyDMLed {color: black;}",
+			ALARM_MINOR: "PyDMLed {color: yellow; border: yellow;}",
+			ALARM_MAJOR: "PyDMLed {color: red; border: red;}",
+			ALARM_INVALID: "PyDMLed {color: purple; border: purple;}",
+			ALARM_DISCONNECTED: "PyDMLed {color: white; border: white;}"
 		}
 	}
 
 	def __init__(self, parent=None, init_channel=None):
-		super(PyDMByte, self).__init__(parent)
+		super(PyDMLed, self).__init__(parent)
 		self.value = None
 		self._channels = None
 		self._connected = False
@@ -424,5 +424,5 @@ class PyDMByte(QWidget):
 
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
-	ex = PyDMByte()
+	ex = PyDMLed()
 	sys.exit(app.exec_())

@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Byte Example</string>
   </property>
-  <widget class="PyDMByte" name="PyDMByte_2">
+  <widget class="PyDMLed" name="PyDMLed_2">
    <property name="geometry">
     <rect>
      <x>200</x>
@@ -58,7 +58,7 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="PyDMByte" name="PyDMByte">
+  <widget class="PyDMLed" name="PyDMLed">
    <property name="geometry">
     <rect>
      <x>180</x>
@@ -74,7 +74,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="PyDMByte" name="PyDMByte_7">
+  <widget class="PyDMLed" name="PyDMLed_7">
    <property name="geometry">
     <rect>
      <x>225</x>
@@ -121,7 +121,7 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="PyDMByte" name="PyDMByte_3">
+  <widget class="PyDMLed" name="PyDMLed_3">
    <property name="geometry">
     <rect>
      <x>85</x>
@@ -170,7 +170,7 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="PyDMByte" name="PyDMByte_4">
+  <widget class="PyDMLed" name="PyDMLed_4">
    <property name="geometry">
     <rect>
      <x>220</x>
@@ -232,7 +232,7 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="PyDMByte" name="PyDMByte_5">
+  <widget class="PyDMLed" name="PyDMLed_5">
    <property name="geometry">
     <rect>
      <x>345</x>
@@ -359,7 +359,7 @@
     <string>Instead of led, images may be loaded:</string>
    </property>
   </widget>
-  <widget class="PyDMByte" name="PyDMByte_6">
+  <widget class="PyDMLed" name="PyDMLed_6">
    <property name="geometry">
     <rect>
      <x>275</x>
@@ -381,9 +381,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PyDMByte</class>
+   <class>PyDMLed</class>
    <extends>QWidget</extends>
-   <header>pydm.widgets.byte</header>
+   <header>pydm.widgets.led</header>
   </customwidget>
  </customwidgets>
  <resources/>
