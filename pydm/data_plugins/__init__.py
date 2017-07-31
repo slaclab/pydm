@@ -15,7 +15,10 @@ filenames = [os.path.splitext(f)[0] for f in os.listdir(plugin_dir) if os.path.s
 
 plugin_modules = []
 for filename in filenames:
-  module = importlib.import_module("." + filename, "pydm.data_plugins")
+  try:
+    module = importlib.import_module("." + filename, "pydm.data_plugins")
+  except NameError as e:
+    warnings.warn("Unable to import plugin file {}. This plugin will be skipped.  The exception raised was: {}".format(filename, e), RuntimeWarning, stacklevel=2)
   classes = [obj for name, obj in inspect.getmembers(module) if inspect.isclass(obj) and issubclass(obj, PyDMPlugin) and obj is not PyDMPlugin]
   #De-duplicate classes.
   classes = list(set(classes))
@@ -27,4 +30,4 @@ for filename in filenames:
   if plugin.protocol is not None:
     if plugin.protocol in plugin_modules and plugin_modules[plugin.protocol] != plugin:
       warnings.warn("More than one plugin is attempting to register the {protocol} protocol. Which plugin will get called to handle this protocol is undefined.".format(protocol=plugin.protocol, plugin=plugin.__name__), RuntimeWarning, stacklevel=0)
-    plugin_modules.append(plugin)  
+    plugin_modules.append(plugin)
