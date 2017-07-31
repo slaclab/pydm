@@ -21,30 +21,16 @@ from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard
 from .PyQt import uic
 from .main_window import PyDMMainWindow
 from .utilities import macro
+import data_plugins
 
-#If the user has PSP and pyca installed, use psp, which is faster.
-#Otherwise, use PyEPICS, which is slower, but more commonly used.
-#To force a particular library, set the PYDM_EPICS_LIB environment
-#variable to either pyepics or pyca.
-EPICS_LIB = os.getenv("PYDM_EPICS_LIB")
-if EPICS_LIB == "pyepics":
-  from .data_plugins.pyepics_plugin import PyEPICSPlugin
-  EPICSPlugin = PyEPICSPlugin
-elif EPICS_LIB == "pyca":
-  from .data_plugins.psp_plugin import PSPPlugin
-  EPICSPlugin = PSPPlugin
-else:
-  try:
-    from .data_plugins.psp_plugin import PSPPlugin
-    EPICSPlugin = PSPPlugin
-  except ImportError:
-    from .data_plugins.pyepics_plugin import PyEPICSPlugin
-    EPICSPlugin = PyEPICSPlugin
-from .data_plugins.fake_plugin import FakePlugin
-from .data_plugins.archiver_plugin import ArchiverPlugin
+DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
+if DEFAULT_PROTOCOL is not None:
+  #Get rid of the "://" part if it exists
+  DEFAULT_PROTOCOL = DEFAULT_PROTOCOL.split("://")[0]
   
 class PyDMApplication(QApplication):
-  plugins = { "ca": EPICSPlugin(), "fake": FakePlugin(), "archiver": ArchiverPlugin() }
+  #Instantiate our plugins.
+  plugins = {plugin.protocol: plugin() for plugin in data_plugins.plugin_modules}
   
   #HACK. To be replaced with some stylesheet stuff eventually.
   alarm_severity_color_map = {
@@ -212,17 +198,35 @@ class PyDMApplication(QApplication):
     full_path = self.get_path(ui_file)
     return self.open_file(full_path, macros=macros, command_line_args=command_line_args)
 
+  def initialize_plugins(self):
+    module = imp.load_source('intelclass', pyfile)
+    if hasattr(module, 'intelclass'):
+      cls = module.intelclass
+      if not issubclass(cls, Display):
+        raise ValueError("Invalid class definition at file {}. {} does not inherit from Display. Nothing to open at this time.".format(pyfile, cls.__name__))
+    else:
+      classes = [obj for name, obj in inspect.getmembers(module) if inspect.isclass(obj) and issubclass(obj, Display) and obj != Display]
+      if len(classes) == 0:
+        raise ValueError("Invalid File Format. {} has no class inheriting from Display. Nothing to open at this time.".format(pyfile))
+      if len(classes) > 1:
+        warnings.warn("More than one Display class in file {}. The first occurence (in alphabetical order) will be opened: {}".format(pyfile, classes[0].__name__), RuntimeWarning, stacklevel=2)
+      cls = classes[0]
+
   def plugin_for_channel(self, channel):
     if channel.address is None:
       return None
     match = re.match('.*://', channel.address)
     if match:
-      try:
-        protocol = match.group(0)[:-3]
-        plugin_to_use = self.plugins[str(protocol)]
-        return plugin_to_use
-      except KeyError:
-        print("Couldn't find plugin: {0}".format(match.group(0)[:-3]))
+      protocol = match.group(0)[:-3]
+    elif DEFAULT_PROTOCOL is not None:
+      #If no protocol was specified, and the default protocol environment variable is specified, try to use that instead.
+      protocol = DEFAULT_PROTOCOL
+    try:
+      plugin_to_use = self.plugins[str(protocol)]
+      return plugin_to_use
+    except KeyError:
+      print("Couldn't find plugin for protocol: {0}".format(match.group(0)[:-3]))
+    warnings.warn("Channel {addr} did not specify a valid protocol and no default protocol is defined.  This channel will receive no data.  To specify a default protocol, set the PYDM_DEFAULT_PROTOCOL environment variable.", RuntimeWarning, stacklevel=2)
     return None
   
   def add_connection(self, channel):
@@ -247,12 +251,12 @@ class PyDMApplication(QApplication):
   def show_address_tooltip(self, obj, event):
     addr = obj.channels()[0].address
     QToolTip.showText(event.globalPos(), addr)
-    #Strip the scheme out of the address before putting it in the clipboard.
+    #If the address has a protocol, and it is the default protocol, strip it out before putting it on the clipboard.
     m = re.match('(.+?):/{2,3}(.+?)$',addr)
-    if m is None:
-      QApplication.clipboard().setText(addr, mode=QClipboard.Selection)
-    else:
+    if m is not None and DEFAULT_PROTOCOL is not None and m.group(1) == DEFAULT_PROTOCOL:
       QApplication.clipboard().setText(m.group(2), mode=QClipboard.Selection)
+    else:
+      QApplication.clipboard().setText(addr, mode=QClipboard.Selection)
  
   def establish_widget_connections(self, widget):
     widgets = [widget]

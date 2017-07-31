@@ -72,9 +72,9 @@ class PyDMPlugin(object):
     connection_class = PyDMConnection
     def __init__(self):
         self.connections = {}
-  
+    
     def get_address(self, channel):
-        return str(channel.address.split(self.protocol)[1])
+        return str(channel.address.split(self.protocol + "://")[-1])
     
     def add_connection(self, channel):  
         address = self.get_address(channel)
