@@ -13,6 +13,7 @@ class PyDMRelatedDisplayButton(QPushButton):
     super(PyDMRelatedDisplayButton, self).__init__(parent)
     self._display_filename = filename
     self._macro_string = None
+    self._open_in_new_window = False
     self.app = QApplication.instance()
     
   def getDisplayFilename(self):
@@ -49,8 +50,19 @@ class PyDMRelatedDisplayButton(QPushButton):
   The macro substitutions to use when launching the display, in JSON object format.
   """)
   
+  @pyqtProperty(bool, doc=
+  """
+  If true, the button will open the display in a new window, rather than in the existing window.
+  """)
+  def openInNewWindow(self):
+    return self._open_in_new_window
+  
+  @openInNewWindow.setter
+  def openInNewWindow(self, open_in_new):
+    self._open_in_new_window = open_in_new
+  
   def mouseReleaseEvent(self, mouse_event):
-    if mouse_event.modifiers() == Qt.ShiftModifier:
+    if mouse_event.modifiers() == Qt.ShiftModifier or self._open_in_new_window:
       self.open_display(target=self.NEW_WINDOW)
     else:
       self.open_display()
