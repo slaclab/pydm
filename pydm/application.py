@@ -24,6 +24,9 @@ from .utilities import macro
 import data_plugins
 
 DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
+if DEFAULT_PROTOCOL is not None:
+  #Get rid of the "://" part if it exists
+  DEFAULT_PROTOCOL = DEFAULT_PROTOCOL.split("://")[0]
   
 class PyDMApplication(QApplication):
   #Instantiate our plugins.
@@ -214,12 +217,16 @@ class PyDMApplication(QApplication):
       return None
     match = re.match('.*://', channel.address)
     if match:
-      try:
-        protocol = match.group(0)[:-3]
-        plugin_to_use = self.plugins[str(protocol)]
-        return plugin_to_use
-      except KeyError:
-        print("Couldn't find plugin: {0}".format(match.group(0)[:-3]))
+      protocol = match.group(0)[:-3]
+    elif DEFAULT_PROTOCOL is not None:
+      #If no protocol was specified, and the default protocol environment variable is specified, try to use that instead.
+      protocol = DEFAULT_PROTOCOL
+    try:
+      plugin_to_use = self.plugins[str(protocol)]
+      return plugin_to_use
+    except KeyError:
+      print("Couldn't find plugin for protocol: {0}".format(match.group(0)[:-3]))
+    warnings.warn("Channel {addr} did not specify a valid protocol and no default protocol is defined.  This channel will receive no data.  To specify a default protocol, set the PYDM_DEFAULT_PROTOCOL environment variable.", RuntimeWarning, stacklevel=2)
     return None
   
   def add_connection(self, channel):
