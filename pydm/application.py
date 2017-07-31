@@ -213,7 +213,7 @@ class PyDMApplication(QApplication):
       cls = classes[0]
 
   def plugin_for_channel(self, channel):
-    if channel.address is None:
+    if channel.address is None or channel.address == "":
       return None
     match = re.match('.*://', channel.address)
     if match:
