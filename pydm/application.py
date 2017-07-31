@@ -141,9 +141,9 @@ class PyDMApplication(QApplication):
     if hasattr(cls, "PyQt5") or hasattr(cls, "PyQt4"):
       warnings.warn("Direct PyQt5/PyQt4 import detected. To ensure compatibility with PyQt4 and PyQt5 use: pydm.PyQt.", RuntimeWarning, stacklevel=0)
 
-    check(cls, "QtCore")
-    check(cls, "QtGui")
-    check(cls, "QtWidgets") 
+    check("QtCore")
+    check("QtGui")
+    check("QtWidgets") 
 
   def load_py_file(self, pyfile, args=None):
     #Add the intelligence module directory to the python path, so that submodules can be loaded.  Eventually, this should go away, and intelligence modules should behave as real python modules.
@@ -152,6 +152,7 @@ class PyDMApplication(QApplication):
 
     #Now load the intelligence module.
     module = imp.load_source('intelclass', pyfile)
+    self.__sanity_check_pyqt(module)
     if hasattr(module, 'intelclass'):
       cls = module.intelclass
       if not issubclass(cls, Display):
@@ -163,8 +164,6 @@ class PyDMApplication(QApplication):
       if len(classes) > 1:
         warnings.warn("More than one Display class in file {}. The first occurence (in alphabetical order) will be opened: {}".format(pyfile, classes[0].__name__), RuntimeWarning, stacklevel=2)
       cls = classes[0]
-
-    self.__sanity_check_pyqt(cls)
 
     try:
       #This only works in python 3 and up.
