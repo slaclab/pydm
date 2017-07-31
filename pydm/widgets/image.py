@@ -71,12 +71,12 @@ class PyDMImageView(ImageView):
     if not map:
       if not self._cm_colors.any():
         return
-      pos = np.linspace(self.cm_min/float(self.data_max_int), self.cm_max/float(self.data_max_int), num=len(self._cm_colors))
+      pos = np.linspace(0.0, 1.0, num=len(self._cm_colors)) # take default values
       map = ColorMap(pos, self._cm_colors)
     self.getView().setBackgroundColor(map.map(0))
     lut = map.getLookupTable(0.0,1.0,self.data_max_int, alpha=False)
     self.getImageItem().setLookupTable(lut)
-    self.getImageItem().setLevels([self.cm_min/float(self.data_max_int),float(self.data_max_int)])
+    self.getImageItem().setLevels([self.cm_min, float(self.data_max_int)]) # set levels from min to max of image (may improve min here)
 
   @pyqtSlot(np.ndarray)
   def receiveImageWaveform(self, new_waveform):
@@ -91,7 +91,8 @@ class PyDMImageView(ImageView):
       self.image_waveform = new_waveform.reshape((int(self.image_width),-1), order='F')
     elif len(new_waveform.shape) == 2:
       self.image_waveform = new_waveform
-    self.data_max_int = np.iinfo(self.image_waveform.dtype).max
+    self.data_max_int = np.amax(self.image_waveform) # take the max value of the recieved image
+    self.setColorMap() # to update the colormap immediately
     self.redrawImage()
   
   @pyqtSlot(int)
