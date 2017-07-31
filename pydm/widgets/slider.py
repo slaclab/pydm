@@ -137,7 +137,7 @@ class PyDMSlider(QFrame):
   @pyqtSlot(float)
   @pyqtSlot(str)
   def receiveValue(self, val):
-    self.value = val
+    self.value = float(val) # needs to be float or int
     
   @pyqtSlot(bool)
   def connectionStateChanged(self, connected):

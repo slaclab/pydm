@@ -25,7 +25,10 @@ class Connection(PyDMConnection):
       self.unit_signal.emit(units)
     if value is not None:
       if count > 1:
-        self.new_waveform_signal.emit(value)
+        if isinstance(value, list): # this is a workaround for lists and I'm
+          self.new_value_signal[str].emit(str(value)) # not sure if this is safe at all
+        else:
+          self.new_waveform_signal.emit(value)
       else:
         if ftype in int_types:
           self.new_value_signal[int].emit(int(value))
