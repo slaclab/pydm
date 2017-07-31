@@ -21,7 +21,7 @@ from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard
 from .PyQt import uic
 from .main_window import PyDMMainWindow
 from .utilities import macro
-import data_plugins
+from . import data_plugins
 
 DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
 if DEFAULT_PROTOCOL is not None:

@@ -5,8 +5,8 @@ This is used instead of pyepics for better performance.
 import numpy as np
 import pyca
 from psp.Pv import Pv
-from ..PyQt.QtCore import pyqtSlot, pyqtSignal, Qt, QTimer
-from .plugin import PyDMPlugin, PyDMConnection
+from ...PyQt.QtCore import pyqtSlot, pyqtSignal, Qt, QTimer
+from ..plugin import PyDMPlugin, PyDMConnection
 
 import datetime
 
