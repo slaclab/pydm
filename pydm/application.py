@@ -251,12 +251,12 @@ class PyDMApplication(QApplication):
   def show_address_tooltip(self, obj, event):
     addr = obj.channels()[0].address
     QToolTip.showText(event.globalPos(), addr)
-    #Strip the scheme out of the address before putting it in the clipboard.
+    #If the address has a protocol, and it is the default protocol, strip it out before putting it on the clipboard.
     m = re.match('(.+?):/{2,3}(.+?)$',addr)
-    if m is None:
-      QApplication.clipboard().setText(addr, mode=QClipboard.Selection)
-    else:
+    if m is not None and DEFAULT_PROTOCOL is not None and m.group(1) == DEFAULT_PROTOCOL:
       QApplication.clipboard().setText(m.group(2), mode=QClipboard.Selection)
+    else:
+      QApplication.clipboard().setText(addr, mode=QClipboard.Selection)
  
   def establish_widget_connections(self, widget):
     widgets = [widget]
