@@ -26,5 +26,5 @@ for filename in filenames:
   plugin = classes[0]
   if plugin.protocol is not None:
     if plugin.protocol in plugin_modules and plugin_modules[plugin.protocol] != plugin:
-      warnings.warn("More than one plugin is attempting to register the {protocol} protocol. The last protocol to register (currently {plugin}) will be used.".format(protocol=plugin.protocol, plugin=plugin.__name__), RuntimeWarning, stacklevel=0)
+      warnings.warn("More than one plugin is attempting to register the {protocol} protocol. Which plugin will get called to handle this protocol is undefined.".format(protocol=plugin.protocol, plugin=plugin.__name__), RuntimeWarning, stacklevel=0)
     plugin_modules.append(plugin)  
