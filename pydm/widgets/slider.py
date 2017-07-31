@@ -128,7 +128,7 @@ class PyDMSlider(QFrame):
   @value.setter
   def value(self, new_val):
     self._value = float(new_val)
-    self._value = max(min(self._maximum, new_val), self._minimum)
+    self._value = max(min(self._maximum, self._value), self._minimum)
     self.value_label.setText(str(self._value))
     if not self._slider.isSliderDown():
       self.set_slider_to_closest_value(self._value)
