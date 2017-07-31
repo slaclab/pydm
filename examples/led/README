@@ -1,0 +1,14 @@
+Byte Widget Example
+
+	How to run:
+
+	1) Execute sample ioc:
+
+		./byte_example_ioc.py
+
+	2) Execute application:
+
+		./byte_app.py
+
+Image source:
+http://www.glasshouseme.com/yes-or-no-not-maybe/
