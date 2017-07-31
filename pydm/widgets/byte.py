@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QWidget, QTabWidget, QColor, QPen, QGridLayout, QLabel, QPalette, QFontMetrics, QPainter, QBrush, QStyleOption, QStyle
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt, QStringList, QSize, QPoint
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt, QSize, QPoint
 from .channel import PyDMChannel
 import numpy as np
 
@@ -284,7 +284,7 @@ class PyDMByteIndicator(QWidget):
     self._shift = new_shift
     self.update_indicators()
   
-  @pyqtProperty(QStringList, doc=
+  @pyqtProperty('QStringList', doc=
   """
   Labels for each bit.
   """)
