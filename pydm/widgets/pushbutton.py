@@ -185,17 +185,7 @@ class PyDMPushButton(QPushButton):
     def update_enabled_state(self):
       self.setEnabled(self._write_access and self._connected)
 
-    @pyqtSlot()
-    def sendValue(self):
-        """
-        Send a new value to the channel
-
-        This function interprets the settings of the PyDMPushButton and sends
-        the appropriate value out through the :attr:`.send_value_signal`.   
-        """
-        if not self._pressValue or self._value is None:
-            return None
-
+    def confirm_dialog(self):
         if self._show_confirm_dialog:
             if self._confirm_message == "":
                 self._confirm_message = PyDMPushButton.DEFAULT_CONFIRM_MESSAGE
@@ -206,7 +196,22 @@ class PyDMPushButton(QPushButton):
             msg.setDefaultButton(QMessageBox.No)
             ret = msg.exec_()
             if ret == QMessageBox.No:
-                return None
+                return False
+        return True
+    
+
+    @pyqtSlot()
+    def sendValue(self):
+        """
+        Send a new value to the channel
+
+        This function interprets the settings of the PyDMPushButton and sends
+        the appropriate value out through the :attr:`.send_value_signal`.   
+        """
+        if not self._pressValue or self._value is None:
+            return None
+        if not self.confirm_dialog():
+            return None
 
         if not self._relative or self._channeltype == str:
             self.send_value_signal[self._channeltype].emit(self._channeltype(self._pressValue))
