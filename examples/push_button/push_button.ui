@@ -60,6 +60,9 @@
      <property name="text">
       <string>Start Test IOC</string>
      </property>
+     <property name="showConfirmDialog" stdset="0">
+      <bool>false</bool>
+     </property>
      <property name="channel" stdset="0">
       <string>ca://MTEST:Run</string>
      </property>
@@ -114,6 +117,12 @@
      <property name="text">
       <string>Stop Test IOC</string>
      </property>
+     <property name="showConfirmDialog" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="confirmMessage" stdset="0">
+      <string>Are you sure you want to stop the IOC ?</string>
+     </property>
      <property name="channel" stdset="0">
       <string>ca://MTEST:Run</string>
      </property>
@@ -142,14 +151,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PyDMPushButton</class>
-   <extends>QPushButton</extends>
-   <header>pydm.widgets.pushbutton</header>
-  </customwidget>
-  <customwidget>
    <class>PyDMLabel</class>
    <extends>QLabel</extends>
    <header>pydm.widgets.label</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMPushButton</class>
+   <extends>QPushButton</extends>
+   <header>pydm.widgets.pushbutton</header>
   </customwidget>
  </customwidgets>
  <resources/>

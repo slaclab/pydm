@@ -4,7 +4,7 @@ from os import path
 
 
 from .channel import PyDMChannel
-from ..PyQt.QtGui import QPushButton
+from ..PyQt.QtGui import QPushButton, QMessageBox
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 
 logger = logging.getLogger(__name__)
@@ -48,6 +48,7 @@ class PyDMPushButton(QPushButton):
     """
     __pyqtSignals__ = ("send_value_signal(str)",)
     send_value_signal = pyqtSignal([int],[float],[str])
+    DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed ?"
 
     def __init__(self,parent=None,label=None,icon=None,
                  pressValue=None,relative=False, 
@@ -67,9 +68,36 @@ class PyDMPushButton(QPushButton):
         self._channeltype = type(self._value)
         self._connected = False
         self._write_access = False
+        self._show_confirm_dialog = False
+        self._confirm_message = PyDMPushButton.DEFAULT_CONFIRM_MESSAGE
         self.update_enabled_state()
         self.clicked.connect(self.sendValue)
 
+    @pyqtProperty(bool, doc=
+    """
+    Wether or not to display a confirmation dialog.
+    """
+    )
+    def showConfirmDialog(self):
+        return self._show_confirm_dialog
+
+    @showConfirmDialog.setter
+    def showConfirmDialog(self, value):
+        if self._show_confirm_dialog != value:
+            self._show_confirm_dialog = value
+
+    @pyqtProperty(str, doc=
+    """
+    Message to be displayed at the Confirmation dialog.
+    """
+    )
+    def confirmMessage(self):
+        return self._confirm_message
+
+    @confirmMessage.setter
+    def confirmMessage(self, value):
+        if self._confirm_message != value:
+            self._confirm_message = value
 
     @pyqtProperty(str,doc=
     """
@@ -167,6 +195,18 @@ class PyDMPushButton(QPushButton):
         """
         if not self._pressValue or self._value is None:
             return None
+
+        if self._show_confirm_dialog:
+            if self._confirm_message == "":
+                self._confirm_message = PyDMPushButton.DEFAULT_CONFIRM_MESSAGE
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Question)
+            msg.setText(self._confirm_message)
+            msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            msg.setDefaultButton(QMessageBox.No)
+            ret = msg.exec_()
+            if ret == QMessageBox.No:
+                return None
 
         if not self._relative or self._channeltype == str:
             self.send_value_signal[self._channeltype].emit(self._channeltype(self._pressValue))
