@@ -1,4 +1,7 @@
 from .qtplugin_base import qtplugin_factory
+
+from .byte import PyDMByteIndicator
+
 from .checkbox import PyDMCheckbox
 from .drawing import (PyDMDrawingLine, PyDMDrawingRectangle, PyDMDrawingTriangle,
                       PyDMDrawingEllipse, PyDMDrawingCircle, PyDMDrawingArc,
@@ -15,10 +18,15 @@ from .related_display_button import PyDMRelatedDisplayButton
 from .shell_command import PyDMShellCommand
 from .slider import PyDMSlider
 from .spinbox import PyDMSpinbox
+from .symbol import PyDMSymbol
 from .timeplot import PyDMTimePlot
 from .waveformplot import PyDMWaveformPlot
 from .waveformtable import PyDMWaveformTable
 
+'''
+# Byte plugin
+PyDMByteIndicatorPlugin = qtplugin_factory(PyDMByteIndicator)
+'''
 
 # Checkbox plugin
 PyDMCheckboxPlugin = qtplugin_factory(PyDMCheckbox)
@@ -67,6 +75,9 @@ PyDMSliderPlugin = qtplugin_factory(PyDMSlider)
 
 # Spinbox plugin
 PyDMSpinboxplugin = qtplugin_factory(PyDMSpinbox)
+
+# Symbol plugin
+PyDMSymbolPlugin = qtplugin_factory(PyDMSymbol)
 
 # Time Plot plugin
 PyDMTimePlotPlugin = qtplugin_factory(PyDMTimePlot)
