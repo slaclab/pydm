@@ -20,8 +20,12 @@ from .slider import PyDMSlider
 from .spinbox import PyDMSpinbox
 from .symbol import PyDMSymbol
 from .timeplot import PyDMTimePlot
-from .waveformplot import PyDMWaveformPlot
 from .waveformtable import PyDMWaveformTable
+
+# Time Plot plugin
+from .timeplot_qtplugin import PyDMTimePlotPlugin
+# Waveform Plot plugin
+from .waveformplot_qtplugin import PyDMWaveformPlotPlugin
 
 '''
 # Byte plugin
@@ -78,12 +82,6 @@ PyDMSpinboxplugin = qtplugin_factory(PyDMSpinbox)
 
 # Symbol plugin
 PyDMSymbolPlugin = qtplugin_factory(PyDMSymbol)
-
-# Time Plot plugin
-PyDMTimePlotPlugin = qtplugin_factory(PyDMTimePlot)
-
-# Waveform Plot plugin
-PyDMWaveformPlotPlugin = qtplugin_factory(PyDMWaveformPlot)
 
 # Waveform Table plugin
 PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable)
