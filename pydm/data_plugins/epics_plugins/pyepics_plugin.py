@@ -11,11 +11,13 @@ class Connection(PyDMConnection):
     self.pv = epics.PV(pv, callback=self.send_new_value, connection_callback=self.send_connection_state, form='ctrl', auto_monitor=True)
     self.add_listener(channel)
   
-  def send_new_value(self, pvname=None, value=None, char_value=None, units=None, enum_strs=None, severity=None, count=None, write_access=None, ftype=None, upper_ctrl_limit=None, lower_ctrl_limit=None, *args, **kws):
+  def send_new_value(self, pvname=None, value=None, char_value=None, units=None, enum_strs=None, severity=None, count=None, write_access=None, ftype=None, upper_ctrl_limit=None, lower_ctrl_limit=None, precision=None, *args, **kws):
     if severity != None:
       self.new_severity_signal.emit(int(severity))
     if write_access != None:
       self.write_access_signal.emit(write_access)
+    if precision != None:
+      self.prec_signal.emit(precision)
     if enum_strs != None:
       enum_strs = tuple(b.decode(encoding='ascii') for b in enum_strs)
       self.enum_strings_signal.emit(enum_strs)
