@@ -33,6 +33,9 @@ class PyDMSlider(QFrame):
     self._channels = None
     self._channel = ""
     self._value = 0.0
+    self._user_defined_prec = False
+    self._prec = 5
+    self._format_string = "{:." + str(self._prec) + "f}"
     self._show_limit_labels = True
     self._show_value_label = True
     self._minimum = -10.0
@@ -102,15 +105,18 @@ class PyDMSlider(QFrame):
       QWidget().setLayout(self.layout())
     self.setLayout(layout)
   
+  def update_labels(self):
+    self.low_lim_label.setText(self._format_string.format(self._minimum))
+    self.high_lim_label.setText(self._format_string.format(self._maximum))
+    self.value_label.setText(self._format_string.format(self._value))
+    
   def reset_slider_limits(self):
     self._slider.setMinimum(0)
     self._slider.setMaximum(self._num_steps-1)
     self._slider.setSingleStep(1)
     self._slider.setPageStep(10)
     self._slider_position_to_value_map = np.linspace(self._minimum, self._maximum, num=self._num_steps)
-    self.low_lim_label.setText(str(self._minimum))
-    self.high_lim_label.setText(str(self._maximum))
-    self.value_label.setText(str(self._value))
+    self.update_labels()
     self.set_slider_to_closest_value(self.value)
     self.rangeChanged.emit(self._minimum, self._maximum)
   
@@ -120,7 +126,7 @@ class PyDMSlider(QFrame):
   
   def set_slider_to_closest_value(self, val):
     self._slider.setValue(self.find_closest_slider_position_to_value(self._value))
-  
+    
   @pyqtProperty(float)
   def value(self):
     return self._value
@@ -129,7 +135,7 @@ class PyDMSlider(QFrame):
   def value(self, new_val):
     self._value = float(new_val)
     self._value = max(min(self._maximum, self._value), self._minimum)
-    self.value_label.setText(str(self._value))
+    self.value_label.setText(self._format_string.format(self._value))
     if not self._slider.isSliderDown():
       self.set_slider_to_closest_value(self._value)
     
@@ -154,6 +160,11 @@ class PyDMSlider(QFrame):
   @pyqtSlot(int)
   def alarmSeverityChanged(self, new_alarm_severity):
     self.value_label.setStyleSheet(self.alarm_style_sheet_map[new_alarm_severity])
+  
+  @pyqtSlot(int)
+  def precisionChanged(self, new_prec):
+    if not self._user_defined_prec:
+      self.precision = new_prec
   
   def set_enable_state(self):
     self.setEnabled(self._write_access and self._connected)
@@ -253,6 +264,24 @@ class PyDMSlider(QFrame):
     self._num_steps = int(new_steps)
     self.reset_slider_limits()
   
+  @pyqtProperty(bool)
+  def userDefinedPrecision(self):
+    return self._user_defined_prec
+  
+  @userDefinedPrecision.setter
+  def userDefinedPrecision(self, user_defined_prec):
+    self._user_defined_prec = user_defined_prec
+  
+  @pyqtProperty(int)
+  def precision(self):
+    return self._prec
+  
+  @precision.setter
+  def precision(self, new_prec):
+    self._prec = new_prec
+    self._format_string = "{:." + str(self._prec) + "f}"
+    self.update_labels()
+  
   def getChannel(self):
     if self._channel is None:
       return ""
@@ -269,7 +298,7 @@ class PyDMSlider(QFrame):
 
   def channels(self):
     if self._channels is None:
-      self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, severity_slot=self.alarmSeverityChanged, write_access_slot=self.writeAccessChanged, value_signal=self.valueChanged)]
+      self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, severity_slot=self.alarmSeverityChanged, write_access_slot=self.writeAccessChanged, value_signal=self.valueChanged, prec_slot=self.precisionChanged)]
     return self._channels
 
 
