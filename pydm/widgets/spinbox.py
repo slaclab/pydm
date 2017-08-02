@@ -112,7 +112,12 @@ class PyDMSpinbox(QDoubleSpinBox):
   @pyqtSlot(float)
   def receive_lower_limit(self,limit):
     self.setMinimum(limit)
-
+  
+  @pyqtSlot(int)
+  def receivePrecision(self, new_prec):
+    self._prec = new_prec
+    self.setDecimals(self._prec)
+  
   def getChannel(self):
     return str(self._channel)
 
@@ -147,5 +152,6 @@ class PyDMSpinbox(QDoubleSpinBox):
                         write_access_slot=self.writeAccessChanged,
                         upper_ctrl_limit_slot = self.receive_upper_limit,
                         lower_ctrl_limit_slot = self.receive_lower_limit,
+                        prec_slot = self.receivePrecision,
                         value_signal=self.send_value_signal,
                         )]
