@@ -1,10 +1,11 @@
 import sys
 import logging
+import hashlib
 from os import path
 
 
 from .channel import PyDMChannel
-from ..PyQt.QtGui import QPushButton
+from ..PyQt.QtGui import QPushButton, QMessageBox, QInputDialog, QLineEdit
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
 
 logger = logging.getLogger(__name__)
@@ -48,6 +49,7 @@ class PyDMPushButton(QPushButton):
     """
     __pyqtSignals__ = ("send_value_signal(str)",)
     send_value_signal = pyqtSignal([int],[float],[str])
+    DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed ?"
 
     def __init__(self,parent=None,label=None,icon=None,
                  pressValue=None,relative=False, 
@@ -67,9 +69,80 @@ class PyDMPushButton(QPushButton):
         self._channeltype = type(self._value)
         self._connected = False
         self._write_access = False
+        self._show_confirm_dialog = False
+        self._confirm_message = PyDMPushButton.DEFAULT_CONFIRM_MESSAGE
+        self._password_protected = False
+        self._password = ""
+        self._protected_password = ""
         self.update_enabled_state()
         self.clicked.connect(self.sendValue)
 
+    @pyqtProperty(bool, doc=
+    """
+    Wether or not this button is password protected.
+    """
+    )
+    def passwordProtected(self):
+        return self._password_protected
+
+    @passwordProtected.setter
+    def passwordProtected(self, value):
+        if self._password_protected != value:
+            self._password_protected = value
+
+    @pyqtProperty(str, doc=
+    """
+    Password to be encrypted using SHA256.
+    """
+    )
+    def password(self):
+        return ""
+
+    @password.setter
+    def password(self, value):
+        if value is not None and value != "":
+            sha = hashlib.sha256()
+            sha.update(value.encode())
+            self._protected_password = sha.hexdigest()
+    
+    @pyqtProperty(str, doc=
+    """
+    The encrypted password
+    """
+    )
+    def protectedPassword(self):
+        return self._protected_password
+
+    @protectedPassword.setter
+    def protectedPassword(self, value):
+        if self._protected_password != value:
+            self._protected_password = value
+
+    @pyqtProperty(bool, doc=
+    """
+    Wether or not to display a confirmation dialog.
+    """
+    )
+    def showConfirmDialog(self):
+        return self._show_confirm_dialog
+
+    @showConfirmDialog.setter
+    def showConfirmDialog(self, value):
+        if self._show_confirm_dialog != value:
+            self._show_confirm_dialog = value
+
+    @pyqtProperty(str, doc=
+    """
+    Message to be displayed at the Confirmation dialog.
+    """
+    )
+    def confirmMessage(self):
+        return self._confirm_message
+
+    @confirmMessage.setter
+    def confirmMessage(self, value):
+        if self._confirm_message != value:
+            self._confirm_message = value
 
     @pyqtProperty(str,doc=
     """
@@ -157,6 +230,44 @@ class PyDMPushButton(QPushButton):
     def update_enabled_state(self):
       self.setEnabled(self._write_access and self._connected)
 
+    def confirm_dialog(self):
+        if self._show_confirm_dialog:
+            if self._confirm_message == "":
+                self._confirm_message = PyDMPushButton.DEFAULT_CONFIRM_MESSAGE
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Question)
+            msg.setText(self._confirm_message)
+            msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            msg.setDefaultButton(QMessageBox.No)
+            ret = msg.exec_()
+            if ret == QMessageBox.No:
+                return False
+        return True
+    
+    def validate_password(self):
+        if not self._password_protected:
+            return True
+
+        pwd, ok = QInputDialog.getText(None, "Authentication", "Please enter your password:", QLineEdit.Password,"")
+        pwd = str(pwd)
+        if not ok or pwd == "":
+            return False
+
+        sha = hashlib.sha256()
+        sha.update(pwd.encode())
+        pwd_encrypted = sha.hexdigest()
+        if pwd_encrypted != self._protected_password:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Invalid password.")
+            msg.setWindowTitle("Error")
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.setDefaultButton(QMessageBox.Ok)
+            msg.setEscapeButton(QMessageBox.Ok)
+            msg.exec_()
+            return False
+        return True
+
     @pyqtSlot()
     def sendValue(self):
         """
@@ -166,6 +277,11 @@ class PyDMPushButton(QPushButton):
         the appropriate value out through the :attr:`.send_value_signal`.   
         """
         if not self._pressValue or self._value is None:
+            return None
+        if not self.confirm_dialog():
+            return None
+
+        if not self.validate_password():
             return None
 
         if not self._relative or self._channeltype == str:
