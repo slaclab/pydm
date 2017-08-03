@@ -12,9 +12,10 @@ Contents:
    :maxdepth: 1
 
    channel.rst
-   pushbutton.rst
-   lineedit.rst
+   widgets/pushbutton.rst
+   widgets/lineedit.rst
    macros.rst
+   scripted_displays.rst
    
 Indices and tables
 ==================
