@@ -249,6 +249,7 @@ class PyDMPushButton(QPushButton):
             return True
 
         pwd, ok = QInputDialog.getText(None, "Authentication", "Please enter your password:", QLineEdit.Password,"")
+        pwd = str(pwd)
         if not ok or pwd == "":
             return False
 
