@@ -82,6 +82,7 @@ class PyDMLabel(QLabel):
     self.value = None
     self._channels = None
     self._channel = init_channel
+    self._user_defined_prec = False
     self._prec = 0
     self._alarm_sensitive_text = False
     self._alarm_sensitive_border = True
@@ -138,6 +139,11 @@ class PyDMLabel(QLabel):
       self.enum_strings = enum_strings
       self.receiveValue(self.value)
   
+  @pyqtSlot(int)
+  def precisionChanged(self, new_prec):
+    if not self._user_defined_prec:
+      self.precision = new_prec
+  
   @pyqtProperty(bool, doc=
   """
   Whether or not the label's text color changes when alarm severity changes.
@@ -177,6 +183,14 @@ class PyDMLabel(QLabel):
     
   channel = pyqtProperty(str, getChannel, setChannel, resetChannel)
   
+  @pyqtProperty(bool)
+  def userDefinedPrecision(self):
+    return self._user_defined_prec
+  
+  @userDefinedPrecision.setter
+  def userDefinedPrecision(self, user_defined_prec):
+    self._user_defined_prec = user_defined_prec
+  
   def getPrecision(self):
     return self._prec
   
@@ -195,5 +209,5 @@ class PyDMLabel(QLabel):
   def channels(self):
     if self._channels != None:
       return self._channels
-    self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, severity_slot=self.alarmSeverityChanged, enum_strings_slot=self.enumStringsChanged)]
+    self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, severity_slot=self.alarmSeverityChanged, enum_strings_slot=self.enumStringsChanged, prec_slot=self.precisionChanged)]
     return self._channels

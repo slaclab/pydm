@@ -37,6 +37,12 @@
      <property name="maximum" stdset="0">
       <double>1.500000000000000</double>
      </property>
+     <property name="userDefinedPrecision" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="precision" stdset="0">
+      <number>2</number>
+     </property>
      <property name="channel">
       <string>ca://MTEST:Float</string>
      </property>
