@@ -132,6 +132,14 @@ class PyDMApplication(QApplication):
       f = uifile
     return uic.loadUi(f)
     
+  def __sanity_check_pyqt(self, cls):
+    for itm in dir(cls):
+      i = getattr(cls, itm)
+      if hasattr(i, "__file__"):
+        if any([True if v in i.__file__ else False for v in ["PyQt4", "PyQt5"]]):
+          warnings.warn("Direct PyQt5/PyQt4 import detected. To ensure compatibility with PyQt4 and PyQt5 consider using: pydm.PyQt for your imports.", RuntimeWarning, stacklevel=0)
+          return
+
   def load_py_file(self, pyfile, args=None):
     #Add the intelligence module directory to the python path, so that submodules can be loaded.  Eventually, this should go away, and intelligence modules should behave as real python modules.
     module_dir = os.path.dirname(os.path.abspath(pyfile))
@@ -139,6 +147,7 @@ class PyDMApplication(QApplication):
 
     #Now load the intelligence module.
     module = imp.load_source('intelclass', pyfile)
+    self.__sanity_check_pyqt(module)
     if hasattr(module, 'intelclass'):
       cls = module.intelclass
       if not issubclass(cls, Display):
