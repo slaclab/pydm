@@ -11,6 +11,7 @@ ignore-paths:
     - versioneer.py
     - examples/*
     - setup.py
+    - pydm.py
 pylint:
   disable:
     - protected-access
