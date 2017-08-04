@@ -14,32 +14,34 @@ IMAGE_SIZE      = 512
 prefix = 'MTEST:'
 pvdb = {
         'Run'              : { 'type' : 'enum',
-                                'enums': ['STOP', 'RUN']   },
-        'UpdateTime'       : { 'prec' : 3, 'unit' : 's', 'value' : 1     },
-        'TimePerDivision'  : { 'prec' : 5, 'unit' : 's', 'value' : 0.001 },
-        'TriggerDelay'     : { 'prec' : 5, 'unit' : 's', 'value' : 0.0005},
-        'VoltsPerDivision' : { 'prec' : 3, 'unit' : 'V', 'value' : 0.2   },
-        'VoltOffset'       : { 'prec' : 3, 'unit' : 'V' },
-        'NoiseAmplitude'   : { 'prec' : 3, 'value' : 0.2   },
+                                'enums': ['STOP', 'RUN'], 'asg'  : 'default'},
+        'ReadOnly'     : { 'type' : 'enum',
+                                'enums': ['FALSE', 'TRUE'], 'value': 0 },
+        'UpdateTime'       : { 'prec' : 3, 'unit' : 's', 'value' : 1, 'asg' : 'default'     },
+        'TimePerDivision'  : { 'prec' : 5, 'unit' : 's', 'value' : 0.001, 'asg' : 'default' },
+        'TriggerDelay'     : { 'prec' : 5, 'unit' : 's', 'value' : 0.0005, 'asg' : 'default'},
+        'VoltsPerDivision' : { 'prec' : 3, 'unit' : 'V', 'value' : 0.2, 'asg' : 'default'   },
+        'VoltOffset'       : { 'prec' : 3, 'unit' : 'V', 'asg' : 'default' },
+        'NoiseAmplitude'   : { 'prec' : 3, 'value' : 0.2, 'asg' : 'default'   },
         'Waveform'         : { 'count': MAX_POINTS,
-                                'prec' : 5 },
+                                'prec' : 5, 'asg' : 'default' },
         'Cosine'         : { 'count': MAX_POINTS,
-                                'prec' : 5 },
+                                'prec' : 5, 'asg' : 'default' },
         'TimeBase'         : { 'count': MAX_POINTS,
                                'prec' : 5,
                                'value': numpy.arange(MAX_POINTS, dtype=float) 
-                                            * NUM_DIVISIONS / (MAX_POINTS -1)},
-        'MinValue'         : { 'prec' : 4 },
-        'MaxValue'         : { 'prec' : 4 },
-        'MeanValue'        : { 'prec' : 4 },
-        'XPos'             : { 'prec' : 2, 'value' : 0.0 },
-        'YPos'             : { 'prec' : 2, 'value' : 0.0 },
-        'Image'            : { 'type' : 'char', 'count': IMAGE_SIZE**2, 'value': numpy.zeros(IMAGE_SIZE**2,dtype=numpy.uint8) },
-        'TwoSpotImage'     : { 'type' : 'char', 'count': IMAGE_SIZE**2, 'value': numpy.zeros(IMAGE_SIZE**2,dtype=numpy.uint8) },
-        'ImageWidth'       : { 'type' : 'int', 'value' : IMAGE_SIZE },
-        'String'           : { 'type' : 'string', 'value': "Test String"},
-        'Float'            : { 'type' : 'float', 'value': 0.0, 'lolim': -1.2, 'lolo': -1.0, 'low': -0.8, 'high': 0.8, 'hihi': 1.0, 'hilim': 1.2, 'units': 'mJ', 'prec': 3 },
-        'StatusBits'       : { 'type' : 'int', 'value': 0b101010, 'lolim': 0, 'hilim': 32 }
+                                            * NUM_DIVISIONS / (MAX_POINTS -1), 'asg' : 'default'},
+        'MinValue'         : { 'prec' : 4, 'asg' : 'default' },
+        'MaxValue'         : { 'prec' : 4, 'asg' : 'default' },
+        'MeanValue'        : { 'prec' : 4, 'asg' : 'default' },
+        'XPos'             : { 'prec' : 2, 'value' : 0.0, 'asg' : 'default' },
+        'YPos'             : { 'prec' : 2, 'value' : 0.0, 'asg' : 'default' },
+        'Image'            : { 'type' : 'char', 'count': IMAGE_SIZE**2, 'value': numpy.zeros(IMAGE_SIZE**2,dtype=numpy.uint8), 'asg' : 'default' },
+        'TwoSpotImage'     : { 'type' : 'char', 'count': IMAGE_SIZE**2, 'value': numpy.zeros(IMAGE_SIZE**2,dtype=numpy.uint8), 'asg' : 'default' },
+        'ImageWidth'       : { 'type' : 'int', 'value' : IMAGE_SIZE, 'asg' : 'default' },
+        'String'           : { 'type' : 'string', 'value': "Test String", 'asg' : 'default'},
+        'Float'            : { 'type' : 'float', 'value': 0.0, 'lolim': -1.2, 'lolo': -1.0, 'low': -0.8, 'high': 0.8, 'hihi': 1.0, 'hilim': 1.2, 'units': 'mJ', 'prec': 3, 'asg' : 'default' },
+        'StatusBits'       : { 'type' : 'int', 'value': 0b101010, 'lolim': 0, 'hilim': 32, 'asg' : 'default' }
 }
 
 def double_gaussian_2d(x, y, x0, y0, xsig, ysig):
@@ -124,9 +126,12 @@ class myDriver(Driver):
 
 if __name__ == '__main__':
     server = SimpleServer()
+    server.initAccessSecurityFile('access_rules.as', P=prefix)
     server.createPV(prefix, pvdb)
     driver = myDriver()
-
+    #Manually set the ReadOnly PV to force access rule calculation.
+    #You can set ReadOnly to 1 to disable write access on all PVs.
+    driver.setParam('ReadOnly', 0)
     # process CA transactions
     while True:
         server.process(0.1)
