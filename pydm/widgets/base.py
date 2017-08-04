@@ -1,6 +1,6 @@
 import numpy as np
-from ..PyQt.QtGui import QApplication, QColor
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
+from ..PyQt.QtGui import QApplication, QColor, QCursor
+from ..PyQt.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty
 from .channel import PyDMChannel
 from ..application import PyDMApplication
 
@@ -100,7 +100,13 @@ class PyDMWidget():
         self._alarm_state = 0
         self._style = dict()
         self._connected = False
+        self._write_access = False
         self._prec = 0
+        self._unit = ""
+        
+        self._upper_ctrl_limit = None
+        self._lower_ctrl_limit = None
+        
         self.enum_strings = None
         self.format_string = None
         
@@ -208,6 +214,17 @@ class PyDMWidget():
     """
     QT SLOTS
     """
+    # false = disconnected, true = connected
+    @pyqtSlot(bool)
+    def connectionStateChanged(self, connected):
+        print("Connection state changed...")
+        self._connected = connected
+        self.checkEnableState()
+        if not connected:
+            self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
+        if self._connection_changed is not None:
+            self._connection_changed(connected)
+    
     @pyqtSlot(int)
     @pyqtSlot(float)
     @pyqtSlot(str)
@@ -227,24 +244,49 @@ class PyDMWidget():
             style = compose_stylesheet(style=self._style)
             self.setStyleSheet(style)
             self.update()
+            if self._alarm_severity_changed is not None:
+                self._alarm_severity_changed(new_alarm_severity)
 
-    # false = disconnected, true = connected
-    @pyqtSlot(bool)
-    def connectionStateChanged(self, connected):
-        self._connected = connected
-        if not connected:
-            self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
 
     @pyqtSlot(tuple)
     def enumStringsChanged(self, enum_strings):
         if enum_strings != self.enum_strings:
             self.enum_strings = enum_strings
             self.valueChanged(self.value)
+            if self._enum_strings_changed is not None:
+                self._enum_strings_changed(enum_strings)
 
     @pyqtSlot(bool)
     def writeAccessChanged(self, write_access):
         self._write_access = write_access
         self.checkEnableState()
+        if self._write_access_changed is not None:
+            self._write_access_changed(write_access)
+
+    @pyqtSlot(str)
+    def unitChanged(self, unit):
+        if self._unit_changed is not None:
+            self._unit_changed(unit)
+
+    @pyqtSlot(int)
+    @pyqtSlot(float)
+    def precisionChanged(self, prec):
+        self._prec = prec
+        if self._precision_changed is not None:
+            self._precision_changed(prec)
+
+    @pyqtSlot(float)
+    def upperCtrlLimitChanged(self, limit):
+        self._upper_ctrl_limit = limit
+        if self._ctrl_limit_changed is not None:
+            self._ctrl_limit_changed("UPPER", limit)
+
+    @pyqtSlot(float)
+    def lowerCtrlLimitChanged(self, limit):
+        self._lower_ctrl_limit = limit
+        if self._ctrl_limit_changed is not None:
+            self._ctrl_limit_changed("UPPER", limit)
+
 
     @pyqtSlot()
     def force_redraw(self):
@@ -310,7 +352,15 @@ class PyDMWidget():
     PyDMWidget methods
     """
     def checkEnableState(self):
-        self.setEnabled(self._write_access and self._connected)
+        status = self._write_access and self._connected
+        if status:
+            self.setCursor(QCursor(Qt.ArrowCursor))
+        else:
+            self.setCursor(QCursor(Qt.ForbiddenCursor))
+        #self.setEnabled(status)
+    
+    def get_ctrl_limits(self):
+        return (self._lower_ctrl_limit, self._upper_ctrl_limit)
     
     def channels(self):
         if self._channels != None:
@@ -320,15 +370,15 @@ class PyDMWidget():
             PyDMChannel(address=self.channel,
                         connection_slot=self.connectionStateChanged,
                         value_slot=self.valueChanged,
-                        waveform_slot=None,
+                        waveform_slot=self.valueChanged,
                         severity_slot=self.alarmSeverityChanged,
                         enum_strings_slot=self.enumStringsChanged,
-                        unit_slot=None,
-                        prec_slot=None,
-                        upper_ctrl_limit_slot=None,
-                        lower_ctrl_limit_slot=None,
+                        unit_slot=self.unitChanged,
+                        prec_slot=self.precisionChanged,
+                        upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
+                        lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
                         value_signal=self.send_value_signal,
-                        waveform_signal=None,
+                        waveform_signal=self.send_value_signal,
                         write_access_slot=self.writeAccessChanged)
         ]
         return self._channels
