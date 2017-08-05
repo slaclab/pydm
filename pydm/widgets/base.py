@@ -1,6 +1,6 @@
 import numpy as np
 from ..PyQt.QtGui import QApplication, QColor, QCursor
-from ..PyQt.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty
+from ..PyQt.QtCore import Qt, QEvent, pyqtSignal, pyqtSlot, pyqtProperty
 from .channel import PyDMChannel
 from ..application import PyDMApplication
 
@@ -126,6 +126,24 @@ class PyDMWidget():
         app = QApplication.instance()
         if isinstance(app, PyDMApplication):
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
+            
+        self.installEventFilter(self)
+
+    """
+    EVENT FILTER
+    """
+    def eventFilter(self, object, event):
+        status = self._write_access and self._connected
+        
+        if event.type() == QEvent.Leave:
+            QApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
+            return True
+            
+        if event.type() == QEvent.Enter and not status:
+            QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
+            return True
+        
+        return False
 
     """
     CALLBACK PROPERTIES
@@ -217,7 +235,7 @@ class PyDMWidget():
     # false = disconnected, true = connected
     @pyqtSlot(bool)
     def connectionStateChanged(self, connected):
-        print("Connection state changed...")
+        print("Connection state changed...", connected)
         self._connected = connected
         self.checkEnableState()
         if not connected:
@@ -258,6 +276,7 @@ class PyDMWidget():
 
     @pyqtSlot(bool)
     def writeAccessChanged(self, write_access):
+        print("Write Access Changed...", write_access)
         self._write_access = write_access
         self.checkEnableState()
         if self._write_access_changed is not None:
@@ -353,11 +372,14 @@ class PyDMWidget():
     """
     def checkEnableState(self):
         status = self._write_access and self._connected
-        if status:
-            self.setCursor(QCursor(Qt.ArrowCursor))
+        tooltip = ""
+        if not self._connected:
+            tooltip += "PV is disconnected."
         else:
-            self.setCursor(QCursor(Qt.ForbiddenCursor))
-        #self.setEnabled(status)
+            if not self._write_access:
+                tooltip += "Access denied by Channel Access Security."
+        self.setToolTip(tooltip)
+        self.setEnabled(status)
     
     def get_ctrl_limits(self):
         return (self._lower_ctrl_limit, self._upper_ctrl_limit)
