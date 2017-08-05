@@ -74,7 +74,7 @@ class PyDMRelatedDisplayButton(QPushButton):
       return
     macros = None
     if self._macro_string is not None:
-      macros = json.loads(self._macro_string)
+      macros = json.loads(str(self._macro_string))
     try:
       if target == self.EXISTING_WINDOW:
         self.window().go(self.displayFilename, macros=macros)
