@@ -140,7 +140,7 @@ class PyDMApplication(QApplication):
           warnings.warn("Direct PyQt5/PyQt4 import detected. To ensure compatibility with PyQt4 and PyQt5 consider using: pydm.PyQt for your imports.", RuntimeWarning, stacklevel=0)
           return
 
-  def load_py_file(self, pyfile, args=None):
+  def load_py_file(self, pyfile, args=None, macros=None):
     #Add the intelligence module directory to the python path, so that submodules can be loaded.  Eventually, this should go away, and intelligence modules should behave as real python modules.
     module_dir = os.path.dirname(os.path.abspath(pyfile))
     sys.path.append(module_dir)
@@ -167,10 +167,14 @@ class PyDMApplication(QApplication):
       #Works in python 2, deprecated in 3.0 and up.
       module_params = inspect.getargspec(cls.__init__).args
 
+    #Because older versions of Display may not have the args parameter or the macros parameter, we check
+    #to see if it does before trying to use them.
+    kwargs = {}
     if 'args' in module_params:
-      return cls(args=args)
-    else:
-      return cls()
+      kwargs['args'] = args
+    if 'macros' in module_params:
+      kwargs['macros'] = macros
+    return cls(**kwargs)
 
   def open_file(self, ui_file, macros=None, command_line_args=[]):
     #First split the ui_file string into a filepath and arguments
