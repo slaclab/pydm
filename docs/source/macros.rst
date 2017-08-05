@@ -23,4 +23,4 @@ If you open a python file and specify macros (via the command line, related disp
 
 Macro Behavior at Run Time
 --------------------------
-PyDM will remember the macros used to launch a display, and re-use them when navigating with the forward, back, and home buttons.
+PyDM will remember the macros used to launch a display, and re-use them when navigating with the forward, back, and home buttons. When a new display is opened, any macros defined on the current window are also passed to the new display.  This lets you cascade macros to child displays.
