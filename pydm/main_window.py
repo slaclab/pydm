@@ -70,21 +70,23 @@ class PyDMMainWindow(QMainWindow):
     self.open_abs_file(filename, macros, command_line_args)
   
   def open_abs_file(self, filename, macros=None, command_line_args=[]):
-    widget = self.app.open_file(filename, macros, command_line_args)
+    merged_macros = self.merge_with_current_macros(macros)
+    widget = self.app.open_file(filename, merged_macros, command_line_args)
     if (len(self.back_stack) == 0) or (self.current_file() != filename):
-      self.back_stack.append((filename, macros, command_line_args))
+      self.back_stack.append((filename, merged_macros, command_line_args))
     self.set_display_widget(widget)
     self.ui.forwardButton.setEnabled(len(self.forward_stack) > 0)
     self.ui.backButton.setEnabled(len(self.back_stack) > 1)
     if self.home_file is None:
-      self.home_file = (filename, macros, command_line_args)
+      self.home_file = (filename, merged_macros, command_line_args)
       
   def new_window(self, ui_file, macros=None, command_line_args=[]):
     filename = self.join_to_current_file_path(ui_file)
     self.new_abs_window(filename, macros, command_line_args)
   
   def new_abs_window(self, filename, macros=None, command_line_args=[]):
-    self.app.new_window(filename, macros, command_line_args)
+    merged_macros = self.merge_with_current_macros(macros)
+    self.app.new_window(filename, merged_macros, command_line_args)
   
   def go_button_pressed(self):
     filename = str(self.ui.panelSearchLineEdit.text())
@@ -136,10 +138,34 @@ class PyDMMainWindow(QMainWindow):
     else:
       self.go_abs(self.home_file[0], macros=self.home_file[1], command_line_args=self.home_file[2])
   
-  def current_file(self):
+  def current_stack_item(self):
     if len(self.back_stack) == 0:
       raise IndexError("The display manager does not have a display loaded.")
-    return self.back_stack[-1][0]
+    return self.back_stack[-1]
+  
+  def current_file(self):
+    return self.current_stack_item()[0]
+  
+  def current_macros(self):
+    try:
+      return self.current_stack_item()[1]
+    except IndexError:
+      return None
+  
+  def current_args(self):
+    try:
+      return self.current_stack_item()[2]
+    except IndexError:
+      return None
+  
+  def merge_with_current_macros(self, macros_to_merge):
+    if self.current_macros() is None:
+      return macros_to_merge
+    if macros_to_merge is None:
+      return self.current_macros()
+    m = self.current_macros().copy()
+    m.update(macros_to_merge)
+    return m
   
   def update_window_title(self):
     if self.showing_file_path_in_title_bar:
