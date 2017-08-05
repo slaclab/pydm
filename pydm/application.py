@@ -187,7 +187,7 @@ class PyDMApplication(QApplication):
     if extension == '.ui':
       widget = self.load_ui_file(filepath, macros)
     elif extension == '.py':
-      widget = self.load_py_file(filepath, args)
+      widget = self.load_py_file(filepath, args, macros)
     else:
       self.directory_stack.pop()
       raise ValueError("invalid file type: {}".format(extension))
