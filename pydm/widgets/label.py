@@ -84,6 +84,8 @@ class PyDMLabel(QLabel):
     self._channel = init_channel
     self._user_defined_prec = False
     self._prec = 0
+    self._show_units = False
+    self._unit_string = ""
     self._alarm_sensitive_text = False
     self._alarm_sensitive_border = True
     self._alarm_flags = (self.ALARM_TEXT * self._alarm_sensitive_text) | (self.ALARM_BORDER * self._alarm_sensitive_border)
@@ -95,23 +97,43 @@ class PyDMLabel(QLabel):
     app = QApplication.instance()
     if isinstance(app, PyDMApplication):
       self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
-    
+  
+  def redraw_label(self):
+    #If the value is a string, just display it as-is, no formatting needed.
+    if isinstance(self.value, str):
+      self.setText(self.value)
+      return
+    #If the value is an enum, display the appropriate enum string for the value.
+    if self.enum_strings is not None and isinstance(self.value, int):
+      self.setText(self.enum_strings[self.value])
+      return
+    #If the value is a number (float or int), display it using a format string if necessary.
+    if isinstance(self.value, float) or isinstance(self.value, int):
+      if self.format_string is not None:
+        self.setText(self.format_string.format(self.value))
+        return
+    #If you made it this far, just turn whatever the heck the value is into a string and display it.
+    self.setText(str(self.value))
+  
+  def refresh_format_string(self):
+    if self.precision == 0 and self._unit_string == "":
+      self.format_string = None
+      self.redraw_label()
+      return
+    strs = []
+    if self.precision != 0:
+      strs.append("{:." + str(self.precision) + "f}")
+    if self._unit_string != "":
+      strs.append(self._unit_string)
+    self.format_string = " ".join(strs)
+    self.redraw_label()
+      
   @pyqtSlot(float)
   @pyqtSlot(int)
   @pyqtSlot(str)
   def receiveValue(self, new_value):
     self.value = new_value
-    if isinstance(new_value, str):
-      self.setText(new_value)
-      return
-    if isinstance(new_value, float):
-      if self.format_string:
-        self.setText(self.format_string.format(new_value))
-        return
-    if self.enum_strings is not None and isinstance(new_value, int):
-      self.setText(self.enum_strings[new_value])
-      return
-    self.setText(str(new_value))
+    self.redraw_label()
     
   # -2 to +2, -2 is LOLO, -1 is LOW, 0 is OK, etc.  
   @pyqtSlot(int)
@@ -137,12 +159,19 @@ class PyDMLabel(QLabel):
   def enumStringsChanged(self, enum_strings):
     if enum_strings != self.enum_strings:
       self.enum_strings = enum_strings
-      self.receiveValue(self.value)
+      self.redraw_label()
   
   @pyqtSlot(int)
   def precisionChanged(self, new_prec):
     if not self._user_defined_prec:
       self.precision = new_prec
+      self.refresh_format_string()
+  
+  @pyqtSlot(str)
+  def unitsChanged(self, new_units):
+    print("Got new units: {}".format(new_units))
+    self._unit_string = str(new_units)
+    self.refresh_format_string()
   
   @pyqtProperty(bool, doc=
   """
@@ -191,23 +220,32 @@ class PyDMLabel(QLabel):
   def userDefinedPrecision(self, user_defined_prec):
     self._user_defined_prec = user_defined_prec
   
+  @pyqtProperty(bool)
+  def showUnits(self):
+    return self._show_units
+  
+  @showUnits.setter
+  def showUnits(self, show_units):
+    self._show_units = show_units
+    self.refresh_format_string()
+  
   def getPrecision(self):
     return self._prec
   
   def setPrecision(self, new_prec):
     if self._prec != int(new_prec) and new_prec >= 0:
       self._prec = int(new_prec)
-      self.format_string = "{:." + str(self._prec) + "f}"
+      self.refresh_format_string()
       
   def resetPrecision(self):
     if self._prec != 0:
       self._prec = 0
-      self.format_string = None
+      self.refresh_format_string()
       
   precision = pyqtProperty("int", getPrecision, setPrecision, resetPrecision)
 
   def channels(self):
     if self._channels != None:
       return self._channels
-    self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, severity_slot=self.alarmSeverityChanged, enum_strings_slot=self.enumStringsChanged, prec_slot=self.precisionChanged)]
+    self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, severity_slot=self.alarmSeverityChanged, enum_strings_slot=self.enumStringsChanged, prec_slot=self.precisionChanged, unit_slot=self.unitsChanged)]
     return self._channels
