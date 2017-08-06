@@ -82,7 +82,6 @@ class PyDMChannel:
         self.unit_slot         = unit_slot
         self.prec_slot         = prec_slot
 
-        #TODO: added following slots
         self.upper_ctrl_limit_slot = upper_ctrl_limit_slot
         self.lower_ctrl_limit_slot = lower_ctrl_limit_slot
         
