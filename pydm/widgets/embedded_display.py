@@ -71,19 +71,22 @@ class PyDMEmbeddedDisplay(QFrame):
 			except IOError as e:
 				self.err_label.setText("Could not open {filename}.\nError: {err}".format(filename=self._filename, err=e))
 				self.err_label.show()
-		
+	
+	def parsed_macros(self):
+		if self.macros is not None and len(self.macros) > 0:
+			return json.loads(self.macros)
+		else:
+			return {}
+
 	def open_file(self):
 		"""
 		Opens the widget specified in the widget's filename property.
 		:rtyp: QWidget
 		"""
-		parsed_macros = None
-		if self.macros is not None and len(self.macros) > 0:
-			parsed_macros = json.loads(self.macros)
 		if os.path.isabs(self.filename):
-			return self.app.open_file(self.filename, macros=parsed_macros)
+			return self.app.open_file(self.filename, macros=self.parsed_macros())
 		else:
-			return self.app.open_relative(self.filename, self, macros=parsed_macros)
+			return self.app.open_relative(self.filename, self, macros=self.parsed_macros())
 	
 	@property
 	def embedded_widget(self):
