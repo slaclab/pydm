@@ -40,7 +40,7 @@ pvdb = {
         'TwoSpotImage'     : { 'type' : 'char', 'count': IMAGE_SIZE**2, 'value': numpy.zeros(IMAGE_SIZE**2,dtype=numpy.uint8), 'asg' : 'default' },
         'ImageWidth'       : { 'type' : 'int', 'value' : IMAGE_SIZE, 'asg' : 'default' },
         'String'           : { 'type' : 'string', 'value': "Test String", 'asg' : 'default'},
-        'Float'            : { 'type' : 'float', 'value': 0.0, 'lolim': -1.2, 'lolo': -1.0, 'low': -0.8, 'high': 0.8, 'hihi': 1.0, 'hilim': 1.2, 'units': 'mJ', 'prec': 3, 'asg' : 'default' },
+        'Float'            : { 'type' : 'float', 'value': 0.0, 'lolim': -1.2, 'lolo': -1.0, 'low': -0.8, 'high': 0.8, 'hihi': 1.0, 'hilim': 1.2, 'unit': 'mJ', 'prec': 3, 'asg' : 'default' },
         'StatusBits'       : { 'type' : 'int', 'value': 0b101010, 'lolim': 0, 'hilim': 32, 'asg' : 'default' }
 }
 
