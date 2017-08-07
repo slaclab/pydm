@@ -152,8 +152,13 @@ class PyDMWidget():
     def value_signal(self):
         return self._value_signal
     
+    def validate_callback(self, callback):
+        if not callable(callback):
+            raise ValueError("Callback must be a callable.")
+
     @value_signal.setter
     def value_signal(self, callback):
+        self.validate_callback(callback)
         if self._value_signal != callback:
             self._value_signal = callback
 
@@ -163,6 +168,7 @@ class PyDMWidget():
     
     @connection_changed.setter
     def connection_changed(self, callback):
+        self.validate_callback(callback)
         if self._connection_changed != callback:
             self._connection_changed = callback
 
@@ -172,6 +178,7 @@ class PyDMWidget():
     
     @value_changed.setter
     def value_changed(self, callback):
+        self.validate_callback(callback)
         if self._value_changed != callback:
             self._value_changed = callback
 
@@ -181,6 +188,7 @@ class PyDMWidget():
     
     @alarm_severity_changed.setter
     def alarm_severity_changed(self, callback):
+        self.validate_callback(callback)
         if self._alarm_severity_changed != callback:
             self._alarm_severity_changed = callback
     
@@ -190,6 +198,7 @@ class PyDMWidget():
     
     @write_access_changed.setter
     def write_access_changed(self, callback):
+        self.validate_callback(callback)
         if self._write_access_changed != callback:
             self._write_access_changed = callback
     
@@ -199,6 +208,7 @@ class PyDMWidget():
     
     @enum_strings_changed.setter
     def enum_strings_changed(self, callback):
+        self.validate_callback(callback)
         if self._enum_strings_changed != callback:
             self._enum_strings_changed = callback
     
@@ -208,6 +218,7 @@ class PyDMWidget():
     
     @unit_changed.setter
     def unit_changed(self, callback):
+        self.validate_callback(callback)
         if self._unit_changed != callback:
             self._unit_changed = callback
 
@@ -217,6 +228,7 @@ class PyDMWidget():
     
     @precision_changed.setter
     def precision_changed(self, callback):
+        self.validate_callback(callback)
         if self._precision_changed != callback:
             self._precision_changed = callback
 
@@ -226,6 +238,7 @@ class PyDMWidget():
     
     @ctrl_limit_changed.setter
     def ctrl_limit_changed(self, callback):
+        self.validate_callback(callback)
         if self._ctrl_limit_changed != callback:
             self._ctrl_limit_changed = callback
 
@@ -365,8 +378,7 @@ class PyDMWidget():
     def channel(self, value):
         if self._channel != value:
             self._channel = str(value)
-        
-        
+              
     """
     PyDMWidget methods
     """
