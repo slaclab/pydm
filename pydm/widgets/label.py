@@ -169,7 +169,6 @@ class PyDMLabel(QLabel):
   
   @pyqtSlot(str)
   def unitsChanged(self, new_units):
-    print("Got new units: {}".format(new_units))
     self._unit_string = str(new_units)
     self.refresh_format_string()
   
