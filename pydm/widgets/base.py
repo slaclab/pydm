@@ -102,12 +102,14 @@ class PyDMWidget():
         self._style = dict()
         self._connected = False
         self._write_access = False
+
+        self._precision_from_pv = True
         self._prec = 0
-        self._unit = ""        
+        self._unit = ""
         
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
-        
+
         self.enum_strings = None
         self.format_string = None
         
@@ -304,9 +306,11 @@ class PyDMWidget():
     @pyqtSlot(int)
     @pyqtSlot(float)
     def precisionChanged(self, prec):
-        self._prec = prec
-        if self._precision_changed is not None:
-            self._precision_changed(prec)
+        if self._precision_from_pv:
+            self._prec = prec
+            self.update_format_string()
+            if self._precision_changed is not None:
+                self._precision_changed(prec)
 
     @pyqtSlot(float)
     def upperCtrlLimitChanged(self, limit):
@@ -319,7 +323,6 @@ class PyDMWidget():
         self._lower_ctrl_limit = limit
         if self._ctrl_limit_changed is not None:
             self._ctrl_limit_changed("UPPER", limit)
-
 
     @pyqtSlot()
     def force_redraw(self):
@@ -354,6 +357,17 @@ class PyDMWidget():
         self._alarm_sensitive_border = checked
         self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | (self.ALARM_BORDER * self._alarm_sensitive_border)
 
+    @pyqtProperty(bool, doc=
+    """Wether or not to use the precision information from the PV"""
+    )
+    def precisionFromPV(self):
+        return self._precision_from_pv
+
+    @precisionFromPV.setter
+    def precisionFromPV(self, value):
+        if self._precision_from_pv != bool(value):
+            self._precision_from_pv = value
+
     @pyqtProperty(int, doc=
     """The precision to be used when formatting the output
     of the PV"""
@@ -363,9 +377,14 @@ class PyDMWidget():
 
     @precision.setter
     def precision(self, new_prec):
+        # Only allow one to change the property if not getting the precision from the PV    
+        if self._precision_from_pv:
+            return
         if self._prec != int(new_prec) and new_prec >= 0:
             self._prec = int(new_prec)
-            self.format_string = "{:." + str(self._prec) + "f}"
+            self.update_format_string()
+        if self._precision_changed is not None:
+            self._precision_changed(new_prec)
 
     @pyqtProperty(bool)
     def showUnits(self):
@@ -392,6 +411,10 @@ class PyDMWidget():
     """
     PyDMWidget methods
     """
+    def update_format_string(self):
+        self.format_string = "{:." + str(self._prec) + "f}"
+        return self.format_string
+    
     def checkEnableState(self):
         status = self._write_access and self._connected
         tooltip = ""
