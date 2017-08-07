@@ -29,10 +29,10 @@ def compose_stylesheet(style, base_class="QWidget"):
 
 
 class PyDMWidget():
-    __pyqtSignals__ = ("send_value_signal(str)")
-    
+    __pyqtSignals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray])")
+        
     # Emitted when the user changes the value.
-    send_value_signal = pyqtSignal(str)
+    send_value_signal = pyqtSignal([int], [float], [str], [bool], [np.ndarray])
     
     # Usually, this widget will get this from its parent pydm application.  
     # However, in Designer, the parent isnt a pydm application, and doesn't know what a color map is.
@@ -149,128 +149,18 @@ class PyDMWidget():
         return False
 
     """
-    CALLBACK PROPERTIES
+    CALLBACKS
     """
-    @property
-    def value_signal(self):
-        return self._value_signal
-    
-    def validate_callback(self, callback):
-        if not callable(callback):
-            raise ValueError("Callback must be a callable.")
-
-    @value_signal.setter
-    def value_signal(self, callback):
-        self.validate_callback(callback)
-        if self._value_signal != callback:
-            self._value_signal = callback
-
-    @property
-    def connection_changed(self):
-        return self._connection_changed
-    
-    @connection_changed.setter
-    def connection_changed(self, callback):
-        self.validate_callback(callback)
-        if self._connection_changed != callback:
-            self._connection_changed = callback
-
-    @property
-    def value_changed(self):
-        return self._value_changed
-    
-    @value_changed.setter
-    def value_changed(self, callback):
-        self.validate_callback(callback)
-        if self._value_changed != callback:
-            self._value_changed = callback
-
-    @property
-    def alarm_severity_changed(self):
-        return self._alarm_severity_changed
-    
-    @alarm_severity_changed.setter
-    def alarm_severity_changed(self, callback):
-        self.validate_callback(callback)
-        if self._alarm_severity_changed != callback:
-            self._alarm_severity_changed = callback
-    
-    @property
-    def write_access_changed(self):
-        return self._write_access_changed
-    
-    @write_access_changed.setter
-    def write_access_changed(self, callback):
-        self.validate_callback(callback)
-        if self._write_access_changed != callback:
-            self._write_access_changed = callback
-    
-    @property
-    def enum_strings_changed(self):
-        return self._write_access_changed
-    
-    @enum_strings_changed.setter
-    def enum_strings_changed(self, callback):
-        self.validate_callback(callback)
-        if self._enum_strings_changed != callback:
-            self._enum_strings_changed = callback
-    
-    @property
-    def unit_changed(self):
-        return self._unit_changed
-    
-    @unit_changed.setter
-    def unit_changed(self, callback):
-        self.validate_callback(callback)
-        if self._unit_changed != callback:
-            self._unit_changed = callback
-
-    @property
-    def precision_changed(self):
-        return self._precision_changed
-    
-    @precision_changed.setter
-    def precision_changed(self, callback):
-        self.validate_callback(callback)
-        if self._precision_changed != callback:
-            self._precision_changed = callback
-
-    @property
-    def ctrl_limit_changed(self):
-        return self._ctrl_limit_changed
-    
-    @ctrl_limit_changed.setter
-    def ctrl_limit_changed(self, callback):
-        self.validate_callback(callback)
-        if self._ctrl_limit_changed != callback:
-            self._ctrl_limit_changed = callback
-
-    """
-    QT SLOTS
-    """
-    # false = disconnected, true = connected
-    @pyqtSlot(bool)
-    def connectionStateChanged(self, connected):
-        print("Connection state changed...", connected)
+    def connection_changed(self, connected):
         self._connected = connected
         self.checkEnableState()
         if not connected:
-            self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
-        if self._connection_changed is not None:
-            self._connection_changed(connected)
-    
-    @pyqtSlot(int)
-    @pyqtSlot(float)
-    @pyqtSlot(str)
-    @pyqtSlot(bool)
-    @pyqtSlot(np.ndarray)
-    def valueChanged(self, new_val):
-        self.value = new_val
-        if self._value_changed is not None:
-            self._value_changed(new_val)
+            self.alarmSeverityChanged(self.ALARM_DISCONNECTED)        
 
-    @pyqtSlot(int)
-    def alarmSeverityChanged(self, new_alarm_severity):
+    def value_changed(self, new_val):
+        self.value = new_val
+
+    def alarm_severity_changed(self, new_alarm_severity):
         # 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID
         if self._channels is not None:
             self._alarm_state = new_alarm_severity
@@ -278,51 +168,75 @@ class PyDMWidget():
             style = compose_stylesheet(style=self._style)
             self.setStyleSheet(style)
             self.update()
-            if self._alarm_severity_changed is not None:
-                self._alarm_severity_changed(new_alarm_severity)
+    
+    def write_access_changed(self, new_write_access):
+        self._write_access = new_write_access
+        self.checkEnableState()
+    
+    def enum_strings_changed(self, new_enum_strings):
+        if new_enum_strings != self.enum_strings:
+            self.enum_strings = new_enum_strings
+            self.value_changed(self.value)
+    
+    def unit_changed(self, new_unit):
+        if self._unit != new_unit:
+            self._unit = new_unit
 
+    def precision_changed(self, new_precision):
+        if self._precision_from_pv:
+            self._prec = new_precision
+            self.update_format_string()
+
+    def ctrl_limit_changed(self, which, new_limit):
+        if which == "UPPER":
+            self._upper_ctrl_limit = new_limit
+        else:
+            self._lower_ctrl_limit = new_limit
+
+    """
+    QT SLOTS
+    """
+    @pyqtSlot(bool)
+    def connectionStateChanged(self, connected):
+        # false = disconnected, true = connected
+        self.connection_changed(connected)
+    
+    @pyqtSlot(int)
+    @pyqtSlot(float)
+    @pyqtSlot(str)
+    @pyqtSlot(bool)
+    @pyqtSlot(np.ndarray)
+    def valueChanged(self, new_val):
+        self.value_changed(new_val)
+
+    @pyqtSlot(int)
+    def alarmSeverityChanged(self, new_alarm_severity):
+        self.alarm_severity_changed(new_alarm_severity)
 
     @pyqtSlot(tuple)
     def enumStringsChanged(self, enum_strings):
-        if enum_strings != self.enum_strings:
-            self.enum_strings = enum_strings
-            self.valueChanged(self.value)
-            if self._enum_strings_changed is not None:
-                self._enum_strings_changed(enum_strings)
+        self.enum_strings_changed(enum_strings)
 
     @pyqtSlot(bool)
     def writeAccessChanged(self, write_access):
-        print("Write Access Changed...", write_access)
-        self._write_access = write_access
-        self.checkEnableState()
-        if self._write_access_changed is not None:
-            self._write_access_changed(write_access)
+        self.write_access_changed(write_access)
 
     @pyqtSlot(str)
     def unitChanged(self, unit):
-        if self._unit_changed is not None:
-            self._unit_changed(unit)
+        self.unit_changed(unit)
 
     @pyqtSlot(int)
     @pyqtSlot(float)
     def precisionChanged(self, prec):
-        if self._precision_from_pv:
-            self._prec = prec
-            self.update_format_string()
-            if self._precision_changed is not None:
-                self._precision_changed(prec)
+        self.precision_changed(prec)
 
     @pyqtSlot(float)
     def upperCtrlLimitChanged(self, limit):
-        self._upper_ctrl_limit = limit
-        if self._ctrl_limit_changed is not None:
-            self._ctrl_limit_changed("UPPER", limit)
+        self.ctrl_limit_changed("UPPER", limit)
 
     @pyqtSlot(float)
     def lowerCtrlLimitChanged(self, limit):
-        self._lower_ctrl_limit = limit
-        if self._ctrl_limit_changed is not None:
-            self._ctrl_limit_changed("UPPER", limit)
+        self.ctrl_limit_changed("LOWER", limit)
 
     @pyqtSlot()
     def force_redraw(self):
