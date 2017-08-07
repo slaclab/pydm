@@ -2,8 +2,8 @@ from ..PyQt.QtGui import QCheckBox
 from .base import PyDMWidget
 
 class PyDMCheckbox(QCheckBox, PyDMWidget):    
-    def __init__(self, parent=None, channel=None):
-        super(PyDMCheckbox, self).__init__(parent)
+    def __init__(self, parent=None, init_channel=None):
+        super(PyDMCheckbox, self).__init__(parent, init_channel=init_channel)
         self.value_changed = self.receive_value
         self.clicked.connect(self.send_value)
     
