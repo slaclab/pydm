@@ -94,6 +94,7 @@ class PyDMWidget():
         self._color = self.local_connection_status_color_map[False]
         self._channel = init_channel
         self._channels = None
+        self._show_units = False
         self._alarm_sensitive_content = False
         self._alarm_sensitive_border = True
         self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | (self.ALARM_BORDER * self._alarm_sensitive_border)
@@ -102,7 +103,7 @@ class PyDMWidget():
         self._connected = False
         self._write_access = False
         self._prec = 0
-        self._unit = ""
+        self._unit = ""        
         
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
@@ -365,6 +366,15 @@ class PyDMWidget():
         if self._prec != int(new_prec) and new_prec >= 0:
             self._prec = int(new_prec)
             self.format_string = "{:." + str(self._prec) + "f}"
+
+    @pyqtProperty(bool)
+    def showUnits(self):
+        return self._show_units
+    
+    @showUnits.setter
+    def showUnits(self, show_units):
+        self._show_units = show_units
+
 
     @pyqtProperty(str, doc=
     """

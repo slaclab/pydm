@@ -58,10 +58,12 @@ PyDMImageViewPlugin = qtplugin_factory(PyDMImageView)
 
 # Indicator plugin
 PyDMIndicatorPlugin = qtplugin_factory(PyDMIndicator)
+'''
 
 # Label plugin
 PyDMLabelPlugin = qtplugin_factory(PyDMLabel)
 
+'''
 # Line Edit plugin
 PyDMLineEditPlugin = qtplugin_factory(PyDMLineEdit)
 
