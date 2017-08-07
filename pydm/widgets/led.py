@@ -9,11 +9,12 @@ from ..application import PyDMApplication
 class PyDMLed(QWidget):
 
 	#Tell Designer what signals are available.
-	__pyqtSignals__ = ("connected_signal()",
-                     "disconnected_signal()")
+	#__pyqtSignals__ = ("connected_signal()",
+    #                 "disconnected_signal()")
 	
 	connected_signal = pyqtSignal()
 	disconnected_signal = pyqtSignal()
+	valueChanged = pyqtSignal(int)
 
 	NO_ALARM = 0x0
 	ALARM_TEXT = 0x1
@@ -258,6 +259,7 @@ class PyDMLed(QWidget):
 		if self._showLabel:
 			self.updateCurrentLabel(new_value)
 		self.repaint()
+		self.valueChanged.emit(new_value)
 
 	@pyqtSlot(bool)
 	def connectionStateChanged(self, connected):
