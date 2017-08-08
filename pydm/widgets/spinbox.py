@@ -54,7 +54,7 @@ class PyDMSpinbox(QDoubleSpinBox):
         self.setSingleStep(10**self.step_exponent)
         self.update_suffix()
 
- ### END: Left, right Arrow: changing stepsize
+    ### END: Left, right Arrow: changing stepsize
 
     def update_suffix(self):
         if self._units is None:
@@ -126,7 +126,7 @@ class PyDMSpinbox(QDoubleSpinBox):
             self._channel = str(value)
 
     def resetChannel(self):
-        if self._channel != None:
+        if self._channel is not None:
             self._channel = None
 
     channel = pyqtProperty(str, getChannel, setChannel, resetChannel)
