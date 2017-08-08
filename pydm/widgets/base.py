@@ -121,7 +121,7 @@ class PyDMWidget():
         self._lower_ctrl_limit = None
 
         self.enum_strings = None
-        self.format_string = None
+        self.format_string = "{}"
         
         self.value = None   
         
@@ -224,6 +224,7 @@ class PyDMWidget():
     def unit_changed(self, new_unit):
         if self._unit != new_unit:
             self._unit = new_unit
+            self.update_format_string()
 
     def precision_changed(self, new_precision):
         if self._precision_from_pv:
@@ -340,8 +341,6 @@ class PyDMWidget():
         if self._prec != int(new_prec) and new_prec >= 0:
             self._prec = int(new_prec)
             self.update_format_string()
-        if self._precision_changed is not None:
-            self._precision_changed(new_prec)
 
     @pyqtProperty(bool)
     def showUnits(self):
@@ -349,8 +348,9 @@ class PyDMWidget():
     
     @showUnits.setter
     def showUnits(self, show_units):
-        self._show_units = show_units
-
+        if self._show_units != show_units:
+            self._show_units = show_units
+            self.update_format_string()
 
     @pyqtProperty(str, doc=
     """
@@ -369,7 +369,11 @@ class PyDMWidget():
     PyDMWidget methods
     """
     def update_format_string(self):
-        self.format_string = "{:." + str(self._prec) + "f}"
+        self.format_string = "{}"
+        if self._prec != 0:
+            self.format_string = "{:." + str(self._prec) + "f}"
+        if self._show_units and self._unit != "":
+            self.format_string += " {}".format(self._unit)
         return self.format_string
     
     def checkEnableState(self):
