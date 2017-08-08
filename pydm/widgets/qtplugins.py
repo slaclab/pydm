@@ -19,7 +19,6 @@ from .shell_command import PyDMShellCommand
 from .slider import PyDMSlider
 from .spinbox import PyDMSpinbox
 from .symbol import PyDMSymbol
-from .timeplot import PyDMTimePlot
 from .waveformtable import PyDMWaveformTable
 
 # Time Plot plugin
