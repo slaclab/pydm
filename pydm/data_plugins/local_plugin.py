@@ -78,7 +78,7 @@ class LocalPlugin(PyDMPlugin):
                 for channel in widget.channels():
                     channel_protocol = str(channel.address).split("://")[0]
                     if self.base_protocol == channel_protocol:
-                         self.add_connection(channel)
+                        self.add_connection(channel)
 
     def connect_to_update(self, address, signal):
         """

@@ -1,3 +1,5 @@
+[![Code Health](https://landscape.io/github/slaclab/pydm/master/landscape.svg?style=flat)](https://landscape.io/github/slaclab/pydm/master)
+
 # pydm: Python Display Manager
 pydm is a PyQt-based framework for building user interfaces for control systems.  The goal is to provide a no-code, drag-and-drop system to make simple screens, as well as a straightforward python framework to build complex applications.
 
