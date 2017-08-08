@@ -1,0 +1,16 @@
+test-warnings: no
+strictness: medium
+python-targets:
+    - 2
+    - 3
+ignore-paths:
+    - pydm/__init__.py
+    - pydm/_version.py
+    - designer_plugin.py
+    - testing-ioc.py
+    - versioneer.py
+    - examples/*
+    - setup.py
+pylint:
+  disable:
+    - protected-access
