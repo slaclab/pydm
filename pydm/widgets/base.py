@@ -29,6 +29,16 @@ def compose_stylesheet(style, base_class="QWidget"):
 
 
 class PyDMWidget():
+    """
+    Base class to be used as foundation for all PyDM classes.
+    
+    Parameters
+    ----------
+    init_channel : str
+        The channel to be used by the widget.
+        
+    """
+    
     __pyqtSignals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray])")
         
     # Emitted when the user changes the value.
@@ -113,17 +123,7 @@ class PyDMWidget():
         self.enum_strings = None
         self.format_string = None
         
-        self.value = None
-        
-        self._value_signal = None
-        self._connection_changed = None
-        self._value_changed = None
-        self._alarm_severity_changed = None
-        self._write_access_changed = None
-        self._enum_strings_changed = None
-        self._unit_changed = None
-        self._precision_changed = None
-        self._ctrl_limit_changed = None        
+        self.value = None   
         
         # If this label is inside a PyDMApplication (not Designer) start it in the disconnected state.
         app = QApplication.instance()
@@ -136,6 +136,21 @@ class PyDMWidget():
     EVENT FILTER
     """
     def eventFilter(self, object, event):
+        """
+        Filters events on this object.
+        
+        Params
+        ------
+        object : QObject
+            The object that is being handled. 
+        event : QEvent
+            The event that is happening.
+        
+        Returns
+        -------
+        bool : True to stop the event from being handled further; otherwise return false.
+        
+        """
         status = self._write_access and self._connected
         
         if event.type() == QEvent.Leave:
@@ -152,15 +167,43 @@ class PyDMWidget():
     CALLBACKS
     """
     def connection_changed(self, connected):
+        """
+        Callback invoked when the connection state of the Channel is changed.
+        This callback acts on the connection state to enable/disable the widget
+        and also trigger the change on alarm severity to ALARM_DISCONNECTED.
+        
+        Params
+        ------
+        connected : int
+            When this value is 0 the channel is disconnected, 1 otherwise.
+        """    
         self._connected = connected
         self.checkEnableState()
         if not connected:
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)        
 
     def value_changed(self, new_val):
+        """
+        Callback invoked when the Channel value is changed.
+        
+        Params
+        ------
+        new_val : str, int, float, bool or np.ndarray
+            The new value from the channel. The type depends on the channel.
+        """
         self.value = new_val
 
     def alarm_severity_changed(self, new_alarm_severity):
+        """
+        Callback invoked when the Channel alarm severity is changed.
+        This callback is not processed if the widget has no channel associated with it.
+        This callback handles the composition of the stylesheet to be applied and the call
+        to update to redraw the widget with the needed changes for the new state.
+        
+        Params:
+        new_alarm_severity : int
+            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR and 3 = INVALID
+        """
         # 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID
         if self._channels is not None:
             self._alarm_state = new_alarm_severity
