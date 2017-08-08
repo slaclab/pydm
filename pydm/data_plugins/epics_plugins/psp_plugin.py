@@ -222,36 +222,36 @@ class Connection(PyDMConnection):
                 self.pv.get_enum_strings(-1.0)
         
         if self.pv.severity != self.sevr:
-          self.sevr = self.pv.severity
-          self.new_severity_signal.emit(self.sevr)
+            self.sevr = self.pv.severity
+            self.new_severity_signal.emit(self.sevr)
 
         if self.prec is None:
-          try:
-            self.prec = self.pv.data['precision']
-            self.prec_signal.emit(int(self.prec))
-          except KeyError:
-            pass
+            try:
+                self.prec = self.pv.data['precision']
+                self.prec_signal.emit(int(self.prec))
+            except KeyError:
+                pass
         
         if self.units is None:
-          try:
-            self.units = self.pv.data['units']
-            self.unit_signal.emit(self.units.decode(encoding='ascii'))
-          except KeyError:
-            pass
+            try:
+                self.units = self.pv.data['units']
+                self.unit_signal.emit(self.units.decode(encoding='ascii'))
+            except KeyError:
+                pass
         
         if self.ctrl_llim is None:
-          try:
-            self.ctrl_llim = self.pv.data['ctrl_llim']
-            self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
-          except KeyError:
-            pass
+            try:
+                self.ctrl_llim = self.pv.data['ctrl_llim']
+                self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
+            except KeyError:
+                pass
           
         if self.ctrl_hlim is None:
-          try:
-            self.ctrl_hlim = self.pv.data['ctrl_hlim']
-            self.upper_ctrl_limit_signal.emit(self.ctrl_hlim)
-          except KeyError:
-            pass
+            try:
+                self.ctrl_hlim = self.pv.data['ctrl_hlim']
+                self.upper_ctrl_limit_signal.emit(self.ctrl_hlim)
+            except KeyError:
+                pass
 
         if self.count > 1:
             self.new_waveform_signal.emit(value)

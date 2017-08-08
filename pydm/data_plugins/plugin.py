@@ -88,4 +88,4 @@ class PyDMPlugin(object):
         if address in self.connections:
             self.connections[address].remove_listener()
             if self.connections[address].listener_count < 1:
-              del self.connections[address]
+                del self.connections[address]
