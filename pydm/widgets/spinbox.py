@@ -35,18 +35,18 @@ class PyDMSpinbox(QDoubleSpinBox):
 
     def event(self, event):
         if (event.type()==QEvent.KeyPress) and (event.key()== Qt.Key_Left):
-                self.step_exponent = self.step_exponent + 1
-                self.update_step_size()
-                return True
+            self.step_exponent = self.step_exponent + 1
+            self.update_step_size()
+            return True
 
         if (event.type()==QEvent.KeyPress) and (event.key()== Qt.Key_Right):
-                self.step_exponent = self.step_exponent - 1
+            self.step_exponent = self.step_exponent - 1
 
-                if self.step_exponent < -self.decimals():
-                    self.step_exponent = -self.decimals()
+            if self.step_exponent < -self.decimals():
+                self.step_exponent = -self.decimals()
 
-                self.update_step_size()
-                return True
+            self.update_step_size()
+            return True
 
         return QDoubleSpinBox.event(self, event)
 
@@ -75,7 +75,7 @@ class PyDMSpinbox(QDoubleSpinBox):
     @pyqtSlot(float)
     def sendValue(self, value):
         if not self.valueBeingSet:
-                self.send_value_signal.emit(value)
+            self.send_value_signal.emit(value)
 
     @pyqtSlot(bool)
     def connectionStateChanged(self, connected):
@@ -92,16 +92,16 @@ class PyDMSpinbox(QDoubleSpinBox):
 
     @pyqtSlot(str)
     def receiveUnits(self,unit):
-            """
-            Accept a unit to display with a channel's value
+        """
+        Accept a unit to display with a channel's value
 
-            The unit may or may not be displayed based on the :attr:`showUnits`
-            attribute. Receiving a new value for the unit causes the display to
-            reset.
-            """
-            self._units = str(unit)
-            self._scale = 1
-            self.update_suffix()
+        The unit may or may not be displayed based on the :attr:`showUnits`
+        attribute. Receiving a new value for the unit causes the display to
+        reset.
+        """
+        self._units = str(unit)
+        self._scale = 1
+        self.update_suffix()
 
     @pyqtSlot(int)
     @pyqtSlot(float)
@@ -146,12 +146,12 @@ class PyDMSpinbox(QDoubleSpinBox):
 
     def channels(self):
         return [PyDMChannel(address=self.channel,
-                                                connection_slot=self.connectionStateChanged,
-                                                value_slot=self.receiveValue,
-                                                unit_slot = self.receiveUnits,
-                                                write_access_slot=self.writeAccessChanged,
-                                                upper_ctrl_limit_slot = self.receive_upper_limit,
-                                                lower_ctrl_limit_slot = self.receive_lower_limit,
-                                                prec_slot = self.receivePrecision,
-                                                value_signal=self.send_value_signal,
-                                                )]
+                            connection_slot=self.connectionStateChanged,
+                            value_slot=self.receiveValue,
+                            unit_slot = self.receiveUnits,
+                            write_access_slot=self.writeAccessChanged,
+                            upper_ctrl_limit_slot = self.receive_upper_limit,
+                            lower_ctrl_limit_slot = self.receive_lower_limit,
+                            prec_slot = self.receivePrecision,
+                            value_signal=self.send_value_signal,
+               )]

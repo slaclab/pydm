@@ -17,11 +17,11 @@ class PyDMSlider(QFrame):
     ALARM_INVALID = 3
     ALARM_DISCONNECTED = 4
     alarm_style_sheet_map = {
-            ALARM_NONE: "QLabel {color: black;}",
-            ALARM_MINOR: "QLabel {color: yellow;}",
-            ALARM_MAJOR: "QLabel {color: red;}",
-            ALARM_INVALID: "QLabel {color: purple;}",
-            ALARM_DISCONNECTED: "QLabel {color: white;}"
+        ALARM_NONE: "QLabel {color: black;}",
+        ALARM_MINOR: "QLabel {color: yellow;}",
+        ALARM_MAJOR: "QLabel {color: red;}",
+        ALARM_INVALID: "QLabel {color: purple;}",
+        ALARM_DISCONNECTED: "QLabel {color: white;}"
     }
     
     def __init__(self, parent=None):
