@@ -48,7 +48,16 @@ class PyDMApplication(QApplication):
   
   def __init__(self, ui_file=None, command_line_args=[], display_args=[], perfmon=False, macros=None):
     super(PyDMApplication, self).__init__(command_line_args)
+    # The macro and directory stacks are needed for nested displays (usually PyDMEmbeddedDisplays).
+    # During the process of loading a display (whether from a .ui file, or a .py file), the application's
+    # 'open_file' method will be called recursively.  Inside open_file, the last item on the stack represents
+    # the parent widget's file path and macro variables.  Any file paths are joined to the end of the parent's
+    # file path, and any macros are merged with the parent's macros.  This system depends on open_file always
+    # being called hierarchially (i.e., parent calls it first, then on down the ancestor tree, with no unrelated
+    # calls in between).  If something crazy happens and PyDM somehow gains the ability to open files in a 
+    # multi-threaded way, for example, this system will fail.
     self.directory_stack = ['']
+    self.macro_stack = [{}]
     self.windows = {}
     self.display_args = display_args
     #Open a window if one was provided.
@@ -140,7 +149,7 @@ class PyDMApplication(QApplication):
           warnings.warn("Direct PyQt5/PyQt4 import detected. To ensure compatibility with PyQt4 and PyQt5 consider using: pydm.PyQt for your imports.", RuntimeWarning, stacklevel=0)
           return
 
-  def load_py_file(self, pyfile, args=None):
+  def load_py_file(self, pyfile, args=None, macros=None):
     #Add the intelligence module directory to the python path, so that submodules can be loaded.  Eventually, this should go away, and intelligence modules should behave as real python modules.
     module_dir = os.path.dirname(os.path.abspath(pyfile))
     sys.path.append(module_dir)
@@ -167,12 +176,16 @@ class PyDMApplication(QApplication):
       #Works in python 2, deprecated in 3.0 and up.
       module_params = inspect.getargspec(cls.__init__).args
 
+    #Because older versions of Display may not have the args parameter or the macros parameter, we check
+    #to see if it does before trying to use them.
+    kwargs = {}
     if 'args' in module_params:
-      return cls(args=args)
-    else:
-      return cls()
+      kwargs['args'] = args
+    if 'macros' in module_params:
+      kwargs['macros'] = macros
+    return cls(**kwargs)
 
-  def open_file(self, ui_file, macros=None, command_line_args=[]):
+  def open_file(self, ui_file, macros={}, command_line_args=[]):
     #First split the ui_file string into a filepath and arguments
     args = command_line_args
     split = shlex.split(ui_file)
@@ -180,15 +193,22 @@ class PyDMApplication(QApplication):
     args.extend(split[1:])
     self.directory_stack.append(os.path.dirname(filepath))
     (filename, extension) = os.path.splitext(filepath)
+    if macros is None:
+      macros = {}
+    merged_macros = self.macro_stack[-1].copy()
+    merged_macros.update(macros)
+    self.macro_stack.append(merged_macros)
     if extension == '.ui':
-      widget = self.load_ui_file(filepath, macros)
+      widget = self.load_ui_file(filepath, merged_macros)
     elif extension == '.py':
-      widget = self.load_py_file(filepath, args)
+      widget = self.load_py_file(filepath, args, merged_macros)
     else:
       self.directory_stack.pop()
+      self.macro_stack.pop()
       raise ValueError("invalid file type: {}".format(extension))
     self.establish_widget_connections(widget)
     self.directory_stack.pop()
+    self.macro_stack.pop()
     return widget
 
   #get_path gives you the path to ui_file relative to where you are running pydm from.
