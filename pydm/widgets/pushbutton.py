@@ -219,16 +219,16 @@ class PyDMPushButton(QPushButton):
     
     @pyqtSlot(bool)
     def connectionStateChanged(self, connected):
-      self._connected = connected
-      self.update_enabled_state()
+        self._connected = connected
+        self.update_enabled_state()
     
     @pyqtSlot(bool)
     def writeAccessChanged(self, write_access):
-      self._write_access = write_access
-      self.update_enabled_state()
+        self._write_access = write_access
+        self.update_enabled_state()
     
     def update_enabled_state(self):
-      self.setEnabled(self._write_access and self._connected)
+        self.setEnabled(self._write_access and self._connected)
 
     def confirm_dialog(self):
         if self._show_confirm_dialog:

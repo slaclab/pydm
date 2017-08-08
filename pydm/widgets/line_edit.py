@@ -131,10 +131,10 @@ class PyDMLineEdit(QLineEdit):
 
     @pyqtSlot(bool)
     def connectionStateChanged(self, conn):
-      if conn:
-        self.setEnabled(True)
-      else:
-        self.setEnabled(False)
+        if conn:
+            self.setEnabled(True)
+        else:
+            self.setEnabled(False)
 
     @pyqtSlot(float)
     @pyqtSlot(int)
@@ -282,7 +282,7 @@ class PyDMLineEdit(QLineEdit):
         value in the PyDMLineEdit the text will not be changed.
         """
         if self._value is None:
-          return
+            return
         value = self._value
         if not isinstance(value,str):
             if self._scale and value:
