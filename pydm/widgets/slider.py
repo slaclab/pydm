@@ -367,7 +367,7 @@ class PyDMSlider(QFrame):
             self._channel = str(value)
 
     def resetChannel(self):
-        if self._channel != None:
+        if self._channel is not None:
             self._channel = None
     channel = pyqtProperty(str, getChannel, setChannel, resetChannel)
 

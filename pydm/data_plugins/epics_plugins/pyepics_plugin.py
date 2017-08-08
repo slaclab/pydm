@@ -17,16 +17,16 @@ class Connection(PyDMConnection):
         self.add_listener(channel)
     
     def send_new_value(self, pvname=None, value=None, char_value=None, units=None, enum_strs=None, severity=None, count=None, write_access=None, ftype=None, upper_ctrl_limit=None, lower_ctrl_limit=None, precision=None, *args, **kws):
-        if severity != None:
+        if severity is not None:
             self.new_severity_signal.emit(int(severity))
-        if write_access != None:
+        if write_access is not None:
             self.write_access_signal.emit(write_access)
-        if precision != None:
+        if precision is not None:
             self.prec_signal.emit(precision)
-        if enum_strs != None:
+        if enum_strs is not None:
             enum_strs = tuple(b.decode(encoding='ascii') for b in enum_strs)
             self.enum_strings_signal.emit(enum_strs)
-        if units != None and len(units) > 0:
+        if units is not None and len(units) > 0:
             if type(units) == bytes:
                 units = units.decode()
             self.unit_signal.emit(units)
@@ -41,10 +41,10 @@ class Connection(PyDMConnection):
                 else:
                     self.new_value_signal[str].emit(char_value)
 
-        if upper_ctrl_limit != None:
+        if upper_ctrl_limit is not None:
             self.upper_ctrl_limit_signal.emit(upper_ctrl_limit)
 
-        if lower_ctrl_limit != None:
+        if lower_ctrl_limit is not None:
             self.lower_ctrl_limit_signal.emit(lower_ctrl_limit)
         
             
@@ -70,23 +70,23 @@ class Connection(PyDMConnection):
             self.pv.run_callbacks()
         #If the channel is used for writing to PVs, hook it up to the 'put' methods.    
         if channel.value_signal is not None:
-                try:
-                        channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
-                except KeyError:
-                        pass
-                try:
-                        channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
-                except KeyError:
-                        pass
-                try:
-                        channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
-                except KeyError:
-                        pass
+            try:
+                channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
+            try:
+                channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
+            try:
+                channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
         if channel.waveform_signal is not None:
-                try:
-                        channel.waveform_signal.connect(self.put_value, Qt.QueuedConnection)
-                except KeyError:
-                        pass
+            try:
+                channel.waveform_signal.connect(self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
 
     def close(self):
         self.pv.disconnect()

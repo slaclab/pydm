@@ -108,9 +108,9 @@ class PyDMDrawing(QWidget):
     @pyqtSlot(int)
     def alarmSeverityChanged(self, new_alarm_severity):
         if self._channels is not None:
-                style = self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity]
-                self.setStyleSheet(style)
-                self.update()
+            style = self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity]
+            self.setStyleSheet(style)
+            self.update()
         
     #false = disconnected, true = connected
     @pyqtSlot(bool)
@@ -169,7 +169,7 @@ class PyDMDrawing(QWidget):
         self._painter.rotate(-self._rotation)
 
     def get_center(self):
-            return self.width()*0.5, self.height()*0.5
+        return self.width()*0.5, self.height()*0.5
 
     def get_bounds(self, maxsize=False, force_no_pen=False):
         w, h = self.width(), self.height()
@@ -208,26 +208,26 @@ class PyDMDrawing(QWidget):
         origHeight = self.height()
 
         if (origWidth <= origHeight):
-                w0 = origWidth
-                h0 = origHeight
+            w0 = origWidth
+            h0 = origHeight
         else:
-                w0 = origHeight
-                h0 = origWidth
+            w0 = origHeight
+            h0 = origWidth
 
         #Angle normalization in range [-PI..PI)
         ang = angle - math.floor((angle + math.pi) / (2*math.pi)) * 2*math.pi
         ang = math.fabs(ang)
         if (ang > math.pi / 2):
-                ang = math.pi - ang
+            ang = math.pi - ang
         c = w0 / (h0 * math.sin(ang) + w0 * math.cos(ang))
         w = 0
         h = 0
         if (origWidth <= origHeight):
-                w = w0 * c
-                h = h0 * c
+            w = w0 * c
+            h = h0 * c
         else:
-                w = h0 * c
-                h = w0 * c
+            w = h0 * c
+            h = w0 * c
 
         return w, h
 

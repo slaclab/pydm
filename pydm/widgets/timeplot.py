@@ -12,7 +12,7 @@ from .. import utilities
 
 class TimePlotCurveItem(PlotCurveItem):
     def __init__(self, channel_address, **kws):
-        if not 'name' in kws or kws['name'] is None:
+        if 'name' not in kws or kws['name'] is None:
             try:
                 name = channel_address.split("://")[1]
             except IndexError:
@@ -108,7 +108,7 @@ class TimePlotCurveItem(PlotCurveItem):
             self.setData(y=self.data_buffer[1, -self.points_accumulated:], x=self.data_buffer[0, -self.points_accumulated:])
     
     def setUpdatesAsynchronously(self, value):
-        if value == True:
+        if value is True:
             self._update_mode = PyDMTimePlot.AsynchronousMode
         else:
             self._update_mode = PyDMTimePlot.SynchronousMode
@@ -238,7 +238,7 @@ class PyDMTimePlot(BasePlot):
     def setUpdatesAsynchronously(self, value):
         for curve in self._curves:
             curve.setUpdatesAsynchronously(value)
-        if value == True:
+        if value is True:
             self._update_mode = PyDMTimePlot.AsynchronousMode
             self.update_timer.start()
         else:

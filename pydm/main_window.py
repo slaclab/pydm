@@ -29,7 +29,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionDecrease_Font_Size.triggered.connect(self.decrease_font_size)
         self.ui.actionShow_File_Path_in_Title_Bar.triggered.connect(self.toggle_file_path_in_title_bar)
         self.designer_path = None
-        if environ.get('QTHOME') == None:
+        if environ.get('QTHOME') is None:
             self.ui.actionEdit_in_Designer.setEnabled(False)
         else:
             qt_path = environ.get('QTHOME')
@@ -52,7 +52,7 @@ class PyDMMainWindow(QMainWindow):
         QTimer.singleShot(0, self.resizeToMinimum)
         
     def clear_display_widget(self):
-        if self._display_widget != None:
+        if self._display_widget is not None:
             self.ui.verticalLayout.removeWidget(self._display_widget)
             self.app.close_widget_connections(self._display_widget)
             self._display_widget.deleteLater()
@@ -91,7 +91,7 @@ class PyDMMainWindow(QMainWindow):
     def go_button_pressed(self):
         filename = str(self.ui.panelSearchLineEdit.text())
         if not filename:
-                return
+            return
         try:
             if QApplication.keyboardModifiers() == Qt.ShiftModifier:
                 self.app.new_window(filename)
@@ -101,7 +101,7 @@ class PyDMMainWindow(QMainWindow):
             self.handle_open_file_error(filename, e)
     
     def handle_open_file_error(self, filename, error):
-            self.statusBar().showMessage("Cannot open file: '{0}', reason: '{1}'...".format(filename, error), 5000)
+        self.statusBar().showMessage("Cannot open file: '{0}', reason: '{1}'...".format(filename, error), 5000)
 
     #Note: in go(), back(), and forward(), always do history stack manipulation *before* opening the file.
     #That way, the navigation button enable/disable state will work correctly.  This is stupid, and will be fixed eventually.
@@ -204,14 +204,14 @@ class PyDMMainWindow(QMainWindow):
         filename = filename[0] if isinstance(filename, (list, tuple)) else filename
 
         if filename:
-                filename = str(filename)
-                try:
-                    if modifiers == Qt.ShiftModifier:
-                        self.app.new_window(filename)
-                    else:
-                        self.open_file(filename)
-                except (IOError, OSError, ValueError, ImportError) as e:
-                    self.handle_open_file_error(filename, e)
+            filename = str(filename)
+            try:
+                if modifiers == Qt.ShiftModifier:
+                    self.app.new_window(filename)
+                else:
+                    self.open_file(filename)
+            except (IOError, OSError, ValueError, ImportError) as e:
+                self.handle_open_file_error(filename, e)
 
     @pyqtSlot(bool)
     def reload_display(self, checked):

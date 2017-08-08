@@ -22,18 +22,18 @@ class PyDMConnection(QObject):
         if channel.connection_slot is not None:
             self.connection_state_signal.connect(channel.connection_slot, Qt.QueuedConnection)
         if channel.value_slot is not None:
-          try:
-              self.new_value_signal[int].connect(channel.value_slot, Qt.QueuedConnection)
-          except TypeError:
-              pass
-          try:
-              self.new_value_signal[float].connect(channel.value_slot, Qt.QueuedConnection)
-          except TypeError:
-              pass
-          try:
-              self.new_value_signal[str].connect(channel.value_slot, Qt.QueuedConnection)
-          except TypeError:
-              pass
+            try:
+                self.new_value_signal[int].connect(channel.value_slot, Qt.QueuedConnection)
+            except TypeError:
+                pass
+            try:
+                self.new_value_signal[float].connect(channel.value_slot, Qt.QueuedConnection)
+            except TypeError:
+                pass
+            try:
+                self.new_value_signal[str].connect(channel.value_slot, Qt.QueuedConnection)
+            except TypeError:
+                pass
 
         if channel.waveform_slot is not None:
             self.new_waveform_signal.connect(channel.waveform_slot, Qt.QueuedConnection)

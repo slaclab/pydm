@@ -206,7 +206,7 @@ class PyDMLabel(QLabel):
             self._channel = str(value)
 
     def resetChannel(self):
-        if self._channel != None:
+        if self._channel is not None:
             self._channel = None
         
     channel = pyqtProperty(str, getChannel, setChannel, resetChannel)
@@ -244,7 +244,7 @@ class PyDMLabel(QLabel):
     precision = pyqtProperty("int", getPrecision, setPrecision, resetPrecision)
 
     def channels(self):
-        if self._channels != None:
+        if self._channels is not None:
             return self._channels
         self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, severity_slot=self.alarmSeverityChanged, enum_strings_slot=self.enumStringsChanged, prec_slot=self.precisionChanged, unit_slot=self.unitsChanged)]
         return self._channels

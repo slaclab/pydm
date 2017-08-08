@@ -78,22 +78,22 @@ class PyDMApplication(QApplication):
             self.perf_timer.start()
 
     def exec_(self):
-            """
-            Execute the QApplication
-            """
-            # Connect to top-level widgets that were not loaded from file
-            # These are usually testing/debug widgets
-            if not self.had_file:
-                self.make_connections()
-            return super(PyDMApplication,self).exec_()
+        """
+        Execute the QApplication
+        """
+        # Connect to top-level widgets that were not loaded from file
+        # These are usually testing/debug widgets
+        if not self.had_file:
+            self.make_connections()
+        return super(PyDMApplication,self).exec_()
 
 
     @pyqtSlot()
     def get_CPU_usage(self):
         with self.perf.oneshot():
-                total_percent = self.perf.cpu_percent(interval=None)
-                total_time = sum(self.perf.cpu_times())
-                usage = [total_percent * ((t.system_time + t.user_time)/total_time) for t in self.perf.threads()]
+            total_percent = self.perf.cpu_percent(interval=None)
+            total_time = sum(self.perf.cpu_times())
+            usage = [total_percent * ((t.system_time + t.user_time)/total_time) for t in self.perf.threads()]
         print("Total: {tot}, Per Thread: {percpu}".format(tot=total_percent, percpu=usage))
 
     def make_connections(self):
@@ -306,8 +306,8 @@ class PyDMApplication(QApplication):
         widgets.extend(widget.findChildren(QWidget))
         for child_widget in widgets:
             try:
-                    if hasattr(child_widget, 'channels'):
-                        for channel in child_widget.channels():
-                            self.remove_connection(channel)
+                if hasattr(child_widget, 'channels'):
+                    for channel in child_widget.channels():
+                        self.remove_connection(channel)
             except NameError:
-                    pass
+                pass

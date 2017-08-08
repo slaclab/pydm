@@ -24,7 +24,7 @@ class PyDMTimePlotPlugin(PyDMDesignerPlugin):
         :type core:  QDesignerFormEditorInterface
         """
         if self.initialized:
-             return
+            return
         manager = core.extensionManager()
         if manager:
             self.factory = PyDMTimePlotExtensionFactory(manager)

@@ -26,7 +26,7 @@ class PyDMRelatedDisplayButton(QPushButton):
                 self.setEnabled(False)
 
     def resetDisplayFilename(self):
-        if self._display_filename != None:
+        if self._display_filename is not None:
             self._display_filename = None
     
     displayFilename = pyqtProperty(str, getDisplayFilename, setDisplayFilename, resetDisplayFilename)
@@ -70,7 +70,7 @@ class PyDMRelatedDisplayButton(QPushButton):
             
     @pyqtSlot() 
     def open_display(self, target=EXISTING_WINDOW):
-        if self.displayFilename == None:
+        if self.displayFilename is None:
             return
         macros = None
         if self._macro_string is not None:

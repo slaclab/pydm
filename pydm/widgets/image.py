@@ -134,7 +134,7 @@ class PyDMImageView(ImageView):
             self._imagechannel = str(value)
 
     def resetImageChannel(self):
-        if self._imagechannel != None:
+        if self._imagechannel is not None:
             self._imagechannel = None
         
     imageChannel = pyqtProperty(str, getImageChannel, setImageChannel, resetImageChannel)
@@ -147,7 +147,7 @@ class PyDMImageView(ImageView):
             self._widthchannel = str(value)
 
     def resetWidthChannel(self):
-        if self._widthchannel != None:
+        if self._widthchannel is not None:
             self._widthchannel = None
         
     widthChannel = pyqtProperty(str, getWidthChannel, setWidthChannel, resetWidthChannel)

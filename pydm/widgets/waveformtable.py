@@ -70,7 +70,7 @@ class PyDMWaveformTable(QTableWidget):
             self._waveformchannel = str(value)
 
     def resetWaveformChannel(self):
-        if self._waveformchannel != None:
+        if self._waveformchannel is not None:
             self._waveformchannel = None
         
     waveformChannel = pyqtProperty(str, getWaveformChannel, setWaveformChannel, resetWaveformChannel)

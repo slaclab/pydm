@@ -312,7 +312,7 @@ class PyDMLineEdit(QLineEdit):
         without pressing return.  Resets the value of the text field to the
         current channel value.
         """
-        if self._display != None:
+        if self._display is not None:
             self.setText(self._display)
         super(PyDMLineEdit, self).focusOutEvent(event)
 
