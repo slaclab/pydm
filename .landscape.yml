@@ -12,6 +12,8 @@ ignore-paths:
     - examples/*
     - setup.py
     - pydm.py
+    - */__init__.py
 pylint:
   disable:
     - protected-access
+    - too-many-arguments
