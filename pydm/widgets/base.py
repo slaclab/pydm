@@ -28,9 +28,17 @@ def compose_stylesheet(style, base_class="QWidget"):
     return style_str
 
 
-class PyDMWidget():
+class PyDMPrimitiveWidget():
     """
-    Base class to be used as foundation for all PyDM classes.
+    Primitive class that determines that a given widget is a PyDMWidget.
+    All Widget classes from PyDMWidget will be True for isinstance(obj, PyDMPrimitiveWidget)
+    """
+    pass
+
+class PyDMWidget(PyDMPrimitiveWidget):
+    """
+    PyDM base class for Read-Only widgets.
+    This class implements all the functions of connection, alarm handling and more.
     
     Parameters
     ----------
@@ -38,11 +46,6 @@ class PyDMWidget():
         The channel to be used by the widget.
         
     """
-    
-    __pyqtSignals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray])")
-        
-    # Emitted when the user changes the value.
-    send_value_signal = pyqtSignal([int], [float], [str], [bool], [np.ndarray])
     
     # Usually, this widget will get this from its parent pydm application.  
     # However, in Designer, the parent isnt a pydm application, and doesn't know what a color map is.
@@ -111,8 +114,7 @@ class PyDMWidget():
         self._alarm_state = 0
         self._style = dict()
         self._connected = False
-        self._write_access = False
-
+    
         self._precision_from_pv = True
         self._prec = 0
         self._unit = ""
@@ -130,39 +132,6 @@ class PyDMWidget():
         if isinstance(app, PyDMApplication):
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             
-        self.installEventFilter(self)
-
-    """
-    EVENT FILTER
-    """
-    def eventFilter(self, object, event):
-        """
-        Filters events on this object.
-        
-        Params
-        ------
-        object : QObject
-            The object that is being handled. 
-        event : QEvent
-            The event that is happening.
-        
-        Returns
-        -------
-        bool : True to stop the event from being handled further; otherwise return false.
-        
-        """
-        status = self._write_access and self._connected
-        
-        if event.type() == QEvent.Leave:
-            QApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
-            return True
-            
-        if event.type() == QEvent.Enter and not status:
-            QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
-            return True
-        
-        return False
-
     """
     CALLBACKS
     """
@@ -178,7 +147,7 @@ class PyDMWidget():
             When this value is 0 the channel is disconnected, 1 otherwise.
         """    
         self._connected = connected
-        self.checkEnableState()
+        self.check_enable_state()
         if not connected:
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)        
 
@@ -211,10 +180,6 @@ class PyDMWidget():
             style = compose_stylesheet(style=self._style)
             self.setStyleSheet(style)
             self.update()
-    
-    def write_access_changed(self, new_write_access):
-        self._write_access = new_write_access
-        self.checkEnableState()
     
     def enum_strings_changed(self, new_enum_strings):
         if new_enum_strings != self.enum_strings:
@@ -260,10 +225,6 @@ class PyDMWidget():
     @pyqtSlot(tuple)
     def enumStringsChanged(self, enum_strings):
         self.enum_strings_changed(enum_strings)
-
-    @pyqtSlot(bool)
-    def writeAccessChanged(self, write_access):
-        self.write_access_changed(write_access)
 
     @pyqtSlot(str)
     def unitChanged(self, unit):
@@ -370,13 +331,116 @@ class PyDMWidget():
     """
     def update_format_string(self):
         self.format_string = "{}"
-        if self._prec != 0:
+        if isinstance(self.value, (int, float)):
             self.format_string = "{:." + str(self._prec) + "f}"
         if self._show_units and self._unit != "":
             self.format_string += " {}".format(self._unit)
         return self.format_string
     
-    def checkEnableState(self):
+    def check_enable_state(self):
+        status = self._connected
+        tooltip = ""
+        if not status:
+            tooltip = "PV is disconnected."
+
+        self.setToolTip(tooltip)
+        self.setEnabled(status)
+    
+    def get_ctrl_limits(self):
+        return (self._lower_ctrl_limit, self._upper_ctrl_limit)
+    
+    def channels(self):
+        if self._channels != None:
+            return self._channels
+
+        self._channels = [
+            PyDMChannel(address=self.channel,
+                        connection_slot=self.connectionStateChanged,
+                        value_slot=self.valueChanged,
+                        waveform_slot=self.valueChanged,
+                        severity_slot=self.alarmSeverityChanged,
+                        enum_strings_slot=self.enumStringsChanged,
+                        unit_slot=self.unitChanged,
+                        prec_slot=self.precisionChanged,
+                        upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
+                        lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
+                        value_signal=None,
+                        waveform_signal=None,
+                        write_access_slot=None)
+        ]
+        return self._channels
+
+class PyDMWritableWidget(PyDMWidget):
+    """
+    PyDM base class for Writable widgets.
+    This class implements the send_value_signal and also the event filter for write access changes on PVs.
+
+    
+    Parameters
+    ----------
+    init_channel : str
+        The channel to be used by the widget.
+        
+    """
+    
+    __pyqtSignals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray])")
+        
+    # Emitted when the user changes the value.
+    send_value_signal = pyqtSignal([int], [float], [str], [bool], [np.ndarray])
+    
+    def __init__(self, init_channel=None):
+        super().__init__(init_channel=init_channel)
+        self._write_access = False            
+        self.installEventFilter(self)
+
+    """
+    EVENT FILTER
+    """
+    def eventFilter(self, object, event):
+        """
+        Filters events on this object.
+        
+        Params
+        ------
+        object : QObject
+            The object that is being handled. 
+        event : QEvent
+            The event that is happening.
+        
+        Returns
+        -------
+        bool : True to stop the event from being handled further; otherwise return false.
+        
+        """
+        status = self._write_access and self._connected
+        
+        if event.type() == QEvent.Leave:
+            QApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
+            return True
+            
+        if event.type() == QEvent.Enter and not status:
+            QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
+            return True
+        
+        return False
+
+    """
+    CALLBACKS
+    """
+    def write_access_changed(self, new_write_access):
+        self._write_access = new_write_access
+        self.check_enable_state()
+    
+
+    """
+    QT SLOTS
+    """
+    @pyqtSlot(bool)
+    def writeAccessChanged(self, write_access):
+        self.write_access_changed(write_access)
+
+    
+    def check_enable_state(self):
         status = self._write_access and self._connected
         tooltip = ""
         if not self._connected:
@@ -386,10 +450,7 @@ class PyDMWidget():
                 tooltip += "Access denied by Channel Access Security."
         self.setToolTip(tooltip)
         self.setEnabled(status)
-    
-    def get_ctrl_limits(self):
-        return (self._lower_ctrl_limit, self._upper_ctrl_limit)
-    
+        
     def channels(self):
         if self._channels != None:
             return self._channels
