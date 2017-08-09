@@ -12,7 +12,8 @@ ignore-paths:
     - examples/*
     - setup.py
     - pydm.py
-    - */__init__.py
+ignore-patterns:
+    - (^|/)*(/|$)__init__.py
 pylint:
   disable:
     - protected-access
