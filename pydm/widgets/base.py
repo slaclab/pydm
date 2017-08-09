@@ -350,7 +350,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         return (self._lower_ctrl_limit, self._upper_ctrl_limit)
     
     def channels(self):
-        if self._channels != None:
+        if self._channels is not None:
             return self._channels
 
         self._channels = [
@@ -396,7 +396,7 @@ class PyDMWritableWidget(PyDMWidget):
     """
     EVENT FILTER
     """
-    def eventFilter(self, object, event):
+    def eventFilter(self, obj, event):
         """
         Filters events on this object.
         
@@ -452,7 +452,7 @@ class PyDMWritableWidget(PyDMWidget):
         self.setEnabled(status)
         
     def channels(self):
-        if self._channels != None:
+        if self._channels is not None:
             return self._channels
 
         self._channels = [
