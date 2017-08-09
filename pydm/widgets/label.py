@@ -20,7 +20,7 @@ class PyDMLabel(QLabel, PyDMWidget):
             self.setText(self.enum_strings[new_value])
             return
         #If the value is a number (float or int), display it using a format string if necessary.
-        if isinstance(new_value, float) or isinstance(new_value, int):
+        if isinstance(new_value, (int, float)):
             self.setText(self.format_string.format(new_value))
             return
         #If you made it this far, just turn whatever the heck the value is into a string and display it.
