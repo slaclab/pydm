@@ -1,6 +1,6 @@
 import math
-from ..PyQt.QtGui import QApplication, QWidget, QColor, QPainter, QBrush, QPen, QTransform, QPolygon, QPixmap, QStyle, QStyleOption
-from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, QFile
+from ..PyQt.QtGui import QApplication, QWidget, QColor, QPainter, QBrush, QPen, QPolygon, QPixmap, QStyle, QStyleOption
+from ..PyQt.QtCore import pyqtProperty, Qt, QPoint
 from .base import PyDMWidget
 
 def deg_to_qt(deg):
