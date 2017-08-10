@@ -6,15 +6,15 @@ python-targets:
 ignore-paths:
     - pydm/__init__.py
     - pydm/_version.py
-    - pydm/PyQt/*
     - pydm/widgets/qtplugins.py
     - designer_plugin.py
     - testing-ioc.py
     - versioneer.py
-    - examples/*
     - setup.py
     - pydm.py
 ignore-patterns:
+    - (^|/)pydm/PyQt(/|$)
+    - (^|/)examples(/|$)
     - (^|/)*(/|$)__init__.py
 pylint:
   disable:
