@@ -6,6 +6,8 @@ python-targets:
 ignore-paths:
     - pydm/__init__.py
     - pydm/_version.py
+    - pydm/PyQt/*
+    - pydm/widgets/qtplugins.py
     - designer_plugin.py
     - testing-ioc.py
     - versioneer.py
