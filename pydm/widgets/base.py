@@ -42,7 +42,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
     
     Parameters
     ----------
-    init_channel : str
+    init_channel : str, optional
         The channel to be used by the widget.
         
     """
@@ -141,8 +141,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         This callback acts on the connection state to enable/disable the widget
         and also trigger the change on alarm severity to ALARM_DISCONNECTED.
         
-        Params
-        ------
+        Parameters
+        ----------
         connected : int
             When this value is 0 the channel is disconnected, 1 otherwise.
         """    
@@ -155,8 +155,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         Callback invoked when the Channel value is changed.
         
-        Params
-        ------
+        Parameters
+        ----------
         new_val : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
         """
@@ -169,7 +169,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         This callback handles the composition of the stylesheet to be applied and the call
         to update to redraw the widget with the needed changes for the new state.
         
-        Params:
+        Parameters
+        ----------
         new_alarm_severity : int
             The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR and 3 = INVALID
         """
@@ -182,21 +183,61 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self.update()
     
     def enum_strings_changed(self, new_enum_strings):
+        """
+        Callback invoked when the Channel has new enum values.
+        This callback also triggers a value_changed call so the
+        new enum values to be broadcasted
+        
+        Parameters
+        ----------
+        new_enum_strings : tuple
+            The new list of values
+        """
         if new_enum_strings != self.enum_strings:
             self.enum_strings = new_enum_strings
             self.value_changed(self.value)
     
     def unit_changed(self, new_unit):
+        """
+        Callback invoked when the Channel has new unit value.
+        This callback also triggers an update_format_string call so the
+        new unit value is considered if ```showUnits``` is set.
+        
+        Parameters
+        ----------
+        new_unit : str
+            The new unit
+        """
         if self._unit != new_unit:
             self._unit = new_unit
             self.update_format_string()
 
     def precision_changed(self, new_precision):
+        """
+        Callback invoked when the Channel has new precision value.
+        This callback also triggers an update_format_string call so the
+        new precision value is considered.
+        
+        Parameters
+        ----------
+        new_precison : int or float
+            The new precision value
+        """
         if self._precision_from_pv:
             self._prec = new_precision
             self.update_format_string()
 
     def ctrl_limit_changed(self, which, new_limit):
+        """
+        Callback invoked when the Channel receives new control limit values.
+        
+        Parameters
+        ----------
+        which : str
+            Which control limit was changed. "UPPER" or "LOWER"
+        new_limit : float
+            New value for the control limit
+        """
         if which == "UPPER":
             self._upper_ctrl_limit = new_limit
         else:
@@ -207,6 +248,15 @@ class PyDMWidget(PyDMPrimitiveWidget):
     """
     @pyqtSlot(bool)
     def connectionStateChanged(self, connected):
+        """
+        PyQT Slot for changes on the Connection State of the Channel
+        This slot sends the connection state to the ```connection_changed``` callback.
+        
+        Parameters
+        ----------
+        connected : bool
+            
+        """
         # false = disconnected, true = connected
         self.connection_changed(connected)
     
@@ -216,35 +266,102 @@ class PyDMWidget(PyDMPrimitiveWidget):
     @pyqtSlot(bool)
     @pyqtSlot(np.ndarray)
     def valueChanged(self, new_val):
+        """
+        PyQT Slot for changes on the Value of the Channel
+        This slot sends the value to the ```value_changed``` callback.
+        
+        Parameters
+        ----------
+        new_val : int, float, str, bool or np.ndarray
+            
+        """
         self.value_changed(new_val)
 
     @pyqtSlot(int)
     def alarmSeverityChanged(self, new_alarm_severity):
+        """
+        PyQT Slot for changes on the Alarm Severity of the Channel
+        This slot sends the severity value to the ```alarm_severity_changed``` callback.
+        
+        Parameters
+        ----------
+        new_alarm_severity : int
+            
+        """
         self.alarm_severity_changed(new_alarm_severity)
 
     @pyqtSlot(tuple)
-    def enumStringsChanged(self, enum_strings):
-        self.enum_strings_changed(enum_strings)
+    def enumStringsChanged(self, new_enum_strings):
+        """
+        PyQT Slot for changes on the string values of the Channel
+        This slot sends the new strings to the ```enum_strings_changed``` callback.
+        
+        Parameters
+        ----------
+        new_enum_strings : tuple
+            
+        """
+        self.enum_strings_changed(new_enum_strings)
 
     @pyqtSlot(str)
-    def unitChanged(self, unit):
-        self.unit_changed(unit)
+    def unitChanged(self, new_unit):
+        """
+        PyQT Slot for changes on the unit of the Channel
+        This slot sends the new unit string to the ```unit_changed``` callback.
+        
+        Parameters
+        ----------
+        new_unit : str
+            
+        """
+        self.unit_changed(new_unit)
 
     @pyqtSlot(int)
     @pyqtSlot(float)
-    def precisionChanged(self, prec):
-        self.precision_changed(prec)
+    def precisionChanged(self, new_prec):
+        """
+        PyQT Slot for changes on the precision of the Channel
+        This slot sends the new precision value to the ```precision_changed``` callback.
+        
+        Parameters
+        ----------
+        new_prec : int or float
+            
+        """
+        self.precision_changed(new_prec)
 
     @pyqtSlot(float)
-    def upperCtrlLimitChanged(self, limit):
-        self.ctrl_limit_changed("UPPER", limit)
+    def upperCtrlLimitChanged(self, new_limit):
+        """
+        PyQT Slot for changes on the upper control limit value of the Channel
+        This slot sends the new limit value to the ```ctrl_limit_changed``` callback.
+        
+        Parameters
+        ----------
+        new_limit : float
+            
+        """
+        self.ctrl_limit_changed("UPPER", new_limit)
 
     @pyqtSlot(float)
-    def lowerCtrlLimitChanged(self, limit):
-        self.ctrl_limit_changed("LOWER", limit)
+    def lowerCtrlLimitChanged(self, new_limit):
+        """
+        PyQT Slot for changes on the lower control limit value of the Channel
+        This slot sends the new limit value to the ```ctrl_limit_changed``` callback.
+        
+        Parameters
+        ----------
+        new_limit : float
+            
+        """
+        self.ctrl_limit_changed("LOWER", new_limit)
 
     @pyqtSlot()
     def force_redraw(self):
+        """
+        PyQT Slot to force a redraw on the widget.
+                    
+        """
         self.update()
     
     """
@@ -256,10 +373,26 @@ class PyDMWidget(PyDMPrimitiveWidget):
     """
     )
     def alarmSensitiveContent(self):
+        """
+        Whether or not the content color changes when alarm severity changes.
+        
+        Returns
+        -------
+        bool
+            True means that the content color will be changed in case of alarm severity changes.
+        """
         return self._alarm_sensitive_content
 
     @alarmSensitiveContent.setter
     def alarmSensitiveContent(self, checked):
+        """
+        Whether or not the content color changes when alarm severity changes.
+        
+        Parameters
+        ----------
+        checked : bool
+            True means that the content color will be changed in case of alarm severity changes.
+        """
         self._alarm_sensitive_content = checked
         self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | (self.ALARM_BORDER * self._alarm_sensitive_border)
 
@@ -269,21 +402,53 @@ class PyDMWidget(PyDMPrimitiveWidget):
     """
     )
     def alarmSensitiveBorder(self):
+        """
+        Whether or not the border color changes when alarm severity changes.
+        
+        Returns
+        -------
+        bool
+            True means that the border color will be changed in case of alarm severity changes.
+        """
         return self._alarm_sensitive_border
 
     @alarmSensitiveBorder.setter
     def alarmSensitiveBorder(self, checked):
+        """
+        Whether or not the border color changes when alarm severity changes.
+        
+        Parameters
+        ----------
+        checked : bool
+            True means that the border color will be changed in case of alarm severity changes.
+        """
         self._alarm_sensitive_border = checked
         self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | (self.ALARM_BORDER * self._alarm_sensitive_border)
 
     @pyqtProperty(bool, doc=
-    """Wether or not to use the precision information from the PV"""
+    """whether or not to use the precision information from the PV"""
     )
     def precisionFromPV(self):
+        """
+        Whether or not to use the precision information from the PV
+        
+        Returns
+        -------
+        bool
+            True means that the widget will use the precision information from the Channel if available.
+        """
         return self._precision_from_pv
 
     @precisionFromPV.setter
     def precisionFromPV(self, value):
+        """
+        Whether or not to use the precision information from the PV
+        
+        Parameters
+        ----------
+        value : bool
+            True means that the widget will use the precision information from the PV if available.
+        """
         if self._precision_from_pv != bool(value):
             self._precision_from_pv = value
 
@@ -292,10 +457,27 @@ class PyDMWidget(PyDMPrimitiveWidget):
     of the PV"""
     )
     def precision(self):
+        """
+        The precision to be used when formatting the output of the PV
+        
+        Returns
+        -------
+        int
+            The current precision value
+        """
         return self._prec
 
     @precision.setter
     def precision(self, new_prec):
+        """
+        The precision to be used when formatting the output of the PV.
+        This has no effect when ```precisionFromPV``` is True.
+        
+        Parameters
+        ----------
+        new_prec : int
+            The new precision value to use
+        """
         # Only allow one to change the property if not getting the precision from the PV    
         if self._precision_from_pv:
             return
@@ -303,12 +485,30 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self._prec = int(new_prec)
             self.update_format_string()
 
-    @pyqtProperty(bool)
+    @pyqtProperty(bool, doc="""
+    whether or not to append the unit when formating the output value
+    """)
     def showUnits(self):
+        """
+        Whether or not to append the unit when formating the output value
+        
+        Returns
+        -------
+        bool
+            True means that the unit will be appended to the output value format string
+        """
         return self._show_units
     
     @showUnits.setter
     def showUnits(self, show_units):
+        """
+        Whether or not to append the unit when formating the output value
+        
+        Paramters
+        ---------
+        show_units : bool
+            True means that the unit will be appended to the output value format string
+        """
         if self._show_units != show_units:
             self._show_units = show_units
             self.update_format_string()
@@ -319,10 +519,26 @@ class PyDMWidget(PyDMPrimitiveWidget):
     """
     )
     def channel(self):
+        """
+        The channel address in use for this widget.
+        
+        Returns
+        -------
+        str
+            Channel address
+        """
         return str(self._channel)
 
     @channel.setter  
     def channel(self, value):
+        """
+        The channel address to use for this widget.
+        
+        Parameters
+        ----------
+        value : str
+            Channel address
+        """
         if self._channel != value:
             self._channel = str(value)
               
@@ -330,6 +546,15 @@ class PyDMWidget(PyDMPrimitiveWidget):
     PyDMWidget methods
     """
     def update_format_string(self):
+        """
+        Reconstruct the format string to be used when representing the output value.
+        
+        Returns
+        -------
+        format_string : str
+            The format string to be used including or not the precision and unit        
+        
+        """
         self.format_string = "{}"
         if isinstance(self.value, (int, float)):
             self.format_string = "{:." + str(self._prec) + "f}"
@@ -338,6 +563,12 @@ class PyDMWidget(PyDMPrimitiveWidget):
         return self.format_string
     
     def check_enable_state(self):
+        """
+        Checks whether or not the widget should be disable.
+        This method also disables the widget and add a Tool Tip
+        with the reason why it is disabled.
+        
+        """
         status = self._connected
         tooltip = ""
         if not status:
@@ -347,9 +578,25 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.setEnabled(status)
     
     def get_ctrl_limits(self):
+        """
+        Returns a tuple with the control limits for the channel
+        
+        Returns
+        -------
+        tuple
+            Lower and Upper control limits
+        """
         return (self._lower_ctrl_limit, self._upper_ctrl_limit)
     
     def channels(self):
+        """
+        Returns the channels being used for this Widget.
+        
+        Returns
+        -------
+        channels : list
+            List of PyDMChannel objects
+        """
         if self._channels is not None:
             return self._channels
 
@@ -378,9 +625,13 @@ class PyDMWritableWidget(PyDMWidget):
     
     Parameters
     ----------
-    init_channel : str
+    init_channel : str, optional
         The channel to be used by the widget.
-        
+    
+    Signals
+    -------
+    send_value_signal : int, float, str, bool or np.ndarray
+        Emitted when the user changes the value
     """
     
     __pyqtSignals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray])")
@@ -428,30 +679,60 @@ class PyDMWritableWidget(PyDMWidget):
     CALLBACKS
     """
     def write_access_changed(self, new_write_access):
+        """
+        Callback invoked when the Channel has new write access value.
+        This callback calls check_enable_state so it can act on the widget
+        enabling or disabling it accordingly
+        
+        Parameters
+        ----------
+        new_write_access : bool
+            True if write operations to the channel are allowed.
+        """
         self._write_access = new_write_access
-        self.check_enable_state()
-    
+        self.check_enable_state()    
 
     """
     QT SLOTS
     """
     @pyqtSlot(bool)
     def writeAccessChanged(self, write_access):
+        """
+        PyQT Slot for changes on the write access value of the Channel
+        This slot sends the write access value to the ```write_access_changed``` callback.
+        
+        Parameters
+        ----------
+        write_access : bool
+            
+        """
         self.write_access_changed(write_access)
-
     
     def check_enable_state(self):
+        """
+        Checks whether or not the widget should be disable.
+        This method also disables the widget and add a Tool Tip
+        with the reason why it is disabled.
+        
+        """
         status = self._write_access and self._connected
         tooltip = ""
         if not self._connected:
             tooltip += "PV is disconnected."
-        else:
-            if not self._write_access:
-                tooltip += "Access denied by Channel Access Security."
+        elif not self._write_access:
+            tooltip += "Access denied by Channel Access Security."
         self.setToolTip(tooltip)
         self.setEnabled(status)
         
     def channels(self):
+        """
+        Returns the channels being used for this Widget.
+        
+        Returns
+        -------
+        channels : list
+            List of PyDMChannel objects
+        """
         if self._channels is not None:
             return self._channels
 
