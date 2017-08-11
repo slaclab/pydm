@@ -34,7 +34,7 @@ PyDMByteIndicatorPlugin = qtplugin_factory(PyDMByteIndicator)
 # Checkbox plugin
 PyDMCheckboxPlugin = qtplugin_factory(PyDMCheckbox)
 
-'''
+
 # Drawing plugins
 PyDMDrawingImagePlugin = qtplugin_factory(PyDMDrawingImage)
 PyDMDrawingLinePlugin = qtplugin_factory(PyDMDrawingLine)
@@ -46,11 +46,15 @@ PyDMDrawingArcPlugin = qtplugin_factory(PyDMDrawingArc)
 PyDMDrawingPiePlugin = qtplugin_factory(PyDMDrawingPie)
 PyDMDrawingChordPlugin = qtplugin_factory(PyDMDrawingChord)
 
+'''
 # Embedded Display plugin
 PyDMEmbeddedDisplayPlugin = qtplugin_factory(PyDMEmbeddedDisplay)
+'''
 
 # Enum Combobox plugin
 PyDMEnumComboBoxPlugin = qtplugin_factory(PyDMEnumComboBox)
+
+'''
 
 # Image plugin
 PyDMImageViewPlugin = qtplugin_factory(PyDMImageView)
