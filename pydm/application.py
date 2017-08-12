@@ -185,9 +185,9 @@ class PyDMApplication(QApplication):
             kwargs['macros'] = macros
         return cls(**kwargs)
 
-    def open_file(self, ui_file, macros={}, command_line_args=[]):
+    def open_file(self, ui_file, macros=None, command_line_args=None):
         #First split the ui_file string into a filepath and arguments
-        args = command_line_args
+        args = command_line_args if command_line_args is not None else []
         split = shlex.split(ui_file)
         filepath = split[0]
         args.extend(split[1:])
