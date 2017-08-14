@@ -132,9 +132,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if isinstance(app, PyDMApplication):
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             
-    """
-    CALLBACKS
-    """
     def connection_changed(self, connected):
         """
         Callback invoked when the connection state of the Channel is changed.
@@ -243,9 +240,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         else:
             self._lower_ctrl_limit = new_limit
 
-    """
-    QT SLOTS
-    """
     @pyqtSlot(bool)
     def connectionStateChanged(self, connected):
         """
@@ -364,9 +358,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self.update()
     
-    """
-    PYQT PROPERTIES
-    """
     @pyqtProperty(bool, doc=
     """
     Whether or not the content color changes when alarm severity changes.
@@ -542,9 +533,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if self._channel != value:
             self._channel = str(value)
               
-    """
-    PyDMWidget methods
-    """
     def update_format_string(self):
         """
         Reconstruct the format string to be used when representing the output value.
@@ -617,6 +605,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         ]
         return self._channels
 
+
 class PyDMWritableWidget(PyDMWidget):
     """
     PyDM base class for Writable widgets.
@@ -644,9 +633,6 @@ class PyDMWritableWidget(PyDMWidget):
         self._write_access = False            
         self.installEventFilter(self)
 
-    """
-    EVENT FILTER
-    """
     def eventFilter(self, obj, event):
         """
         Filters events on this object.
@@ -675,9 +661,6 @@ class PyDMWritableWidget(PyDMWidget):
         
         return False
 
-    """
-    CALLBACKS
-    """
     def write_access_changed(self, new_write_access):
         """
         Callback invoked when the Channel has new write access value.
@@ -692,9 +675,6 @@ class PyDMWritableWidget(PyDMWidget):
         self._write_access = new_write_access
         self.check_enable_state()    
 
-    """
-    QT SLOTS
-    """
     @pyqtSlot(bool)
     def writeAccessChanged(self, write_access):
         """
