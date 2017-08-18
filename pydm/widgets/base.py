@@ -125,7 +125,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.enum_strings = None
         self.format_string = "{}"
         
-        self.value = None   
+        self.value = None
+        self.channeltype = None   
         
         # If this label is inside a PyDMApplication (not Designer) start it in the disconnected state.
         app = QApplication.instance()
@@ -158,6 +159,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
             The new value from the channel. The type depends on the channel.
         """
         self.value = new_val
+        self.channeltype = type(self.value)
 
     def alarm_severity_changed(self, new_alarm_severity):
         """
@@ -421,7 +423,17 @@ class PyDMWidget(PyDMPrimitiveWidget):
     )
     def precisionFromPV(self):
         """
-        Whether or not to use the precision information from the PV
+        A choice whether or not to use the precision given by channel.
+    
+        If set to False, the value received will be displayed as is, with no
+        modification to the number of displayed significant figures. However, if
+        set to True, and the channel specifies a display precision, a float or
+        integer channel value will be set to display the correct precision. When
+        using an EPICS Channel, the precision value corresponds to the PV's PREC
+        field.
+    
+        It is also important to note, that if the value of the channel is a String,
+        the choice of True or False will have no affect on the display.
         
         Returns
         -------
@@ -433,8 +445,18 @@ class PyDMWidget(PyDMPrimitiveWidget):
     @precisionFromPV.setter
     def precisionFromPV(self, value):
         """
-        Whether or not to use the precision information from the PV
-        
+        A choice whether or not to use the precision given by channel.
+    
+        If set to False, the value received will be displayed as is, with no
+        modification to the number of displayed significant figures. However, if
+        set to True, and the channel specifies a display precision, a float or
+        integer channel value will be set to display the correct precision. When
+        using an EPICS Channel, the precision value corresponds to the PV's PREC
+        field.
+    
+        It is also important to note, that if the value of the channel is a String,
+        the choice of True or False will have no affect on the display.
+                
         Parameters
         ----------
         value : bool
@@ -481,7 +503,11 @@ class PyDMWidget(PyDMPrimitiveWidget):
     """)
     def showUnits(self):
         """
-        Whether or not to append the unit when formating the output value
+        A choice whether or not to show the units given by the channel
+    
+        If set to True, the units given in the channel will be displayed with the
+        value. If using an EPICS channel, this will automatically be linked to the
+        EGU field of the PV.
         
         Returns
         -------
@@ -493,8 +519,12 @@ class PyDMWidget(PyDMPrimitiveWidget):
     @showUnits.setter
     def showUnits(self, show_units):
         """
-        Whether or not to append the unit when formating the output value
-        
+        A choice whether or not to show the units given by the channel
+    
+        If set to True, the units given in the channel will be displayed with the
+        value. If using an EPICS channel, this will automatically be linked to the
+        EGU field of the PV.
+                
         Paramters
         ---------
         show_units : bool
