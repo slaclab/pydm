@@ -18,19 +18,23 @@ class Connection(PyDMConnection):
         self.pv = epics.PV(pv, connection_callback=self.send_connection_state, form='ctrl', auto_monitor=True, access_callback=self.send_access_state)
         self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
         self.add_listener(channel)
+
+        self._severity = None
+        self._precision = None
+        self._enum_strs = None
+        self._unit = None
+        self._upper_ctrl_limit = None
+        self._lower_ctrl_limit = None
   
-    def send_new_value(self, value=None, char_value=None, units=None, enum_strs=None, severity=None, count=None, ftype=None, upper_ctrl_limit=None, lower_ctrl_limit=None, precision=None, *args, **kws):
-        if severity is not None:
-            self.new_severity_signal.emit(int(severity))
-        if precision is not None:
-            self.prec_signal.emit(precision)
-        if enum_strs is not None:
-            enum_strs = tuple(b.decode(encoding='ascii') for b in enum_strs)
-            self.enum_strings_signal.emit(enum_strs)
-        if units is not None and len(units) > 0:
-            if type(units) == bytes:
-                units = units.decode()
-            self.unit_signal.emit(units)
+    def clear_cache(self):
+        self._severity = None
+        self._precision = None
+        self._enum_strs = None
+        self._unit = None
+        self._upper_ctrl_limit = None
+        self._lower_ctrl_limit = None
+
+    def send_new_value(self, value=None, char_value=None, count=None, ftype=None, *args, **kws):
         if value is not None:
             if count > 1:
                 self.new_waveform_signal.emit(value)
@@ -42,19 +46,39 @@ class Connection(PyDMConnection):
                 else:
                     self.new_value_signal[str].emit(char_value)
 
-        if upper_ctrl_limit is not None:
-            self.upper_ctrl_limit_signal.emit(upper_ctrl_limit)    
-        if lower_ctrl_limit is not None:
-            self.lower_ctrl_limit_signal.emit(lower_ctrl_limit)    
+        self.update_ctrl_vars(**kws)
     
+    def update_ctrl_vars(self, units=None, enum_strs=None, severity=None, upper_ctrl_limit=None, lower_ctrl_limit=None, precision=None, *args, **kws):
+        if severity is not None and self._severity != severity:
+            self._severity = severity
+            self.new_severity_signal.emit(int(severity))
+        if precision is not None and self._precision != precision:
+            self._precision = precision
+            self.prec_signal.emit(precision)
+        if enum_strs is not None and self._enum_strs != enum_strs:
+            self._enum_strs = enum_strs
+            enum_strs = tuple(b.decode(encoding='ascii') for b in enum_strs)
+            self.enum_strings_signal.emit(enum_strs)
+        if units is not None and len(units) > 0 and self._unit != units:
+            if type(units) == bytes:
+                units = units.decode()
+            self._unit = units
+            self.unit_signal.emit(units)
+        if upper_ctrl_limit is not None and self._upper_ctrl_limit != upper_ctrl_limit:
+            self._upper_ctrl_limit = upper_ctrl_limit
+            self.upper_ctrl_limit_signal.emit(upper_ctrl_limit)    
+        if lower_ctrl_limit is not None and self._lower_ctrl_limit != lower_ctrl_limit:
+            self._lower_ctrl_limit = lower_ctrl_limit
+            self.lower_ctrl_limit_signal.emit(lower_ctrl_limit)    
+
     def send_access_state(self, read_access, write_access, *args, **kws):
-        write_access = epics.ca.write_access(self.pv.chid)
         if write_access is not None:
             self.write_access_signal.emit(write_access)        
-    
+
     def send_connection_state(self, conn=None, *args, **kws):
         self.connection_state_signal.emit(conn)
         if conn:
+            self.clear_cache()
             self.pv.run_callbacks()
 
     @pyqtSlot(int)
