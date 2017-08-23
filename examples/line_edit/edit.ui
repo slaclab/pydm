@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>681</width>
+    <height>514</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="PyDMLineEdit" name="PyDMLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>10</y>
+     <width>125</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string>
+    A QLineEdit (writable text field) with support for Channels and more from PyDM.
+    This widget offers an unit conversion menu when users Right Click into it.
+    
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget. 
+    
+    </string>
+   </property>
+   <property name="alarmSensitiveContent" stdset="0">
+    <bool>false</bool>
+   </property>
+   <property name="alarmSensitiveBorder" stdset="0">
+    <bool>false</bool>
+   </property>
+   <property name="showUnits" stdset="0">
+    <bool>true</bool>
+   </property>
+   <property name="channel" stdset="0">
+    <string>ca://MTEST:UpdateTime</string>
+   </property>
+  </widget>
+  <widget class="QWebEngineView" name="webEngineView">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>80</y>
+     <width>641</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <property name="url">
+    <url>
+     <string>https://html5test.com/</string>
+    </url>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>pydm.widgets.line_edit</header>
+  </customwidget>
+  <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header location="global">QtWebEngineWidgets/QWebEngineView</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

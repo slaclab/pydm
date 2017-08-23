@@ -66,10 +66,10 @@ PyDMIndicatorPlugin = qtplugin_factory(PyDMIndicator)
 # Label plugin
 PyDMLabelPlugin = qtplugin_factory(PyDMLabel)
 
-'''
 # Line Edit plugin
 PyDMLineEditPlugin = qtplugin_factory(PyDMLineEdit)
 
+'''
 # Push Button plugin
 PyDMPushButtonPlugin = qtplugin_factory(PyDMPushButton)
 

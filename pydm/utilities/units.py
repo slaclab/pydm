@@ -62,10 +62,11 @@ def find_unit_options(unit):
     """
     Find the options for a given unit
     """
+    print("Find unit options: ", unit)
     tp = find_unittype(unit)
     if tp:
         units = [choice for choice,_ in 
-                 sorted(UNITS[type].items(),key=lambda x: 1/x[1])]
+                 sorted(UNITS[tp].items(),key=lambda x: 1/x[1])]
         return units
     else:
         return None
