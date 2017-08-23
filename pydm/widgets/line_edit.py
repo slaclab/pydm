@@ -32,7 +32,7 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         self.menu     = QMenu(self)
         self.unitMenu = self.menu.addMenu('Convert Units')
         self.create_unit_options()
-          
+
 
     def value_changed(self, new_val):
         """
@@ -71,6 +71,8 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
                           / self.channeltype(self._scale))
          
         self.send_value_signal[self.channeltype].emit(self.channeltype(send_value))
+        self.clearFocus()
+        self.set_display()
    
     
     def write_access_changed(self, new_write_access):
@@ -130,7 +132,6 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         unit : str
             String name of desired units
         """
-        print("apply_conversion called with: ", unit)
         if not self._unit:
             print('Warning: Attempting to convert PyDMLineEdit unit, but no '\
                            'initial units supplied')
@@ -188,7 +189,6 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         without pressing return.  Resets the value of the text field to the
         current channel value.
         """
-        print("Focus Out Event called", self._display is not None)
         if self._display is not None:
             self.setText(self._display)
         super().focusOutEvent(event)

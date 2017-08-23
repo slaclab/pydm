@@ -660,7 +660,7 @@ class PyDMWritableWidget(PyDMWidget):
     
     def __init__(self, init_channel=None):
         super().__init__(init_channel=init_channel)
-        self._write_access = False            
+        self._write_access = False
         self.installEventFilter(self)
 
     def eventFilter(self, obj, event):
@@ -683,11 +683,9 @@ class PyDMWritableWidget(PyDMWidget):
         
         if event.type() == QEvent.Leave:
             QApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
-            return True
             
         if event.type() == QEvent.Enter and not status:
             QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
-            return True
         
         return False
 

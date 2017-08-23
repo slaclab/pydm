@@ -21,6 +21,7 @@ UNITS = {'length':   {'m'   : 1,
                       'days'  : constants.day,
                      }
         }
+
 def find_unittype(unit):
     """
     Find the type of a unit string
@@ -62,7 +63,6 @@ def find_unit_options(unit):
     """
     Find the options for a given unit
     """
-    print("Find unit options: ", unit)
     tp = find_unittype(unit)
     if tp:
         units = [choice for choice,_ in 
