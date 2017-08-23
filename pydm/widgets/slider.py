@@ -70,6 +70,9 @@ class PyDMSlider(QFrame):
         self.setup_widgets_for_orientation(self._orientation)
         self.reset_slider_limits()
     
+    def init_for_designer(self):
+      self._value = 0.0
+    
     @pyqtProperty(Qt.Orientation)
     def orientation(self):
         return self._orientation
