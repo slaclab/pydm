@@ -73,12 +73,18 @@ class Connection(PyDMConnection):
 
     def send_access_state(self, read_access, write_access, *args, **kws):
         if write_access is not None:
-            self.write_access_signal.emit(write_access)        
+            self.write_access_signal.emit(write_access)
+    
+    def reload_access_state(self):
+        read_access = epics.ca.read_access(self.pv.chid)
+        write_access = epics.ca.write_access(self.pv.chid)
+        self.send_access_state(read_access, write_access)
 
     def send_connection_state(self, conn=None, *args, **kws):
         self.connection_state_signal.emit(conn)
         if conn:
             self.clear_cache()
+            self.reload_access_state()
             self.pv.run_callbacks()
 
     @pyqtSlot(int)
