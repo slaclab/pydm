@@ -1,6 +1,5 @@
-from ..PyQt.QtGui import QWidget, QTabWidget, QColor, QPen, QGridLayout, QLabel, QPalette, QFontMetrics, QPainter, QBrush, QStyleOption, QStyle
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt, QSize, QPoint
-from .channel import PyDMChannel
+from ..PyQt.QtGui import QWidget, QTabWidget, QColor, QPen, QGridLayout, QLabel, QFontMetrics, QPainter, QBrush, QStyleOption, QStyle
+from ..PyQt.QtCore import pyqtProperty, Qt, QSize, QPoint
 import numpy as np
 from .base import PyDMWidget
 
