@@ -116,14 +116,14 @@ class PyDMLabel(QLabel):
         self.setText(str(self.value))
     
     def refresh_format_string(self):
-        if self.precision == 0 and self._unit_string == "":
+        if self.precision == 0 and not self._show_units:
             self.format_string = None
             self.redraw_label()
             return
-        strs = []
+        strs = ["{}"]
         if self.precision != 0:
-            strs.append("{:." + str(self.precision) + "f}")
-        if self._unit_string != "":
+            strs = ["{:." + str(self.precision) + "f}"]
+        if self._unit_string != "" and self._show_units:
             strs.append(self._unit_string)
         self.format_string = " ".join(strs)
         self.redraw_label()
