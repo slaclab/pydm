@@ -163,6 +163,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self.value = new_val
         self.channeltype = type(self.value)
+        self.update_format_string()
 
     def alarm_severity_changed(self, new_alarm_severity):
         """
