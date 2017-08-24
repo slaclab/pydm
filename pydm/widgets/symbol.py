@@ -1,25 +1,20 @@
 from ..PyQt.QtGui import QApplication, QWidget, QPainter, QPixmap, QStyle, QStyleOption
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt, QFile, QSize, QSizeF, QRect, QRectF, qInstallMessageHandler
+from ..PyQt.QtCore import pyqtProperty, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from ..PyQt.QtSvg import QSvgRenderer
-from .channel import PyDMChannel
 import json
-import os.path
+from .base import PyDMWidget
 
-class PyDMSymbol(QWidget):
+class PyDMSymbol(QWidget, PyDMWidget):
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMSymbol, self).__init__(parent)
+        super().__init__(parent, init_channel=init_channel)
         self.app = QApplication.instance()
         self._state_images = {} #Keyed on state values (ints), values are (filename, qpixmap or qsvgrenderer) tuples.
-        self._channel = init_channel
-        self._channels = None
-        self._connected = False
-        self._value = None
         self._aspect_ratio_mode = Qt.KeepAspectRatio
         self._sizeHint = self.minimumSizeHint()
         self._painter = QPainter()
     
     def init_for_designer(self):
-        self._value = 0
+        self.value = 0
     
     @pyqtProperty(str, doc=
     """
@@ -42,7 +37,7 @@ class PyDMSymbol(QWidget):
             #First, lets try SVG.  We have to try SVG first, otherwise
             #QPixmap will happily load the SVG and turn it into a raster image.
             #Really annoying: We have to try to load the file as SVG,
-            #and we expect it will fail often (because many images arent SVG).
+            #and we expect it will fail often (because many images aren't SVG).
             #Qt prints a warning message to stdout any time SVG loading fails.
             #So we have to temporarily silence Qt warning messages here.
             qInstallMessageHandler(self.qt_message_handler)
@@ -78,36 +73,13 @@ class PyDMSymbol(QWidget):
             self._aspect_ratio_mode = new_mode
             self.update()
     
-    @pyqtProperty(str, doc=
-    """
-    The channel to be used 
-    """
-    )
-    def channel(self):
-        if self._channel is None:
-            return ""
-        return str(self._channel)
 
-    @channel.setter
-    def channel(self, value):
-        if self._channel != value:
-            self._channel = str(value)
-
-    def channels(self):
-        if self._channels is not None:
-            return self._channels
-        self._channels = [PyDMChannel(address=self._channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue)]
-        return self._channels
-
-    #false = disconnected, true = connected
-    @pyqtSlot(bool)
-    def connectionStateChanged(self, connected):
-        self._connected = connected
+    def connection_changed(self, connected):
+        super().connection_changed(connected)
         self.update()
-    
-    @pyqtSlot(int)
-    def receiveValue(self, new_value):
-        self._value = new_value
+
+    def value_changed(self, new_val):
+        super().value_changed(new_val)
         self.update()
     
     def sizeHint(self):
@@ -122,7 +94,7 @@ class PyDMSymbol(QWidget):
         opt.initFrom(self)
         self.style().drawPrimitive(QStyle.PE_Widget, opt, self._painter, self)
         #self._painter.setRenderHint(QPainter.Antialiasing)
-        image_to_draw = self._state_images.get(self._value, (None, None))[1]
+        image_to_draw = self._state_images.get(self.value, (None, None))[1]
         if image_to_draw is None:
             self._painter.end()
             return
@@ -146,5 +118,5 @@ class PyDMSymbol(QWidget):
         self._painter.end()
     
     def qt_message_handler(self, msg_type, *args):
-        #Intentionally supress all qt messages.  Make sure not to leave this handler installed.
+        #Intentionally suppress all qt messages.  Make sure not to leave this handler installed.
         pass
