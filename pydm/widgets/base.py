@@ -88,14 +88,14 @@ class PyDMWidget(PyDMPrimitiveWidget):
             ALARM_DISCONNECTED: {"color": "white"}
         },
         ALARM_BORDER: {
-            ALARM_NONE: {"border-width": "2px", "border-style": "hidden"},
+            ALARM_NONE: {"border": "0px"},
             ALARM_MINOR: {"border": "2px solid yellow"},
             ALARM_MAJOR: {"border": "2px solid red"},
             ALARM_INVALID: {"border": "2px solid purple"},
             ALARM_DISCONNECTED: {"border": "2px solid white"}
         },
         ALARM_CONTENT | ALARM_BORDER: {
-            ALARM_NONE: {"color": "black", "border-width": "2px", "border-style": "hidden"},
+            ALARM_NONE: {"color": "black", "border": "0px"},
             ALARM_MINOR: {"color": "yellow", "border": "2px solid yellow"},
             ALARM_MAJOR: {"color": "red", "border": "2px solid red"},
             ALARM_INVALID: {"color": "purple", "border": "2px solid purple"},
