@@ -327,6 +327,9 @@
         setting to an absolute value
     </string>
      </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="text">
       <string>Subtract 0.1 to the value below...</string>
      </property>
