@@ -26,10 +26,8 @@ from .timeplot_qtplugin import PyDMTimePlotPlugin
 # Waveform Plot plugin
 from .waveformplot_qtplugin import PyDMWaveformPlotPlugin
 
-'''
 # Byte plugin
 PyDMByteIndicatorPlugin = qtplugin_factory(PyDMByteIndicator)
-'''
 
 # Checkbox plugin
 PyDMCheckboxPlugin = qtplugin_factory(PyDMCheckbox)

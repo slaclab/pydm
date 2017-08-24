@@ -2,6 +2,7 @@ from ..PyQt.QtGui import QWidget, QTabWidget, QColor, QPen, QGridLayout, QLabel,
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt, QSize, QPoint
 from .channel import PyDMChannel
 import numpy as np
+from .base import PyDMWidget
 
 class PyDMBitIndicator(QWidget):
     def __init__(self, parent=None):
@@ -38,31 +39,35 @@ class PyDMBitIndicator(QWidget):
         fm = QFontMetrics(self.font())
         return QSize(fm.height(), fm.height())
 
-class PyDMByteIndicator(QWidget):
+class PyDMByteIndicator(QWidget, PyDMWidget):
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMByteIndicator, self).__init__(parent)
+        super().__init__(parent, init_channel=init_channel)
+        self.value = 0
         self.setLayout(QGridLayout(self))
-        self._connected = False
+        
         self._on_color = QColor(0,255,0)
         self._off_color = QColor(100,100,100)
         self._disconnected_color = QColor(255,255,255)
         self._invalid_color = QColor(255,0,255)
+        
         self._pen_style = Qt.SolidLine
         self._line_pen = QPen(self._pen_style)
+        
         self._orientation = Qt.Vertical
+        
         #This is kind of ridiculous, importing QTabWidget just to get a 4-item enum thats usable in Designer.
-        #PyQt5 lets you define custom enums that you can use in designer with QtCore.Q_ENUMS(), doesnt exist in PyQt4.
+        #PyQt5 lets you define custom enums that you can use in designer with QtCore.Q_ENUMS(), doesn't exist in PyQt4.
+        self._labels = []
         self._show_labels = True
         self._label_position = QTabWidget.East
-        self._channel = ""
-        self._channels = None
+        
         self._num_bits = 1
-        self._labels = []
+        
         self._indicators = []
-        self._value = 0
         self._circles = False
         self.set_spacing()
         self.layout().setOriginCorner(Qt.TopLeftCorner)
+
         self._big_endian = False
         self._shift = 0
         self.numBits = 1 #Need to set the property to initialize _labels and _indicators
@@ -70,12 +75,11 @@ class PyDMByteIndicator(QWidget):
     
     def init_for_designer(self):
         self._connected = True
-        self._value = 5
+        self.value = 5
         self.update_indicators()
     
-    @pyqtSlot(bool)
-    def connectionStateChanged(self, connected):
-        self._connected = connected
+    def connection_changed(self, connected):
+        super().connection_changed(connected)
         self.update_indicators()
     
     def rebuild_layout(self):
@@ -125,7 +129,7 @@ class PyDMByteIndicator(QWidget):
                         self.layout().removeWidget(w)
     
     def update_indicators(self):
-        bits = np.unpackbits(np.array(self._value, dtype=np.uint8))
+        bits = np.unpackbits(np.array(self.value, dtype=np.uint8))
         bits = np.roll(bits[::-1], -self._shift)
         for i in range(0,self._num_bits):
             w = self._indicators[i]
@@ -300,26 +304,10 @@ class PyDMByteIndicator(QWidget):
         self.showLabels = self._show_labels
         self.rebuild_layout()
     
-    @pyqtProperty(str, doc=
-    """
-    The channel to be used.  The channel must supply a type convertable to an int.
-    """
-    )
-    def channel(self):
-        return str(self._channel)
-
-    @channel.setter
-    def channel(self, value):
-        if self._channel != value:
-            self._channel = str(value)
-    
-    def channels(self):
-        if self._channels is not None:
-            return self._channels
-        self._channels = [PyDMChannel(address=self._channel, connection_slot=self.connectionStateChanged, value_slot=self.valueReceived)]
-        return self._channels
-    
-    @pyqtSlot(int)
-    def valueReceived(self, new_val):
-        self._value = new_val
-        self.update_indicators()
+    def value_changed(self, new_val):
+        super().value_changed(new_val)
+        try:
+            int(new_val)
+            self.update_indicators()
+        except:
+            pass
