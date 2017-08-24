@@ -35,6 +35,7 @@ class Connection(PyDMConnection):
         self._lower_ctrl_limit = None
 
     def send_new_value(self, value=None, char_value=None, count=None, ftype=None, *args, **kws):
+        self.update_ctrl_vars(**kws)
         if value is not None:
             if count > 1:
                 self.new_waveform_signal.emit(value)
@@ -45,8 +46,6 @@ class Connection(PyDMConnection):
                     self.new_value_signal[float].emit(float(value))
                 else:
                     self.new_value_signal[str].emit(char_value)
-
-        self.update_ctrl_vars(**kws)
     
     def update_ctrl_vars(self, units=None, enum_strs=None, severity=None, upper_ctrl_limit=None, lower_ctrl_limit=None, precision=None, *args, **kws):
         if severity is not None and self._severity != severity:
