@@ -4,7 +4,7 @@ import shlex, subprocess
 
 class PyDMShellCommand(QPushButton):
     def __init__(self, parent=None, command=None):
-        super(PyDMShellCommand, self).__init__(parent)
+        super().__init__(parent)
         self._command = command
         self.process = None
 
@@ -21,7 +21,7 @@ class PyDMShellCommand(QPushButton):
 
     def mouseReleaseEvent(self, mouse_event):
         self.execute_command()
-        super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
+        super().mouseReleaseEvent(mouse_event)
 
     @pyqtSlot()
     def execute_command(self):
