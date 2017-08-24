@@ -132,6 +132,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         app = QApplication.instance()
         if isinstance(app, PyDMApplication):
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
+    
+    def init_for_designer(self):
+        self._connected = True
             
     def connection_changed(self, connected):
         """
@@ -662,7 +665,11 @@ class PyDMWritableWidget(PyDMWidget):
         super().__init__(init_channel=init_channel)
         self._write_access = False
         self.installEventFilter(self)
-
+        
+    def init_for_designer(self):
+        super().init_for_designer()
+        self._write_access = True
+    
     def eventFilter(self, obj, event):
         """
         Filters events on this object.
