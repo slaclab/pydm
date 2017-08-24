@@ -1,8 +1,9 @@
 from ..PyQt.QtGui import QPushButton
 from ..PyQt.QtCore import pyqtSlot, pyqtProperty
 import shlex, subprocess
+from .base import PyDMPrimitiveWidget
 
-class PyDMShellCommand(QPushButton):
+class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
     def __init__(self, parent=None, command=None):
         super().__init__(parent)
         self._command = command

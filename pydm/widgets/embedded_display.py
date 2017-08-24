@@ -1,13 +1,14 @@
 from ..PyQt.QtGui import QFrame, QApplication, QLabel, QVBoxLayout
 from ..PyQt.QtCore import Qt
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
+from ..PyQt.QtCore import pyqtProperty
 import json
 import os.path
 from ..application import PyDMApplication
+from .base import PyDMPrimitiveWidget
 
-class PyDMEmbeddedDisplay(QFrame):
+class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     def __init__(self, parent=None):
-        super(PyDMEmbeddedDisplay, self).__init__(parent=parent)
+        super().__init__(parent=parent)
         self.app = QApplication.instance()
         self._filename = None
         self._macros = None
@@ -57,7 +58,7 @@ class PyDMEmbeddedDisplay(QFrame):
         filename = str(filename)
         if filename != self._filename:
             self._filename = filename
-            #If we arent in a PyDMApplication (usually that means we are in Qt Designer),
+            #If we aren't in a PyDMApplication (usually that means we are in Qt Designer),
             # don't try to load the file, just show text with the filename.
             if not isinstance(self.app, PyDMApplication):
                 self.err_label.setText(self._filename)
