@@ -121,10 +121,9 @@ class PyDMEnumComboBox(QWidget, PyDMWritableWidget):
         ----------
         index : int
             
-        """        
-        if self.value != index:
-            self.send_value_signal.emit(index)
-            self.activated[int].emit(index)
+        """
+        self.send_value_signal.emit(index)
+        self.activated[int].emit(index)
     
     @pyqtSlot(str)
     def internal_combo_box_activated_str(self, text):
