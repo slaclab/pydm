@@ -41,11 +41,10 @@ class PyDMWaveformTable(QTableWidget):
     
     @pyqtSlot(int, int)
     def send_data_for_cell(self, row, column):
-        print("Cell changed!")
         item = self.item(row, column)
         new_val = float(item.text())
         self.waveform[row] = new_val
-        self.send_value_signal.emit(self.waveform)
+        self.send_value_signal[np.ndarray].emit(self.waveform)
         
     # -2 to +2, -2 is LOLO, -1 is LOW, 0 is OK, etc.    
     @pyqtSlot(int)
@@ -76,4 +75,4 @@ class PyDMWaveformTable(QTableWidget):
     waveformChannel = pyqtProperty(str, getWaveformChannel, setWaveformChannel, resetWaveformChannel)
     
     def channels(self):
-        return [PyDMChannel(address=self.waveformChannel, connection_slot=self.connectionStateChanged, waveform_slot=self.receiveWaveform, severity_slot=self.alarmSeverityChanged, value_signal=self.send_value_signal)]
+        return [PyDMChannel(address=self.waveformChannel, connection_slot=self.connectionStateChanged, waveform_slot=self.receiveWaveform, severity_slot=self.alarmSeverityChanged, waveform_signal=self.send_value_signal)]
