@@ -31,6 +31,16 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
     
                 self.update_step_size()
                 return True
+
+            if (event.key() == Qt.Key_Up):
+                self.setValue(self.value + self.singleStep())
+                self.send_value()
+                return True
+
+            if (event.key() == Qt.Key_Down):
+                self.setValue(self.value - self.singleStep())
+                self.send_value()
+                return True
     
             if (event.key() == Qt.Key_Return):
                 self.send_value()
