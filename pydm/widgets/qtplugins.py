@@ -32,7 +32,6 @@ PyDMByteIndicatorPlugin = qtplugin_factory(PyDMByteIndicator)
 # Checkbox plugin
 PyDMCheckboxPlugin = qtplugin_factory(PyDMCheckbox)
 
-
 # Drawing plugins
 PyDMDrawingImagePlugin = qtplugin_factory(PyDMDrawingImage)
 PyDMDrawingLinePlugin = qtplugin_factory(PyDMDrawingLine)
@@ -44,16 +43,13 @@ PyDMDrawingArcPlugin = qtplugin_factory(PyDMDrawingArc)
 PyDMDrawingPiePlugin = qtplugin_factory(PyDMDrawingPie)
 PyDMDrawingChordPlugin = qtplugin_factory(PyDMDrawingChord)
 
-'''
 # Embedded Display plugin
 PyDMEmbeddedDisplayPlugin = qtplugin_factory(PyDMEmbeddedDisplay)
-'''
 
 # Enum Combobox plugin
 PyDMEnumComboBoxPlugin = qtplugin_factory(PyDMEnumComboBox)
 
-'''
-
+''' # TODO
 # Image plugin
 PyDMImageViewPlugin = qtplugin_factory(PyDMImageView)
 
@@ -71,15 +67,18 @@ PyDMLineEditPlugin = qtplugin_factory(PyDMLineEdit)
 PyDMPushButtonPlugin = qtplugin_factory(PyDMPushButton)
 
 
-'''
+''' # TODO
 # Related Display Button plugin
 PyDMRelatedDisplayButtonPlugin = qtplugin_factory(PyDMRelatedDisplayButton)
+'''
 
 # Shell Command plugin
 PyDMShellCommandPlugin = qtplugin_factory(PyDMShellCommand)
 
+''' # TODO
 # Slider plugin
 PyDMSliderPlugin = qtplugin_factory(PyDMSlider)
+'''
 
 # Spinbox plugin
 PyDMSpinboxplugin = qtplugin_factory(PyDMSpinbox)
@@ -87,6 +86,7 @@ PyDMSpinboxplugin = qtplugin_factory(PyDMSpinbox)
 # Symbol plugin
 PyDMSymbolPlugin = qtplugin_factory(PyDMSymbol)
 
+''' # TODO
 # Waveform Table plugin
 PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable)
 
