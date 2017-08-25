@@ -265,7 +265,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
     @pyqtSlot(str)
     @pyqtSlot(bool)
     @pyqtSlot(np.ndarray)
-    def valueChanged(self, new_val):
+    def channelValueChanged(self, new_val):
         """
         PyQT Slot for changes on the Value of the Channel
         This slot sends the value to the ```value_changed``` callback.
@@ -625,8 +625,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._channels = [
             PyDMChannel(address=self.channel,
                         connection_slot=self.connectionStateChanged,
-                        value_slot=self.valueChanged,
-                        waveform_slot=self.valueChanged,
+                        value_slot=self.channelValueChanged,
+                        waveform_slot=self.channelValueChanged,
                         severity_slot=self.alarmSeverityChanged,
                         enum_strings_slot=self.enumStringsChanged,
                         unit_slot=self.unitChanged,
@@ -755,8 +755,8 @@ class PyDMWritableWidget(PyDMWidget):
         self._channels = [
             PyDMChannel(address=self.channel,
                         connection_slot=self.connectionStateChanged,
-                        value_slot=self.valueChanged,
-                        waveform_slot=self.valueChanged,
+                        value_slot=self.channelValueChanged,
+                        waveform_slot=self.channelValueChanged,
                         severity_slot=self.alarmSeverityChanged,
                         enum_strings_slot=self.enumStringsChanged,
                         unit_slot=self.unitChanged,
