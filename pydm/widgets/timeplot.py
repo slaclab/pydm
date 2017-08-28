@@ -203,16 +203,18 @@ class PyDMTimePlot(BasePlot):
         return [json.dumps(curve.to_dict()) for curve in self._curves]
     
     def setCurves(self, new_list):
-        new_list = [str(i) for i in new_list]
-        #super(PyDMTimePlot, self).clear()
+        try:
+            new_list = [json.loads(str(i)) for i in new_list]
+        except json.decoder.JSONDecodeError:
+            print("ERROR: Invalid Curve property value.")
+            return
         self.clearCurves()
-        for curve_dict in new_list:
-            d = json.loads(str(curve_dict))
+        for d in new_list:
             color = d.get('color')
             if color:
                 color = QColor(color)
             self.addYChannel(d['channel'], name=d.get('name'), color=color)
-        
+
     curves = pyqtProperty("QStringList", getCurves, setCurves)
 
     def getBufferSize(self):
