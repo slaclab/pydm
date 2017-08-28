@@ -185,8 +185,8 @@ class PyDMWaveformPlot(BasePlot):
     def setCurves(self, new_list):
         try:
             new_list = [json.loads(str(i)) for i in new_list]
-        except json.decoder.JSONDecodeError:
-            print("ERROR: Invalid Curve property value.")
+        except json.decoder.JSONDecodeError as e:
+            print("Error parsing curve json data: {}".format(e))
             return
         self.clearCurves()
         for d in new_list:
