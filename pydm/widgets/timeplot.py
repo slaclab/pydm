@@ -205,7 +205,7 @@ class PyDMTimePlot(BasePlot):
     def setCurves(self, new_list):
         try:
             new_list = [json.loads(str(i)) for i in new_list]
-        except json.decoder.JSONDecodeError as e:
+        except ValueError as e:
             print("Error parsing curve json data: {}".format(e))
             return
         self.clearCurves()
