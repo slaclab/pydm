@@ -628,7 +628,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
             PyDMChannel(address=self.channel,
                         connection_slot=self.connectionStateChanged,
                         value_slot=self.channelValueChanged,
-                        waveform_slot=self.channelValueChanged,
                         severity_slot=self.alarmSeverityChanged,
                         enum_strings_slot=self.enumStringsChanged,
                         unit_slot=self.unitChanged,
@@ -636,7 +635,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
                         upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
                         lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
                         value_signal=None,
-                        waveform_signal=None,
                         write_access_slot=None)
         ]
         return self._channels
@@ -758,7 +756,6 @@ class PyDMWritableWidget(PyDMWidget):
             PyDMChannel(address=self.channel,
                         connection_slot=self.connectionStateChanged,
                         value_slot=self.channelValueChanged,
-                        waveform_slot=self.channelValueChanged,
                         severity_slot=self.alarmSeverityChanged,
                         enum_strings_slot=self.enumStringsChanged,
                         unit_slot=self.unitChanged,
@@ -766,7 +763,6 @@ class PyDMWritableWidget(PyDMWidget):
                         upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
                         lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
                         value_signal=self.send_value_signal,
-                        waveform_signal=self.send_value_signal,
                         write_access_slot=self.writeAccessChanged)
         ]
         return self._channels

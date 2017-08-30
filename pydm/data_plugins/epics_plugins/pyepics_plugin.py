@@ -37,8 +37,8 @@ class Connection(PyDMConnection):
     def send_new_value(self, value=None, char_value=None, count=None, ftype=None, *args, **kws):
         self.update_ctrl_vars(**kws)
         if value is not None:
-            if count > 1:
-                self.new_waveform_signal.emit(value)
+            if isinstance(value, np.ndarray):
+                self.new_value_signal[np.ndarray].emit(value)
             else:
                 if ftype in int_types:
                     self.new_value_signal[int].emit(int(value))
@@ -89,13 +89,10 @@ class Connection(PyDMConnection):
     @pyqtSlot(int)
     @pyqtSlot(float)
     @pyqtSlot(str)
+    @pyqtSlot(np.ndarray)
     def put_value(self, new_val):
         if self.pv.write_access:
             self.pv.put(new_val)
-  
-    @pyqtSlot(np.ndarray)
-    def put_waveform(self, new_waveform_val):
-        self.pv.put(new_waveform_val)
     
     def add_listener(self, channel):
         super(Connection, self).add_listener(channel)
@@ -118,9 +115,8 @@ class Connection(PyDMConnection):
                 channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
-        if channel.waveform_signal is not None:
             try:
-                channel.waveform_signal.connect(self.put_value, Qt.QueuedConnection)
+                channel.value_signal[np.ndarray].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
 
