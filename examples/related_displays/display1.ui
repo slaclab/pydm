@@ -45,6 +45,9 @@
      <property name="whatsThis">
       <string/>
      </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>false</bool>
+     </property>
      <property name="channel" stdset="0">
       <string>ca://MTEST:Float</string>
      </property>
@@ -61,7 +64,7 @@
  <customwidgets>
   <customwidget>
    <class>PyDMRelatedDisplayButton</class>
-   <extends>QWidget</extends>
+   <extends>QFrame</extends>
    <header>pydm.widgets.related_display_button</header>
   </customwidget>
  </customwidgets>

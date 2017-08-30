@@ -1,9 +1,9 @@
-from ..PyQt.QtGui import QPushButton, QApplication, QWidget, QHBoxLayout
+from ..PyQt.QtGui import QPushButton, QApplication, QFrame, QVBoxLayout, QSizePolicy, QLayout
 from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt
 import json
 from .base import PyDMWidget
 
-class PyDMRelatedDisplayButton(QWidget, PyDMWidget):
+class PyDMRelatedDisplayButton(QFrame, PyDMWidget):
     __pyqtSignals__ = ("request_open_signal(str)")
 
     # Constants for determining where to open the display.
@@ -11,16 +11,36 @@ class PyDMRelatedDisplayButton(QWidget, PyDMWidget):
     NEW_WINDOW = 1;
 
     def __init__(self, parent=None, init_channel=None, filename=None):
-        super(PyDMRelatedDisplayButton, self).__init__(parent, init_channel=init_channel)
-        self.horizontal_layout = QHBoxLayout(self)
+        super().__init__(parent, init_channel=init_channel)
+        self.fix_alarm_stylesheet_map()
+
+        self._layout = QVBoxLayout(self)
+        self._layout.setSpacing(0)
+        self._layout.setContentsMargins(0, 0, 0, 0)
+        self._layout.setSizeConstraint(QLayout.SetMaximumSize)
+
         self.push_button = QPushButton(self)
+        self.push_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.push_button.mouseReleaseEvent = self.mouseReleaseEvent
-        self.horizontal_layout.addWidget(self.push_button)
+
+        self._layout.addWidget(self.push_button)
+
+        self.setLayout(self._layout)
+        self.setFrameShape(QFrame.NoFrame)
+        self.setLineWidth(0)
 
         self._display_filename = filename
         self._macro_string = None
         self._open_in_new_window = False
         self.app = QApplication.instance()
+
+    def fix_alarm_stylesheet_map(self):
+        for _, v in self.alarm_style_sheet_map.items():
+            for ik, iv in v.items():
+                if ik == 0:
+                    continue
+                if 'color' in iv:
+                    iv['background-color'] = iv['color']
 
     @pyqtProperty(str)
     def text(self):
