@@ -106,8 +106,11 @@ class PyDMImageView(ImageView, PyDMWidget):
 
     def redrawImage(self):
         if len(self.image_waveform) > 0 and self.image_width > 0:
-            self.setImage(self.image_waveform, autoLevels=False,
+            self.getImageItem().setImage(self.image_waveform, autoLevels=False,
                           autoHistogramRange=False, xvals=[0, 1])
+
+    def keyPressEvent(self, ev):
+        return
 
     @pyqtProperty(str)
     def imageChannel(self):
