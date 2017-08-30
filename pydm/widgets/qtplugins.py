@@ -73,10 +73,9 @@ PyDMRelatedDisplayButtonPlugin = qtplugin_factory(PyDMRelatedDisplayButton)
 # Shell Command plugin
 PyDMShellCommandPlugin = qtplugin_factory(PyDMShellCommand)
 
-''' # TODO
 # Slider plugin
 PyDMSliderPlugin = qtplugin_factory(PyDMSlider)
-'''
+
 
 # Spinbox plugin
 PyDMSpinboxplugin = qtplugin_factory(PyDMSpinbox)

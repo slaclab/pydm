@@ -28,6 +28,24 @@
      <property name="whatsThis">
       <string/>
      </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="precisionFromPV" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="precision" stdset="0">
+      <number>0</number>
+     </property>
+     <property name="showUnits" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Float</string>
+     </property>
      <property name="tickPosition" stdset="0">
       <enum>QSlider::TicksBelow</enum>
      </property>
@@ -39,12 +57,6 @@
      </property>
      <property name="userDefinedPrecision" stdset="0">
       <bool>false</bool>
-     </property>
-     <property name="precision" stdset="0">
-      <number>2</number>
-     </property>
-     <property name="channel">
-      <string>ca://MTEST:Float</string>
      </property>
     </widget>
    </item>
