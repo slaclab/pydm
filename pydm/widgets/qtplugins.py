@@ -67,10 +67,8 @@ PyDMLineEditPlugin = qtplugin_factory(PyDMLineEdit)
 PyDMPushButtonPlugin = qtplugin_factory(PyDMPushButton)
 
 
-''' # TODO
 # Related Display Button plugin
 PyDMRelatedDisplayButtonPlugin = qtplugin_factory(PyDMRelatedDisplayButton)
-'''
 
 # Shell Command plugin
 PyDMShellCommandPlugin = qtplugin_factory(PyDMShellCommand)

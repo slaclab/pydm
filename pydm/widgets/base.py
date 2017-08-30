@@ -4,22 +4,24 @@ from ..PyQt.QtCore import Qt, QEvent, pyqtSignal, pyqtSlot, pyqtProperty
 from .channel import PyDMChannel
 from ..application import PyDMApplication
 
-def compose_stylesheet(style, base_class="QWidget"):
+def compose_stylesheet(style, base_class="QWidget", obj=None):
     """
     Creates a stylesheet string for a base class from a dictionary.
-    
+
     Parameters
     ----------
     style : dict
         A dictionary with key being the property and value being the property value to compose the stylesheet
     base_class : str, optional
         The QT base class to apply this stylesheet. Default: "QWidget"
-    
+
     Returns
     -------
     style_str : str
-        The composed stylesheet with the proper base class.        
+        The composed stylesheet with the proper base class.
     """
+    if base_class is None and obj is not None:
+        base_class = type(obj).__name__
     style_str = base_class + " {"
     for k, v in style.items():
         style_str += "{}: {}; ".format(k, v)
@@ -39,7 +41,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
     """
     PyDM base class for Read-Only widgets.
     This class implements all the functions of connection, alarm handling and more.
-    
+
     Parameters
     ----------
     init_channel : str, optional
@@ -64,13 +66,13 @@ class PyDMWidget(PyDMPrimitiveWidget):
     NO_ALARM = 0x0
     ALARM_CONTENT = 0x1
     ALARM_BORDER = 0x2
-    
+
     ALARM_NONE = 0
     ALARM_MINOR = 1
     ALARM_MAJOR = 2
     ALARM_INVALID = 3
     ALARM_DISCONNECTED = 4
-    
+
     # We put all this in a big dictionary to try to avoid constantly allocating and deallocating new stylesheet strings.
     alarm_style_sheet_map = {
         NO_ALARM: {
@@ -114,28 +116,28 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_state = 0
         self._style = dict()
         self._connected = False
-    
+
         self._precision_from_pv = True
         self._prec = 0
         self._unit = ""
-        
+
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
 
         self.enum_strings = None
         self.format_string = "{}"
-        
+
         self.value = None
         self.channeltype = None   
-        
+
         # If this label is inside a PyDMApplication (not Designer) start it in the disconnected state.
         app = QApplication.instance()
         if isinstance(app, PyDMApplication):
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
-    
+
     def init_for_designer(self):
         self._connected = True
-            
+
     def connection_changed(self, connected):
         """
         Callback invoked when the connection state of the Channel is changed.
@@ -184,7 +186,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
             style = compose_stylesheet(style=self._style)
             self.setStyleSheet(style)
             self.update()
-    
+
     def enum_strings_changed(self, new_enum_strings):
         """
         Callback invoked when the Channel has new enum values.
@@ -199,7 +201,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if new_enum_strings != self.enum_strings:
             self.enum_strings = new_enum_strings
             self.value_changed(self.value)
-    
+
     def unit_changed(self, new_unit):
         """
         Callback invoked when the Channel has new unit value.
@@ -259,7 +261,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         # false = disconnected, true = connected
         self.connection_changed(connected)
-    
+
     @pyqtSlot(int)
     @pyqtSlot(float)
     @pyqtSlot(str)
