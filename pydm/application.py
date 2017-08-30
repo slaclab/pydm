@@ -11,7 +11,6 @@ import signal
 import subprocess
 import re
 import shlex
-import psutil
 import json
 import inspect
 import warnings
@@ -71,6 +70,7 @@ class PyDMApplication(QApplication):
         
         #Performance monitoring
         if perfmon:
+            import psutil
             self.perf = psutil.Process()
             self.perf_timer = QTimer()
             self.perf_timer.setInterval(2000)
