@@ -134,7 +134,7 @@ class PyDMImageView(ImageView, PyDMWidget):
         return [
             PyDMChannel(address=self.imageChannel,
                         connection_slot=self.connectionStateChanged,
-                        waveform_slot=self.image_value_changed,
+                        value_slot=self.image_value_changed,
                         severity_slot=self.alarmSeverityChanged),
             PyDMChannel(address=self.widthChannel,
                         connection_slot=self.connectionStateChanged,
