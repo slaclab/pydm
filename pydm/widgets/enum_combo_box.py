@@ -31,7 +31,6 @@ class PyDMEnumComboBox(QFrame, PyDMWritableWidget):
 
     def __init__(self, parent=None, init_channel=None):
         super(PyDMEnumComboBox, self).__init__(parent=parent, init_channel=init_channel)
-        self.fix_alarm_stylesheet_map()
         self.horizontal_layout = QHBoxLayout(self)
         self.combo_box = QComboBox(self)
         self.horizontal_layout.addWidget(self.combo_box)
@@ -43,14 +42,6 @@ class PyDMEnumComboBox(QFrame, PyDMWritableWidget):
         self.combo_box.currentIndexChanged[str].connect(self.internal_combo_box_index_changed_str)
         self.combo_box.highlighted[int].connect(self.internal_combo_box_highlighted_int)
         self.combo_box.highlighted[str].connect(self.internal_combo_box_highlighted_str)
-
-    def fix_alarm_stylesheet_map(self):
-        for _, v in self.alarm_style_sheet_map.items():
-            for ik, iv in v.items():
-                if ik == 0:
-                    continue
-                if 'color' in iv:
-                    iv['background-color'] = iv['color']
 
     # Internal methods
     def set_items(self, enums):

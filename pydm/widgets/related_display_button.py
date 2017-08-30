@@ -1,7 +1,7 @@
 from ..PyQt.QtGui import QPushButton, QApplication, QFrame, QVBoxLayout, QSizePolicy, QLayout
 from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt
 import json
-from .base import PyDMWidget
+from .base import PyDMWidget, compose_stylesheet
 
 class PyDMRelatedDisplayButton(QFrame, PyDMWidget):
     __pyqtSignals__ = ("request_open_signal(str)")
@@ -12,8 +12,6 @@ class PyDMRelatedDisplayButton(QFrame, PyDMWidget):
 
     def __init__(self, parent=None, init_channel=None, filename=None):
         super().__init__(parent, init_channel=init_channel)
-        self.fix_alarm_stylesheet_map()
-
         self._layout = QVBoxLayout(self)
         self._layout.setSpacing(0)
         self._layout.setContentsMargins(0, 0, 0, 0)
@@ -21,7 +19,7 @@ class PyDMRelatedDisplayButton(QFrame, PyDMWidget):
 
         self.push_button = QPushButton(self)
         self.push_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.push_button.mouseReleaseEvent = self.mouseReleaseEvent
+        self.push_button.mouseReleaseEvent = self.push_button_release_event
 
         self._layout.addWidget(self.push_button)
 
@@ -34,13 +32,16 @@ class PyDMRelatedDisplayButton(QFrame, PyDMWidget):
         self._open_in_new_window = False
         self.app = QApplication.instance()
 
-    def fix_alarm_stylesheet_map(self):
-        for _, v in self.alarm_style_sheet_map.items():
-            for ik, iv in v.items():
-                if ik == 0:
-                    continue
-                if 'color' in iv:
-                    iv['background-color'] = iv['color']
+    def alarm_severity_changed(self, new_alarm_severity):
+        PyDMWidget.alarm_severity_changed(self, new_alarm_severity)
+        if self._channels is not None:
+            self._alarm_state = new_alarm_severity
+            self._style = dict(self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity])
+            if 'border' in self._style:
+                del self._style['border']
+            style = compose_stylesheet(style=self._style, obj=self.push_button)
+            self.push_button.setStyleSheet(style)
+            self.push_button.update()
 
     @pyqtProperty(str)
     def text(self):
@@ -91,7 +92,7 @@ class PyDMRelatedDisplayButton(QFrame, PyDMWidget):
     def openInNewWindow(self, open_in_new):
         self._open_in_new_window = open_in_new
 
-    def mouseReleaseEvent(self, mouse_event):
+    def push_button_release_event(self, mouse_event):
         if mouse_event.modifiers() == Qt.ShiftModifier or self._open_in_new_window:
             self.open_display(target=self.NEW_WINDOW)
         else:
