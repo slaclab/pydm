@@ -78,8 +78,5 @@ PyDMSpinboxplugin = qtplugin_factory(PyDMSpinbox)
 # Symbol plugin
 PyDMSymbolPlugin = qtplugin_factory(PyDMSymbol)
 
-''' # TODO
 # Waveform Table plugin
 PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable)
-
-'''
