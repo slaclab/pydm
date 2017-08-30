@@ -1,9 +1,9 @@
-from ..PyQt.QtGui import QWidget, QComboBox, QHBoxLayout
+from ..PyQt.QtGui import QFrame, QComboBox, QHBoxLayout
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot
 from .base import PyDMWritableWidget
 
 
-class PyDMEnumComboBox(QWidget, PyDMWritableWidget):
+class PyDMEnumComboBox(QFrame, PyDMWritableWidget):
     """
     A QComboBox with support for Channels and more from PyDM
     
@@ -24,18 +24,18 @@ class PyDMEnumComboBox(QWidget, PyDMWritableWidget):
         Emitted when the index is changed in the combobox.
     highlighted : int, str
         Emitted when an item in the combobox popup list is highlighted by the user.
-    """    
+    """
     activated = pyqtSignal([int], [str])
     currentIndexChanged = pyqtSignal([int], [str])
     highlighted = pyqtSignal([int], [str])
-    
-    def __init__(self, parent=None):
-        super(PyDMEnumComboBox, self).__init__(parent=parent)
+
+    def __init__(self, parent=None, init_channel=None):
+        super(PyDMEnumComboBox, self).__init__(parent=parent, init_channel=init_channel)
+        self.fix_alarm_stylesheet_map()
         self.horizontal_layout = QHBoxLayout(self)
         self.combo_box = QComboBox(self)
-
         self.horizontal_layout.addWidget(self.combo_box)
-        #Internal values for properties
+        # Internal values for properties
         self._has_enums = False
         self.combo_box.activated[int].connect(self.internal_combo_box_activated_int)
         self.combo_box.activated[str].connect(self.internal_combo_box_activated_str)
@@ -44,7 +44,15 @@ class PyDMEnumComboBox(QWidget, PyDMWritableWidget):
         self.combo_box.highlighted[int].connect(self.internal_combo_box_highlighted_int)
         self.combo_box.highlighted[str].connect(self.internal_combo_box_highlighted_str)
 
-    #Internal methods    
+    def fix_alarm_stylesheet_map(self):
+        for _, v in self.alarm_style_sheet_map.items():
+            for ik, iv in v.items():
+                if ik == 0:
+                    continue
+                if 'color' in iv:
+                    iv['background-color'] = iv['color']
+
+    # Internal methods
     def set_items(self, enums):
         """
         Internal method to fill the ComboBox items based on a list
@@ -54,13 +62,13 @@ class PyDMEnumComboBox(QWidget, PyDMWritableWidget):
         ----------
         new_enum_strings : tuple
             The new list of values
-        """        
+        """
         self.combo_box.clear()
         for enum in enums:
             self.combo_box.addItem(enum)
         self._has_enums = True
         self.check_enable_state()
-    
+
     def check_enable_state(self):
         """
         Checks whether or not the widget should be disable.
@@ -76,10 +84,10 @@ class PyDMEnumComboBox(QWidget, PyDMWritableWidget):
             tooltip += "Access denied by Channel Access Security."
         elif not self._has_enums:
             tooltip += "Enums not available."
-                
+
         self.setToolTip(tooltip)
         self.setEnabled(status)
-    
+
     def enum_strings_changed(self, new_enum_strings):
         """
         Callback invoked when the Channel has new enum values.
@@ -93,7 +101,7 @@ class PyDMEnumComboBox(QWidget, PyDMWritableWidget):
         """
         super().enum_strings_changed(new_enum_strings)
         self.set_items(new_enum_strings)
-    
+
     def value_changed(self, new_val):
         """
         Callback invoked when the Channel value is changed.
@@ -103,14 +111,14 @@ class PyDMEnumComboBox(QWidget, PyDMWritableWidget):
         ----------
         new_value : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
-        """        
+        """
         if new_val:
             super().value_changed(new_val)
             self.combo_box.setCurrentIndex(new_val)
-    
-    #Internal combo box signal handling.
-    #In places where we just forward the signal, we may want to instead just do self.signal = self.combo_box.signal
-    #in __init__...
+
+    # Internal combo box signal handling.
+    # In places where we just forward the signal, we may want to instead just do self.signal = self.combo_box.signal
+    # in __init__...
     @pyqtSlot(int)
     def internal_combo_box_activated_int(self, index):
         """
@@ -124,7 +132,7 @@ class PyDMEnumComboBox(QWidget, PyDMWritableWidget):
         """
         self.send_value_signal.emit(index)
         self.activated[int].emit(index)
-    
+
     @pyqtSlot(str)
     def internal_combo_box_activated_str(self, text):
         """
@@ -135,9 +143,9 @@ class PyDMEnumComboBox(QWidget, PyDMWritableWidget):
         ----------
         text : str
             
-        """                
+        """
         self.activated[str].emit(text)
-    
+
     @pyqtSlot(int)
     def internal_combo_box_index_changed_int(self, index):
         """
@@ -148,9 +156,9 @@ class PyDMEnumComboBox(QWidget, PyDMWritableWidget):
         ----------
         index : int
             
-        """        
+        """
         self.currentIndexChanged[int].emit(index)
-    
+
     @pyqtSlot(str)
     def internal_combo_box_index_changed_str(self, text):
         """
@@ -161,9 +169,9 @@ class PyDMEnumComboBox(QWidget, PyDMWritableWidget):
         ----------
         text : str
             
-        """        
+        """
         self.currentIndexChanged[str].emit(text)
-    
+
     @pyqtSlot(int)
     def internal_combo_box_highlighted_int(self, index):
         """
@@ -174,9 +182,9 @@ class PyDMEnumComboBox(QWidget, PyDMWritableWidget):
         ----------
         index : int
             
-        """        
+        """
         self.highlighted[int].emit(index)
-    
+
     @pyqtSlot(str)
     def internal_combo_box_highlighted_str(self, text):
         """
@@ -187,5 +195,5 @@ class PyDMEnumComboBox(QWidget, PyDMWritableWidget):
         ----------
         text : str
             
-        """        
+        """
         self.highlighted[str].emit(text)
