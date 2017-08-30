@@ -4,7 +4,7 @@ from ..PyQt.QtCore import Qt, QEvent, pyqtSignal, pyqtSlot, pyqtProperty
 from .channel import PyDMChannel
 from ..application import PyDMApplication
 
-def compose_stylesheet(style, base_class="QWidget", obj=None):
+def compose_stylesheet(style, base_class=None, obj=None):
     """
     Creates a stylesheet string for a base class from a dictionary.
 
@@ -183,7 +183,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if self._channels is not None:
             self._alarm_state = new_alarm_severity
             self._style = dict(self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity])
-            style = compose_stylesheet(style=self._style)
+            style = compose_stylesheet(style=self._style, obj=self)
             self.setStyleSheet(style)
             self.update()
 
