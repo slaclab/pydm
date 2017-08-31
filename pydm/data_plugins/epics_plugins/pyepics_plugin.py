@@ -32,7 +32,13 @@ class Connection(PyDMConnection):
             self.unit_signal.emit(units)
         if value is not None:
             if count > 1:
-                self.new_waveform_signal.emit(value)
+                if self.pv.type == 'ctrl_char':
+                    try:
+                        self.new_value_signal[str].emit(''.join(chr(i) for i in value))
+                    except:
+                        self.new_waveform_signal.emit(value)
+                else:
+                    self.new_waveform_signal.emit(value)
             else:
                 if ftype in int_types:
                     self.new_value_signal[int].emit(int(value))
