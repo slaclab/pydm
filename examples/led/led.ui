@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ByteExampleForm</class>
+ <widget class="QWidget" name="ByteExampleForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>526</width>
+    <height>696</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Byte Example</string>
+  </property>
+  <widget class="PyDMLed" name="PyDMLed_2">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>285</y>
+     <width>110</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="channel">
+    <string>ca://EX:STATUS_ENUM</string>
+   </property>
+   <property name="byte">
+    <stringlist>
+     <string>0</string>
+     <string>1</string>
+     <string>2</string>
+    </stringlist>
+   </property>
+   <property name="label">
+    <stringlist/>
+   </property>
+   <property name="ledColor">
+    <stringlist>
+     <string>green</string>
+     <string>red</string>
+     <string>yellow</string>
+    </stringlist>
+   </property>
+   <property name="squareLed">
+    <bool>true</bool>
+   </property>
+   <property name="alarmSensitiveText" stdset="0">
+    <bool>false</bool>
+   </property>
+   <property name="alarmSensitiveBorder" stdset="0">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="PyDMLed" name="PyDMLed">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>55</y>
+     <width>60</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+  </widget>
+  <widget class="PyDMLed" name="PyDMLed_7">
+   <property name="geometry">
+    <rect>
+     <x>225</x>
+     <y>170</y>
+     <width>60</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="channel">
+    <string>ca://EX:STATUS_INT</string>
+   </property>
+   <property name="byte">
+    <stringlist>
+     <string>0</string>
+     <string>1</string>
+     <string>2</string>
+    </stringlist>
+   </property>
+   <property name="label">
+    <stringlist/>
+   </property>
+   <property name="ledColor">
+    <stringlist>
+     <string>green</string>
+     <string>red</string>
+    </stringlist>
+   </property>
+   <property name="showLabel">
+    <bool>true</bool>
+   </property>
+   <property name="squareLed">
+    <bool>false</bool>
+   </property>
+   <property name="alarmSensitiveText" stdset="0">
+    <bool>false</bool>
+   </property>
+   <property name="alarmSensitiveBorder" stdset="0">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="PyDMLed" name="PyDMLed_3">
+   <property name="geometry">
+    <rect>
+     <x>85</x>
+     <y>445</y>
+     <width>110</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="channel">
+    <string>ca://EX:STATUS_ENUM</string>
+   </property>
+   <property name="byte">
+    <stringlist>
+     <string>0</string>
+     <string>1</string>
+     <string>2</string>
+    </stringlist>
+   </property>
+   <property name="label">
+    <stringlist>
+     <string>yes</string>
+     <string>no</string>
+     <string>maybe</string>
+    </stringlist>
+   </property>
+   <property name="ledColor">
+    <stringlist>
+     <string>green</string>
+     <string>red</string>
+     <string>yellow</string>
+    </stringlist>
+   </property>
+   <property name="squareLed">
+    <bool>true</bool>
+   </property>
+   <property name="alarmSensitiveText" stdset="0">
+    <bool>false</bool>
+   </property>
+   <property name="alarmSensitiveBorder" stdset="0">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="PyDMLed" name="PyDMLed_4">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>600</y>
+     <width>80</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="channel">
+    <string>ca://EX:STATUS_ENUM</string>
+   </property>
+   <property name="byte">
+    <stringlist>
+     <string>0</string>
+     <string>1</string>
+     <string>2</string>
+    </stringlist>
+   </property>
+   <property name="label">
+    <stringlist>
+     <string>yes</string>
+     <string>no</string>
+     <string>maybe</string>
+    </stringlist>
+   </property>
+   <property name="ledColor">
+    <stringlist>
+     <string>green</string>
+     <string>red</string>
+     <string>yellow</string>
+    </stringlist>
+   </property>
+   <property name="imagePath">
+    <stringlist>
+     <string>yes.png</string>
+     <string>no.png</string>
+     <string>maybe.png</string>
+    </stringlist>
+   </property>
+   <property name="showLabel">
+    <bool>false</bool>
+   </property>
+   <property name="squareLed">
+    <bool>true</bool>
+   </property>
+   <property name="useImage">
+    <bool>true</bool>
+   </property>
+   <property name="alarmSensitiveText" stdset="0">
+    <bool>false</bool>
+   </property>
+   <property name="alarmSensitiveBorder" stdset="0">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="PyDMLed" name="PyDMLed_5">
+   <property name="geometry">
+    <rect>
+     <x>345</x>
+     <y>445</y>
+     <width>110</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="channel">
+    <string>ca://EX:STATUS_ENUM</string>
+   </property>
+   <property name="byte">
+    <stringlist>
+     <string>0</string>
+     <string>1</string>
+     <string>2</string>
+    </stringlist>
+   </property>
+   <property name="label">
+    <stringlist>
+     <string>yes</string>
+     <string>no</string>
+     <string>maybe</string>
+    </stringlist>
+   </property>
+   <property name="ledColor">
+    <stringlist>
+     <string>green</string>
+     <string>red</string>
+     <string>yellow</string>
+    </stringlist>
+   </property>
+   <property name="squareLed">
+    <bool>true</bool>
+   </property>
+   <property name="alarmSensitiveText" stdset="0">
+    <bool>true</bool>
+   </property>
+   <property name="alarmSensitiveBorder" stdset="0">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>125</x>
+     <y>25</y>
+     <width>291</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Default byte (round or square led):</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>135</y>
+     <width>376</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Colors defined for values (bytes) 0 and 1 only:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>255</y>
+     <width>176</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Enums are displayed:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>410</y>
+     <width>241</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Labels may be set for values:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>295</x>
+     <y>410</y>
+     <width>201</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Alarm may be displayed:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>560</y>
+     <width>316</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Instead of led, images may be loaded:</string>
+   </property>
+  </widget>
+  <widget class="PyDMLed" name="PyDMLed_6">
+   <property name="geometry">
+    <rect>
+     <x>275</x>
+     <y>55</y>
+     <width>60</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="squareLed">
+    <bool>true</bool>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMLed</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.led</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
