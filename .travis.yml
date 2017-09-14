@@ -37,12 +37,12 @@ before_install:
   - conda install conda-build anaconda-client
   - conda update -q conda conda-build
   # Useful for debugging any issues with conda
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pyqt=$PYQT_VERSION pip numpy scipy six psutil pyqtgraph -c conda-forge
   - source activate test-environment
+  - pip install requests pyepics coverage codecov coveralls pytest pytest-cov
 
 install:
-  - pip install .[all]
-  - conda install pyqt=$PYQT_VERSION
+  - python setup.py install
 
 script:
   - py.test -sv --cov=pydm --cov-report term-missing
