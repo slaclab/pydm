@@ -31,6 +31,6 @@ If you want to use the pydm widgets in Qt Designer, add the pydm directory (whic
 
 ```sh
 git clone https://github.com/slaclab/pydm.git
-cd pydm.git
+cd pydm
 pip install .[all]
 ```
