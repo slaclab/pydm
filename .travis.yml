@@ -1,9 +1,10 @@
 language: python
 
 env:
-  # Variables jut to silence pcaspy setup.
-  - EPICS_BASE=~
-  - EPICS_HOST_ARCH=linux-x86_64
+  global:
+    # Variables jut to silence pcaspy setup.
+    - EPICS_BASE=~
+    - EPICS_HOST_ARCH=linux-x86_64
 
 matrix:
   include:
