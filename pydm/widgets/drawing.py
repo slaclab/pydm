@@ -7,50 +7,49 @@ def deg_to_qt(deg):
     """
     Converts from degrees to QT degrees.
     16 deg = 1 QTdeg
-    
+
     Parameters
     ----------
     deg : float
         The value to convert.
-        
+
     Returns
     -------
     float
         The value converted.
-    """    
+    """
     # Angles for Qt are in units of 1/16 of a degree
-    return deg*16
+    return deg * 16
 
 def qt_to_deg(deg):
     """
     Converts from QT degrees to degrees.
     16 deg = 1 QTdeg
-    
+
     Parameters
     ----------
     deg : float
         The value to convert.
-        
+
     Returns
     -------
     float
         The value converted.
-    """    
+    """
     # Angles for Qt are in units of 1/16 of a degree
-    return deg/16.0
+    return deg / 16.0
 
 class PyDMDrawing(QWidget, PyDMWidget):
     """
     Base class to be used for all PyDM Drawing Widgets.
     This class inherits from QWidget and PyDMWidget.
-    
+
     Parameters
     ----------
     parent : QWidget
         The parent widget for the Label
     init_channel : str, optional
-        The channel to be used by the widget. 
-    
+        The channel to be used by the widget.
     """
     def __init__(self, parent=None, init_channel=None):
         super().__init__(parent, init_channel=init_channel)
@@ -61,22 +60,21 @@ class PyDMDrawing(QWidget, PyDMWidget):
         self._pen = QPen(Qt.NoPen)
         self._pen_style = Qt.NoPen
         self._pen_width = 0
-        self._pen_color = QColor(0,0,0)
+        self._pen_color = QColor(0, 0, 0)
 
     def paintEvent(self, _):
         """
         Paint events are sent to widgets that need to update themselves,
         for instance when part of a widget is exposed because a covering
         widget was moved.
-        
+
         At PyDMDrawing this method handles the alarm painting with parameters
         from the stylesheet, configures the brush, pen and calls ```draw_item```
         so the specifics can be performed for each of the drawing classes.
-        
+
         Parameters
         ----------
-        event : QPaintEvent 
-
+        event : QPaintEvent
         """
         self._painter.begin(self)
         opt = QStyleOption()
@@ -90,77 +88,80 @@ class PyDMDrawing(QWidget, PyDMWidget):
                 color = QColor(alarm_color)
         else:
             color = self._default_color
-      
+
         self._brush.setColor(color)
-    
+
         self._painter.setBrush(self._brush)
         self._painter.setPen(self._pen)
-    
+
         self.draw_item()
         self._painter.end()
 
     def draw_item(self):
         """
         The classes inheriting from PyDMDrawing must overwrite this method.
-        This method translate the painter to the center point given by ```get_center```
-        and rotate the canvas by the given amount of degrees.
+        This method translate the painter to the center point given by
+        ```get_center``` and rotate the canvas by the given amount of
+        degrees.
         """
-        xc, yc = self.get_center() 
+        xc, yc = self.get_center()
         self._painter.translate(xc, yc)
         self._painter.rotate(-self._rotation)
 
     def get_center(self):
         """
         Simple calculation of the canvas' center point.
-        
+
         Returns
         -------
         x, y : float
             Tuple with X and Y coordinates of the center.
         """
-        return self.width()*0.5, self.height()*0.5
+        return self.width() * 0.5, self.height() * 0.5
 
     def get_bounds(self, maxsize=False, force_no_pen=False):
         """
         Returns a tuple containing the useful area for the drawing.
-        
+
         Parameters
         ----------
         maxsize : bool, default is False
             If True, width and height information are based on the
             maximum inner rectangle dimensions given by ```get_inner_max```,
             otherwise width and height will receive the widget size.
-        
+
         force_no_pen : bool, default is False
-            If True the pen width will not be considered when calculating the bounds.
+            If True the pen width will not be considered when calculating
+            the bounds.
 
         Returns
         -------
-        x, y, w, h : int
-            Tuple with X and Y coordinates followed by the maximum width and height.
+        x, y, w, h : tuple
+            Tuple with X and Y coordinates followed by the maximum width
+            and height.
         """
         w, h = self.width(), self.height()
 
         if maxsize:
             w, h = self.get_inner_max()
 
-        xc, yc = w* 0.5, h*0.5
+        xc, yc = w * 0.5, h * 0.5
 
         if self.has_border() and not force_no_pen:
-            w = max(0, w - 2*self._pen_width)
-            h = max(0, h - 2*self._pen_width)
+            w = max(0, w - 2 * self._pen_width)
+            h = max(0, h - 2 * self._pen_width)
             x = max(0, self._pen_width)
             y = max(0, self._pen_width)
         else:
             x = 0
             y = 0
-        return x-xc, y-yc, w, h
+        return x - xc, y - yc, w, h
 
     def has_border(self):
         """
-        Check whether or not the drawing have a border based on the Pen Style
-        and Pen width.
-        
+        Check whether or not the drawing have a border based on the
+        Pen Style and Pen width.
+
         Returns
         -------
         bool
@@ -174,7 +175,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
     def is_square(self):
         """
         Check if the widget has the same width and height values.
-        
+
         Returns
         -------
         bool
@@ -186,10 +187,10 @@ class PyDMDrawing(QWidget, PyDMWidget):
         """
         Calculates the largest inner rectangle in a rotated rectangle.
         This implementation was based on https://stackoverflow.com/a/18402507
-        
+
         Returns
         -------
-        w, h : float
+        w, h : tuple
             The width and height of the largest rectangle.
         """
         # Based on https://stackoverflow.com/a/18402507
@@ -204,8 +205,8 @@ class PyDMDrawing(QWidget, PyDMWidget):
         else:
             w0 = origHeight
             h0 = origWidth
-        #Angle normalization in range [-PI..PI)
-        ang = angle - math.floor((angle + math.pi) / (2*math.pi)) * 2*math.pi
+        # Angle normalization in range [-PI..PI)
+        ang = angle - math.floor((angle + math.pi) / (2 * math.pi)) * 2 * math.pi
         ang = math.fabs(ang)
         if (ang > math.pi / 2):
             ang = math.pi - ang
@@ -220,86 +221,76 @@ class PyDMDrawing(QWidget, PyDMWidget):
             h = w0 * c
         return w, h
 
-    @pyqtProperty(QBrush, doc=
-    """
-    The brush properties to be used when coloring the drawing 
-    """
-    )
+    @pyqtProperty(QBrush)
     def brush(self):
         """
-        PyQT Property for the brush object to be used when coloring the drawing
-        
+        PyQT Property for the brush object to be used when coloring the
+        drawing
+
         Returns
         -------
-        QBrush    
+        QBrush
         """
         return self._brush
 
     @brush.setter
     def brush(self, new_brush):
         """
-        PyQT Property for the brush object to be used when coloring the drawing
-        
+        PyQT Property for the brush object to be used when coloring the
+        drawing
+
         Parameters
         ----------
-        new_brush : QBrush    
+        new_brush : QBrush
         """
         if new_brush != self._brush:
             self._brush = new_brush
             self._default_color = new_brush.color()
             self.update()
 
-    @pyqtProperty(Qt.PenStyle, doc=
-    """
-    The pen style to be used on the border 
-    """
-    )
+    @pyqtProperty(Qt.PenStyle)
     def penStyle(self):
         """
         PyQT Property for the pen style to be used when drawing the border
-        
+
         Returns
         -------
         int
             Index at Qt.PenStyle enum
-        """        
+        """
         return self._pen_style
 
     @penStyle.setter
     def penStyle(self, new_style):
         """
         PyQT Property for the pen style to be used when drawing the border
-        
+
         Parameters
         ----------
         new_style : int
             Index at Qt.PenStyle enum
-        """        
+        """
         if new_style != self._pen_style:
             self._pen_style = new_style
             self._pen.setStyle(new_style)
             self.update()
 
-    @pyqtProperty(QColor, doc=
-    """
-    The border color 
-    """
-    )
+    @pyqtProperty(QColor)
     def penColor(self):
         """
         PyQT Property for the pen color to be used when drawing the border
-        
+
         Returns
         -------
         QColor
-        """   
+        """
         return self._pen_color
-  
+
     @penColor.setter
     def penColor(self, new_color):
         """
         PyQT Property for the pen color to be used when drawing the border
-        
+
         Parameters
         ----------
         new_color : QColor
@@ -308,27 +299,23 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._pen_color = new_color
             self._pen.setColor(new_color)
             self.update()
-  
-    @pyqtProperty(float, doc=
-    """
-    Border width
-    """
-    )
+
+    @pyqtProperty(float)
     def penWidth(self):
         """
         PyQT Property for the pen width to be used when drawing the border
-        
+
         Returns
         -------
         float
-        """  
+        """
         return self._pen_width
-  
+
     @penWidth.setter
     def penWidth(self, new_width):
         """
         PyQT Property for the pen width to be used when drawing the border
-        
+
         Parameters
         ----------
         new_width : float
@@ -340,28 +327,24 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._pen.setWidth(self._pen_width)
             self.update()
 
-    @pyqtProperty(float, doc=
-    """
-    Counter-clockwise rotation in degrees to be applied to the drawing.
-    """
-    )
+    @pyqtProperty(float)
     def rotation(self):
         """
         PyQT Property for the counter-clockwise rotation in degrees
         to be applied to the drawing.
-        
+
         Returns
         -------
         float
-        """          
+        """
         return self._rotation
-  
+
     @rotation.setter
     def rotation(self, new_angle):
         """
         PyQT Property for the counter-clockwise rotation in degrees
         to be applied to the drawing.
-        
+
         Parameters
         ----------
         new_angle : float
@@ -369,27 +352,26 @@ class PyDMDrawing(QWidget, PyDMWidget):
         if new_angle != self._rotation:
             self._rotation = new_angle
             self.update()
-      
+
 
 class PyDMDrawingLine(PyDMDrawing):
     """
     A widget with a line drawn in it.
     This class inherits from PyDMDrawing.
-    
+
     Parameters
     ----------
     parent : QWidget
         The parent widget for the Label
     init_channel : str, optional
-        The channel to be used by the widget. 
-    
-    """    
+        The channel to be used by the widget.
+    """
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingLine, self).__init__(parent, init_channel)
 
     def draw_item(self):
         """
-        Draws the line after setting up the canvas with a call to 
+        Draws the line after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
         super(PyDMDrawingLine, self).draw_item()
@@ -401,15 +383,14 @@ class PyDMDrawingImage(PyDMDrawing):
     """
     Renders an image given by the ```filename``` property.
     This class inherits from PyDMDrawing.
-    
+
     Parameters
     ----------
     parent : QWidget
         The parent widget for the Label
     init_channel : str, optional
-        The channel to be used by the widget. 
-    
-    """    
+        The channel to be used by the widget.
+    """
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingImage, self).__init__(parent, init_channel)
         self._file = ""
@@ -417,21 +398,17 @@ class PyDMDrawingImage(PyDMDrawing):
         self._aspect_ratio_mode = Qt.KeepAspectRatio
         self.app = QApplication.instance()
 
-    @pyqtProperty(str, doc=
-    """
-    The file to be loaded and displayed
-    """
-    )
+    @pyqtProperty(str)
     def filename(self):
         """
         The filename of the image to be displayed.
         This can be an absolute or relative path to the display file.
-        
+
         Returns
         -------
         str
             The filename configured.
-        """        
+        """
         return self._file
 
     @filename.setter
@@ -439,61 +416,61 @@ class PyDMDrawingImage(PyDMDrawing):
         """
         The filename of the image to be displayed.
         This can be an absolute or relative path to the display file.
-        
+
         Parameters
         -------
         new_file : str
             The filename to be used
-        """        
+        """
         if new_file != self._file:
             self._file = new_file
             path_relative_to_ui_file = self._file
             try:
-                #This could fail if we are in designer, where window() doesn't have the join_to_current_file_path method.
+                # This could fail if we are in designer, where window()
+                # doesn't have the join_to_current_file_path method.
                 path_relative_to_ui_file = self.app.get_path(self._file)
             except Exception:
                 pass
             self._pixmap = QPixmap(path_relative_to_ui_file)
             self.update()
 
-    @pyqtProperty(Qt.AspectRatioMode, doc=
-    """
-    Which aspect ratio mode to use
-    """
-    )
+    @pyqtProperty(Qt.AspectRatioMode)
     def aspectRatioMode(self):
         """
-        PyQT Property for aspect ratio mode to be used when rendering the image
-        
+        PyQT Property for aspect ratio mode to be used when rendering
+        the image
+
         Returns
         -------
         int
             Index at Qt.AspectRatioMode enum
-        """        
+        """
         return self._aspect_ratio_mode
 
     @aspectRatioMode.setter
     def aspectRatioMode(self, new_mode):
         """
-        PyQT Property for aspect ratio mode to be used when rendering the image
-        
+        PyQT Property for aspect ratio mode to be used when rendering
+        the image
+
         Returns
         -------
         new_mode : int
             Index at Qt.AspectRatioMode enum
-        """                
+        """
         if new_mode != self._aspect_ratio_mode:
             self._aspect_ratio_mode = new_mode
             self.update()
 
     def draw_item(self):
         """
-        Draws the image after setting up the canvas with a call to 
+        Draws the image after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
         super(PyDMDrawingImage, self).draw_item()
         x, y, w, h = self.get_bounds(maxsize=True, force_no_pen=True)
-        _scaled = self._pixmap.scaled(w, h, self._aspect_ratio_mode, Qt.SmoothTransformation)
+        _scaled = self._pixmap.scaled(w, h, self._aspect_ratio_mode,
+                                      Qt.SmoothTransformation)
         self._painter.drawPixmap(x, y, _scaled)
 
 
@@ -501,21 +478,20 @@ class PyDMDrawingRectangle(PyDMDrawing):
     """
     A widget with a rectangle drawn in it.
     This class inherits from PyDMDrawing.
-    
+
     Parameters
     ----------
     parent : QWidget
         The parent widget for the Label
     init_channel : str, optional
-        The channel to be used by the widget. 
-    
-    """        
+        The channel to be used by the widget.
+    """
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingRectangle, self).__init__(parent, init_channel)
 
     def draw_item(self):
         """
-        Draws the rectangle after setting up the canvas with a call to 
+        Draws the rectangle after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
         super(PyDMDrawingRectangle, self).draw_item()
@@ -527,83 +503,80 @@ class PyDMDrawingTriangle(PyDMDrawing):
     """
     A widget with a triangle drawn in it.
     This class inherits from PyDMDrawing.
-    
+
     Parameters
     ----------
     parent : QWidget
         The parent widget for the Label
     init_channel : str, optional
-        The channel to be used by the widget. 
-    
-    """    
+        The channel to be used by the widget.
+    """
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingTriangle, self).__init__(parent, init_channel)
 
     def draw_item(self):
         """
-        Draws the triangle after setting up the canvas with a call to 
+        Draws the triangle after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
-        """        
+        """
         super(PyDMDrawingTriangle, self).draw_item()
         x, y, w, h = self.get_bounds(maxsize=True)
         points = [
-            QPoint(x, h/2.0),
+            QPoint(x, h / 2.0),
             QPoint(x, y),
-            QPoint(w/2.0, y)
+            QPoint(w / 2.0, y)
         ]
         self._painter.drawPolygon(QPolygon(points))
-    
-    
+
+
 class PyDMDrawingEllipse(PyDMDrawing):
     """
     A widget with an ellipse drawn in it.
     This class inherits from PyDMDrawing.
-    
+
     Parameters
     ----------
     parent : QWidget
         The parent widget for the Label
     init_channel : str, optional
-        The channel to be used by the widget. 
-    
-    """    
+        The channel to be used by the widget.
+    """
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingEllipse, self).__init__(parent, init_channel)
-    
+
     def draw_item(self):
         """
-        Draws the ellipse after setting up the canvas with a call to 
+        Draws the ellipse after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
-        """        
+        """
         super(PyDMDrawingEllipse, self).draw_item()
         maxsize = not self.is_square()
         _, _, w, h = self.get_bounds(maxsize=maxsize)
-        self._painter.drawEllipse(QPoint(0,0), w/2.0, h/2.0)
+        self._painter.drawEllipse(QPoint(0, 0), w / 2.0, h / 2.0)
 
 class PyDMDrawingCircle(PyDMDrawing):
     """
     A widget with a circle drawn in it.
     This class inherits from PyDMDrawing.
-    
+
     Parameters
     ----------
     parent : QWidget
         The parent widget for the Label
     init_channel : str, optional
-        The channel to be used by the widget. 
-    
-    """    
+        The channel to be used by the widget.
+    """
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingCircle, self).__init__(parent, init_channel)
-    
+
     def draw_item(self):
         """
-        Draws the circle after setting up the canvas with a call to 
+        Draws the circle after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
         super(PyDMDrawingCircle, self).draw_item()
         _, _, w, h = self.get_bounds()
-        r = min(w, h)/2.0
+        r = min(w, h) / 2.0
         self._painter.drawEllipse(QPoint(0, 0), r, r)
 
 
@@ -611,15 +584,14 @@ class PyDMDrawingArc(PyDMDrawing):
     """
     A widget with an arc drawn in it.
     This class inherits from PyDMDrawing.
-    
+
     Parameters
     ----------
     parent : QWidget
         The parent widget for the Label
     init_channel : str, optional
-        The channel to be used by the widget. 
-    
-    """    
+        The channel to be used by the widget.
+    """
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingArc, self).__init__(parent, init_channel)
         self.penStyle = Qt.SolidLine
@@ -627,69 +599,61 @@ class PyDMDrawingArc(PyDMDrawing):
         self._start_angle = 0
         self._span_angle = deg_to_qt(90)
 
-    @pyqtProperty(float, doc=
-    """
-    Start angle in degrees
-    """
-    )
+    @pyqtProperty(float)
     def startAngle(self):
         """
         PyQT Property for the start angle in degrees
-        
+
         Returns
         -------
         float
             Angle in degrees
-        """        
+        """
         return qt_to_deg(self._start_angle)
 
     @startAngle.setter
     def startAngle(self, new_angle):
         """
         PyQT Property for the start angle in degrees
-        
+
         Parameters
         ----------
         new_angle : float
             Angle in degrees
-        """                
+        """
         if deg_to_qt(new_angle) != self._start_angle:
             self._start_angle = deg_to_qt(new_angle)
             self.update()
 
-    @pyqtProperty(float, doc=
-    """
-    Span angle in degrees
-    """
-    )
+    @pyqtProperty(float)
     def spanAngle(self):
         """
         PyQT Property for the span angle in degrees
-        
+
         Returns
         -------
         float
             Angle in degrees
-        """        
+        """
         return qt_to_deg(self._span_angle)
 
     @spanAngle.setter
     def spanAngle(self, new_angle):
         """
         PyQT Property for the span angle in degrees
-        
+
         Parameters
         ----------
         new_angle : float
             Angle in degrees
-        """                
+        """
         if deg_to_qt(new_angle) != self._span_angle:
             self._span_angle = deg_to_qt(new_angle)
             self.update()
 
     def draw_item(self):
         """
-        Draws the arc after setting up the canvas with a call to 
+        Draws the arc after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
         super(PyDMDrawingArc, self).draw_item()
@@ -702,21 +666,20 @@ class PyDMDrawingPie(PyDMDrawingArc):
     """
     A widget with a pie drawn in it.
     This class inherits from PyDMDrawing.
-    
+
     Parameters
     ----------
     parent : QWidget
         The parent widget for the Label
     init_channel : str, optional
-        The channel to be used by the widget. 
-    
-    """    
+        The channel to be used by the widget.
+    """
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingPie, self).__init__(parent, init_channel)
 
     def draw_item(self):
         """
-        Draws the pie after setting up the canvas with a call to 
+        Draws the pie after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
         super(PyDMDrawingPie, self).draw_item()
@@ -729,21 +692,20 @@ class PyDMDrawingChord(PyDMDrawingArc):
     """
     A widget with a chord drawn in it.
     This class inherits from PyDMDrawing.
-    
+
     Parameters
     ----------
     parent : QWidget
         The parent widget for the Label
     init_channel : str, optional
-        The channel to be used by the widget. 
-    
-    """    
+        The channel to be used by the widget.
+    """
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingChord, self).__init__(parent, init_channel)
 
     def draw_item(self):
         """
-        Draws the chord after setting up the canvas with a call to 
+        Draws the chord after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
         super(PyDMDrawingChord, self).draw_item()

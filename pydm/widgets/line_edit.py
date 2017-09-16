@@ -6,33 +6,33 @@ from .base import PyDMWritableWidget
 
 class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
     """
-    A QLineEdit (writable text field) with support for Channels and more from PyDM.
-    This widget offers an unit conversion menu when users Right Click into it.
-    
+    A QLineEdit (writable text field) with support for Channels and more
+    from PyDM.
+    This widget offers an unit conversion menu when users Right Click
+    into it.
+
     Parameters
     ----------
     parent : QWidget
         The parent widget for the Label
     init_channel : str, optional
-        The channel to be used by the widget. 
-    
+        The channel to be used by the widget.
     """
 
-    def __init__(self,parent=None, init_channel=None):
+    def __init__(self, parent=None, init_channel=None):
         super(PyDMLineEdit, self).__init__(parent, init_channel=init_channel)
-        self._display     = None
-        self._scale      = 1
+        self._display = None
+        self._scale = 1
 
         self.returnPressed.connect(self.send_value)
         self.setEnabled(False)
-        
-        #Create Context Menu upon Right Click
+
+        # Create Context Menu upon Right Click
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.launch_menu)
-        self.menu     = QMenu(self)
+        self.menu = QMenu(self)
         self.unitMenu = self.menu.addMenu('Convert Units')
         self.create_unit_options()
-
 
     def value_changed(self, new_val):
         """
@@ -49,8 +49,7 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         """
         super().value_changed(new_val)
         self.set_display()
-          
-    
+
     def send_value(self):
         """
         Emit a :attr:`send_value_signal` to update channel value.
@@ -60,21 +59,20 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         ReturnPressed signal of the PyDMLineEdit
         """
         send_value = str(self.text())
-        
-        #Clean text of all formatting
+
+        # Clean text of all formatting
         if self.format_string:
             send_value = send_value.strip(self.format_string)
-        
-        #Remove scale factor
+
+        # Remove scale factor
         if self._scale and self.channeltype != type(""):
             send_value = (self.channeltype(send_value)
                           / self.channeltype(self._scale))
-         
+
         self.send_value_signal[self.channeltype].emit(self.channeltype(send_value))
         self.clearFocus()
         self.set_display()
-   
-    
+
     def write_access_changed(self, new_write_access):
         """
         Change the PyDMLineEdit to read only if write access is denied
@@ -82,8 +80,7 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         super().write_access_changed(new_write_access)
         self.setEnabled(True)
         self.setReadOnly(not new_write_access)
-    
- 
+
     def precision_changed(self, new_precision):
         super().precision_changed(new_precision)
         self.set_display()
@@ -100,64 +97,68 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         self._scale = 1
         self.set_display()
         self.create_unit_options()
-            
+
     def create_unit_options(self):
         """
         Create the menu for displaying possible unit values
 
-        The menu is filled with possible unit conversions based on the current
-        PyDMLineEdit. If either the unit is not found in the by the
-        :func:`utilities.find_unit_options` function, or, the
-        :attr:`.showUnits` attribute is set to False, the menu will tell the
-        user that there are no available conversions
+        The menu is filled with possible unit conversions based on the
+        current PyDMLineEdit. If either the unit is not found in the by
+        the :func:`utilities.find_unit_options` function, or, the
+        :attr:`.showUnits` attribute is set to False, the menu will tell
+        the user that there are no available conversions
         """
         self.unitMenu.clear()
         units = utilities.find_unit_options(self._unit)
         if units and self._show_units:
             for choice in units:
-                self.unitMenu.addAction(choice,partial(self.apply_conversion,choice))
+                self.unitMenu.addAction(choice,
+                                        partial(
+                                            self.apply_conversion,
+                                            choice
+                                            )
+                                        )
         else:
             self.unitMenu.addAction('No Unit Conversions found')
- 
-    
+
     def apply_conversion(self, unit):
         """
         Convert the current unit to a different one
 
-        This function will attempt to find a scalar to convert the current unit
-        type to the desired one and reset the display with the new conversion.
-        
+        This function will attempt to find a scalar to convert the current
+        unit type to the desired one and reset the display with the new
+        conversion.
+
         Parameters
         ----------
         unit : str
             String name of desired units
         """
         if not self._unit:
-            print('Warning: Attempting to convert PyDMLineEdit unit, but no '\
-                           'initial units supplied')
+            print('Warning: Attempting to convert PyDMLineEdit unit, '\
+                           'but no initial units supplied')
             return None
 
-        scale = utilities.convert(str(self._unit),unit) 
+        scale = utilities.convert(str(self._unit), unit)
         if scale:
-            self._scale = scale*float(self._scale)
+            self._scale = scale * float(self._scale)
             self._unit = unit
             self.update_format_string()
             self.clearFocus()
             self.set_display()
         else:
             print('Warning: Attempting to convert PyDMLineEdit unit, but {:} '\
-                           'can not be converted to {:}'.format(self._units,unit))
+                           'can not be converted to {:}'.format(self._units, unit))
 
-    def launch_menu(self,point):
+    def launch_menu(self, point):
         """
         Launch the context menu with the appropriate unit conversions.
-        
+
         Parameters
         ----------
         point : QPoint
         """
         return self.menu.exec_(self.mapToGlobal(point))
-   
 
     def set_display(self):
         """
@@ -171,20 +172,20 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         if self.value is None:
             return
         value = self.value
-        if not isinstance(value,str):
+        if not isinstance(value, str):
             if self._scale and value:
                 value *= self.channeltype(self._scale)
-            
+
         if self.format_string:
             value = self.format_string.format(value)
-        
+
         self._display = str(value)
-        
+
         if not self.hasFocus():
             self.setText(self._display)
 
     def focusOutEvent(self, event):
-        """      
+        """
         Overwrites the function called when a user leaves a PyDMLineEdit
         without pressing return.  Resets the value of the text field to the
         current channel value.

@@ -8,9 +8,23 @@ from .colormaps import cmaps
 from .base import PyDMWidget
 
 class PyDMImageView(ImageView, PyDMWidget):
+    """
+    A PyQtGraph ImageView with support for Channels and more from PyDM
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    image_channel : str, optional
+        The channel to be used by the widget for the image data.
+    width_channel : str, optional
+        The channel to be used by the widget to receive the image width
+        information
+    """
+
     color_maps = cmaps
     def __init__(self, parent=None, image_channel=None, width_channel=None):
-        super(PyDMImageView, self).__init__(parent)
+        super(PyDMImageView, self).__init__(parent, init_channel=image_channel)
         self.axes = dict({'t': None, "x": 0, "y": 1, "c": None})
         self._imagechannel = image_channel
         self._widthchannel = width_channel
@@ -38,10 +52,25 @@ class PyDMImageView(ImageView, PyDMWidget):
         cm_menu.triggered.connect(self.changeColorMap)
 
     def changeColorMap(self, action):
+        """
+        Method invoked by the colormap Action Menu that changes the
+        current colormap used to render the image.
+
+        Parameters
+        ----------
+        action : QAction
+        """
         self.setColorMapToPreset(str(action.text()))
 
     @pyqtSlot(int)
     def setColorMapMin(self, new_min):
+        """
+        Set the minimal value for the colormap
+
+        Parameters
+        ----------
+        new_min : int
+        """
         if self.cm_min != new_min:
             self.cm_min = new_min
             if self.cm_min > self.cm_max:
@@ -50,6 +79,13 @@ class PyDMImageView(ImageView, PyDMWidget):
 
     @pyqtSlot(int)
     def setColorMapMax(self, new_max):
+        """
+        Set the maximum value for the colormap
+
+        Parameters
+        ----------
+        new_max : int
+        """
         if self.cm_max != new_max:
             if new_max >= self.data_max_int:
                 new_max = self.data_max_int
@@ -59,16 +95,40 @@ class PyDMImageView(ImageView, PyDMWidget):
             self.setColorMap()
 
     def setColorMapLimits(self, mn, mx):
+        """
+        Set the limit values for the colormap
+
+        Parameters
+        ----------
+        mn : int
+            The lower limit
+        mx : int
+            The upper limit
+        """
         self.cm_max = mx
         self.cm_min = mn
         self.setColorMap()
 
     def setColorMapToPreset(self, name):
+        """
+        Load a predefined colormap
+
+        Parameters
+        ----------
+        name : str
+        """
         self._colormapname = str(name)
         self._cm_colors = self.color_maps[str(name)]
         self.setColorMap()
 
     def setColorMap(self, cmap=None):
+        """
+        Update the image colormap
+
+        Parameters
+        ----------
+        cmap : ColorMap
+        """
         if not cmap:
             if not self._cm_colors.any():
                 return
@@ -80,6 +140,15 @@ class PyDMImageView(ImageView, PyDMWidget):
         self.getImageItem().setLevels([self.cm_min, float(self.data_max_int)])  # set levels from min to max of image (may improve min here)
 
     def image_value_changed(self, new_image):
+        """
+        Callback invoked when the Image Channel value is changed.
+        Reshape and display the new image.
+
+        Parameters
+        ----------
+        new_image : np.ndarray
+            The new image data as a flat array
+        """
         if new_image is None:
             return
         if self.image_width == 0:
@@ -96,6 +165,15 @@ class PyDMImageView(ImageView, PyDMWidget):
         self.redrawImage()
 
     def image_width_changed(self, new_width):
+        """
+        Callback invoked when the Image Width Channel value is changed.
+        Reshape the image data and triggers a ```redrawImage```
+
+        Parameters
+        ----------
+        new_width : int
+            The new image width
+        """
         if new_width is None:
             return
         self.image_width = int(new_width)
@@ -105,6 +183,9 @@ class PyDMImageView(ImageView, PyDMWidget):
         self.redrawImage()
 
     def redrawImage(self):
+        """
+        Set the image data into the ImageItem
+        """
         if len(self.image_waveform) > 0 and self.image_width > 0:
             self.getImageItem().setImage(self.image_waveform, autoLevels=False,
                           autoHistogramRange=False, xvals=[0, 1])
@@ -114,23 +195,63 @@ class PyDMImageView(ImageView, PyDMWidget):
 
     @pyqtProperty(str)
     def imageChannel(self):
+        """
+        The channel address in use for the image data .
+
+        Returns
+        -------
+        str
+            Channel address
+        """
         return str(self._imagechannel)
 
     @imageChannel.setter
     def imageChannel(self, value):
+        """
+        The channel address in use for the image data .
+
+        Parameters
+        ----------
+        value : str
+            Channel address
+        """
         if self._imagechannel != value:
             self._imagechannel = str(value)
 
     @pyqtProperty(str)
     def widthChannel(self):
+        """
+        The channel address in use for the image width .
+
+        Returns
+        -------
+        str
+            Channel address
+        """
         return str(self._widthchannel)
 
     @widthChannel.setter
     def widthChannel(self, value):
+        """
+        The channel address in use for the image width .
+
+        Parameters
+        ----------
+        value : str
+            Channel address
+        """
         if self._widthchannel != value:
             self._widthchannel = str(value)
 
     def channels(self):
+        """
+        Returns the channels being used for this Widget.
+
+        Returns
+        -------
+        channels : list
+            List of PyDMChannel objects
+        """
         return [
             PyDMChannel(address=self.imageChannel,
                         connection_slot=self.connectionStateChanged,
