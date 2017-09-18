@@ -11,7 +11,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
     def __init__(self, parent=None, command=None):
         super().__init__(parent)
         self._command = command
-        self.process = ""
+        self.process = None
 
     @pyqtProperty(str)
     def command(self):
@@ -58,7 +58,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         The process is available through the ```process``` member.
         """
 
-        if self._command is None or self._command != "":
+        if self._command is None or self._command == "":
             return
 
         if self.process is None or self.process.poll() is not None:
