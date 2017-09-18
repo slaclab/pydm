@@ -4,6 +4,10 @@ import shlex, subprocess
 from .base import PyDMPrimitiveWidget
 
 class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
+    """
+    A QPushButton capable of execute shell commands.
+    """
+
     def __init__(self, parent=None, command=None):
         super().__init__(parent)
         self._command = command
