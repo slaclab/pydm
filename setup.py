@@ -11,14 +11,13 @@ with open(path.join(cur_dir, 'requirements.txt')) as f:
     requirements = f.read().split()
 
 # Remove the 'optional' requirements
-optional = ('PyQt5', 'PyQt4', 'PySide', 'psutil', 'pcaspy', 'pyepics')
+optional = ('PyQt5', 'PySide', 'psutil', 'pcaspy', 'pyepics')
 for package in optional:
     if package in requirements:
         requirements.remove(package)
 
 extras_require = {
     'PyQt5': ['PyQt5'],
-    'PyQt4': ['PyQt4'],
     'PySide': ['PySide'],
     'pyepics': ['pyepics'],
     'perf': ['psutil'],
@@ -28,7 +27,6 @@ extras_require = {
 
 extras_require['all'] = sorted(set(sum(extras_require.values(), [])))
 # Preference for PyQt5 if you select ALL...
-extras_require['all'].remove('PyQt4')
 extras_require['all'].remove('PySide')
 
 setup(
