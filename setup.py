@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 # To use a consistent encoding
 from codecs import open
-from os import path
+from os import path, environ
 
 cur_dir = path.abspath(path.dirname(__file__))
 
@@ -17,13 +17,27 @@ for package in optional:
         requirements.remove(package)
 
 extras_require = {
-    'PyQt5': ['PyQt5'],
     'PySide': ['PySide'],
     'pyepics': ['pyepics'],
     'perf': ['psutil'],
     'testing-ioc': ['pcaspy'],
     'test': ['codecov', 'pytest', 'pytest-cov', 'coverage', 'coveralls', 'pcaspy']
 }
+
+
+if "CONDA_PREFIX" not in environ:
+    extras_require['PyQt5'] = ['PyQt5']
+else:
+    print("******************************************************************")
+    print("*                              WARNING                           *") 
+    print("******************************************************************")
+    print("Installing at an Anaconda Environment, to avoid naming conflicts ")
+    print("make sure you do:")
+    print("conda install pyqt=5")
+    print("******************************************************************")
+    print("For more info please check: ")
+    print("https://github.com/ContinuumIO/anaconda-issues/issues/1554")
+    print("******************************************************************")
 
 extras_require['all'] = sorted(set(sum(extras_require.values(), [])))
 # Preference for PyQt5 if you select ALL...
