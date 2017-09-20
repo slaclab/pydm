@@ -3,7 +3,7 @@ import sys
 from os import path, environ
 from .PyQt.QtGui import QApplication, QMainWindow, QWidget, QToolTip, QClipboard, QFileDialog
 from .PyQt.QtCore import Qt, QTimer, pyqtSlot
-from .pydm_ui import Ui_MainWindow
+from .pydm_ui_new import Ui_MainWindow
 import subprocess
 import platform
 
