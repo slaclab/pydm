@@ -4,7 +4,16 @@ from .base import PyDMWritableWidget
 
 
 class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
+    """
+    A QDoubleSpinBox with support for Channels and more from PyDM.
 
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    """
     def __init__(self, parent=None, init_channel=None):
         super().__init__(parent, init_channel=init_channel)
         self.valueBeingSet = False
@@ -15,20 +24,33 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         self.app = QApplication.instance()
 
     def event(self, event):
+        """
+        Method invoked when an event of any nature happens on the
+        QDoubleSpinBox.
+
+        For PyDMSpinBox we are interested on the Keypress events for:
+        - CTRL + Left/Right : Increase or Decrease the step exponent
+        - Up / Down : Add or Remove `singleStep` units to the value
+        - Return : Send the value to the channel using the `send_value_signal`
+
+        Parameters
+        ----------
+        event : QEvent
+        """
         if (event.type() == QEvent.KeyPress):
             ctrl_hold = self.app.queryKeyboardModifiers() == Qt.ControlModifier
-            
+
             if ctrl_hold and (event.key() == Qt.Key_Left):
                 self.step_exponent = self.step_exponent + 1
                 self.update_step_size()
                 return True
-    
+
             if ctrl_hold and (event.key() == Qt.Key_Right):
                 self.step_exponent = self.step_exponent - 1
-    
+
                 if self.step_exponent < -self.decimals():
                     self.step_exponent = -self.decimals()
-    
+
                 self.update_step_size()
                 return True
 
@@ -41,7 +63,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
                 self.setValue(self.value - self.singleStep())
                 self.send_value()
                 return True
-    
+
             if (event.key() == Qt.Key_Return):
                 self.send_value()
                 return True
@@ -49,15 +71,28 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         return super().event(event)
 
     def update_step_size(self):
-        self.setSingleStep(10**self.step_exponent)
+        """
+        Update the Single Step size on the QDoubleSpinBox.
+        """
+        self.setSingleStep(10 ** self.step_exponent)
         self.update_format_string()
 
     def update_format_string(self):
+        """
+        Reconstruct the format string to be used when representing the
+        output value.
+
+        Returns
+        -------
+        format_string : str
+            The format string to be used including or not the precision
+            and unit
+        """
         if self._show_units:
             units = " {}".format(self._unit)
         else:
             units = ""
-            
+
         if self._show_step_exponent:
             self.setSuffix("{units} Step: 1E{exp}".format(
                 units=units, exp=self.step_exponent))
@@ -65,17 +100,40 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
             self.setSuffix(units)
 
     def value_changed(self, new_val):
+        """
+        Callback invoked when the Channel value is changed.
+
+        Parameters
+        ----------
+        new_val : int or float
+            The new value from the channel.
+        """
         super().value_changed(new_val)
         self.valueBeingSet = True
         self.setValue(new_val)
         self.valueBeingSet = False
 
     def send_value(self):
+        """
+        Method invoked to send the current value on the QDoubleSpinBox to
+        the channel using the `send_value_signal`.
+        """
         value = float(self.cleanText())
         if not self.valueBeingSet:
             self.send_value_signal[float].emit(value)
 
     def ctrl_limit_changed(self, which, new_limit):
+        """
+        Callback invoked when the Channel receives new control limit
+        values.
+
+        Parameters
+        ----------
+        which : str
+            Which control limit was changed. "UPPER" or "LOWER"
+        new_limit : float
+            New value for the control limit
+        """
         super().ctrl_limit_changed(which, new_limit)
         if which == "UPPER":
             self.setMaximum(new_limit)
@@ -83,14 +141,38 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
             self.setMinimum(new_limit)
 
     def precision_changed(self, new_precision):
+        """
+        Callback invoked when the Channel has new precision value.
+        This callback also triggers an update_format_string call so the
+        new precision value is considered.
+
+        Parameters
+        ----------
+        new_precison : int or float
+            The new precision value
+        """
         super().precision_changed(new_precision)
         self.setDecimals(new_precision)
 
     @pyqtProperty(bool)
     def showStepExponent(self):
+        """
+        Whether to show or not the step exponent
+
+        Returns
+        -------
+        bool
+        """
         return self._show_step_exponent
 
     @showStepExponent.setter
     def showStepExponent(self, val):
+        """
+        Whether to show or not the step exponent
+
+        Parameters
+        ----------
+        val : bool
+        """
         self._show_step_exponent = val
         self.update()
