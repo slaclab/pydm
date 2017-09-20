@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QFrame, QApplication, QLabel, QVBoxLayout
-from ..PyQt.QtCore import Qt
+from ..PyQt.QtCore import Qt, QSize
 from ..PyQt.QtCore import pyqtProperty
 import json
 import os.path
@@ -34,6 +34,16 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             self.setFrameShape(QFrame.Box)
         else:
             self.setFrameShape(QFrame.NoFrame)
+
+    def minimumSizeHint(self):
+        """
+        This property holds the recommended minimum size for the widget.
+
+        Returns
+        -------
+        QSize
+        """
+        return QSize(100, 100)  # This is totally arbitrary, I just want *some* visible nonzero size
 
     @pyqtProperty(str)
     def macros(self):
