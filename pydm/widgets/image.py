@@ -24,7 +24,7 @@ class PyDMImageView(ImageView, PyDMWidget):
 
     color_maps = cmaps
     def __init__(self, parent=None, image_channel=None, width_channel=None):
-        super(PyDMImageView, self).__init__(parent, init_channel=image_channel)
+        super(PyDMImageView, self).__init__(parent)
         self.axes = dict({'t': None, "x": 0, "y": 1, "c": None})
         self._imagechannel = image_channel
         self._widthchannel = width_channel
