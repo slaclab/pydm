@@ -16,10 +16,10 @@ PyDM can use either version of PyQt.  By default, it will first try to use PyQt4
 
 # Running the Examples
 There are various examples of some of the features of the display manager.
-To launch a particular display run 'python pydm.py <filename>'.
+To launch a particular display run 'python scripts/pydm <filename>'.
 
 There is a 'home' display in the examples directory with buttons to launch all the examples:
-run 'python pydm.py examples/home.ui'
+run 'python scripts/pydm examples/home.ui'
 
 There isn't any documentation yet, hopefully looking at the examples can get you started.
 
