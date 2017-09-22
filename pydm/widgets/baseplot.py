@@ -5,9 +5,10 @@ from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
 from pyqtgraph import PlotCurveItem
 from collections import OrderedDict
 
-class BasePlot(PlotWidget):
+class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def __init__(self, parent=None, background='default', axisItems=None):
-        super(BasePlot, self).__init__(parent=parent, background=background, axisItems=axisItems)
+        PlotWidget.__init__(self, parent=parent, background=background, axisItems=axisItems)
+        PyDMPrimitiveWidget.__init__(self)
         self.plotItem = self.getPlotItem()
         self.plotItem.hideButtons()
         self._auto_range_x = None

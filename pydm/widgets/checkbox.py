@@ -14,7 +14,8 @@ class PyDMCheckbox(QCheckBox, PyDMWritableWidget):
 
     """
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMCheckbox, self).__init__(parent, init_channel=init_channel)
+        QCheckBox.__init__(self, parent)
+        PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self.clicked.connect(self.send_value)
 
     def value_changed(self, new_val):
@@ -27,7 +28,7 @@ class PyDMCheckbox(QCheckBox, PyDMWritableWidget):
         new_val : int
             The new value from the channel.
         """
-        super().value_changed(new_val)
+        super(PyDMCheckbox, self).value_changed(new_val)
         if new_val is None:
             return
         if new_val > 0:

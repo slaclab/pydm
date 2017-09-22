@@ -31,8 +31,8 @@ class PyDMEnumComboBox(QFrame, PyDMWritableWidget):
     highlighted = pyqtSignal([int], [str])
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMEnumComboBox, self).__init__(parent=parent,
-                                               init_channel=init_channel)
+        QFrame.__init__(self, parent)
+        PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self.horizontal_layout = QHBoxLayout(self)
         self.combo_box = QComboBox(self)
         self.horizontal_layout.addWidget(self.combo_box)
@@ -92,7 +92,7 @@ class PyDMEnumComboBox(QFrame, PyDMWritableWidget):
         new_enum_strings : tuple
             The new list of values
         """
-        super().enum_strings_changed(new_enum_strings)
+        super(PyDMEnumComboBox, self).enum_strings_changed(new_enum_strings)
         self.set_items(new_enum_strings)
 
     def value_changed(self, new_val):
@@ -106,7 +106,7 @@ class PyDMEnumComboBox(QFrame, PyDMWritableWidget):
             The new value from the channel. The type depends on the channel.
         """
         if new_val:
-            super().value_changed(new_val)
+            super(PyDMEnumComboBox, self).value_changed(new_val)
             self.combo_box.setCurrentIndex(new_val)
 
     # Internal combo box signal handling.

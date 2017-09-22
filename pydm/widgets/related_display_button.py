@@ -21,7 +21,8 @@ class PyDMRelatedDisplayButton(QFrame, PyDMWidget):
     NEW_WINDOW = 1;
 
     def __init__(self, parent=None, init_channel=None, filename=None):
-        super().__init__(parent, init_channel=init_channel)
+        QFrame.__init__(self, parent)
+        PyDMWidget.__init__(self, init_channel=init_channel)
         self._layout = QVBoxLayout(self)
         self._layout.setSpacing(0)
         self._layout.setContentsMargins(0, 0, 0, 0)

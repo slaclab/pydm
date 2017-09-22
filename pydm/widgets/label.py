@@ -14,7 +14,8 @@ class PyDMLabel(QLabel, PyDMWidget):
         The channel to be used by the widget.
     """
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMLabel, self).__init__(parent, init_channel=init_channel)
+        QLabel.__init__(self, parent)
+        PyDMWidget.__init__(self, init_channel=init_channel)
         self.setTextFormat(Qt.PlainText)
         self.setTextInteractionFlags(Qt.NoTextInteraction)
         self.setText("PyDMLabel")
@@ -29,7 +30,7 @@ class PyDMLabel(QLabel, PyDMWidget):
         new_value : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
         """
-        super().value_changed(new_value)
+        super(PyDMLabel, self).value_changed(new_value)
         # If the value is a string, just display it as-is, no formatting
         # needed.
         if isinstance(new_value, str):

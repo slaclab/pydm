@@ -52,7 +52,8 @@ class PyDMDrawing(QWidget, PyDMWidget):
         The channel to be used by the widget.
     """
     def __init__(self, parent=None, init_channel=None):
-        super().__init__(parent, init_channel=init_channel)
+        QWidget.__init__(self, parent)
+        PyDMWidget.__init__(self, init_channel=init_channel)
         self._rotation = 0.0
         self._brush = QBrush(Qt.SolidPattern)
         self._default_color = QColor()

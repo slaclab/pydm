@@ -15,7 +15,8 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         The channel to be used by the widget.
     """
     def __init__(self, parent=None, init_channel=None):
-        super().__init__(parent, init_channel=init_channel)
+        QDoubleSpinBox.__init__(self, parent)
+        PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self.valueBeingSet = False
         self.setEnabled(False)
         self._show_step_exponent = True
@@ -68,7 +69,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
                 self.send_value()
                 return True
 
-        return super().event(event)
+        return super(PyDMSpinbox, self).event(event)
 
     def update_step_size(self):
         """
@@ -108,7 +109,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         new_val : int or float
             The new value from the channel.
         """
-        super().value_changed(new_val)
+        super(PyDMSpinbox, self).value_changed(new_val)
         self.valueBeingSet = True
         self.setValue(new_val)
         self.valueBeingSet = False
@@ -134,7 +135,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         new_limit : float
             New value for the control limit
         """
-        super().ctrl_limit_changed(which, new_limit)
+        super(PyDMSpinbox, self).ctrl_limit_changed(which, new_limit)
         if which == "UPPER":
             self.setMaximum(new_limit)
         else:
@@ -151,7 +152,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         new_precison : int or float
             The new precision value
         """
-        super().precision_changed(new_precision)
+        super(PyDMSpinbox, self).precision_changed(new_precision)
         self.setDecimals(new_precision)
 
     @pyqtProperty(bool)

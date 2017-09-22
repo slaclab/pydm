@@ -20,7 +20,8 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMLineEdit, self).__init__(parent, init_channel=init_channel)
+        QLineEdit.__init__(self, parent)
+        PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self._display = None
         self._scale = 1
 
@@ -47,7 +48,7 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         value: str, float or int
             The new value of the channel
         """
-        super().value_changed(new_val)
+        super(PyDMLineEdit, self).value_changed(new_val)
         self.set_display()
 
     def send_value(self):
@@ -77,12 +78,12 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         """
         Change the PyDMLineEdit to read only if write access is denied
         """
-        super().write_access_changed(new_write_access)
+        super(PyDMLineEdit, self).write_access_changed(new_write_access)
         self.setEnabled(True)
         self.setReadOnly(not new_write_access)
 
     def precision_changed(self, new_precision):
-        super().precision_changed(new_precision)
+        super(PyDMLineEdit, self).precision_changed(new_precision)
         self.set_display()
 
     def unit_changed(self, new_unit):
@@ -93,7 +94,7 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         attribute. Receiving a new value for the unit causes the display to
         reset.
         """
-        super().unit_changed(new_unit)
+        super(PyDMLineEdit, self).unit_changed(new_unit)
         self._scale = 1
         self.set_display()
         self.create_unit_options()
@@ -192,4 +193,4 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         """
         if self._display is not None:
             self.setText(self._display)
-        super().focusOutEvent(event)
+        super(PyDMLineEdit, self).focusOutEvent(event)

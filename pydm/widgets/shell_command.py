@@ -9,7 +9,8 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
     """
 
     def __init__(self, parent=None, command=None):
-        super().__init__(parent)
+        QPushButton.__init__(self, parent)
+        PyDMPrimitiveWidget.__init__(self)
         self._command = command
         self.process = None
 
@@ -49,7 +50,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         """
 
         self.execute_command()
-        super().mouseReleaseEvent(mouse_event)
+        super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
 
     @pyqtSlot()
     def execute_command(self):

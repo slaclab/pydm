@@ -16,7 +16,8 @@ class PyDMSymbol(QWidget, PyDMWidget):
         The channel to be used by the widget.
     """
     def __init__(self, parent=None, init_channel=None):
-        super().__init__(parent, init_channel=init_channel)
+        QWidget.__init__(self, parent)
+        PyDMWidget.__init__(self, init_channel=init_channel)
         self.app = QApplication.instance()
         self._state_images = {}  # Keyed on state values (ints), values are (filename, qpixmap or qsvgrenderer) tuples.
         self._aspect_ratio_mode = Qt.KeepAspectRatio
@@ -120,7 +121,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
         connected : int
             When this value is 0 the channel is disconnected, 1 otherwise.
         """
-        super().connection_changed(connected)
+        super(PyDMSymbol, self).connection_changed(connected)
         self.update()
 
     def value_changed(self, new_val):
@@ -132,7 +133,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
         new_val : int
             The new value from the channel.
         """
-        super().value_changed(new_val)
+        super(PyDMSymbol, self).value_changed(new_val)
         self.update()
 
     def sizeHint(self):

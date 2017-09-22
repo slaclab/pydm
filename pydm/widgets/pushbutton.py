@@ -47,12 +47,12 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
                  pressValue=None, relative=False,
                  init_channel=None):
         if icon:
-            super().__init__(icon, label, parent, init_channel=init_channel)
+            QPushButton.__init__(self, icon, label, parent)
         elif label:
-            super().__init__(label, parent, init_channel=init_channel)
+            QPushButton.__init__(self, label, parent)
         else:
-            super().__init__(parent, init_channel=init_channel)
-
+            QPushButton.__init__(self, parent)
+        PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self._pressValue = pressValue
         self._relative = relative
 

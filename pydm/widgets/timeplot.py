@@ -122,7 +122,7 @@ class TimePlotCurveItem(PlotCurveItem):
     def max_x(self):
         return self.data_buffer[0, -1]
 
-class PyDMTimePlot(BasePlot, PyDMPrimitiveWidget):
+class PyDMTimePlot(BasePlot):
     SynchronousMode = 1
     AsynchronousMode = 2
     def __init__(self, parent=None, init_y_channels=[], background='default'):

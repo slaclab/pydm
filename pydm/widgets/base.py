@@ -35,7 +35,7 @@ def compose_stylesheet(style, base_class=None, obj=None):
     return style_str
 
 
-class PyDMPrimitiveWidget():
+class PyDMPrimitiveWidget(object):
     """
     Primitive class that determines that a given widget is a PyDMWidget.
     All Widget classes from PyDMWidget will be True for
@@ -115,7 +115,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
     }
 
     def __init__(self, init_channel=None):
-        super().__init__()
+        super(PyDMWidget, self).__init__()
         self._color = self.local_connection_status_color_map[False]
         self._channel = init_channel
         self._channels = None
@@ -675,7 +675,7 @@ class PyDMWritableWidget(PyDMWidget):
     send_value_signal = pyqtSignal([int], [float], [str], [bool], [np.ndarray])
 
     def __init__(self, init_channel=None):
-        super().__init__(init_channel=init_channel)
+        super(PyDMWidget, self).__init__(init_channel=init_channel)
         self._write_access = False
         self.installEventFilter(self)
 
@@ -684,7 +684,7 @@ class PyDMWritableWidget(PyDMWidget):
         Method called after the constructor to tweak configurations for
         when using the widget with the Qt Designer
         """
-        super().init_for_designer()
+        super(PyDMWidget, self).init_for_designer()
         self._write_access = True
 
     def eventFilter(self, obj, event):

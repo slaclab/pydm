@@ -17,7 +17,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
 
     """
     def __init__(self, parent=None):
-        super().__init__(parent=parent)
+        QFrame.__init__(self, parent)
+        PyDMPrimitiveWidget.__init__(self)
         self.app = QApplication.instance()
         self._filename = None
         self._macros = None

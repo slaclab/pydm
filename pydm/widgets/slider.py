@@ -22,7 +22,8 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
     valueChanged = pyqtSignal(float)
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMSlider, self).__init__(parent=parent, init_channel=init_channel)
+        QFrame.__init__(self, parent)
+        PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self.alarmSensitiveContent = True
         self.alarmSensitiveBorder = False
         # Internal values for properties
