@@ -4,6 +4,7 @@ from .. import utilities
 from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
 from pyqtgraph import PlotCurveItem
 from collections import OrderedDict
+from .base import PyDMPrimitiveWidget
 
 class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def __init__(self, parent=None, background='default', axisItems=None):

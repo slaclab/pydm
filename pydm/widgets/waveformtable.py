@@ -6,7 +6,8 @@ from .base import PyDMWritableWidget
 
 class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMWaveformTable, self).__init__(parent=parent, init_channel=init_channel)
+        QTableWidget.__init__(self, parent)
+        PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self.setColumnCount(1)
         self.columnHeader = "Value"
         self.waveform = None
