@@ -5,14 +5,16 @@ pydm is a PyQt-based framework for building user interfaces for control systems.
 
 # Prerequisites
 * Python 2.7 or 3.5
-* Qt 4.8 or higher
-* PyQt4 >=4.11 or PyQt5 >= 5.7
+* Qt 5.7 or higher
+* PyQt5 >= 5.7
 If you'd like to use Qt Designer (drag-and-drop tool to build interfaces) you'll need to make sure you have the PyQt plugin for Designer installed.  This usually happens automatically when you install PyQt from source, but if you install it from a package manager, it may be left out.
 
 Python package requirements are listed in the requirements.txt file, which can be used to install all requirements from pip: 'pip install -r requirements.txt'
 
-# PyQt4 and PyQt5
-PyDM can use either version of PyQt.  By default, it will first try to use PyQt4, and if that fails to import, it will try to use PyQt5.  If you'd like to force PyDM to use one or the other, you can set an environment variable named PYDM_QT_LIB to either 'PyQt4' or 'PyQt5'.  If you force a particular PyQt version, you will also have to force pyqtgraph to use the same version as PyDM, which you can do with its own environment variable: PYQTGRAPH_QT_LIB.
+# PyQt4 vs PyQt5
+In the early days of PyDM both Qt4 & Qt5 were supported and one could choose which version to use while running PyDM.
+This is no longer true as new features were needed, many bugs were faced and most recently the poor support for multiple inheritance with Qt4 and Designer.
+Based on that the support for Qt4 and PyQt4 is being dropped since Qt4.8.11 seems to be the last Qt4.x version to be released.
 
 # Running the Examples
 There are various examples of some of the features of the display manager.
