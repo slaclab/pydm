@@ -22,7 +22,8 @@ class CamViewer(Display):
         
         #Set up the list of cameras, and all the PVs
         test_dict = { "image": "ca://MTEST:Image", "max_width": "ca://MTEST:ImageWidth", "max_height": "ca://MTEST:ImageWidth", "roi_x": None, "roi_y": None, "roi_width": None, "roi_height": None }
-        self.cameras = { "VCC": vcc_dict, "C-Iris": c_iris_dict, "Test": test_dict }
+        #self.cameras = { "VCC": vcc_dict, "C-Iris": c_iris_dict, "Test": test_dict }
+        self.cameras = {"Test": test_dict }
         self._channels = []
         
         #Populate the camera combo box
