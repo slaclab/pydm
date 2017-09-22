@@ -675,7 +675,7 @@ class PyDMWritableWidget(PyDMWidget):
     send_value_signal = pyqtSignal([int], [float], [str], [bool], [np.ndarray])
 
     def __init__(self, init_channel=None):
-        super(PyDMWidget, self).__init__(init_channel=init_channel)
+        super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
         self._write_access = False
         self.installEventFilter(self)
 
