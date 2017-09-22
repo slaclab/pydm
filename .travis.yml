@@ -9,15 +9,9 @@ env:
 matrix:
   include:
     - python: 2.7
-      env: PYQT_VERSION=4
-    - python: 2.7
       env: PYQT_VERSION=5
     - python: 3.5
-      env: PYQT_VERSION=4
-    - python: 3.5
       env: PYQT_VERSION=5
-    - python: 3.6
-      env: PYQT_VERSION=4
     - python: 3.6
       env: PYQT_VERSION=5
 
