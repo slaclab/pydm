@@ -291,7 +291,10 @@ class Connection(PyDMConnection):
         """
         if self.count == 1:
             value = self.python_type(value)
-        self.pv.put(value)
+        try:
+            self.pv.put(value)
+        except pyca.caexc as e:
+            print("pyca error: {}".format(e))
 
     @pyqtSlot(np.ndarray)
     def put_waveform(self, value):
