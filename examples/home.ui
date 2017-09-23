@@ -484,7 +484,7 @@
                <string>Macro Variables and Related Display Buttons</string>
               </property>
               <property name="displayFilename" stdset="0">
-               <string>macros/basics/related_display_with_macro.ui</string>
+               <string>macros/basics/related_display_with_macros.ui</string>
               </property>
              </widget>
             </item>
@@ -548,6 +548,9 @@
               </property>
               <property name="text" stdset="0">
                <string>Python-based Display: Camera View Application</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>camviewer/camviewer.py</string>
               </property>
              </widget>
             </item>
