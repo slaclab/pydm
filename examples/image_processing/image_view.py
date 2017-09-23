@@ -41,9 +41,9 @@ class ImageViewer(Display):
         #Show number of blobs in text label  
         self.ui.numBlobsLabel.setText(str(len(blobs)))
         #Send the original image data to the image widget
-        self.ui.imageView.receiveImageWaveform(new_waveform)
+        self.ui.imageView.image_value_changed(new_waveform)
     
     def channels(self):
-        return [PyDMChannel(address=self.image_channel, waveform_slot=self.new_image_received)]
+        return [PyDMChannel(address=self.image_channel, value_slot=self.new_image_received)]
 
 intelclass = ImageViewer
