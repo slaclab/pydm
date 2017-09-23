@@ -53,7 +53,7 @@ setup(
     packages=find_packages(),
     description='Python Display Manager',
     url='https://github.com/slaclab/pydm',
-    scripts=['scripts/pydm', 'scripts/pydm-testing-ioc', 'scripts/access_rules.as'],
+    scripts=['scripts/pydm', 'scripts/pydm-testing-ioc'],
     package_data={'pydm': ['data/access_rules.as']},
     license='BSD',
 
