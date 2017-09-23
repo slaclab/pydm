@@ -138,8 +138,9 @@ class PyDMImageView(ImageView, PyDMWidget):
         self.getView().setBackgroundColor(cmap.map(0))
         lut = cmap.getLookupTable(0.0, 1.0, self.data_max_int, alpha=False)
         self.getImageItem().setLookupTable(lut)
-        self.getImageItem().setLevels([self.cm_min, float(self.data_max_int)])  # set levels from min to max of image (may improve min here)
+        self.getImageItem().setLevels([self.cm_min, float(min(self.cm_max, self.data_max_int))])  # set levels from min to max of image (may improve min here)
 
+    @pyqtSlot(np.ndarray)
     def image_value_changed(self, new_image):
         """
         Callback invoked when the Image Channel value is changed.
