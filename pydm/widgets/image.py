@@ -151,7 +151,6 @@ class PyDMImageView(ImageView, PyDMWidget):
         new_image : np.ndarray
             The new image data as a flat array
         """
-        print(new_image)
         if new_image is None:
             return
         if len(new_image.shape) == 1:
