@@ -25,7 +25,7 @@
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
-     <property name="channel">
+     <property name="channel" stdset="0">
       <string>ca://${prefix}:String</string>
      </property>
     </widget>

@@ -1,6 +1,5 @@
-from ..PyQt.QtGui import QLabel, QApplication, QColor
+from ..PyQt.QtGui import QColor
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
-from pyqtgraph import PlotWidget
 from pyqtgraph import PlotCurveItem
 import numpy as np
 from .baseplot import BasePlot
@@ -56,7 +55,7 @@ class WaveformCurveItem(PlotCurveItem):
         if new_address is None or len(str(new_address)) < 1:
             self.x_channel = None
             return
-        self.x_channel = PyDMChannel(address=new_address, connection_slot=self.xConnectionStateChanged, waveform_slot=self.receiveXWaveform)
+        self.x_channel = PyDMChannel(address=new_address, connection_slot=self.xConnectionStateChanged, value_slot=self.receiveXWaveform)
     
     @property
     def y_address(self):
@@ -69,7 +68,7 @@ class WaveformCurveItem(PlotCurveItem):
         if new_address is None or len(str(new_address)) < 1:
             self.y_channel = None
             return
-        self.y_channel = PyDMChannel(address=new_address, connection_slot=self.yConnectionStateChanged, waveform_slot=self.receiveYWaveform)
+        self.y_channel = PyDMChannel(address=new_address, connection_slot=self.yConnectionStateChanged, value_slot=self.receiveYWaveform)
     
     def to_dict(self):
         return OrderedDict([("y_channel", self.y_address), ("x_channel", self.x_address), ("name", self.name()), ("color", self.color_string)])

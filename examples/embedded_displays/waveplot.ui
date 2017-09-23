@@ -46,11 +46,10 @@
      <property name="title" stdset="0">
       <string>Waveform</string>
      </property>
-     <property name="yChannel">
-      <string>ca://MTEST:Waveform</string>
-     </property>
-     <property name="xChannel">
-      <string>ca://MTEST:TimeBase</string>
+     <property name="curves">
+      <stringlist>
+       <string>{&quot;y_channel&quot;: &quot;ca://MTEST:Waveform&quot;, &quot;x_channel&quot;: &quot;ca://MTEST:TimeBase&quot;, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;white&quot;}</string>
+      </stringlist>
      </property>
     </widget>
    </item>

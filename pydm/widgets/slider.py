@@ -1,41 +1,33 @@
 from ..PyQt.QtGui import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
-from ..PyQt.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
-from .channel import PyDMChannel
+from ..PyQt.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty
+from .base import PyDMWritableWidget, compose_stylesheet
 import numpy as np
 
-class PyDMSlider(QFrame):
+class PyDMSlider(QFrame, PyDMWritableWidget):
+    """
+    A QSlider with support for Channels and more from PyDM.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    """
     actionTriggered = pyqtSignal(int)
     rangeChanged = pyqtSignal(float, float)
     sliderMoved = pyqtSignal(float)
     sliderPressed = pyqtSignal()
     sliderReleased = pyqtSignal()
     valueChanged = pyqtSignal(float)
-    
-    ALARM_NONE = 0
-    ALARM_MINOR = 1
-    ALARM_MAJOR = 2
-    ALARM_INVALID = 3
-    ALARM_DISCONNECTED = 4
-    alarm_style_sheet_map = {
-        ALARM_NONE: "QLabel {color: black;}",
-        ALARM_MINOR: "QLabel {color: yellow;}",
-        ALARM_MAJOR: "QLabel {color: red;}",
-        ALARM_INVALID: "QLabel {color: purple;}",
-        ALARM_DISCONNECTED: "QLabel {color: white;}"
-    }
-    
-    def __init__(self, parent=None):
-        super(PyDMSlider, self).__init__(parent=parent)
-        #Internal values for properties
-        self._connected = False
-        self._write_access = False
+
+    def __init__(self, parent=None, init_channel=None):
+        QFrame.__init__(self, parent)
+        PyDMWritableWidget.__init__(self, init_channel=init_channel)
+        self.alarmSensitiveContent = True
+        self.alarmSensitiveBorder = False
+        # Internal values for properties
         self.set_enable_state()
-        self._channels = None
-        self._channel = ""
-        self._value = None
-        self._user_defined_prec = False
-        self._prec = 5
-        self._format_string = "{:." + str(self._prec) + "f}"
         self._show_limit_labels = True
         self._show_value_label = True
         self._user_defined_limits = False
@@ -51,42 +43,70 @@ class PyDMSlider(QFrame):
         label_size_policy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
         self.low_lim_label = QLabel(self)
         self.low_lim_label.setSizePolicy(label_size_policy)
-        self.low_lim_label.setAlignment(Qt.AlignLeft|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.low_lim_label.setAlignment(Qt.AlignLeft | Qt.AlignTrailing | Qt.AlignVCenter)
         self.value_label = QLabel(self)
-        self.value_label.setAlignment(Qt.AlignHCenter|Qt.AlignVCenter)
+        self.value_label.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
         self.high_lim_label = QLabel(self)
         self.high_lim_label.setSizePolicy(label_size_policy)
-        self.high_lim_label.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.high_lim_label.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
         self._slider = QSlider(parent=self)
         self._slider.setOrientation(Qt.Horizontal)
         self._slider.sliderMoved.connect(self.internal_slider_moved)
         self._slider.sliderPressed.connect(self.internal_slider_pressed)
         self._slider.sliderReleased.connect(self.internal_slider_released)
         self._slider.valueChanged.connect(self.internal_slider_value_changed)
-        #self.vertical_layout.addWidget(self._slider)
-        #Other internal variables and final setup steps
+        # self.vertical_layout.addWidget(self._slider)
+        # Other internal variables and final setup steps
         self._slider_position_to_value_map = None
         self._mute_internal_slider_changes = False
         self.setup_widgets_for_orientation(self._orientation)
         self.reset_slider_limits()
-    
+
     def init_for_designer(self):
-      self._value = 0.0
-    
+        """
+        Method called after the constructor to tweak configurations for
+        when using the widget with the Qt Designer
+        """
+        self.value = 0.0
+
     @pyqtProperty(Qt.Orientation)
     def orientation(self):
+        """
+        The slider orientation (Horizontal or Vertical)
+
+        Returns
+        -------
+        int
+            Qt.Horizontal or Qt.Vertical
+        """
         return self._orientation
-    
+
     @orientation.setter
     def orientation(self, new_orientation):
+        """
+        The slider orientation (Horizontal or Vertical)
+
+        Parameters
+        ----------
+        new_orientation : int
+            Qt.Horizontal or Qt.Vertical
+        """
         self._orientation = new_orientation
         self.setup_widgets_for_orientation(new_orientation)
-        
+
     def setup_widgets_for_orientation(self, new_orientation):
+        """
+        Reconstruct the widget given the orientation.
+
+        Parameters
+        ----------
+        new_orientation : int
+            Qt.Horizontal or Qt.Vertical
+        """
         layout = None
         if new_orientation == Qt.Horizontal:
             layout = QVBoxLayout()
-            layout.setContentsMargins(4,0,4,4)
+            layout.setContentsMargins(4, 0, 4, 4)
             label_layout = QHBoxLayout()
             label_layout.addWidget(self.low_lim_label)
             label_layout.addStretch(0)
@@ -98,7 +118,7 @@ class PyDMSlider(QFrame):
             layout.addWidget(self._slider)
         elif new_orientation == Qt.Vertical:
             layout = QHBoxLayout()
-            layout.setContentsMargins(0,4,4,4)
+            layout.setContentsMargins(0, 4, 4, 4)
             label_layout = QVBoxLayout()
             label_layout.addWidget(self.high_lim_label)
             label_layout.addStretch(0)
@@ -109,32 +129,38 @@ class PyDMSlider(QFrame):
             self._slider.setOrientation(new_orientation)
             layout.addWidget(self._slider)
         if self.layout() is not None:
-            # Trick to remove the existing layout by reparenting it in an empty widget.
+            # Trick to remove the existing layout by re-parenting it in an empty widget.
             QWidget().setLayout(self.layout())
         self.setLayout(layout)
-    
+
     def update_labels(self):
+        """
+        Update the limits and value labels with the correct values.
+        """
         if self.minimum is None:
             self.low_lim_label.setText("")
         else:
-            self.low_lim_label.setText(self._format_string.format(self.minimum))
+            self.low_lim_label.setText(self.format_string.format(self.minimum))
         if self.maximum is None:
             self.high_lim_label.setText("")
         else:
-            self.high_lim_label.setText(self._format_string.format(self.maximum))
+            self.high_lim_label.setText(self.format_string.format(self.maximum))
         if self.value is None:
             self.value_label.setText("")
         else:
-            self.value_label.setText(self._format_string.format(self.value))
-        
+            self.value_label.setText(self.format_string.format(self.value))
+
     def reset_slider_limits(self):
+        """
+        Reset the limits and adjust the labels properly for the slider.
+        """
         if self.minimum is None or self.maximum is None:
             self._needs_limit_info = True
             self.set_enable_state()
             return
         self._needs_limit_info = False
         self._slider.setMinimum(0)
-        self._slider.setMaximum(self._num_steps-1)
+        self._slider.setMaximum(self._num_steps - 1)
         self._slider.setSingleStep(1)
         self._slider.setPageStep(10)
         self._slider_position_to_value_map = np.linspace(self.minimum, self.maximum, num=self._num_steps)
@@ -142,12 +168,31 @@ class PyDMSlider(QFrame):
         self.set_slider_to_closest_value(self.value)
         self.rangeChanged.emit(self.minimum, self.maximum)
         self.set_enable_state()
-    
+
     def find_closest_slider_position_to_value(self, val):
+        """
+        Find and returns the index for the closest position on the slider
+        for a given value.
+
+        Parameters
+        ----------
+        val : float
+
+        Returns
+        -------
+        int
+        """
         diff = abs(self._slider_position_to_value_map - float(val))
         return np.argmin(diff)
-    
+
     def set_slider_to_closest_value(self, val):
+        """
+        Set the value for the slider according to a given value.
+
+        Parameters
+        ----------
+        val : float
+        """
         if val is None or self._needs_limit_info:
             return
         # When we set the slider to the closest value, it may end up at a slightly
@@ -161,101 +206,156 @@ class PyDMSlider(QFrame):
         self._mute_internal_slider_changes = True
         self._slider.setValue(self.find_closest_slider_position_to_value(val))
         self._mute_internal_slider_changes = False
-        
-    @pyqtProperty(float)
-    def value(self):
-        return self._value
-    
-    @value.setter
-    def value(self, new_val):
-        self._value = float(new_val)
-        self.value_label.setText(self._format_string.format(self._value))
+
+    def value_changed(self, new_val):
+        """
+        Callback invoked when the Channel value is changed.
+
+        Parameters
+        ----------
+        new_val : int or float
+            The new value from the channel.
+        """
+        PyDMWritableWidget.value_changed(self, new_val)
+        if hasattr(self, "value_label"):
+            self.value_label.setText(self.format_string.format(self.value))
         if not self._slider.isSliderDown():
-            self.set_slider_to_closest_value(self._value)
-        
-    @pyqtSlot(int)
-    @pyqtSlot(float)
-    @pyqtSlot(str)
-    def receiveValue(self, val):
-        self.value = val
-        
-    @pyqtSlot(bool)
-    def connectionStateChanged(self, connected):
-        self._connected = connected
-        self.set_enable_state()
-        if not self._connected:
-            self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
-    
-    @pyqtSlot(bool)
-    def writeAccessChanged(self, write_access):
-        self._write_access = write_access
-        self.set_enable_state()
-    
-    @pyqtSlot(int)
-    def alarmSeverityChanged(self, new_alarm_severity):
-        self.value_label.setStyleSheet(self.alarm_style_sheet_map[new_alarm_severity])
-    
-    @pyqtSlot(int)
-    def precisionChanged(self, new_prec):
-        if not self._user_defined_prec:
-            self.precision = new_prec
-    
-    @pyqtSlot(float)
-    def lowerCtrlLimitChanged(self, new_lower_limit):
-        self._minimum = new_lower_limit
+            self.set_slider_to_closest_value(self.value)
+
+    def alarm_severity_changed(self, new_alarm_severity):
+        """
+        Callback invoked when the Channel alarm severity is changed.
+        This callback is not processed if the widget has no channel
+        associated with it.
+        This callback handles the composition of the stylesheet to be
+        applied and the call
+        to update to redraw the widget with the needed changes for the
+        new state.
+
+        Parameters
+        ----------
+        new_alarm_severity : int
+            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
+            and 3 = INVALID
+        """
+        PyDMWritableWidget.alarm_severity_changed(self, new_alarm_severity)
+        if hasattr(self, "value_label"):
+            if self._channels is not None:
+                style = compose_stylesheet(style=self._style, obj=self.value_label)
+                self.value_label.setStyleSheet(style)
+                self.update()
+
+    def ctrl_limit_changed(self, which, new_limit):
+        """
+        Callback invoked when the Channel receives new control limit
+        values.
+
+        Parameters
+        ----------
+        which : str
+            Which control limit was changed. "UPPER" or "LOWER"
+        new_limit : float
+            New value for the control limit
+        """
+        PyDMWritableWidget.ctrl_limit_changed(self, which, new_limit)
         if not self.userDefinedLimits:
             self.reset_slider_limits()
-        
-    @pyqtSlot(float)
-    def upperCtrlLimitChanged(self, new_upper_limit):
-        self._maximum = new_upper_limit
-        if not self.userDefinedLimits:
-            self.reset_slider_limits()
-    
+
+    def update_format_string(self):
+        """
+        Reconstruct the format string to be used when representing the
+        output value.
+
+        Returns
+        -------
+        format_string : str
+            The format string to be used including or not the precision
+            and unit
+        """
+        fs = PyDMWritableWidget.update_format_string(self)
+        self.update_labels()
+        return fs
+
     def set_enable_state(self):
+        """
+        Determines wether or not the widget must be enabled or not depending
+        on the write access, connection state and presence of limits information
+        """
         self.setEnabled(self._write_access and self._connected and not self._needs_limit_info)
-        
+
     @pyqtSlot(int)
     def internal_slider_action_triggered(self, action):
         self.actionTriggered.emit(action)
-    
+
     @pyqtSlot(int)
     def internal_slider_moved(self, val):
-        #The user has moved the slider, we need to update our value.
-        #Only update the underlying value, not the self.value property,
-        #because we don't need to reset the slider position.    If we change
-        #self.value, we can get into a loop where the position changes, which
-        #updates the value, which changes the position again, etc etc.
-        self._value = self._slider_position_to_value_map[val]
+        """
+        Method invoked when the slider is moved.
+
+        Parameters
+        ----------
+        val : float
+        """
+        # The user has moved the slider, we need to update our value.
+        # Only update the underlying value, not the self.value property,
+        # because we don't need to reset the slider position.    If we change
+        # self.value, we can get into a loop where the position changes, which
+        # updates the value, which changes the position again, etc etc.
+        self.value = self._slider_position_to_value_map[val]
         self.sliderMoved.emit(self.value)
-    
+
     @pyqtSlot()
     def internal_slider_pressed(self):
+        """
+        Method invoked when the slider is pressed
+        """
         self.sliderPressed.emit()
-    
+
     @pyqtSlot()
     def internal_slider_released(self):
+        """
+        Method invoked when the slider is released
+        """
         self.sliderReleased.emit()
-    
+
     @pyqtSlot(int)
     def internal_slider_value_changed(self, val):
-        #At this point, our local copy of the value reflects the position of the
-        #slider, now all we need to do is emit a signal to PyDM so that the data
-        #plugin will send a put to the channel.  Don't update self.value or self._value
-        #in here, it is pointless at best, and could cause an infinite loop at worst.
+        """
+        Method invoked when a new value is selected on the slider.
+        This will cause the new value to be emitted to the signal
+        unless `mute_internal_slider_changes` is True.
+
+        Parameters
+        ----------
+        val : int
+        """
+        # At this point, our local copy of the value reflects the position of the
+        # slider, now all we need to do is emit a signal to PyDM so that the data
+        # plugin will send a put to the channel.  Don't update self.value or self._value
+        # in here, it is pointless at best, and could cause an infinite loop at worst.
         if not self._mute_internal_slider_changes:
-            self.valueChanged.emit(self.value)
-    
-    @pyqtProperty(bool, doc=
-    """
-    showLimitLabels: Whether or not the high and low limits should be displayed on the slider.
-    """
-    )
+            self.send_value_signal[float].emit(self.value)
+
+    @pyqtProperty(bool)
     def showLimitLabels(self):
+        """
+        Whether or not the high and low limits should be displayed on the slider.
+
+        Returns
+        -------
+        bool
+        """
         return self._show_limit_labels
-        
+
     @showLimitLabels.setter
     def showLimitLabels(self, checked):
+        """
+        Whether or not the high and low limits should be displayed on the slider.
+
+        Parameters
+        ----------
+        checked : bool
+        """
         self._show_limit_labels = checked
         if checked:
             self.low_lim_label.show()
@@ -263,121 +363,173 @@ class PyDMSlider(QFrame):
         else:
             self.low_lim_label.hide()
             self.high_lim_label.hide()
-    
-    @pyqtProperty(bool, doc=
-    """
-    showValueLabel: Whether or not the current value should be displayed on the slider.
-    """
-    )
+
+    @pyqtProperty(bool)
     def showValueLabel(self):
+        """
+        Whether or not the current value should be displayed on the slider.
+
+        Returns
+        -------
+        bool
+        """
         return self._show_value_label
-        
+
     @showValueLabel.setter
     def showValueLabel(self, checked):
+        """
+        Whether or not the current value should be displayed on the slider.
+
+        Parameters
+        ----------
+        checked : bool
+        """
         self._show_value_label = checked
         if checked:
             self.value_label.show()
         else:
             self.value_label.hide()
-    
-    @pyqtProperty(QSlider.TickPosition, doc=
-    """
-    Where to draw tick marks for the slider.
-    """
-    )
+
+    @pyqtProperty(QSlider.TickPosition)
     def tickPosition(self):
+        """
+        Where to draw tick marks for the slider.
+
+        Returns
+        -------
+        QSlider.TickPosition
+        """
         return self._slider.tickPosition()
-    
+
     @tickPosition.setter
     def tickPosition(self, position):
+        """
+        Where to draw tick marks for the slider.
+
+        Parameter
+        ---------
+        position : QSlider.TickPosition
+        """
         self._slider.setTickPosition(position)
-    
+
     @pyqtProperty(bool)
     def userDefinedLimits(self):
+        """
+        Wether or not to use limits defined by the user and not from the
+        channel
+
+        Returns
+        -------
+        bool
+        """
         return self._user_defined_limits
-    
+
     @userDefinedLimits.setter
     def userDefinedLimits(self, user_defined_limits):
+        """
+        Wether or not to use limits defined by the user and not from the
+        channel
+
+        Parameters
+        ----------
+        user_defined_limits : bool
+        """
         self._user_defined_limits = user_defined_limits
         self.reset_slider_limits()
-        
+
     @pyqtProperty(float)
     def userMinimum(self):
+        """
+        Lower user defined limit value
+
+        Returns
+        -------
+        float
+        """
         return self._user_minimum
-    
+
     @userMinimum.setter
     def userMinimum(self, new_min):
+        """
+        Lower user defined limit value
+
+        Parameters
+        ----------
+        new_min : float
+        """
         self._user_minimum = float(new_min)
         if self.userDefinedLimits:
             self.reset_slider_limits()
-    
+
     @pyqtProperty(float)
     def userMaximum(self):
+        """
+        Upper user defined limit value
+
+        Returns
+        -------
+        float
+        """
         return self._user_maximum
-    
+
     @userMaximum.setter
     def userMaximum(self, new_max):
+        """
+        Upper user defined limit value
+
+        Parameters
+        ----------
+        new_max : float
+        """
         self._user_maximum = float(new_max)
         if self.userDefinedLimits:
             self.reset_slider_limits()
-    
+
     @property
     def minimum(self):
+        """
+        The current value being used for the lower limit
+
+        Returns
+        -------
+        float
+        """
         if self.userDefinedLimits:
             return self._user_minimum
-        return self._minimum
-    
+        return self._lower_ctrl_limit
+
     @property
     def maximum(self):
+        """
+        The current value being used for the upper limit
+
+        Returns
+        -------
+        float
+        """
         if self.userDefinedLimits:
             return self._user_maximum
-        return self._maximum
-    
+        return self._upper_ctrl_limit
+
     @pyqtProperty(int)
     def num_steps(self):
+        """
+        The number of steps on the slider
+
+        Returns
+        -------
+        int
+        """
         return self._num_steps
-    
+
     @num_steps.setter
     def num_steps(self, new_steps):
+        """
+        The number of steps on the slider
+
+        Parameters
+        ----------
+        new_steps : int
+        """
         self._num_steps = int(new_steps)
         self.reset_slider_limits()
-    
-    @pyqtProperty(bool)
-    def userDefinedPrecision(self):
-        return self._user_defined_prec
-    
-    @userDefinedPrecision.setter
-    def userDefinedPrecision(self, user_defined_prec):
-        self._user_defined_prec = user_defined_prec
-    
-    @pyqtProperty(int)
-    def precision(self):
-        return self._prec
-    
-    @precision.setter
-    def precision(self, new_prec):
-        self._prec = new_prec
-        self._format_string = "{:." + str(self._prec) + "f}"
-        self.update_labels()
-    
-    def getChannel(self):
-        if self._channel is None:
-            return ""
-        return str(self._channel)
-    
-    def setChannel(self, value):
-        if self._channel != value:
-            self._channel = str(value)
-
-    def resetChannel(self):
-        if self._channel is not None:
-            self._channel = None
-    channel = pyqtProperty(str, getChannel, setChannel, resetChannel)
-
-    def channels(self):
-        if self._channels is None:
-            self._channels = [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, severity_slot=self.alarmSeverityChanged, write_access_slot=self.writeAccessChanged, value_signal=self.valueChanged, prec_slot=self.precisionChanged, upper_ctrl_limit_slot=self.upperCtrlLimitChanged, lower_ctrl_limit_slot=self.lowerCtrlLimitChanged)]
-        return self._channels
-
-
-

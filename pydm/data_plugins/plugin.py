@@ -2,8 +2,7 @@ from numpy import ndarray
 from ..PyQt.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
 
 class PyDMConnection(QObject):
-    new_value_signal =        pyqtSignal([float],[int],[str])
-    new_waveform_signal =     pyqtSignal(ndarray)
+    new_value_signal =        pyqtSignal([float],[int],[str], [ndarray])
     connection_state_signal = pyqtSignal(bool)
     new_severity_signal =     pyqtSignal(int)
     write_access_signal =     pyqtSignal(bool)
@@ -34,10 +33,11 @@ class PyDMConnection(QObject):
                 self.new_value_signal[str].connect(channel.value_slot, Qt.QueuedConnection)
             except TypeError:
                 pass
+            try:
+                self.new_value_signal[ndarray].connect(channel.value_slot, Qt.QueuedConnection)
+            except TypeError:
+                pass
 
-        if channel.waveform_slot is not None:
-            self.new_waveform_signal.connect(channel.waveform_slot, Qt.QueuedConnection)
-    
         if channel.severity_slot is not None:
             self.new_severity_signal.connect(channel.severity_slot, Qt.QueuedConnection)
 

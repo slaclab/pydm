@@ -22,10 +22,10 @@
      <property name="whatsThis">
       <string/>
      </property>
-     <property name="imageChannel">
+     <property name="imageChannel" stdset="0">
       <string/>
      </property>
-     <property name="widthChannel">
+     <property name="widthChannel" stdset="0">
       <string/>
      </property>
     </widget>

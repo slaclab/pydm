@@ -1,30 +1,30 @@
 from ..widgets.qtplugin_base import qtplugin_factory
 
 def test_import_byte_plugin():
-	# Byte plugin
-	from ..widgets.byte import PyDMByteIndicator
-	PyDMByteIndicatorPlugin = qtplugin_factory(PyDMByteIndicator)
+    # Byte plugin
+    from ..widgets.byte import PyDMByteIndicator
+    PyDMByteIndicatorPlugin = qtplugin_factory(PyDMByteIndicator)
 
 def test_import_checkbox_plugin():
-	# Checkbox plugin
-	from ..widgets.checkbox import PyDMCheckbox
-	PyDMCheckboxPlugin = qtplugin_factory(PyDMCheckbox)
+    # Checkbox plugin
+    from ..widgets.checkbox import PyDMCheckbox
+    PyDMCheckboxPlugin = qtplugin_factory(PyDMCheckbox)
 
 def test_import_drawing_plugins():
-	# Drawing plugins
-	from ..widgets.drawing import (PyDMDrawingLine, PyDMDrawingRectangle, PyDMDrawingTriangle,
-    			                  PyDMDrawingEllipse, PyDMDrawingCircle, PyDMDrawingArc,
-                			      PyDMDrawingPie, PyDMDrawingChord, PyDMDrawingImage)
+    # Drawing plugins
+    from ..widgets.drawing import (PyDMDrawingLine, PyDMDrawingRectangle, PyDMDrawingTriangle,
+                                  PyDMDrawingEllipse, PyDMDrawingCircle, PyDMDrawingArc,
+                                  PyDMDrawingPie, PyDMDrawingChord, PyDMDrawingImage)
 
-	PyDMDrawingImagePlugin = qtplugin_factory(PyDMDrawingImage)
-	PyDMDrawingLinePlugin = qtplugin_factory(PyDMDrawingLine)
-	PyDMDrawingRectanglePlugin = qtplugin_factory(PyDMDrawingRectangle)
-	PyDMDrawingTrianglePlugin = qtplugin_factory(PyDMDrawingTriangle)
-	PyDMDrawingEllipsePlugin = qtplugin_factory(PyDMDrawingEllipse)
-	PyDMDrawingCirclePlugin = qtplugin_factory(PyDMDrawingCircle)
-	PyDMDrawingArcPlugin = qtplugin_factory(PyDMDrawingArc)
-	PyDMDrawingPiePlugin = qtplugin_factory(PyDMDrawingPie)
-	PyDMDrawingChordPlugin = qtplugin_factory(PyDMDrawingChord)
+    PyDMDrawingImagePlugin = qtplugin_factory(PyDMDrawingImage)
+    PyDMDrawingLinePlugin = qtplugin_factory(PyDMDrawingLine)
+    PyDMDrawingRectanglePlugin = qtplugin_factory(PyDMDrawingRectangle)
+    PyDMDrawingTrianglePlugin = qtplugin_factory(PyDMDrawingTriangle)
+    PyDMDrawingEllipsePlugin = qtplugin_factory(PyDMDrawingEllipse)
+    PyDMDrawingCirclePlugin = qtplugin_factory(PyDMDrawingCircle)
+    PyDMDrawingArcPlugin = qtplugin_factory(PyDMDrawingArc)
+    PyDMDrawingPiePlugin = qtplugin_factory(PyDMDrawingPie)
+    PyDMDrawingChordPlugin = qtplugin_factory(PyDMDrawingChord)
 
 def test_import_embedded_display_plugin():
     # Embedded Display plugin

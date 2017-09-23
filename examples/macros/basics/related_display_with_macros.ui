@@ -22,13 +22,13 @@
      <property name="whatsThis">
       <string/>
      </property>
-     <property name="text">
+     <property name="text" stdset="0">
       <string>Launch Display With Macro</string>
      </property>
-     <property name="displayFilename">
+     <property name="displayFilename" stdset="0">
       <string>macro_pv.ui</string>
      </property>
-     <property name="macros">
+     <property name="macros" stdset="0">
       <string>{&quot;prefix&quot;: &quot;MTEST&quot;}</string>
      </property>
     </widget>
@@ -38,7 +38,7 @@
  <customwidgets>
   <customwidget>
    <class>PyDMRelatedDisplayButton</class>
-   <extends>QPushButton</extends>
+   <extends>QFrame</extends>
    <header>pydm.widgets.related_display_button</header>
   </customwidget>
  </customwidgets>

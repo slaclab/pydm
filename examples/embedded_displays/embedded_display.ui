@@ -6,14 +6,30 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>590</width>
-    <height>406</height>
+    <width>622</width>
+    <height>467</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>This display contains an embedded display widget, which loads another display from a file and nests it inside this one.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="PyDMEmbeddedDisplay" name="PyDMEmbeddedDisplay">
      <property name="toolTip">
@@ -26,17 +42,17 @@
     gui this widget is in.
     </string>
      </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>2</number>
+     </property>
      <property name="filename" stdset="0">
       <string>waveplot.ui</string>
-     </property>
-     <property name="display_filenames" stdset="0">
-      <stringlist>
-       <string>waveplot.ui</string>
-       <string>somethingelse.ui</string>
-      </stringlist>
-     </property>
-     <property name="active_display_filename" stdset="0">
-      <string/>
      </property>
     </widget>
    </item>

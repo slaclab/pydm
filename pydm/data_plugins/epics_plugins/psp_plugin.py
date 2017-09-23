@@ -254,7 +254,7 @@ class Connection(PyDMConnection):
                 pass
 
         if self.count > 1:
-            self.new_waveform_signal.emit(value)
+            self.new_value_signal[np.ndarray].emit(value)
         else:
             self.new_value_signal[self.python_type].emit(self.python_type(value))
 
@@ -291,7 +291,10 @@ class Connection(PyDMConnection):
         """
         if self.count == 1:
             value = self.python_type(value)
-        self.pv.put(value)
+        try:
+            self.pv.put(value)
+        except pyca.caexc as e:
+            print("pyca error: {}".format(e))
 
     @pyqtSlot(np.ndarray)
     def put_waveform(self, value):
@@ -372,9 +375,8 @@ class Connection(PyDMConnection):
                 channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
-        if channel.waveform_signal is not None:
             try:
-                channel.waveform_signal.connect(self.put_value, Qt.QueuedConnection)
+                channel.value_signal[np.ndarray].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
 

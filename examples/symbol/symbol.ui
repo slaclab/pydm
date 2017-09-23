@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="PyDMSymbol" name="PyDMSymbol">
+    <widget class="PyDMSymbol" name="PyDMSymbol" native="true">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -50,7 +50,7 @@
      <property name="whatsThis">
       <string/>
      </property>
-     <property name="channel">
+     <property name="channel" stdset="0">
       <string>ca://MTEST:Run</string>
      </property>
     </widget>

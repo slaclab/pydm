@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>353</width>
-    <height>100</height>
+    <height>128</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,10 +45,16 @@
      <property name="whatsThis">
       <string/>
      </property>
-     <property name="text">
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Float</string>
+     </property>
+     <property name="text" stdset="0">
       <string>Open Display 1...</string>
      </property>
-     <property name="displayFilename">
+     <property name="displayFilename" stdset="0">
       <string>display1.ui</string>
      </property>
     </widget>
@@ -58,7 +64,7 @@
  <customwidgets>
   <customwidget>
    <class>PyDMRelatedDisplayButton</class>
-   <extends>QPushButton</extends>
+   <extends>QFrame</extends>
    <header>pydm.widgets.related_display_button</header>
   </customwidget>
  </customwidgets>

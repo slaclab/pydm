@@ -22,11 +22,11 @@
      <property name="whatsThis">
       <string>Displays an image from a PV.</string>
      </property>
-     <property name="imageChannel">
-      <string>ca://CAMR:IN20:186:IMAGE</string>
+     <property name="imageChannel" stdset="0">
+      <string>ca://MTEST:Image</string>
      </property>
-     <property name="widthChannel">
-      <string>ca://CAMR:IN20:186:N_OF_COL</string>
+     <property name="widthChannel" stdset="0">
+      <string>ca://MTEST:ImageWidth</string>
      </property>
     </widget>
    </item>

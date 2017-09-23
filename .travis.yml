@@ -1,17 +1,17 @@
 language: python
 
+env:
+  global:
+    # Variables jut to silence pcaspy setup.
+    - EPICS_BASE=~
+    - EPICS_HOST_ARCH=linux-x86_64
+
 matrix:
   include:
     - python: 2.7
-      env: PYQT_VERSION=4
-    - python: 2.7
       env: PYQT_VERSION=5
     - python: 3.5
-      env: PYQT_VERSION=4
-    - python: 3.5
       env: PYQT_VERSION=5
-    - python: 3.6
-      env: PYQT_VERSION=4
     - python: 3.6
       env: PYQT_VERSION=5
 
@@ -36,8 +36,7 @@ before_install:
   - pip install requests pyepics coverage codecov coveralls pytest pytest-cov
 
 install:
-    # Commented out while package is not there.
-    #- python setup.py develop
+  - python setup.py install
 
 script:
   - py.test -sv --cov=pydm --cov-report term-missing

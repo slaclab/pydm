@@ -23,7 +23,7 @@ class CamViewer(Display):
         #Set up the list of cameras, and all the PVs
         test_dict = { "image": "ca://MTEST:Image", "max_width": "ca://MTEST:ImageWidth", "max_height": "ca://MTEST:ImageWidth", "roi_x": None, "roi_y": None, "roi_width": None, "roi_height": None }
         #self.cameras = { "VCC": vcc_dict, "C-Iris": c_iris_dict, "Test": test_dict }
-        self.cameras = {"Test": test_dict }
+        self.cameras = {"Testing IOC Image": test_dict }
         self._channels = []
         
         #Populate the camera combo box
@@ -254,7 +254,7 @@ class CamViewer(Display):
         self.roiWidthChannel = self.cameras[new_camera]["roi_width"]
         self.roiHeightChannel = self.cameras[new_camera]["roi_height"]
         
-        self._channels = [PyDMChannel(address=self.imageChannel, connection_slot=self.connectionStateChanged, waveform_slot=self.receiveImageWaveform, severity_slot=self.alarmSeverityChanged),
+        self._channels = [PyDMChannel(address=self.imageChannel, connection_slot=self.connectionStateChanged, value_slot=self.receiveImageWaveform, severity_slot=self.alarmSeverityChanged),
                                             PyDMChannel(address=self.widthChannel, value_slot=self.receiveImageWidth),
                                             PyDMChannel(address=self.maxWidthChannel, value_slot=self.receiveMaxWidth),
                                             PyDMChannel(address=self.maxHeightChannel, value_slot=self.receiveMaxHeight)]
@@ -402,7 +402,7 @@ class CamViewer(Display):
             self.image_data = new_waveform.reshape((int(self.image_width),-1), order='F')
         self.setMarkerBounds()
         self.updateLineouts()
-        self.ui.imageView.receiveImageWaveform(self.image_data)
+        self.ui.imageView.image_value_changed(self.image_data)
         self.calculateStats()
         if self._needs_auto_range:
             self.ui.imageView.getView().autoRange(padding=0.0)
@@ -441,7 +441,7 @@ class CamViewer(Display):
     @pyqtSlot(int)
     def receiveImageWidth(self, new_width):
         self.image_width = new_width
-        self.ui.imageView.receiveImageWidth(self.image_width)
+        self.ui.imageView.image_width_changed(self.image_width)
     
     @pyqtSlot(int)
     def receiveMaxWidth(self, new_max_width):
