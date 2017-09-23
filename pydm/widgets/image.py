@@ -151,14 +151,15 @@ class PyDMImageView(ImageView, PyDMWidget):
         new_image : np.ndarray
             The new image data as a flat array
         """
+        print(new_image)
         if new_image is None:
             return
-        if self.image_width == 0:
-            self.image_waveform = new_image
-            self._needs_reshape = True
-            # We'll wait to draw the image until we get the width.
-            return
         if len(new_image.shape) == 1:
+            if self.image_width == 0:
+                self.image_waveform = new_image
+                self._needs_reshape = True
+                # We'll wait to draw the image until we get the width.
+                return
             self.image_waveform = new_image.reshape((int(self.image_width), -1), order='F')
         elif len(new_image.shape) == 2:
             self.image_waveform = new_image
@@ -166,6 +167,7 @@ class PyDMImageView(ImageView, PyDMWidget):
         self.setColorMap()  # to update the colormap immediately
         self.redrawImage()
 
+    @pyqtSlot(int)
     def image_width_changed(self, new_width):
         """
         Callback invoked when the Image Width Channel value is changed.
