@@ -69,6 +69,13 @@ class PyDMRelatedDisplayButton(QFrame, PyDMWidget):
             self.push_button.setStyleSheet(style)
             self.push_button.update()
 
+    def check_enable_state(self):
+        """
+        Because the related display button's channel is only used for alarm
+        status, the widget is never disabled by connection state.
+        """
+        self.setEnabled(True)
+
     @pyqtProperty(str)
     def text(self):
         """

@@ -139,7 +139,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         self.value = None
         self.channeltype = None
-
+        self.check_enable_state()
         # If this label is inside a PyDMApplication (not Designer) start it in the disconnected state.
         app = QApplication.instance()
         if isinstance(app, PyDMApplication):
@@ -675,8 +675,8 @@ class PyDMWritableWidget(PyDMWidget):
     send_value_signal = pyqtSignal([int], [float], [str], [bool], [np.ndarray])
 
     def __init__(self, init_channel=None):
-        super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
         self._write_access = False
+        super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
         self.installEventFilter(self)
 
     def init_for_designer(self):
