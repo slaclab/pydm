@@ -14,13 +14,13 @@ class PyDMMainWindow(QMainWindow):
         self.ui.setupUi(self)
         self._display_widget = None
         self._showing_file_path_in_title_bar = False
-        self.ui.homeButton.clicked.connect(self.home)
+        self.ui.actionHome.triggered.connect(self.home)
         self.home_file = None
         self.back_stack = []
         self.forward_stack = []
-        self.ui.backButton.clicked.connect(self.back)
-        self.ui.forwardButton.clicked.connect(self.forward)
-        self.ui.goButton.clicked.connect(self.go_button_pressed)
+        self.ui.actionBack.triggered.connect(self.back)
+        self.ui.actionForward.triggered.connect(self.forward)
+        #self.ui.goButton.clicked.connect(self.go_button_pressed)
         self.ui.actionEdit_in_Designer.triggered.connect(self.edit_in_designer)
         self.ui.actionOpen_File.triggered.connect(self.open_file_action)
         self.ui.actionReload_Display.triggered.connect(self.reload_display)
