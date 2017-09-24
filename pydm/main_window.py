@@ -1,6 +1,6 @@
 import os
 from os import path, environ
-from .PyQt.QtGui import QApplication, QMainWindow, QFileDialog
+from .PyQt.QtGui import QApplication, QMainWindow, QFileDialog, QWidget
 from .PyQt.QtCore import Qt, QTimer, pyqtSlot, QSize
 from .utilities import IconFont
 from .pydm_ui import Ui_MainWindow
@@ -59,13 +59,13 @@ class PyDMMainWindow(QMainWindow):
         if not new_widget.layout():
             new_widget.setMinimumSize(new_widget.size())
         self._display_widget = new_widget
-        self.ui.verticalLayout.addWidget(self._display_widget)
+        self.setCentralWidget(self._display_widget)
         self.update_window_title()
         QTimer.singleShot(0, self.resizeToMinimum)
         
     def clear_display_widget(self):
         if self._display_widget is not None:
-            self.ui.verticalLayout.removeWidget(self._display_widget)
+            self.setCentralWidget(QWidget())
             self.app.close_widget_connections(self._display_widget)
             self._display_widget.deleteLater()
             self._display_widget = None
