@@ -17,7 +17,6 @@ class IconFont(object):
         self.font_name = None
         self.char_map = None
         self.load_font(self.font_file, self.charmap_file)
-        self.painter = CharIconPainter()
         
     def load_font(self, ttf_filename, charmap_filename):
         font_id = QFontDatabase.addApplicationFont(os.path.join(os.path.dirname(os.path.realpath(__file__)), ttf_filename))
@@ -48,33 +47,22 @@ class IconFont(object):
     
     def icon(self, name):
         char = self.get_char_for_name(name)
-        engine = CharIconEngine(self, self.painter, char)
+        engine = CharIconEngine(self, char)
         return QIcon(engine)
         
 class CharIconEngine(QIconEngine):
-    def __init__(self, icon_font, painter, char):
+    """Subclass of QIconEngine that is designed to draw characters from icon fonts."""
+    def __init__(self, icon_font, char):
         super(CharIconEngine, self).__init__()
         self.icon_font = icon_font
-        self.painter = painter
         self.char = char
     
     def paint(self, painter, rect, mode, state):
-        self.painter.paint(self.icon_font, self.char, painter, rect, mode, state)
-    
-    def pixmap(self, size, mode, state):
-        pm = QPixmap(size)
-        pm.fill(Qt.transparent)
-        self.paint(QPainter(pm), QRect(QPoint(0, 0), size), mode, state)
-        return pm
-        
-class CharIconPainter(object):
-    def paint(self, icon_font, char, painter, rect, mode, state):
         painter.save()
         if mode == QIcon.Disabled:
             color = QColor(150, 150, 150)
         else:
             color = QColor(90, 90, 90)
-            
         painter.setPen(color)
         scale_factor = 1.0
         draw_size = 0.875 * qRound(rect.height() * scale_factor)
@@ -82,3 +70,9 @@ class CharIconPainter(object):
         painter.setOpacity(1.0)
         painter.drawText(rect, Qt.AlignCenter | Qt.AlignVCenter, char)
         painter.restore()
+    
+    def pixmap(self, size, mode, state):
+        pm = QPixmap(size)
+        pm.fill(Qt.transparent)
+        self.paint(QPainter(pm), QRect(QPoint(0, 0), size), mode, state)
+        return pm
