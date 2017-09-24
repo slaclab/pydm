@@ -4,10 +4,13 @@ The inspiration and methodology come from the 'QtAwesome' module, which does exa
 is a little too big, complicated, and flexible for PyDM's needs.
 """
 import os
+import sys
 import json
 from ..PyQt.QtGui import QFontDatabase, QIconEngine, QPixmap, QPainter, QColor, QFont, QIcon
 from ..PyQt.QtCore import Qt, QRect, QPoint, qRound
-
+if sys.version_info[0] == 3:
+    unichr = chr
+    
 class IconFont(object):
     """IconFont represents an icon font.  Users will generally want
     to use IconFont.icon() to get a QIcon object for the character they want."""
@@ -66,9 +69,9 @@ class CharIconEngine(QIconEngine):
         painter.setPen(color)
         scale_factor = 1.0
         draw_size = 0.875 * qRound(rect.height() * scale_factor)
-        painter.setFont(icon_font.font(draw_size))
+        painter.setFont(self.icon_font.font(draw_size))
         painter.setOpacity(1.0)
-        painter.drawText(rect, Qt.AlignCenter | Qt.AlignVCenter, char)
+        painter.drawText(rect, Qt.AlignCenter | Qt.AlignVCenter, self.char)
         painter.restore()
     
     def pixmap(self, size, mode, state):
