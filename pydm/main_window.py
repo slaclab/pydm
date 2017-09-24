@@ -1,8 +1,9 @@
 import os
 from os import path, environ
 from .PyQt.QtGui import QApplication, QMainWindow, QFileDialog
-from .PyQt.QtCore import Qt, QTimer, pyqtSlot
-from .pydm_ui_new import Ui_MainWindow
+from .PyQt.QtCore import Qt, QTimer, pyqtSlot, QSize
+from .utilities import IconFont
+from .pydm_ui import Ui_MainWindow
 import subprocess
 import platform
 
@@ -10,16 +11,27 @@ class PyDMMainWindow(QMainWindow):
     def __init__(self, parent=None):
         super(PyDMMainWindow, self).__init__(parent)
         self.app = QApplication.instance()
+        self.iconFont = IconFont()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self._display_widget = None
         self._showing_file_path_in_title_bar = False
+        self.ui.navbar.setIconSize(QSize(24,24))
+        self.ui.navbar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        #No search bar for now, since there isn't really any capability to search yet.
+        #self.searchBar = QLineEdit(self)
+        #self.searchBar.setPlaceholderText("Search")
+        #self.searchBar.setMinimumWidth(150)
+        #self.searchAction = self.ui.navbar.insertWidget(self.ui.actionHome, self.searchBar)
         self.ui.actionHome.triggered.connect(self.home)
+        self.ui.actionHome.setIcon(self.iconFont.icon("home"))
         self.home_file = None
         self.back_stack = []
         self.forward_stack = []
         self.ui.actionBack.triggered.connect(self.back)
+        self.ui.actionBack.setIcon(self.iconFont.icon("angle-left"))
         self.ui.actionForward.triggered.connect(self.forward)
+        self.ui.actionForward.setIcon(self.iconFont.icon("angle-right"))
         #self.ui.goButton.clicked.connect(self.go_button_pressed)
         self.ui.actionEdit_in_Designer.triggered.connect(self.edit_in_designer)
         self.ui.actionOpen_File.triggered.connect(self.open_file_action)
@@ -27,6 +39,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionIncrease_Font_Size.triggered.connect(self.increase_font_size)
         self.ui.actionDecrease_Font_Size.triggered.connect(self.decrease_font_size)
         self.ui.actionShow_File_Path_in_Title_Bar.triggered.connect(self.toggle_file_path_in_title_bar)
+        self.ui.actionShow_Navigation_Bar.triggered.connect(self.toggle_nav_bar)
         self.designer_path = None
         if environ.get('QTHOME') is None:
             self.ui.actionEdit_in_Designer.setEnabled(False)
@@ -76,8 +89,8 @@ class PyDMMainWindow(QMainWindow):
         if (len(self.back_stack) == 0) or (self.current_file() != filename):
             self.back_stack.append((filename, merged_macros, command_line_args))
         self.set_display_widget(widget)
-        self.ui.forwardButton.setEnabled(len(self.forward_stack) > 0)
-        self.ui.backButton.setEnabled(len(self.back_stack) > 1)
+        self.ui.actionForward.setEnabled(len(self.forward_stack) > 0)
+        self.ui.actionBack.setEnabled(len(self.back_stack) > 1)
         if self.home_file is None:
             self.home_file = (filename, merged_macros, command_line_args)
             
@@ -186,6 +199,10 @@ class PyDMMainWindow(QMainWindow):
     @pyqtSlot(bool)
     def toggle_file_path_in_title_bar(self, checked):
         self.showing_file_path_in_title_bar = checked
+    
+    @pyqtSlot(bool)
+    def toggle_nav_bar(self, checked):
+        self.ui.navbar.setHidden(not checked)
             
     @pyqtSlot(bool)
     def edit_in_designer(self, checked):

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>619</width>
-    <height>89</height>
+    <width>677</width>
+    <height>465</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>619</width>
+     <width>677</width>
      <height>22</height>
     </rect>
    </property>
@@ -36,10 +36,12 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionAbout_PyDM"/>
+    <addaction name="actionOpen_File"/>
     <addaction name="separator"/>
     <addaction name="actionEdit_in_Designer"/>
     <addaction name="actionReload_Display"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout_PyDM"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -47,6 +49,7 @@
     </property>
     <addaction name="actionIncrease_Font_Size"/>
     <addaction name="actionDecrease_Font_Size"/>
+    <addaction name="separator"/>
     <addaction name="actionShow_File_Path_in_Title_Bar"/>
     <addaction name="actionShow_Navigation_Bar"/>
    </widget>
@@ -157,8 +160,19 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Show Navigation Bar</string>
+   </property>
+  </action>
+  <action name="actionOpen_File">
+   <property name="text">
+    <string>Open File...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
  </widget>
