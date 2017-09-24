@@ -1,7 +1,6 @@
 import os
-import sys
 from os import path, environ
-from .PyQt.QtGui import QApplication, QMainWindow, QWidget, QToolTip, QClipboard, QFileDialog
+from .PyQt.QtGui import QApplication, QMainWindow, QFileDialog
 from .PyQt.QtCore import Qt, QTimer, pyqtSlot
 from .pydm_ui_new import Ui_MainWindow
 import subprocess
@@ -65,11 +64,13 @@ class PyDMMainWindow(QMainWindow):
         else:
             return path.join(path.dirname(self.current_file()), ui_file)
     
-    def open_file(self, ui_file, macros=None, command_line_args=[]):
+    def open_file(self, ui_file, macros=None, command_line_args=None):
         filename = self.join_to_current_file_path(ui_file)
         self.open_abs_file(filename, macros, command_line_args)
     
-    def open_abs_file(self, filename, macros=None, command_line_args=[]):
+    def open_abs_file(self, filename, macros=None, command_line_args=None):
+        if command_line_args is None:
+            command_line_args = []
         merged_macros = self.merge_with_current_macros(macros)
         widget = self.app.open_file(filename, merged_macros, command_line_args)
         if (len(self.back_stack) == 0) or (self.current_file() != filename):
@@ -80,11 +81,11 @@ class PyDMMainWindow(QMainWindow):
         if self.home_file is None:
             self.home_file = (filename, merged_macros, command_line_args)
             
-    def new_window(self, ui_file, macros=None, command_line_args=[]):
+    def new_window(self, ui_file, macros=None, command_line_args=None):
         filename = self.join_to_current_file_path(ui_file)
         self.new_abs_window(filename, macros, command_line_args)
     
-    def new_abs_window(self, filename, macros=None, command_line_args=[]):
+    def new_abs_window(self, filename, macros=None, command_line_args=None):
         merged_macros = self.merge_with_current_macros(macros)
         self.app.new_window(filename, merged_macros, command_line_args)
     
@@ -105,11 +106,11 @@ class PyDMMainWindow(QMainWindow):
 
     #Note: in go(), back(), and forward(), always do history stack manipulation *before* opening the file.
     #That way, the navigation button enable/disable state will work correctly.  This is stupid, and will be fixed eventually.
-    def go(self, ui_file, macros=None, command_line_args=[]):
+    def go(self, ui_file, macros=None, command_line_args=None):
         self.forward_stack = []
         self.open_file(ui_file, macros, command_line_args)
     
-    def go_abs(self, ui_file, macros=None, command_line_args=[]):
+    def go_abs(self, ui_file, macros=None, command_line_args=None):
         self.forward_stack = []
         self.open_abs_file(filename=ui_file, macros=macros, command_line_args=command_line_args)
         

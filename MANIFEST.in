@@ -1,0 +1,3 @@
+include versioneer.py
+include pydm/_version.py
+include pydm/utilities/*.pkl

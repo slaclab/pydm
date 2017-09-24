@@ -1,68 +1,52 @@
-from ..PyQt.QtGui import QCheckBox, QApplication, QColor, QPalette
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QState, QStateMachine, QPropertyAnimation
-from .channel import PyDMChannel
+from ..PyQt.QtGui import QCheckBox
+from .base import PyDMWritableWidget
 
-class PyDMCheckbox(QCheckBox):
-    __pyqtSignals__ = ("send_value_signal(str)",
-                                         "connected_signal()",
-                                         "disconnected_signal()", 
-                                         "no_alarm_signal()", 
-                                         "minor_alarm_signal()", 
-                                         "major_alarm_signal()", 
-                                         "invalid_alarm_signal()")
-                                         
-    #Emitted when the user changes the value.
-    send_value_signal = pyqtSignal(str)
-    
-    def __init__(self, parent=None, channel=None):
-        super(PyDMCheckbox, self).__init__(parent)
-        self._channel = channel
-        self._connected = False
-        self._write_access = False
-        self.checkEnableState()
-        self.clicked.connect(self.sendValue)
-            
-    @pyqtSlot(int)
-    @pyqtSlot(float)
-    @pyqtSlot(str)
-    def receiveValue(self, new_val):
+class PyDMCheckbox(QCheckBox, PyDMWritableWidget):
+    """
+    A QCheckbox with support for Channels and more from PyDM
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+
+    """
+    def __init__(self, parent=None, init_channel=None):
+        QCheckBox.__init__(self, parent)
+        PyDMWritableWidget.__init__(self, init_channel=init_channel)
+        self.clicked.connect(self.send_value)
+
+    def value_changed(self, new_val):
+        """
+        Callback invoked when the Channel value is changed.
+        Sets the checkbox checked or not based on the new value.
+
+        Parameters
+        ----------
+        new_val : int
+            The new value from the channel.
+        """
+        super(PyDMCheckbox, self).value_changed(new_val)
+        if new_val is None:
+            return
         if new_val > 0:
             self.setChecked(True)
         else:
             self.setChecked(False)
-    
-    @pyqtSlot(bool)
-    def sendValue(self, checked):
+
+    def send_value(self, checked):
+        """
+        Method that emit the signal to notify the Channel that a new
+        value was written at the widget.
+
+        Parameters
+        ----------
+        checked : bool
+            True in case the checkbox was checked, False otherwise.
+        """
         if checked:
-            self.send_value_signal.emit(str(1))
+            self.send_value_signal.emit(1)
         else:
-            self.send_value_signal.emit(str(0))
-        
-    @pyqtSlot(bool)
-    def connectionStateChanged(self, connected):
-        self._connected = connected
-        self.checkEnableState()
-    
-    @pyqtSlot(bool)
-    def writeAccessChanged(self, write_access):
-        self._write_access = write_access
-        self.checkEnableState()
-    
-    def checkEnableState(self):
-        self.setEnabled(self._write_access and self._connected)
-    
-    def getChannel(self):
-        return str(self._channel)
-    
-    def setChannel(self, value):
-        if self._channel != value:
-            self._channel = str(value)
-
-    def resetChannel(self):
-        if self._channel is not None:
-            self._channel = None
-        
-    channel = pyqtProperty(str, getChannel, setChannel, resetChannel)
-
-    def channels(self):
-        return [PyDMChannel(address=self.channel, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue, write_access_slot=self.writeAccessChanged, value_signal=self.send_value_signal)]
+            self.send_value_signal.emit(0)

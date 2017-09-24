@@ -1,6 +1,5 @@
 import pickle
 import os
-import itertools
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -20,6 +19,6 @@ def svg_color_from_hex(hex_string, hex_on_fail=False):
         return hex_string
     
 def hex_from_svg_color(color_string):
-    return svg_color_to_hex_map[str(hex_string).lower()]
+    return svg_color_to_hex_map[str(color_string).lower()]
 
 default_colors = ['white', 'red', 'dodgerblue', 'forestgreen', 'yellow', 'fuchsia', 'turquoise', 'deeppink', 'lime', 'orange', 'whitesmoke', 'beige', 'purple', 'teal', 'darksalmon', 'brown']

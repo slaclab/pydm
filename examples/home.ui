@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>576</width>
-    <height>338</height>
+    <width>680</width>
+    <height>578</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Example Displays</string>
+      <string>PyDM Example Displays</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -38,139 +38,550 @@
     </widget>
    </item>
    <item>
-    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton">
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="whatsThis">
-      <string/>
-     </property>
-     <property name="text">
-      <string>Indicators</string>
-     </property>
-     <property name="displayFilename">
-      <string>indicator/indicators.ui</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton_2">
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="whatsThis">
-      <string/>
-     </property>
-     <property name="text">
-      <string>Line Edit</string>
-     </property>
-     <property name="displayFilename">
-      <string>line_edit/line_edit.ui</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton_3">
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="whatsThis">
-      <string/>
-     </property>
-     <property name="text">
-      <string>Positioner Example</string>
-     </property>
-     <property name="displayFilename">
-      <string>positioner/positioner_module.py</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton_4">
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="whatsThis">
-      <string/>
-     </property>
-     <property name="text">
-      <string>Related Displays</string>
-     </property>
-     <property name="displayFilename">
-      <string>related_displays/display1.ui</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton_5">
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="whatsThis">
-      <string/>
-     </property>
-     <property name="text">
-      <string>Waveform Plot (from a PV)</string>
-     </property>
-     <property name="displayFilename">
-      <string>waveformplot/pv-plotter.ui</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton_6">
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="whatsThis">
-      <string/>
-     </property>
-     <property name="text">
-      <string>Waveform Plot (from the Archiver)</string>
-     </property>
-     <property name="displayFilename">
-      <string>waveformplot/archive-plotter.ui</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton_7">
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="whatsThis">
-      <string/>
-     </property>
-     <property name="text">
-      <string>Slider</string>
-     </property>
-     <property name="displayFilename">
-      <string>slider/slider.ui</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="PyDMRelatedDisplayButton" name="pydmRelatedDisplayButton_8">
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="whatsThis">
-      <string/>
-     </property>
-     <property name="text">
-      <string>Image Views</string>
-     </property>
-     <property name="displayFilename">
-      <string>image_view/many_images.ui</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>Widgets</string>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QScrollArea" name="scrollArea">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>215</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAsNeeded</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>216</width>
+             <height>782</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Byte Indicator</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>byte_indicator/byte_indicator.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Checkbox</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>checkbox/checkbox.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Drawing Widgets</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>drawing/drawing_demo.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_4">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Embedded Display</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>embedded_displays/embedded_display.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_5">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Enum Combo Box</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>enum_combo_box/enum_combo_box.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_6">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Image View</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>image_view/image.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_7">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Label</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>label/label.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_8">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Line Edit</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>line_edit/edit.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_9">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Push Button</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>push_button/push_button.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_10">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Related Display Button</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>related_displays/display1.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_11">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Shell Command Button</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>shell_command/shell_command.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_12">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Slider</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>slider/slider.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_13">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Spinbox</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>spinbox/spinbox.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_14">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Symbol</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>symbol/symbol.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_15">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Time Plot</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>timeplot/timeplot.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_16">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Waveform Plot</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>waveformplot/waveform_plot.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_17">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Waveform Table</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>waveformtable/wavetable.ui</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="title">
+        <string>Features</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QScrollArea" name="scrollArea_2">
+          <property name="minimumSize">
+           <size>
+            <width>360</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAsNeeded</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>358</width>
+             <height>443</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_18">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Macro Variables in Embedded Displays</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>macros/basics/embedded_display_with_macro.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_19">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Macro Variables and Related Display Buttons</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>macros/basics/related_display_with_macros.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_20">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Nested Embedded Displays</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>macros/nested_embedded_windows/nested_embedded_windows.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_21">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Python-based Display: Image Processing</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>image_processing/image_view.py</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_22">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text" stdset="0">
+               <string>Python-based Display: Camera View Application</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>camviewer/camviewer.py</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
    <class>PyDMRelatedDisplayButton</class>
-   <extends>QPushButton</extends>
+   <extends>QFrame</extends>
    <header>pydm.widgets.related_display_button</header>
   </customwidget>
  </customwidgets>

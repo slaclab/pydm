@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 import threading
 import numpy
 
@@ -125,13 +126,18 @@ class myDriver(Driver):
             self.updatePVs()
 
 if __name__ == '__main__':
-    server = SimpleServer()
-    server.initAccessSecurityFile('access_rules.as', P=prefix)
-    server.createPV(prefix, pvdb)
-    driver = myDriver()
-    #Manually set the ReadOnly PV to force access rule calculation.
-    #You can set ReadOnly to 1 to disable write access on all PVs.
-    driver.setParam('ReadOnly', 0)
-    # process CA transactions
-    while True:
-        server.process(0.1)
+    try:
+        print('Starting testing-ioc')
+        print('To start processing records do: caput '+prefix+'Run 1')
+        server = SimpleServer()
+        server.initAccessSecurityFile(os.path.join(os.path.dirname(os.path.realpath(__file__)),'../data/access_rules.as'), P=prefix)
+        server.createPV(prefix, pvdb)
+        driver = myDriver()
+        #Manually set the ReadOnly PV to force access rule calculation.
+        #You can set ReadOnly to 1 to disable write access on all PVs.
+        driver.setParam('ReadOnly', 0)
+        # process CA transactions
+        while True:
+            server.process(0.1)
+    except KeyboardInterrupt:
+        print('\nInterrupted... finishing testing-ioc')

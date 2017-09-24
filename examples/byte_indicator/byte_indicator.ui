@@ -40,10 +40,10 @@
        <property name="maximum">
         <double>32.000000000000000</double>
        </property>
-       <property name="channel">
+       <property name="channel" stdset="0">
         <string>ca://MTEST:StatusBits</string>
        </property>
-       <property name="show_step_exponent">
+       <property name="show_step_exponent" stdset="0">
         <bool>false</bool>
        </property>
       </widget>
@@ -64,14 +64,14 @@
      <property name="whatsThis">
       <string/>
      </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:StatusBits</string>
+     </property>
      <property name="circles" stdset="0">
       <bool>false</bool>
      </property>
      <property name="numBits" stdset="0">
       <number>6</number>
-     </property>
-     <property name="channel" stdset="0">
-      <string>ca://MTEST:StatusBits</string>
      </property>
     </widget>
    </item>
@@ -79,14 +79,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PyDMSpinbox</class>
-   <extends>QDoubleSpinBox</extends>
-   <header>pydm.widgets.spinbox</header>
-  </customwidget>
-  <customwidget>
    <class>PyDMByteIndicator</class>
    <extends>QWidget</extends>
    <header>pydm.widgets.byte</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMSpinbox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>pydm.widgets.spinbox</header>
   </customwidget>
  </customwidgets>
  <resources/>
