@@ -47,6 +47,9 @@ class PyDMApplication(QApplication):
 
     def __init__(self, ui_file=None, command_line_args=[], display_args=[], perfmon=False, macros=None):
         super(PyDMApplication, self).__init__(command_line_args)
+        # Enable High DPI display, if available.
+        if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
+            self.setAttribute(Qt.AA_UseHighDpiPixmaps)
         # The macro and directory stacks are needed for nested displays (usually PyDMEmbeddedDisplays).
         # During the process of loading a display (whether from a .ui file, or a .py file), the application's
         # 'open_file' method will be called recursively.    Inside open_file, the last item on the stack represents
