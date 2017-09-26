@@ -56,7 +56,10 @@ class Connection(PyDMConnection):
             self.prec_signal.emit(precision)
         if enum_strs is not None and self._enum_strs != enum_strs:
             self._enum_strs = enum_strs
-            enum_strs = tuple(b.decode(encoding='ascii') for b in enum_strs)
+            try:
+                enum_strs = tuple(b.decode(encoding='ascii') for b in enum_strs)
+            except AttributeError:
+                pass
             self.enum_strings_signal.emit(enum_strs)
         if units is not None and len(units) > 0 and self._unit != units:
             if type(units) == bytes:
@@ -83,8 +86,9 @@ class Connection(PyDMConnection):
         self.connection_state_signal.emit(conn)
         if conn:
             self.clear_cache()
-            self.reload_access_state()
-            self.pv.run_callbacks()
+            if hasattr(self, 'pv'):
+                self.reload_access_state()
+                self.pv.run_callbacks()
 
     @pyqtSlot(int)
     @pyqtSlot(float)
