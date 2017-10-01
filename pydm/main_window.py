@@ -8,7 +8,7 @@ import subprocess
 import platform
 
 class PyDMMainWindow(QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, hide_nav_bar=False):
         super(PyDMMainWindow, self).__init__(parent)
         self.app = QApplication.instance()
         self.iconFont = IconFont()
@@ -40,6 +40,8 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionDecrease_Font_Size.triggered.connect(self.decrease_font_size)
         self.ui.actionShow_File_Path_in_Title_Bar.triggered.connect(self.toggle_file_path_in_title_bar)
         self.ui.actionShow_Navigation_Bar.triggered.connect(self.toggle_nav_bar)
+        if hide_nav_bar:
+            self.toggle_nav_bar(False)
         self.designer_path = None
         if environ.get('QTHOME') is None:
             self.ui.actionEdit_in_Designer.setEnabled(False)
