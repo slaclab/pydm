@@ -145,13 +145,6 @@ class PyDMTimePlot(BasePlot):
         self._update_interval = 100
         self.update_timer.setInterval(self._update_interval)
         self._update_mode = PyDMTimePlot.SynchronousMode
-        # Due to a bug in pyqtgraph, we have to remove a bunch of leftover garbage axes.
-        # It looks like this bug will be fixed in a future version of pyqtgraph.
-        # NOTE: I think this was fixed in PyQtGraph 0.10.0, see if removing this is OK.
-        for child in self.getPlotItem().childItems():
-            if isinstance(child, AxisItem):
-                if child not in [self.getPlotItem().axes[k]['item'] for k in self.getPlotItem().axes]:
-                    child.deleteLater()
 
     def initialize_for_designer(self):
         # If we are in Qt Designer, don't update the plot continuously.
