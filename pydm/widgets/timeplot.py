@@ -121,6 +121,9 @@ class TimePlotCurveItem(PlotCurveItem):
 
     def max_x(self):
         return self.data_buffer[0, -1]
+    
+    def min_x(self):
+        return self.data_buffer[0, 0]
 
 class PyDMTimePlot(BasePlot):
     SynchronousMode = 1
@@ -307,6 +310,22 @@ class PyDMTimePlot(BasePlot):
 
     def channels(self):
         return [curve.channel for curve in self._curves]
+        
+    # The methods for autoRangeY, minYRange, and maxYRange are
+    # all defined in BasePlot, but we don't expose them as properties there, because not all plot
+    # subclasses necessarily want them to be user-configurable in Designer.    
+    autoRangeY = pyqtProperty(bool, BasePlot.getAutoRangeY, BasePlot.setAutoRangeY, BasePlot.resetAutoRangeY, doc="""
+    Whether or not the Y-axis automatically rescales to fit the data.  If true, the
+    values in minYRange and maxYRange are ignored.
+    """)
+    
+    minYRange = pyqtProperty(float, BasePlot.getMinYRange, BasePlot.setMinYRange, doc="""
+    Minimum Y-axis value visible on the plot.
+    """)
+    
+    maxYRange = pyqtProperty(float, BasePlot.getMaxYRange, BasePlot.setMaxYRange, doc="""
+    Maximum Y-axis value visible on the plot.
+    """)
 
 class TimeAxisItem(AxisItem):
     def tickStrings(self, values, scale, spacing):

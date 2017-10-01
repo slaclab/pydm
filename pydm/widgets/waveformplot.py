@@ -1,6 +1,6 @@
 from ..PyQt.QtGui import QColor
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
-from pyqtgraph import PlotCurveItem
+from pyqtgraph import PlotCurveItem, ViewBox
 import numpy as np
 from .baseplot import BasePlot
 from .channel import PyDMChannel
@@ -201,3 +201,32 @@ class PyDMWaveformPlot(BasePlot):
         chans.extend([curve.y_channel for curve in self._curves])
         chans.extend([curve.x_channel for curve in self._curves if curve.x_channel is not None])
         return chans
+    
+    # The methods for autoRangeX, minXRange, maxXRange, autoRangeY, minYRange, and maxYRange are
+    # all defined in BasePlot, but we don't expose them as properties there, because not all plot
+    # subclasses necessarily want them to be user-configurable in Designer.
+    autoRangeX = pyqtProperty(bool, BasePlot.getAutoRangeX, BasePlot.setAutoRangeX, BasePlot.resetAutoRangeX, doc="""
+    Whether or not the X-axis automatically rescales to fit the data.  If true, the
+    values in minXRange and maxXRange are ignored.
+    """)   
+    
+    minXRange = pyqtProperty(float, BasePlot.getMinXRange, BasePlot.setMinXRange, doc="""
+    Minimum X-axis value visible on the plot.
+    """)
+    
+    maxXRange = pyqtProperty(float, BasePlot.getMaxXRange, BasePlot.setMaxXRange, doc="""
+    Maximum X-axis value visible on the plot.
+    """)
+    
+    autoRangeY = pyqtProperty(bool, BasePlot.getAutoRangeY, BasePlot.setAutoRangeY, BasePlot.resetAutoRangeY, doc="""
+    Whether or not the Y-axis automatically rescales to fit the data.  If true, the
+    values in minYRange and maxYRange are ignored.
+    """)
+    
+    minYRange = pyqtProperty(float, BasePlot.getMinYRange, BasePlot.setMinYRange, doc="""
+    Minimum Y-axis value visible on the plot.
+    """)
+    
+    maxYRange = pyqtProperty(float, BasePlot.getMaxYRange, BasePlot.setMaxYRange, doc="""
+    Maximum Y-axis value visible on the plot.
+    """)
