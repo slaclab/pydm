@@ -18,6 +18,7 @@ class PyDMMainWindow(QMainWindow):
         self._showing_file_path_in_title_bar = False
         self.ui.navbar.setIconSize(QSize(24,24))
         self.ui.navbar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        self.setMinimumWidth(300)
         #No search bar for now, since there isn't really any capability to search yet.
         #self.searchBar = QLineEdit(self)
         #self.searchBar.setPlaceholderText("Search")
