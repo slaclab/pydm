@@ -45,7 +45,6 @@ class WaveformCurveItem(PlotDataItem):
     def color_string(self, new_color_string):
         self._color = QColor(str(new_color_string))
         if self.connect_points:
-            print("Color string changed, resetting pen.")
             self.setPen(self._color)
             
     @property
@@ -58,16 +57,13 @@ class WaveformCurveItem(PlotDataItem):
     
     @connect_points.setter
     def connect_points(self, connect):
-        print("Setting connect_points to: {}".format(connect))
         self._connect_points = connect
         if self._connect_points:
             self.setPen(self._color)
         else:
-            print("Disabling pen, supposedly.")
             self.setPen(None)
     
     def setPen(self, pen):
-        print("Pen is now set to: {}".format(pen))
         super(WaveformCurveItem, self).setPen(pen)
     
     @property
@@ -76,7 +72,6 @@ class WaveformCurveItem(PlotDataItem):
     
     @symbol.setter
     def symbol(self, new_symbol):
-        print("setting symbol to: {}".format(new_symbol))
         if new_symbol in self.symbols.values():
             self.setSymbol(new_symbol)
         else:
@@ -180,7 +175,6 @@ class PyDMWaveformPlot(BasePlot):
         curve = WaveformCurveItem(y_addr=y_channel, x_addr=x_channel, name=name, color=color, connect_points=connect_points, **plot_opts)
         curve.data_changed.connect(self.redrawPlot)
         self.channel_pairs[(y_channel, x_channel)] = curve
-        print("Waveform Plot is adding a new curve with color: {}".format(color))
         self.addCurve(curve, curve_color=color)
     
     def removeChannel(self, curve):
@@ -232,7 +226,6 @@ class PyDMWaveformPlot(BasePlot):
         self.clearCurves()
         for d in new_list:
             color = d.get('color')
-            print("Color retrieved from json: {}".format(color))
             if color:
                 color = QColor(color)
             self.addChannel(d['y_channel'], d['x_channel'], name=d.get('name'), color=color, connect_points=d.get('connect_points', True), symbol=d.get('symbol'))
