@@ -1,6 +1,6 @@
 from ..PyQt.QtGui import QColor
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty
-from pyqtgraph import PlotCurveItem
+from pyqtgraph import PlotDataItem
 import numpy as np
 from .baseplot import BasePlot
 from .channel import PyDMChannel
@@ -12,9 +12,10 @@ from .. import utilities
 class NoDataError(Exception):
     pass
 
-class WaveformCurveItem(PlotCurveItem):
+class WaveformCurveItem(PlotDataItem):
+    symbols = OrderedDict([('None', None), ('Circle', 'o'), ('Square', 's'), ('Triangle', 't'), ('Diamond', 'd'), ('Plus', '+')])
     data_changed = pyqtSignal()
-    def __init__(self, y_addr=None, x_addr=None, **kws):
+    def __init__(self, y_addr=None, x_addr=None, color=None, connect_points=True, **kws):
         y_addr = "" if y_addr is None else y_addr
         if kws.get('name') is None:
             y_name = utilities.remove_protocol(y_addr)
@@ -30,7 +31,11 @@ class WaveformCurveItem(PlotCurveItem):
         self.y_address = y_addr
         self.x_waveform = None
         self.y_waveform = None
+        self._color = QColor('white')
+        if color is not None:
+            self._color = color
         super(WaveformCurveItem, self).__init__(**kws)
+        self.connect_points = connect_points
     
     @property
     def color_string(self):
@@ -38,11 +43,44 @@ class WaveformCurveItem(PlotCurveItem):
     
     @color_string.setter
     def color_string(self, new_color_string):
-        self.setPen(QColor(str(new_color_string)))
-    
+        self._color = QColor(str(new_color_string))
+        if self.connect_points:
+            print("Color string changed, resetting pen.")
+            self.setPen(self._color)
+            
     @property
     def color(self):
-        return self.opts['pen'].color()
+        return self._color
+    
+    @property
+    def connect_points(self):
+        return self._connect_points
+    
+    @connect_points.setter
+    def connect_points(self, connect):
+        print("Setting connect_points to: {}".format(connect))
+        self._connect_points = connect
+        if self._connect_points:
+            self.setPen(self._color)
+        else:
+            print("Disabling pen, supposedly.")
+            self.setPen(None)
+    
+    def setPen(self, pen):
+        print("Pen is now set to: {}".format(pen))
+        super(WaveformCurveItem, self).setPen(pen)
+    
+    @property
+    def symbol(self):
+        return self.opts['symbol']
+    
+    @symbol.setter
+    def symbol(self, new_symbol):
+        print("setting symbol to: {}".format(new_symbol))
+        if new_symbol in self.symbols.values():
+            self.setSymbol(new_symbol)
+        else:
+            self.setSymbol(None)
     
     @property
     def x_address(self):
@@ -71,7 +109,7 @@ class WaveformCurveItem(PlotCurveItem):
         self.y_channel = PyDMChannel(address=new_address, connection_slot=self.yConnectionStateChanged, value_slot=self.receiveYWaveform)
     
     def to_dict(self):
-        return OrderedDict([("y_channel", self.y_address), ("x_channel", self.x_address), ("name", self.name()), ("color", self.color_string)])
+        return OrderedDict([("y_channel", self.y_address), ("x_channel", self.x_address), ("name", self.name()), ("color", self.color_string), ("connect_points", self.connect_points), ("symbol", self.symbol)])
     
     @pyqtSlot(bool)
     def xConnectionStateChanged(self, connected):
@@ -100,10 +138,10 @@ class WaveformCurveItem(PlotCurveItem):
         if self.x_waveform is None:
             self.setData(y=self.y_waveform)
             return
-        if self.x_waveform.shape[0] > self.y_waveform.shape[0]:
-            self.x_waveform = self.x_waveform[:self.y_waveform.shape[0]]
-        elif self.x_waveform.shape[0] < self.y_waveform.shape[0]:
-            self.y_waveform = self.y_waveform[:self.x_waveform.shape[0]]
+        #if self.x_waveform.shape[0] > self.y_waveform.shape[0]:
+        #    self.x_waveform = self.x_waveform[:self.y_waveform.shape[0]]
+        #elif self.x_waveform.shape[0] < self.y_waveform.shape[0]:
+        #    self.y_waveform = self.y_waveform[:self.x_waveform.shape[0]]
         self.setData(x=self.x_waveform, y=self.y_waveform)
     
     def limits(self):
@@ -135,10 +173,14 @@ class PyDMWaveformPlot(BasePlot):
         for (x_chan, y_chan) in init_channel_pairs:
             self.addChannel(y_chan, x_channel=x_chan)
     
-    def addChannel(self, y_channel=None, x_channel=None, name=None, color=None):
-        curve = WaveformCurveItem(y_addr=y_channel, x_addr=x_channel, name=name)
+    def addChannel(self, y_channel=None, x_channel=None, name=None, color=None, connect_points=True, symbol=None):
+        plot_opts = {}
+        if symbol is not None:
+            plot_opts['symbol'] = symbol
+        curve = WaveformCurveItem(y_addr=y_channel, x_addr=x_channel, name=name, color=color, connect_points=connect_points, **plot_opts)
         curve.data_changed.connect(self.redrawPlot)
         self.channel_pairs[(y_channel, x_channel)] = curve
+        print("Waveform Plot is adding a new curve with color: {}".format(color))
         self.addCurve(curve, curve_color=color)
     
     def removeChannel(self, curve):
@@ -190,9 +232,10 @@ class PyDMWaveformPlot(BasePlot):
         self.clearCurves()
         for d in new_list:
             color = d.get('color')
+            print("Color retrieved from json: {}".format(color))
             if color:
                 color = QColor(color)
-            self.addChannel(d['y_channel'], d['x_channel'], name=d.get('name'), color=color)
+            self.addChannel(d['y_channel'], d['x_channel'], name=d.get('name'), color=color, connect_points=d.get('connect_points', True), symbol=d.get('symbol'))
         
     curves = pyqtProperty("QStringList", getCurves, setCurves)
                     

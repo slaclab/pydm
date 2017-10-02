@@ -30,7 +30,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def addCurve(self, plot_item, curve_color=None):
         if curve_color is None:
             curve_color = utilities.colors.default_colors[len(self._curves) % len(utilities.colors.default_colors)]
-        plot_item.setPen(QColor(curve_color))
+            plot_item.color_string = curve_color        
         self._curves.append(plot_item)
         self.addItem(plot_item)
         #self._legend.addItem(plot_item, plot_item.curve_name)

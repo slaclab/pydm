@@ -1,14 +1,23 @@
-from ..PyQt.QtGui import QDialog, QVBoxLayout, QHBoxLayout, QTableView, QAbstractItemView, QSpacerItem, QSizePolicy, QDialogButtonBox, QPushButton, QItemSelection
+from ..PyQt.QtGui import QDialog, QVBoxLayout, QHBoxLayout, QTableView, QAbstractItemView, QSpacerItem, QSizePolicy, QDialogButtonBox, QPushButton, QItemSelection, QComboBox, QStyledItemDelegate
 from ..PyQt.QtCore import Qt, pyqtSlot
 from ..PyQt.QtDesigner import QDesignerFormWindowInterface
 from .waveformplot_table_model import PyDMWaveformPlotCurvesModel
+from .waveformplot import WaveformCurveItem
+from collections import OrderedDict
 
 class WaveformPlotCurveEditorDialog(QDialog):
+    """WaveformPlotCurveEditorDialog is a QDialog that is used in Qt Designer to
+    edit the properties of the curves in a waveform plot.  This dialog is shown
+    when you double-click the plot, or when you right click it and choose 'edit curves'.
+    
+    This thing is mostly just a wrapper for a table view, with a couple buttons to add and
+    remove curves, and a button to save the changes.
+    """
     def __init__(self, plot, parent=None):
         super(WaveformPlotCurveEditorDialog, self).__init__(parent)
         self.plot = plot
         self.setup_ui()
-        self.column_names = ("Y Channel", "X Channel", "Label", "Color")
+        self.column_names = ("Y Channel", "X Channel", "Label", "Color", "Connect Points", "Data Point Symbol")
         self.table_model = PyDMWaveformPlotCurvesModel(self.plot)
         self.table_view.setModel(self.table_model)
         self.table_model.plot = plot
@@ -16,10 +25,12 @@ class WaveformPlotCurveEditorDialog(QDialog):
         self.add_button.clicked.connect(self.addCurve)
         self.remove_button.clicked.connect(self.removeSelectedCurve)
         self.remove_button.setEnabled(False)
+        symbol_delegate = SymbolColumnDelegate(self)
+        self.table_view.setItemDelegateForColumn(5, symbol_delegate)
         self.table_view.selectionModel().selectionChanged.connect(self.handleSelectionChange)
         
     def setup_ui(self):
-        self.resize(500, 300)
+        self.resize(800, 300)
         self.vertical_layout = QVBoxLayout(self)
         self.table_view = QTableView(self)
         self.table_view.setEditTriggers(QAbstractItemView.DoubleClicked)
@@ -69,4 +80,21 @@ class WaveformPlotCurveEditorDialog(QDialog):
         if formWindow:
             formWindow.cursor().setProperty("curves", self.plot.curves)
         self.accept()
-        
+
+class SymbolColumnDelegate(QStyledItemDelegate):
+    #reverse_symbols = {v: k for k, v in WaveformCurveItem.symbols.items()}
+    def createEditor(self, parent, option, index):
+        editor = QComboBox(parent)
+        editor.addItems(WaveformCurveItem.symbols.keys())
+        return editor
+    
+    def setEditorData(self, editor, index):
+        val = str(index.model().data(index, Qt.EditRole))
+        editor.setCurrentText(val)
+    
+    def setModelData(self, editor, model, index):
+        val = WaveformCurveItem.symbols[editor.currentText()]
+        model.setData(index, val, Qt.EditRole)
+    
+    def updateEditorGeometry(self, editor, option, index):
+        editor.setGeometry(option.rect)

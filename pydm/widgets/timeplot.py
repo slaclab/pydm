@@ -165,6 +165,8 @@ class PyDMTimePlot(BasePlot):
         # Add curve
         new_curve = TimePlotCurveItem(ychannel, name=name)
         new_curve.setUpdatesAsynchronously(self.updatesAsynchronously)
+        if color:
+            new_curve.setPen(color)
         self.update_timer.timeout.connect(new_curve.asyncUpdate)
         self.addCurve(new_curve, curve_color=color)
         self.redraw_timer.start()
