@@ -25,6 +25,8 @@ class WaveformCurveItem(PlotDataItem):
                 x_name = utilities.remove_protocol(x_addr)
                 plot_name = "{y} vs. {x}".format(y=y_name, x=x_name)
             kws['name'] = plot_name
+        self.needs_new_x = True
+        self.needs_new_y = True
         self.x_channel = None
         self.y_channel = None
         self.x_address = x_addr
@@ -117,14 +119,16 @@ class WaveformCurveItem(PlotDataItem):
     @pyqtSlot(np.ndarray)
     def receiveXWaveform(self, new_waveform):
         self.x_waveform = new_waveform
+        self.needs_new_x = False
         #Don't redraw unless we already have Y data.
-        if self.y_waveform is not None:
+        if not (self.needs_new_x or self.needs_new_y):
             self.data_changed.emit()
     
     @pyqtSlot(np.ndarray)
     def receiveYWaveform(self, new_waveform):
         self.y_waveform = new_waveform
-        if self.x_channel is None or self.x_waveform is not None:
+        self.needs_new_y = False
+        if self.x_channel is None or not (self.needs_new_x or self.needs_new_y):
             self.data_changed.emit()
     
     def redrawCurve(self):
@@ -138,6 +142,8 @@ class WaveformCurveItem(PlotDataItem):
         #elif self.x_waveform.shape[0] < self.y_waveform.shape[0]:
         #    self.y_waveform = self.y_waveform[:self.x_waveform.shape[0]]
         self.setData(x=self.x_waveform, y=self.y_waveform)
+        self.needs_new_x = True
+        self.needs_new_y = True
     
     def limits(self):
         """Returns a nested tuple of limits: ((xmin, xmax), (ymin, ymax))"""
