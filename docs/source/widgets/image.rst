@@ -1,7 +1,6 @@
 #######################
-PyDMLineEdit
+PyDMImageView
 #######################
 
-.. autoclass:: line_edit.PyDMLineEdit
+.. autoclass:: pydm.widgets.image.PyDMImageView
    :members:
-

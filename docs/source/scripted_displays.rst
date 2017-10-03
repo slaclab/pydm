@@ -32,24 +32,32 @@ Python-based displays are just PyQt widgets, based on PyDM's 'Display' class.  Y
     
     def ui_filepath(self):
       return path.join(path.dirname(path.realpath(__file__)), self.ui_filename())
-      
+
 Lets look at this in detail::
+
   from os import path
   from pydm import Display
+
 First, we import the modules we need.  You will probably want to import more of your own modules here as well.  
 
 Next, we define our Display subclass, and its initializer::
+
   class MyDisplay(Display):
     def __init__(self, parent=None, args=None):
       super(MyDisplay, self).__init__(parent=parent)
+
 It is important to remember that you must always call the superclass' initializer in your own, and pass it the 'parent' argument from your initializer.  Otherwise, your display might get garbage collected by Python and crash.
 
 Now we must implement two methods that tell PyDM where the .ui file for this display lives::
+
   def ui_filename(self):
     return 'my_display.ui'
+
 lets PyDM know what the .ui file to load is called, and::
+
   def ui_filepath(self):
     return path.join(path.dirname(path.realpath(__file__)), self.ui_filename())
+
 lets PyDM know where to find that file.  The implementation of ui_filepath used here can probably be copied and pasted into your display verbatim: it just joins the path of the display's .py file to the filename of the .ui file.  Unfortunately, at the time of writing you must include this yourself, it cannot be done automatically by PyDM.
 
 PyDM will expose all the widgets from the .ui file as a variable called 'ui'.  To access the widgets in your code, call `self.ui.widgetName`
@@ -58,8 +66,11 @@ Handling Command Line Arguments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Displays can accept command line arguments supplied at launch.  Your display's initializer has a named argument called 'args'::
+
   def __init__(self, parent=None, args=[]):
+
 It is recommended to use python's `argparse` module to parse your arguments.  For example, you could write a method like this in your display to do this::
+
   def parse_args(self, args):
     parser = argparse.ArgumentParser()
     parser.add_argument('--list', dest='magnet_list', help='File containing a list of magnet names to use.')
@@ -74,6 +85,7 @@ Building Your Interface Dynamically
 A common reason to build a Python-based display is to generate your UI dynamically, from some other source of data, like a file or database.  As mentioned in :ref:`Handling Command Line Arguments`, you can read in command line arguments to help get data into your display.
 
 Once you have a source of data, you can use PyQt to make new widgets, and add them to your display.  For example, if you get a list of devices from somewhere, you can make widgets for each device, and add them to a layout you defined in the .ui file::
+
   for device_name in device_list:
     device_label = PyDMLabel(parent=self, init_channel=device_name)
     self.ui.deviceListLayout.addWidget(device_label)

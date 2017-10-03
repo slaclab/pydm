@@ -9,13 +9,13 @@ Welcome to PyDM's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
-   channel.rst
-   widgets/pushbutton.rst
-   widgets/lineedit.rst
-   macros.rst
    scripted_displays.rst
+   channel.rst
+   macros.rst
+   widgets/index.rst
+   
    
 Indices and tables
 ==================
