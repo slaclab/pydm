@@ -28,7 +28,7 @@ class TimePlotCurveEditorDialog(QDialog):
         self.table_view.setSelectionMode(QAbstractItemView.SingleSelection)
         self.table_view.setSelectionBehavior(QAbstractItemView.SelectRows)
         color_delegate = ColorColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(4, color_delegate)
+        self.table_view.setItemDelegateForColumn(2, color_delegate)
         self.table_view.doubleClicked.connect(self.handleDoubleClick)
         self.table_view.setSortingEnabled(False)
         self.table_view.horizontalHeader().setStretchLastSection(True)

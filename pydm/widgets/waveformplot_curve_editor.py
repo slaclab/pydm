@@ -26,9 +26,9 @@ class WaveformPlotCurveEditorDialog(QDialog):
         self.remove_button.clicked.connect(self.removeSelectedCurve)
         self.remove_button.setEnabled(False)
         symbol_delegate = SymbolColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(5, symbol_delegate)
+        self.table_view.setItemDelegateForColumn(4, symbol_delegate)
         color_delegate = ColorColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(4, color_delegate)
+        self.table_view.setItemDelegateForColumn(3, color_delegate)
         self.table_view.selectionModel().selectionChanged.connect(self.handleSelectionChange)
         self.table_view.doubleClicked.connect(self.handleDoubleClick)
         
