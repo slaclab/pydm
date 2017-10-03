@@ -2,8 +2,7 @@ from numpy import ndarray
 from ..PyQt.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
 
 class PyDMConnection(QObject):
-    new_value_signal =        pyqtSignal([float],[int],[str])
-    new_waveform_signal =     pyqtSignal(ndarray)
+    new_value_signal =        pyqtSignal([float],[int],[str], [ndarray])
     connection_state_signal = pyqtSignal(bool)
     new_severity_signal =     pyqtSignal(int)
     write_access_signal =     pyqtSignal(bool)
@@ -22,22 +21,23 @@ class PyDMConnection(QObject):
         if channel.connection_slot is not None:
             self.connection_state_signal.connect(channel.connection_slot, Qt.QueuedConnection)
         if channel.value_slot is not None:
-          try:
-              self.new_value_signal[int].connect(channel.value_slot, Qt.QueuedConnection)
-          except TypeError:
-              pass
-          try:
-              self.new_value_signal[float].connect(channel.value_slot, Qt.QueuedConnection)
-          except TypeError:
-              pass
-          try:
-              self.new_value_signal[str].connect(channel.value_slot, Qt.QueuedConnection)
-          except TypeError:
-              pass
+            try:
+                self.new_value_signal[int].connect(channel.value_slot, Qt.QueuedConnection)
+            except TypeError:
+                pass
+            try:
+                self.new_value_signal[float].connect(channel.value_slot, Qt.QueuedConnection)
+            except TypeError:
+                pass
+            try:
+                self.new_value_signal[str].connect(channel.value_slot, Qt.QueuedConnection)
+            except TypeError:
+                pass
+            try:
+                self.new_value_signal[ndarray].connect(channel.value_slot, Qt.QueuedConnection)
+            except TypeError:
+                pass
 
-        if channel.waveform_slot is not None:
-            self.new_waveform_signal.connect(channel.waveform_slot, Qt.QueuedConnection)
-    
         if channel.severity_slot is not None:
             self.new_severity_signal.connect(channel.severity_slot, Qt.QueuedConnection)
 
@@ -88,4 +88,4 @@ class PyDMPlugin(object):
         if address in self.connections:
             self.connections[address].remove_listener()
             if self.connections[address].listener_count < 1:
-              del self.connections[address]
+                del self.connections[address]

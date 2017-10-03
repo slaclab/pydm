@@ -26,15 +26,15 @@ class ImageMarker(ROI):
         return self.shape().boundingRect()
     
     def getArrayRegion(self, data, img, axes=(0,1)):
-      #img_point = self.mapToItem(img, self.pos())
-      coords = self.getPixelCoords()
-      ystrip = data[coords[0],:]
-      xstrip = data[:,coords[1]]
-      return ([xstrip,ystrip], coords)
+        #img_point = self.mapToItem(img, self.pos())
+        coords = self.getPixelCoords()
+        ystrip = data[coords[0],:]
+        xstrip = data[:,coords[1]]
+        return ([xstrip,ystrip], coords)
     
     def getPixelCoords(self):
-      img_point = self.pos()
-      return (int(img_point.x()), int(img_point.y()))
+        img_point = self.pos()
+        return (int(img_point.x()), int(img_point.y()))
       
     def shape(self):
         if self._shape is None:

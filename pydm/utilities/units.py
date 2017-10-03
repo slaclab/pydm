@@ -21,13 +21,14 @@ UNITS = {'length':   {'m'   : 1,
                       'days'  : constants.day,
                      }
         }
+
 def find_unittype(unit):
     """
     Find the type of a unit string
     """
-    for type in UNITS.keys():
-        if unit in UNITS[type].keys():
-            return type
+    for tp in UNITS.keys():
+        if unit in UNITS[tp].keys():
+            return tp
     return None
 
 
@@ -35,9 +36,9 @@ def find_unit(unit):
     """
     Find the conversion of a unit string
     """
-    type = find_unittype(unit)
-    if type:
-        return UNITS[type][unit]
+    tp = find_unittype(unit)
+    if tp:
+        return UNITS[tp][unit]
     else:
         return None
 
@@ -62,10 +63,10 @@ def find_unit_options(unit):
     """
     Find the options for a given unit
     """
-    type = find_unittype(unit)
-    if type:
-        units = [choice for choice,value in 
-                 sorted(UNITS[type].items(),key=lambda x: 1/x[1])]
+    tp = find_unittype(unit)
+    if tp:
+        units = [choice for choice,_ in 
+                 sorted(UNITS[tp].items(),key=lambda x: 1/x[1])]
         return units
     else:
         return None

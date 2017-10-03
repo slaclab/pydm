@@ -17,7 +17,7 @@ affect any of your widgets, but it will be annoying.
 """
 from ..PyQt import QtGui, QtDesigner
 
-def qtplugin_factory(cls, is_container=False):
+def qtplugin_factory(cls, is_container=False, group='PyDM Widgets'):
     """
     Helper function to create a generic PyDMDesignerPlugin class.
 
@@ -27,7 +27,7 @@ def qtplugin_factory(cls, is_container=False):
     class Plugin(PyDMDesignerPlugin):
         __doc__ = "PyDMDesigner Plugin for {}".format(cls.__name__)
         def __init__(self):
-            super(Plugin, self).__init__(cls, is_container)
+            super(Plugin, self).__init__(cls, is_container, group)
     return Plugin
 
 class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
@@ -35,7 +35,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
     Parent class to standardize how pydm plugins are accessed in qt designer.
     All functions have default returns that can be overriden as necessary.
     """
-    def __init__(self, cls, is_container=False):
+    def __init__(self, cls, is_container=False, group='PyDM Widgets'):
         """
         Set up the plugin using the class info in cls
 
@@ -46,6 +46,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         self.initialized = False
         self.is_container = is_container
         self.cls = cls
+        self.group = group
 
     def initialize(self, core):
         """
@@ -75,9 +76,9 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         """
         w = self.cls(parent=parent)
         try:
-          w.init_for_designer()
+            w.init_for_designer()
         except (AttributeError, NameError):
-          pass
+            pass
         return w
 
     def name(self):
@@ -91,7 +92,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         Return a common group name so all PyDM Widgets are together in
         Qt Designer.
         """
-        return "PyDM Widgets"
+        return self.group
 
     def toolTip(self):
         """

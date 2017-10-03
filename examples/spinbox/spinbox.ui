@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>960</width>
-    <height>100</height>
+    <width>840</width>
+    <height>134</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,10 @@
      <property name="whatsThis">
       <string/>
      </property>
-     <property name="channel">
+     <property name="showUnits" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="channel" stdset="0">
       <string>ca://MTEST:Float</string>
      </property>
     </widget>
@@ -42,6 +45,9 @@
       <string>
     Writeable text field to send and display channel values
     </string>
+     </property>
+     <property name="showUnits" stdset="0">
+      <bool>true</bool>
      </property>
      <property name="channel" stdset="0">
       <string>ca://MTEST:Float</string>

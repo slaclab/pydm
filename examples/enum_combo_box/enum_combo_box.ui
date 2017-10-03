@@ -22,7 +22,7 @@
      <property name="whatsThis">
       <string/>
      </property>
-     <property name="channel">
+     <property name="channel" stdset="0">
       <string>ca://MTEST:Run</string>
      </property>
     </widget>
@@ -35,7 +35,7 @@
      <property name="whatsThis">
       <string/>
      </property>
-     <property name="channel">
+     <property name="channel" stdset="0">
       <string>ca://MTEST:Run</string>
      </property>
     </widget>
@@ -44,14 +44,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PyDMLabel</class>
-   <extends>QLabel</extends>
-   <header>pydm.widgets.label</header>
-  </customwidget>
-  <customwidget>
    <class>PyDMEnumComboBox</class>
    <extends>QWidget</extends>
    <header>pydm.widgets.enum_combo_box</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMLabel</class>
+   <extends>QLabel</extends>
+   <header>pydm.widgets.label</header>
   </customwidget>
  </customwidgets>
  <resources/>

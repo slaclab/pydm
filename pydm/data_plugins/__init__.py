@@ -15,19 +15,19 @@ filenames = [os.path.splitext(f)[0] for f in os.listdir(plugin_dir) if os.path.s
 
 plugin_modules = []
 for filename in filenames:
-  try:
-    module = importlib.import_module("." + filename, "pydm.data_plugins")
-  except NameError as e:
-    warnings.warn("Unable to import plugin file {}. This plugin will be skipped.  The exception raised was: {}".format(filename, e), RuntimeWarning, stacklevel=2)
-  classes = [obj for name, obj in inspect.getmembers(module) if inspect.isclass(obj) and issubclass(obj, PyDMPlugin) and obj is not PyDMPlugin]
-  #De-duplicate classes.
-  classes = list(set(classes))
-  if len(classes) == 0:
-    continue
-  if len(classes) > 1:
-    warnings.warn("More than one PyDMPlugin subclass in file {}. The first occurence (in alphabetical order) will be opened: {}".format(filename, classes[0].__name__), RuntimeWarning, stacklevel=0)
-  plugin = classes[0]
-  if plugin.protocol is not None:
-    if plugin.protocol in plugin_modules and plugin_modules[plugin.protocol] != plugin:
-      warnings.warn("More than one plugin is attempting to register the {protocol} protocol. Which plugin will get called to handle this protocol is undefined.".format(protocol=plugin.protocol, plugin=plugin.__name__), RuntimeWarning, stacklevel=0)
-    plugin_modules.append(plugin)
+    try:
+        module = importlib.import_module("." + filename, "pydm.data_plugins")
+    except NameError as e:
+        warnings.warn("Unable to import plugin file {}. This plugin will be skipped.    The exception raised was: {}".format(filename, e), RuntimeWarning, stacklevel=2)
+    classes = [obj for name, obj in inspect.getmembers(module) if inspect.isclass(obj) and issubclass(obj, PyDMPlugin) and obj is not PyDMPlugin]
+    #De-duplicate classes.
+    classes = list(set(classes))
+    if len(classes) == 0:
+        continue
+    if len(classes) > 1:
+        warnings.warn("More than one PyDMPlugin subclass in file {}. The first occurence (in alphabetical order) will be opened: {}".format(filename, classes[0].__name__), RuntimeWarning, stacklevel=0)
+    plugin = classes[0]
+    if plugin.protocol is not None:
+        if plugin.protocol in plugin_modules and plugin_modules[plugin.protocol] != plugin:
+            warnings.warn("More than one plugin is attempting to register the {protocol} protocol. Which plugin will get called to handle this protocol is undefined.".format(protocol=plugin.protocol, plugin=plugin.__name__), RuntimeWarning, stacklevel=0)
+        plugin_modules.append(plugin)

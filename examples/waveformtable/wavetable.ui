@@ -22,8 +22,11 @@
      <property name="whatsThis">
       <string>Displays a waveform in table form.</string>
      </property>
-     <property name="waveformChannel">
-      <string>ca://MOTOR:WAVE</string>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Waveform</string>
+     </property>
+     <property name="waveformChannel" stdset="0">
+      <string/>
      </property>
      <column/>
     </widget>
