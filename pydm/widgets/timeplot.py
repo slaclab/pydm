@@ -51,11 +51,18 @@ class TimePlotCurveItem(PlotCurveItem):
 
     @color_string.setter
     def color_string(self, new_color_string):
-        self.setPen(QColor(str(new_color_string)))
+        self.color = QColor(str(new_color_string))
 
     @property
     def color(self):
         return self.opts['pen'].color()
+    
+    @color.setter
+    def color(self, new_color):
+        if isinstance(new_color, str):
+            self.color_string = new_color
+            return
+        self.setPen(new_color)
 
     @pyqtSlot(bool)
     def connectionStateChanged(self, connected):

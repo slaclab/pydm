@@ -24,8 +24,9 @@ class PyDMTimePlotCurvesModel(QAbstractTableModel):
         self.plot.clearCurves()
 
     def flags(self, index):
-        f = Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsEditable
-        return f
+        if self._column_names[index.column()] == "Color":
+            return Qt.ItemIsSelectable | Qt.ItemIsEnabled
+        return Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsEditable
 
     def rowCount(self, parent=None):
         if parent is not None and parent.isValid():
@@ -80,7 +81,7 @@ class PyDMTimePlotCurvesModel(QAbstractTableModel):
         elif column_name == "Label":
             curve.setData(name=str(value))
         elif column_name == "Color":
-            curve.color_string = str(value)
+            curve.color = value
         self.dataChanged.emit(index, index)
         return True
 
@@ -102,3 +103,9 @@ class PyDMTimePlotCurvesModel(QAbstractTableModel):
         self.beginRemoveRows(QModelIndex(), index.row(), index.row())
         self._plot.removeYChannelAtIndex(index.row())
         self.endRemoveRows()
+    
+    def needsColorDialog(self, index):
+        column_name = self._column_names[index.column()]
+        if column_name == "Color":
+            return True
+        return False
