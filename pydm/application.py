@@ -45,8 +45,11 @@ class PyDMApplication(QApplication):
         True: QColor(0, 0, 0)
     }
 
-    def __init__(self, ui_file=None, command_line_args=[], display_args=[], perfmon=False, macros=None):
+    def __init__(self, ui_file=None, command_line_args=[], display_args=[], perfmon=False, hide_nav_bar=False, macros=None):
         super(PyDMApplication, self).__init__(command_line_args)
+        # Enable High DPI display, if available.
+        if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
+            self.setAttribute(Qt.AA_UseHighDpiPixmaps)
         # The macro and directory stacks are needed for nested displays (usually PyDMEmbeddedDisplays).
         # During the process of loading a display (whether from a .ui file, or a .py file), the application's
         # 'open_file' method will be called recursively.    Inside open_file, the last item on the stack represents
@@ -59,6 +62,7 @@ class PyDMApplication(QApplication):
         self.macro_stack = [{}]
         self.windows = {}
         self.display_args = display_args
+        self.hide_nav_bar = hide_nav_bar
         # Open a window if one was provided.
         if ui_file is not None:
             self.make_window(ui_file, macros, command_line_args)
@@ -115,6 +119,8 @@ class PyDMApplication(QApplication):
                 pydm_display_app_path = os.path.join(os.path.split(os.path.realpath(__file__))[0], "..", "scripts", "pydm")
 
         args = [pydm_display_app_path]
+        if self.hide_nav_bar:
+            args.extend(["--hide-nav-bar"])
         if macros is not None:
             args.extend(["-m", json.dumps(macros)])
         args.append(filepath)
@@ -130,7 +136,7 @@ class PyDMApplication(QApplication):
     def make_window(self, ui_file, macros=None, command_line_args=None):
         """make_window instantiates a new PyDMMainWindow, adds it to the
         application's list of windows, and opens ui_file in the window."""
-        main_window = PyDMMainWindow()
+        main_window = PyDMMainWindow(hide_nav_bar=self.hide_nav_bar)
         main_window.open_file(ui_file, macros, command_line_args)
         main_window.show()
         self.windows[main_window] = os.path.dirname(ui_file)

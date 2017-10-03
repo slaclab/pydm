@@ -104,7 +104,6 @@ class SymbolColumnDelegate(QStyledItemDelegate):
     """SymbolColumnDelegate draws a QComboBox in the Symbol column, so that users
     can pick the symbol they want to display from a list, instead of needing to
     remember the PyQtGraph character codes."""
-    #reverse_symbols = {v: k for k, v in WaveformCurveItem.symbols.items()}
     def createEditor(self, parent, option, index):
         editor = QComboBox(parent)
         editor.addItems(WaveformCurveItem.symbols.keys())
