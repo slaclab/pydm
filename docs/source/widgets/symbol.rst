@@ -1,7 +1,6 @@
 #######################
-PyDMLineEdit
+PyDMSymbol
 #######################
 
-.. autoclass:: line_edit.PyDMLineEdit
+.. autoclass:: pydm.widgets.symbol.PyDMSymbol
    :members:
-

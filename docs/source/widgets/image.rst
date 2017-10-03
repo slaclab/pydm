@@ -1,7 +1,6 @@
 #######################
-PyDMPushButton
+PyDMImageView
 #######################
 
-.. autoclass:: pushbutton.PyDMPushButton
+.. autoclass:: pydm.widgets.image.PyDMImageView
    :members:
-
