@@ -33,6 +33,8 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
         column_name = self._column_names[index.column()]
         if column_name == "Connect Points":
             return Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsUserCheckable
+        if column_name == "Color":
+            return Qt.ItemIsSelectable | Qt.ItemIsEnabled
         return Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsEditable
 
     def rowCount(self, parent=None):
@@ -104,7 +106,7 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
             elif column_name == "Label":
                 curve.setData(name=str(value))
             elif column_name == "Color":
-                curve.color_string = str(value)
+                curve.color = value
             elif column_name == "Data Point Symbol":
                 curve.symbol = str(value)
             else:
@@ -134,3 +136,9 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
         self.beginRemoveRows(QModelIndex(), index.row(), index.row())
         self._plot.removeChannelAtIndex(index.row())
         self.endRemoveRows()
+    
+    def needsColorDialog(self, index):
+        column_name = self._column_names[index.column()]
+        if column_name == "Color":
+            return True
+        return False

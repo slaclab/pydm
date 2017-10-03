@@ -1,5 +1,5 @@
-from ..PyQt.QtGui import QDialog, QVBoxLayout, QHBoxLayout, QTableView, QAbstractItemView, QSpacerItem, QSizePolicy, QDialogButtonBox, QPushButton, QItemSelection, QComboBox, QStyledItemDelegate
-from ..PyQt.QtCore import Qt, pyqtSlot
+from ..PyQt.QtGui import QDialog, QVBoxLayout, QHBoxLayout, QTableView, QAbstractItemView, QSpacerItem, QSizePolicy, QDialogButtonBox, QPushButton, QItemSelection, QComboBox, QStyledItemDelegate, QColorDialog
+from ..PyQt.QtCore import Qt, pyqtSlot, QModelIndex
 from ..PyQt.QtDesigner import QDesignerFormWindowInterface
 from .waveformplot_table_model import PyDMWaveformPlotCurvesModel
 from .waveformplot import WaveformCurveItem
@@ -27,7 +27,10 @@ class WaveformPlotCurveEditorDialog(QDialog):
         self.remove_button.setEnabled(False)
         symbol_delegate = SymbolColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(5, symbol_delegate)
+        color_delegate = ColorColumnDelegate(self)
+        self.table_view.setItemDelegateForColumn(4, color_delegate)
         self.table_view.selectionModel().selectionChanged.connect(self.handleSelectionChange)
+        self.table_view.doubleClicked.connect(self.handleDoubleClick)
         
     def setup_ui(self):
         self.resize(800, 300)
@@ -74,6 +77,16 @@ class WaveformPlotCurveEditorDialog(QDialog):
     def handleSelectionChange(self, selected, deselected):
         self.remove_button.setEnabled(self.table_view.selectionModel().hasSelection())
     
+    @pyqtSlot(QModelIndex)
+    def handleDoubleClick(self, index):
+        if self.table_model.needsColorDialog(index):
+            #The table model returns a QBrush for BackgroundRole, not a QColor.
+            init_color = self.table_model.data(index, Qt.BackgroundRole).color()
+            color = QColorDialog.getColor(init_color, self)
+            if color.isValid():
+                print("Dialog picked color for curve: {}".format(color.name()))
+                self.table_model.setData(index, color, role=Qt.EditRole)
+    
     @pyqtSlot()
     def saveChanges(self):
         formWindow = QDesignerFormWindowInterface.findFormWindow(self.plot)
@@ -81,6 +94,10 @@ class WaveformPlotCurveEditorDialog(QDialog):
             formWindow.cursor().setProperty("curves", self.plot.curves)
         self.accept()
 
+class ColorColumnDelegate(QStyledItemDelegate):
+    def createEditor(self, parent, option, index):
+        return None
+    
 class SymbolColumnDelegate(QStyledItemDelegate):
     #reverse_symbols = {v: k for k, v in WaveformCurveItem.symbols.items()}
     def createEditor(self, parent, option, index):
