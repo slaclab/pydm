@@ -68,30 +68,6 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.plotItem.clear()
         self._curves = []
     
-    def getAutoRangeX(self):
-        return self._auto_range_x
-    
-    def setAutoRangeX(self, value):
-        self._auto_range_x = value
-        self.plotItem.enableAutoRange(ViewBox.XAxis,enable=self._auto_range_x)
-            
-    def resetAutoRangeX(self):
-        self.setAutoRangeX(True)
-        
-    autoRangeX = pyqtProperty("bool", getAutoRangeX, setAutoRangeX, resetAutoRangeX)
-    
-    def getAutoRangeY(self):
-        return self._auto_range_y
-    
-    def setAutoRangeY(self, value):
-        self._auto_range_y = value
-        self.plotItem.enableAutoRange(ViewBox.YAxis,enable=self._auto_range_y)
-            
-    def resetAutoRangeY(self):
-        self.setAutoRangeY(True)
-        
-    autoRangeY = pyqtProperty("bool", getAutoRangeY, setAutoRangeY, resetAutoRangeY)
-    
     def getShowXGrid(self):
         return self._show_x_grid
     
@@ -172,3 +148,157 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.setShowLegend(False)
         
     showLegend = pyqtProperty(bool, getShowLegend, setShowLegend, resetShowLegend)
+    
+    def getAutoRangeX(self):
+        return self._auto_range_x
+    
+    def setAutoRangeX(self, value):
+        self._auto_range_x = value
+        self.plotItem.enableAutoRange(ViewBox.XAxis,enable=self._auto_range_x)
+            
+    def resetAutoRangeX(self):
+        self.setAutoRangeX(True)
+    
+    def getAutoRangeY(self):
+        return self._auto_range_y
+    
+    def setAutoRangeY(self, value):
+        self._auto_range_y = value
+        self.plotItem.enableAutoRange(ViewBox.YAxis,enable=self._auto_range_y)
+            
+    def resetAutoRangeY(self):
+        self.setAutoRangeY(True)
+        
+    def getMinXRange(self):
+        """
+        Minimum X-axis value visible on the plot.
+
+        Returns
+        -------
+        float
+        """
+        return self.plotItem.viewRange()[0][0]
+    
+    def setMinXRange(self, new_min_x_range):
+        """
+        Set the minimum X-axis value visible on the plot.
+
+        Parameters
+        -------
+        new_min_x_range : float
+        """
+        viewRange = self.plotItem.viewRange()
+        viewRange[0][0] = new_min_x_range
+        self.plotItem.setXRange(viewRange[0][0], viewRange[0][1], padding=0)
+    
+    def getMaxXRange(self):
+        """
+        Maximum X-axis value visible on the plot.
+
+        Returns
+        -------
+        float
+        """
+        return self.plotItem.viewRange()[0][1]
+    
+    def setMaxXRange(self, new_max_x_range):
+        """
+        Set the Maximum X-axis value visible on the plot.
+
+        Parameters
+        -------
+        new_max_x_range : float
+        """
+        viewRange = self.plotItem.viewRange()
+        viewRange[0][1] = new_max_x_range
+        self.plotItem.setXRange(viewRange[0][0], viewRange[0][1], padding=0)
+    
+    def getMinYRange(self):
+        """
+        Minimum Y-axis value visible on the plot.
+
+        Returns
+        -------
+        float
+        """
+        return self.plotItem.viewRange()[1][0]
+    
+    def setMinYRange(self, new_min_y_range):
+        """
+        Set the minimum Y-axis value visible on the plot.
+
+        Parameters
+        -------
+        new_min_y_range : float
+        """
+        viewRange = self.plotItem.viewRange()
+        viewRange[1][0] = new_min_y_range
+        self.plotItem.setYRange(viewRange[1][0], viewRange[1][1], padding=0)
+    
+    def getMaxYRange(self):
+        """
+        Maximum Y-axis value visible on the plot.
+
+        Returns
+        -------
+        float
+        """
+        return self.plotItem.viewRange()[1][1]
+    
+    def setMaxYRange(self, new_max_y_range):
+        """
+        Set the maximum Y-axis value visible on the plot.
+
+        Parameters
+        -------
+        new_max_y_range : float
+        """
+        viewRange = self.plotItem.viewRange()
+        viewRange[1][1] = new_max_y_range
+        self.plotItem.setYRange(viewRange[1][0], viewRange[1][1], padding=0)
+    
+    
+    @pyqtProperty(bool)
+    def mouseEnabledX(self):
+        """
+        Whether or not mouse interactions are enabled for the X-axis.
+
+        Returns
+        -------
+        bool
+        """
+        return self.plotItem.getViewBox().state['mouseEnabled'][0]
+    
+    @mouseEnabledX.setter
+    def mouseEnabledX(self, x_enabled):
+        """
+        Whether or not mouse interactions are enabled for the X-axis.
+
+        Parameters
+        -------
+        x_enabled : bool
+        """
+        self.plotItem.setMouseEnabled(x=x_enabled)
+    
+    @pyqtProperty(bool)
+    def mouseEnabledY(self):
+        """
+        Whether or not mouse interactions are enabled for the Y-axis.
+
+        Returns
+        -------
+        bool
+        """
+        return self.plotItem.getViewBox().state['mouseEnabled'][1]
+    
+    @mouseEnabledY.setter
+    def mouseEnabledY(self, y_enabled):
+        """
+        Whether or not mouse interactions are enabled for the Y-axis.
+
+        Parameters
+        -------
+        y_enabled : bool
+        """
+        self.plotItem.setMouseEnabled(y=y_enabled)
+    
