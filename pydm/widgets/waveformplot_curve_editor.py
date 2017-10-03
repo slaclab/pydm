@@ -84,7 +84,6 @@ class WaveformPlotCurveEditorDialog(QDialog):
             init_color = self.table_model.data(index, Qt.BackgroundRole).color()
             color = QColorDialog.getColor(init_color, self)
             if color.isValid():
-                print("Dialog picked color for curve: {}".format(color.name()))
                 self.table_model.setData(index, color, role=Qt.EditRole)
     
     @pyqtSlot()

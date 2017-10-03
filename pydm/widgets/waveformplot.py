@@ -56,7 +56,6 @@ class WaveformCurveItem(PlotDataItem):
         if isinstance(new_color, str):
             self.color_string = new_color
             return
-        print("Curve is settings its color to: {}".format(new_color.name()))
         self._color = new_color
         if self.connect_points:
             self.setPen(self._color)
