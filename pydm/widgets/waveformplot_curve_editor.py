@@ -94,11 +94,16 @@ class WaveformPlotCurveEditorDialog(QDialog):
         self.accept()
 
 class ColorColumnDelegate(QStyledItemDelegate):
+    """The ColorColumnDelegate is an item delegate that is installed on the
+    color column of the table view.  Its only job is to ensure that the default
+    editor widget (a line edit) isn't displayed for items in the color column."""
     def createEditor(self, parent, option, index):
         return None
     
 class SymbolColumnDelegate(QStyledItemDelegate):
-    #reverse_symbols = {v: k for k, v in WaveformCurveItem.symbols.items()}
+    """SymbolColumnDelegate draws a QComboBox in the Symbol column, so that users
+    can pick the symbol they want to display from a list, instead of needing to
+    remember the PyQtGraph character codes."""
     def createEditor(self, parent, option, index):
         editor = QComboBox(parent)
         editor.addItems(WaveformCurveItem.symbols.keys())
