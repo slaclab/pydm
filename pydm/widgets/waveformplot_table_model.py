@@ -2,12 +2,18 @@ from ..PyQt.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant
 from ..PyQt.QtGui import QBrush, QColor
 from operator import itemgetter
 from .. import utilities
+from .waveformplot import WaveformCurveItem
 
 class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
+    name_for_symbol = {v: k for k, v in WaveformCurveItem.symbols.items()}
+    """ This is the data model used by the waveform plot curve editor.
+    It basically acts as a go-between for the curves in a plot, and
+    QTableView items.
+    """
     def __init__(self, plot, parent=None):
         super(PyDMWaveformPlotCurvesModel, self).__init__(parent=parent)
         self._plot = plot
-        self._column_names = ("Y Channel", "X Channel", "Label", "Color")
+        self._column_names = ("Y Channel", "X Channel", "Label", "Color", "Connect Points", "Data Point Symbol")
 
     @property
     def plot(self):
@@ -24,8 +30,12 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
         self.plot.clearCurves()
 
     def flags(self, index):
-        f = Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsEditable
-        return f
+        column_name = self._column_names[index.column()]
+        if column_name == "Connect Points":
+            return Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsUserCheckable
+        if column_name == "Color":
+            return Qt.ItemIsSelectable | Qt.ItemIsEnabled
+        return Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsEditable
 
     def rowCount(self, parent=None):
         if parent is not None and parent.isValid():
@@ -59,16 +69,25 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
                 return str(curve.name())
             elif column_name == "Color":
                 return curve.color_string
+            elif column_name == "Connect Points":
+                return QVariant()
+            elif column_name == "Data Point Symbol":
+                if curve.symbol is None:
+                    return "None"
+                return self.name_for_symbol[curve.symbol]
         #elif role == Qt.DecorationRole and column_name == "Color":
         #    return curve.color
         elif role == Qt.BackgroundRole and column_name == "Color":
             return QBrush(curve.color)
+        elif role == Qt.CheckStateRole and column_name == "Connect Points":
+            if curve.connect_points:
+                return Qt.Checked
+            else:
+                return Qt.Unchecked
         else:
             return QVariant()
 
     def setData(self, index, value, role=Qt.EditRole):
-        if role != Qt.EditRole:
-            return False
         if not index.isValid():
             return False
         if index.row() >= self.rowCount():
@@ -77,16 +96,25 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
             return False
         column_name = self._column_names[index.column()]
         curve = self.plot._curves[index.row()]
-        if isinstance(value, QVariant):
-            value = value.toString()
-        if column_name == "Y Channel":
-            curve.y_address = str(value)
-        elif column_name == "X Channel":
-            curve.x_address = str(value)
-        elif column_name == "Label":
-            curve.setData(name=str(value))
-        elif column_name == "Color":
-            curve.color_string = str(value)
+        if role == Qt.EditRole:
+            if isinstance(value, QVariant):
+                value = value.toString()
+            if column_name == "Y Channel":
+                curve.y_address = str(value)
+            elif column_name == "X Channel":
+                curve.x_address = str(value)
+            elif column_name == "Label":
+                curve.setData(name=str(value))
+            elif column_name == "Color":
+                curve.color = value
+            elif column_name == "Data Point Symbol":
+                curve.symbol = str(value)
+            else:
+                return False
+        elif role == Qt.CheckStateRole and column_name == "Connect Points":
+            curve.connect_points = bool(value)
+        else:
+            return False
         self.dataChanged.emit(index, index)
         return True
 
@@ -108,3 +136,9 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
         self.beginRemoveRows(QModelIndex(), index.row(), index.row())
         self._plot.removeChannelAtIndex(index.row())
         self.endRemoveRows()
+    
+    def needsColorDialog(self, index):
+        column_name = self._column_names[index.column()]
+        if column_name == "Color":
+            return True
+        return False

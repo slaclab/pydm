@@ -1,5 +1,5 @@
-from ..PyQt.QtGui import QDialog, QVBoxLayout, QHBoxLayout, QTableView, QAbstractItemView, QSpacerItem, QSizePolicy, QDialogButtonBox, QPushButton, QItemSelection
-from ..PyQt.QtCore import Qt, pyqtSlot
+from ..PyQt.QtGui import QDialog, QVBoxLayout, QHBoxLayout, QTableView, QAbstractItemView, QSpacerItem, QSizePolicy, QDialogButtonBox, QPushButton, QItemSelection, QStyledItemDelegate, QColorDialog
+from ..PyQt.QtCore import Qt, pyqtSlot, QModelIndex
 from ..PyQt.QtDesigner import QDesignerFormWindowInterface
 from .timeplot_table_model import PyDMTimePlotCurvesModel
 
@@ -27,6 +27,9 @@ class TimePlotCurveEditorDialog(QDialog):
         self.table_view.setDragDropOverwriteMode(False)
         self.table_view.setSelectionMode(QAbstractItemView.SingleSelection)
         self.table_view.setSelectionBehavior(QAbstractItemView.SelectRows)
+        color_delegate = ColorColumnDelegate(self)
+        self.table_view.setItemDelegateForColumn(2, color_delegate)
+        self.table_view.doubleClicked.connect(self.handleDoubleClick)
         self.table_view.setSortingEnabled(False)
         self.table_view.horizontalHeader().setStretchLastSection(True)
         self.table_view.verticalHeader().setVisible(False)
@@ -62,10 +65,23 @@ class TimePlotCurveEditorDialog(QDialog):
     def handleSelectionChange(self, selected, deselected):
         self.remove_button.setEnabled(self.table_view.selectionModel().hasSelection())
     
+    @pyqtSlot(QModelIndex)
+    def handleDoubleClick(self, index):
+        if self.table_model.needsColorDialog(index):
+            #The table model returns a QBrush for BackgroundRole, not a QColor.
+            init_color = self.table_model.data(index, Qt.BackgroundRole).color()
+            color = QColorDialog.getColor(init_color, self)
+            if color.isValid():
+                self.table_model.setData(index, color, role=Qt.EditRole)
+    
     @pyqtSlot()
     def saveChanges(self):
         formWindow = QDesignerFormWindowInterface.findFormWindow(self.plot)
         if formWindow:
             formWindow.cursor().setProperty("curves", self.plot.curves)
         self.accept()
+    
+class ColorColumnDelegate(QStyledItemDelegate):
+    def createEditor(self, parent, option, index):
+        return None
         
