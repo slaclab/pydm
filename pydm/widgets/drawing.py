@@ -54,6 +54,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
     def __init__(self, parent=None, init_channel=None):
         QWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
+        self.alarmSensitiveBorder = False
         self._rotation = 0.0
         self._brush = QBrush(Qt.SolidPattern)
         self._default_color = QColor()
