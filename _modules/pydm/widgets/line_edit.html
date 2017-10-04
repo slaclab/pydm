@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pydm.widgets.line_edit &mdash; PyDM 0.3.0+29.gf86a846 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="PyDM 0.3.0+29.gf86a846 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0+29.gf86a846
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripted_displays.html">Making Python-based Displays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../channel.html">PyDM Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../macros.html">Macro Substitution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">PyDM Widgets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyDM</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pydm.widgets.line_edit</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pydm.widgets.line_edit</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QMenu</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">utilities</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
+
+<div class="viewcode-block" id="PyDMLineEdit"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit">[docs]</a><span class="k">class</span> <span class="nc">PyDMLineEdit</span><span class="p">(</span><span class="n">QLineEdit</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A QLineEdit (writable text field) with support for Channels and more</span>
+<span class="sd">    from PyDM.</span>
+<span class="sd">    This widget offers an unit conversion menu when users Right Click</span>
+<span class="sd">    into it.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parent : QWidget</span>
+<span class="sd">        The parent widget for the Label</span>
+<span class="sd">    init_channel : str, optional</span>
+<span class="sd">        The channel to be used by the widget.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QLineEdit</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">returnPressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Create Context Menu upon Right Click</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">customContextMenuRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">launch_menu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s1">&#39;Convert Units&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_unit_options</span><span class="p">()</span>
+
+<div class="viewcode-block" id="PyDMLineEdit.value_changed"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Receive and update the PyDMLineEdit for a new channel value</span>
+
+<span class="sd">        The actual value of the input is saved as well as the type received.</span>
+<span class="sd">        This also resets the PyDMLineEdit display text using</span>
+<span class="sd">        :meth:`.set_display`</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value: str, float or int</span>
+<span class="sd">            The new value of the channel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMLineEdit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_display</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyDMLineEdit.send_value"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.send_value">[docs]</a>    <span class="k">def</span> <span class="nf">send_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Emit a :attr:`send_value_signal` to update channel value.</span>
+
+<span class="sd">        The text is cleaned of all units, user-formatting and scale values</span>
+<span class="sd">        before being sent back to the channel. This function is attached the</span>
+<span class="sd">        ReturnPressed signal of the PyDMLineEdit</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">send_value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+
+        <span class="c1"># Clean text of all formatting</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="p">:</span>
+            <span class="n">send_value</span> <span class="o">=</span> <span class="n">send_value</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="p">)</span>
+
+        <span class="c1"># Remove scale factor</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span> <span class="o">!=</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="n">send_value</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
+                          <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scale</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">send_value</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clearFocus</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_display</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyDMLineEdit.write_access_changed"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.write_access_changed">[docs]</a>    <span class="k">def</span> <span class="nf">write_access_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_write_access</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Change the PyDMLineEdit to read only if write access is denied</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMLineEdit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">write_access_changed</span><span class="p">(</span><span class="n">new_write_access</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="ow">not</span> <span class="n">new_write_access</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">precision_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_precision</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMLineEdit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">precision_changed</span><span class="p">(</span><span class="n">new_precision</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_display</span><span class="p">()</span>
+
+<div class="viewcode-block" id="PyDMLineEdit.unit_changed"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.unit_changed">[docs]</a>    <span class="k">def</span> <span class="nf">unit_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_unit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Accept a unit to display with a channel&#39;s value</span>
+
+<span class="sd">        The unit may or may not be displayed based on the :attr:`showUnits`</span>
+<span class="sd">        attribute. Receiving a new value for the unit causes the display to</span>
+<span class="sd">        reset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMLineEdit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">unit_changed</span><span class="p">(</span><span class="n">new_unit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_display</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_unit_options</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyDMLineEdit.create_unit_options"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.create_unit_options">[docs]</a>    <span class="k">def</span> <span class="nf">create_unit_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create the menu for displaying possible unit values</span>
+
+<span class="sd">        The menu is filled with possible unit conversions based on the</span>
+<span class="sd">        current PyDMLineEdit. If either the unit is not found in the by</span>
+<span class="sd">        the :func:`utilities.find_unit_options` function, or, the</span>
+<span class="sd">        :attr:`.showUnits` attribute is set to False, the menu will tell</span>
+<span class="sd">        the user that there are no available conversions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">find_unit_options</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_units</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">choice</span> <span class="ow">in</span> <span class="n">units</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">choice</span><span class="p">,</span>
+                                        <span class="n">partial</span><span class="p">(</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">apply_conversion</span><span class="p">,</span>
+                                            <span class="n">choice</span>
+                                            <span class="p">)</span>
+                                        <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s1">&#39;No Unit Conversions found&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMLineEdit.apply_conversion"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.apply_conversion">[docs]</a>    <span class="k">def</span> <span class="nf">apply_conversion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert the current unit to a different one</span>
+
+<span class="sd">        This function will attempt to find a scalar to convert the current</span>
+<span class="sd">        unit type to the desired one and reset the display with the new</span>
+<span class="sd">        conversion.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        unit : str</span>
+<span class="sd">            String name of desired units</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning: Attempting to convert PyDMLineEdit unit, &#39;</span>\
+                           <span class="s1">&#39;but no initial units supplied&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">),</span> <span class="n">unit</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scale</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="o">=</span> <span class="n">unit</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_format_string</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clearFocus</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_display</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning: Attempting to convert PyDMLineEdit unit, but </span><span class="si">{:}</span><span class="s1"> &#39;</span>\
+                           <span class="s1">&#39;can not be converted to </span><span class="si">{:}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">,</span> <span class="n">unit</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="PyDMLineEdit.launch_menu"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.launch_menu">[docs]</a>    <span class="k">def</span> <span class="nf">launch_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Launch the context menu with the appropriate unit conversions.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        point : QPoint</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">point</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="PyDMLineEdit.set_display"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.set_display">[docs]</a>    <span class="k">def</span> <span class="nf">set_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the text display of the PyDMLineEdit.</span>
+
+<span class="sd">        The original value given by the PV is converted to a text entry based</span>
+<span class="sd">        on the current settings for scale value, precision, a user-defined</span>
+<span class="sd">        format, and the current units. If the user is currently entering a</span>
+<span class="sd">        value in the PyDMLineEdit the text will not be changed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="ow">and</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scale</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasFocus</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_display</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMLineEdit.focusOutEvent"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.focusOutEvent">[docs]</a>    <span class="k">def</span> <span class="nf">focusOutEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Overwrites the function called when a user leaves a PyDMLineEdit</span>
+<span class="sd">        without pressing return.  Resets the value of the text field to the</span>
+<span class="sd">        current channel value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_display</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMLineEdit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">focusOutEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.3.0+29.gf86a846',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

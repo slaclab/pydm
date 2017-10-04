@@ -1,0 +1,594 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pydm.widgets.pushbutton &mdash; PyDM 0.3.0+29.gf86a846 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="PyDM 0.3.0+29.gf86a846 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0+29.gf86a846
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripted_displays.html">Making Python-based Displays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../channel.html">PyDM Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../macros.html">Macro Substitution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">PyDM Widgets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyDM</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pydm.widgets.pushbutton</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pydm.widgets.pushbutton</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">hashlib</span>
+
+<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QInputDialog</span><span class="p">,</span> <span class="n">QLineEdit</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
+
+<div class="viewcode-block" id="PyDMPushButton"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton">[docs]</a><span class="k">class</span> <span class="nc">PyDMPushButton</span><span class="p">(</span><span class="n">QPushButton</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Basic PushButton to send a fixed value.</span>
+
+<span class="sd">    The PyDMPushButton is meant to hold a specific value, and send that value</span>
+<span class="sd">    to a channel when it is clicked, much like the MessageButton does in EDM.</span>
+<span class="sd">    The PyDMPushButton works in two different modes of operation, first, a</span>
+<span class="sd">    fixed value can be given to the :attr:`.pressValue` attribute, whenever the</span>
+<span class="sd">    button is clicked a signal containing this value will be sent to the</span>
+<span class="sd">    connected channel. This is the default behavior of the button. However, if</span>
+<span class="sd">    the :attr:`.relativeChange` is set to True, the fixed value will be added</span>
+<span class="sd">    to the current value of the channel. This means that the button will</span>
+<span class="sd">    increment a channel by a fixed amount with every click, a consistent</span>
+<span class="sd">    relative move</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parent : QObject, optional</span>
+<span class="sd">        Parent of PyDMPushButton</span>
+
+<span class="sd">    label : str, optional</span>
+<span class="sd">        String to place on button</span>
+
+<span class="sd">    icon : QIcon, optional</span>
+<span class="sd">        An Icon to display on the PyDMPushButton</span>
+
+<span class="sd">    pressValue : int, float, str</span>
+<span class="sd">        Value to be sent when the button is clicked</span>
+
+<span class="sd">    relative : bool, optional</span>
+<span class="sd">        Choice to have the button perform a relative put, instead of always</span>
+<span class="sd">        setting to an absolute value</span>
+
+<span class="sd">    init_channel : str, optional</span>
+<span class="sd">        ID of channel to manipulate</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEFAULT_CONFIRM_MESSAGE</span> <span class="o">=</span> <span class="s2">&quot;Are you sure you want to proceed ?&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">pressValue</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">icon</span><span class="p">:</span>
+            <span class="n">QPushButton</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">label</span><span class="p">:</span>
+            <span class="n">QPushButton</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">QPushButton</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span> <span class="o">=</span> <span class="n">pressValue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="o">=</span> <span class="n">relative</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span> <span class="o">=</span> <span class="n">PyDMPushButton</span><span class="o">.</span><span class="n">DEFAULT_CONFIRM_MESSAGE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_password</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sendValue</span><span class="p">)</span>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">passwordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wether or not this button is password protected.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span>
+
+    <span class="nd">@passwordProtected</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">passwordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wether or not this button is password protected.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">password</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Password to be encrypted using SHA256.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            To avoid issues exposing the password this method</span>
+<span class="sd">            always returns an empty string.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="nd">@password</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Password to be encrypted using SHA256.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : str</span>
+<span class="sd">            The password to be encrypted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">sha</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
+            <span class="n">sha</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">=</span> <span class="n">sha</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">protectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The encrypted password</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span>
+
+    <span class="nd">@protectedPassword</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">protectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">showConfirmDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wether or not to display a confirmation dialog.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span>
+
+    <span class="nd">@showConfirmDialog</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">showConfirmDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wether or not to display a confirmation dialog.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">confirmMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Message to be displayed at the Confirmation dialog.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span>
+
+    <span class="nd">@confirmMessage</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">confirmMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Message to be displayed at the Confirmation dialog.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">pressValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This property holds the value to send back through the channel.</span>
+
+<span class="sd">        The type of this value does not matter because it is automatically</span>
+<span class="sd">        converted to match the prexisting value type of the channel. However, the</span>
+<span class="sd">        sign of the value matters for both the fixed and relative modes.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">)</span>
+
+    <span class="nd">@pressValue</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">pressValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This property holds the value to send back through the channel.</span>
+
+<span class="sd">        The type of this value does not matter because it is automatically</span>
+<span class="sd">        converted to match the prexisting value type of the channel. However, the</span>
+<span class="sd">        sign of the value matters for both the fixed and relative modes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span> <span class="o">=</span> <span class="n">value</span>
+
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">relativeChange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The mode of operation of the PyDMPushButton</span>
+
+<span class="sd">        If set to True, the :attr:`pressValue` will be added to the current value</span>
+<span class="sd">        of the channel. If False, the :attr:`pressValue` will be sent without any</span>
+<span class="sd">        operation.</span>
+
+<span class="sd">        This flag will be ignored if the connected channel sends a str type value</span>
+<span class="sd">        to :meth:`.receiveValue`. This is designed to eliminate the undesirable</span>
+<span class="sd">        behavior of concatenating strings as opposed to doing mathematical</span>
+<span class="sd">        addition.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span>
+
+    <span class="nd">@relativeChange</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">relativeChange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choice</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The mode of operation of the PyDMPushButton</span>
+
+<span class="sd">        If set to True, the :attr:`pressValue` will be added to the current value</span>
+<span class="sd">        of the channel. If False, the :attr:`pressValue` will be sent without any</span>
+<span class="sd">        operation.</span>
+
+<span class="sd">        This flag will be ignored if the connected channel sends a str type value</span>
+<span class="sd">        to :meth:`.receiveValue`. This is designed to eliminate the undesirable</span>
+<span class="sd">        behavior of concatenating strings as opposed to doing mathematical</span>
+<span class="sd">        addition.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        choice : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="o">!=</span> <span class="n">choice</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="o">=</span> <span class="n">choice</span>
+
+<div class="viewcode-block" id="PyDMPushButton.confirm_dialog"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.confirm_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">confirm_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shows the confirmation dialog with the proper message in case</span>
+<span class="sd">        ```showConfirmMessage``` is True.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the message was confirmed or if ```showCofirmMessage``` is False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span> <span class="o">=</span> <span class="n">PyDMPushButton</span><span class="o">.</span><span class="n">DEFAULT_CONFIRM_MESSAGE</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Question</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setDefaultButton</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">ret</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="PyDMPushButton.validate_password"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.validate_password">[docs]</a>    <span class="k">def</span> <span class="nf">validate_password</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If the widget is ```passwordProtected```, this method will propmt</span>
+<span class="sd">        the user for the correct password.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True in case the password was correct of if the widget is not</span>
+<span class="sd">            password protected.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="n">pwd</span><span class="p">,</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">QInputDialog</span><span class="o">.</span><span class="n">getText</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Authentication&quot;</span><span class="p">,</span> <span class="s2">&quot;Please enter your password:&quot;</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="o">.</span><span class="n">Password</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">pwd</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pwd</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span> <span class="ow">or</span> <span class="n">pwd</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">sha</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
+        <span class="n">sha</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pwd</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+        <span class="n">pwd_encrypted</span> <span class="o">=</span> <span class="n">sha</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">pwd_encrypted</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Critical</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Invalid password.&quot;</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setDefaultButton</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setEscapeButton</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="PyDMPushButton.alarm_severity_changed"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.alarm_severity_changed">[docs]</a>    <span class="k">def</span> <span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback invoked when the Channel alarm severity is changed.</span>
+<span class="sd">        This callback is not processed if the widget has no channel associated with it.</span>
+<span class="sd">        This callback handles the composition of the stylesheet to be applied and the call</span>
+<span class="sd">        to update to redraw the widget with the needed changes for the new state.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_alarm_severity : int</span>
+<span class="sd">            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR and 3 = INVALID</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="PyDMPushButton.sendValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.sendValue">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">sendValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Send a new value to the channel</span>
+
+<span class="sd">        This function interprets the settings of the PyDMPushButton and sends</span>
+<span class="sd">        the appropriate value out through the :attr:`.send_value_signal`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_dialog</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_password</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">send_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PyDMPushButton.updatePressValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.updatePressValue">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">updatePressValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the pressValue of a function by passing a signal to the</span>
+<span class="sd">        PyDMPushButton</span>
+
+<span class="sd">        This is useful to dynamically change the pressValue of the button</span>
+<span class="sd">        during runtime. This enables the applied value to be linked to the</span>
+<span class="sd">        state of a different widget, say a QLineEdit or QSlider</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : int, float or str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pressValue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:}</span><span class="s1"> is not a valid pressValue &#39;</span>\
+                        <span class="s1">&#39;for </span><span class="si">{:}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.3.0+29.gf86a846',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,445 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pydm.widgets.related_display_button &mdash; PyDM 0.3.0+29.gf86a846 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="PyDM 0.3.0+29.gf86a846 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0+29.gf86a846
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripted_displays.html">Making Python-based Displays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../channel.html">PyDM Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../macros.html">Macro Substitution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">PyDM Widgets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyDM</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pydm.widgets.related_display_button</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pydm.widgets.related_display_button</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QLayout</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Qt</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">compose_stylesheet</span>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton">[docs]</a><span class="k">class</span> <span class="nc">PyDMRelatedDisplayButton</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A QPushButton capable of opening a new Display at the same of at a</span>
+<span class="sd">    new window.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    init_channel : str, optional</span>
+<span class="sd">        The channel to be used by the widget.</span>
+
+<span class="sd">    filename : str, optional</span>
+<span class="sd">        The file to be opened</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Constants for determining where to open the display.</span>
+    <span class="n">EXISTING_WINDOW</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">NEW_WINDOW</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_layout</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_layout</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_layout</span><span class="o">.</span><span class="n">setSizeConstraint</span><span class="p">(</span><span class="n">QLayout</span><span class="o">.</span><span class="n">SetMaximumSize</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">push_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="o">.</span><span class="n">mouseReleaseEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">push_button_release_event</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">NoFrame</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLineWidth</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_macro_string</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_open_in_new_window</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.alarm_severity_changed"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.alarm_severity_changed">[docs]</a>    <span class="k">def</span> <span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback invoked when the Channel alarm severity is changed.</span>
+<span class="sd">        This callback is not processed if the widget has no channel</span>
+<span class="sd">        associated with it.</span>
+<span class="sd">        This callback handles the composition of the stylesheet to be</span>
+<span class="sd">        applied and the call</span>
+<span class="sd">        to update to redraw the widget with the needed changes for the</span>
+<span class="sd">        new state.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_alarm_severity : int</span>
+<span class="sd">            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR</span>
+<span class="sd">            and 3 = INVALID</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">=</span> <span class="n">new_alarm_severity</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_style</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alarm_style_sheet_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_alarm_flags</span><span class="p">][</span><span class="n">new_alarm_severity</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s1">&#39;border&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">[</span><span class="s1">&#39;border&#39;</span><span class="p">]</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="n">compose_stylesheet</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">style</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.check_enable_state"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.check_enable_state">[docs]</a>    <span class="k">def</span> <span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Because the related display button&#39;s channel is only used for alarm</span>
+<span class="sd">        status, the widget is never disabled by connection state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The QPushButton text property</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+
+    <span class="nd">@text</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The QPushButton text property</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        txt : str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">displayFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The filename to open</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_display_filename</span><span class="p">)</span>
+
+    <span class="nd">@displayFilename</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">displayFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The filename to open</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_filename</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_display_filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_filename</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_display_filename</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">macros</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The macro substitutions to use when launching the display, in JSON object format.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macro_string</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macro_string</span>
+
+    <span class="nd">@macros</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">macros</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_macros</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The macro substitutions to use when launching the display, in JSON object format.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_macros : str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_macros</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_macro_string</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_macro_string</span> <span class="o">=</span> <span class="n">new_macros</span>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">openInNewWindow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If true, the button will open the display in a new window, rather than in the existing window.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_in_new_window</span>
+
+    <span class="nd">@openInNewWindow</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">openInNewWindow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">open_in_new</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If true, the button will open the display in a new window, rather than in the existing window.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        open_in_new : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_open_in_new_window</span> <span class="o">=</span> <span class="n">open_in_new</span>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.push_button_release_event"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.push_button_release_event">[docs]</a>    <span class="k">def</span> <span class="nf">push_button_release_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mouse_event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Opens the related display given by `filename`.</span>
+<span class="sd">        If the Shift Key is hold it will open in a new window.</span>
+
+<span class="sd">        Called when a mouse button is released. A widget receives mouse</span>
+<span class="sd">        release events when it has received the corresponding mouse press</span>
+<span class="sd">        event. This means that if the user presses the mouse inside your</span>
+<span class="sd">        widget, then drags the mouse somewhere else before releasing the</span>
+<span class="sd">        mouse button, your widget receives the release event.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mouse_event : QMouseEvent</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">mouse_event</span><span class="o">.</span><span class="n">modifiers</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ShiftModifier</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_in_new_window</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">open_display</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NEW_WINDOW</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">open_display</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMRelatedDisplayButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">mouseReleaseEvent</span><span class="p">(</span><span class="n">mouse_event</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.open_display"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.open_display">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">open_display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">EXISTING_WINDOW</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open the configured `filename` with the given `target`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        target : int</span>
+<span class="sd">            PyDMRelatedDisplayButton.EXISTING_WINDOW or 0 will open the</span>
+<span class="sd">            file on the same window. PyDMRelatedDisplayButton.NEW_WINDOW</span>
+<span class="sd">            or 1 will result on a new process.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayFilename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">macros</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macro_string</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">macros</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_macro_string</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">target</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">EXISTING_WINDOW</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="p">()</span><span class="o">.</span><span class="n">go</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">displayFilename</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">target</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">NEW_WINDOW</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="p">()</span><span class="o">.</span><span class="n">new_window</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">displayFilename</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IOError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">ImportError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="p">()</span><span class="o">.</span><span class="n">statusBar</span><span class="p">()</span><span class="o">.</span><span class="n">showMessage</span><span class="p">(</span><span class="s2">&quot;Cannot open file: &#39;</span><span class="si">{0}</span><span class="s2">&#39;. Reason: &#39;</span><span class="si">{1}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">displayFilename</span><span class="p">,</span> <span class="n">e</span><span class="p">),</span> <span class="mi">5000</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.3.0+29.gf86a846',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

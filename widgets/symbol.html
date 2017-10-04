@@ -1,0 +1,397 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>PyDMSymbol &mdash; PyDM 0.3.0+29.gf86a846 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="PyDM 0.3.0+29.gf86a846 documentation" href="../index.html"/>
+        <link rel="up" title="PyDM Widgets" href="index.html"/>
+        <link rel="next" title="PyDMTimePlot" href="timeplot.html"/>
+        <link rel="prev" title="PyDMSpinbox" href="spinbox.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0+29.gf86a846
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../scripted_displays.html">Making Python-based Displays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../channel.html">PyDM Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../macros.html">Macro Substitution</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">PyDM Widgets</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="byte.html">PyDMByteIndicator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="checkbox.html">PyDMCheckbox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawing.html">PyDMDrawing Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="embedded_display.html">PyDMEmbeddedDisplay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enum_combo_box.html">PyDMEnumComboBox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html">PyDMImageView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="label.html">PyDMLabel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="line_edit.html">PyDMLineEdit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pushbutton.html">PyDMPushButton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="related_display_button.html">PyDMRelatedDisplayButton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell_command.html">PyDMShellCommand</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slider.html">PyDMSlider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spinbox.html">PyDMSpinbox</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">PyDMSymbol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeplot.html">PyDMTimePlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="waveformplot.html">PyDMWaveformPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="waveformtable.html">PyDMWaveformTable</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyDM</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">PyDM Widgets</a> &raquo;</li>
+        
+      <li>PyDMSymbol</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/widgets/symbol.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pydmsymbol">
+<h1>PyDMSymbol<a class="headerlink" href="#pydmsymbol" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pydm.widgets.symbol.PyDMSymbol">
+<em class="property">class </em><code class="descclassname">pydm.widgets.symbol.</code><code class="descname">PyDMSymbol</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyDMSymbol will render an image (symbol) for each value of a channel.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
+<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pydm.widgets.symbol.PyDMSymbol.aspectRatioMode">
+<code class="descname">aspectRatioMode</code><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.aspectRatioMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Which aspect ratio mode to use.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Qt.AspectRatioMode</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.symbol.PyDMSymbol.connection_changed">
+<code class="descname">connection_changed</code><span class="sig-paren">(</span><em>connected</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.connection_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.connection_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the connection state of the Channel is changed.
+This callback acts on the connection state to enable/disable the widget
+and also trigger the change on alarm severity to ALARM_DISCONNECTED.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connected</strong> (<em>int</em>) – When this value is 0 the channel is disconnected, 1 otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.symbol.PyDMSymbol.imageFiles">
+<code class="descname">imageFiles</code><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.imageFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>JSON-formatted dictionary keyed on states (integers), with filenames
+of the image file to display for the state.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.symbol.PyDMSymbol.init_for_designer">
+<code class="descname">init_for_designer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.init_for_designer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.init_for_designer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method called after the constructor to tweak configurations for
+when using the widget with the Qt Designer</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.symbol.PyDMSymbol.minimumSizeHint">
+<code class="descname">minimumSizeHint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.minimumSizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.minimumSizeHint" title="Permalink to this definition">¶</a></dt>
+<dd><p>This property holds the recommended minimum size for the widget.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QSize</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.symbol.PyDMSymbol.paintEvent">
+<code class="descname">paintEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.paintEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.paintEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Paint events are sent to widgets that need to update themselves,
+for instance when part of a widget is exposed because a covering
+widget was moved.</p>
+<p>At PyDMSymbol this method handles the alarm painting with parameters
+from the stylesheet and draws the proper image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> (<em>QPaintEvent</em>) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.symbol.PyDMSymbol.sizeHint">
+<code class="descname">sizeHint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.sizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.sizeHint" title="Permalink to this definition">¶</a></dt>
+<dd><p>This property holds the recommended size for the widget.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QSize</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.symbol.PyDMSymbol.value_changed">
+<code class="descname">value_changed</code><span class="sig-paren">(</span><em>new_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.value_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel value is changed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_val</strong> (<em>int</em>) – The new value from the channel.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="timeplot.html" class="btn btn-neutral float-right" title="PyDMTimePlot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="spinbox.html" class="btn btn-neutral" title="PyDMSpinbox" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3.0+29.gf86a846',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

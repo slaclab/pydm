@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>channel &mdash; PyDM 0.3.0+29.gf86a846 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="PyDM 0.3.0+29.gf86a846 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0+29.gf86a846
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../scripted_displays.html">Making Python-based Displays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../channel.html">PyDM Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../macros.html">Macro Substitution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">PyDM Widgets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyDM</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>channel</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for channel</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="PyDMChannel"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel">[docs]</a><span></span><span class="k">class</span> <span class="nc">PyDMChannel</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object to hold signals and slots for a PyDM Widget interface to an</span>
+<span class="sd">    external plugin</span>
+
+<span class="sd">    The purpose of this class is to create a templated slot and signals</span>
+<span class="sd">    list that can be sent to an external plugin. The type of plugin is</span>
+<span class="sd">    determined by the PyDMApplication based on the identifier placed at</span>
+<span class="sd">    the beginning of the :attr:`.address` attribute. This allows a generic</span>
+<span class="sd">    way to connect slots and signals to functionality within your PyDM</span>
+<span class="sd">    Widget. Slots should be connected to functions on your created widget</span>
+<span class="sd">    that perform actions upon changes. For instance, the :attr:`.value_slot`</span>
+<span class="sd">    will be automatically called everytime a new value is found by the</span>
+<span class="sd">    plugin. This should probably linked to a function that updates the</span>
+<span class="sd">    display to report the new value. Signals perform the reverse operation.</span>
+<span class="sd">    These should be used to send new values back to the plugin to update</span>
+<span class="sd">    the source.</span>
+
+<span class="sd">    Using this structure to interface with plugins allows your created PyDM</span>
+<span class="sd">    Widget a greater flexibility in choosing its underlying source. For</span>
+<span class="sd">    instance, returning to the example of the :attr:`.value_slot`,</span>
+<span class="sd">    getting a value to display from channel access or from the EPICS Archiver</span>
+<span class="sd">    are very different operations. However, actually displaying the value</span>
+<span class="sd">    should be identical. By simplying attching your PyDM Widget&#39;s display</span>
+<span class="sd">    functionality to the :attr:`.value_slot` you have created a</span>
+<span class="sd">    Widget that can do either interchangeably, all the user has to do is</span>
+<span class="sd">    specify the correct address signature and the rest of the work is done</span>
+<span class="sd">    by the underlying plugins.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    address : str, optional</span>
+<span class="sd">        The name of the address to be used by the plugin. This</span>
+<span class="sd">        should usually be a user inputted field when a specific</span>
+<span class="sd">        PyDM widget is initialized</span>
+
+<span class="sd">    connection_slot : pyqtSlot, optional</span>
+<span class="sd">        A function to be run when the connection state</span>
+<span class="sd">        changes</span>
+
+<span class="sd">    value_slot : pyqtSlot, optional</span>
+<span class="sd">        A function to be run when the value updates</span>
+
+<span class="sd">    severity_slot : pyqtSlot, optional</span>
+<span class="sd">        A function to be run when the severity changes</span>
+
+<span class="sd">    write_access_slot : pyqtSlot, optional</span>
+<span class="sd">        A function to be run when the write access changes</span>
+
+<span class="sd">    enum_strings_slot : pyqtSlot, optional</span>
+<span class="sd">        A function to be run when the enum_strings change</span>
+
+<span class="sd">    unit_slot : pyqtSlot, optional</span>
+<span class="sd">        A function to be run when the unit changes</span>
+
+<span class="sd">    prec_slot : pyqtSlot, optional</span>
+<span class="sd">        A function to be run when the precision value changes</span>
+
+<span class="sd">    value_signal : pyqtSignal, optional</span>
+<span class="sd">        Attach a signal here that emits a desired value to be sent</span>
+<span class="sd">        through the plugin</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">connection_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">severity_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">write_access_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">enum_strings_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prec_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">upper_ctrl_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lower_ctrl_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">value_signal</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection_slot</span> <span class="o">=</span> <span class="n">connection_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_slot</span> <span class="o">=</span> <span class="n">value_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">severity_slot</span> <span class="o">=</span> <span class="n">severity_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_access_slot</span> <span class="o">=</span> <span class="n">write_access_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enum_strings_slot</span> <span class="o">=</span> <span class="n">enum_strings_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit_slot</span> <span class="o">=</span> <span class="n">unit_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prec_slot</span> <span class="o">=</span> <span class="n">prec_slot</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">upper_ctrl_limit_slot</span> <span class="o">=</span> <span class="n">upper_ctrl_limit_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lower_ctrl_limit_slot</span> <span class="o">=</span> <span class="n">lower_ctrl_limit_slot</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span> <span class="o">=</span> <span class="n">value_signal</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3.0+29.gf86a846',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

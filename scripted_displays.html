@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Making Python-based Displays &mdash; PyDM 0.3.0+29.gf86a846 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="PyDM 0.3.0+29.gf86a846 documentation" href="index.html"/>
+        <link rel="next" title="PyDM Channel" href="channel.html"/>
+        <link rel="prev" title="Welcome to PyDM’s documentation!" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0+29.gf86a846
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Making Python-based Displays</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#building-your-ui-in-designer">Building Your UI In Designer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#writing-the-code-for-your-display">Writing The Code For Your Display</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subclassing-display">Subclassing Display</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#handling-command-line-arguments">Handling Command Line Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-your-interface-dynamically">Building Your Interface Dynamically</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="channel.html">PyDM Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="macros.html">Macro Substitution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="widgets/index.html">PyDM Widgets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyDM</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Making Python-based Displays</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/scripted_displays.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="making-python-based-displays">
+<h1>Making Python-based Displays<a class="headerlink" href="#making-python-based-displays" title="Permalink to this headline">¶</a></h1>
+<p>PyDM supports making diplays that are powered by Python scripts.  This is quite powerful - you can do anything from generating a simple display at run time (from a file or database, for example), up to building entire applications that utilize the PyDM widget set.  In additon to this guide, you can look at some of PyDM’s bundled examples to see how a script-based display works.  In particular, the ‘positioner’ and ‘image_processing’ examples are good places to start.</p>
+<div class="section" id="building-your-ui-in-designer">
+<h2>Building Your UI In Designer<a class="headerlink" href="#building-your-ui-in-designer" title="Permalink to this headline">¶</a></h2>
+<p>When you make a Python-based display, you will still use Qt Designer to lay out your user interface.  In addition to the PyDM widget set, you may want to consider using some of Qt’s base widgets like Line Edit, Push Button, etc, if your display will have some internal functionality that does not depend on a data source (like EPICS).  For example, the ‘positioner’ example uses normal (non-PyDM) Line Edits to take user input, performs some math on the input, and outputs the result to PVs, which are displayed with PyDMLabels.  If you want to dynamically generate your display when it launches, you should still build a UI file, but it might only have an empty container (like a Vertical Layout, or a Scroll Area), which you will fill with widgets later in your code.</p>
+<p>Once you are satisfied with your interface, save it to a .ui file.</p>
+</div>
+<div class="section" id="writing-the-code-for-your-display">
+<h2>Writing The Code For Your Display<a class="headerlink" href="#writing-the-code-for-your-display" title="Permalink to this headline">¶</a></h2>
+<p>Python-based displays in PyDM are mostly just PyQt widgets with a few extra features on top.  This guide expects that you have a basic familiarity with PyQt and Qt itself.  Good resources for these topics are available online.  The Qt documentation, especially, is very thorough, and will come in handy as you build your display.</p>
+<div class="section" id="subclassing-display">
+<h3>Subclassing Display<a class="headerlink" href="#subclassing-display" title="Permalink to this headline">¶</a></h3>
+<p>Python-based displays are just PyQt widgets, based on PyDM’s ‘Display’ class.  Your display must subclass Display, and implement a few required methods:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span>
+<span class="kn">from</span> <span class="nn">pydm</span> <span class="k">import</span> <span class="n">Display</span>
+<span class="k">class</span> <span class="nc">MyDisplay</span><span class="p">(</span><span class="n">Display</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">MyDisplay</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">ui_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;my_display.ui&#39;</span>
+
+  <span class="k">def</span> <span class="nf">ui_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui_filename</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Lets look at this in detail:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span>
+<span class="kn">from</span> <span class="nn">pydm</span> <span class="k">import</span> <span class="n">Display</span>
+</pre></div>
+</div>
+<p>First, we import the modules we need.  You will probably want to import more of your own modules here as well.</p>
+<p>Next, we define our Display subclass, and its initializer:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyDisplay</span><span class="p">(</span><span class="n">Display</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">MyDisplay</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It is important to remember that you must always call the superclass’ initializer in your own, and pass it the ‘parent’ argument from your initializer.  Otherwise, your display might get garbage collected by Python and crash.</p>
+<p>Now we must implement two methods that tell PyDM where the .ui file for this display lives:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ui_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="k">return</span> <span class="s1">&#39;my_display.ui&#39;</span>
+</pre></div>
+</div>
+<p>lets PyDM know what the .ui file to load is called, and:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ui_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui_filename</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>lets PyDM know where to find that file.  The implementation of ui_filepath used here can probably be copied and pasted into your display verbatim: it just joins the path of the display’s .py file to the filename of the .ui file.  Unfortunately, at the time of writing you must include this yourself, it cannot be done automatically by PyDM.</p>
+<p>PyDM will expose all the widgets from the .ui file as a variable called ‘ui’.  To access the widgets in your code, call <cite>self.ui.widgetName</cite></p>
+</div>
+<div class="section" id="handling-command-line-arguments">
+<h3>Handling Command Line Arguments<a class="headerlink" href="#handling-command-line-arguments" title="Permalink to this headline">¶</a></h3>
+<p>Displays can accept command line arguments supplied at launch.  Your display’s initializer has a named argument called ‘args’:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[]):</span>
+</pre></div>
+</div>
+<p>It is recommended to use python’s <cite>argparse</cite> module to parse your arguments.  For example, you could write a method like this in your display to do this:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">parse_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+  <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--list&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;magnet_list&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;File containing a list of magnet names to use.&#39;</span><span class="p">)</span>
+  <span class="n">parsed_args</span><span class="p">,</span> <span class="n">_unknown_args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">parsed_args</span>
+</pre></div>
+</div>
+<p>Using command line arguments can be a good way to make displays that generate themselves dynamically: you could accept a filename argument, and read the contents of that file to add widgets to your display.</p>
+</div>
+<div class="section" id="building-your-interface-dynamically">
+<h3>Building Your Interface Dynamically<a class="headerlink" href="#building-your-interface-dynamically" title="Permalink to this headline">¶</a></h3>
+<p>A common reason to build a Python-based display is to generate your UI dynamically, from some other source of data, like a file or database.  As mentioned in <a class="reference internal" href="#handling-command-line-arguments">Handling Command Line Arguments</a>, you can read in command line arguments to help get data into your display.</p>
+<p>Once you have a source of data, you can use PyQt to make new widgets, and add them to your display.  For example, if you get a list of devices from somewhere, you can make widgets for each device, and add them to a layout you defined in the .ui file:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">device_name</span> <span class="ow">in</span> <span class="n">device_list</span><span class="p">:</span>
+  <span class="n">device_label</span> <span class="o">=</span> <span class="n">PyDMLabel</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">device_name</span><span class="p">)</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">deviceListLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">device_label</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You usually want to put code like this in your display’s initializer, so that it happens when the display launches.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="channel.html" class="btn btn-neutral float-right" title="PyDM Channel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to PyDM’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.3.0+29.gf86a846',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

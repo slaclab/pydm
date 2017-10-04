@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>PyDMLineEdit &mdash; PyDM 0.3.0+29.gf86a846 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="PyDM 0.3.0+29.gf86a846 documentation" href="../index.html"/>
+        <link rel="up" title="PyDM Widgets" href="index.html"/>
+        <link rel="next" title="PyDMPushButton" href="pushbutton.html"/>
+        <link rel="prev" title="PyDMLabel" href="label.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0+29.gf86a846
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../scripted_displays.html">Making Python-based Displays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../channel.html">PyDM Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../macros.html">Macro Substitution</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">PyDM Widgets</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="byte.html">PyDMByteIndicator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="checkbox.html">PyDMCheckbox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawing.html">PyDMDrawing Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="embedded_display.html">PyDMEmbeddedDisplay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enum_combo_box.html">PyDMEnumComboBox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html">PyDMImageView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="label.html">PyDMLabel</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">PyDMLineEdit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pushbutton.html">PyDMPushButton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="related_display_button.html">PyDMRelatedDisplayButton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell_command.html">PyDMShellCommand</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slider.html">PyDMSlider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spinbox.html">PyDMSpinbox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbol.html">PyDMSymbol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeplot.html">PyDMTimePlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="waveformplot.html">PyDMWaveformPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="waveformtable.html">PyDMWaveformTable</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyDM</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">PyDM Widgets</a> &raquo;</li>
+        
+      <li>PyDMLineEdit</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/widgets/line_edit.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pydmlineedit">
+<h1>PyDMLineEdit<a class="headerlink" href="#pydmlineedit" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pydm.widgets.line_edit.PyDMLineEdit">
+<em class="property">class </em><code class="descclassname">pydm.widgets.line_edit.</code><code class="descname">PyDMLineEdit</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A QLineEdit (writable text field) with support for Channels and more
+from PyDM.
+This widget offers an unit conversion menu when users Right Click
+into it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
+<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pydm.widgets.line_edit.PyDMLineEdit.apply_conversion">
+<code class="descname">apply_conversion</code><span class="sig-paren">(</span><em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.apply_conversion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.apply_conversion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the current unit to a different one</p>
+<p>This function will attempt to find a scalar to convert the current
+unit type to the desired one and reset the display with the new
+conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>unit</strong> (<em>str</em>) – String name of desired units</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.line_edit.PyDMLineEdit.create_unit_options">
+<code class="descname">create_unit_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.create_unit_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.create_unit_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the menu for displaying possible unit values</p>
+<p>The menu is filled with possible unit conversions based on the
+current PyDMLineEdit. If either the unit is not found in the by
+the <code class="xref py py-func docutils literal"><span class="pre">utilities.find_unit_options()</span></code> function, or, the
+<code class="xref py py-attr docutils literal"><span class="pre">showUnits</span></code> attribute is set to False, the menu will tell
+the user that there are no available conversions</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.line_edit.PyDMLineEdit.focusOutEvent">
+<code class="descname">focusOutEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.focusOutEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.focusOutEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrites the function called when a user leaves a PyDMLineEdit
+without pressing return.  Resets the value of the text field to the
+current channel value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.line_edit.PyDMLineEdit.launch_menu">
+<code class="descname">launch_menu</code><span class="sig-paren">(</span><em>point</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.launch_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.launch_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launch the context menu with the appropriate unit conversions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>point</strong> (<em>QPoint</em>) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.line_edit.PyDMLineEdit.send_value">
+<code class="descname">send_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.send_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.send_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emit a <code class="xref py py-attr docutils literal"><span class="pre">send_value_signal</span></code> to update channel value.</p>
+<p>The text is cleaned of all units, user-formatting and scale values
+before being sent back to the channel. This function is attached the
+ReturnPressed signal of the PyDMLineEdit</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.line_edit.PyDMLineEdit.set_display">
+<code class="descname">set_display</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.set_display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.set_display" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the text display of the PyDMLineEdit.</p>
+<p>The original value given by the PV is converted to a text entry based
+on the current settings for scale value, precision, a user-defined
+format, and the current units. If the user is currently entering a
+value in the PyDMLineEdit the text will not be changed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.line_edit.PyDMLineEdit.unit_changed">
+<code class="descname">unit_changed</code><span class="sig-paren">(</span><em>new_unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.unit_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.unit_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accept a unit to display with a channel’s value</p>
+<p>The unit may or may not be displayed based on the <code class="xref py py-attr docutils literal"><span class="pre">showUnits</span></code>
+attribute. Receiving a new value for the unit causes the display to
+reset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.line_edit.PyDMLineEdit.value_changed">
+<code class="descname">value_changed</code><span class="sig-paren">(</span><em>new_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.value_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive and update the PyDMLineEdit for a new channel value</p>
+<p>The actual value of the input is saved as well as the type received.
+This also resets the PyDMLineEdit display text using
+<a class="reference internal" href="#pydm.widgets.line_edit.PyDMLineEdit.set_display" title="pydm.widgets.line_edit.PyDMLineEdit.set_display"><code class="xref py py-meth docutils literal"><span class="pre">set_display()</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>str</em><em>, </em><em>float</em><em> or </em><em>int</em>) – The new value of the channel</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.line_edit.PyDMLineEdit.write_access_changed">
+<code class="descname">write_access_changed</code><span class="sig-paren">(</span><em>new_write_access</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.write_access_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.write_access_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the PyDMLineEdit to read only if write access is denied</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pushbutton.html" class="btn btn-neutral float-right" title="PyDMPushButton" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="label.html" class="btn btn-neutral" title="PyDMLabel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3.0+29.gf86a846',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
