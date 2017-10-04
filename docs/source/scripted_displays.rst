@@ -82,7 +82,7 @@ Using command line arguments can be a good way to make displays that generate th
 Building Your Interface Dynamically
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A common reason to build a Python-based display is to generate your UI dynamically, from some other source of data, like a file or database.  As mentioned in :ref:`Handling Command Line Arguments`, you can read in command line arguments to help get data into your display.
+A common reason to build a Python-based display is to generate your UI dynamically, from some other source of data, like a file or database.  As mentioned in `Handling Command Line Arguments`_, you can read in command line arguments to help get data into your display.
 
 Once you have a source of data, you can use PyQt to make new widgets, and add them to your display.  For example, if you get a list of devices from somewhere, you can make widgets for each device, and add them to a layout you defined in the .ui file::
 

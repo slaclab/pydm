@@ -91,8 +91,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         Password to be encrypted using SHA256.
 
-        .. warning:: To avoid issues exposing the password this method
-        always returns an empty string.
+        .. warning::
+            To avoid issues exposing the password this method
+            always returns an empty string.
 
         Returns
         -------
