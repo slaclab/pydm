@@ -270,10 +270,10 @@ class WaveformCurveItem(PlotDataItem):
         if self.x_waveform is None:
             self.setData(y=self.y_waveform)
             return
-        #if self.x_waveform.shape[0] > self.y_waveform.shape[0]:
-        #    self.x_waveform = self.x_waveform[:self.y_waveform.shape[0]]
-        #elif self.x_waveform.shape[0] < self.y_waveform.shape[0]:
-        #    self.y_waveform = self.y_waveform[:self.x_waveform.shape[0]]
+        if self.x_waveform.shape[0] > self.y_waveform.shape[0]:
+            self.x_waveform = self.x_waveform[:self.y_waveform.shape[0]]
+        elif self.x_waveform.shape[0] < self.y_waveform.shape[0]:
+            self.y_waveform = self.y_waveform[:self.x_waveform.shape[0]]
         self.setData(x=self.x_waveform, y=self.y_waveform)
         self.needs_new_x = True
         self.needs_new_y = True
