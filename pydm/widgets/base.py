@@ -123,8 +123,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_sensitive_content = False
         self._alarm_sensitive_border = True
         self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | (self.ALARM_BORDER * self._alarm_sensitive_border)
-        self._alarm_state = 0
-        self._style = dict()
+        self._alarm_state = self.ALARM_DISCONNECTED
+        self._style = self.alarm_style_sheet_map[self._alarm_flags][self._alarm_state]
         self._connected = False
 
         self._precision_from_pv = True
@@ -198,12 +198,11 @@ class PyDMWidget(PyDMPrimitiveWidget):
             and 3 = INVALID
         """
         # 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID
-        if self._channels is not None:
-            self._alarm_state = new_alarm_severity
-            self._style = dict(self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity])
-            style = compose_stylesheet(style=self._style, obj=self)
-            self.setStyleSheet(style)
-            self.update()
+        self._alarm_state = new_alarm_severity
+        self._style = dict(self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity])
+        style = compose_stylesheet(style=self._style, obj=self)
+        self.setStyleSheet(style)
+        self.update()
 
     def enum_strings_changed(self, new_enum_strings):
         """
@@ -412,6 +411,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self._alarm_sensitive_content = checked
         self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | (self.ALARM_BORDER * self._alarm_sensitive_border)
+        self.alarm_severity_changed(self._alarm_state)
 
     @pyqtProperty(bool)
     def alarmSensitiveBorder(self):
@@ -440,6 +440,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self._alarm_sensitive_border = checked
         self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | (self.ALARM_BORDER * self._alarm_sensitive_border)
+        self.alarm_severity_changed(self._alarm_state)
 
     @pyqtProperty(bool)
     def precisionFromPV(self):
