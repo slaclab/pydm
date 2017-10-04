@@ -5,6 +5,7 @@ env:
     # Variables jut to silence pcaspy setup.
     - EPICS_BASE=~
     - EPICS_HOST_ARCH=linux-x86_64
+    - secure: "g7JqJMMB4LL0bM0h1rUN8bR2/CWt+jHLW+nknroyU6+kZc2oi6WLw7FSapCV23nJkyzoBZrvHokKBz/hml/lhp4wBuxWfm4E9h8qdyZgkA7OzWkJ2SxNvChi3mASLfvavkuIS/yCDxdhlcQsSNr3kdwkTRQuuKPqWuLzYLFHesCYOtWtRTn/9bzEPsvLp5/3ul+PY8ZsAdcdUEEJPgeW8P+JS960Jf4JsQ2QEl3ZOS3+l4SF7Z72yr0exmrWp8dt2rVuPXDLVHVos08Wx1tTL5Xwp8v33sAt9SHR40li+Q5KNHyA6ZC6Jgz7ZeDyxu39V7QvA55sF5+1J9UG0SrStmChbJ5lTeOx9wgxq6Ha8hrcsTaMPuk5eKcLvfZliSZ4lXxlSf8R/+HFrZNnS9DvrulWY/MVI4AdrON9RF9RDPGtfMyit8CKYOKp9XzKPDHeGFGZCfE9F0isLK/2YqIem63FwB1uFew6cFyRHIM1Ygtb7dzm/AE+dJhkY4iwR8jVnQF9qy7DwAAjbRohL40KvjcrZmn5rxH/VpPjxbifArEhtymYMgTGPfSgQAJO17yOcJdNKODZ/40qghlh0dv1loMxGPM73S9VLdsHqDQaaIptpQi2Z/y7pGVoiMPbZueQcSIkC04YKwJzKB1iCs2OQJ0g+kUdV4fFweMnUwa4umU="
 
 matrix:
   include:
@@ -13,7 +14,8 @@ matrix:
     - python: 3.5
       env: PYQT_VERSION=5
     - python: 3.6
-      env: PYQT_VERSION=5
+      env: PYQT_VERSION=5 BUILD_DOCS=1
+
 
 before_install:
   - sudo apt-get update
@@ -40,7 +42,22 @@ install:
 
 script:
   - py.test -sv --cov=pydm --cov-report term-missing
-          
+  - set -e
+  #Build docs
+  - |
+    if [[ -n "$DOCTR_DEPLOY_ENCRYPTION_KEY" && $BUILD_DOCS ]]; then
+      pip install -r docs-requirements.txt
+      # Install doctr from a custom branch until
+      # https://github.com/drdoctr/doctr/pull/190 is merged.
+      pip uninstall -y doctr
+      pip install git+https://github.com/danielballan/doctr@other-master
+      pushd docs
+      make html
+      popd
+      #Publish docs.
+      doctr deploy --built-docs docs/build/html --deploy-branch-name gh-pages
+    fi
+
 after_success:
   - coveralls
   - codecov
