@@ -55,6 +55,6 @@ script:
       make html
       popd
       #Publish docs.
-      doctr deploy --built-docs docs/build/html --deploy-branch-name gh-pages
+      doctr deploy . --built-docs docs/build/html --deploy-branch-name gh-pages
     fi
 
