@@ -54,6 +54,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
     def __init__(self, parent=None, init_channel=None):
         QWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
+        self.alarmSensitiveBorder = False
         self._rotation = 0.0
         self._brush = QBrush(Qt.SolidPattern)
         self._default_color = QColor()
@@ -83,12 +84,11 @@ class PyDMDrawing(QWidget, PyDMWidget):
         self.style().drawPrimitive(QStyle.PE_Widget, opt, self._painter, self)
         self._painter.setRenderHint(QPainter.Antialiasing)
 
-        if self._alarm_sensitive_content and self._alarm_state != 0:
+        color = self._default_color
+        if self._alarm_sensitive_content and self._alarm_state != 0 and self.channels() is not None:
             alarm_color = self._style.get("color", None)
             if alarm_color is not None:
                 color = QColor(alarm_color)
-        else:
-            color = self._default_color
 
         self._brush.setColor(color)
 
@@ -97,6 +97,25 @@ class PyDMDrawing(QWidget, PyDMWidget):
 
         self.draw_item()
         self._painter.end()
+
+    def alarm_severity_changed(self, new_alarm_severity):
+        """
+        Callback invoked when the Channel alarm severity is changed.
+        This callback is not processed if the widget has no channel
+        associated with it.
+        This callback handles the composition of the stylesheet to be
+        applied and the call
+        to update to redraw the widget with the needed changes for the
+        new state.
+
+        Parameters
+        ----------
+        new_alarm_severity : int
+            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
+            and 3 = INVALID
+        """
+        PyDMWidget.alarm_severity_changed(self, new_alarm_severity)
+        self.update()
 
     def draw_item(self):
         """
