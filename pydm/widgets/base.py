@@ -181,7 +181,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.value = new_val
         self.channeltype = type(self.value)
         if self.channeltype == np.ndarray:
-            self.subtype = type(self.value[0])
+            self.subtype = self.value.dtype.type
         self.update_format_string()
 
     def alarm_severity_changed(self, new_alarm_severity):
