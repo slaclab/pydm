@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>559</width>
-    <height>497</height>
+    <width>646</width>
+    <height>510</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,94 +18,86 @@
     <rect>
      <x>20</x>
      <y>30</y>
-     <width>141</width>
-     <height>141</height>
+     <width>140</width>
+     <height>140</height>
     </rect>
    </property>
    <property name="toolTip">
     <string/>
    </property>
    <property name="whatsThis">
-    <string/>
-   </property>
-   <property name="penStyle" stdset="0">
-    <enum>Qt::NoPen</enum>
-   </property>
-   <property name="penWidth" stdset="0">
-    <double>0.000000000000000</double>
-   </property>
-   <property name="rotation" stdset="0">
-    <double>0.000000000000000</double>
+    <string>
+    Renders an image given by the ```filename``` property.
+    This class inherits from PyDMDrawing.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
    </property>
    <property name="filename" stdset="0">
     <string>SLAC_logo.jpeg</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>10</y>
-     <width>141</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>PyDMDrawingImage</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
   <widget class="PyDMDrawingLine" name="PyDMDrawingLine">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>250</x>
      <y>30</y>
-     <width>141</width>
-     <height>141</height>
+     <width>140</width>
+     <height>140</height>
     </rect>
    </property>
    <property name="toolTip">
     <string/>
    </property>
    <property name="whatsThis">
-    <string/>
+    <string>
+    A widget with a line drawn in it.
+    This class inherits from PyDMDrawing.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
    </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>10</y>
-     <width>141</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>PyDMDrawingLine</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
+   <property name="alarmSensitiveBorder" stdset="0">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="PyDMDrawingRectangle" name="PyDMDrawingRectangle">
    <property name="geometry">
     <rect>
-     <x>390</x>
+     <x>480</x>
      <y>30</y>
-     <width>141</width>
-     <height>141</height>
+     <width>140</width>
+     <height>140</height>
     </rect>
    </property>
    <property name="toolTip">
     <string/>
    </property>
    <property name="whatsThis">
-    <string/>
+    <string>
+    A widget with a rectangle drawn in it.
+    This class inherits from PyDMDrawing.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
    </property>
    <property name="brush" stdset="0">
-    <brush brushstyle="Dense3Pattern">
+    <brush brushstyle="Dense1Pattern">
      <color alpha="255">
       <red>255</red>
       <green>0</green>
@@ -124,16 +116,26 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>210</y>
-     <width>141</width>
-     <height>141</height>
+     <y>200</y>
+     <width>140</width>
+     <height>140</height>
     </rect>
    </property>
    <property name="toolTip">
     <string/>
    </property>
    <property name="whatsThis">
-    <string/>
+    <string>
+    A widget with a triangle drawn in it.
+    This class inherits from PyDMDrawing.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
    </property>
    <property name="brush" stdset="0">
     <brush brushstyle="NoBrush">
@@ -148,15 +150,15 @@
     <enum>Qt::SolidLine</enum>
    </property>
    <property name="penWidth" stdset="0">
-    <double>4.000000000000000</double>
+    <double>5.000000000000000</double>
    </property>
   </widget>
   <widget class="PyDMDrawingEllipse" name="PyDMDrawingEllipse">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>230</y>
-     <width>191</width>
+     <x>200</x>
+     <y>220</y>
+     <width>241</width>
      <height>111</height>
     </rect>
    </property>
@@ -164,7 +166,17 @@
     <string/>
    </property>
    <property name="whatsThis">
-    <string/>
+    <string>
+    A widget with an ellipse drawn in it.
+    This class inherits from PyDMDrawing.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
    </property>
    <property name="brush" stdset="0">
     <brush brushstyle="SolidPattern">
@@ -179,23 +191,33 @@
     <enum>Qt::SolidLine</enum>
    </property>
    <property name="penWidth" stdset="0">
-    <double>8.000000000000000</double>
+    <double>5.000000000000000</double>
    </property>
   </widget>
   <widget class="PyDMDrawingCircle" name="PyDMDrawingCircle">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>210</y>
-     <width>141</width>
-     <height>141</height>
+     <x>480</x>
+     <y>200</y>
+     <width>140</width>
+     <height>140</height>
     </rect>
    </property>
    <property name="toolTip">
     <string/>
    </property>
    <property name="whatsThis">
-    <string/>
+    <string>
+    A widget with a circle drawn in it.
+    This class inherits from PyDMDrawing.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
    </property>
    <property name="brush" stdset="0">
     <brush brushstyle="DiagCrossPattern">
@@ -207,49 +229,69 @@
     </brush>
    </property>
    <property name="penStyle" stdset="0">
-    <enum>Qt::DashDotDotLine</enum>
+    <enum>Qt::DashDotLine</enum>
    </property>
    <property name="penWidth" stdset="0">
-    <double>6.000000000000000</double>
+    <double>5.000000000000000</double>
    </property>
   </widget>
   <widget class="PyDMDrawingArc" name="PyDMDrawingArc">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>390</y>
-     <width>141</width>
-     <height>141</height>
-    </rect>
-   </property>
-   <property name="toolTip">
-    <string/>
-   </property>
-   <property name="penStyle" stdset="0">
-    <enum>Qt::DashDotDotLine</enum>
-   </property>
-  </widget>
-  <widget class="PyDMDrawingPie" name="PyDMDrawingPie">
-   <property name="geometry">
-    <rect>
-     <x>200</x>
-     <y>390</y>
-     <width>141</width>
-     <height>141</height>
+     <x>30</x>
+     <y>400</y>
+     <width>140</width>
+     <height>140</height>
     </rect>
    </property>
    <property name="toolTip">
     <string/>
    </property>
    <property name="whatsThis">
+    <string>
+    A widget with an arc drawn in it.
+    This class inherits from PyDMDrawing.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
+   </property>
+  </widget>
+  <widget class="PyDMDrawingPie" name="PyDMDrawingPie">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>400</y>
+     <width>140</width>
+     <height>140</height>
+    </rect>
+   </property>
+   <property name="toolTip">
     <string/>
+   </property>
+   <property name="whatsThis">
+    <string>
+    A widget with a pie drawn in it.
+    This class inherits from PyDMDrawing.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
    </property>
    <property name="brush" stdset="0">
     <brush brushstyle="SolidPattern">
      <color alpha="255">
       <red>255</red>
       <green>255</green>
-      <blue>102</blue>
+      <blue>0</blue>
      </color>
     </brush>
    </property>
@@ -261,181 +303,156 @@
     </color>
    </property>
    <property name="penWidth" stdset="0">
-    <double>4.000000000000000</double>
+    <double>5.000000000000000</double>
    </property>
   </widget>
   <widget class="PyDMDrawingChord" name="PyDMDrawingChord">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>390</y>
-     <width>141</width>
-     <height>141</height>
+     <x>450</x>
+     <y>400</y>
+     <width>140</width>
+     <height>140</height>
     </rect>
    </property>
    <property name="toolTip">
     <string/>
    </property>
    <property name="whatsThis">
-    <string/>
+    <string>
+    A widget with a chord drawn in it.
+    This class inherits from PyDMDrawing.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>141</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PyDMDrawingImage</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>10</y>
+     <width>141</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PyDMDrawingLine</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>370</x>
+     <x>480</x>
      <y>10</y>
-     <width>181</width>
-     <height>20</height>
+     <width>151</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
     <string>PyDMDrawingRectangle</string>
    </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
   </widget>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>190</y>
-     <width>141</width>
-     <height>20</height>
+     <y>180</y>
+     <width>151</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
     <string>PyDMDrawingTriangle</string>
    </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
   </widget>
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>190</x>
-     <y>190</y>
-     <width>141</width>
-     <height>20</height>
+     <x>250</x>
+     <y>180</y>
+     <width>151</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
     <string>PyDMDrawingEllipse</string>
    </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
   </widget>
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>390</x>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-    <string>PyDMDrawingCircle</string>
+     <x>490</x>
+     <y>180</y>
+     <width>151</width>
+     <height>16</height>
+    </rect>
    </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
+   <property name="text">
+    <string>PyDMDrawingCircle</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_7">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>360</y>
-     <width>141</width>
-     <height>20</height>
+     <x>30</x>
+     <y>370</y>
+     <width>151</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
     <string>PyDMDrawingArc</string>
    </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
   </widget>
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
-     <x>210</x>
-     <y>360</y>
-     <width>141</width>
-     <height>20</height>
+     <x>300</x>
+     <y>370</y>
+     <width>151</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
     <string>PyDMDrawingPie</string>
    </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
   </widget>
   <widget class="QLabel" name="label_9">
    <property name="geometry">
     <rect>
-     <x>400</x>
-     <y>360</y>
-     <width>141</width>
-     <height>20</height>
+     <x>500</x>
+     <y>370</y>
+     <width>151</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
     <string>PyDMDrawingChord</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_8">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>360</y>
-     <width>141</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>PyDMDrawingPie</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_9">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>360</y>
-     <width>141</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>PyDMDrawingChord</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PyDMDrawingRectangle</class>
-   <extends>QWidget</extends>
-   <header>pydm.widgets.drawing</header>
-  </customwidget>
-  <customwidget>
-   <class>PyDMDrawingChord</class>
-   <extends>PyDMDrawingArc</extends>
-   <header>pydm.widgets.drawing</header>
-  </customwidget>
-  <customwidget>
-   <class>PyDMDrawingCircle</class>
+   <class>PyDMDrawingImage</class>
    <extends>QWidget</extends>
    <header>pydm.widgets.drawing</header>
   </customwidget>
@@ -445,12 +462,22 @@
    <header>pydm.widgets.drawing</header>
   </customwidget>
   <customwidget>
-   <class>PyDMDrawingPie</class>
-   <extends>PyDMDrawingArc</extends>
+   <class>PyDMDrawingRectangle</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingTriangle</class>
+   <extends>QWidget</extends>
    <header>pydm.widgets.drawing</header>
   </customwidget>
   <customwidget>
    <class>PyDMDrawingEllipse</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingCircle</class>
    <extends>QWidget</extends>
    <header>pydm.widgets.drawing</header>
   </customwidget>
@@ -460,17 +487,16 @@
    <header>pydm.widgets.drawing</header>
   </customwidget>
   <customwidget>
-   <class>PyDMDrawingImage</class>
-   <extends>QWidget</extends>
+   <class>PyDMDrawingPie</class>
+   <extends>PyDMDrawingArc</extends>
    <header>pydm.widgets.drawing</header>
   </customwidget>
   <customwidget>
-   <class>PyDMDrawingTriangle</class>
-   <extends>QWidget</extends>
+   <class>PyDMDrawingChord</class>
+   <extends>PyDMDrawingArc</extends>
    <header>pydm.widgets.drawing</header>
   </customwidget>
  </customwidgets>
  <resources/>
  <connections/>
 </ui>
-
