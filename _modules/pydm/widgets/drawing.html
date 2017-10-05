@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.drawing &mdash; PyDM 0.3.0+31.gff44947 documentation</title>
+  <title>pydm.widgets.drawing &mdash; PyDM 0.3.0+32.gf0892f8 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+31.gff44947 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+32.gf0892f8 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+31.gff44947
+                0.3.0+32.gf0892f8
               </div>
             
           
@@ -214,6 +214,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alarmSensitiveBorder</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span> <span class="o">=</span> <span class="n">QBrush</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">SolidPattern</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_default_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">()</span>
@@ -243,12 +244,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">drawPrimitive</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">PE_Widget</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_sensitive_content</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_color</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_sensitive_content</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">alarm_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">alarm_color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="n">alarm_color</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_color</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
 
@@ -257,6 +257,25 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyDMDrawing.alarm_severity_changed"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.alarm_severity_changed">[docs]</a>    <span class="k">def</span> <span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback invoked when the Channel alarm severity is changed.</span>
+<span class="sd">        This callback is not processed if the widget has no channel</span>
+<span class="sd">        associated with it.</span>
+<span class="sd">        This callback handles the composition of the stylesheet to be</span>
+<span class="sd">        applied and the call</span>
+<span class="sd">        to update to redraw the widget with the needed changes for the</span>
+<span class="sd">        new state.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_alarm_severity : int</span>
+<span class="sd">            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR</span>
+<span class="sd">            and 3 = INVALID</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMDrawing.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -910,7 +929,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0+31.gff44947',
+            VERSION:'0.3.0+32.gf0892f8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
