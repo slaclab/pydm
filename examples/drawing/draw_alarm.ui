@@ -10,6 +10,12 @@
     <height>300</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>300</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
@@ -27,11 +33,11 @@
        <property name="whatsThis">
         <string/>
        </property>
+       <property name="channel" stdset="0">
+        <string>ca://MTEST:Float</string>
+       </property>
        <property name="alarmSensitiveText" stdset="0">
         <bool>true</bool>
-       </property>
-       <property name="channel">
-        <string>ca://MTEST:Float</string>
        </property>
       </widget>
      </item>
@@ -44,16 +50,25 @@
         <string/>
        </property>
        <property name="styleSheet">
-        <string notr="true">QWidget {color: yellow; border: 2px solid red;}</string>
+        <string notr="true"/>
        </property>
-       <property name="alarmSensitiveText" stdset="0">
+       <property name="alarmSensitiveContent" stdset="0">
         <bool>true</bool>
+       </property>
+       <property name="alarmSensitiveBorder" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="precisionFromPV" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="channel" stdset="0">
+        <string>ca://MTEST:Float</string>
        </property>
        <property name="brush" stdset="0">
         <brush brushstyle="SolidPattern">
          <color alpha="255">
-          <red>255</red>
-          <green>0</green>
+          <red>128</red>
+          <green>255</green>
           <blue>0</blue>
          </color>
         </brush>
@@ -64,8 +79,8 @@
        <property name="penWidth" stdset="0">
         <double>10.000000000000000</double>
        </property>
-       <property name="channel" stdset="0">
-        <string>ca://MTEST:Float</string>
+       <property name="alarmSensitiveText" stdset="0">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -75,14 +90,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PyDMLabel</class>
-   <extends>QLabel</extends>
-   <header>pydm.widgets.label</header>
-  </customwidget>
-  <customwidget>
    <class>PyDMDrawingRectangle</class>
    <extends>QWidget</extends>
    <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMLabel</class>
+   <extends>QLabel</extends>
+   <header>pydm.widgets.label</header>
   </customwidget>
  </customwidgets>
  <resources/>
