@@ -42,20 +42,16 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         ----------
         event : QEvent
         """
-        if (event.type() == QEvent.KeyPress):
-            ctrl_hold = self.app.queryKeyboardModifiers() == Qt.ControlModifier
+        if event.type() == QEvent.KeyPress and \
+           self.app.queryKeyboardModifiers() == Qt.ControlModifier:
 
-            if ctrl_hold and (event.key() == Qt.Key_Left):
+            if event.key() == Qt.Key_Left:
                 self.step_exponent = self.step_exponent + 1
                 self.update_step_size()
                 return True
-
-            if ctrl_hold and (event.key() == Qt.Key_Right):
-                self.step_exponent = self.step_exponent - 1
-
-                if self.step_exponent < -self.decimals():
-                    self.step_exponent = -self.decimals()
-
+            elif event.key() == Qt.Key_Right:
+                self.step_exponent = max(self.step_exponent - 1,
+                                         -self.decimals())
                 self.update_step_size()
                 return True
 
