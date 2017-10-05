@@ -26,6 +26,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
 
         self.valueChanged.connect(self.send_value)  # signal from spinbox
         self.setKeyboardTracking(False)
+        self.setAccelerated(True)
 
     def event(self, event):
         """
