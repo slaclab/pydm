@@ -24,6 +24,9 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         self.setDecimals(0)
         self.app = QApplication.instance()
 
+        self.valueChanged.connect(self.send_value)  # signal from spinbox
+        self.setKeyboardTracking(False)
+
     def event(self, event):
         """
         Method invoked when an event of any nature happens on the
@@ -53,20 +56,6 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
                     self.step_exponent = -self.decimals()
 
                 self.update_step_size()
-                return True
-
-            if (event.key() == Qt.Key_Up):
-                self.setValue(self.value + self.singleStep())
-                self.send_value()
-                return True
-
-            if (event.key() == Qt.Key_Down):
-                self.setValue(self.value - self.singleStep())
-                self.send_value()
-                return True
-
-            if (event.key() == Qt.Key_Return):
-                self.send_value()
                 return True
 
         return super(PyDMSpinbox, self).event(event)
@@ -114,12 +103,11 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         self.setValue(new_val)
         self.valueBeingSet = False
 
-    def send_value(self):
+    def send_value(self, value):
         """
         Method invoked to send the current value on the QDoubleSpinBox to
         the channel using the `send_value_signal`.
         """
-        value = float(self.cleanText())
         if not self.valueBeingSet:
             self.send_value_signal[float].emit(value)
 
