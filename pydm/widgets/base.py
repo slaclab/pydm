@@ -3,6 +3,7 @@ from ..PyQt.QtGui import QApplication, QColor, QCursor
 from ..PyQt.QtCore import Qt, QEvent, pyqtSignal, pyqtSlot, pyqtProperty
 from .channel import PyDMChannel
 from ..application import PyDMApplication
+from ..utilities import is_pydm_app
 
 def compose_stylesheet(style, base_class=None, obj=None):
     """
@@ -141,8 +142,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.channeltype = None
         self.check_enable_state()
         # If this label is inside a PyDMApplication (not Designer) start it in the disconnected state.
-        app = QApplication.instance()
-        if isinstance(app, PyDMApplication):
+        if is_pydm_app():
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
 
     def init_for_designer(self):
@@ -411,7 +411,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self._alarm_sensitive_content = checked
         self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | (self.ALARM_BORDER * self._alarm_sensitive_border)
-        self.alarm_severity_changed(self._alarm_state)
+        if is_pydm_app():
+            self.alarm_severity_changed(self._alarm_state)
 
     @pyqtProperty(bool)
     def alarmSensitiveBorder(self):
@@ -440,7 +441,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self._alarm_sensitive_border = checked
         self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | (self.ALARM_BORDER * self._alarm_sensitive_border)
-        self.alarm_severity_changed(self._alarm_state)
+        if is_pydm_app():
+            self.alarm_severity_changed(self._alarm_state)
 
     @pyqtProperty(bool)
     def precisionFromPV(self):

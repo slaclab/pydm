@@ -7,6 +7,15 @@ from .iconfont import IconFont
 import os
 import sys
 
+def is_pydm_app():
+    from ..application import PyDMApplication
+    from ..PyQt.QtGui import QApplication
+    app = QApplication.instance()
+    if isinstance(app, PyDMApplication):
+        return True
+    else:
+        return False
+
 try:  # Forced testing
     from shutil import which
 except ImportError:  # Forced testing
