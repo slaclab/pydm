@@ -140,6 +140,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         self.value = None
         self.channeltype = None
+        self.subtype = None
         self.check_enable_state()
         # If this label is inside a PyDMApplication (not Designer) start it in the disconnected state.
         if is_pydm_app():
@@ -179,6 +180,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self.value = new_val
         self.channeltype = type(self.value)
+        if self.channeltype == np.ndarray:
+            self.subtype = self.value.dtype.type
         self.update_format_string()
 
     def alarm_severity_changed(self, new_alarm_severity):
