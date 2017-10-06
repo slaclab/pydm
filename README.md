@@ -23,7 +23,7 @@ To launch a particular display run 'python scripts/pydm <filename>'.
 There is a 'home' display in the examples directory with buttons to launch all the examples:
 run 'python scripts/pydm examples/home.ui'
 
-There isn't any documentation yet, hopefully looking at the examples can get you started.
+Documentation is available at http://slaclab.github.io/pydm/.  Documentation is somewhat sparse right now, unfortunately.
 
 # Widget Designer Plugins
 pydm widgets are written in Python, and are loaded into Qt Designer via the PyQt Designer Plugin.
