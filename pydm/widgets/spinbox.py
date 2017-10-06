@@ -172,4 +172,4 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         val : bool
         """
         self._show_step_exponent = val
-        self.update()
+        self.update_format_string()
