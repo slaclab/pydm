@@ -8,6 +8,10 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
     """
     A QTableWidget with support for Channels and more from PyDM.
 
+    Values of the array are displayed in the selected number of columns.
+    The number of rows is determined by the size of the waveform.
+    It is possible to define the labels of each row and column.
+
     Parameters
     ----------
     parent : QWidget
