@@ -17,7 +17,7 @@ class WaveformPlotCurveEditorDialog(QDialog):
         super(WaveformPlotCurveEditorDialog, self).__init__(parent)
         self.plot = plot
         self.setup_ui()
-        self.column_names = ("Y Channel", "X Channel", "Label", "Color", "Connect Points", "Data Point Symbol")
+        self.column_names = ("Y Channel", "X Channel", "Label", "Color", "Connect Points", "Data Point Symbol", "Redraw When")
         self.table_model = PyDMWaveformPlotCurvesModel(self.plot)
         self.table_view.setModel(self.table_model)
         self.table_model.plot = plot
@@ -26,9 +26,11 @@ class WaveformPlotCurveEditorDialog(QDialog):
         self.remove_button.clicked.connect(self.removeSelectedCurve)
         self.remove_button.setEnabled(False)
         symbol_delegate = SymbolColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(4, symbol_delegate)
+        self.table_view.setItemDelegateForColumn(5, symbol_delegate)
         color_delegate = ColorColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(3, color_delegate)
+        redraw_mode_delegate = RedrawModeColumnDelegate(self)
+        self.table_view.setItemDelegateForColumn(6, redraw_mode_delegate)
         self.table_view.selectionModel().selectionChanged.connect(self.handleSelectionChange)
         self.table_view.doubleClicked.connect(self.handleDoubleClick)
         
@@ -115,6 +117,34 @@ class SymbolColumnDelegate(QStyledItemDelegate):
     
     def setModelData(self, editor, model, index):
         val = WaveformCurveItem.symbols[editor.currentText()]
+        model.setData(index, val, Qt.EditRole)
+    
+    def updateEditorGeometry(self, editor, option, index):
+        editor.setGeometry(option.rect)
+
+class RedrawModeColumnDelegate(QStyledItemDelegate):
+    """RedrawModeColumnDelegate draws a QComboBox in the Redraw Mode column, so
+    that users can pick the redraw mode from a list."""
+    choices = OrderedDict([('X or Y updates', WaveformCurveItem.REDRAW_ON_EITHER),
+                            ('Y updates', WaveformCurveItem.REDRAW_ON_Y),
+                            ('X updates', WaveformCurveItem.REDRAW_ON_X),
+                            ('Both update', WaveformCurveItem.REDRAW_ON_BOTH)])
+    text_for_choices = {v: k for k, v in choices.items()}
+    
+    def displayText(self, value, locale):
+        return self.text_for_choices[value]
+    
+    def createEditor(self, parent, option, index):
+        editor = QComboBox(parent)
+        editor.addItems(self.choices.keys())
+        return editor
+    
+    def setEditorData(self, editor, index):
+        val = self.text_for_choices[index.model().data(index, Qt.EditRole)]
+        editor.setCurrentText(val)
+    
+    def setModelData(self, editor, model, index):
+        val = self.choices[editor.currentText()]
         model.setData(index, val, Qt.EditRole)
     
     def updateEditorGeometry(self, editor, option, index):

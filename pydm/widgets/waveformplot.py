@@ -31,10 +31,17 @@ class WaveformCurveItem(PlotDataItem):
         The color used to draw the curve line.  If connect_points is False, this is not used.
     connect_points: bool, optional
         Whether or not to draw a line to connect the data points.
+    redraw_mode: int, optional
+        Must be one four values:
+        WaveformCurveItem.REDRAW_ON_EITHER: (Default) The curve will be redrawn after either X or Y receives new data.
+        WaveformCurveItem.REDRAW_ON_X: The curve will only be redrawn after X receives new data.
+        WaveformCurveItem.REDRAW_ON_Y: The curve will only be redrawn after Y receives new data.
+        WaveformCurveItem.REDRAW_ON_BOTH: The curve will only be redrawn after both X and Y receive new data.
     """
+    REDRAW_ON_X, REDRAW_ON_Y, REDRAW_ON_EITHER, REDRAW_ON_BOTH = range(4)
     symbols = OrderedDict([('None', None), ('Circle', 'o'), ('Square', 's'), ('Triangle', 't'), ('Diamond', 'd'), ('Plus', '+')])
     data_changed = pyqtSignal()
-    def __init__(self, y_addr=None, x_addr=None, color=None, connect_points=True, **kws):
+    def __init__(self, y_addr=None, x_addr=None, color=None, connect_points=True, redraw_mode=REDRAW_ON_EITHER, **kws):
         y_addr = "" if y_addr is None else y_addr
         if kws.get('name') is None:
             y_name = utilities.remove_protocol(y_addr)
@@ -44,6 +51,7 @@ class WaveformCurveItem(PlotDataItem):
                 x_name = utilities.remove_protocol(x_addr)
                 plot_name = "{y} vs. {x}".format(y=y_name, x=x_name)
             kws['name'] = plot_name
+        self.redraw_mode = redraw_mode
         self.needs_new_x = True
         self.needs_new_y = True
         self.x_channel = None
@@ -229,7 +237,26 @@ class WaveformCurveItem(PlotDataItem):
         -------
         OrderedDict
         """
-        return OrderedDict([("y_channel", self.y_address), ("x_channel", self.x_address), ("name", self.name()), ("color", self.color_string), ("connect_points", self.connect_points), ("symbol", self.symbol)])
+        return OrderedDict([("y_channel", self.y_address), ("x_channel", self.x_address), ("name", self.name()), ("color", self.color_string), ("connect_points", self.connect_points), ("symbol", self.symbol), ("redraw_mode", self.redraw_mode)])
+    
+    def emit_data_changed_if_ready(self):
+        """
+        This is called whenever new waveform data is received for X or Y.
+        Based on the value of the redraw_mode attribute, it decides whether
+        the data_changed signal will be emitted.  The data_changed signal
+        is used by the plot that owns this curve to request a redraw.
+        """
+        if self.redraw_mode == WaveformCurveItem.REDRAW_ON_EITHER:
+            self.data_changed.emit()
+        elif self.redraw_mode == WaveformCurveItem.REDRAW_ON_X:
+            if not self.needs_new_x:
+                self.data_changed.emit()
+        elif self.redraw_mode == WaveformCurveItem.REDRAW_ON_Y:
+            if not self.needs_new_y:
+                self.data_changed.emit()
+        elif self.redraw_mode == WaveformCurveItem.REDRAW_ON_BOTH:
+            if not (self.needs_new_y or self.needs_new_x):
+                self.data_changed.emit()
     
     @pyqtSlot(bool)
     def xConnectionStateChanged(self, connected):
@@ -247,8 +274,8 @@ class WaveformCurveItem(PlotDataItem):
         self.x_waveform = new_waveform
         self.needs_new_x = False
         #Don't redraw unless we already have Y data.
-        if not (self.needs_new_x or self.needs_new_y):
-            self.data_changed.emit()
+        if self.y_waveform is not None:
+            self.emit_data_changed_if_ready()
     
     @pyqtSlot(np.ndarray)
     def receiveYWaveform(self, new_waveform):
@@ -258,7 +285,7 @@ class WaveformCurveItem(PlotDataItem):
         self.y_waveform = new_waveform
         self.needs_new_y = False
         if self.x_channel is None or self.x_waveform is not None:
-            self.data_changed.emit()
+            self.emit_data_changed_if_ready()
     
     def redrawCurve(self):
         """
@@ -340,7 +367,7 @@ class PyDMWaveformPlot(BasePlot):
         for (x_chan, y_chan) in init_channel_pairs:
             self.addChannel(y_chan, x_channel=x_chan)
     
-    def addChannel(self, y_channel=None, x_channel=None, name=None, color=None, connect_points=True, symbol=None):
+    def addChannel(self, y_channel=None, x_channel=None, name=None, color=None, connect_points=True, redraw_mode=None, symbol=None):
         """
         Add a new curve to the plot.  In addition to the arguments below,
         all other keyword arguments are passed to the underlying 
@@ -364,6 +391,8 @@ class PyDMWaveformPlot(BasePlot):
         plot_opts = {}
         if symbol is not None:
             plot_opts['symbol'] = symbol
+        if redraw_mode is not None:
+            plot_opts['redraw_mode'] = redraw_mode
         curve = WaveformCurveItem(y_addr=y_channel, x_addr=x_channel, name=name, color=color, connect_points=connect_points, **plot_opts)
         curve.data_changed.connect(self.redrawPlot)
         self.channel_pairs[(y_channel, x_channel)] = curve
@@ -462,7 +491,7 @@ class PyDMWaveformPlot(BasePlot):
             color = d.get('color')
             if color:
                 color = QColor(color)
-            self.addChannel(d['y_channel'], d['x_channel'], name=d.get('name'), color=color, connect_points=d.get('connect_points', True), symbol=d.get('symbol'))
+            self.addChannel(d['y_channel'], d['x_channel'], name=d.get('name'), color=color, connect_points=d.get('connect_points', True), symbol=d.get('symbol'), redraw_mode=d.get('redraw_mode'))
         
     curves = pyqtProperty("QStringList", getCurves, setCurves)
                     
