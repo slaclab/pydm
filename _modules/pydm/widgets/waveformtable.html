@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.waveformtable &mdash; PyDM 0.3.0+32.gf0892f8 documentation</title>
+  <title>pydm.widgets.waveformtable &mdash; PyDM 0.3.0+33.gb14c477 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+32.gf0892f8 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+33.gb14c477 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+32.gf0892f8
+                0.3.0+33.gb14c477
               </div>
             
           
@@ -172,7 +172,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">columnHeader</span> <span class="o">=</span> <span class="s2">&quot;Value&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">waveform</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">columnHeader</span><span class="p">])</span>
-        
+
     <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">):</span>
         <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">waveform</span> <span class="o">=</span> <span class="n">new_waveform</span>
@@ -189,11 +189,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">setVerticalHeaderItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">index_cell</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">value_cell</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cellChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">send_data_for_cell</span><span class="p">)</span>
-    
+
     <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">send_data_for_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
         <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
-        <span class="n">new_val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="n">new_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtype</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">waveform</span><span class="p">[</span><span class="n">row</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">waveform</span><span class="p">)</span></div>
 </pre></div>
@@ -232,7 +232,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0+32.gf0892f8',
+            VERSION:'0.3.0+33.gb14c477',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
