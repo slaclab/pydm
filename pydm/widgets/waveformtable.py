@@ -100,6 +100,8 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         ----------
         new_labels : list of strings
         """
+        if new_labels:
+            new_labels += (self.columnCount() - len(new_labels)) * [""]
         self._columnHeaders = new_labels
         self.setHorizontalHeaderLabels(self._columnHeaders)
 
@@ -125,6 +127,8 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         ----------
         new_labels : list of strings
         """
+        if new_labels:
+            new_labels += (self.rowCount() - len(new_labels)) * [""]
         self._rowHeaders = new_labels
         self.setVerticalHeaderLabels(self._rowHeaders)
 
