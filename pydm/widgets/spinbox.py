@@ -28,6 +28,8 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         self.setKeyboardTracking(False)
         self.setAccelerated(True)
 
+        self.lineEdit().setToolTip('Step: 1E{0:+d}'.format(self.step_exponent))
+
     def event(self, event):
         """
         Method invoked when an event of any nature happens on the
@@ -91,6 +93,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         else:
             units = ""
 
+        self.lineEdit().setToolTip('Step: 1E{0:+d}'.format(self.step_exponent))
         if self._show_step_exponent:
             self.setSuffix("{units} Step: 1E{exp}".format(
                 units=units, exp=self.step_exponent))
