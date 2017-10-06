@@ -12,7 +12,7 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         self.columnHeader = "Value"
         self.waveform = None
         self.setHorizontalHeaderLabels([self.columnHeader])
-        
+
     def value_changed(self, new_waveform):
         PyDMWritableWidget.value_changed(self, new_waveform)
         self.waveform = new_waveform
@@ -29,10 +29,10 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
             self.setVerticalHeaderItem(i,index_cell)
             self.setItem(i,0,value_cell)
         self.cellChanged.connect(self.send_data_for_cell)
-    
+
     @pyqtSlot(int, int)
     def send_data_for_cell(self, row, column):
         item = self.item(row, column)
-        new_val = float(item.text())
+        new_val = self.subtype(item.text())
         self.waveform[row] = new_val
         self.send_value_signal[np.ndarray].emit(self.waveform)
