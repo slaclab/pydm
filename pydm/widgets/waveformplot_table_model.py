@@ -13,7 +13,7 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
     def __init__(self, plot, parent=None):
         super(PyDMWaveformPlotCurvesModel, self).__init__(parent=parent)
         self._plot = plot
-        self._column_names = ("Y Channel", "X Channel", "Label", "Color", "Connect Points", "Data Point Symbol")
+        self._column_names = ("Y Channel", "X Channel", "Label", "Color", "Connect Points", "Data Point Symbol", "Redraw Mode")
 
     @property
     def plot(self):
@@ -75,8 +75,8 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
                 if curve.symbol is None:
                     return "None"
                 return self.name_for_symbol[curve.symbol]
-        #elif role == Qt.DecorationRole and column_name == "Color":
-        #    return curve.color
+            elif column_name == "Redraw Mode":
+                return curve.redraw_mode
         elif role == Qt.BackgroundRole and column_name == "Color":
             return QBrush(curve.color)
         elif role == Qt.CheckStateRole and column_name == "Connect Points":
@@ -109,6 +109,8 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
                 curve.color = value
             elif column_name == "Data Point Symbol":
                 curve.symbol = str(value)
+            elif column_name == "Redraw Mode":
+                curve.redraw_mode = int(value)
             else:
                 return False
         elif role == Qt.CheckStateRole and column_name == "Connect Points":
