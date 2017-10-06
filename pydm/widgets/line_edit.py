@@ -61,9 +61,9 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         """
         send_value = str(self.text())
 
-        # Clean text of all formatting
-        if self.format_string:
-            send_value = send_value.strip(self.format_string)
+        # Clean text of unit string
+        if self._unit:
+            send_value = send_value.replace(self._unit, '')
 
         # Remove scale factor
         if self._scale and self.channeltype != type(""):
