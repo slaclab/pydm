@@ -257,7 +257,7 @@ class WaveformCurveItem(PlotDataItem):
         """
         self.y_waveform = new_waveform
         self.needs_new_y = False
-        if self.x_channel is None or not (self.needs_new_x or self.needs_new_y):
+        if self.x_channel is None or self.x_waveform is not None:
             self.data_changed.emit()
     
     def redrawCurve(self):
