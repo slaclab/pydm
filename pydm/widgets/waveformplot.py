@@ -61,10 +61,10 @@ class WaveformCurveItem(PlotDataItem):
         self.x_waveform = None
         self.y_waveform = None
         self._color = QColor('white')
-        if color is not None:
-            self._color = color
         super(WaveformCurveItem, self).__init__(**kws)
         self.connect_points = connect_points
+        if color is not None:
+            self.color = color
     
     @property
     def color_string(self):
@@ -120,6 +120,8 @@ class WaveformCurveItem(PlotDataItem):
         self._color = new_color
         if self.connect_points:
             self.setPen(self._color)
+        if self.symbol is not None:
+            self.setSymbolPen(self._color)
     
     @property
     def connect_points(self):
@@ -171,6 +173,8 @@ class WaveformCurveItem(PlotDataItem):
         """
         if new_symbol in self.symbols.values():
             self.setSymbol(new_symbol)
+            self.setSymbolPen(self._color)
+            self.setSymbolBrush(None)
         else:
             self.setSymbol(None)
     
