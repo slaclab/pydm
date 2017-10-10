@@ -9,7 +9,7 @@ class WaveformPlotCurveEditorDialog(QDialog):
     """WaveformPlotCurveEditorDialog is a QDialog that is used in Qt Designer to
     edit the properties of the curves in a waveform plot.  This dialog is shown
     when you double-click the plot, or when you right click it and choose 'edit curves'.
-    
+
     This thing is mostly just a wrapper for a table view, with a couple buttons to add and
     remove curves, and a button to save the changes.
     """
@@ -17,7 +17,11 @@ class WaveformPlotCurveEditorDialog(QDialog):
         super(WaveformPlotCurveEditorDialog, self).__init__(parent)
         self.plot = plot
         self.setup_ui()
-        self.column_names = ("Y Channel", "X Channel", "Label", "Color", "Connect Points", "Data Point Symbol", "Redraw When")
+        self.column_names = ("Y Channel", "X Channel",
+                             "Label", "Color",
+                             "Line Style", "Line Width",
+                             "Symbol", "Symbol Size",
+                             "Redraw Mode")
         self.table_model = PyDMWaveformPlotCurvesModel(self.plot)
         self.table_view.setModel(self.table_model)
         self.table_model.plot = plot
@@ -26,14 +30,16 @@ class WaveformPlotCurveEditorDialog(QDialog):
         self.remove_button.clicked.connect(self.removeSelectedCurve)
         self.remove_button.setEnabled(False)
         symbol_delegate = SymbolColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(5, symbol_delegate)
+        self.table_view.setItemDelegateForColumn(6, symbol_delegate)
+        line_delegate = LineColumnDelegate(self)
+        self.table_view.setItemDelegateForColumn(4, line_delegate)
         color_delegate = ColorColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(3, color_delegate)
         redraw_mode_delegate = RedrawModeColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(6, redraw_mode_delegate)
+        self.table_view.setItemDelegateForColumn(8, redraw_mode_delegate)
         self.table_view.selectionModel().selectionChanged.connect(self.handleSelectionChange)
         self.table_view.doubleClicked.connect(self.handleDoubleClick)
-        
+
     def setup_ui(self):
         self.resize(800, 300)
         self.vertical_layout = QVBoxLayout(self)
@@ -66,19 +72,19 @@ class WaveformPlotCurveEditorDialog(QDialog):
         self.button_box.accepted.connect(self.saveChanges)
         self.button_box.rejected.connect(self.reject)
         self.setWindowTitle("Waveform Curve Editor")
-    
+
     @pyqtSlot()
     def addCurve(self):
         self.table_model.append()
-    
+
     @pyqtSlot()
     def removeSelectedCurve(self):
         self.table_model.removeAtIndex(self.table_view.currentIndex())
-        
+
     @pyqtSlot(QItemSelection, QItemSelection)
     def handleSelectionChange(self, selected, deselected):
         self.remove_button.setEnabled(self.table_view.selectionModel().hasSelection())
-    
+
     @pyqtSlot(QModelIndex)
     def handleDoubleClick(self, index):
         if self.table_model.needsColorDialog(index):
@@ -87,7 +93,7 @@ class WaveformPlotCurveEditorDialog(QDialog):
             color = QColorDialog.getColor(init_color, self)
             if color.isValid():
                 self.table_model.setData(index, color, role=Qt.EditRole)
-    
+
     @pyqtSlot()
     def saveChanges(self):
         formWindow = QDesignerFormWindowInterface.findFormWindow(self.plot)
@@ -95,13 +101,36 @@ class WaveformPlotCurveEditorDialog(QDialog):
             formWindow.cursor().setProperty("curves", self.plot.curves)
         self.accept()
 
+
 class ColorColumnDelegate(QStyledItemDelegate):
     """The ColorColumnDelegate is an item delegate that is installed on the
     color column of the table view.  Its only job is to ensure that the default
     editor widget (a line edit) isn't displayed for items in the color column."""
     def createEditor(self, parent, option, index):
         return None
-    
+
+
+class LineColumnDelegate(QStyledItemDelegate):
+    """LineColumnDelegate draws a QComboBox in the Line Style column, so that users
+    can pick the styles they want to display from a list, instead of needing to
+    remember the PyQtGraph character codes."""
+    def createEditor(self, parent, option, index):
+        editor = QComboBox(parent)
+        editor.addItems(WaveformCurveItem.lines.keys())
+        return editor
+
+    def setEditorData(self, editor, index):
+        val = str(index.model().data(index, Qt.EditRole))
+        editor.setCurrentText(val)
+
+    def setModelData(self, editor, model, index):
+        val = WaveformCurveItem.lines[editor.currentText()]
+        model.setData(index, val, Qt.EditRole)
+
+    def updateEditorGeometry(self, editor, option, index):
+        editor.setGeometry(option.rect)
+
+
 class SymbolColumnDelegate(QStyledItemDelegate):
     """SymbolColumnDelegate draws a QComboBox in the Symbol column, so that users
     can pick the symbol they want to display from a list, instead of needing to
@@ -110,17 +139,18 @@ class SymbolColumnDelegate(QStyledItemDelegate):
         editor = QComboBox(parent)
         editor.addItems(WaveformCurveItem.symbols.keys())
         return editor
-    
+
     def setEditorData(self, editor, index):
         val = str(index.model().data(index, Qt.EditRole))
         editor.setCurrentText(val)
-    
+
     def setModelData(self, editor, model, index):
         val = WaveformCurveItem.symbols[editor.currentText()]
         model.setData(index, val, Qt.EditRole)
-    
+
     def updateEditorGeometry(self, editor, option, index):
         editor.setGeometry(option.rect)
+
 
 class RedrawModeColumnDelegate(QStyledItemDelegate):
     """RedrawModeColumnDelegate draws a QComboBox in the Redraw Mode column, so
@@ -130,22 +160,22 @@ class RedrawModeColumnDelegate(QStyledItemDelegate):
                             ('X updates', WaveformCurveItem.REDRAW_ON_X),
                             ('Both update', WaveformCurveItem.REDRAW_ON_BOTH)])
     text_for_choices = {v: k for k, v in choices.items()}
-    
+
     def displayText(self, value, locale):
         return self.text_for_choices[value]
-    
+
     def createEditor(self, parent, option, index):
         editor = QComboBox(parent)
         editor.addItems(self.choices.keys())
         return editor
-    
+
     def setEditorData(self, editor, index):
         val = self.text_for_choices[index.model().data(index, Qt.EditRole)]
         editor.setCurrentText(val)
-    
+
     def setModelData(self, editor, model, index):
         val = self.choices[editor.currentText()]
         model.setData(index, val, Qt.EditRole)
-    
+
     def updateEditorGeometry(self, editor, option, index):
         editor.setGeometry(option.rect)
