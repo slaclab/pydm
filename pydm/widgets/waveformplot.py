@@ -24,19 +24,26 @@ class WaveformCurveItem(PlotDataItem):
     Parameters
     ----------
     y_addr : str, optional
-        The address to waveform data for the Y axis.  Curves must have Y data to plot.
+        The address to waveform data for the Y axis.
+        Curves must have Y data to plot.
     x_addr : str, optional
-        The address to waveform data for the X axis.  If None, the curve will plot Y data vs. the Y index.
+        The address to waveform data for the X axis.
+        If None, the curve will plot Y data vs. the Y index.
     color : QColor, optional
-        The color used to draw the curve line.  If connect_points is False, this is not used.
-    connect_points: bool, optional
-        Whether or not to draw a line to connect the data points.
+        The color used to draw the curve line and the symbols.
+    lineStyle: int, optional
+        Style of the line connecting the data points.
+        0 means no line (scatter plot).
+    lineWidth: int, optional
+        Width of the line connecting the data points.
     redraw_mode: int, optional
         Must be one four values:
         WaveformCurveItem.REDRAW_ON_EITHER: (Default) The curve will be redrawn after either X or Y receives new data.
         WaveformCurveItem.REDRAW_ON_X: The curve will only be redrawn after X receives new data.
         WaveformCurveItem.REDRAW_ON_Y: The curve will only be redrawn after Y receives new data.
         WaveformCurveItem.REDRAW_ON_BOTH: The curve will only be redrawn after both X and Y receive new data.
+    **kargs: optional
+        PlotDataItem keyword arguments, such as symbol and symbolSize.
     """
     REDRAW_ON_X, REDRAW_ON_Y, REDRAW_ON_EITHER, REDRAW_ON_BOTH = range(4)
     symbols = OrderedDict([('None', None),
@@ -135,7 +142,8 @@ class WaveformCurveItem(PlotDataItem):
         Parameters
         -------
         new_color: QColor or str
-            The new color to use for the curve.  Strings are passed to WaveformCurveItem.color_string.
+            The new color to use for the curve.
+            Strings are passed to WaveformCurveItem.color_string.
         """
         if isinstance(new_color, str):
             self.color_string = new_color
@@ -148,22 +156,28 @@ class WaveformCurveItem(PlotDataItem):
     @property
     def lineStyle(self):
         """
-        Whether or not the data points are connected with a line.
+        Return the style of the line connecting the data points.
+
+        see Qt line styles.
+        0 means no line.
 
         Returns
         -------
-        bool
+        int
         """
         return self._pen.style()
 
     @lineStyle.setter
     def lineStyle(self, new_style):
         """
-        Whether or not the data points are connected with a line.
+        Set the style of the line connecting the data points.
+
+        see Qt line styles.
+        0 means no line.
 
         Parameters
         -------
-        connect: bool
+        new_style: int
         """
         if new_style in self.lines.values():
             self._pen.setStyle(new_style)
@@ -172,22 +186,22 @@ class WaveformCurveItem(PlotDataItem):
     @property
     def lineWidth(self):
         """
-        Whether or not the data points are connected with a line.
+        Return the width of the line connecting the data points.
 
         Returns
         -------
-        bool
+        int
         """
         return self._pen.width()
 
     @lineWidth.setter
     def lineWidth(self, new_width):
         """
-        Whether or not the data points are connected with a line.
+        Set the width of the line connecting the data points.
 
         Parameters
         -------
-        connect: bool
+        new_width: int
         """
         self._pen.setWidth(int(new_width))
         self.setPen(self._pen)
@@ -196,11 +210,12 @@ class WaveformCurveItem(PlotDataItem):
     def symbol(self):
         """
         The single-character code for the symbol drawn at each datapoint.
+
         See the documentation for pyqtgraph.PlotDataItem for possible values.
 
         Returns
         -------
-        str
+        str or None
         """
         return self.opts['symbol']
 
@@ -208,11 +223,12 @@ class WaveformCurveItem(PlotDataItem):
     def symbol(self, new_symbol):
         """
         The single-character code for the symbol drawn at each datapoint.
+
         See the documentation for pyqtgraph.PlotDataItem for possible values.
 
         Parameters
         -------
-        new_symbol: str
+        new_symbol: str or None
         """
         if new_symbol in self.symbols.values():
             self.setSymbol(new_symbol)
@@ -221,24 +237,22 @@ class WaveformCurveItem(PlotDataItem):
     @property
     def symbolSize(self):
         """
-        The single-character code for the symbol drawn at each datapoint.
-        See the documentation for pyqtgraph.PlotDataItem for possible values.
+        Return the size of the symbol to represent the data.
 
         Returns
         -------
-        str
+        int
         """
         return self.opts['symbolSize']
 
     @symbolSize.setter
     def symbolSize(self, new_size):
         """
-        The single-character code for the symbol drawn at each datapoint.
-        See the documentation for pyqtgraph.PlotDataItem for possible values.
+        Set the size of the symbol to represent the data.
 
         Parameters
         -------
-        new_symbol: str
+        new_size: int
         """
         self.setSymbolSize(int(new_size))
 
@@ -468,9 +482,21 @@ class PyDMWaveformPlot(BasePlot):
         color: str or QColor, optional
             A color for the line of the curve.  If not specified, the plot will
             automatically assign a unique color from a set of default colors.
-        connect_points: bool, optional
-            Whether or not to connect the datapoints with a line.  If you want
-            to make a scatter plot, set this to False.  Defaults to True.
+        lineStyle: int, optional
+            Style of the line connecting the data points.
+            0 means no line (scatter plot).
+        lineWidth: int, optional
+            Width of the line connecting the data points.
+        redraw_mode: int, optional
+            Must be one four values:
+            WaveformCurveItem.REDRAW_ON_EITHER: (Default) The curve will be redrawn after either X or Y receives new data.
+            WaveformCurveItem.REDRAW_ON_X: The curve will only be redrawn after X receives new data.
+            WaveformCurveItem.REDRAW_ON_Y: The curve will only be redrawn after Y receives new data.
+            WaveformCurveItem.REDRAW_ON_BOTH: The curve will only be redrawn after both X and Y receive new data.
+        symbol: str or None, optional
+            Which symbol to use to represent the data.
+        symbol: int, optional
+            Size of the symbol.
         """
         plot_opts = {}
         plot_opts['symbol'] = symbol
