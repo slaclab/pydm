@@ -374,6 +374,8 @@ class WaveformCurveItem(PlotDataItem):
         """
         #We try to be nice: if the X waveform doesn't have the same number of points as the Y waveform,
         #we'll truncate whichever was longer so that they are both the same size.
+        if self.y_waveform is None:
+            return
         if self.x_waveform is None:
             self.setData(y=self.y_waveform)
             return
