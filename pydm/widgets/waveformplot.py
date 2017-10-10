@@ -333,36 +333,40 @@ class WaveformCurveItem(PlotDataItem):
         elif self.redraw_mode == WaveformCurveItem.REDRAW_ON_BOTH:
             if not (self.needs_new_y or self.needs_new_x):
                 self.data_changed.emit()
-    
+
     @pyqtSlot(bool)
     def xConnectionStateChanged(self, connected):
         pass
-        
+
     @pyqtSlot(bool)
     def yConnectionStateChanged(self, connected):
         pass
-    
+
     @pyqtSlot(np.ndarray)
     def receiveXWaveform(self, new_waveform):
         """
         Handler for new x waveform data.
         """
+        if new_waveform is None:
+            return
         self.x_waveform = new_waveform
         self.needs_new_x = False
         #Don't redraw unless we already have Y data.
         if self.y_waveform is not None:
             self.emit_data_changed_if_ready()
-    
+
     @pyqtSlot(np.ndarray)
     def receiveYWaveform(self, new_waveform):
         """
         Handler for new y waveform data.
         """
+        if new_waveform is None:
+            return
         self.y_waveform = new_waveform
         self.needs_new_y = False
         if self.x_channel is None or self.x_waveform is not None:
             self.emit_data_changed_if_ready()
-    
+
     def redrawCurve(self):
         """
         redrawCurve is called by the curve's parent plot whenever the curve needs to be
