@@ -1,12 +1,14 @@
 from .plugin import PyDMPlugin, PyDMConnection
 import requests
 import numpy as np
+import os
 
 class Connection(PyDMConnection):
     def __init__(self, channel, address, parent=None):
         super(Connection, self).__init__(channel, address, parent)
         self.add_listener(channel)
-        url_string = "http://lcls-archapp.slac.stanford.edu/retrieval/data/getData.json?{params}".format(params=address)
+        base_url = os.getenv("PYDM_ARCHIVER_URL", "http://lcls-archapp.slac.stanford.edu")
+        url_string = "{base}/retrieval/data/getData.json?{params}".format(base=base_url, params=address)
         r = requests.get(url_string) #blocking.  BAD!
         if r.status_code == 200 and r.headers['content-type'] == 'application/json':
             data_dict = r.json()
