@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMWaveformPlot &mdash; PyDM 0.3.0+42.g11b70e8 documentation</title>
+  <title>PyDMWaveformPlot &mdash; PyDM 0.3.0+43.g79fa32f documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+42.g11b70e8 documentation" href="../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+43.g79fa32f documentation" href="../index.html"/>
         <link rel="up" title="PyDM Widgets" href="index.html"/>
         <link rel="next" title="PyDMWaveformTable" href="waveformtable.html"/>
         <link rel="prev" title="PyDMTimePlot" href="timeplot.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.3.0+42.g11b70e8
+                0.3.0+43.g79fa32f
               </div>
             
           
@@ -214,7 +214,7 @@ will accept.</li>
 </table>
 <dl class="method">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.addChannel">
-<code class="descname">addChannel</code><span class="sig-paren">(</span><em>y_channel=None</em>, <em>x_channel=None</em>, <em>name=None</em>, <em>color=None</em>, <em>connect_points=True</em>, <em>redraw_mode=None</em>, <em>symbol=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.addChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.addChannel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addChannel</code><span class="sig-paren">(</span><em>y_channel=None</em>, <em>x_channel=None</em>, <em>name=None</em>, <em>color=None</em>, <em>lineStyle=None</em>, <em>lineWidth=None</em>, <em>symbol=None</em>, <em>symbolSize=None</em>, <em>redraw_mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.addChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.addChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new curve to the plot.  In addition to the arguments below,
 all other keyword arguments are passed to the underlying
 pyqtgraph.PlotDataItem used to draw the curve.</p>
@@ -228,8 +228,16 @@ pyqtgraph.PlotDataItem used to draw the curve.</p>
 <li><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – A name for this curve.  The name will be used in the plot legend.</li>
 <li><strong>color</strong> (<em>str</em><em> or </em><em>QColor</em><em>, </em><em>optional</em>) – A color for the line of the curve.  If not specified, the plot will
 automatically assign a unique color from a set of default colors.</li>
-<li><strong>connect_points</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to connect the datapoints with a line.  If you want
-to make a scatter plot, set this to False.  Defaults to True.</li>
+<li><strong>lineStyle</strong> (<em>int</em><em>, </em><em>optional</em>) – Style of the line connecting the data points.
+0 means no line (scatter plot).</li>
+<li><strong>lineWidth</strong> (<em>int</em><em>, </em><em>optional</em>) – Width of the line connecting the data points.</li>
+<li><strong>redraw_mode</strong> (<em>int</em><em>, </em><em>optional</em>) – Must be one four values:
+WaveformCurveItem.REDRAW_ON_EITHER: (Default) The curve will be redrawn after either X or Y receives new data.
+WaveformCurveItem.REDRAW_ON_X: The curve will only be redrawn after X receives new data.
+WaveformCurveItem.REDRAW_ON_Y: The curve will only be redrawn after Y receives new data.
+WaveformCurveItem.REDRAW_ON_BOTH: The curve will only be redrawn after both X and Y receive new data.</li>
+<li><strong>symbol</strong> (<em>int</em><em>, </em><em>optional</em>) – Which symbol to use to represent the data.</li>
+<li><strong>symbol</strong> – Size of the symbol.</li>
 </ul>
 </td>
 </tr>
@@ -417,7 +425,7 @@ all curves for the plot.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.3.0+42.g11b70e8',
+            VERSION:'0.3.0+43.g79fa32f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

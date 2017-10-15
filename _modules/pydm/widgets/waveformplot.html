@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.waveformplot &mdash; PyDM 0.3.0+42.g11b70e8 documentation</title>
+  <title>pydm.widgets.waveformplot &mdash; PyDM 0.3.0+43.g79fa32f documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+42.g11b70e8 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+43.g79fa32f documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+42.g11b70e8
+                0.3.0+43.g79fa32f
               </div>
             
           
@@ -159,8 +159,8 @@
             
   <h1>Source code for pydm.widgets.waveformplot</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QColor</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSignal</span><span class="p">,</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span>
-<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="k">import</span> <span class="n">PlotDataItem</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSignal</span><span class="p">,</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="k">import</span> <span class="n">PlotDataItem</span><span class="p">,</span> <span class="n">mkPen</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">.baseplot</span> <span class="k">import</span> <span class="n">BasePlot</span>
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="k">import</span> <span class="n">PyDMChannel</span>
@@ -184,24 +184,48 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    y_addr : str, optional</span>
-<span class="sd">        The address to waveform data for the Y axis.  Curves must have Y data to plot.</span>
+<span class="sd">        The address to waveform data for the Y axis.</span>
+<span class="sd">        Curves must have Y data to plot.</span>
 <span class="sd">    x_addr : str, optional</span>
-<span class="sd">        The address to waveform data for the X axis.  If None, the curve will plot Y data vs. the Y index.</span>
+<span class="sd">        The address to waveform data for the X axis.</span>
+<span class="sd">        If None, the curve will plot Y data vs. the Y index.</span>
 <span class="sd">    color : QColor, optional</span>
-<span class="sd">        The color used to draw the curve line.  If connect_points is False, this is not used.</span>
-<span class="sd">    connect_points: bool, optional</span>
-<span class="sd">        Whether or not to draw a line to connect the data points.</span>
+<span class="sd">        The color used to draw the curve line and the symbols.</span>
+<span class="sd">    lineStyle: int, optional</span>
+<span class="sd">        Style of the line connecting the data points.</span>
+<span class="sd">        0 means no line (scatter plot).</span>
+<span class="sd">    lineWidth: int, optional</span>
+<span class="sd">        Width of the line connecting the data points.</span>
 <span class="sd">    redraw_mode: int, optional</span>
 <span class="sd">        Must be one four values:</span>
 <span class="sd">        WaveformCurveItem.REDRAW_ON_EITHER: (Default) The curve will be redrawn after either X or Y receives new data.</span>
 <span class="sd">        WaveformCurveItem.REDRAW_ON_X: The curve will only be redrawn after X receives new data.</span>
 <span class="sd">        WaveformCurveItem.REDRAW_ON_Y: The curve will only be redrawn after Y receives new data.</span>
 <span class="sd">        WaveformCurveItem.REDRAW_ON_BOTH: The curve will only be redrawn after both X and Y receive new data.</span>
+<span class="sd">    **kargs: optional</span>
+<span class="sd">        PlotDataItem keyword arguments, such as symbol and symbolSize.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">REDRAW_ON_X</span><span class="p">,</span> <span class="n">REDRAW_ON_Y</span><span class="p">,</span> <span class="n">REDRAW_ON_EITHER</span><span class="p">,</span> <span class="n">REDRAW_ON_BOTH</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-    <span class="n">symbols</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Circle&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Square&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Triangle&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Diamond&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Plus&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)])</span>
+    <span class="n">symbols</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Circle&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Square&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Triangle&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Star&#39;</span><span class="p">,</span> <span class="s1">&#39;star&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Pentagon&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Hexagon&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Diamond&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Plus&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)])</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s1">&#39;NoLine&#39;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">NoPen</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s1">&#39;Solid&#39;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">SolidLine</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s1">&#39;Dash&#39;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">DashLine</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s1">&#39;Dot&#39;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">DotLine</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s1">&#39;DashDot&#39;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">DashDotLine</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s1">&#39;DashDotDot&#39;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">DashDotDotLine</span><span class="p">)])</span>
     <span class="n">data_changed</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_addr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_addr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">connect_points</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">redraw_mode</span><span class="o">=</span><span class="n">REDRAW_ON_EITHER</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_addr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_addr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineStyle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">lineWidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">redraw_mode</span><span class="o">=</span><span class="n">REDRAW_ON_EITHER</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
         <span class="n">y_addr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">y_addr</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">y_addr</span>
         <span class="k">if</span> <span class="n">kws</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">y_name</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">remove_protocol</span><span class="p">(</span><span class="n">y_addr</span><span class="p">)</span>
@@ -221,12 +245,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span> <span class="o">=</span> <span class="n">mkPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lineWidth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setWidth</span><span class="p">(</span><span class="n">lineWidth</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lineStyle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setStyle</span><span class="p">(</span><span class="n">lineStyle</span><span class="p">)</span>
+        <span class="n">kws</span><span class="p">[</span><span class="s1">&#39;pen&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">WaveformCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setSymbolBrush</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connect_points</span> <span class="o">=</span> <span class="n">connect_points</span>
         <span class="k">if</span> <span class="n">color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
-    
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">color_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -239,7 +268,7 @@
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">utilities</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">svg_color_from_hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">hex_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-    
+
     <span class="nd">@color_string</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">color_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color_string</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -253,7 +282,7 @@
 <span class="sd">            The new string to use for the curve color.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">new_color_string</span><span class="p">))</span>
-            
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -264,7 +293,7 @@
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color</span>
-    
+
     <span class="nd">@color</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -273,76 +302,125 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        -------</span>
 <span class="sd">        new_color: QColor or str</span>
-<span class="sd">            The new color to use for the curve.  Strings are passed to WaveformCurveItem.color_string.</span>
+<span class="sd">            The new color to use for the curve.</span>
+<span class="sd">            Strings are passed to WaveformCurveItem.color_string.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_color</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">color_string</span> <span class="o">=</span> <span class="n">new_color</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">new_color</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect_points</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setSymbolPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
-    
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSymbolPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
+
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">connect_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">lineStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Whether or not the data points are connected with a line.</span>
+<span class="sd">        Return the style of the line connecting the data points.</span>
+
+<span class="sd">        see Qt line styles.</span>
+<span class="sd">        0 means no line.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        bool</span>
+<span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_points</span>
-    
-    <span class="nd">@connect_points</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">connect_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connect</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">style</span><span class="p">()</span>
+
+    <span class="nd">@lineStyle</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">lineStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_style</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Whether or not the data points are connected with a line.</span>
+<span class="sd">        Set the style of the line connecting the data points.</span>
+
+<span class="sd">        see Qt line styles.</span>
+<span class="sd">        0 means no line.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        -------</span>
-<span class="sd">        connect: bool</span>
+<span class="sd">        new_style: int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_connect_points</span> <span class="o">=</span> <span class="n">connect</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_points</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-    
+        <span class="k">if</span> <span class="n">new_style</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setStyle</span><span class="p">(</span><span class="n">new_style</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lineWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the width of the line connecting the data points.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">width</span><span class="p">()</span>
+
+    <span class="nd">@lineWidth</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">lineWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_width</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the width of the line connecting the data points.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_width: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setWidth</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">new_width</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="p">)</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The single-character code for the symbol drawn at each datapoint.</span>
+
 <span class="sd">        See the documentation for pyqtgraph.PlotDataItem for possible values.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        str</span>
+<span class="sd">        str or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span>
-    
+
     <span class="nd">@symbol</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_symbol</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The single-character code for the symbol drawn at each datapoint.</span>
+
 <span class="sd">        See the documentation for pyqtgraph.PlotDataItem for possible values.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        -------</span>
-<span class="sd">        new_symbol: str</span>
+<span class="sd">        new_symbol: str or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_symbol</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setSymbol</span><span class="p">(</span><span class="n">new_symbol</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setSymbolPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setSymbol</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-    
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">symbolSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the size of the symbol to represent the data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;symbolSize&#39;</span><span class="p">]</span>
+
+    <span class="nd">@symbolSize</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">symbolSize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the size of the symbol to represent the data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_size: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSymbolSize</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">new_size</span><span class="p">))</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">x_address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The address of the channel used to get the x axis waveform data.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
@@ -350,12 +428,12 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_channel</span><span class="o">.</span><span class="n">address</span>
-    
+
     <span class="nd">@x_address</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">x_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_address</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The address of the channel used to get the x axis waveform data.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        -------</span>
 <span class="sd">        new_address: str</span>
@@ -364,12 +442,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">x_channel</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x_channel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">new_address</span><span class="p">,</span> <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xConnectionStateChanged</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiveXWaveform</span><span class="p">)</span>
-    
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">y_address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The address of the channel used to get the y axis waveform data.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
@@ -377,12 +455,12 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_channel</span><span class="o">.</span><span class="n">address</span>
-    
+
     <span class="nd">@y_address</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">y_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_address</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The address of the channel used to get the x axis wavefor data.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        -------</span>
 <span class="sd">        new_address: str</span>
@@ -391,18 +469,26 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">y_channel</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_channel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">new_address</span><span class="p">,</span> <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">yConnectionStateChanged</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiveYWaveform</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns an OrderedDict representation with values for all properties </span>
+<span class="sd">        Returns an OrderedDict representation with values for all properties</span>
 <span class="sd">        needed to recreate this curve.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        OrderedDict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s2">&quot;y_channel&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_address</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x_channel&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_address</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">()),</span> <span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_string</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;connect_points&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect_points</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;symbol&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;redraw_mode&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_mode</span><span class="p">)])</span>
-    
+        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s2">&quot;y_channel&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_address</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s2">&quot;x_channel&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_address</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">()),</span>
+                            <span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_string</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s2">&quot;lineStyle&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lineStyle</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s2">&quot;lineWidth&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lineWidth</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s2">&quot;symbol&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s2">&quot;symbolSize&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbolSize</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s2">&quot;redraw_mode&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_mode</span><span class="p">)])</span>
+
     <span class="k">def</span> <span class="nf">emit_data_changed_if_ready</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called whenever new waveform data is received for X or Y.</span>
@@ -421,36 +507,40 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_mode</span> <span class="o">==</span> <span class="n">WaveformCurveItem</span><span class="o">.</span><span class="n">REDRAW_ON_BOTH</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">needs_new_y</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_x</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
-    
+
     <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">xConnectionStateChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
         <span class="k">pass</span>
-        
+
     <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">yConnectionStateChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
         <span class="k">pass</span>
-    
+
     <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">receiveXWaveform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handler for new x waveform data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_waveform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span> <span class="o">=</span> <span class="n">new_waveform</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_x</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="c1">#Don&#39;t redraw unless we already have Y data.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">emit_data_changed_if_ready</span><span class="p">()</span>
-    
+
     <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">receiveYWaveform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handler for new y waveform data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_waveform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span> <span class="o">=</span> <span class="n">new_waveform</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_y</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_channel</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">emit_data_changed_if_ready</span><span class="p">()</span>
-    
+
     <span class="k">def</span> <span class="nf">redrawCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        redrawCurve is called by the curve&#39;s parent plot whenever the curve needs to be</span>
@@ -458,6 +548,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#We try to be nice: if the X waveform doesn&#39;t have the same number of points as the Y waveform,</span>
         <span class="c1">#we&#39;ll truncate whichever was longer so that they are both the same size.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span><span class="p">)</span>
             <span class="k">return</span>
@@ -468,12 +560,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_x</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_y</span> <span class="o">=</span> <span class="kc">True</span>
-    
+
     <span class="k">def</span> <span class="nf">limits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Limits of the data for this curve.</span>
 <span class="sd">        Returns a nested tuple of limits: ((xmin, xmax), (ymin, ymax))</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        tuple</span>
@@ -485,7 +577,7 @@
             <span class="k">return</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span><span class="p">)),</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span><span class="p">)</span> <span class="o">-</span> <span class="n">yspan</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span><span class="p">)</span> <span class="o">+</span> <span class="n">yspan</span><span class="p">)))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span><span class="p">)),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span><span class="p">)))</span>
-    
+
 <div class="viewcode-block" id="PyDMWaveformPlot"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot">[docs]</a><span class="k">class</span> <span class="nc">PyDMWaveformPlot</span><span class="p">(</span><span class="n">BasePlot</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    PyDMWaveformPlot is a widget to plot one or more waveforms.  Each curve can plot</span>
@@ -530,13 +622,15 @@
         <span class="n">init_channel_pairs</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">init_x_channels</span><span class="p">,</span> <span class="n">init_y_channels</span><span class="p">)</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">x_chan</span><span class="p">,</span> <span class="n">y_chan</span><span class="p">)</span> <span class="ow">in</span> <span class="n">init_channel_pairs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">addChannel</span><span class="p">(</span><span class="n">y_chan</span><span class="p">,</span> <span class="n">x_channel</span><span class="o">=</span><span class="n">x_chan</span><span class="p">)</span>
-    
-<div class="viewcode-block" id="PyDMWaveformPlot.addChannel"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.addChannel">[docs]</a>    <span class="k">def</span> <span class="nf">addChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">connect_points</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">redraw_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PyDMWaveformPlot.addChannel"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.addChannel">[docs]</a>    <span class="k">def</span> <span class="nf">addChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineStyle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineWidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">symbol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">symbolSize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">redraw_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a new curve to the plot.  In addition to the arguments below,</span>
-<span class="sd">        all other keyword arguments are passed to the underlying </span>
+<span class="sd">        all other keyword arguments are passed to the underlying</span>
 <span class="sd">        pyqtgraph.PlotDataItem used to draw the curve.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        y_channel: str</span>
@@ -548,24 +642,45 @@
 <span class="sd">        color: str or QColor, optional</span>
 <span class="sd">            A color for the line of the curve.  If not specified, the plot will</span>
 <span class="sd">            automatically assign a unique color from a set of default colors.</span>
-<span class="sd">        connect_points: bool, optional</span>
-<span class="sd">            Whether or not to connect the datapoints with a line.  If you want</span>
-<span class="sd">            to make a scatter plot, set this to False.  Defaults to True.</span>
+<span class="sd">        lineStyle: int, optional</span>
+<span class="sd">            Style of the line connecting the data points.</span>
+<span class="sd">            0 means no line (scatter plot).</span>
+<span class="sd">        lineWidth: int, optional</span>
+<span class="sd">            Width of the line connecting the data points.</span>
+<span class="sd">        redraw_mode: int, optional</span>
+<span class="sd">            Must be one four values:</span>
+<span class="sd">            WaveformCurveItem.REDRAW_ON_EITHER: (Default) The curve will be redrawn after either X or Y receives new data.</span>
+<span class="sd">            WaveformCurveItem.REDRAW_ON_X: The curve will only be redrawn after X receives new data.</span>
+<span class="sd">            WaveformCurveItem.REDRAW_ON_Y: The curve will only be redrawn after Y receives new data.</span>
+<span class="sd">            WaveformCurveItem.REDRAW_ON_BOTH: The curve will only be redrawn after both X and Y receive new data.</span>
+<span class="sd">        symbol: str or None, optional</span>
+<span class="sd">            Which symbol to use to represent the data.</span>
+<span class="sd">        symbol: int, optional</span>
+<span class="sd">            Size of the symbol.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">plot_opts</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">plot_opts</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span>
+        <span class="n">plot_opts</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span>
+        <span class="k">if</span> <span class="n">symbolSize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plot_opts</span><span class="p">[</span><span class="s1">&#39;symbolSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbolSize</span>
+        <span class="k">if</span> <span class="n">lineStyle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plot_opts</span><span class="p">[</span><span class="s1">&#39;lineStyle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lineStyle</span>
+        <span class="k">if</span> <span class="n">lineWidth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plot_opts</span><span class="p">[</span><span class="s1">&#39;lineWidth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lineWidth</span>
         <span class="k">if</span> <span class="n">redraw_mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">plot_opts</span><span class="p">[</span><span class="s1">&#39;redraw_mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">redraw_mode</span>
-        <span class="n">curve</span> <span class="o">=</span> <span class="n">WaveformCurveItem</span><span class="p">(</span><span class="n">y_addr</span><span class="o">=</span><span class="n">y_channel</span><span class="p">,</span> <span class="n">x_addr</span><span class="o">=</span><span class="n">x_channel</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">connect_points</span><span class="o">=</span><span class="n">connect_points</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_opts</span><span class="p">)</span>
+        <span class="n">curve</span> <span class="o">=</span> <span class="n">WaveformCurveItem</span><span class="p">(</span><span class="n">y_addr</span><span class="o">=</span><span class="n">y_channel</span><span class="p">,</span>
+                                  <span class="n">x_addr</span><span class="o">=</span><span class="n">x_channel</span><span class="p">,</span>
+                                  <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                                  <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                                  <span class="o">**</span><span class="n">plot_opts</span><span class="p">)</span>
         <span class="n">curve</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">redrawPlot</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel_pairs</span><span class="p">[(</span><span class="n">y_channel</span><span class="p">,</span> <span class="n">x_channel</span><span class="p">)]</span> <span class="o">=</span> <span class="n">curve</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">addCurve</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">curve_color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span></div>
-    
+
 <div class="viewcode-block" id="PyDMWaveformPlot.removeChannel"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannel">[docs]</a>    <span class="k">def</span> <span class="nf">removeChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove a curve from the plot.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        curve: WaveformCurveItem</span>
@@ -573,12 +688,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">curve</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">redrawPlot</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">removeCurve</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span></div>
-    
+
 <div class="viewcode-block" id="PyDMWaveformPlot.removeChannelAtIndex"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannelAtIndex">[docs]</a>    <span class="k">def</span> <span class="nf">removeChannelAtIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove a curve from the plot, given an index</span>
 <span class="sd">        for a curve.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        index: int</span>
@@ -586,7 +701,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">curve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">removeChannel</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span></div>
-        
+
 <div class="viewcode-block" id="PyDMWaveformPlot.updateAxes"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.updateAxes">[docs]</a>    <span class="k">def</span> <span class="nf">updateAxes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the X and Y axes for the plot to fit all data in</span>
@@ -608,9 +723,9 @@
             <span class="k">if</span> <span class="n">plot_ymin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">curve_ymin</span> <span class="o">&lt;</span> <span class="n">plot_ymin</span><span class="p">:</span>
                 <span class="n">plot_ymin</span> <span class="o">=</span> <span class="n">curve_ymin</span>
             <span class="k">if</span> <span class="n">plot_ymax</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">curve_ymax</span> <span class="o">&gt;</span> <span class="n">plot_ymax</span><span class="p">:</span>
-                <span class="n">plot_ymax</span> <span class="o">=</span> <span class="n">curve_ymax</span>  
+                <span class="n">plot_ymax</span> <span class="o">=</span> <span class="n">curve_ymax</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setLimits</span><span class="p">(</span><span class="n">xMin</span><span class="o">=</span><span class="n">plot_xmin</span><span class="p">,</span> <span class="n">xMax</span><span class="o">=</span><span class="n">plot_xmax</span><span class="p">,</span> <span class="n">yMin</span><span class="o">=</span><span class="n">plot_ymin</span><span class="p">,</span> <span class="n">yMax</span><span class="o">=</span><span class="n">plot_ymax</span><span class="p">)</span></div>
-    
+
 <div class="viewcode-block" id="PyDMWaveformPlot.redrawPlot"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.redrawPlot">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">redrawPlot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -620,26 +735,26 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">updateAxes</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">:</span>
             <span class="n">curve</span><span class="o">.</span><span class="n">redrawCurve</span><span class="p">()</span></div>
-    
+
 <div class="viewcode-block" id="PyDMWaveformPlot.clearCurves"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.clearCurves">[docs]</a>    <span class="k">def</span> <span class="nf">clearCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove all curves from the plot.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMWaveformPlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
-    
+
 <div class="viewcode-block" id="PyDMWaveformPlot.getCurves"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.getCurves">[docs]</a>    <span class="k">def</span> <span class="nf">getCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get a list of json representations for each curve.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">]</span></div>
-     
+
 <div class="viewcode-block" id="PyDMWaveformPlot.setCurves"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.setCurves">[docs]</a>    <span class="k">def</span> <span class="nf">setCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_list</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Replace all existing curves with new ones.  This function</span>
 <span class="sd">        is mostly used as a way to load curves from a .ui file, and</span>
 <span class="sd">        almost all users will want to add curves through addChannel,</span>
 <span class="sd">        not this method.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        new_list: list</span>
@@ -655,14 +770,20 @@
             <span class="n">color</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">color</span><span class="p">:</span>
                 <span class="n">color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">addChannel</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;y_channel&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;x_channel&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">connect_points</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;connect_points&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="n">symbol</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbol&#39;</span><span class="p">),</span> <span class="n">redraw_mode</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;redraw_mode&#39;</span><span class="p">))</span></div>
-        
+            <span class="bp">self</span><span class="o">.</span><span class="n">addChannel</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;y_channel&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;x_channel&#39;</span><span class="p">],</span>
+                            <span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                            <span class="n">lineStyle</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lineStyle&#39;</span><span class="p">),</span>
+                            <span class="n">lineWidth</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lineWidth&#39;</span><span class="p">),</span>
+                            <span class="n">symbol</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbol&#39;</span><span class="p">),</span>
+                            <span class="n">symbolSize</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbolSize&#39;</span><span class="p">),</span>
+                            <span class="n">redraw_mode</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;redraw_mode&#39;</span><span class="p">))</span></div>
+
     <span class="n">curves</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getCurves</span><span class="p">,</span> <span class="n">setCurves</span><span class="p">)</span>
-                    
+
 <div class="viewcode-block" id="PyDMWaveformPlot.channels"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.channels">[docs]</a>    <span class="k">def</span> <span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the list of channels used by all curves in the plot.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
@@ -671,32 +792,32 @@
         <span class="n">chans</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">curve</span><span class="o">.</span><span class="n">y_channel</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">])</span>
         <span class="n">chans</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">curve</span><span class="o">.</span><span class="n">x_channel</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span> <span class="k">if</span> <span class="n">curve</span><span class="o">.</span><span class="n">x_channel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">chans</span></div>
-    
+
     <span class="c1"># The methods for autoRangeX, minXRange, maxXRange, autoRangeY, minYRange, and maxYRange are</span>
     <span class="c1"># all defined in BasePlot, but we don&#39;t expose them as properties there, because not all plot</span>
     <span class="c1"># subclasses necessarily want them to be user-configurable in Designer.</span>
     <span class="n">autoRangeX</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getAutoRangeX</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">setAutoRangeX</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">resetAutoRangeX</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    Whether or not the X-axis automatically rescales to fit the data.  If true, the</span>
 <span class="s2">    values in minXRange and maxXRange are ignored.</span>
-<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>   
-    
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
+
     <span class="n">minXRange</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMinXRange</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMinXRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    Minimum X-axis value visible on the plot.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
-    
+
     <span class="n">maxXRange</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMaxXRange</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMaxXRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    Maximum X-axis value visible on the plot.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
-    
+
     <span class="n">autoRangeY</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getAutoRangeY</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">setAutoRangeY</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">resetAutoRangeY</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    Whether or not the Y-axis automatically rescales to fit the data.  If true, the</span>
 <span class="s2">    values in minYRange and maxYRange are ignored.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
-    
+
     <span class="n">minYRange</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMinYRange</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMinYRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    Minimum Y-axis value visible on the plot.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
-    
+
     <span class="n">maxYRange</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMaxYRange</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMaxYRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    Maximum Y-axis value visible on the plot.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span></div>
@@ -736,7 +857,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0+42.g11b70e8',
+            VERSION:'0.3.0+43.g79fa32f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
