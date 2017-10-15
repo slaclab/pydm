@@ -33,7 +33,7 @@ class WaveformCurveItem(PlotDataItem):
         The color used to draw the curve line and the symbols.
     lineStyle: int, optional
         Style of the line connecting the data points.
-        0 means no line (scatter plot).
+        Must be a value from the Qt::PenStyle enum (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).
     lineWidth: int, optional
         Width of the line connecting the data points.
     redraw_mode: int, optional
@@ -157,9 +157,7 @@ class WaveformCurveItem(PlotDataItem):
     def lineStyle(self):
         """
         Return the style of the line connecting the data points.
-
-        see Qt line styles.
-        0 means no line.
+        Must be a value from the Qt::PenStyle enum (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).
 
         Returns
         -------
@@ -171,9 +169,7 @@ class WaveformCurveItem(PlotDataItem):
     def lineStyle(self, new_style):
         """
         Set the style of the line connecting the data points.
-
-        see Qt line styles.
-        0 means no line.
+        Must be a value from the Qt::PenStyle enum (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).
 
         Parameters
         -------
