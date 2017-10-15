@@ -6,6 +6,7 @@ from .waveformplot import WaveformCurveItem
 
 class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
     name_for_symbol = {v: k for k, v in WaveformCurveItem.symbols.items()}
+    name_for_line = {v: k for k, v in WaveformCurveItem.lines.items()}
     """ This is the data model used by the waveform plot curve editor.
     It basically acts as a go-between for the curves in a plot, and
     QTableView items.
@@ -13,7 +14,11 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
     def __init__(self, plot, parent=None):
         super(PyDMWaveformPlotCurvesModel, self).__init__(parent=parent)
         self._plot = plot
-        self._column_names = ("Y Channel", "X Channel", "Label", "Color", "Connect Points", "Data Point Symbol", "Redraw Mode")
+        self._column_names = ("Y Channel", "X Channel",
+                              "Label", "Color",
+                              "Line Style", "Line Width",
+                              "Symbol", "Symbol Size",
+                              "Redraw Mode")
 
     @property
     def plot(self):
@@ -31,8 +36,6 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
 
     def flags(self, index):
         column_name = self._column_names[index.column()]
-        if column_name == "Connect Points":
-            return Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsUserCheckable
         if column_name == "Color":
             return Qt.ItemIsSelectable | Qt.ItemIsEnabled
         return Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsEditable
@@ -69,12 +72,14 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
                 return str(curve.name())
             elif column_name == "Color":
                 return curve.color_string
-            elif column_name == "Connect Points":
-                return QVariant()
-            elif column_name == "Data Point Symbol":
-                if curve.symbol is None:
-                    return "None"
+            elif column_name == "Line Style":
+                return self.name_for_line[curve.lineStyle]
+            elif column_name == "Line Width":
+                return str(curve.lineWidth)
+            elif column_name == "Symbol":
                 return self.name_for_symbol[curve.symbol]
+            elif column_name == "Symbol Size":
+                return str(curve.symbolSize)
             elif column_name == "Redraw Mode":
                 return curve.redraw_mode
         elif role == Qt.BackgroundRole and column_name == "Color":
@@ -107,14 +112,21 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
                 curve.setData(name=str(value))
             elif column_name == "Color":
                 curve.color = value
-            elif column_name == "Data Point Symbol":
-                curve.symbol = str(value)
+            elif column_name == "Line Style":
+                curve.lineStyle = int(value)
+            elif column_name == "Line Width":
+                curve.lineWidth = int(value)
+            elif column_name == "Symbol":
+                if value is None:
+                    curve.symbol = None
+                else:
+                    curve.symbol = str(value)
+            elif column_name == "Symbol Size":
+                curve.symbolSize = int(value)
             elif column_name == "Redraw Mode":
                 curve.redraw_mode = int(value)
             else:
                 return False
-        elif role == Qt.CheckStateRole and column_name == "Connect Points":
-            curve.connect_points = bool(value)
         else:
             return False
         self.dataChanged.emit(index, index)
@@ -138,7 +150,7 @@ class PyDMWaveformPlotCurvesModel(QAbstractTableModel):
         self.beginRemoveRows(QModelIndex(), index.row(), index.row())
         self._plot.removeChannelAtIndex(index.row())
         self.endRemoveRows()
-    
+
     def needsColorDialog(self, index):
         column_name = self._column_names[index.column()]
         if column_name == "Color":
