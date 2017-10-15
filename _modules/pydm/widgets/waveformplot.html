@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.waveformplot &mdash; PyDM 0.3.0+43.g79fa32f documentation</title>
+  <title>pydm.widgets.waveformplot &mdash; PyDM 0.3.0+44.g77a4cb7 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+43.g79fa32f documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+44.g77a4cb7 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+43.g79fa32f
+                0.3.0+44.g77a4cb7
               </div>
             
           
@@ -193,7 +193,7 @@
 <span class="sd">        The color used to draw the curve line and the symbols.</span>
 <span class="sd">    lineStyle: int, optional</span>
 <span class="sd">        Style of the line connecting the data points.</span>
-<span class="sd">        0 means no line (scatter plot).</span>
+<span class="sd">        Must be a value from the Qt::PenStyle enum (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).</span>
 <span class="sd">    lineWidth: int, optional</span>
 <span class="sd">        Width of the line connecting the data points.</span>
 <span class="sd">    redraw_mode: int, optional</span>
@@ -317,9 +317,7 @@
     <span class="k">def</span> <span class="nf">lineStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the style of the line connecting the data points.</span>
-
-<span class="sd">        see Qt line styles.</span>
-<span class="sd">        0 means no line.</span>
+<span class="sd">        Must be a value from the Qt::PenStyle enum (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -331,9 +329,7 @@
     <span class="k">def</span> <span class="nf">lineStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_style</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the style of the line connecting the data points.</span>
-
-<span class="sd">        see Qt line styles.</span>
-<span class="sd">        0 means no line.</span>
+<span class="sd">        Must be a value from the Qt::PenStyle enum (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        -------</span>
@@ -857,7 +853,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0+43.g79fa32f',
+            VERSION:'0.3.0+44.g77a4cb7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
