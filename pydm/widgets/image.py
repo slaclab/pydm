@@ -23,10 +23,6 @@ class PyDMImageView(ImageView, PyDMWidget):
     If there is no :attr:`channelWidth` it is possible to define the width of
     the image with the :attr:`width` property.
 
-    If the :attr:`imageChannel` contains the width of the image in the first
-    element of the array, set :attr:`widthFromImageChannel` to true and it will
-    overright the :attr:`widthChannel` property and the :attr:`width` property.
-
     The :attr:`normalizeData` property defines if the colors of the images are
     relative to the :attr:`colorMapMin` and :attr:`colorMapMax` property or to
     the minimum and maximum values of the image.
@@ -76,7 +72,6 @@ class PyDMImageView(ImageView, PyDMWidget):
         self._widthchannel = width_channel
         self.image_waveform = np.zeros(0)
         self._image_width = 0
-        self._width_from_image_channel = False
         self._normalize_data = False
 
         # Hide some itens of the widget
@@ -156,10 +151,6 @@ class PyDMImageView(ImageView, PyDMWidget):
             return
         elif len(new_image.shape) == 2:
             self.image_waveform = new_image
-        elif self._width_from_image_channel:
-            self.imageWidth = new_image[0]
-            image = new_image[1:]
-            self.image_waveform = self._reshapeImage(image)
         elif self.imageWidth > 0:
             self.image_waveform = self._reshapeImage(new_image)
         elif self._widthchannel is not None:
@@ -234,26 +225,6 @@ class PyDMImageView(ImageView, PyDMWidget):
         """Handle keypress events."""
         return
 
-    @pyqtProperty(bool)
-    def widthFromImageChannel(self):
-        """Whether to retrieve width from the imageChannel first element.
-
-        Returns
-        -------
-        bool
-        """
-        return self._width_from_image_channel
-
-    @widthFromImageChannel.setter
-    def widthFromImageChannel(self, new_bool):
-        """Define if width is retrieved from the imageChannel first element.
-
-        Parameters
-        ----------
-        new_bool: bool
-        """
-        self._width_from_image_channel = bool(new_bool)
-
     @pyqtProperty(int)
     def imageWidth(self):
         """Return the width of the image.
@@ -268,8 +239,7 @@ class PyDMImageView(ImageView, PyDMWidget):
     def imageWidth(self, new_width):
         """Set the width of the image.
 
-        Can be overridden by :attr:`widthChannel`
-        or :attr:`widthFromImageChannel`.
+        Can be overridden by :attr:`widthChannel`.
 
         Parameters
         ----------
