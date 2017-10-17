@@ -24,8 +24,6 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         self.setDecimals(0)
         self.app = QApplication.instance()
 
-        self.valueChanged.connect(self.send_value)  # signal from spinbox
-        self.setKeyboardTracking(False)
         self.setAccelerated(True)
 
     def event(self, event):
@@ -42,17 +40,35 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         ----------
         event : QEvent
         """
-        if event.type() == QEvent.KeyPress and \
-           self.app.queryKeyboardModifiers() == Qt.ControlModifier:
+        if (event.type() == QEvent.KeyPress):
+            ctrl_hold = self.app.queryKeyboardModifiers() == Qt.ControlModifier
 
-            if event.key() == Qt.Key_Left:
+            if ctrl_hold and (event.key() == Qt.Key_Left):
                 self.step_exponent = self.step_exponent + 1
                 self.update_step_size()
                 return True
-            elif event.key() == Qt.Key_Right:
-                self.step_exponent = max(self.step_exponent - 1,
-                                         -self.decimals())
+
+            if ctrl_hold and (event.key() == Qt.Key_Right):
+                self.step_exponent = self.step_exponent - 1
+
+                if self.step_exponent < -self.decimals():
+                    self.step_exponent = -self.decimals()
+
                 self.update_step_size()
+                return True
+
+            if (event.key() == Qt.Key_Up):
+                self.setValue(self.value + self.singleStep())
+                self.send_value()
+                return True
+
+            if (event.key() == Qt.Key_Down):
+                self.setValue(self.value - self.singleStep())
+                self.send_value()
+                return True
+
+            if (event.key() == Qt.Key_Return):
+                self.send_value()
                 return True
 
         return super(PyDMSpinbox, self).event(event)
@@ -114,11 +130,12 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         self.setValue(new_val)
         self.valueBeingSet = False
 
-    def send_value(self, value):
+    def send_value(self):
         """
         Method invoked to send the current value on the QDoubleSpinBox to
         the channel using the `send_value_signal`.
         """
+        value = QDoubleSpinBox.value(self)
         if not self.valueBeingSet:
             self.send_value_signal[float].emit(value)
 
