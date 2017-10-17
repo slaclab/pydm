@@ -24,6 +24,8 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         self.setDecimals(0)
         self.app = QApplication.instance()
 
+        self.setAccelerated(True)
+
     def event(self, event):
         """
         Method invoked when an event of any nature happens on the
@@ -71,6 +73,17 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
 
         return super(PyDMSpinbox, self).event(event)
 
+    def contextMenuEvent(self, ev):
+        """Increment LineEdit menu to toggle the display of the step size."""
+        def toogle():
+            self.showStepExponent = not self.showStepExponent
+
+        menu = self.lineEdit().createStandardContextMenu()
+        menu.addSeparator()
+        ac = menu.addAction('Toggle Show Step Size')
+        ac.triggered.connect(toogle)
+        menu.exec_(ev.globalPos())
+
     def update_step_size(self):
         """
         Update the Single Step size on the QDoubleSpinBox.
@@ -97,8 +110,11 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         if self._show_step_exponent:
             self.setSuffix("{units} Step: 1E{exp}".format(
                 units=units, exp=self.step_exponent))
+            self.lineEdit().setToolTip("")
         else:
             self.setSuffix(units)
+            self.lineEdit().setToolTip(
+                            'Step: 1E{0:+d}'.format(self.step_exponent))
 
     def value_changed(self, new_val):
         """
@@ -119,7 +135,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         Method invoked to send the current value on the QDoubleSpinBox to
         the channel using the `send_value_signal`.
         """
-        value = float(self.cleanText())
+        value = QDoubleSpinBox.value(self)
         if not self.valueBeingSet:
             self.send_value_signal[float].emit(value)
 
@@ -176,4 +192,4 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         val : bool
         """
         self._show_step_exponent = val
-        self.update()
+        self.update_format_string()
