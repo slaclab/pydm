@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMSpinbox &mdash; PyDM 0.3.0+46.gbafc1d9 documentation</title>
+  <title>PyDMSpinbox &mdash; PyDM 0.3.0+47.g88da773 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+46.gbafc1d9 documentation" href="../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+47.g88da773 documentation" href="../index.html"/>
         <link rel="up" title="PyDM Widgets" href="index.html"/>
         <link rel="next" title="PyDMSymbol" href="symbol.html"/>
         <link rel="prev" title="PyDMSlider" href="slider.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.3.0+46.gbafc1d9
+                0.3.0+47.g88da773
               </div>
             
           
@@ -199,6 +199,12 @@
 </tbody>
 </table>
 <dl class="method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.contextMenuEvent">
+<code class="descname">contextMenuEvent</code><span class="sig-paren">(</span><em>ev</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.contextMenuEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.contextMenuEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increment LineEdit menu to toggle the display of the step size.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydm.widgets.spinbox.PyDMSpinbox.ctrl_limit_changed">
 <code class="descname">ctrl_limit_changed</code><span class="sig-paren">(</span><em>which</em>, <em>new_limit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.ctrl_limit_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.ctrl_limit_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel receives new control limit
@@ -218,19 +224,24 @@ values.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.spinbox.PyDMSpinbox.event">
-<code class="descname">event</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.event" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method invoked when an event of any nature happens on the
-QDoubleSpinBox.</p>
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.keyPressEvent">
+<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>ev</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method invoked when a key press event happens on the QDoubleSpinBox.</p>
 <p>For PyDMSpinBox we are interested on the Keypress events for:
-- CTRL + Left/Right : Increase or Decrease the step exponent
-- Up / Down : Add or Remove <cite>singleStep</cite> units to the value
-- Return : Send the value to the channel using the <cite>send_value_signal</cite></p>
+- CTRL + Left/Right : Increase or Decrease the step exponent;
+- Up / Down : Add or Remove <cite>singleStep</cite> units to the value;
+- PageUp / PageDown : Add or Remove 10 times <cite>singleStep</cite> units</p>
+<blockquote>
+<div>to the value;</div></blockquote>
+<ul class="simple">
+<li>Return or Enter : Send the value to the channel using the
+<cite>send_value_signal</cite>.</li>
+</ul>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> (<em>QEvent</em>) – </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ev</strong> (<em>QEvent</em>) – </td>
 </tr>
 </tbody>
 </table>
@@ -361,7 +372,7 @@ and unit</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.3.0+46.gbafc1d9',
+            VERSION:'0.3.0+47.g88da773',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

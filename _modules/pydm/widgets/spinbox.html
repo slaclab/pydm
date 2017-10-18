@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.spinbox &mdash; PyDM 0.3.0+46.gbafc1d9 documentation</title>
+  <title>pydm.widgets.spinbox &mdash; PyDM 0.3.0+47.g88da773 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+46.gbafc1d9 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+47.g88da773 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+46.gbafc1d9
+                0.3.0+47.g88da773
               </div>
             
           
@@ -183,53 +183,44 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAccelerated</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMSpinbox.event"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.event">[docs]</a>    <span class="k">def</span> <span class="nf">event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSpinbox.keyPressEvent"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method invoked when an event of any nature happens on the</span>
-<span class="sd">        QDoubleSpinBox.</span>
+<span class="sd">        Method invoked when a key press event happens on the QDoubleSpinBox.</span>
 
 <span class="sd">        For PyDMSpinBox we are interested on the Keypress events for:</span>
-<span class="sd">        - CTRL + Left/Right : Increase or Decrease the step exponent</span>
-<span class="sd">        - Up / Down : Add or Remove `singleStep` units to the value</span>
-<span class="sd">        - Return : Send the value to the channel using the `send_value_signal`</span>
+<span class="sd">        - CTRL + Left/Right : Increase or Decrease the step exponent;</span>
+<span class="sd">        - Up / Down : Add or Remove `singleStep` units to the value;</span>
+<span class="sd">        - PageUp / PageDown : Add or Remove 10 times `singleStep` units</span>
+<span class="sd">          to the value;</span>
+<span class="sd">        - Return or Enter : Send the value to the channel using the</span>
+<span class="sd">          `send_value_signal`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        event : QEvent</span>
+<span class="sd">        ev : QEvent</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">.</span><span class="n">KeyPress</span><span class="p">):</span>
-            <span class="n">ctrl_hold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">queryKeyboardModifiers</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ControlModifier</span>
+        <span class="n">ctrl_hold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">queryKeyboardModifiers</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ControlModifier</span>
+        <span class="k">if</span> <span class="n">ctrl_hold</span> <span class="ow">and</span> <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_Left</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Right</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span> <span class="o">+=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">ev</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Left</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">decimals</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_step_size</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">ev</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_Return</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Enter</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span></div>
 
-            <span class="k">if</span> <span class="n">ctrl_hold</span> <span class="ow">and</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Left</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span> <span class="o">+</span> <span class="mi">1</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">update_step_size</span><span class="p">()</span>
-                <span class="k">return</span> <span class="kc">True</span>
+<div class="viewcode-block" id="PyDMSpinbox.contextMenuEvent"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.contextMenuEvent">[docs]</a>    <span class="k">def</span> <span class="nf">contextMenuEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Increment LineEdit menu to toggle the display of the step size.&quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">toogle</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">showStepExponent</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">showStepExponent</span>
 
-            <span class="k">if</span> <span class="n">ctrl_hold</span> <span class="ow">and</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Right</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span> <span class="o">-</span> <span class="mi">1</span>
-
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span> <span class="o">&lt;</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">decimals</span><span class="p">():</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">decimals</span><span class="p">()</span>
-
-                <span class="bp">self</span><span class="o">.</span><span class="n">update_step_size</span><span class="p">()</span>
-                <span class="k">return</span> <span class="kc">True</span>
-
-            <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Up</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">singleStep</span><span class="p">())</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">()</span>
-                <span class="k">return</span> <span class="kc">True</span>
-
-            <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Down</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">singleStep</span><span class="p">())</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">()</span>
-                <span class="k">return</span> <span class="kc">True</span>
-
-            <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Return</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">()</span>
-                <span class="k">return</span> <span class="kc">True</span>
-
-        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div>
+        <span class="n">menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit</span><span class="p">()</span><span class="o">.</span><span class="n">createStandardContextMenu</span><span class="p">()</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+        <span class="n">ac</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s1">&#39;Toggle Show Step Size&#39;</span><span class="p">)</span>
+        <span class="n">ac</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">toogle</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">globalPos</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.update_step_size"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.update_step_size">[docs]</a>    <span class="k">def</span> <span class="nf">update_step_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -257,8 +248,11 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_step_exponent</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setSuffix</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{units}</span><span class="s2"> Step: 1E</span><span class="si">{exp}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span> <span class="n">exp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit</span><span class="p">()</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setSuffix</span><span class="p">(</span><span class="n">units</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setSuffix</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit</span><span class="p">()</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
+                            <span class="s1">&#39;Step: 1E</span><span class="si">{0:+d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.value_changed"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -279,7 +273,7 @@
 <span class="sd">        Method invoked to send the current value on the QDoubleSpinBox to</span>
 <span class="sd">        the channel using the `send_value_signal`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cleanText</span><span class="p">())</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">QDoubleSpinBox</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">valueBeingSet</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
@@ -336,7 +330,7 @@
 <span class="sd">        val : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_step_exponent</span> <span class="o">=</span> <span class="n">val</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_format_string</span><span class="p">()</span></div>
 </pre></div>
 
            </div>
@@ -373,7 +367,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0+46.gbafc1d9',
+            VERSION:'0.3.0+47.g88da773',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
