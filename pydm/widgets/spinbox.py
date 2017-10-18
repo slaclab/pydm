@@ -23,55 +23,33 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         self.step_exponent = 0
         self.setDecimals(0)
         self.app = QApplication.instance()
-
         self.setAccelerated(True)
 
-    def event(self, event):
+    def keyPressEvent(self, ev):
         """
-        Method invoked when an event of any nature happens on the
-        QDoubleSpinBox.
+        Method invoked when a key press event happens on the QDoubleSpinBox.
 
         For PyDMSpinBox we are interested on the Keypress events for:
-        - CTRL + Left/Right : Increase or Decrease the step exponent
-        - Up / Down : Add or Remove `singleStep` units to the value
-        - Return : Send the value to the channel using the `send_value_signal`
+        - CTRL + Left/Right : Increase or Decrease the step exponent;
+        - Up / Down : Add or Remove `singleStep` units to the value;
+        - PageUp / PageDown : Add or Remove 10 times `singleStep` units
+          to the value;
+        - Return or Enter : Send the value to the channel using the
+          `send_value_signal`.
 
         Parameters
         ----------
-        event : QEvent
+        ev : QEvent
         """
-        if (event.type() == QEvent.KeyPress):
-            ctrl_hold = self.app.queryKeyboardModifiers() == Qt.ControlModifier
-
-            if ctrl_hold and (event.key() == Qt.Key_Left):
-                self.step_exponent = self.step_exponent + 1
-                self.update_step_size()
-                return True
-
-            if ctrl_hold and (event.key() == Qt.Key_Right):
-                self.step_exponent = self.step_exponent - 1
-
-                if self.step_exponent < -self.decimals():
-                    self.step_exponent = -self.decimals()
-
-                self.update_step_size()
-                return True
-
-            if (event.key() == Qt.Key_Up):
-                self.setValue(self.value + self.singleStep())
-                self.send_value()
-                return True
-
-            if (event.key() == Qt.Key_Down):
-                self.setValue(self.value - self.singleStep())
-                self.send_value()
-                return True
-
-            if (event.key() == Qt.Key_Return):
-                self.send_value()
-                return True
-
-        return super(PyDMSpinbox, self).event(event)
+        ctrl_hold = self.app.queryKeyboardModifiers() == Qt.ControlModifier
+        if ctrl_hold and (ev.key() in (Qt.Key_Left, Qt.Key_Right)):
+            self.step_exponent += 1 if ev.key() == Qt.Key_Left else -1
+            self.step_exponent = max(-self.decimals(), self.step_exponent)
+            self.update_step_size()
+        elif ev.key() in (Qt.Key_Return, Qt.Key_Enter):
+            self.send_value()
+        else:
+            super(PyDMSpinbox, self).keyPressEvent(ev)
 
     def contextMenuEvent(self, ev):
         """Increment LineEdit menu to toggle the display of the step size."""
