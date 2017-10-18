@@ -1,7 +1,7 @@
 from ..PyQt.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
 from ..PyQt.QtGui import QAction
 from ..PyQt.QtCore import pyqtSlot
-from .qtplugin_base import PyDMDesignerPlugin
+from .qtplugin_base import PyDMDesignerPlugin, WidgetCategory
 from .timeplot import PyDMTimePlot
 from .timeplot_curve_editor import TimePlotCurveEditorDialog
 Q_TYPEID = {'QPyDesignerContainerExtension':         'com.trolltech.Qt.Designer.Container',
@@ -11,7 +11,7 @@ Q_TYPEID = {'QPyDesignerContainerExtension':         'com.trolltech.Qt.Designer.
                         
 class PyDMTimePlotPlugin(PyDMDesignerPlugin):
     def __init__(self):
-        super(PyDMTimePlotPlugin, self).__init__(PyDMTimePlot)
+        super(PyDMTimePlotPlugin, self).__init__(PyDMTimePlot, group=WidgetCategory.PLOT)
         self.factory = None
         
     def initialize(self, core):
