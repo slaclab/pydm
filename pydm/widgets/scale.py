@@ -14,40 +14,46 @@ class QScale(QWidget):
 		#self._orientation = 'horizontal'
 		self.position = 0 # unit: pixel
 
-		self._bg_color = QColor('black')
-		self._pointer_color = QColor('white')
-		self._pointer_proportion = 0.05
-		self._bg_proportion = 0.8
+		self._bg_color = QColor('darkgray')
+		self._bg_size_rate = 0.8	# from 0 to 1
 
-		self._divisions = 10
+		self._pointer_color = QColor('white')
+		self._pointer_width_rate = 0.05
+
+		self._num_divisions = 10
+		self._show_ticks = True
 		self._tick_pen = QPen()
-		self.tick_color = QColor('black')
+		self._tick_color = QColor('black')
 		self._tick_width = 0
+		self._tick_size_rate = 0.1 # from 0 to 1
 		self._painter = QPainter()
 
 
 	def setTickPen(self):
-		self._tick_pen.setColor(self.tick_color)
+		self._tick_pen.setColor(self._tick_color)
 		self._tick_pen.setWidth(self._tick_width)
 
 	def drawTicks(self):
+		if not self._show_ticks:
+			return
 		self._painter.setPen(self._tick_pen)
-		division_size = self.width() / self._divisions
-		tick_y0 = self._bg_proportion*self.height()
-		tick_yf = self.height()
-		# Draw ticks
-		for i in range(self._divisions+1):
-			self._painter.drawLine(i*division_size, tick_y0, i*division_size, tick_yf) # x1, y1, x2, y2
+		division_size = self.width() / self._num_divisions
+		tick_y0 = self.height()
+		tick_yf = tick_y0 - self._tick_size_rate*self.height()
+		tick_yf = (1 - self._tick_size_rate)*self.height()
+		for i in range(self._num_divisions+1):
+			x = i*division_size
+			self._painter.drawLine(x, tick_y0, x, tick_yf) # x1, y1, x2, y2
 
 	def drawIndicator(self):
-		# Draw a pointer as indicator
+		# Draw a pointer as indicator of current value
 		if self.position < 0 or self.position > self.width():
 			return
 		self.setPosition()
 		self._painter.setPen(Qt.transparent)
 		self._painter.setBrush(self._pointer_color)
-		pointer_width = self._pointer_proportion * self.width()
-		pointer_height = self._bg_proportion * self.height()
+		pointer_width = self._pointer_width_rate * self.width()
+		pointer_height = self._bg_size_rate * self.height()
 		points = [
                 QPoint(self.position, 0),
                 QPoint(self.position + 0.5*pointer_width, 0.5*pointer_height),
@@ -60,7 +66,7 @@ class QScale(QWidget):
 		self._painter.setPen(Qt.transparent)
 		self._painter.setBrush(self._bg_color)
 		bg_width = self.width()
-		bg_height = self._bg_proportion * self.height()
+		bg_height = self._bg_size_rate * self.height()
 		self._painter.drawRect(0, 0, bg_width, bg_height)
 
 	def paintEvent(self, event):
@@ -76,9 +82,7 @@ class QScale(QWidget):
 		try:
 			proportion = (self._value - self._lower_limit) / (self._upper_limit - self._lower_limit)
 		except:
-			proportion = -1 # Invalid value
-		#self.bar.setValue(proportion)
-		#self.value = proportion
+			proportion = -1 # Invalid
 		self.position = int(proportion * self.width())
 
 	def updateIndicator(self):
@@ -98,7 +102,6 @@ class QScale(QWidget):
 class PyDMScaleIndicator(PyDMWidget, QWidget):
 
 	def __init__(self, parent=None, init_channel=None):
-		#QScale.__init__(self, parent)
 		PyDMWidget.__init__(self, init_channel=init_channel)
 		self._show_value = True
 		self._show_limits = True
@@ -109,8 +112,8 @@ class PyDMScaleIndicator(PyDMWidget, QWidget):
 		self.upper_label = QLabel()
 
 		self.value_label.setText('<val>')
-		self.lower_label.setText('<lopr>')
-		self.upper_label.setText('<hopr>')
+		self.lower_label.setText('<min>')
+		self.upper_label.setText('<max>')
 		
 		self.value_label.setAlignment(Qt.AlignCenter)
 		self.lower_label.setAlignment(Qt.AlignLeft)
@@ -143,7 +146,6 @@ class PyDMScaleIndicator(PyDMWidget, QWidget):
 		self.limits_layout = QHBoxLayout()
 		self.limits_layout.addWidget(self.lower_label)
 		self.limits_layout.addWidget(self.upper_label)
-
 		self.layout = QVBoxLayout()
 		self.layout.addWidget(self.value_label)
 		self.layout.addWidget(self.scale_indicator)
