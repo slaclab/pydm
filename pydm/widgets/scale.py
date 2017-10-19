@@ -142,7 +142,7 @@ class QScale(QWidget):
 		return self._num_divisions
 
 	def setNumDivisions(self, divisions):
-		if isinstance(divisions, int) and divisions > 1 and self._num_divisions != divisions:
+		if isinstance(divisions, int) and divisions > 0 and self._num_divisions != divisions:
 			self._num_divisions = divisions
 			self.repaint()
 	
