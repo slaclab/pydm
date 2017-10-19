@@ -1,6 +1,6 @@
 from .base import PyDMWidget
-from ..PyQt.QtGui import QWidget, QVBoxLayout, QHBoxLayout, QPainter, QColor, QPolygon, QPen, QLabel
-from ..PyQt.QtCore import Qt, QPoint, pyqtSlot, pyqtProperty
+from ..PyQt.QtGui import QWidget, QVBoxLayout, QHBoxLayout, QPainter, QColor, QPolygon, QPen, QLabel, QSizePolicy
+from ..PyQt.QtCore import Qt, QPoint, pyqtProperty
 from .channel import PyDMChannel
 import sys
 
@@ -28,6 +28,7 @@ class QScale(QWidget):
 		self._tick_size_rate = 0.1 # from 0 to 1
 		self._painter = QPainter()
 
+		self.setMinimumSize(0, 2)
 
 	def setTickPen(self):
 		self._tick_pen.setColor(self._tick_color)
@@ -87,17 +88,63 @@ class QScale(QWidget):
 
 	def updateIndicator(self):
 		self.setPosition()
+		self.repaint()
 
 	def setValue(self, value):
 		self._value = value
 		self.updateIndicator()
-		self.repaint()
 
 	def setUpperLimit(self, new_limit):
 		self._upper_limit = new_limit
 
 	def setLowerLimit(self, new_limit):
 		self._lower_limit = new_limit
+
+	def getShowTicks(self):
+		return self._show_ticks
+
+	def setShowTicks(self, checked):
+		if self._show_ticks != bool(checked):
+			self._show_ticks = checked
+			self.repaint()
+
+	def getBackgroundColor(self):
+		return self._bg_color
+
+	def setBackgroundColor(self, color):
+		self._bg_color = color
+		self.repaint()
+
+	def getIndicatorColor(self):
+		return self._pointer_color
+
+	def setIndicatorColor(self, color):
+		self._pointer_color = color
+		self.repaint()
+
+	def getBackgroundSizeRate(self):
+		return self._bg_size_rate
+
+	def setBackgroundSizeRate(self, rate):
+		if rate >= 0 and rate <=1 and self._bg_size_rate != rate:
+			self._bg_size_rate = rate
+			self.repaint()
+
+	def getTickSizeRate(self):
+		return self._tick_size_rate
+
+	def setTickSizeRate(self, rate):
+		if rate >= 0 and rate <=1 and self._tick_size_rate != rate:
+			self._tick_size_rate = rate
+			self.repaint()
+
+	def getNumDivisions(self):
+		return self._num_divisions
+
+	def setNumDivisions(self, divisions):
+		if isinstance(divisions, int) and divisions > 1 and self._num_divisions != divisions:
+			self._num_divisions = divisions
+			self.repaint()
 	
 class PyDMScaleIndicator(PyDMWidget, QWidget):
 
@@ -122,10 +169,9 @@ class PyDMScaleIndicator(PyDMWidget, QWidget):
 		self.buildLayout()
 
 	def updateAll(self):
-		if self._show_limits:
-			self.lower_label.setText(str(self.scale_indicator._lower_limit))
-			self.upper_label.setText(str(self.scale_indicator._upper_limit))
-			self.value_label.setText(self.format_string.format(self.scale_indicator._value))
+		self.lower_label.setText(str(self.scale_indicator._lower_limit))
+		self.upper_label.setText(str(self.scale_indicator._upper_limit))
+		self.value_label.setText(self.format_string.format(self.scale_indicator._value))
 
 	def value_changed(self, new_value):
 		super(PyDMScaleIndicator, self).value_changed(new_value)
@@ -152,3 +198,80 @@ class PyDMScaleIndicator(PyDMWidget, QWidget):
 		self.layout.setContentsMargins(1, 1, 1, 1)
 		self.layout.addItem(self.limits_layout)
 		self.setLayout(self.layout)
+
+	@pyqtProperty(bool)
+	def showValue(self):
+		return self._show_value
+
+	@showValue.setter
+	def showValue(self, checked):
+		if self._show_value != bool(checked):
+			self._show_value = checked
+		if checked:
+			self.value_label.show()
+		else:
+			self.value_label.hide()
+
+	@pyqtProperty(bool)
+	def showLimits(self):
+		return self._show_limits
+
+	@showLimits.setter
+	def showLimits(self, checked):
+		if self._show_limits != bool(checked):
+			self._show_limits = checked
+		if checked:
+			self.lower_label.show()
+			self.upper_label.show()
+		else:
+			self.lower_label.hide()
+			self.upper_label.hide()
+
+	@pyqtProperty(bool)
+	def showTicks(self):
+		return self.scale_indicator.getShowTicks()
+
+	@showTicks.setter
+	def showTicks(self, checked):
+		self.scale_indicator.setShowTicks(checked)
+
+	@pyqtProperty(QColor)
+	def backgroundColor(self):
+		return self.scale_indicator.getBackgroundColor()
+
+	@backgroundColor.setter
+	def backgroundColor(self, color):
+		self.scale_indicator.setBackgroundColor(color)
+
+	@pyqtProperty(QColor)
+	def indicatorColor(self):
+		return self.scale_indicator.getIndicatorColor()
+
+	@indicatorColor.setter
+	def indicatorColor(self, color):
+		self.scale_indicator.setIndicatorColor(color)
+
+	@pyqtProperty(float)
+	def backgroundSizeRate(self):
+		return self.scale_indicator.getBackgroundSizeRate()
+
+	@backgroundSizeRate.setter
+	def backgroundSizeRate(self, rate):
+		self.scale_indicator.setBackgroundSizeRate(rate)
+
+	@pyqtProperty(float)
+	def tickSizeRate(self):
+		return self.scale_indicator.getTickSizeRate()
+
+	@tickSizeRate.setter
+	def tickSizeRate(self, rate):
+		self.scale_indicator.setTickSizeRate(rate)
+
+	@pyqtProperty(int)
+	def numDivisions(self):
+		return self.scale_indicator.getNumDivisions()
+
+	@numDivisions.setter
+	def numDivisions(self, divisions):
+		self.scale_indicator.setNumDivisions(divisions)
+
