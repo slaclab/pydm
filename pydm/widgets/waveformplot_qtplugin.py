@@ -1,13 +1,13 @@
 from ..PyQt.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
 from ..PyQt.QtGui import QAction
 from ..PyQt.QtCore import pyqtSlot
-from .qtplugin_base import PyDMDesignerPlugin
+from .qtplugin_base import PyDMDesignerPlugin, WidgetCategory
 from .waveformplot import PyDMWaveformPlot
 from .waveformplot_curve_editor import WaveformPlotCurveEditorDialog
 
 class PyDMWaveformPlotPlugin(PyDMDesignerPlugin):
     def __init__(self):
-        super(PyDMWaveformPlotPlugin, self).__init__(PyDMWaveformPlot)
+        super(PyDMWaveformPlotPlugin, self).__init__(PyDMWaveformPlot, group=WidgetCategory.PLOT)
         self.factory = None
         
     def initialize(self, core):

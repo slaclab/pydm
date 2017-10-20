@@ -22,9 +22,6 @@
      <property name="whatsThis">
       <string/>
      </property>
-     <property name="autoRangeX">
-      <bool>true</bool>
-     </property>
      <property name="showXGrid">
       <bool>true</bool>
      </property>
@@ -36,8 +33,11 @@
      </property>
      <property name="curves">
       <stringlist>
-       <string>{&quot;y_channel&quot;: &quot;ca://MTEST:Waveform&quot;, &quot;x_channel&quot;: &quot;ca://MTEST:TimeBase&quot;, &quot;name&quot;: &quot;Scope Trace&quot;, &quot;color&quot;: &quot;white&quot;}</string>
+       <string>{&quot;y_channel&quot;: &quot;ca://MTEST:Waveform&quot;, &quot;x_channel&quot;: &quot;ca://MTEST:TimeBase&quot;, &quot;name&quot;: &quot;Scope Trace&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;redraw_mode&quot;: 2}</string>
       </stringlist>
+     </property>
+     <property name="autoRangeX">
+      <bool>true</bool>
      </property>
      <property name="yChannel" stdset="0">
       <string>ca://MTEST:Waveform</string>
@@ -72,7 +72,7 @@
           <property name="whatsThis">
            <string/>
           </property>
-          <property name="channel">
+          <property name="channel" stdset="0">
            <string>ca://MTEST:Run</string>
           </property>
          </widget>
@@ -239,19 +239,19 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PyDMLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>pydm.widgets.line_edit</header>
-  </customwidget>
-  <customwidget>
    <class>PyDMWaveformPlot</class>
    <extends>QGraphicsView</extends>
    <header>pydm.widgets.waveformplot</header>
   </customwidget>
   <customwidget>
    <class>PyDMEnumComboBox</class>
-   <extends>QWidget</extends>
+   <extends>QFrame</extends>
    <header>pydm.widgets.enum_combo_box</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>pydm.widgets.line_edit</header>
   </customwidget>
  </customwidgets>
  <resources/>

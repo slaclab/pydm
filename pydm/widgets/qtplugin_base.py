@@ -17,6 +17,15 @@ affect any of your widgets, but it will be annoying.
 """
 from ..PyQt import QtGui, QtDesigner
 
+# TODO: Change to Enum once we drop support
+#       for the almost dead and agonizing Python 2.7
+#       <pitchforks> Death to Python 2.7! </ pitchforks>
+class WidgetCategory(object):
+    DISPLAY = "PyDM Display Widgets"
+    INPUT = "PyDM Input Widgets"
+    PLOT = "PyDM Plot Widgets"
+    DRAWING = "PyDM Drawing Widgets"
+
 def qtplugin_factory(cls, is_container=False, group='PyDM Widgets'):
     """
     Helper function to create a generic PyDMDesignerPlugin class.
