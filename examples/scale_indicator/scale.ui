@@ -44,7 +44,7 @@
       <bool>true</bool>
      </property>
      <property name="channel" stdset="0">
-      <string>MTEST:Float</string>
+         <string>ca://MTEST:Float</string>
      </property>
      <property name="showValue" stdset="0">
       <bool>true</bool>
@@ -90,7 +90,7 @@
       <bool>false</bool>
      </property>
      <property name="channel" stdset="0">
-      <string>MTEST:Float</string>
+         <string>ca://MTEST:Float</string>
      </property>
     </widget>
    </item>
@@ -112,7 +112,7 @@
     </string>
      </property>
      <property name="text">
-      <string>MTEST:Float</string>
+         <string>ca://MTEST:Float</string>
      </property>
     </widget>
    </item>
