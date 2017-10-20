@@ -1,11 +1,11 @@
-from .base import PyDMWidget
-from ..PyQt.QtGui import QWidget, QVBoxLayout, QHBoxLayout, QPainter, QColor, QPolygon, QPen, QLabel, QSizePolicy
+from .base import PyDMWidget, compose_stylesheet
+from ..PyQt.QtGui import QFrame, QVBoxLayout, QHBoxLayout, QPainter, QColor, QPolygon, QPen, QLabel, QSizePolicy
 from ..PyQt.QtCore import Qt, QPoint, pyqtProperty
 from .channel import PyDMChannel
 import sys
 
 
-class QScale(QWidget):
+class QScale(QFrame):
 	def __init__(self, parent=None):
 		super(QScale, self).__init__(parent)
 		self._value = 0
@@ -146,9 +146,10 @@ class QScale(QWidget):
 			self._num_divisions = divisions
 			self.repaint()
 	
-class PyDMScaleIndicator(PyDMWidget, QWidget):
+class PyDMScaleIndicator(QFrame, PyDMWidget):
 
 	def __init__(self, parent=None, init_channel=None):
+		QFrame.__init__(self, parent)
 		PyDMWidget.__init__(self, init_channel=init_channel)
 		self._show_value = True
 		self._show_limits = True
@@ -226,6 +227,13 @@ class PyDMScaleIndicator(PyDMWidget, QWidget):
 		else:
 			self.lower_label.hide()
 			self.upper_label.hide()
+
+	def alarm_severity_changed(self, new_alarm_severity):
+		PyDMWidget.alarm_severity_changed(self, new_alarm_severity)
+		if self._channels is not None:
+			style = compose_stylesheet(style=self._style, obj=self.value_label)
+			self.value_label.setStyleSheet(style)
+			self.repaint()
 
 	@pyqtProperty(bool)
 	def showTicks(self):
