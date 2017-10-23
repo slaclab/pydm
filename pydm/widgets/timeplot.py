@@ -56,7 +56,7 @@ class TimePlotCurveItem(PlotCurveItem):
     @property
     def color(self):
         return self.opts['pen'].color()
-    
+
     @color.setter
     def color(self, new_color):
         if isinstance(new_color, str):
@@ -135,9 +135,12 @@ class PyDMTimePlot(BasePlot):
     def __init__(self, parent=None, init_y_channels=[], background='default'):
         self._bottom_axis = TimeAxisItem('bottom')
         self._left_axis = AxisItem('left')
-        super(PyDMTimePlot, self).__init__(parent=parent, background=background, axisItems={'bottom': self._bottom_axis, 'left': self._left_axis})
-        for channel in init_y_channels:
-            self.addYChannel(channel)
+        super(PyDMTimePlot, self).__init__(
+                                    parent=parent,
+                                    background=background,
+                                    axisItems={'bottom': self._bottom_axis,
+                                               'left': self._left_axis}
+                                    )
         self.plotItem.disableAutoRange(ViewBox.XAxis)
         self.getViewBox().setMouseEnabled(x=False)
         self._bufferSize = 1200
@@ -149,6 +152,8 @@ class PyDMTimePlot(BasePlot):
         self._update_interval = 100
         self.update_timer.setInterval(self._update_interval)
         self._update_mode = PyDMTimePlot.SynchronousMode
+        for channel in init_y_channels:
+            self.addYChannel(channel)
 
     def initialize_for_designer(self):
         # If we are in Qt Designer, don't update the plot continuously.
@@ -309,19 +314,19 @@ class PyDMTimePlot(BasePlot):
 
     def channels(self):
         return [curve.channel for curve in self._curves]
-        
+
     # The methods for autoRangeY, minYRange, and maxYRange are
     # all defined in BasePlot, but we don't expose them as properties there, because not all plot
-    # subclasses necessarily want them to be user-configurable in Designer.    
+    # subclasses necessarily want them to be user-configurable in Designer.
     autoRangeY = pyqtProperty(bool, BasePlot.getAutoRangeY, BasePlot.setAutoRangeY, BasePlot.resetAutoRangeY, doc="""
     Whether or not the Y-axis automatically rescales to fit the data.  If true, the
     values in minYRange and maxYRange are ignored.
     """)
-    
+
     minYRange = pyqtProperty(float, BasePlot.getMinYRange, BasePlot.setMinYRange, doc="""
     Minimum Y-axis value visible on the plot.
     """)
-    
+
     maxYRange = pyqtProperty(float, BasePlot.getMaxYRange, BasePlot.setMaxYRange, doc="""
     Maximum Y-axis value visible on the plot.
     """)
