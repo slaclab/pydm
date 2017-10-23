@@ -1,5 +1,5 @@
-from ..PyQt.QtGui import QTableWidget, QTableWidgetItem
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt
+from ..PyQt.QtGui import QTableWidget, QTableWidgetItem, QApplication, QCursor
+from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt, QEvent
 import numpy as np
 from .base import PyDMWritableWidget
 
@@ -77,6 +77,31 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         ind = row*self.columnCount() + column
         self.waveform[ind] = new_val
         self.send_value_signal[np.ndarray].emit(self.waveform)
+
+    def check_enable_state(self):
+        """
+        For PyDMWaveformTable, we want to make the individual cells
+        editable when we have write access.
+        """
+        PyDMWritableWidget.check_enable_state(self)
+        self.setEnabled(True)
+        if self._write_access and self._connected:
+            self._itemsFlags = Qt.ItemIsSelectable|Qt.ItemIsEditable|Qt.ItemIsEnabled
+        else:
+            self._itemsFlags = Qt.ItemIsSelectable|Qt.ItemIsEnabled
+        for col in range(0, self.columnCount()):
+            for row in range(0, self.rowCount()):
+                item = self.item(row, col)
+                if item is not None:
+                    item.setFlags(self._itemsFlags)
+
+    def eventFilter(self, obj, event):
+        status = self._connected
+        if event.type() == QEvent.Leave:
+            QApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
+        elif event.type() == QEvent.Enter and not status:
+            QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
+        return False
 
     @pyqtProperty("QStringList")
     def columnHeaderLabels(self):
