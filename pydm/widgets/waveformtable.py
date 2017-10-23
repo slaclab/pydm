@@ -158,25 +158,3 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
             new_labels += (self.rowCount() - len(new_labels)) * [""]
         self._rowHeaders = new_labels
         self.setVerticalHeaderLabels(self._rowHeaders)
-
-    @pyqtProperty(Qt.ItemFlags)
-    def itemsFlags(self):
-        """
-        Return the flags used in the TableWidgetItems.
-
-        Returns
-        -------
-        Qt.ItemFlags
-        """
-        return Qt.ItemFlags(self._itemsFlags)
-
-    @itemsFlags.setter
-    def itemsFlags(self, new_flags):
-        """
-        Set the flags to be used in the TableWidgetItems.
-
-        Parameters
-        ----------
-        new_flags : Qt.ItemFlags
-        """
-        self._itemsFlags = Qt.ItemFlags(new_flags)
