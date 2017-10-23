@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMWaveformTable &mdash; PyDM 0.3.0+51.g6918355 documentation</title>
+  <title>PyDMWaveformTable &mdash; PyDM 0.3.0+52.gb97c531 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+51.g6918355 documentation" href="../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+52.gb97c531 documentation" href="../index.html"/>
         <link rel="up" title="PyDM Widgets" href="index.html"/>
         <link rel="prev" title="PyDMWaveformPlot" href="waveformplot.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.3.0+51.g6918355
+                0.3.0+52.gb97c531
               </div>
             
           
@@ -184,7 +184,94 @@
 <dl class="class">
 <dt id="pydm.widgets.waveformtable.PyDMWaveformTable">
 <em class="property">class </em><code class="descclassname">pydm.widgets.waveformtable.</code><code class="descname">PyDMWaveformTable</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>A QTableWidget with support for Channels and more from PyDM.</p>
+<p>Values of the array are displayed in the selected number of columns.
+The number of rows is determined by the size of the waveform.
+It is possible to define the labels of each row and column.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
+<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pydm.widgets.waveformtable.PyDMWaveformTable.check_enable_state">
+<code class="descname">check_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.check_enable_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.check_enable_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>For PyDMWaveformTable, we want to make the individual cells
+editable when we have write access.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.waveformtable.PyDMWaveformTable.columnHeaderLabels">
+<code class="descname">columnHeaderLabels</code><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.columnHeaderLabels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of labels for the columns of the Table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of strings</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.waveformtable.PyDMWaveformTable.rowHeaderLabels">
+<code class="descname">rowHeaderLabels</code><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.rowHeaderLabels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of labels for the rows of the Table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of strings</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.waveformtable.PyDMWaveformTable.send_waveform">
+<code class="descname">send_waveform</code><span class="sig-paren">(</span><em>row</em>, <em>column</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.send_waveform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.send_waveform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update Channel value when cell value is changed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>row</strong> (<em>int</em>) – Row of the changed cell.</li>
+<li><strong>column</strong> (<em>int</em>) – Column of the changed cell.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.waveformtable.PyDMWaveformTable.value_changed">
+<code class="descname">value_changed</code><span class="sig-paren">(</span><em>new_waveform</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.value_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel value is changed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_waveform</strong> (<em>np.ndarray</em>) – The new waveform value from the channel.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
 
 </div>
 
@@ -230,7 +317,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.3.0+51.g6918355',
+            VERSION:'0.3.0+52.gb97c531',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

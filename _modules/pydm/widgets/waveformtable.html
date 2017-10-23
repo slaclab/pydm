@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.waveformtable &mdash; PyDM 0.3.0+51.g6918355 documentation</title>
+  <title>pydm.widgets.waveformtable &mdash; PyDM 0.3.0+52.gb97c531 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+51.g6918355 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+52.gb97c531 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+51.g6918355
+                0.3.0+52.gb97c531
               </div>
             
           
@@ -158,44 +158,166 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.waveformtable</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QTableWidget</span><span class="p">,</span> <span class="n">QTableWidgetItem</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSignal</span><span class="p">,</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Qt</span>
-<span class="kn">from</span> <span class="nn">.channel</span> <span class="k">import</span> <span class="n">PyDMChannel</span>
+<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QTableWidget</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QCursor</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QEvent</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
 
+
 <div class="viewcode-block" id="PyDMWaveformTable"><a class="viewcode-back" href="../../../widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable">[docs]</a><span class="k">class</span> <span class="nc">PyDMWaveformTable</span><span class="p">(</span><span class="n">QTableWidget</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A QTableWidget with support for Channels and more from PyDM.</span>
+
+<span class="sd">    Values of the array are displayed in the selected number of columns.</span>
+<span class="sd">    The number of rows is determined by the size of the waveform.</span>
+<span class="sd">    It is possible to define the labels of each row and column.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parent : QWidget</span>
+<span class="sd">        The parent widget for the Label</span>
+<span class="sd">    init_channel : str, optional</span>
+<span class="sd">        The channel to be used by the widget.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QTableWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">columnHeader</span> <span class="o">=</span> <span class="s2">&quot;Value&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_columnHeaders</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Value&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rowHeaders</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_itemsFlags</span> <span class="o">=</span> <span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span> <span class="o">|</span>
+                            <span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEditable</span> <span class="o">|</span>
+                            <span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">waveform</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">columnHeader</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_valueBeingSet</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cellChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">send_waveform</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMWaveformTable.value_changed"><a class="viewcode-back" href="../../../widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback invoked when the Channel value is changed.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_waveform : np.ndarray</span>
+<span class="sd">            The new waveform value from the channel.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_valueBeingSet</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">waveform</span> <span class="o">=</span> <span class="n">new_waveform</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">new_waveform</span><span class="p">))</span>
-        <span class="c1">#TODO: Fix this hacky crap where I disconnect/reconnect the changed signal whenever the pv updates.</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cellChanged</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="k">pass</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">new_waveform</span><span class="p">):</span>
-            <span class="n">index_cell</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="n">col_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()</span>
+        <span class="n">len_wave</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_waveform</span><span class="p">)</span>
+        <span class="n">row_count</span> <span class="o">=</span> <span class="n">len_wave</span><span class="o">//</span><span class="n">col_count</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">len_wave</span> <span class="o">%</span> <span class="n">col_count</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">row_count</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">new_waveform</span><span class="p">):</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">ind</span><span class="o">//</span><span class="n">col_count</span><span class="p">,</span> <span class="n">ind</span> <span class="o">%</span> <span class="n">col_count</span>
             <span class="n">value_cell</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">element</span><span class="p">))</span>
-            <span class="n">value_cell</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEditable</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setVerticalHeaderItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">index_cell</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">value_cell</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cellChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">send_data_for_cell</span><span class="p">)</span>
+            <span class="n">value_cell</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_itemsFlags</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">value_cell</span><span class="p">)</span>
 
-    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">send_data_for_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setVerticalHeaderLabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rowHeaders</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columnHeaders</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_valueBeingSet</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="PyDMWaveformTable.send_waveform"><a class="viewcode-back" href="../../../widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.send_waveform">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">send_waveform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update Channel value when cell value is changed.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        row : int</span>
+<span class="sd">            Row of the changed cell.</span>
+<span class="sd">        column : int</span>
+<span class="sd">            Column of the changed cell.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valueBeingSet</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
         <span class="n">new_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtype</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">waveform</span><span class="p">[</span><span class="n">row</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">row</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()</span> <span class="o">+</span> <span class="n">column</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waveform</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">waveform</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMWaveformTable.check_enable_state"><a class="viewcode-back" href="../../../widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.check_enable_state">[docs]</a>    <span class="k">def</span> <span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        For PyDMWaveformTable, we want to make the individual cells</span>
+<span class="sd">        editable when we have write access.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_access</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_itemsFlags</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span><span class="o">|</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEditable</span><span class="o">|</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_itemsFlags</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span><span class="o">|</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_itemsFlags</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()):</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_itemsFlags</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">.</span><span class="n">Leave</span><span class="p">:</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">QCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ArrowCursor</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">.</span><span class="n">Enter</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">status</span><span class="p">:</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">QCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ForbiddenCursor</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">columnHeaderLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the list of labels for the columns of the Table.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of strings</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columnHeaders</span>
+
+    <span class="nd">@columnHeaderLabels</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">columnHeaderLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_labels</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the list of labels for the columns of the Table.</span>
+
+<span class="sd">        If new_labels is empty the column numbers will be used.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_labels : list of strings</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_labels</span><span class="p">:</span>
+            <span class="n">new_labels</span> <span class="o">+=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_labels</span><span class="p">))</span> <span class="o">*</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_columnHeaders</span> <span class="o">=</span> <span class="n">new_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columnHeaders</span><span class="p">)</span>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">rowHeaderLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the list of labels for the rows of the Table.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of strings</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rowHeaders</span>
+
+    <span class="nd">@rowHeaderLabels</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">rowHeaderLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_labels</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the list of labels for the rows of the Table.</span>
+
+<span class="sd">        If new_labels is empty the row numbers will be used.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_labels : list of strings</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_labels</span><span class="p">:</span>
+            <span class="n">new_labels</span> <span class="o">+=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_labels</span><span class="p">))</span> <span class="o">*</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rowHeaders</span> <span class="o">=</span> <span class="n">new_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setVerticalHeaderLabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rowHeaders</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -232,7 +354,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0+51.g6918355',
+            VERSION:'0.3.0+52.gb97c531',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
