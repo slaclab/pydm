@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.timeplot &mdash; PyDM 0.3.0+49.ga2c7df9 documentation</title>
+  <title>pydm.widgets.timeplot &mdash; PyDM 0.3.0+51.g6918355 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+49.ga2c7df9 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+51.g6918355 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+49.ga2c7df9
+                0.3.0+51.g6918355
               </div>
             
           
@@ -216,7 +216,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;pen&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">color</span><span class="p">()</span>
-    
+
     <span class="nd">@color</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_color</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -295,9 +295,12 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_y_channels</span><span class="o">=</span><span class="p">[],</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bottom_axis</span> <span class="o">=</span> <span class="n">TimeAxisItem</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_left_axis</span> <span class="o">=</span> <span class="n">AxisItem</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMTimePlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span> <span class="n">axisItems</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bottom_axis</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_left_axis</span><span class="p">})</span>
-        <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">init_y_channels</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">addYChannel</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMTimePlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                                    <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+                                    <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span>
+                                    <span class="n">axisItems</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bottom_axis</span><span class="p">,</span>
+                                               <span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_left_axis</span><span class="p">}</span>
+                                    <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">disableAutoRange</span><span class="p">(</span><span class="n">ViewBox</span><span class="o">.</span><span class="n">XAxis</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">setMouseEnabled</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">=</span> <span class="mi">1200</span>
@@ -309,6 +312,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_interval</span> <span class="o">=</span> <span class="mi">100</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_timer</span><span class="o">.</span><span class="n">setInterval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_interval</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_mode</span> <span class="o">=</span> <span class="n">PyDMTimePlot</span><span class="o">.</span><span class="n">SynchronousMode</span>
+        <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">init_y_channels</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">addYChannel</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">initialize_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># If we are in Qt Designer, don&#39;t update the plot continuously.</span>
@@ -469,19 +474,19 @@
 
     <span class="k">def</span> <span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">curve</span><span class="o">.</span><span class="n">channel</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">]</span>
-        
+
     <span class="c1"># The methods for autoRangeY, minYRange, and maxYRange are</span>
     <span class="c1"># all defined in BasePlot, but we don&#39;t expose them as properties there, because not all plot</span>
-    <span class="c1"># subclasses necessarily want them to be user-configurable in Designer.    </span>
+    <span class="c1"># subclasses necessarily want them to be user-configurable in Designer.</span>
     <span class="n">autoRangeY</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getAutoRangeY</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">setAutoRangeY</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">resetAutoRangeY</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    Whether or not the Y-axis automatically rescales to fit the data.  If true, the</span>
 <span class="s2">    values in minYRange and maxYRange are ignored.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
-    
+
     <span class="n">minYRange</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMinYRange</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMinYRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    Minimum Y-axis value visible on the plot.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
-    
+
     <span class="n">maxYRange</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMaxYRange</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMaxYRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    Maximum Y-axis value visible on the plot.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span></div>
@@ -528,7 +533,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0+49.ga2c7df9',
+            VERSION:'0.3.0+51.g6918355',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
