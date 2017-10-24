@@ -13,7 +13,6 @@ Contents:
 
    getting_started.rst
    scripted_displays.rst
-   channel.rst
    macros.rst
    widgets/index.rst
    
