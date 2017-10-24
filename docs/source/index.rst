@@ -11,6 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   getting_started.rst
    scripted_displays.rst
    channel.rst
    macros.rst
