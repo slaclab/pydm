@@ -12,8 +12,14 @@ with pip.
 
 Installing with Anaconda
 ^^^^^^^^^^^^^^^^^^^^^^^^
-
-(Fill this in with help from Hugo)
+After installing Anaconda (see https://www.anaconda.com/download/), create a new
+environment for PyDM::
+  
+  $ conda create -n pydm-environment python=3.6 pyqt=5 pip numpy scipy six psutil pyqtgraph -c conda-forge
+  $ source activate pydm-environment
+  
+Once the environment is setup, continue on with the instructions in the `Installing
+with PIP`_ section below.
 
 Installing with PIP
 ^^^^^^^^^^^^^^^^^^^
@@ -22,11 +28,11 @@ PyDM is not currently part of the Python Package Index (PyPI), so you'll have to
 first `download a release of PyDM <https://github.com/slaclab/pydm/releases/>`_,
 or clone PyDM's git repository::
 
-  git clone https://github.com/slaclab/pydm.git
+  $ git clone https://github.com/slaclab/pydm.git
   
 After you download PyDM, enter the directory where you saved it, and run::
 
-  pip install .[all]
+  $ pip install .[all]
   
 This will download and install all the necessary dependencies, then will install 
 PyDM.
@@ -113,10 +119,22 @@ somewhere.
 We can test the display in PyDM by first running the testing IOC.  Open up a new
 terminal and run the command::
 
-  pydm-testing-ioc
+  $ pydm-testing-ioc
   
-to launch the IOC.  Once the IOC is running, run the command 'pydm <your file name>'
+to launch the IOC.  Once the IOC is running, run the command::
+  
+  $ pydm <your file name>
+  
 with the .ui file you just saved.  This will open your display in PyDM.  If everything
 works correctly, you should see a label with the text '0.000'.  This value will update
 whenever the MTEST:Float PV updates.  You can test this by using 'caput' at the terminal
 to change the value of MTEST:Float, and observing the label on the display.
+
+You now know almost all you need to build simple displays!  At this point, the
+best thing you can do is play around with the various widgets and their properties.
+For example, try adding a slider to your display and connect it to the same PV - you
+should see the label change as the slider moves around.
+
+Once you've become comfortable with building displays in Designer, you should
+investigate the system for writing your own displays using Python code (see 
+:doc:`/scripted_displays`).
