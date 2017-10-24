@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Getting Started with PyDM &mdash; PyDM 0.3.0+53.g479145c documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="PyDM 0.3.0+53.g479145c documentation" href="index.html"/>
+        <link rel="next" title="Making Python-based Displays" href="scripted_displays.html"/>
+        <link rel="prev" title="Welcome to PyDM’s documentation!" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0+53.g479145c
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started with PyDM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installing-with-anaconda">Installing with Anaconda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-with-pip">Installing with PIP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-environment-variables">Setting Environment Variables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#designer-plugin-path">Designer Plugin Path</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#default-data-source">Default Data Source</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting-pydm-widgets-in-designer">Troubleshooting PyDM Widgets in Designer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#building-your-first-display-with-qt-designer">Building Your First Display with Qt Designer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripted_displays.html">Making Python-based Displays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="macros.html">Macro Substitution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="widgets/index.html">PyDM Widgets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyDM</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Getting Started with PyDM</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/getting_started.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="getting-started-with-pydm">
+<h1>Getting Started with PyDM<a class="headerlink" href="#getting-started-with-pydm" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>There are a few different ways to install PyDM.  The easiest way to install it
+from scratch is probably using the Anaconda system.  If you have an existing
+python environment, and want to install PyDM for use with that, you can do that
+with pip.</p>
+<div class="section" id="installing-with-anaconda">
+<h3>Installing with Anaconda<a class="headerlink" href="#installing-with-anaconda" title="Permalink to this headline">¶</a></h3>
+<p>After installing Anaconda (see <a class="reference external" href="https://www.anaconda.com/download/">https://www.anaconda.com/download/</a>), create a new
+environment for PyDM:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ conda create -n pydm-environment python=3.6 pyqt=5 pip numpy scipy six psutil pyqtgraph -c conda-forge
+$ source activate pydm-environment
+</pre></div>
+</div>
+<p>Once the environment is setup, continue on with the instructions in the <a class="reference internal" href="#installing-with-pip">Installing
+with PIP</a> section below.</p>
+</div>
+<div class="section" id="installing-with-pip">
+<h3>Installing with PIP<a class="headerlink" href="#installing-with-pip" title="Permalink to this headline">¶</a></h3>
+<p>PyDM is not currently part of the Python Package Index (PyPI), so you’ll have to
+first <a class="reference external" href="https://github.com/slaclab/pydm/releases/">download a release of PyDM</a>,
+or clone PyDM’s git repository:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ git clone https://github.com/slaclab/pydm.git
+</pre></div>
+</div>
+<p>After you download PyDM, enter the directory where you saved it, and run:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install .[all]
+</pre></div>
+</div>
+<p>This will download and install all the necessary dependencies, then will install
+PyDM.</p>
+</div>
+<div class="section" id="setting-environment-variables">
+<h3>Setting Environment Variables<a class="headerlink" href="#setting-environment-variables" title="Permalink to this headline">¶</a></h3>
+<p>PyDM has several environment variables that let you configure its behavior, and
+where it looks for certain types of files.  To ensure these variables are always
+set, you probably want to add them to your shell startup file (like ~/.bashrc, if you
+are using bash).</p>
+<div class="section" id="designer-plugin-path">
+<h4>Designer Plugin Path<a class="headerlink" href="#designer-plugin-path" title="Permalink to this headline">¶</a></h4>
+<p>If you want to use Designer to build displays with PyDM widgets, you’ll need to
+add the PyDM install location to the PYQTDESIGNERPATH environment variable.  This
+directory might be buried pretty deep, depending on how Python is installed on your
+system.  For example, mine lives at ‘/usr/local/lib/python2.7/site-packages/pydm/’.</p>
+</div>
+<div class="section" id="default-data-source">
+<h4>Default Data Source<a class="headerlink" href="#default-data-source" title="Permalink to this headline">¶</a></h4>
+<p>PyDM lets you get data from multiple data sources.  To accomplish this, all
+addresses are prefixed by a ‘scheme’, much like a URL.  For example, the
+EPICS plugin that comes with PyDM registers the scheme ‘ca’, and to specify
+an address to a PV, you’d write ‘ca://PVNAME’.  Many sites use one data
+source primarily, and if you’d like to avoid always writing out the same scheme,
+you can set the PYDM_DEFAULT_PROTOCOL environment variable.  For example,
+to use the EPICS plugin by default, set PYDM_DEFAULT_PROTOCOL to ‘ca’.  Now
+you can use ‘PVNAME’ as an address without specifying that you want to use
+channel access.</p>
+</div>
+</div>
+<div class="section" id="troubleshooting-pydm-widgets-in-designer">
+<h3>Troubleshooting PyDM Widgets in Designer<a class="headerlink" href="#troubleshooting-pydm-widgets-in-designer" title="Permalink to this headline">¶</a></h3>
+<p>For Qt Designer to see the PyDM widgets, the PyQt Designer Plugin needs to be
+installed.  This is usually done as part of the PyQt install process, but some
+package managers (like homebrew on OSX) don’t install the plugin when PyQt is
+installed.  In that case, you’ll probably need to install PyQt from source.
+Follow the directions from the PyQt documentation: <a class="reference external" href="http://pyqt.sourceforge.net/Docs/PyQt5/installation.html#building-and-installing-from-source">http://pyqt.sourceforge.net/Docs/PyQt5/installation.html#building-and-installing-from-source</a></p>
+</div>
+</div>
+<div class="section" id="building-your-first-display-with-qt-designer">
+<h2>Building Your First Display with Qt Designer<a class="headerlink" href="#building-your-first-display-with-qt-designer" title="Permalink to this headline">¶</a></h2>
+<p>Once you have PyDM installed, you can start making displays.  The easiest way
+to make a display is to use Qt Designer, which is Qt’s drag-and-drop tool for
+building user interfaces.  Once you open Designer, you’ll be greeted by a mostly
+blank screen, with a list of widgets on the left, and a property inspector on the
+right.</p>
+<div class="figure" id="id1">
+<a class="reference internal image-reference" href="_images/designer.png"><img alt="Screenshot of newly-opened Qt Designer." src="_images/designer.png" style="width: 809.82px; height: 539.88px;" /></a>
+<p class="caption"><span class="caption-text">A newly-opened Qt Designer.  Notice the PyDM widgets at the bottom of
+the widget list on the left.</span></p>
+</div>
+<p>To make a new PyDM display, go to File-&gt;New…, then choose to build a new Widget.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All PyDM displays must have a Widget for the base - if you try to use MainWindow, your
+display will not work properly.</p>
+</div>
+<p>Now you should see a blank form on which you can drag widgets.  Drag a PyDMLabel
+(in the ‘PyDM Display Widgets’ section) onto the form.  On the right side of the
+screen, you can see all the properties for the widget.  Most of these properties
+are for the basic QLabel widget that PyDMLabel is based on, and control the label’s
+appearance and size (things like the font).  At the bottom of the properties list
+are the PyDM-specific properties.</p>
+<div class="figure" id="id2">
+<a class="reference internal image-reference" href="_images/pydm_properties.png"><img alt="Screenshot showing the PyDMLabel's properties." src="_images/pydm_properties.png" style="width: 911.46px; height: 539.88px;" /></a>
+<p class="caption"><span class="caption-text">The PyDMLabel’s properties are highlighted in red.</span></p>
+</div>
+<p>Lets fill in the ‘channel’ property for this label, which will connect it to a source
+of data.  PyDM comes with a Python-based IOC which is useful for testing widgets out.
+We’ll use one of the PVs supplied by the testing IOC.  Set the label’s ‘channel’ property
+to ‘ca://MTEST:Float’.  Once that is done, go to File-&gt;Save… and save the .ui file
+somewhere.</p>
+<p>We can test the display in PyDM by first running the testing IOC.  Open up a new
+terminal and run the command:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ pydm-testing-ioc
+</pre></div>
+</div>
+<p>to launch the IOC.  Once the IOC is running, run the command:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ pydm &lt;your file name&gt;
+</pre></div>
+</div>
+<p>with the .ui file you just saved.  This will open your display in PyDM.  If everything
+works correctly, you should see a label with the text ‘0.000’.  This value will update
+whenever the MTEST:Float PV updates.  You can test this by using ‘caput’ at the terminal
+to change the value of MTEST:Float, and observing the label on the display.</p>
+<p>You now know almost all you need to build simple displays!  At this point, the
+best thing you can do is play around with the various widgets and their properties.
+For example, try adding a slider to your display and connect it to the same PV - you
+should see the label change as the slider moves around.</p>
+<p>Once you’ve become comfortable with building displays in Designer, you should
+investigate the system for writing your own displays using Python code (see
+<a class="reference internal" href="scripted_displays.html"><span class="doc">Making Python-based Displays</span></a>).</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="scripted_displays.html" class="btn btn-neutral float-right" title="Making Python-based Displays" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to PyDM’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.3.0+53.g479145c',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
