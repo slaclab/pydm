@@ -2,7 +2,7 @@ import hashlib
 
 from ..PyQt.QtGui import QPushButton, QMessageBox, QInputDialog, QLineEdit
 from ..PyQt.QtCore import pyqtSlot, pyqtProperty
-from .base import PyDMWritableWidget
+from .base import PyDMWritableWidget, compose_stylesheet
 
 class PyDMPushButton(QPushButton, PyDMWritableWidget):
     """
@@ -321,7 +321,11 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         new_alarm_severity : int
             The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR and 3 = INVALID
         """
-        pass
+        if self._alarm_sensitive_content:
+            self._style = dict(self.alarm_style_sheet_map[self.ALARM_CONTENT][new_alarm_severity])
+            style = compose_stylesheet(style=self._style, obj=self)
+            self.setStyleSheet(style)
+            self.update()
 
     @pyqtSlot()
     def sendValue(self):
