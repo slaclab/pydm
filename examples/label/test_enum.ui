@@ -16,14 +16,11 @@
   <widget class="PyDMLabel" name="PyDMLabel">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>80</y>
+     <x>180</x>
+     <y>70</y>
      <width>69</width>
      <height>16</height>
     </rect>
-   </property>
-   <property name="focusPolicy">
-    <enum>Qt::StrongFocus</enum>
    </property>
    <property name="toolTip">
     <string/>
@@ -31,14 +28,8 @@
    <property name="whatsThis">
     <string/>
    </property>
-   <property name="alarmSensitiveContent" stdset="0">
-    <bool>true</bool>
-   </property>
-   <property name="channel" stdset="0">
-    <string>ca://MTEST:Float</string>
-   </property>
    <property name="displayFormat" stdset="0">
-    <enum>PyDMLabel::String</enum>
+    <enum>PyDMLabel::Exponential</enum>
    </property>
   </widget>
  </widget>
