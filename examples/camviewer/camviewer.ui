@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>915</width>
-    <height>841</height>
+    <height>870</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,6 +20,9 @@
       <layout class="QGridLayout" name="imageGridLayout">
        <item row="0" column="0">
         <widget class="PyDMImageView" name="imageView">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -31,6 +34,9 @@
            <width>400</width>
            <height>400</height>
           </size>
+         </property>
+         <property name="mouseTracking">
+          <bool>true</bool>
          </property>
          <property name="toolTip">
           <string/>
@@ -323,14 +329,8 @@
            <layout class="QHBoxLayout" name="horizontalLayout_6">
             <item>
              <widget class="QPushButton" name="marker1Button">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
               <property name="text">
-               <string>1</string>
+               <string>1 </string>
               </property>
               <property name="checkable">
                <bool>true</bool>
