@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.pushbutton &mdash; PyDM 0.3.0+53.g479145c documentation</title>
+  <title>pydm.widgets.pushbutton &mdash; PyDM 0.3.0+54.gb9c3231 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+53.g479145c documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+54.gb9c3231 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+53.g479145c
+                0.3.0+54.gb9c3231
               </div>
             
           
@@ -162,7 +162,7 @@
 
 <span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QInputDialog</span><span class="p">,</span> <span class="n">QLineEdit</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">compose_stylesheet</span>
 
 <div class="viewcode-block" id="PyDMPushButton"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton">[docs]</a><span class="k">class</span> <span class="nc">PyDMPushButton</span><span class="p">(</span><span class="n">QPushButton</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -481,7 +481,11 @@
 <span class="sd">        new_alarm_severity : int</span>
 <span class="sd">            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR and 3 = INVALID</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_sensitive_content</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_style</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alarm_style_sheet_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ALARM_CONTENT</span><span class="p">][</span><span class="n">new_alarm_severity</span><span class="p">])</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="n">compose_stylesheet</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">style</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMPushButton.sendValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.sendValue">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">sendValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -563,7 +567,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0+53.g479145c',
+            VERSION:'0.3.0+54.gb9c3231',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
