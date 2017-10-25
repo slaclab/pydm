@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.enum_combo_box &mdash; PyDM 0.3.0+54.gb9c3231 documentation</title>
+  <title>pydm.widgets.enum_combo_box &mdash; PyDM 0.3.0+56.g994a552 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+54.gb9c3231 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+56.g994a552 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+54.gb9c3231
+                0.3.0+56.g994a552
               </div>
             
           
@@ -265,7 +265,7 @@
 <span class="sd">        new_value : str, int, float, bool or np.ndarray</span>
 <span class="sd">            The new value from the channel. The type depends on the channel.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">new_val</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">new_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">combo_box</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span></div>
 
@@ -390,7 +390,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0+54.gb9c3231',
+            VERSION:'0.3.0+56.g994a552',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
