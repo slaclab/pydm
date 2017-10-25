@@ -86,22 +86,22 @@ class CamViewer(Display):
         #Instantiate markers.
         self.marker_dict = {1:{}, 2:{}, 3:{}, 4:{}}
         marker_size = QPointF(20.,20.)
-        self.marker_dict[1]['marker'] = ImageMarker((0,0), size=marker_size, pen=mkPen((100,100,255), width=3))
+        self.marker_dict[1]['marker'] = ImageMarker((0,0), size=marker_size, pen=mkPen((100,100,255), width=5))
         self.marker_dict[1]['button'] = self.ui.marker1Button
         self.marker_dict[1]['xlineedit'] = self.ui.marker1XPosLineEdit
         self.marker_dict[1]['ylineedit'] = self.ui.marker1YPosLineEdit
         
-        self.marker_dict[2]['marker'] = ImageMarker((0,0), size=marker_size, pen=mkPen((255,100,100), width=3))
+        self.marker_dict[2]['marker'] = ImageMarker((0,0), size=marker_size, pen=mkPen((255,100,100), width=5))
         self.marker_dict[2]['button'] = self.ui.marker2Button
         self.marker_dict[2]['xlineedit'] = self.ui.marker2XPosLineEdit
         self.marker_dict[2]['ylineedit'] = self.ui.marker2YPosLineEdit
         
-        self.marker_dict[3]['marker'] = ImageMarker((0,0), size=marker_size, pen=mkPen((60,255,60), width=3))
+        self.marker_dict[3]['marker'] = ImageMarker((0,0), size=marker_size, pen=mkPen((60,255,60), width=5))
         self.marker_dict[3]['button'] = self.ui.marker3Button
         self.marker_dict[3]['xlineedit'] = self.ui.marker3XPosLineEdit
         self.marker_dict[3]['ylineedit'] = self.ui.marker3YPosLineEdit
         
-        self.marker_dict[4]['marker'] = ImageMarker((0,0), size=marker_size, pen=mkPen((255,60,255), width=3))
+        self.marker_dict[4]['marker'] = ImageMarker((0,0), size=marker_size, pen=mkPen((255,60,255), width=5))
         self.marker_dict[4]['button'] = self.ui.marker4Button
         self.marker_dict[4]['xlineedit'] = self.ui.marker4XPosLineEdit
         self.marker_dict[4]['ylineedit'] = self.ui.marker4YPosLineEdit
@@ -180,7 +180,6 @@ class CamViewer(Display):
                 new_y = int(y_line_edit.text())
                 if new_x <= marker.maxBounds.width() and new_y <= marker.maxBounds.height():
                     marker.setPos((new_x,new_y))
-                    return
             except:
                 pass
             coords = marker.getPixelCoords()
