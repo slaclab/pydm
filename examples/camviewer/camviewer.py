@@ -180,7 +180,6 @@ class CamViewer(Display):
                 new_y = int(y_line_edit.text())
                 if new_x <= marker.maxBounds.width() and new_y <= marker.maxBounds.height():
                     marker.setPos((new_x,new_y))
-                    return
             except:
                 pass
             coords = marker.getPixelCoords()
