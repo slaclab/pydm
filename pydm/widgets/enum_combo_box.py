@@ -105,7 +105,7 @@ class PyDMEnumComboBox(QFrame, PyDMWritableWidget):
         new_value : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
         """
-        if new_val:
+        if new_val is not None:
             super(PyDMEnumComboBox, self).value_changed(new_val)
             self.combo_box.setCurrentIndex(new_val)
 
