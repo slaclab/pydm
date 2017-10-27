@@ -28,6 +28,8 @@ from .timeplot_qtplugin import PyDMTimePlotPlugin
 # Waveform Plot plugin
 from .waveformplot_qtplugin import PyDMWaveformPlotPlugin
 
+# Scatter Plot plugin
+from .scatterplot_qtplugin import PyDMScatterPlotPlugin
 # Byte plugin
 PyDMByteIndicatorPlugin = qtplugin_factory(PyDMByteIndicator, group=WidgetCategory.DISPLAY)
 
