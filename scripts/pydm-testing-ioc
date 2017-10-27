@@ -80,6 +80,7 @@ class myDriver(Driver):
         x = numpy.linspace(-5.0,5.0,IMAGE_SIZE)
         y = numpy.linspace(-5.0,5.0,IMAGE_SIZE)
         xgrid,ygrid = numpy.meshgrid(x,y)
+        i=0
         while True:
             run = self.getParam('Run')
             updateTime = self.getParam('UpdateTime')
@@ -112,7 +113,7 @@ class myDriver(Driver):
             cos_data = NUM_DIVISIONS/2.0 + yScale * (cos_data + voltOffset)
             self.setParam('Waveform',  data)
             self.setParam('Cosine', cos_data)
-            i = numpy.random.randint(0,MAX_POINTS)
+            i = (i+1) % MAX_POINTS
             self.setParam('SinVal', data[i])
             self.setParam('CosVal', cos_data[i])
             #Generate the image data
