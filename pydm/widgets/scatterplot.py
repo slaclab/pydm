@@ -29,7 +29,7 @@ class ScatterPlotCurveItem(PlotDataItem):
                          ('DashDot', Qt.DashDotLine),
                          ('DashDotDot', Qt.DashDotDotLine)])
     data_changed = pyqtSignal()
-    def __init__(self, y_addr, x_addr, color=None, lineStyle=None,
+    def __init__(self, y_addr, x_addr, color=None, lineStyle=Qt.NoPen,
                  lineWidth=None, redraw_mode=REDRAW_ON_EITHER, **kws):
         self.x_channel = None
         self.y_channel = None
@@ -60,6 +60,7 @@ class ScatterPlotCurveItem(PlotDataItem):
         kws['pen'] = self._pen
         super(ScatterPlotCurveItem, self).__init__(**kws)
         self.setSymbolBrush(None)
+        self.setSymbol('o')
         if color is not None:
             self.color = color
 
