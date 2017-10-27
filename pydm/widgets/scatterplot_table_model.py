@@ -18,7 +18,7 @@ class PyDMScatterPlotCurvesModel(QAbstractTableModel):
                               "Label", "Color",
                               "Line Style", "Line Width",
                               "Symbol", "Symbol Size",
-                              "Redraw Mode")
+                              "Redraw Mode", "Buffer Size")
 
     @property
     def plot(self):
@@ -82,6 +82,8 @@ class PyDMScatterPlotCurvesModel(QAbstractTableModel):
                 return str(curve.symbolSize)
             elif column_name == "Redraw Mode":
                 return curve.redraw_mode
+            elif column_name == "Buffer Size":
+                return curve.getBufferSize()
         elif role == Qt.BackgroundRole and column_name == "Color":
             return QBrush(curve.color)
         elif role == Qt.CheckStateRole and column_name == "Connect Points":
@@ -125,6 +127,8 @@ class PyDMScatterPlotCurvesModel(QAbstractTableModel):
                 curve.symbolSize = int(value)
             elif column_name == "Redraw Mode":
                 curve.redraw_mode = int(value)
+            elif column_name == "Buffer Size":
+                curve.setBufferSize(int(value))
             else:
                 return False
         else:

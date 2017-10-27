@@ -21,7 +21,7 @@ class ScatterPlotCurveEditorDialog(QDialog):
                              "Label", "Color",
                              "Line Style", "Line Width",
                              "Symbol", "Symbol Size",
-                             "Redraw Mode")
+                             "Redraw Mode", "Buffer Size")
         self.table_model = PyDMScatterPlotCurvesModel(self.plot)
         self.table_view.setModel(self.table_model)
         self.table_model.plot = plot
