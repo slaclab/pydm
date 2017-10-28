@@ -1,8 +1,8 @@
 from ..PyQt.QtGui import QLabel, QApplication, QColor, QBrush
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Qt
 from .. import utilities
 from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
-from pyqtgraph import PlotCurveItem
+from pyqtgraph import PlotDataItem, mkPen
 from collections import OrderedDict
 from .base import PyDMPrimitiveWidget
 
@@ -13,9 +13,238 @@ class NoDataError(Exception):
     pass
 
 
+class BasePlotCurveItem(PlotDataItem):
+    """
+    BasePlotCurveItem represents a single curve in a plot.
+
+    In addition to the parameters listed below, WaveformCurveItem accepts
+    keyword arguments for all plot options that pyqtgraph.PlotDataItem accepts.
+
+    Parameters
+    ----------
+    color : QColor, optional
+        The color used to draw the curve line and the symbols.
+    lineStyle: int, optional
+        Style of the line connecting the data points.
+        Must be a value from the Qt::PenStyle enum
+        (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).
+    lineWidth: int, optional
+        Width of the line connecting the data points.
+    **kargs: optional
+        PlotDataItem keyword arguments, such as symbol and symbolSize.
+    """
+
+    symbols = OrderedDict([('None', None),
+                           ('Circle', 'o'),
+                           ('Square', 's'),
+                           ('Triangle', 't'),
+                           ('Star', 'star'),
+                           ('Pentagon', 'p'),
+                           ('Hexagon', 'h'),
+                           ('X', 'x'),
+                           ('Diamond', 'd'),
+                           ('Plus', '+')])
+    lines = OrderedDict([('NoLine', Qt.NoPen),
+                         ('Solid', Qt.SolidLine),
+                         ('Dash', Qt.DashLine),
+                         ('Dot', Qt.DotLine),
+                         ('DashDot', Qt.DashDotLine),
+                         ('DashDotDot', Qt.DashDotDotLine)])
+    data_changed = pyqtSignal()
+
+    def __init__(self, color=None, lineStyle=None, lineWidth=None, **kws):
+        self._color = QColor('white')
+        self._pen = mkPen(self._color)
+        if lineWidth is not None:
+            self._pen.setWidth(lineWidth)
+        if lineStyle is not None:
+            self._pen.setStyle(lineStyle)
+        kws['pen'] = self._pen
+        super(BasePlotCurveItem, self).__init__(**kws)
+        self.setSymbolBrush(None)
+        if color is not None:
+            self.color = color
+
+    @property
+    def color_string(self):
+        """
+        A string representation of the color used for the curve.  This string
+        will be a hex color code, like #FF00FF, or an SVG spec color name, if
+        a name exists for the color.
+
+        Returns
+        -------
+        str
+        """
+        return str(utilities.colors.svg_color_from_hex(self.color.name(),
+                                                       hex_on_fail=True))
+
+    @color_string.setter
+    def color_string(self, new_color_string):
+        """
+        A string representation of the color used for the curve.  This string
+        will be a hex color code, like #FF00FF, or an SVG spec color name, if
+        a name exists for the color.
+
+        Parameters
+        -------
+        new_color_string: int
+            The new string to use for the curve color.
+        """
+        self.color = QColor(str(new_color_string))
+
+    @property
+    def color(self):
+        """
+        The color used for the curve.
+
+        Returns
+        -------
+        QColor
+        """
+        return self._color
+
+    @color.setter
+    def color(self, new_color):
+        """
+        The color used for the curve.
+
+        Parameters
+        -------
+        new_color: QColor or str
+            The new color to use for the curve.
+            Strings are passed to WaveformCurveItem.color_string.
+        """
+        if isinstance(new_color, str):
+            self.color_string = new_color
+            return
+        self._color = new_color
+        self._pen.setColor(self._color)
+        self.setPen(self._pen)
+        self.setSymbolPen(self._color)
+
+    @property
+    def lineStyle(self):
+        """
+        Return the style of the line connecting the data points.
+        Must be a value from the Qt::PenStyle enum
+        (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).
+
+        Returns
+        -------
+        int
+        """
+        return self._pen.style()
+
+    @lineStyle.setter
+    def lineStyle(self, new_style):
+        """
+        Set the style of the line connecting the data points.
+        Must be a value from the Qt::PenStyle enum
+        (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).
+
+        Parameters
+        -------
+        new_style: int
+        """
+        if new_style in self.lines.values():
+            self._pen.setStyle(new_style)
+            self.setPen(self._pen)
+
+    @property
+    def lineWidth(self):
+        """
+        Return the width of the line connecting the data points.
+
+        Returns
+        -------
+        int
+        """
+        return self._pen.width()
+
+    @lineWidth.setter
+    def lineWidth(self, new_width):
+        """
+        Set the width of the line connecting the data points.
+
+        Parameters
+        -------
+        new_width: int
+        """
+        self._pen.setWidth(int(new_width))
+        self.setPen(self._pen)
+
+    @property
+    def symbol(self):
+        """
+        The single-character code for the symbol drawn at each datapoint.
+
+        See the documentation for pyqtgraph.PlotDataItem for possible values.
+
+        Returns
+        -------
+        str or None
+        """
+        return self.opts['symbol']
+
+    @symbol.setter
+    def symbol(self, new_symbol):
+        """
+        The single-character code for the symbol drawn at each datapoint.
+
+        See the documentation for pyqtgraph.PlotDataItem for possible values.
+
+        Parameters
+        -------
+        new_symbol: str or None
+        """
+        if new_symbol in self.symbols.values():
+            self.setSymbol(new_symbol)
+            self.setSymbolPen(self._color)
+
+    @property
+    def symbolSize(self):
+        """
+        Return the size of the symbol to represent the data.
+
+        Returns
+        -------
+        int
+        """
+        return self.opts['symbolSize']
+
+    @symbolSize.setter
+    def symbolSize(self, new_size):
+        """
+        Set the size of the symbol to represent the data.
+
+        Parameters
+        -------
+        new_size: int
+        """
+        self.setSymbolSize(int(new_size))
+
+    def to_dict(self):
+        """
+        Returns an OrderedDict representation with values for all properties
+        needed to recreate this curve.
+
+        Returns
+        -------
+        OrderedDict
+        """
+        return OrderedDict([("name", self.name()),
+                            ("color", self.color_string),
+                            ("lineStyle", self.lineStyle),
+                            ("lineWidth", self.lineWidth),
+                            ("symbol", self.symbol),
+                            ("symbolSize", self.symbolSize)])
+
+
 class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def __init__(self, parent=None, background='default', axisItems=None):
-        PlotWidget.__init__(self, parent=parent, background=background, axisItems=axisItems)
+        PlotWidget.__init__(self, parent=parent, background=background,
+                            axisItems=axisItems)
         PyDMPrimitiveWidget.__init__(self)
         self.plotItem = self.getPlotItem()
         self.plotItem.hideButtons()
@@ -36,15 +265,16 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     def addCurve(self, plot_item, curve_color=None):
         if curve_color is None:
-            curve_color = utilities.colors.default_colors[len(self._curves) % len(utilities.colors.default_colors)]
+            curve_color = utilities.colors.default_colors[
+                    len(self._curves) % len(utilities.colors.default_colors)]
             plot_item.color_string = curve_color
         self._curves.append(plot_item)
         self.addItem(plot_item)
-        #self._legend.addItem(plot_item, plot_item.curve_name)
+        # self._legend.addItem(plot_item, plot_item.curve_name)
 
     def removeCurve(self, plot_item):
         self.removeItem(plot_item)
-        #self._legend.removeItem(plot_item.name())
+        # self._legend.removeItem(plot_item.name())
         self._curves.remove(plot_item)
 
     def removeCurveWithName(self, name):
@@ -59,7 +289,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def setCurveAtIndex(self, index, new_curve):
         old_curve = self._curves[index]
         self._curves[index] = new_curve
-        #self._legend.addItem(new_curve, new_curve.name())
+        # self._legend.addItem(new_curve, new_curve.name())
         self.removeCurve(old_curve)
 
     def curveAtIndex(self, index):
@@ -128,7 +358,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def setPlotTitle(self, value):
         self._title = str(value)
         if len(self._title) < 1:
-            self._title=None
+            self._title = None
         self.setTitle(self._title)
 
     def resetPlotTitle(self):
@@ -161,7 +391,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     def setAutoRangeX(self, value):
         self._auto_range_x = value
-        self.plotItem.enableAutoRange(ViewBox.XAxis,enable=self._auto_range_x)
+        self.plotItem.enableAutoRange(ViewBox.XAxis, enable=self._auto_range_x)
 
     def resetAutoRangeX(self):
         self.setAutoRangeX(True)
@@ -171,7 +401,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     def setAutoRangeY(self, value):
         self._auto_range_y = value
-        self.plotItem.enableAutoRange(ViewBox.YAxis,enable=self._auto_range_y)
+        self.plotItem.enableAutoRange(ViewBox.YAxis, enable=self._auto_range_y)
 
     def resetAutoRangeY(self):
         self.setAutoRangeY(True)
@@ -263,7 +493,6 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         viewRange = self.plotItem.viewRange()
         viewRange[1][1] = new_max_y_range
         self.plotItem.setYRange(viewRange[1][0], viewRange[1][1], padding=0)
-
 
     @pyqtProperty(bool)
     def mouseEnabledX(self):
