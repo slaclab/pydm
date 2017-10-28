@@ -18,7 +18,7 @@ pvdb = {
                                 'enums': ['STOP', 'RUN'], 'asg'  : 'default'},
         'ReadOnly'     : { 'type' : 'enum',
                                 'enums': ['FALSE', 'TRUE'], 'value': 0 },
-        'UpdateTime'       : { 'prec' : 3, 'unit' : 's', 'value' : 1, 'asg' : 'default'     },
+        'UpdateTime'       : { 'prec' : 3, 'unit' : 's', 'value' : 0.03, 'asg' : 'default'     },
         'TimePerDivision'  : { 'prec' : 5, 'unit' : 's', 'value' : 0.001, 'asg' : 'default' },
         'TriggerDelay'     : { 'prec' : 5, 'unit' : 's', 'value' : 0.0005, 'asg' : 'default'},
         'VoltsPerDivision' : { 'prec' : 3, 'unit' : 'V', 'value' : 0.2, 'asg' : 'default'   },
@@ -42,7 +42,9 @@ pvdb = {
         'ImageWidth'       : { 'type' : 'int', 'value' : IMAGE_SIZE, 'asg' : 'default' },
         'String'           : { 'type' : 'string', 'value': "Test String", 'asg' : 'default'},
         'Float'            : { 'type' : 'float', 'value': 0.0, 'lolim': -1.2, 'lolo': -1.0, 'low': -0.8, 'high': 0.8, 'hihi': 1.0, 'hilim': 1.2, 'unit': 'mJ', 'prec': 3, 'asg' : 'default' },
-        'StatusBits'       : { 'type' : 'int', 'value': 0b101010, 'lolim': 0, 'hilim': 32, 'asg' : 'default' }
+        'StatusBits'       : { 'type' : 'int', 'value': 0b101010, 'lolim': 0, 'hilim': 32, 'asg' : 'default' },
+        'SinVal'           : { 'type' : 'float', 'value': 0.0, 'asg': 'default' },
+        'CosVal'           : { 'type' : 'float', 'value': 0.0, 'asg': 'default' }
 }
 
 def double_gaussian_2d(x, y, x0, y0, xsig, ysig):
@@ -78,6 +80,7 @@ class myDriver(Driver):
         x = numpy.linspace(-5.0,5.0,IMAGE_SIZE)
         y = numpy.linspace(-5.0,5.0,IMAGE_SIZE)
         xgrid,ygrid = numpy.meshgrid(x,y)
+        i=0
         while True:
             run = self.getParam('Run')
             updateTime = self.getParam('UpdateTime')
@@ -97,9 +100,9 @@ class myDriver(Driver):
             timeStart = triggerDelay
             timeStep  = timePerDivision * NUM_DIVISIONS / MAX_POINTS
             timeWave  = timeStart + numpy.arange(MAX_POINTS) * timeStep 
-            noise  = noiseAmplitude * numpy.random.random(MAX_POINTS)
-            data = AMPLITUDE * numpy.sin(timeWave * FREQUENCY * 2 * numpy.pi) + noise
-            cos_data = AMPLITUDE * numpy.cos(timeWave * FREQUENCY * 2 * numpy.pi) + noise
+            #noise  = noiseAmplitude * numpy.random.random(MAX_POINTS)
+            data = AMPLITUDE * numpy.sin(timeWave * FREQUENCY * 2 * numpy.pi) + (noiseAmplitude * numpy.random.random(MAX_POINTS))
+            cos_data = AMPLITUDE * numpy.cos(timeWave * FREQUENCY * 2 * numpy.pi) + (noiseAmplitude * numpy.random.random(MAX_POINTS))
             # calculate statistics
             self.setParam('MinValue',  data.min())
             self.setParam('MaxValue',  data.max())
@@ -110,6 +113,9 @@ class myDriver(Driver):
             cos_data = NUM_DIVISIONS/2.0 + yScale * (cos_data + voltOffset)
             self.setParam('Waveform',  data)
             self.setParam('Cosine', cos_data)
+            i = (i+1) % MAX_POINTS
+            self.setParam('SinVal', data[i])
+            self.setParam('CosVal', cos_data[i])
             #Generate the image data
             x0 = 0.5*(numpy.random.rand()-0.5) + self.getParam('XPos')
             y0 = 0.5*(numpy.random.rand()-0.5) - self.getParam('YPos')
@@ -138,6 +144,6 @@ if __name__ == '__main__':
         driver.setParam('ReadOnly', 0)
         # process CA transactions
         while True:
-            server.process(0.1)
+            server.process(0.03)
     except KeyboardInterrupt:
         print('\nInterrupted... finishing testing-ioc')

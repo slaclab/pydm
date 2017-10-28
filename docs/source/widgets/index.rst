@@ -16,6 +16,7 @@ PyDM comes with a set of widgets useful for operating a control system.
     line_edit.rst
     pushbutton.rst
     related_display_button.rst
+    scatterplot.rst
     shell_command.rst
     slider.rst
     spinbox.rst
