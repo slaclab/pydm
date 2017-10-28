@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMWaveformPlot &mdash; PyDM 0.3.0+58.gf391c2f documentation</title>
+  <title>PyDMScatterPlot &mdash; PyDM 0.3.0+58.gf391c2f documentation</title>
   
 
   
@@ -37,8 +37,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="PyDM 0.3.0+58.gf391c2f documentation" href="../index.html"/>
         <link rel="up" title="PyDM Widgets" href="index.html"/>
-        <link rel="next" title="PyDMWaveformTable" href="waveformtable.html"/>
-        <link rel="prev" title="PyDMTimePlot" href="timeplot.html"/> 
+        <link rel="next" title="PyDMShellCommand" href="shell_command.html"/>
+        <link rel="prev" title="PyDMRelatedDisplayButton" href="related_display_button.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -106,13 +106,13 @@
 <li class="toctree-l2"><a class="reference internal" href="line_edit.html">PyDMLineEdit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pushbutton.html">PyDMPushButton</a></li>
 <li class="toctree-l2"><a class="reference internal" href="related_display_button.html">PyDMRelatedDisplayButton</a></li>
-<li class="toctree-l2"><a class="reference internal" href="scatterplot.html">PyDMScatterPlot</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">PyDMScatterPlot</a></li>
 <li class="toctree-l2"><a class="reference internal" href="shell_command.html">PyDMShellCommand</a></li>
 <li class="toctree-l2"><a class="reference internal" href="slider.html">PyDMSlider</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spinbox.html">PyDMSpinbox</a></li>
 <li class="toctree-l2"><a class="reference internal" href="symbol.html">PyDMSymbol</a></li>
 <li class="toctree-l2"><a class="reference internal" href="timeplot.html">PyDMTimePlot</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">PyDMWaveformPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="waveformplot.html">PyDMWaveformPlot</a></li>
 <li class="toctree-l2"><a class="reference internal" href="waveformtable.html">PyDMWaveformTable</a></li>
 </ul>
 </li>
@@ -162,13 +162,13 @@
         
           <li><a href="index.html">PyDM Widgets</a> &raquo;</li>
         
-      <li>PyDMWaveformPlot</li>
+      <li>PyDMScatterPlot</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/widgets/waveformplot.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/widgets/scatterplot.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -181,14 +181,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pydmwaveformplot">
-<h1>PyDMWaveformPlot<a class="headerlink" href="#pydmwaveformplot" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pydmscatterplot">
+<h1>PyDMScatterPlot<a class="headerlink" href="#pydmscatterplot" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot">
-<em class="property">class </em><code class="descclassname">pydm.widgets.waveformplot.</code><code class="descname">PyDMWaveformPlot</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_x_channels=[]</em>, <em>init_y_channels=[]</em>, <em>background='default'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot" title="Permalink to this definition">¶</a></dt>
-<dd><p>PyDMWaveformPlot is a widget to plot one or more waveforms.  Each curve can plot
-either a Y-axis waveform vs. its indices, or a Y-axis waveform against an X-axis
-waveform.</p>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot">
+<em class="property">class </em><code class="descclassname">pydm.widgets.scatterplot.</code><code class="descname">PyDMScatterPlot</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_x_channels=[]</em>, <em>init_y_channels=[]</em>, <em>background='default'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyDMScatterPlot is a widget to plot one scalar value against another.
+Multiple scalar pairs can be plotted on the same plot.  Each pair has
+a buffer which stores previous values.  All values in the buffer are
+drawn.  The buffer size for each pair is user configurable.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -214,8 +215,8 @@ will accept.</li>
 </tbody>
 </table>
 <dl class="method">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.addChannel">
-<code class="descname">addChannel</code><span class="sig-paren">(</span><em>y_channel=None</em>, <em>x_channel=None</em>, <em>name=None</em>, <em>color=None</em>, <em>lineStyle=None</em>, <em>lineWidth=None</em>, <em>symbol=None</em>, <em>symbolSize=None</em>, <em>redraw_mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.addChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.addChannel" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.addChannel">
+<code class="descname">addChannel</code><span class="sig-paren">(</span><em>y_channel=None</em>, <em>x_channel=None</em>, <em>name=None</em>, <em>color=None</em>, <em>lineStyle=None</em>, <em>lineWidth=None</em>, <em>symbol=None</em>, <em>symbolSize=None</em>, <em>redraw_mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.addChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.addChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new curve to the plot.  In addition to the arguments below,
 all other keyword arguments are passed to the underlying
 pyqtgraph.PlotDataItem used to draw the curve.</p>
@@ -233,10 +234,10 @@ automatically assign a unique color from a set of default colors.</li>
 0 means no line (scatter plot).</li>
 <li><strong>lineWidth</strong> (<em>int</em><em>, </em><em>optional</em>) – Width of the line connecting the data points.</li>
 <li><strong>redraw_mode</strong> (<em>int</em><em>, </em><em>optional</em>) – Must be one four values:
-WaveformCurveItem.REDRAW_ON_EITHER: (Default) The curve will be redrawn after either X or Y receives new data.
-WaveformCurveItem.REDRAW_ON_X: The curve will only be redrawn after X receives new data.
-WaveformCurveItem.REDRAW_ON_Y: The curve will only be redrawn after Y receives new data.
-WaveformCurveItem.REDRAW_ON_BOTH: The curve will only be redrawn after both X and Y receive new data.</li>
+ScatterPlotCurveItem.REDRAW_ON_EITHER: (Default) The curve will be redrawn after either X or Y receives new data.
+ScatterPlotCurveItem.REDRAW_ON_X: The curve will only be redrawn after X receives new data.
+ScatterPlotCurveItem.REDRAW_ON_Y: The curve will only be redrawn after Y receives new data.
+ScatterPlotCurveItem.REDRAW_ON_BOTH: The curve will only be redrawn after both X and Y receive new data.</li>
 <li><strong>symbol</strong> (<em>int</em><em>, </em><em>optional</em>) – Which symbol to use to represent the data.</li>
 <li><strong>symbol</strong> – Size of the symbol.</li>
 </ul>
@@ -247,22 +248,22 @@ WaveformCurveItem.REDRAW_ON_BOTH: The curve will only be redrawn after both X an
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.autoRangeX">
-<code class="descname">autoRangeX</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.autoRangeX" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.autoRangeX">
+<code class="descname">autoRangeX</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.autoRangeX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the X-axis automatically rescales to fit the data.  If true, the
 values in minXRange and maxXRange are ignored.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.autoRangeY">
-<code class="descname">autoRangeY</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.autoRangeY" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.autoRangeY">
+<code class="descname">autoRangeY</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.autoRangeY" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the Y-axis automatically rescales to fit the data.  If true, the
 values in minYRange and maxYRange are ignored.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.channels">
-<code class="descname">channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.channels" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.channels">
+<code class="descname">channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.channels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of channels used by all curves in the plot.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -277,71 +278,71 @@ values in minYRange and maxYRange are ignored.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.clearCurves">
-<code class="descname">clearCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.clearCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.clearCurves" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.clearCurves">
+<code class="descname">clearCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.clearCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.clearCurves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all curves from the plot.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.curves">
-<code class="descname">curves</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.curves" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.curves">
+<code class="descname">curves</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.curves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of json representations for each curve.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.getCurves">
-<code class="descname">getCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.getCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.getCurves" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.getCurves">
+<code class="descname">getCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.getCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.getCurves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of json representations for each curve.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.maxXRange">
-<code class="descname">maxXRange</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.maxXRange" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.maxXRange">
+<code class="descname">maxXRange</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.maxXRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximum X-axis value visible on the plot.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.maxYRange">
-<code class="descname">maxYRange</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.maxYRange" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.maxYRange">
+<code class="descname">maxYRange</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.maxYRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximum Y-axis value visible on the plot.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.minXRange">
-<code class="descname">minXRange</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.minXRange" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.minXRange">
+<code class="descname">minXRange</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.minXRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Minimum X-axis value visible on the plot.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.minYRange">
-<code class="descname">minYRange</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.minYRange" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.minYRange">
+<code class="descname">minYRange</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.minYRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Minimum Y-axis value visible on the plot.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.redrawPlot">
-<code class="descname">redrawPlot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.redrawPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.redrawPlot" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.redrawPlot">
+<code class="descname">redrawPlot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.redrawPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.redrawPlot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Request a redraw from each curve in the plot.
 Called by curves when they get new data.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannel">
-<code class="descname">removeChannel</code><span class="sig-paren">(</span><em>curve</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.removeChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannel" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.removeChannel">
+<code class="descname">removeChannel</code><span class="sig-paren">(</span><em>curve</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.removeChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.removeChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a curve from the plot.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>curve</strong> (<em>WaveformCurveItem</em>) – The curve to remove.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>curve</strong> (<em>ScatterPlotCurveItem</em>) – The curve to remove.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannelAtIndex">
-<code class="descname">removeChannelAtIndex</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.removeChannelAtIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannelAtIndex" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.removeChannelAtIndex">
+<code class="descname">removeChannelAtIndex</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.removeChannelAtIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.removeChannelAtIndex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a curve from the plot, given an index
 for a curve.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -355,8 +356,8 @@ for a curve.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.setCurves">
-<code class="descname">setCurves</code><span class="sig-paren">(</span><em>new_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.setCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.setCurves" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.setCurves">
+<code class="descname">setCurves</code><span class="sig-paren">(</span><em>new_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.setCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.setCurves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace all existing curves with new ones.  This function
 is mostly used as a way to load curves from a .ui file, and
 almost all users will want to add curves through addChannel,
@@ -372,8 +373,8 @@ not this method.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.updateAxes">
-<code class="descname">updateAxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.updateAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.updateAxes" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.scatterplot.PyDMScatterPlot.updateAxes">
+<code class="descname">updateAxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.updateAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.updateAxes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the X and Y axes for the plot to fit all data in
 all curves for the plot.</p>
 </dd></dl>
@@ -392,10 +393,10 @@ all curves for the plot.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="waveformtable.html" class="btn btn-neutral float-right" title="PyDMWaveformTable" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="shell_command.html" class="btn btn-neutral float-right" title="PyDMShellCommand" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="timeplot.html" class="btn btn-neutral" title="PyDMTimePlot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="related_display_button.html" class="btn btn-neutral" title="PyDMRelatedDisplayButton" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

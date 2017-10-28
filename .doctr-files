@@ -12,6 +12,7 @@
 ./_modules/pydm/widgets/line_edit.html
 ./_modules/pydm/widgets/pushbutton.html
 ./_modules/pydm/widgets/related_display_button.html
+./_modules/pydm/widgets/scatterplot.html
 ./_modules/pydm/widgets/shell_command.html
 ./_modules/pydm/widgets/slider.html
 ./_modules/pydm/widgets/spinbox.html
@@ -35,6 +36,7 @@
 ./_sources/widgets/line_edit.rst.txt
 ./_sources/widgets/pushbutton.rst.txt
 ./_sources/widgets/related_display_button.rst.txt
+./_sources/widgets/scatterplot.rst.txt
 ./_sources/widgets/shell_command.rst.txt
 ./_sources/widgets/slider.rst.txt
 ./_sources/widgets/spinbox.rst.txt
@@ -96,6 +98,7 @@
 ./widgets/line_edit.html
 ./widgets/pushbutton.html
 ./widgets/related_display_button.html
+./widgets/scatterplot.html
 ./widgets/shell_command.html
 ./widgets/slider.html
 ./widgets/spinbox.html
