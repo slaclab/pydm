@@ -2,24 +2,21 @@ from ..PyQt.QtGui import QColor
 from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt
 from pyqtgraph import PlotDataItem, mkPen
 import numpy as np
-from .baseplot import BasePlot
+from .baseplot import BasePlot, NoDataError
 from .channel import PyDMChannel
 import itertools
 import json
 from collections import OrderedDict
 from .. import utilities
 
-class NoDataError(Exception):
-    """NoDataError is raised when a curve tries to perform an operation, but does not
-    yet have any data."""
-    pass
 
 class WaveformCurveItem(PlotDataItem):
     """
-    WaveformCurveItem represents a single curve in a waveform plot.  It can be used
-    to plot one waveform vs. its indices, or one waveform vs. another.  In addition
-    to the parameters listed below, WaveformCurveItem accepts keyword arguments for
-    all plot options that pyqtgraph.PlotDataItem accepts.
+    WaveformCurveItem represents a single curve in a waveform plot.
+    It can be used to plot one waveform vs. its indices, or one waveform
+    vs. another.  In addition to the parameters listed below,
+    WaveformCurveItem accepts keyword arguments for all plot options that
+    pyqtgraph.PlotDataItem accepts.
 
     Parameters
     ----------
@@ -33,15 +30,20 @@ class WaveformCurveItem(PlotDataItem):
         The color used to draw the curve line and the symbols.
     lineStyle: int, optional
         Style of the line connecting the data points.
-        Must be a value from the Qt::PenStyle enum (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).
+        Must be a value from the Qt::PenStyle enum
+        (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).
     lineWidth: int, optional
         Width of the line connecting the data points.
     redraw_mode: int, optional
         Must be one four values:
-        WaveformCurveItem.REDRAW_ON_EITHER: (Default) The curve will be redrawn after either X or Y receives new data.
-        WaveformCurveItem.REDRAW_ON_X: The curve will only be redrawn after X receives new data.
-        WaveformCurveItem.REDRAW_ON_Y: The curve will only be redrawn after Y receives new data.
-        WaveformCurveItem.REDRAW_ON_BOTH: The curve will only be redrawn after both X and Y receive new data.
+        WaveformCurveItem.REDRAW_ON_EITHER: (Default)
+            The curve will be redrawn after either X or Y receives new data.
+        WaveformCurveItem.REDRAW_ON_X:
+            The curve will only be redrawn after X receives new data.
+        WaveformCurveItem.REDRAW_ON_Y:
+            The curve will only be redrawn after Y receives new data.
+        WaveformCurveItem.REDRAW_ON_BOTH:
+            The curve will only be redrawn after both X and Y receive new data.
     **kargs: optional
         PlotDataItem keyword arguments, such as symbol and symbolSize.
     """

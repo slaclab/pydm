@@ -5,10 +5,11 @@ import numpy as np
 import json
 import itertools
 from collections import OrderedDict
-from .baseplot import BasePlot
+from .baseplot import BasePlot, NoDataError
 from .channel import PyDMChannel
 from .. import utilities
 from .base import PyDMPrimitiveWidget
+
 
 class ScatterPlotCurveItem(PlotDataItem):
     REDRAW_ON_X, REDRAW_ON_Y, REDRAW_ON_EITHER, REDRAW_ON_BOTH = range(4)
@@ -266,7 +267,7 @@ class ScatterPlotCurveItem(PlotDataItem):
         """
         self._pen.setWidth(int(new_width))
         self.setPen(self._pen)
-        
+
     @property
     def lineStyle(self):
         """
@@ -292,7 +293,7 @@ class ScatterPlotCurveItem(PlotDataItem):
         if new_style in self.lines.values():
             self._pen.setStyle(new_style)
             self.setPen(self._pen)
-    
+
     @pyqtSlot(bool)
     def xConnectionStateChanged(self, connected):
         self.x_connected = connected
@@ -334,10 +335,10 @@ class ScatterPlotCurveItem(PlotDataItem):
         #If we haven't gotten values for X and Y yet, can't redraw.
         if self.latest_y_value is None or self.latest_x_value is None:
             return
-    
+
         if self.redraw_mode == self.REDRAW_ON_EITHER:
             #no matter which channel updates, add a pair with the two most recent values
-            pass 
+            pass
         elif self.redraw_mode == self.REDRAW_ON_X:
             #If we only redraw when X updates, make sure new X data has arrived since the last time we drew the plot.
             if self.needs_new_x:
@@ -383,7 +384,7 @@ class ScatterPlotCurveItem(PlotDataItem):
         self.setData(x=self.data_buffer[1, -self.points_accumulated:], y=self.data_buffer[0, -self.points_accumulated:])
         self.needs_new_x = True
         self.needs_new_y = True
-        
+
     def limits(self):
         """
         Limits of the data for this curve.
@@ -398,7 +399,7 @@ class ScatterPlotCurveItem(PlotDataItem):
         x_data = self.data_buffer[0, -self.points_accumulated:]
         y_data = self.data_buffer[1, -self.points_accumulated:]
         return ((np.amin(x_data), np.amax(x_data)), (np.amin(y_data), np.amax(y_data)))
-        
+
 class PyDMScatterPlot(BasePlot):
     """
     PyDMScatterPlot is a widget to plot one scalar value against another.
