@@ -34,6 +34,7 @@ class BasePlotCurveItem(PlotDataItem):
         PlotDataItem keyword arguments, such as symbol and symbolSize.
     """
 
+    REDRAW_ON_X, REDRAW_ON_Y, REDRAW_ON_EITHER, REDRAW_ON_BOTH = range(4)
     symbols = OrderedDict([('None', None),
                            ('Circle', 'o'),
                            ('Square', 's'),
