@@ -53,6 +53,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
                             ("x_channel", self.x_address)])
         dic_.update(super(ScatterPlotCurveItem, self).to_dict())
         dic_["redraw_mode"] = self.redraw_mode
+        dic_['buffer_size'] = self.getBufferSize()
         return dic_
 
     @property
@@ -282,9 +283,15 @@ class PyDMScatterPlot(BasePlot):
         for (x_chan, y_chan) in init_channel_pairs:
             self.addChannel(y_chan, x_channel=x_chan)
 
+    def initialize_for_designer(self):
+        # If we are in Qt Designer, don't update the plot continuously.
+        # This function gets called by PyDMTimePlot's designer plugin.
+        pass
+
     def addChannel(self, y_channel=None, x_channel=None, name=None,
                    color=None, lineStyle=None, lineWidth=None,
-                   symbol=None, symbolSize=None, redraw_mode=None):
+                   symbol=None, symbolSize=None, redraw_mode=None,
+                   buffer_size=None):
         """
         Add a new curve to the plot.  In addition to the arguments below,
         all other keyword arguments are passed to the underlying
@@ -316,6 +323,8 @@ class PyDMScatterPlot(BasePlot):
                 Redraw after Y receives new data.
             ScatterPlotCurveItem.REDRAW_ON_BOTH:
                 Redraw after both X and Y receive new data.
+        buffer_size: int, optional
+            number of points to keep in the buffer.
         symbol: str or None, optional
             Which symbol to use to represent the data.
         symbol: int, optional
@@ -336,6 +345,8 @@ class PyDMScatterPlot(BasePlot):
                                      name=name,
                                      color=color,
                                      **plot_opts)
+        if buffer_size is not None:
+            curve.setBufferSize(buffer_size)
         curve.data_changed.connect(self.redrawPlot)
         self.channel_pairs[(y_channel, x_channel)] = curve
         self.addCurve(curve, curve_color=color)
@@ -441,7 +452,8 @@ class PyDMScatterPlot(BasePlot):
                             lineWidth=d.get('lineWidth'),
                             symbol=d.get('symbol'),
                             symbolSize=d.get('symbolSize'),
-                            redraw_mode=d.get('redraw_mode'))
+                            redraw_mode=d.get('redraw_mode'),
+                            buffer_size=d.get('buffer_size'))
 
     curves = pyqtProperty("QStringList", getCurves, setCurves)
 
