@@ -1,6 +1,5 @@
 from ..PyQt.QtGui import QColor
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt
-from pyqtgraph import PlotDataItem, mkPen
+from ..PyQt.QtCore import pyqtSlot, pyqtProperty
 import numpy as np
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
@@ -48,10 +47,8 @@ class WaveformCurveItem(BasePlotCurveItem):
     **kargs: optional
         PlotDataItem keyword arguments, such as symbol and symbolSize.
     """
-    REDRAW_ON_X, REDRAW_ON_Y, REDRAW_ON_EITHER, REDRAW_ON_BOTH = range(4)
 
-    def __init__(self, y_addr=None, x_addr=None,
-                 redraw_mode=REDRAW_ON_EITHER, **kws):
+    def __init__(self, y_addr=None, x_addr=None, redraw_mode=None, **kws):
         y_addr = "" if y_addr is None else y_addr
         if kws.get('name') is None:
             y_name = remove_protocol(y_addr)
@@ -61,7 +58,8 @@ class WaveformCurveItem(BasePlotCurveItem):
                 x_name = remove_protocol(x_addr)
                 plot_name = "{y} vs. {x}".format(y=y_name, x=x_name)
             kws['name'] = plot_name
-        self.redraw_mode = redraw_mode
+        self.redraw_mode = (redraw_mode if redraw_mode is not None
+                            else self.REDRAW_ON_EITHER)
         self.needs_new_x = True
         self.needs_new_y = True
         self.x_channel = None
@@ -295,6 +293,11 @@ class PyDMWaveformPlot(BasePlot):
         init_channel_pairs = zip(init_x_channels, init_y_channels)
         for (x_chan, y_chan) in init_channel_pairs:
             self.addChannel(y_chan, x_channel=x_chan)
+
+    def initialize_for_designer(self):
+        # If we are in Qt Designer, don't update the plot continuously.
+        # This function gets called by PyDMTimePlot's designer plugin.
+        pass
 
     def addChannel(self, y_channel=None, x_channel=None, name=None,
                    color=None, lineStyle=None, lineWidth=None,
