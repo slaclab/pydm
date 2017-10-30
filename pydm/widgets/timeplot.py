@@ -7,17 +7,15 @@ import json
 from collections import OrderedDict
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
-from .. import utilities
+from .. utilities import remove_protocol
 
 
 class TimePlotCurveItem(BasePlotCurveItem):
 
-    def __init__(self, channel_address, **kws):
+    def __init__(self, channel_address=None, **kws):
+        channel_address = "" if channel_address is None else channel_address
         if 'name' not in kws or kws['name'] is None:
-            try:
-                name = utilities.remove_protocol(channel_address)
-            except IndexError:
-                name = channel_address
+            name = remove_protocol(channel_address)
             kws['name'] = name
         self._bufferSize = 1200
         self._update_mode = PyDMTimePlot.SynchronousMode
@@ -152,17 +150,23 @@ class PyDMTimePlot(BasePlot):
         self.redraw_timer.setSingleShot(True)
 
     # Adds a new curve to the current plot
-    def addYChannel(self, ychannel, name=None, color=None):
-        if name is None:
-            try:
-                name = ychannel.split('://')[1]
-            except IndexError:
-                name = ychannel
+    def addYChannel(self, y_channel=None, name=None, color=None,
+                    lineStyle=None, lineWidth=None, symbol=None,
+                    symbolSize=None):
+        plot_opts = {}
+        plot_opts['symbol'] = symbol
+        if symbolSize is not None:
+            plot_opts['symbolSize'] = symbolSize
+        if lineStyle is not None:
+            plot_opts['lineStyle'] = lineStyle
+        if lineWidth is not None:
+            plot_opts['lineWidth'] = lineWidth
         # Add curve
-        new_curve = TimePlotCurveItem(ychannel, name=name)
+        new_curve = TimePlotCurveItem(y_channel,
+                                      name=name,
+                                      color=color,
+                                      **plot_opts)
         new_curve.setUpdatesAsynchronously(self.updatesAsynchronously)
-        if color:
-            new_curve.setPen(color)
         self.update_timer.timeout.connect(new_curve.asyncUpdate)
         self.addCurve(new_curve, curve_color=color)
         self.redraw_timer.start()
@@ -213,7 +217,12 @@ class PyDMTimePlot(BasePlot):
             color = d.get('color')
             if color:
                 color = QColor(color)
-            self.addYChannel(d['channel'], name=d.get('name'), color=color)
+            self.addYChannel(d['channel'],
+                             name=d.get('name'), color=color,
+                             lineStyle=d.get('lineStyle'),
+                             lineWidth=d.get('lineWidth'),
+                             symbol=d.get('symbol'),
+                             symbolSize=d.get('symbolSize'))
 
     curves = pyqtProperty("QStringList", getCurves, setCurves)
 
