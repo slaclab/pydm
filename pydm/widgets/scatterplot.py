@@ -1,6 +1,5 @@
 from ..PyQt.QtGui import QColor
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt
-from pyqtgraph import ViewBox, AxisItem, PlotDataItem, mkPen
+from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt
 import numpy as np
 import json
 import itertools
@@ -8,14 +7,11 @@ from collections import OrderedDict
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol
-from .base import PyDMPrimitiveWidget
 
 
 class ScatterPlotCurveItem(BasePlotCurveItem):
-    REDRAW_ON_X, REDRAW_ON_Y, REDRAW_ON_EITHER, REDRAW_ON_BOTH = range(4)
 
-    def __init__(self, y_addr, x_addr, lineStyle=Qt.NoPen,
-                 redraw_mode=REDRAW_ON_EITHER, **kws):
+    def __init__(self, y_addr, x_addr, redraw_mode=None, **kws):
         self.x_channel = None
         self.y_channel = None
         self.x_address = x_addr
@@ -30,15 +26,19 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
                 y_name = remove_protocol(y_addr if y_addr is not None else "")
                 x_name = remove_protocol(x_addr if x_addr is not None else "")
                 kws['name'] = "{y} vs. {x}".format(y=y_name, x=x_name)
-        self.redraw_mode = redraw_mode
+        self.redraw_mode = (redraw_mode if redraw_mode is not None
+                            else self.REDRAW_ON_EITHER)
         self._bufferSize = 1200
         self.data_buffer = np.zeros((2, self._bufferSize),
                                     order='f', dtype=float)
         self.points_accumulated = 0
         self.latest_x_value = None
         self.latest_y_value = None
+        if 'symbol' not in kws.keys():
+            kws['symbol'] = 'o'
+        if 'lineStyle' not in kws.keys():
+            kws['lineStyle'] = Qt.NoPen
         super(ScatterPlotCurveItem, self).__init__(**kws)
-        self.setSymbol('o')
 
     def to_dict(self):
         """
