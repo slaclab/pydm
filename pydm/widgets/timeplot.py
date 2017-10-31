@@ -1,27 +1,26 @@
 from ..PyQt.QtGui import QColor
 from ..PyQt.QtCore import pyqtSlot, pyqtProperty, QTimer
-from pyqtgraph import ViewBox, AxisItem, PlotCurveItem
+from pyqtgraph import ViewBox, AxisItem
 import numpy as np
 import time
 import json
 from collections import OrderedDict
-from .baseplot import BasePlot
+from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
-from .. import utilities
-from .base import PyDMPrimitiveWidget
+from .. utilities import remove_protocol
 
 
-class TimePlotCurveItem(PlotCurveItem):
-    def __init__(self, channel_address, **kws):
+class TimePlotCurveItem(BasePlotCurveItem):
+
+    def __init__(self, channel_address=None, **kws):
+        channel_address = "" if channel_address is None else channel_address
         if 'name' not in kws or kws['name'] is None:
-            try:
-                name = channel_address.split("://")[1]
-            except IndexError:
-                name = channel_address
+            name = remove_protocol(channel_address)
             kws['name'] = name
         self._bufferSize = 1200
         self._update_mode = PyDMTimePlot.SynchronousMode
-        self.data_buffer = np.zeros((2, self._bufferSize), order='f', dtype=float)
+        self.data_buffer = np.zeros((2, self._bufferSize),
+                                    order='f', dtype=float)
         self.connected = False
         self.points_accumulated = 0
         self.latest_value = None
@@ -30,7 +29,9 @@ class TimePlotCurveItem(PlotCurveItem):
         super(TimePlotCurveItem, self).__init__(**kws)
 
     def to_dict(self):
-        return OrderedDict([("channel", self.address), ("name", self.name()), ("color", self.color_string)])
+        dic_ = OrderedDict([("channel", self.address), ])
+        dic_.update(super(TimePlotCurveItem, self).to_dict())
+        return dic_
 
     @property
     def address(self):
@@ -43,26 +44,9 @@ class TimePlotCurveItem(PlotCurveItem):
         if new_address is None or len(str(new_address)) < 1:
             self.channel = None
             return
-        self.channel = PyDMChannel(address=new_address, connection_slot=self.connectionStateChanged, value_slot=self.receiveNewValue)
-
-    @property
-    def color_string(self):
-        return str(utilities.colors.svg_color_from_hex(self.color.name(), hex_on_fail=True))
-
-    @color_string.setter
-    def color_string(self, new_color_string):
-        self.color = QColor(str(new_color_string))
-
-    @property
-    def color(self):
-        return self.opts['pen'].color()
-
-    @color.setter
-    def color(self, new_color):
-        if isinstance(new_color, str):
-            self.color_string = new_color
-            return
-        self.setPen(new_color)
+        self.channel = PyDMChannel(address=new_address,
+                                   connection_slot=self.connectionStateChanged,
+                                   value_slot=self.receiveNewValue)
 
     @pyqtSlot(bool)
     def connectionStateChanged(self, connected):
@@ -93,8 +77,10 @@ class TimePlotCurveItem(PlotCurveItem):
 
     def initialize_buffer(self):
         self.points_accumulated = 0
-        # If you don't specify dtype=float, you don't have enough resolution for the timestamp data.
-        self.data_buffer = np.zeros((2, self._bufferSize), order='f', dtype=float)
+        # If you don't specify dtype=float, you don't have enough
+        # resolution for the timestamp data.
+        self.data_buffer = np.zeros((2, self._bufferSize),
+                                    order='f', dtype=float)
         self.data_buffer[0].fill(time.time())
 
     def getBufferSize(self):
@@ -113,7 +99,8 @@ class TimePlotCurveItem(PlotCurveItem):
     @pyqtSlot()
     def redrawCurve(self):
         if self.connected:
-            self.setData(y=self.data_buffer[1, -self.points_accumulated:], x=self.data_buffer[0, -self.points_accumulated:])
+            self.setData(y=self.data_buffer[1, -self.points_accumulated:],
+                         x=self.data_buffer[0, -self.points_accumulated:])
 
     def setUpdatesAsynchronously(self, value):
         if value is True:
@@ -129,9 +116,11 @@ class TimePlotCurveItem(PlotCurveItem):
     def max_x(self):
         return self.data_buffer[0, -1]
 
+
 class PyDMTimePlot(BasePlot):
     SynchronousMode = 1
     AsynchronousMode = 2
+
     def __init__(self, parent=None, init_y_channels=[], background='default'):
         self._bottom_axis = TimeAxisItem('bottom')
         self._left_axis = AxisItem('left')
@@ -161,17 +150,23 @@ class PyDMTimePlot(BasePlot):
         self.redraw_timer.setSingleShot(True)
 
     # Adds a new curve to the current plot
-    def addYChannel(self, ychannel, name=None, color=None):
-        if name is None:
-            try:
-                name = ychannel.split('://')[1]
-            except IndexError:
-                name = ychannel
+    def addYChannel(self, y_channel=None, name=None, color=None,
+                    lineStyle=None, lineWidth=None, symbol=None,
+                    symbolSize=None):
+        plot_opts = {}
+        plot_opts['symbol'] = symbol
+        if symbolSize is not None:
+            plot_opts['symbolSize'] = symbolSize
+        if lineStyle is not None:
+            plot_opts['lineStyle'] = lineStyle
+        if lineWidth is not None:
+            plot_opts['lineWidth'] = lineWidth
         # Add curve
-        new_curve = TimePlotCurveItem(ychannel, name=name)
+        new_curve = TimePlotCurveItem(y_channel,
+                                      name=name,
+                                      color=color,
+                                      **plot_opts)
         new_curve.setUpdatesAsynchronously(self.updatesAsynchronously)
-        if color:
-            new_curve.setPen(color)
         self.update_timer.timeout.connect(new_curve.asyncUpdate)
         self.addCurve(new_curve, curve_color=color)
         self.redraw_timer.start()
@@ -202,7 +197,8 @@ class PyDMTimePlot(BasePlot):
         else:
             maxrange = time.time()
         minrange = maxrange - self._time_span
-        self.plotItem.setXRange(minrange, maxrange, padding=0.0, update=update_immediately)
+        self.plotItem.setXRange(minrange, maxrange, padding=0.0,
+                                update=update_immediately)
 
     def clearCurves(self):
         super(PyDMTimePlot, self).clear()
@@ -221,7 +217,12 @@ class PyDMTimePlot(BasePlot):
             color = d.get('color')
             if color:
                 color = QColor(color)
-            self.addYChannel(d['channel'], name=d.get('name'), color=color)
+            self.addYChannel(d['channel'],
+                             name=d.get('name'), color=color,
+                             lineStyle=d.get('lineStyle'),
+                             lineWidth=d.get('lineWidth'),
+                             symbol=d.get('symbol'),
+                             symbolSize=d.get('symbolSize'))
 
     curves = pyqtProperty("QStringList", getCurves, setCurves)
 
@@ -240,7 +241,8 @@ class PyDMTimePlot(BasePlot):
             for curve in self._curves:
                 curve.resetBufferSize()
 
-    bufferSize = pyqtProperty("int", getBufferSize, setBufferSize, resetBufferSize)
+    bufferSize = pyqtProperty("int", getBufferSize,
+                              setBufferSize, resetBufferSize)
 
     def getUpdatesAsynchronously(self):
         return self._update_mode == PyDMTimePlot.AsynchronousMode
@@ -261,7 +263,10 @@ class PyDMTimePlot(BasePlot):
         for curve in self._curves:
             curve.resetUpdatesAsynchronously()
 
-    updatesAsynchronously = pyqtProperty("bool", getUpdatesAsynchronously, setUpdatesAsynchronously, resetUpdatesAsynchronously)
+    updatesAsynchronously = pyqtProperty("bool",
+                                         getUpdatesAsynchronously,
+                                         setUpdatesAsynchronously,
+                                         resetUpdatesAsynchronously)
 
     def getTimeSpan(self):
         return float(self._time_span)
@@ -272,7 +277,8 @@ class PyDMTimePlot(BasePlot):
             self._time_span = value
             if self.getUpdatesAsynchronously():
                 for curve in self._curves:
-                    curve.setBufferSize(int((self._time_span * 1000.0) / self._update_interval))
+                    curve.setBufferSize(int((self._time_span * 1000.0) /
+                                            self._update_interval))
             self.updateXAxis(update_immediately=True)
 
     def resetTimeSpan(self):
@@ -280,7 +286,8 @@ class PyDMTimePlot(BasePlot):
             self._time_span = 5.0
             if self.getUpdatesAsynchronously():
                 for curve in self._curves:
-                    curve.setBufferSize(int((self._time_span * 1000.0) / self._update_interval))
+                    curve.setBufferSize(int((self._time_span * 1000.0) /
+                                        self._update_interval))
             self.updateXAxis(update_immediately=True)
 
     timeSpan = pyqtProperty(float, getTimeSpan, setTimeSpan, resetTimeSpan)
@@ -294,16 +301,19 @@ class PyDMTimePlot(BasePlot):
             self._update_interval = value
             self.update_timer.setInterval(self._update_interval)
             if self.getUpdatesAsynchronously():
-                self.setBufferSize(int((self._time_span * 1000.0) / self._update_interval))
+                self.setBufferSize(int((self._time_span * 1000.0) /
+                                       self._update_interval))
 
     def resetUpdateInterval(self):
         if self._update_interval != 100:
             self._update_interval = 100
             self.update_timer.setInterval(self._update_interval)
             if self.getUpdatesAsynchronously():
-                self.setBufferSize(int((self._time_span * 1000.0) / self._update_interval))
+                self.setBufferSize(int((self._time_span * 1000.0) /
+                                       self._update_interval))
 
-    updateInterval = pyqtProperty(float, getUpdateInterval, setUpdateInterval, resetUpdateInterval)
+    updateInterval = pyqtProperty(float, getUpdateInterval,
+                                  setUpdateInterval, resetUpdateInterval)
 
     def getAutoRangeX(self):
         return False
@@ -318,20 +328,24 @@ class PyDMTimePlot(BasePlot):
     # The methods for autoRangeY, minYRange, and maxYRange are
     # all defined in BasePlot, but we don't expose them as properties there, because not all plot
     # subclasses necessarily want them to be user-configurable in Designer.
-    autoRangeY = pyqtProperty(bool, BasePlot.getAutoRangeY, BasePlot.setAutoRangeY, BasePlot.resetAutoRangeY, doc="""
-    Whether or not the Y-axis automatically rescales to fit the data.  If true, the
-    values in minYRange and maxYRange are ignored.
+    autoRangeY = pyqtProperty(bool, BasePlot.getAutoRangeY,
+                              BasePlot.setAutoRangeY,
+                              BasePlot.resetAutoRangeY, doc="""
+    Whether or not the Y-axis automatically rescales to fit the data.
+    If true, the values in minYRange and maxYRange are ignored.
     """)
 
-    minYRange = pyqtProperty(float, BasePlot.getMinYRange, BasePlot.setMinYRange, doc="""
-    Minimum Y-axis value visible on the plot.
-    """)
+    minYRange = pyqtProperty(float, BasePlot.getMinYRange,
+                             BasePlot.setMinYRange, doc="""
+    Minimum Y-axis value visible on the plot.""")
 
-    maxYRange = pyqtProperty(float, BasePlot.getMaxYRange, BasePlot.setMaxYRange, doc="""
-    Maximum Y-axis value visible on the plot.
-    """)
+    maxYRange = pyqtProperty(float, BasePlot.getMaxYRange,
+                             BasePlot.setMaxYRange, doc="""
+    Maximum Y-axis value visible on the plot.""")
+
 
 class TimeAxisItem(AxisItem):
+
     def tickStrings(self, values, scale, spacing):
         strings = []
         for val in values:
