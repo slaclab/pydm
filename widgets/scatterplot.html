@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMScatterPlot &mdash; PyDM 0.3.0+58.gf391c2f documentation</title>
+  <title>PyDMScatterPlot &mdash; PyDM 0.3.0+59.g3632169 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+58.gf391c2f documentation" href="../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+59.g3632169 documentation" href="../index.html"/>
         <link rel="up" title="PyDM Widgets" href="index.html"/>
         <link rel="next" title="PyDMShellCommand" href="shell_command.html"/>
         <link rel="prev" title="PyDMRelatedDisplayButton" href="related_display_button.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.3.0+58.gf391c2f
+                0.3.0+59.g3632169
               </div>
             
           
@@ -196,19 +196,21 @@ drawn.  The buffer size for each pair is user configurable.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>parent</strong> (<em>optional</em>) – The parent of this widget.</li>
-<li><strong>init_x_channels</strong> (<em>optional</em>) – init_x_channels can be a string with the address for a channel, or a list of
-strings, each containing an address for a channel.  If not specified, y-axis
-waveforms will be plotted against their indices.  If a list is specified for
-both init_x_channels and init_y_channels, they both must have the same length.
-If a single x channel was specified, and a list of y channels are specified, all
-y channels will be plotted against the same x channel.</li>
-<li><strong>init_y_channels</strong> (<em>optional</em>) – init_y_channels can be a string with the address for a channel, or a list of
-strings, each containing an address for a channel.  If a list is specified for
-both init_x_channels and init_y_channels, they both must have the same length.
-If a single x channel was specified, and a list of y channels are specified, all
-y channels will be plotted against the same x channel.</li>
-<li><strong>background</strong> (<em>optional</em>) – The background color for the plot.  Accepts any arguments that pyqtgraph.mkColor
-will accept.</li>
+<li><strong>init_x_channels</strong> (<em>optional</em>) – init_x_channels can be a string with the address for a channel,
+or a list of strings, each containing an address for a channel.
+If not specified, y-axis waveforms will be plotted against their
+indices.  If a list is specified for both init_x_channels and
+init_y_channels, they both must have the same length.
+If a single x channel was specified, and a list of y channels are
+specified, all y channels will be plotted against the same x channel.</li>
+<li><strong>init_y_channels</strong> (<em>optional</em>) – init_y_channels can be a string with the address for a channel,
+or a list of strings, each containing an address for a channel.
+If a list is specified for both init_x_channels and init_y_channels,
+they both must have the same length.
+If a single x channel was specified, and a list of y channels are
+specified, all y channels will be plotted against the same x channel.</li>
+<li><strong>background</strong> (<em>optional</em>) – The background color for the plot. Accepts any arguments that
+pyqtgraph.mkColor will accept.</li>
 </ul>
 </td>
 </tr>
@@ -216,7 +218,7 @@ will accept.</li>
 </table>
 <dl class="method">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.addChannel">
-<code class="descname">addChannel</code><span class="sig-paren">(</span><em>y_channel=None</em>, <em>x_channel=None</em>, <em>name=None</em>, <em>color=None</em>, <em>lineStyle=None</em>, <em>lineWidth=None</em>, <em>symbol=None</em>, <em>symbolSize=None</em>, <em>redraw_mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.addChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.addChannel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addChannel</code><span class="sig-paren">(</span><em>y_channel=None</em>, <em>x_channel=None</em>, <em>name=None</em>, <em>color=None</em>, <em>lineStyle=None</em>, <em>lineWidth=None</em>, <em>symbol=None</em>, <em>symbolSize=None</em>, <em>redraw_mode=None</em>, <em>buffer_size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.addChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.addChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new curve to the plot.  In addition to the arguments below,
 all other keyword arguments are passed to the underlying
 pyqtgraph.PlotDataItem used to draw the curve.</p>
@@ -233,11 +235,20 @@ automatically assign a unique color from a set of default colors.</li>
 <li><strong>lineStyle</strong> (<em>int</em><em>, </em><em>optional</em>) – Style of the line connecting the data points.
 0 means no line (scatter plot).</li>
 <li><strong>lineWidth</strong> (<em>int</em><em>, </em><em>optional</em>) – Width of the line connecting the data points.</li>
-<li><strong>redraw_mode</strong> (<em>int</em><em>, </em><em>optional</em>) – Must be one four values:
-ScatterPlotCurveItem.REDRAW_ON_EITHER: (Default) The curve will be redrawn after either X or Y receives new data.
-ScatterPlotCurveItem.REDRAW_ON_X: The curve will only be redrawn after X receives new data.
-ScatterPlotCurveItem.REDRAW_ON_Y: The curve will only be redrawn after Y receives new data.
-ScatterPlotCurveItem.REDRAW_ON_BOTH: The curve will only be redrawn after both X and Y receive new data.</li>
+<li><strong>redraw_mode</strong> (<em>int</em><em>, </em><em>optional</em>) – <p>Must be one four values:
+ScatterPlotCurveItem.REDRAW_ON_EITHER: (Default)</p>
+<blockquote>
+<div>Redraw after either X or Y receives new data.</div></blockquote>
+<dl class="docutils">
+<dt>ScatterPlotCurveItem.REDRAW_ON_X:</dt>
+<dd>Redraw after X receives new data.</dd>
+<dt>ScatterPlotCurveItem.REDRAW_ON_Y:</dt>
+<dd>Redraw after Y receives new data.</dd>
+<dt>ScatterPlotCurveItem.REDRAW_ON_BOTH:</dt>
+<dd>Redraw after both X and Y receive new data.</dd>
+</dl>
+</li>
+<li><strong>buffer_size</strong> (<em>int</em><em>, </em><em>optional</em>) – number of points to keep in the buffer.</li>
 <li><strong>symbol</strong> (<em>int</em><em>, </em><em>optional</em>) – Which symbol to use to represent the data.</li>
 <li><strong>symbol</strong> – Size of the symbol.</li>
 </ul>
@@ -250,15 +261,15 @@ ScatterPlotCurveItem.REDRAW_ON_BOTH: The curve will only be redrawn after both X
 <dl class="attribute">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.autoRangeX">
 <code class="descname">autoRangeX</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.autoRangeX" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether or not the X-axis automatically rescales to fit the data.  If true, the
-values in minXRange and maxXRange are ignored.</p>
+<dd><p>Whether or not the X-axis automatically rescales to fit the data.
+If true, the values in minXRange and maxXRange are ignored.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.autoRangeY">
 <code class="descname">autoRangeY</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.autoRangeY" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether or not the Y-axis automatically rescales to fit the data.  If true, the
-values in minYRange and maxYRange are ignored.</p>
+<dd><p>Whether or not the Y-axis automatically rescales to fit the data.
+If true, the values in minYRange and maxYRange are ignored.</p>
 </dd></dl>
 
 <dl class="method">
@@ -427,7 +438,7 @@ all curves for the plot.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.3.0+58.gf391c2f',
+            VERSION:'0.3.0+59.g3632169',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

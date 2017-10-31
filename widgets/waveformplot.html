@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMWaveformPlot &mdash; PyDM 0.3.0+58.gf391c2f documentation</title>
+  <title>PyDMWaveformPlot &mdash; PyDM 0.3.0+59.g3632169 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+58.gf391c2f documentation" href="../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+59.g3632169 documentation" href="../index.html"/>
         <link rel="up" title="PyDM Widgets" href="index.html"/>
         <link rel="next" title="PyDMWaveformTable" href="waveformtable.html"/>
         <link rel="prev" title="PyDMTimePlot" href="timeplot.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.3.0+58.gf391c2f
+                0.3.0+59.g3632169
               </div>
             
           
@@ -186,28 +186,30 @@
 <dl class="class">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot">
 <em class="property">class </em><code class="descclassname">pydm.widgets.waveformplot.</code><code class="descname">PyDMWaveformPlot</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_x_channels=[]</em>, <em>init_y_channels=[]</em>, <em>background='default'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot" title="Permalink to this definition">¶</a></dt>
-<dd><p>PyDMWaveformPlot is a widget to plot one or more waveforms.  Each curve can plot
-either a Y-axis waveform vs. its indices, or a Y-axis waveform against an X-axis
-waveform.</p>
+<dd><p>PyDMWaveformPlot is a widget to plot one or more waveforms.</p>
+<p>Each curve can plot either a Y-axis waveform vs. its indices,
+or a Y-axis waveform against an X-axis waveform.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>parent</strong> (<em>optional</em>) – The parent of this widget.</li>
-<li><strong>init_x_channels</strong> (<em>optional</em>) – init_x_channels can be a string with the address for a channel, or a list of
-strings, each containing an address for a channel.  If not specified, y-axis
-waveforms will be plotted against their indices.  If a list is specified for
-both init_x_channels and init_y_channels, they both must have the same length.
-If a single x channel was specified, and a list of y channels are specified, all
-y channels will be plotted against the same x channel.</li>
-<li><strong>init_y_channels</strong> (<em>optional</em>) – init_y_channels can be a string with the address for a channel, or a list of
-strings, each containing an address for a channel.  If a list is specified for
-both init_x_channels and init_y_channels, they both must have the same length.
-If a single x channel was specified, and a list of y channels are specified, all
-y channels will be plotted against the same x channel.</li>
-<li><strong>background</strong> (<em>optional</em>) – The background color for the plot.  Accepts any arguments that pyqtgraph.mkColor
-will accept.</li>
+<li><strong>init_x_channels</strong> (<em>optional</em>) – init_x_channels can be a string with the address for a channel,
+or a list of strings, each containing an address for a channel.
+If not specified, y-axis waveforms will be plotted against their
+indices. If a list is specified for both init_x_channels and
+init_y_channels, they both must have the same length.
+If a single x channel was specified, and a list of y channels are
+specified, all y channels will be plotted against the same x channel.</li>
+<li><strong>init_y_channels</strong> (<em>optional</em>) – init_y_channels can be a string with the address for a channel,
+or a list of strings, each containing an address for a channel.
+If a list is specified for both init_x_channels and init_y_channels,
+they both must have the same length.
+If a single x channel was specified, and a list of y channels are
+specified, all y channels will be plotted against the same x channel.</li>
+<li><strong>background</strong> (<em>optional</em>) – The background color for the plot.  Accepts any arguments that
+pyqtgraph.mkColor will accept.</li>
 </ul>
 </td>
 </tr>
@@ -232,11 +234,19 @@ automatically assign a unique color from a set of default colors.</li>
 <li><strong>lineStyle</strong> (<em>int</em><em>, </em><em>optional</em>) – Style of the line connecting the data points.
 0 means no line (scatter plot).</li>
 <li><strong>lineWidth</strong> (<em>int</em><em>, </em><em>optional</em>) – Width of the line connecting the data points.</li>
-<li><strong>redraw_mode</strong> (<em>int</em><em>, </em><em>optional</em>) – Must be one four values:
-WaveformCurveItem.REDRAW_ON_EITHER: (Default) The curve will be redrawn after either X or Y receives new data.
-WaveformCurveItem.REDRAW_ON_X: The curve will only be redrawn after X receives new data.
-WaveformCurveItem.REDRAW_ON_Y: The curve will only be redrawn after Y receives new data.
-WaveformCurveItem.REDRAW_ON_BOTH: The curve will only be redrawn after both X and Y receive new data.</li>
+<li><strong>redraw_mode</strong> (<em>int</em><em>, </em><em>optional</em>) – <p>Must be one four values:
+WaveformCurveItem.REDRAW_ON_EITHER: (Default)</p>
+<blockquote>
+<div>Redraw after either X or Y receives new data.</div></blockquote>
+<dl class="docutils">
+<dt>WaveformCurveItem.REDRAW_ON_X:</dt>
+<dd>Redraw after X receives new data.</dd>
+<dt>WaveformCurveItem.REDRAW_ON_Y:</dt>
+<dd>Redraw after Y receives new data.</dd>
+<dt>WaveformCurveItem.REDRAW_ON_BOTH:</dt>
+<dd>Redraw after both X and Y receive new data.</dd>
+</dl>
+</li>
 <li><strong>symbol</strong> (<em>int</em><em>, </em><em>optional</em>) – Which symbol to use to represent the data.</li>
 <li><strong>symbol</strong> – Size of the symbol.</li>
 </ul>
@@ -249,15 +259,15 @@ WaveformCurveItem.REDRAW_ON_BOTH: The curve will only be redrawn after both X an
 <dl class="attribute">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.autoRangeX">
 <code class="descname">autoRangeX</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.autoRangeX" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether or not the X-axis automatically rescales to fit the data.  If true, the
-values in minXRange and maxXRange are ignored.</p>
+<dd><p>Whether or not the X-axis automatically rescales to fit the data.
+If true, the values in minXRange and maxXRange are ignored.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.autoRangeY">
 <code class="descname">autoRangeY</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.autoRangeY" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether or not the Y-axis automatically rescales to fit the data.  If true, the
-values in minYRange and maxYRange are ignored.</p>
+<dd><p>Whether or not the Y-axis automatically rescales to fit the data.
+If true, the values in minYRange and maxYRange are ignored.</p>
 </dd></dl>
 
 <dl class="method">
@@ -426,7 +436,7 @@ all curves for the plot.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.3.0+58.gf391c2f',
+            VERSION:'0.3.0+59.g3632169',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
