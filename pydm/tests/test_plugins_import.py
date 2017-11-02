@@ -1,4 +1,5 @@
 from ..widgets.qtplugin_base import qtplugin_factory
+from ..widgets.baseplot_qtplugin import qtplugin_plot_factory
 
 def test_import_byte_plugin():
     # Byte plugin
@@ -36,65 +37,85 @@ def test_import_combobox_plugin():
     from ..widgets.enum_combo_box import PyDMEnumComboBox
     PyDMEnumComboBoxPlugin = qtplugin_factory(PyDMEnumComboBox)
 
-def test_image_plugin():
+def test_import_image_plugin():
     # Image plugin
     from ..widgets.image import PyDMImageView
     PyDMImageViewPlugin = qtplugin_factory(PyDMImageView)
 
-def test_indicator_plugin():
+def test_import_indicator_plugin():
     # Indicator plugin
     from ..widgets.indicator import PyDMIndicator
     PyDMIndicatorPlugin = qtplugin_factory(PyDMIndicator)
 
-def test_label_plugin():
+def test_import_label_plugin():
     # Label plugin
     from ..widgets.label import PyDMLabel
     PyDMLabelPlugin = qtplugin_factory(PyDMLabel)
 
-def test_line_edit_plugin():
+def test_import_line_edit_plugin():
     # Line Edit plugin
     from ..widgets.line_edit import PyDMLineEdit
     PyDMLineEditPlugin = qtplugin_factory(PyDMLineEdit)
 
-def test_pushbutton_plugin():
+def test_import_pushbutton_plugin():
     # Push Button plugin
     from ..widgets.pushbutton import PyDMPushButton
     PyDMPushButtonPlugin = qtplugin_factory(PyDMPushButton)
 
-def test_related_display_plugin():
+def test_import_related_display_plugin():
     # Related Display Button plugin
     from ..widgets.related_display_button import PyDMRelatedDisplayButton
     PyDMRelatedDisplayButtonPlugin = qtplugin_factory(PyDMRelatedDisplayButton)
 
-def test_shellcmd_plugin():
+def test_import_scale_indicator_plugin():
+    # Scale Indicator plugin
+    from ..widgets.scale import PyDMScaleIndicator
+    PyDMScaleIndicatorPlugin = qtplugin_factory(PyDMScaleIndicator)
+
+def test_import_shellcmd_plugin():
     # Shell Command plugin
     from ..widgets.shell_command import PyDMShellCommand
     PyDMShellCommandPlugin = qtplugin_factory(PyDMShellCommand)
 
-def test_slider_plugin():
+def test_import_slider_plugin():
     # Slider plugin
     from ..widgets.slider import PyDMSlider
     PyDMSliderPlugin = qtplugin_factory(PyDMSlider)
 
-def test_spinbox_plugin():
+def test_import_spinbox_plugin():
     # Spinbox plugin
     from ..widgets.spinbox import PyDMSpinbox
     PyDMSpinboxplugin = qtplugin_factory(PyDMSpinbox)
 
-def test_symbol_plugin():
+def test_import_symbol_plugin():
     # Symbol plugin
     from ..widgets.symbol import PyDMSymbol
     PyDMSymbolPlugin = qtplugin_factory(PyDMSymbol)
 
-def test_waveform_table_plugin():
+def test_import_waveform_table_plugin():
     # Waveform Table plugin
     from ..widgets.waveformtable import PyDMWaveformTable
     PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable)
 
-def test_timeplot_plugin():
+def test_import_timeplot_plugin():
     # Time Plot plugin
-    from ..widgets.timeplot_qtplugin import PyDMTimePlotPlugin
+    from ..widgets.timeplot import PyDMTimePlot
+    from ..widgets.timeplot_curve_editor import TimePlotCurveEditorDialog
+    # Time Plot plugin
+    PyDMTimePlotPlugin = qtplugin_plot_factory(
+                                PyDMTimePlot, TimePlotCurveEditorDialog)
 
-def test_waveformplot_plugin():
+def test_import_waveformplot_plugin():
+    # Time Plot plugin
+    from ..widgets.waveformplot import PyDMWaveformPlot
+    from ..widgets.waveformplot_curve_editor import WaveformPlotCurveEditorDialog
     # Waveform Plot plugin
-    from ..widgets.waveformplot_qtplugin import PyDMWaveformPlotPlugin
+    PyDMWaveformPlotPlugin = qtplugin_plot_factory(
+                                PyDMWaveformPlot, WaveformPlotCurveEditorDialog)
+
+def test_import_scatterplot_plugin():
+    from ..widgets.scatterplot import PyDMScatterPlot
+    from ..widgets.scatterplot_curve_editor import ScatterPlotCurveEditorDialog
+    # Scatter Plot plugin
+    PyDMScatterPlotPlugin = qtplugin_plot_factory(
+                                PyDMScatterPlot, ScatterPlotCurveEditorDialog)
