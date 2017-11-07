@@ -11,7 +11,7 @@ with open(path.join(cur_dir, 'requirements.txt')) as f:
     requirements = f.read().split()
 
 # Remove the 'optional' requirements
-optional = ('PyQt5', 'PySide', 'psutil', 'pcaspy', 'pyepics', 'pyqtgraph')
+optional = ('PyQt5', 'PySide', 'psutil', 'pcaspy', 'pyepics')
 for package in optional:
     if package in requirements:
         requirements.remove(package)
@@ -27,14 +27,13 @@ extras_require = {
 
 if "CONDA_PREFIX" not in environ:
     extras_require['PyQt5'] = ['PyQt5']
-    extras_require['pyqtgraph'] = ['pyqtgraph']
 else:
     print("******************************************************************")
     print("*                              WARNING                           *") 
     print("******************************************************************")
     print("Installing at an Anaconda Environment, to avoid naming conflicts ")
     print("make sure you do:")
-    print("conda install pyqt=5 pyqtgraph")
+    print("conda install pyqt=5")
     print("******************************************************************")
     print("For more info please check: ")
     print("https://github.com/ContinuumIO/anaconda-issues/issues/1554")
