@@ -1,0 +1,43 @@
+{% set data = load_setup_py_data() %}
+
+package:
+    name    : pydm 
+    version : {{ data.get('version') }}
+
+source:
+    path: ..
+
+requirements:
+    build:
+      - python
+      - setuptools
+      - six
+      - numpy >=1.11.0
+      - scipy >=0.12.0
+      - pyepics >=3.2.7
+      - requests >=1.1.0
+      - pyqt >=5
+      - pyqtgraph
+
+    run:
+      - six
+      - python
+      - numpy >=1.11.0
+      - scipy >=0.12.0
+      - pyepics >=3.2.7
+      - requests >=1.1.0
+      - psutil
+      - pyqt >=5
+      - pyqtgraph
+
+test:
+    imports:
+      - pydm 
+
+    requires: 
+      - pytest
+
+about:
+  home: https://github.com/slaclab/pydm
+  license: SLAC Open License
+  summary: Python Display Manager
