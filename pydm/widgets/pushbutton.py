@@ -42,6 +42,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         ID of channel to manipulate
 
     """
+
     DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed ?"
 
     def __init__(self, parent=None, label=None, icon=None,
@@ -207,8 +208,8 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         ----------
         value : str
         """
-        if value != self._pressValue:
-            self._pressValue = self.channeltype(value)
+        if str(value) != self._pressValue:
+            self._pressValue = str(value)
 
     @pyqtProperty(bool)
     def relativeChange(self):
@@ -233,7 +234,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @relativeChange.setter
     def relativeChange(self, choice):
         """
-        The mode of operation of the PyDMPushButton
+        The mode of operation of the PyDMPushButton.
 
         If set to True, the :attr:`pressValue` will be added to the current
         value of the channel. If False, the :attr:`pressValue` will be sent
@@ -253,7 +254,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
     def confirm_dialog(self):
         """
-        Shows the confirmation dialog with the proper message in case
+        Show the confirmation dialog with the proper message in case
         ```showConfirmMessage``` is True.
 
         Returns
@@ -336,7 +337,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @pyqtSlot()
     def sendValue(self):
         """
-        Send a new value to the channel
+        Send a new value to the channel.
 
         This function interprets the settings of the PyDMPushButton and sends
         the appropriate value out through the :attr:`.send_value_signal`.
@@ -361,7 +362,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     def updatePressValue(self, value):
         """
         Update the pressValue of a function by passing a signal to the
-        PyDMPushButton
+        PyDMPushButton.
 
         This is useful to dynamically change the pressValue of the button
         during runtime. This enables the applied value to be linked to the
