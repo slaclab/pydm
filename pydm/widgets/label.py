@@ -2,6 +2,7 @@ from .base import PyDMWidget
 from ..PyQt.QtGui import QLabel
 from ..PyQt.QtCore import Qt, pyqtProperty, Q_ENUMS, QObject
 import numpy as np
+import math
 
 try:
     # unichr is not available on Py3+
@@ -46,7 +47,6 @@ class PyDMLabel(QLabel, PyDMWidget, DisplayFormat):
 
     @displayFormat.setter
     def displayFormat(self, new_type):
-        print("Display Format : ", new_type)
         if self._display_format_type != new_type:
             self._display_format_type = new_type
 
@@ -63,22 +63,27 @@ class PyDMLabel(QLabel, PyDMWidget, DisplayFormat):
         elif self._display_format_type == DisplayFormat.Decimal:
             # This case is taken care by the current string formatting 
             # routine
-            return r
+            return new_value
         elif self._display_format_type == DisplayFormat.Exponential:
             fmt_string = "{"+":.{}e".format(self._prec)+"}"
             try:
                 r = fmt_string.format(new_value)
-            except ValueError:
-                print("Could not format value {} to exponential.".format(new_value))
+            except (ValueError, TypeError):
+                print("Could not display value {} using displayFormat 'Exponential' at widget named '{}'.".format(new_value, self.objectName()))
                 r = new_value
             return r
         elif self._display_format_type == DisplayFormat.Hex:
-            # TODO: Implement Hexadecimal formating
-            fmt_string = "{:#0X}"
             try:
-                r = fmt_string.format(new_value)
-            except ValueError:
-                print("Could not format value {} to hex.".format(new_value))
+                r = hex(math.floor(new_value))
+            except (ValueError, TypeError):
+                print("Could not display value {} using displayFormat 'Hex' at widget named '{}'.".format(new_value, self.objectName()))
+                r = new_value
+            return r
+        elif self._display_format_type == DisplayFormat.Binary:
+            try:
+                r = bin(math.floor(new_value))
+            except (ValueError, TypeError):
+                print("Could not display value {} using displayFormat 'Binary' at widget named '{}'.".format(new_value, self.objectName()))
                 r = new_value
             return r
 
