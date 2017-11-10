@@ -16,6 +16,16 @@ for i, cm in enumerate(sorted(cmaps.keys())):
     COLORMAP[cm] = i
 
 
+class readingOrderMap:
+    for k in sorted(READINGORDER.keys()):
+        locals()[k] = READINGORDER[k]
+
+
+class colormapMap:
+    for k in sorted(COLORMAP.keys()):
+        locals()[k] = COLORMAP[k]
+
+
 class PyDMImageView(ImageView, PyDMWidget):
     """
     A PyQtGraph ImageView with support for Channels and more from PyDM.
@@ -37,24 +47,14 @@ class PyDMImageView(ImageView, PyDMWidget):
         The channel to be used by the widget to receive the image width
         information
     """
+    Q_ENUMS(readingOrderMap)
+    Q_ENUMS(colormapMap)
 
     # enumMap for readingOrderMap
     locals().update(**READINGORDER)
 
-    class readingOrderMap:
-        for k in sorted(READINGORDER.keys()):
-            locals()[k] = READINGORDER[k]
-
-    Q_ENUMS(readingOrderMap)
-
     # enumMap for colormapMap
     locals().update(**COLORMAP)
-
-    class colormapMap:
-        for k in sorted(COLORMAP.keys()):
-            locals()[k] = COLORMAP[k]
-
-    Q_ENUMS(colormapMap)
 
     readingorderdict = {}
     for rd, i in READINGORDER.items():
