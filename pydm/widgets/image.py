@@ -16,17 +16,17 @@ for i, cm in enumerate(sorted(cmaps.keys())):
     COLORMAP[cm] = i
 
 
-class readingOrderMap:
+class _ReadingOrderMap(object):
     for k in sorted(READINGORDER.keys()):
         locals()[k] = READINGORDER[k]
 
 
-class colormapMap:
+class _ColormapMap(object):
     for k in sorted(COLORMAP.keys()):
         locals()[k] = COLORMAP[k]
 
 
-class PyDMImageView(ImageView, PyDMWidget):
+class PyDMImageView(ImageView, PyDMWidget, _ColormapMap, _ReadingOrderMap):
     """
     A PyQtGraph ImageView with support for Channels and more from PyDM.
 
@@ -47,14 +47,9 @@ class PyDMImageView(ImageView, PyDMWidget):
         The channel to be used by the widget to receive the image width
         information
     """
-    Q_ENUMS(readingOrderMap)
-    Q_ENUMS(colormapMap)
 
-    # enumMap for readingOrderMap
-    locals().update(**READINGORDER)
-
-    # enumMap for colormapMap
-    locals().update(**COLORMAP)
+    Q_ENUMS(_ReadingOrderMap)
+    Q_ENUMS(_ColormapMap)
 
     readingorderdict = {}
     for rd, i in READINGORDER.items():
@@ -273,7 +268,7 @@ class PyDMImageView(ImageView, PyDMWidget):
         if self._widthchannel != value:
             self._widthchannel = str(value)
 
-    @pyqtProperty(colormapMap)
+    @pyqtProperty(_ColormapMap)
     def colormap(self):
         """Return the index of the colormap to be used.
 
@@ -370,7 +365,7 @@ class PyDMImageView(ImageView, PyDMWidget):
         self.cm_max = float(new_max)
         self.setColorMap()
 
-    @pyqtProperty(readingOrderMap)
+    @pyqtProperty(_ReadingOrderMap)
     def readingOrder(self):
         """Reading order of the :attr:`imageChannel` array.
 
