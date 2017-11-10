@@ -10,7 +10,7 @@ try:
 except NameError:
     unichr = chr
 
-class DisplayFormat:
+class DisplayFormat(object):
     Default = 0
     String = 1
     Decimal = 2
@@ -19,8 +19,8 @@ class DisplayFormat:
     Binary = 5
 
 class PyDMLabel(QLabel, PyDMWidget, DisplayFormat):
-    DisplayFormat = DisplayFormat        
     Q_ENUMS(DisplayFormat)
+    DisplayFormat = DisplayFormat
     """
     A QLabel with support for Channels and more from PyDM
 
