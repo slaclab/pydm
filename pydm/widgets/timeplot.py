@@ -133,9 +133,6 @@ class PyDMTimePlot(BasePlot):
         self.plotItem.disableAutoRange(ViewBox.XAxis)
         self.getViewBox().setMouseEnabled(x=False)
         self._bufferSize = 1200
-        self.redraw_timer = QTimer(self)
-        self.redraw_timer.setInterval(20)
-        self.redraw_timer.timeout.connect(self.redrawPlot)
         self.update_timer = QTimer(self)
         self._time_span = 5.0  # This is in seconds
         self._update_interval = 100
@@ -183,8 +180,6 @@ class PyDMTimePlot(BasePlot):
 
     @pyqtSlot()
     def redrawPlot(self):
-        if len(self._curves) == 0:
-            return
         self.updateXAxis()
         for curve in self._curves:
             curve.redrawCurve()

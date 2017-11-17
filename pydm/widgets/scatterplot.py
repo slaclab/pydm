@@ -183,7 +183,6 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         self.data_buffer[1, -1] = self.latest_y_value
         if self.points_accumulated < self._bufferSize:
             self.points_accumulated = self.points_accumulated + 1
-        self.data_changed.emit()
 
     def initialize_buffer(self):
         self.points_accumulated = 0
@@ -347,7 +346,6 @@ class PyDMScatterPlot(BasePlot):
                                      **plot_opts)
         if buffer_size is not None:
             curve.setBufferSize(buffer_size)
-        curve.data_changed.connect(self.redrawPlot)
         self.channel_pairs[(y_channel, x_channel)] = curve
         self.addCurve(curve, curve_color=color)
 
@@ -360,7 +358,6 @@ class PyDMScatterPlot(BasePlot):
         curve: ScatterPlotCurveItem
             The curve to remove.
         """
-        curve.data_changed.disconnect(self.redrawPlot)
         self.removeCurve(curve)
 
     def removeChannelAtIndex(self, index):

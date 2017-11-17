@@ -257,7 +257,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.setShowXGrid(False)
         self._show_y_grid = None
         self.setShowYGrid(False)
-
+        self.redraw_timer = QTimer(self)
+        self.redraw_timer.timeout.connect(self.redrawPlot)
+        self._redraw_rate = 30 #Redraw at 30 Hz by default.
+        self.maxRedrawRate = self._redraw_rate
         self._curves = []
         self._title = None
         self._show_legend = False
@@ -271,12 +274,15 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             plot_item.color_string = curve_color
         self._curves.append(plot_item)
         self.addItem(plot_item)
+        self.redraw_timer.start()
         # self._legend.addItem(plot_item, plot_item.curve_name)
 
     def removeCurve(self, plot_item):
         self.removeItem(plot_item)
         # self._legend.removeItem(plot_item.name())
         self._curves.remove(plot_item)
+        if len(self._curves) < 1:
+            self.redraw_timer.stop()
 
     def removeCurveWithName(self, name):
         for curve in self._curves:
@@ -305,6 +311,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             self._legend.removeItem(item)
         self.plotItem.clear()
         self._curves = []
+
+    @pyqtSlot()
+    def redrawPlot(self):
+        pass
 
     def getShowXGrid(self):
         return self._show_x_grid
@@ -538,3 +548,28 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         y_enabled : bool
         """
         self.plotItem.setMouseEnabled(y=y_enabled)
+
+    @pyqtProperty(int)
+    def maxRedrawRate(self):
+        """
+        The maximum rate (in Hz) at which the plot will be redrawn.
+        The plot will not be redrawn if there is not new data to draw.
+        
+        Returns
+        -------
+        int
+        """
+        return self._redraw_rate
+    
+    @maxRedrawRate.setter
+    def maxRedrawRate(self, redraw_rate):
+        """
+        The maximum rate (in Hz) at which the plot will be redrawn.
+        The plot will not be redrawn if there is not new data to draw.
+        
+        Parameters
+        -------
+        redraw_rate : int
+        """
+        self._redraw_rate = redraw_rate
+        self.redraw_timer.setInterval(int((1.0/self._redraw_rate)*1000))

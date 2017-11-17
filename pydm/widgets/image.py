@@ -1,11 +1,13 @@
 from ..PyQt.QtGui import QActionGroup
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty
+from ..PyQt.QtCore import pyqtSlot, pyqtProperty, QTimer
 from pyqtgraph import ImageView
 from pyqtgraph import ColorMap
 import numpy as np
 from .channel import PyDMChannel
 from .colormaps import cmaps
 from .base import PyDMWidget
+import pyqtgraph
+pyqtgraph.setConfigOption('imageAxisOrder', 'row-major')
 
 class PyDMImageView(ImageView, PyDMWidget):
     """
@@ -32,15 +34,14 @@ class PyDMImageView(ImageView, PyDMWidget):
         self.image_waveform = np.zeros(0)
         self.image_width = 0
         self.ui.histogram.hide()
-        del self.ui.histogram
+        self.getImageItem().sigImageChanged.disconnect(self.ui.histogram.imageChanged)
         self.ui.roiBtn.hide()
         self.ui.menuBtn.hide()
         self.cm_min = 0.0
         self.cm_max = 255.0
-        self.data_max_int = 255  # This is the max value for the image waveform's data type.  It gets set when the waveform updates.
+        self.data_max_int = None  # This is the max value for the image waveform's data type.  It gets set when the waveform updates.
         self._colormapname = "inferno"
         self._cm_colors = None
-        self._needs_reshape = False
         self.setColorMapToPreset(self._colormapname)
         cm_menu = self.getView().getMenu(None).addMenu("Color Map")
         cm_group = QActionGroup(self)
@@ -51,7 +52,12 @@ class PyDMImageView(ImageView, PyDMWidget):
             if map_name == self._colormapname:
                 action.setChecked(True)
         cm_menu.triggered.connect(self.changeColorMap)
-
+        self.needs_redraw = False
+        self.redraw_timer = QTimer(self)
+        self.redraw_timer.timeout.connect(self.redrawImage)
+        self._redraw_rate = 30
+        self.maxRedrawRate = self._redraw_rate
+        
     def changeColorMap(self, action):
         """
         Method invoked by the colormap Action Menu that changes the
@@ -130,6 +136,8 @@ class PyDMImageView(ImageView, PyDMWidget):
         ----------
         cmap : ColorMap
         """
+        if self.data_max_int is None:
+            return
         if not cmap:
             if not self._cm_colors.any():
                 return
@@ -140,6 +148,13 @@ class PyDMImageView(ImageView, PyDMWidget):
         self.getImageItem().setLookupTable(lut)
         self.getImageItem().setLevels([self.cm_min, float(min(self.cm_max, self.data_max_int))])  # set levels from min to max of image (may improve min here)
 
+    @pyqtSlot(bool)
+    def image_connection_state_changed(self, conn):
+        if conn:
+            self.redraw_timer.start()
+        else:
+            self.redraw_timer.stop()
+
     @pyqtSlot(np.ndarray)
     def image_value_changed(self, new_image):
         """
@@ -149,22 +164,15 @@ class PyDMImageView(ImageView, PyDMWidget):
         Parameters
         ----------
         new_image : np.ndarray
-            The new image data as a flat array
+            The new image data.  This can be a flat 1D array, or a 2D array.
         """
         if new_image is None:
             return
-        if len(new_image.shape) == 1:
-            if self.image_width == 0:
-                self.image_waveform = new_image
-                self._needs_reshape = True
-                # We'll wait to draw the image until we get the width.
-                return
-            self.image_waveform = new_image.reshape((int(self.image_width), -1), order='F')
-        elif len(new_image.shape) == 2:
-            self.image_waveform = new_image
-        self.data_max_int = np.amax(self.image_waveform)  # take the max value of the recieved image
-        self.setColorMap()  # to update the colormap immediately
-        self.redrawImage()
+        self.image_waveform = new_image
+        self.needs_redraw = True
+        if self.data_max_int is None:
+            self.data_max_int = np.iinfo(self.image_waveform.dtype).max
+            self.setColorMap() #Now that we know the max size, set the color map appropriately.
 
     @pyqtSlot(int)
     def image_width_changed(self, new_width):
@@ -180,18 +188,24 @@ class PyDMImageView(ImageView, PyDMWidget):
         if new_width is None:
             return
         self.image_width = int(new_width)
-        if self._needs_reshape:
-            self.image_waveform = self.image_waveform.reshape((int(self.image_width), -1), order='F')
-            self._needs_reshape = False
-        self.redrawImage()
 
     def redrawImage(self):
         """
         Set the image data into the ImageItem
         """
-        if len(self.image_waveform) > 0 and self.image_width > 0:
-            self.getImageItem().setImage(self.image_waveform, autoLevels=False,
-                          autoHistogramRange=False, xvals=[0, 1])
+        if not self.needs_redraw:
+            return
+        image_dimensions = len(self.image_waveform.shape)
+        if image_dimensions == 1:
+            if self.image_width < 1:
+                #We don't have a width for this image yet, so we can't draw it.
+                return
+            img = self.image_waveform.reshape(self.image_width, -1, order='F')
+        else:
+            img = self.image_waveform
+        if len(img) > 0:
+            self.getImageItem().setImage(img, autoLevels=False, autoDownsample=True)
+            self.needs_redraw = False
 
     def keyPressEvent(self, ev):
         return
@@ -257,10 +271,35 @@ class PyDMImageView(ImageView, PyDMWidget):
         """
         return [
             PyDMChannel(address=self.imageChannel,
-                        connection_slot=self.connectionStateChanged,
+                        connection_slot=self.image_connection_state_changed,
                         value_slot=self.image_value_changed,
                         severity_slot=self.alarmSeverityChanged),
             PyDMChannel(address=self.widthChannel,
                         connection_slot=self.connectionStateChanged,
                         value_slot=self.image_width_changed,
                         severity_slot=self.alarmSeverityChanged)]
+
+    @pyqtProperty(int)
+    def maxRedrawRate(self):
+        """
+        The maximum rate (in Hz) at which the plot will be redrawn.
+        The plot will not be redrawn if there is not new data to draw.
+        
+        Returns
+        -------
+        int
+        """
+        return self._redraw_rate
+    
+    @maxRedrawRate.setter
+    def maxRedrawRate(self, redraw_rate):
+        """
+        The maximum rate (in Hz) at which the plot will be redrawn.
+        The plot will not be redrawn if there is not new data to draw.
+        
+        Parameters
+        -------
+        redraw_rate : int
+        """
+        self._redraw_rate = redraw_rate
+        self.redraw_timer.setInterval(int((1.0/self._redraw_rate)*1000))
