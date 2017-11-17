@@ -4,6 +4,7 @@ from ..PyQt.QtGui import QPushButton, QMessageBox, QInputDialog, QLineEdit
 from ..PyQt.QtCore import pyqtSlot, pyqtProperty
 from .base import PyDMWritableWidget, compose_stylesheet
 
+
 class PyDMPushButton(QPushButton, PyDMWritableWidget):
     """
     Basic PushButton to send a fixed value.
@@ -41,6 +42,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         ID of channel to manipulate
 
     """
+
     DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed ?"
 
     def __init__(self, parent=None, label=None, icon=None,
@@ -119,7 +121,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @pyqtProperty(str)
     def protectedPassword(self):
         """
-        The encrypted password
+        The encrypted password.
 
         Returns
         -------
@@ -184,8 +186,8 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         This property holds the value to send back through the channel.
 
         The type of this value does not matter because it is automatically
-        converted to match the prexisting value type of the channel. However, the
-        sign of the value matters for both the fixed and relative modes.
+        converted to match the prexisting value type of the channel. However,
+        the sign of the value matters for both the fixed and relative modes.
 
         Returns
         -------
@@ -199,30 +201,29 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         This property holds the value to send back through the channel.
 
         The type of this value does not matter because it is automatically
-        converted to match the prexisting value type of the channel. However, the
-        sign of the value matters for both the fixed and relative modes.
+        converted to match the prexisting value type of the channel. However,
+        the sign of the value matters for both the fixed and relative modes.
 
         Parameters
         ----------
         value : str
         """
-        if value != self._pressValue:
-            self._pressValue = value
-
+        if str(value) != self._pressValue:
+            self._pressValue = str(value)
 
     @pyqtProperty(bool)
     def relativeChange(self):
         """
-        The mode of operation of the PyDMPushButton
+        The mode of operation of the PyDMPushButton.
 
-        If set to True, the :attr:`pressValue` will be added to the current value
-        of the channel. If False, the :attr:`pressValue` will be sent without any
-        operation.
+        If set to True, the :attr:`pressValue` will be added to the current
+        value of the channel. If False, the :attr:`pressValue` will be sent
+        without any operation.
 
-        This flag will be ignored if the connected channel sends a str type value
-        to :meth:`.receiveValue`. This is designed to eliminate the undesirable
-        behavior of concatenating strings as opposed to doing mathematical
-        addition.
+        This flag will be ignored if the connected channel sends a str type
+        value to :meth:`.receiveValue`. This is designed to eliminate the
+        undesirable behavior of concatenating strings as opposed to doing
+        mathematical addition.
 
         Returns
         -------
@@ -233,16 +234,16 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @relativeChange.setter
     def relativeChange(self, choice):
         """
-        The mode of operation of the PyDMPushButton
+        The mode of operation of the PyDMPushButton.
 
-        If set to True, the :attr:`pressValue` will be added to the current value
-        of the channel. If False, the :attr:`pressValue` will be sent without any
-        operation.
+        If set to True, the :attr:`pressValue` will be added to the current
+        value of the channel. If False, the :attr:`pressValue` will be sent
+        without any operation.
 
-        This flag will be ignored if the connected channel sends a str type value
-        to :meth:`.receiveValue`. This is designed to eliminate the undesirable
-        behavior of concatenating strings as opposed to doing mathematical
-        addition.
+        This flag will be ignored if the connected channel sends a str type
+        value to :meth:`.receiveValue`. This is designed to eliminate the
+        undesirable behavior of concatenating strings as opposed to doing
+        mathematical addition.
 
         Parameters
         ----------
@@ -253,13 +254,14 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
     def confirm_dialog(self):
         """
-        Shows the confirmation dialog with the proper message in case
+        Show the confirmation dialog with the proper message in case
         ```showConfirmMessage``` is True.
 
         Returns
         -------
         bool
-            True if the message was confirmed or if ```showCofirmMessage``` is False.
+            True if the message was confirmed or if ```showCofirmMessage```
+            is False.
         """
 
         if self._show_confirm_dialog:
@@ -289,7 +291,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if not self._password_protected:
             return True
 
-        pwd, ok = QInputDialog.getText(None, "Authentication", "Please enter your password:", QLineEdit.Password, "")
+        pwd, ok = QInputDialog.getText(None, "Authentication",
+                                       "Please enter your password:",
+                                       QLineEdit.Password, "")
         pwd = str(pwd)
         if not ok or pwd == "":
             return False
@@ -312,17 +316,20 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     def alarm_severity_changed(self, new_alarm_severity):
         """
         Callback invoked when the Channel alarm severity is changed.
-        This callback is not processed if the widget has no channel associated with it.
-        This callback handles the composition of the stylesheet to be applied and the call
-        to update to redraw the widget with the needed changes for the new state.
+
+        This callback is not processed if the widget has no channel associated
+        with it. It handles the composition of the stylesheet to be applied and
+        the call to update to redraw the widget with the needed changes for the
+        new state.
 
         Parameters
         ----------
         new_alarm_severity : int
-            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR and 3 = INVALID
+            New severity: 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR and 3 = INVALID
         """
         if self._alarm_sensitive_content:
-            self._style = dict(self.alarm_style_sheet_map[self.ALARM_CONTENT][new_alarm_severity])
+            self._style = dict(self.alarm_style_sheet_map[self.ALARM_CONTENT][
+                                                        new_alarm_severity])
             style = compose_stylesheet(style=self._style, obj=self)
             self.setStyleSheet(style)
             self.update()
@@ -330,25 +337,24 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @pyqtSlot()
     def sendValue(self):
         """
-        Send a new value to the channel
+        Send a new value to the channel.
 
         This function interprets the settings of the PyDMPushButton and sends
         the appropriate value out through the :attr:`.send_value_signal`.
         """
-        if not self._pressValue or self.value is None:
+        if self._pressValue is None or self.value is None:
             return None
         if not self.confirm_dialog():
             return None
 
         if not self.validate_password():
             return None
-
         if not self._relative or self.channeltype == str:
-            self.send_value_signal[self.channeltype].emit(self.channeltype(self._pressValue))
+            self.send_value_signal[self.channeltype].emit(
+                                        self.channeltype(self._pressValue))
         else:
             send_value = self.value + self.channeltype(self._pressValue)
             self.send_value_signal[self.channeltype].emit(send_value)
-
 
     @pyqtSlot(int)
     @pyqtSlot(float)
@@ -356,7 +362,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     def updatePressValue(self, value):
         """
         Update the pressValue of a function by passing a signal to the
-        PyDMPushButton
+        PyDMPushButton.
 
         This is useful to dynamically change the pressValue of the button
         during runtime. This enables the applied value to be linked to the
@@ -369,5 +375,5 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         try:
             self.pressValue = self.channeltype(value)
         except ValueError:
-            print('{:} is not a valid pressValue '\
-                        'for {:}'.format(value, self.channel))
+            print('{:} is not a valid pressValue '
+                  'for {:}'.format(value, self.channel))
