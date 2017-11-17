@@ -66,8 +66,14 @@ class WaveformCurveItem(BasePlotCurveItem):
         self.y_channel = None
         self.x_address = x_addr
         self.y_address = y_addr
+        #The data in x_waveform and y_waveform are what actually get plotted.
         self.x_waveform = None
         self.y_waveform = None
+        # Whenever the channels update, they immediately send latest_x and latest_y.
+        # After each update, we check if we are ready to overwrite x_waveform and
+        # y_waveform with the latest values, based on the redraw mode.
+        self.latest_x = None
+        self.latest_y = None
         super(WaveformCurveItem, self).__init__(**kws)
 
     def to_dict(self):
@@ -145,7 +151,7 @@ class WaveformCurveItem(BasePlotCurveItem):
                             connection_slot=self.yConnectionStateChanged,
                             value_slot=self.receiveYWaveform)
 
-    def emit_data_changed_if_ready(self):
+    def update_waveforms_if_ready(self):
         """
         This is called whenever new waveform data is received for X or Y.
         Based on the value of the redraw_mode attribute, it decides whether
@@ -153,16 +159,20 @@ class WaveformCurveItem(BasePlotCurveItem):
         is used by the plot that owns this curve to request a redraw.
         """
         if self.redraw_mode == WaveformCurveItem.REDRAW_ON_EITHER:
-            self.data_changed.emit()
+            self.x_waveform = self.latest_x
+            self.y_waveform = self.latest_y
         elif self.redraw_mode == WaveformCurveItem.REDRAW_ON_X:
             if not self.needs_new_x:
-                self.data_changed.emit()
+                self.x_waveform = self.latest_x
+                self.y_waveform = self.latest_y
         elif self.redraw_mode == WaveformCurveItem.REDRAW_ON_Y:
             if not self.needs_new_y:
-                self.data_changed.emit()
+                self.x_waveform = self.latest_x
+                self.y_waveform = self.latest_y
         elif self.redraw_mode == WaveformCurveItem.REDRAW_ON_BOTH:
             if not (self.needs_new_y or self.needs_new_x):
-                self.data_changed.emit()
+                self.x_waveform = self.latest_x
+                self.y_waveform = self.latest_y
 
     @pyqtSlot(bool)
     def xConnectionStateChanged(self, connected):
@@ -179,11 +189,11 @@ class WaveformCurveItem(BasePlotCurveItem):
         """
         if new_waveform is None:
             return
-        self.x_waveform = new_waveform
+        self.latest_x = new_waveform
         self.needs_new_x = False
         # Don't redraw unless we already have Y data.
-        if self.y_waveform is not None:
-            self.emit_data_changed_if_ready()
+        if self.latest_y is not None:
+            self.update_waveforms_if_ready()
 
     @pyqtSlot(np.ndarray)
     def receiveYWaveform(self, new_waveform):
@@ -192,10 +202,10 @@ class WaveformCurveItem(BasePlotCurveItem):
         """
         if new_waveform is None:
             return
-        self.y_waveform = new_waveform
+        self.latest_y = new_waveform
         self.needs_new_y = False
         if self.x_channel is None or self.x_waveform is not None:
-            self.emit_data_changed_if_ready()
+            self.update_waveforms_if_ready()
 
     def redrawCurve(self):
         """
@@ -353,7 +363,6 @@ class PyDMWaveformPlot(BasePlot):
                                   name=name,
                                   color=color,
                                   **plot_opts)
-        curve.data_changed.connect(self.redrawPlot)
         self.channel_pairs[(y_channel, x_channel)] = curve
         self.addCurve(curve, curve_color=color)
 
@@ -366,7 +375,6 @@ class PyDMWaveformPlot(BasePlot):
         curve: WaveformCurveItem
             The curve to remove.
         """
-        curve.data_changed.disconnect(self.redrawPlot)
         self.removeCurve(curve)
 
     def removeChannelAtIndex(self, index):
