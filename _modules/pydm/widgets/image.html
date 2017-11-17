@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.image &mdash; PyDM 0.3.0+71.g9d15740 documentation</title>
+  <title>pydm.widgets.image &mdash; PyDM 0.3.0+72.gc0411c1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+71.g9d15740 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+72.gc0411c1 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+71.g9d15740
+                0.3.0+72.gc0411c1
               </div>
             
           
@@ -159,13 +159,15 @@
             
   <h1>Source code for pydm.widgets.image</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QActionGroup</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">QTimer</span>
 <span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="k">import</span> <span class="n">ImageView</span>
 <span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="k">import</span> <span class="n">ColorMap</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="k">import</span> <span class="n">PyDMChannel</span>
 <span class="kn">from</span> <span class="nn">.colormaps</span> <span class="k">import</span> <span class="n">cmaps</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
+<span class="kn">import</span> <span class="nn">pyqtgraph</span>
+<span class="n">pyqtgraph</span><span class="o">.</span><span class="n">setConfigOption</span><span class="p">(</span><span class="s1">&#39;imageAxisOrder&#39;</span><span class="p">,</span> <span class="s1">&#39;row-major&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMImageView"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView">[docs]</a><span class="k">class</span> <span class="nc">PyDMImageView</span><span class="p">(</span><span class="n">ImageView</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -192,15 +194,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_width</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">histogram</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">histogram</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">sigImageChanged</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">histogram</span><span class="o">.</span><span class="n">imageChanged</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">roiBtn</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">menuBtn</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span> <span class="o">=</span> <span class="mf">255.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span> <span class="o">=</span> <span class="mi">255</span>  <span class="c1"># This is the max value for the image waveform&#39;s data type.  It gets set when the waveform updates.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># This is the max value for the image waveform&#39;s data type.  It gets set when the waveform updates.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_colormapname</span> <span class="o">=</span> <span class="s2">&quot;inferno&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cm_colors</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_needs_reshape</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setColorMapToPreset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_colormapname</span><span class="p">)</span>
         <span class="n">cm_menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">()</span><span class="o">.</span><span class="n">getMenu</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s2">&quot;Color Map&quot;</span><span class="p">)</span>
         <span class="n">cm_group</span> <span class="o">=</span> <span class="n">QActionGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -211,7 +212,12 @@
             <span class="k">if</span> <span class="n">map_name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colormapname</span><span class="p">:</span>
                 <span class="n">action</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">cm_menu</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeColorMap</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">needs_redraw</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">redrawImage</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span> <span class="o">=</span> <span class="mi">30</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxRedrawRate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span>
+        
 <div class="viewcode-block" id="PyDMImageView.changeColorMap"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.changeColorMap">[docs]</a>    <span class="k">def</span> <span class="nf">changeColorMap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method invoked by the colormap Action Menu that changes the</span>
@@ -290,6 +296,8 @@
 <span class="sd">        ----------</span>
 <span class="sd">        cmap : ColorMap</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">cmap</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cm_colors</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
                 <span class="k">return</span>
@@ -300,6 +308,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">setLookupTable</span><span class="p">(</span><span class="n">lut</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">setLevels</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span><span class="p">))])</span>  <span class="c1"># set levels from min to max of image (may improve min here)</span></div>
 
+    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">image_connection_state_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
 <div class="viewcode-block" id="PyDMImageView.image_value_changed"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.image_value_changed">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">image_value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_image</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -309,22 +324,15 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        new_image : np.ndarray</span>
-<span class="sd">            The new image data as a flat array</span>
+<span class="sd">            The new image data.  This can be a flat 1D array, or a 2D array.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_image</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_width</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span> <span class="o">=</span> <span class="n">new_image</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_needs_reshape</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="c1"># We&#39;ll wait to draw the image until we get the width.</span>
-                <span class="k">return</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span> <span class="o">=</span> <span class="n">new_image</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_width</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span> <span class="o">=</span> <span class="n">new_image</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span><span class="p">)</span>  <span class="c1"># take the max value of the recieved image</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span>  <span class="c1"># to update the colormap immediately</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">redrawImage</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span> <span class="o">=</span> <span class="n">new_image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">needs_redraw</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span> <span class="c1">#Now that we know the max size, set the color map appropriately.</span></div>
 
 <div class="viewcode-block" id="PyDMImageView.image_width_changed"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.image_width_changed">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">image_width_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_width</span><span class="p">):</span>
@@ -339,19 +347,25 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">image_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_width</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_needs_reshape</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_width</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_needs_reshape</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">redrawImage</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_width</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMImageView.redrawImage"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.redrawImage">[docs]</a>    <span class="k">def</span> <span class="nf">redrawImage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the image data into the ImageItem</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_width</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">setImage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span><span class="p">,</span> <span class="n">autoLevels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                          <span class="n">autoHistogramRange</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">xvals</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">needs_redraw</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">image_dimensions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">image_dimensions</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_width</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1">#We don&#39;t have a width for this image yet, so we can&#39;t draw it.</span>
+                <span class="k">return</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_width</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">setImage</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">autoLevels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">autoDownsample</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">needs_redraw</span> <span class="o">=</span> <span class="kc">False</span></div>
 
     <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
         <span class="k">return</span>
@@ -417,13 +431,38 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">imageChannel</span><span class="p">,</span>
-                        <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connectionStateChanged</span><span class="p">,</span>
+                        <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_connection_state_changed</span><span class="p">,</span>
                         <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_value_changed</span><span class="p">,</span>
                         <span class="n">severity_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alarmSeverityChanged</span><span class="p">),</span>
             <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthChannel</span><span class="p">,</span>
                         <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connectionStateChanged</span><span class="p">,</span>
                         <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_width_changed</span><span class="p">,</span>
-                        <span class="n">severity_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alarmSeverityChanged</span><span class="p">)]</span></div></div>
+                        <span class="n">severity_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alarmSeverityChanged</span><span class="p">)]</span></div>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">maxRedrawRate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The maximum rate (in Hz) at which the plot will be redrawn.</span>
+<span class="sd">        The plot will not be redrawn if there is not new data to draw.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span>
+    
+    <span class="nd">@maxRedrawRate</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">maxRedrawRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">redraw_rate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The maximum rate (in Hz) at which the plot will be redrawn.</span>
+<span class="sd">        The plot will not be redrawn if there is not new data to draw.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        redraw_rate : int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span> <span class="o">=</span> <span class="n">redraw_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">setInterval</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="mf">1.0</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="p">))</span></div>
 </pre></div>
 
            </div>
@@ -460,7 +499,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0+71.g9d15740',
+            VERSION:'0.3.0+72.gc0411c1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

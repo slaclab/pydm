@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.waveformplot &mdash; PyDM 0.3.0+71.g9d15740 documentation</title>
+  <title>pydm.widgets.waveformplot &mdash; PyDM 0.3.0+72.gc0411c1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+71.g9d15740 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+72.gc0411c1 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+71.g9d15740
+                0.3.0+72.gc0411c1
               </div>
             
           
@@ -226,8 +226,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">y_channel</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x_address</span> <span class="o">=</span> <span class="n">x_addr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_address</span> <span class="o">=</span> <span class="n">y_addr</span>
+        <span class="c1">#The data in x_waveform and y_waveform are what actually get plotted.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Whenever the channels update, they immediately send latest_x and latest_y.</span>
+        <span class="c1"># After each update, we check if we are ready to overwrite x_waveform and</span>
+        <span class="c1"># y_waveform with the latest values, based on the redraw mode.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest_x</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest_y</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">WaveformCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -305,7 +311,7 @@
                             <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">yConnectionStateChanged</span><span class="p">,</span>
                             <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiveYWaveform</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">emit_data_changed_if_ready</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update_waveforms_if_ready</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called whenever new waveform data is received for X or Y.</span>
 <span class="sd">        Based on the value of the redraw_mode attribute, it decides whether</span>
@@ -313,16 +319,20 @@
 <span class="sd">        is used by the plot that owns this curve to request a redraw.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_mode</span> <span class="o">==</span> <span class="n">WaveformCurveItem</span><span class="o">.</span><span class="n">REDRAW_ON_EITHER</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_y</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_mode</span> <span class="o">==</span> <span class="n">WaveformCurveItem</span><span class="o">.</span><span class="n">REDRAW_ON_X</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_x</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_x</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_y</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_mode</span> <span class="o">==</span> <span class="n">WaveformCurveItem</span><span class="o">.</span><span class="n">REDRAW_ON_Y</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_y</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_x</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_y</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_mode</span> <span class="o">==</span> <span class="n">WaveformCurveItem</span><span class="o">.</span><span class="n">REDRAW_ON_BOTH</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">needs_new_y</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_x</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_x</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_y</span>
 
     <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">xConnectionStateChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
@@ -339,11 +349,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_waveform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span> <span class="o">=</span> <span class="n">new_waveform</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest_x</span> <span class="o">=</span> <span class="n">new_waveform</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_x</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="c1"># Don&#39;t redraw unless we already have Y data.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">emit_data_changed_if_ready</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_waveforms_if_ready</span><span class="p">()</span>
 
     <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">receiveYWaveform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">):</span>
@@ -352,10 +362,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_waveform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span> <span class="o">=</span> <span class="n">new_waveform</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest_y</span> <span class="o">=</span> <span class="n">new_waveform</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_y</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_channel</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">emit_data_changed_if_ready</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_waveforms_if_ready</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">redrawCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -513,7 +523,6 @@
                                   <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                                   <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
                                   <span class="o">**</span><span class="n">plot_opts</span><span class="p">)</span>
-        <span class="n">curve</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">redrawPlot</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel_pairs</span><span class="p">[(</span><span class="n">y_channel</span><span class="p">,</span> <span class="n">x_channel</span><span class="p">)]</span> <span class="o">=</span> <span class="n">curve</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">addCurve</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">curve_color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span></div>
 
@@ -526,7 +535,6 @@
 <span class="sd">        curve: WaveformCurveItem</span>
 <span class="sd">            The curve to remove.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">curve</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">redrawPlot</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">removeCurve</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMWaveformPlot.removeChannelAtIndex"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannelAtIndex">[docs]</a>    <span class="k">def</span> <span class="nf">removeChannelAtIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
@@ -703,7 +711,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0+71.g9d15740',
+            VERSION:'0.3.0+72.gc0411c1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
