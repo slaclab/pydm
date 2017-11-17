@@ -1,11 +1,13 @@
 from ..PyQt.QtGui import QActionGroup
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Q_ENUMS
+from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Q_ENUMS, QTimer
 from pyqtgraph import ImageView, ColorMap
 import numpy as np
 from .channel import PyDMChannel
 from .colormaps import cmaps
 from .base import PyDMWidget
 from collections import OrderedDict
+import pyqtgraph
+pyqtgraph.setConfigOption('imageAxisOrder', 'row-major')
 
 READINGORDER = OrderedDict([
                             ('Fortranlike', 0),
@@ -71,6 +73,8 @@ class PyDMImageView(ImageView, PyDMWidget, _ColormapMap, _ReadingOrderMap):
 
         # Hide some itens of the widget
         self.ui.histogram.hide()
+        self.getImageItem().sigImageChanged.disconnect(
+                                        self.ui.histogram.imageChanged)
         del self.ui.histogram
         self.ui.roiBtn.hide()
         self.ui.menuBtn.hide()
@@ -78,13 +82,13 @@ class PyDMImageView(ImageView, PyDMWidget, _ColormapMap, _ReadingOrderMap):
         # Set color map limits
         self.cm_min = 0.0
         self.cm_max = 255.0
+        self.data_max_int = None
 
         # Reading order of numpy array data
         self._readingOrder = 0
 
         self._colormapindex = COLORMAP["inferno"]
         self._cm_colors = self.colormapdict[self._colormapindex]
-        self._needs_reshape = False
         self.setColorMap()
 
         # Menu to change Color Map
@@ -98,6 +102,12 @@ class PyDMImageView(ImageView, PyDMWidget, _ColormapMap, _ReadingOrderMap):
             if action.index == self._colormapindex:
                 action.setChecked(True)
         cm_menu.triggered.connect(self._changeColorMap)
+
+        self.needs_redraw = False
+        self.redraw_timer = QTimer(self)
+        self.redraw_timer.timeout.connect(self.redrawImage)
+        self._redraw_rate = 30
+        self.maxRedrawRate = self._redraw_rate
 
     def _changeColorMap(self, action):
         """
@@ -130,6 +140,13 @@ class PyDMImageView(ImageView, PyDMWidget, _ColormapMap, _ReadingOrderMap):
         self.getImageItem().setLookupTable(lut)
         self.getImageItem().setLevels([0.0, 1.0])
 
+    @pyqtSlot(bool)
+    def image_connection_state_changed(self, conn):
+        if conn:
+            self.redraw_timer.start()
+        else:
+            self.redraw_timer.stop()
+
     @pyqtSlot(np.ndarray)
     def image_value_changed(self, new_image):
         """
@@ -140,22 +157,14 @@ class PyDMImageView(ImageView, PyDMWidget, _ColormapMap, _ReadingOrderMap):
         Parameters
         ----------
         new_image : np.ndarray
-            The new image data as a flat array
+            The new image data.  This can be a flat 1D array, or a 2D array.
         """
         if new_image is None:
             return
-        elif len(new_image.shape) == 2:
-            self.image_waveform = new_image
-        elif self.imageWidth > 0:
-            self.image_waveform = self._reshapeImage(new_image)
-        elif self._widthchannel is not None:
-            self.image_waveform = new_image
-            # We'll wait to draw the image until we get the width from channel.
-            self._needs_reshape = True
-            return
-        else:
-            raise Exception('Image width is not defined.')
-        self.redrawImage()
+        self.image_waveform = new_image
+        self.needs_redraw = True
+        if self.data_max_int is None:
+            self.data_max_int = np.iinfo(self.image_waveform.dtype).max
 
     def _reshapeImage(self, image):
         """Reshape the image according to the imageWidth and readingOrder."""
@@ -179,26 +188,36 @@ class PyDMImageView(ImageView, PyDMWidget, _ColormapMap, _ReadingOrderMap):
         if new_width is None:
             return
         self.imageWidth = new_width
-        if self._needs_reshape:
-            self.image_waveform = self._reshapeImage(self.image_waveform)
-            self._needs_reshape = False
-        self.redrawImage()
 
     def redrawImage(self):
         """Set the image data into the ImageItem."""
-        if len(self.image_waveform) <= 0 or self.imageWidth <= 0:
+        if not self.needs_redraw:
+            return
+        image_dimensions = len(self.image_waveform.shape)
+        if image_dimensions == 1:
+            if self.imageWidth < 1:
+                # There is no width for this image yet, so we can't draw it.
+                return
+            img = self._reshapeImage(self.image_waveform)
+        else:
+            img = self.image_waveform
+
+        if len(img) <= 0:
             return
         if self._normalize_data:
             mini = self.image_waveform.min()
             maxi = self.image_waveform.max()
         else:
             mini = self.cm_min
-            maxi = self.cm_max
-        image = (self.image_waveform - mini)/(maxi-mini)
+            maxi = min(self.cm_max, self.data_max_int)
+        img -= mini
+        img *= 1/(maxi-mini)
         self.getImageItem().setImage(
-            image,
-            autoLevels=False,
-            autoHistogramRange=False)
+                                    img,
+                                    autoLevels=False,
+                                    autoDownsample=True,
+                                    autoHistogramRange=False)
+        self.needs_redraw = False
 
     def setColorMapLimits(self, mn, mx):
         """Set the limit values for the colormap.
@@ -219,6 +238,31 @@ class PyDMImageView(ImageView, PyDMWidget, _ColormapMap, _ReadingOrderMap):
     def keyPressEvent(self, ev):
         """Handle keypress events."""
         return
+
+    @pyqtProperty(int)
+    def maxRedrawRate(self):
+        """
+        The maximum rate (in Hz) at which the plot will be redrawn.
+        The plot will not be redrawn if there is not new data to draw.
+
+        Returns
+        -------
+        int
+        """
+        return self._redraw_rate
+
+    @maxRedrawRate.setter
+    def maxRedrawRate(self, redraw_rate):
+        """
+        The maximum rate (in Hz) at which the plot will be redrawn.
+        The plot will not be redrawn if there is not new data to draw.
+
+        Parameters
+        -------
+        redraw_rate : int
+        """
+        self._redraw_rate = float(redraw_rate)
+        self.redraw_timer.setInterval(int((1.0/self._redraw_rate)*1000))
 
     @pyqtProperty(int)
     def imageWidth(self):
