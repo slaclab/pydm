@@ -18,7 +18,6 @@ class PyDMMainWindow(QMainWindow):
         self._showing_file_path_in_title_bar = False
         self.ui.navbar.setIconSize(QSize(24,24))
         self.ui.navbar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-        self.setMinimumWidth(300)
         #No search bar for now, since there isn't really any capability to search yet.
         #self.searchBar = QLineEdit(self)
         #self.searchBar.setPlaceholderText("Search")
@@ -41,6 +40,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionDecrease_Font_Size.triggered.connect(self.decrease_font_size)
         self.ui.actionShow_File_Path_in_Title_Bar.triggered.connect(self.toggle_file_path_in_title_bar)
         self.ui.actionShow_Navigation_Bar.triggered.connect(self.toggle_nav_bar)
+        self._new_widget_size = None
         if hide_nav_bar:
             self.toggle_nav_bar(False)
         self.designer_path = None
@@ -61,10 +61,14 @@ class PyDMMainWindow(QMainWindow):
         self.clear_display_widget()
         if not new_widget.layout():
             new_widget.setMinimumSize(new_widget.size())
+        self._new_widget_size = new_widget.size()
         self._display_widget = new_widget
         self.setCentralWidget(self._display_widget)
         self.update_window_title()
-        QTimer.singleShot(0, self.resizeToMinimum)
+        #Resizing to the new widget's dimensions needs to be
+        #done on the event loop for some reason - you can't
+        #just do it here.
+        QTimer.singleShot(0, self.resizeForNewDisplayWidget)
         
     def clear_display_widget(self):
         if self._display_widget is not None:
@@ -253,8 +257,8 @@ class PyDMMainWindow(QMainWindow):
         QApplication.instance().setFont(current_font)
         QTimer.singleShot(0, self.resizeToMinimum)
     
-    def resizeToMinimum(self):
-        self.resize(self.minimumSizeHint())
+    def resizeForNewDisplayWidget(self):
+        self.resize(self._new_widget_size)
     
     def closeEvent(self, event):
         self.clear_display_widget()
