@@ -42,7 +42,18 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionShow_File_Path_in_Title_Bar.triggered.connect(self.toggle_file_path_in_title_bar)
         self.ui.actionShow_Navigation_Bar.triggered.connect(self.toggle_nav_bar)
         self.ui.actionShow_Menu_Bar.triggered.connect(self.toggle_menu_bar)
-        QShortcut(QKeySequence(Qt.CTRL+Qt.Key_M), self, partial(self.toggle_menu_bar, None))
+
+        # We need the shortcuts to be on the application level so they
+        # can be executed even when the menu is hidden
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_M), self, partial(self.toggle_menu_bar, None))
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_R), self, partial(self.reload_display, None))
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Equal), self, partial(self.increase_font_size, None))
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Minus), self, partial(self.decrease_font_size, None))
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Left), self, partial(self.back, None))
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Right), self, partial(self.forward, None))
+        QShortcut(QKeySequence(Qt.SHIFT + Qt.CTRL + Qt.Key_H), self, partial(self.home, None))
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_O), self, partial(self.open_file_action, None))
+
         self.ui.actionShow_Status_Bar.triggered.connect(self.toggle_status_bar)
         self._new_widget_size = None
         if hide_nav_bar:
