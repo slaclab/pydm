@@ -63,10 +63,13 @@ border-bottom: 0px;
       <bool>true</bool>
      </property>
      <property name="alarmSensitiveBorder" stdset="0">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="channel" stdset="0">
       <string>ca://MTEST:Float</string>
+     </property>
+     <property name="disableOnDisconnect" stdset="0">
+      <bool>false</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="leftMargin">
@@ -96,6 +99,9 @@ border-bottom: 0px;
       </item>
       <item>
        <widget class="QPushButton" name="pushButton">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="autoFillBackground">
          <bool>true</bool>
         </property>
