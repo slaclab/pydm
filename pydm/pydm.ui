@@ -52,6 +52,8 @@
     <addaction name="separator"/>
     <addaction name="actionShow_File_Path_in_Title_Bar"/>
     <addaction name="actionShow_Navigation_Bar"/>
+    <addaction name="actionShow_Menu_Bar"/>
+    <addaction name="actionShow_Status_Bar"/>
    </widget>
    <widget class="QMenu" name="menuHistory">
     <property name="title">
@@ -173,6 +175,28 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionShow_Menu_Bar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show Menu Bar</string>
+   </property>
+  </action>
+  <action name="actionShow_Status_Bar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show Status Bar</string>
    </property>
   </action>
  </widget>
