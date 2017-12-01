@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDM Application &mdash; PyDM 0+untagged.80.g2029e70 documentation</title>
+  <title>PyDM Application &mdash; PyDM 0+untagged.80.g472f766 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="PyDM 0+untagged.80.g2029e70 documentation" href="index.html"/>
+    <link rel="top" title="PyDM 0+untagged.80.g472f766 documentation" href="index.html"/>
         <link rel="prev" title="PyDMWaveformTable" href="widgets/waveformtable.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0+untagged.80.g2029e70
+                0+untagged.80.g472f766
               </div>
             
           
@@ -162,7 +162,7 @@
 <h1>PyDM Application<a class="headerlink" href="#pydm-application" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pydm.PyDMApplication">
-<em class="property">class </em><code class="descclassname">pydm.</code><code class="descname">PyDMApplication</code><span class="sig-paren">(</span><em>ui_file=None</em>, <em>command_line_args=[]</em>, <em>display_args=[]</em>, <em>perfmon=False</em>, <em>hide_nav_bar=False</em>, <em>macros=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydm.</code><code class="descname">PyDMApplication</code><span class="sig-paren">(</span><em>ui_file=None</em>, <em>command_line_args=[]</em>, <em>display_args=[]</em>, <em>perfmon=False</em>, <em>hide_nav_bar=False</em>, <em>hide_menu_bar=False</em>, <em>hide_status_bar=False</em>, <em>macros=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyDMApplication handles loading PyDM display files, opening
 new windows, and most importantly, establishing and managing
 connections to channels via data plugins.</p>
@@ -184,6 +184,10 @@ code that instantiates PyDMApplication.</li>
 When enabled, CPU load information on a per-thread basis is
 periodically printed to the terminal.</li>
 <li><strong>hide_nav_bar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to display the navigation bar (forward/back/home buttons)
+when the main window is first displayed.</li>
+<li><strong>hide_menu_bar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to display the menu bar (File, View)
+when the main window is first displayed.</li>
+<li><strong>hide_status_bar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to display the status bar (general messages and errors)
 when the main window is first displayed.</li>
 <li><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to be forwarded to the display class
 being loaded.</li>
@@ -530,7 +534,7 @@ really only used by embedded displays.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0+untagged.80.g2029e70',
+            VERSION:'0+untagged.80.g472f766',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

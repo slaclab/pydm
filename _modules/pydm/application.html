@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM 0+untagged.80.g2029e70 documentation</title>
+  <title>pydm.application &mdash; PyDM 0+untagged.80.g472f766 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="PyDM 0+untagged.80.g2029e70 documentation" href="../../index.html"/>
+    <link rel="top" title="PyDM 0+untagged.80.g472f766 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0+untagged.80.g2029e70
+                0+untagged.80.g472f766
               </div>
             
           
@@ -191,7 +191,7 @@
 <div class="viewcode-block" id="PyDMApplication"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication">[docs]</a><span class="k">class</span> <span class="nc">PyDMApplication</span><span class="p">(</span><span class="n">QApplication</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    PyDMApplication handles loading PyDM display files, opening</span>
-<span class="sd">    new windows, and most importantly, establishing and managing </span>
+<span class="sd">    new windows, and most importantly, establishing and managing</span>
 <span class="sd">    connections to channels via data plugins.</span>
 
 <span class="sd">    Parameters</span>
@@ -205,15 +205,21 @@
 <span class="sd">    display_args : list, optional</span>
 <span class="sd">        A list of command line arguments that should be forwarded to the</span>
 <span class="sd">        Display class.  This is only useful if a Related Display Button</span>
-<span class="sd">        is opening up a .py file with extra arguments specified, and </span>
+<span class="sd">        is opening up a .py file with extra arguments specified, and</span>
 <span class="sd">        probably isn&#39;t something you will ever need to use when writing</span>
 <span class="sd">        code that instantiates PyDMApplication.</span>
 <span class="sd">    perfmon : bool, optional</span>
 <span class="sd">        Whether or not to enable performance monitoring using &#39;psutil&#39;.</span>
-<span class="sd">        When enabled, CPU load information on a per-thread basis is </span>
+<span class="sd">        When enabled, CPU load information on a per-thread basis is</span>
 <span class="sd">        periodically printed to the terminal.</span>
 <span class="sd">    hide_nav_bar : bool, optional</span>
 <span class="sd">        Whether or not to display the navigation bar (forward/back/home buttons)</span>
+<span class="sd">        when the main window is first displayed.</span>
+<span class="sd">    hide_menu_bar: bool, optional</span>
+<span class="sd">        Whether or not to display the menu bar (File, View)</span>
+<span class="sd">        when the main window is first displayed.</span>
+<span class="sd">    hide_status_bar: bool, optional</span>
+<span class="sd">        Whether or not to display the status bar (general messages and errors)</span>
 <span class="sd">        when the main window is first displayed.</span>
 <span class="sd">    macros : dict, optional</span>
 <span class="sd">        A dictionary of macro variables to be forwarded to the display class</span>
@@ -236,7 +242,7 @@
         <span class="kc">True</span><span class="p">:</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="p">[],</span> <span class="n">display_args</span><span class="o">=</span><span class="p">[],</span> <span class="n">perfmon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_nav_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="p">[],</span> <span class="n">display_args</span><span class="o">=</span><span class="p">[],</span> <span class="n">perfmon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_nav_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_menu_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_status_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMApplication</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">command_line_args</span><span class="p">)</span>
         <span class="c1"># Enable High DPI display, if available.</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Qt</span><span class="p">,</span> <span class="s1">&#39;AA_UseHighDpiPixmaps&#39;</span><span class="p">):</span>
@@ -254,6 +260,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">windows</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display_args</span> <span class="o">=</span> <span class="n">display_args</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hide_nav_bar</span> <span class="o">=</span> <span class="n">hide_nav_bar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hide_menu_bar</span> <span class="o">=</span> <span class="n">hide_menu_bar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span> <span class="o">=</span> <span class="n">hide_status_bar</span>
         <span class="c1"># Open a window if one was provided.</span>
         <span class="k">if</span> <span class="n">ui_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">make_window</span><span class="p">(</span><span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="p">)</span>
@@ -308,7 +316,7 @@
 <span class="sd">        new windows in PyDM typically actually spawn an entirely new PyDM process.</span>
 <span class="sd">        This keeps each window isolated, so that one window cannot slow</span>
 <span class="sd">        down or crash another.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ui_file : str</span>
@@ -338,6 +346,10 @@
         <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">pydm_display_app_path</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide_nav_bar</span><span class="p">:</span>
             <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--hide-nav-bar&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide_menu_bar</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--hide-menu-bar&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--hide-status-bar&quot;</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">macros</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">macros</span><span class="p">)])</span>
         <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
@@ -349,9 +361,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Make a new window and open the supplied file.</span>
 <span class="sd">        Currently, this method just calls `new_pydm_process`.</span>
-<span class="sd">        </span>
+
 <span class="sd">        This is an internal method that typically will not be needed by users.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ui_file : str</span>
@@ -374,7 +386,7 @@
 <span class="sd">        list of windows, and open the ui_file in the window.  Typically,</span>
 <span class="sd">        this function is only called as part of starting up a new process,</span>
 <span class="sd">        because PyDMApplications only have one window per process.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ui_file : str</span>
@@ -388,7 +400,9 @@
 <span class="sd">            to pass in extra arguments.  It is probably rare that code you</span>
 <span class="sd">            write needs to use this argument.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">main_window</span> <span class="o">=</span> <span class="n">PyDMMainWindow</span><span class="p">(</span><span class="n">hide_nav_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_nav_bar</span><span class="p">)</span>
+        <span class="n">main_window</span> <span class="o">=</span> <span class="n">PyDMMainWindow</span><span class="p">(</span><span class="n">hide_nav_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_nav_bar</span><span class="p">,</span>
+                                     <span class="n">hide_menu_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_menu_bar</span><span class="p">,</span>
+                                     <span class="n">hide_status_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span><span class="p">)</span>
         <span class="n">main_window</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="p">)</span>
         <span class="n">main_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">windows</span><span class="p">[</span><span class="n">main_window</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">ui_file</span><span class="p">)</span>
@@ -402,9 +416,9 @@
 <div class="viewcode-block" id="PyDMApplication.load_ui_file"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.load_ui_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_ui_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uifile</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load a .ui file, perform macro substitution, then return the resulting QWidget.</span>
-<span class="sd">        </span>
+
 <span class="sd">        This is an internal method, users will usually want to use `open_file` instead.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        uifile : str</span>
@@ -412,7 +426,7 @@
 <span class="sd">        macros : dict, optional</span>
 <span class="sd">            A dictionary of macro variables to supply to the file</span>
 <span class="sd">            to be opened.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QWidget</span>
@@ -436,9 +450,9 @@
 <span class="sd">        Load a .py file, performs some sanity checks to try and determine</span>
 <span class="sd">        if the file actually contains a valid PyDM Display subclass, and if</span>
 <span class="sd">        the checks pass, create and return an instance.</span>
-<span class="sd">        </span>
+
 <span class="sd">        This is an internal method, users will usually want to use `open_file` instead.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        pyfile : str</span>
@@ -447,9 +461,9 @@
 <span class="sd">            A list of command-line arguments to pass to the</span>
 <span class="sd">            loaded display subclass.</span>
 <span class="sd">        macros : dict, optional</span>
-<span class="sd">            A dictionary of macro variables to supply to the </span>
+<span class="sd">            A dictionary of macro variables to supply to the</span>
 <span class="sd">            loaded display subclass.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        pydm.Display</span>
@@ -495,7 +509,7 @@
 <span class="sd">        This method is the entry point for all opening of new displays,</span>
 <span class="sd">        and manages handling macros and relative file paths when opening</span>
 <span class="sd">        nested displays.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ui_file : str</span>
@@ -508,7 +522,7 @@
 <span class="sd">            Typically, this argument is used by related display buttons</span>
 <span class="sd">            to pass in extra arguments.  It is probably rare that code you</span>
 <span class="sd">            write needs to use this argument.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QWidget</span>
@@ -546,17 +560,17 @@
 <div class="viewcode-block" id="PyDMApplication.get_path"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.get_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gives you the path to ui_file relative to where you are running pydm from.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Many widgets handle file paths (related display, embedded display,</span>
 <span class="sd">        and drawing image come to mind) and the standard is that they expect</span>
 <span class="sd">        paths to be given relative to the .ui or .py file in which the widget</span>
 <span class="sd">        lives.  But, python and Qt want the file path relative to the directory</span>
 <span class="sd">        you are running pydm from.  This function does that translation.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ui_file : str</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
@@ -590,11 +604,11 @@
 <div class="viewcode-block" id="PyDMApplication.plugin_for_channel"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.plugin_for_channel">[docs]</a>    <span class="k">def</span> <span class="nf">plugin_for_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Given a PyDMChannel object, determine the appropriate plugin to use.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        channel : PyDMChannel</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        PyDMPlugin</span>
@@ -618,7 +632,7 @@
 <div class="viewcode-block" id="PyDMApplication.add_connection"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.add_connection">[docs]</a>    <span class="k">def</span> <span class="nf">add_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a new connection to a channel.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        channel : PyDMChannel</span>
@@ -630,7 +644,7 @@
 <div class="viewcode-block" id="PyDMApplication.remove_connection"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.remove_connection">[docs]</a>    <span class="k">def</span> <span class="nf">remove_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove a connection to a channel.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        channel : PyDMChannel</span>
@@ -641,8 +655,8 @@
 
 
     <span class="k">def</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="c1">#Override the eventFilter to capture all middle mouse button events,</span>
-        <span class="c1">#and show a tooltip if needed.</span>
+        <span class="c1"># Override the eventFilter to capture all middle mouse button events,</span>
+        <span class="c1"># and show a tooltip if needed.</span>
         <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">.</span><span class="n">MouseButtonPress</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MiddleButton</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">show_address_tooltip</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
@@ -665,10 +679,10 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Given a widget to start from, traverse the tree of child widgets,</span>
 <span class="sd">        and try to establish connections to any widgets with channels.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Display subclasses which dynamically create widgets may need to</span>
 <span class="sd">        use this method.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        widget : QWidget</span>
@@ -690,7 +704,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Given a widget to start from, traverse the tree of child widgets,</span>
 <span class="sd">        and try to close connections to any widgets with channels.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        widget : QWidget</span>
@@ -740,7 +754,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0+untagged.80.g2029e70',
+            VERSION:'0+untagged.80.g472f766',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
