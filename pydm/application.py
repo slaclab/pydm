@@ -30,7 +30,7 @@ if DEFAULT_PROTOCOL is not None:
 class PyDMApplication(QApplication):
     """
     PyDMApplication handles loading PyDM display files, opening
-    new windows, and most importantly, establishing and managing 
+    new windows, and most importantly, establishing and managing
     connections to channels via data plugins.
 
     Parameters
@@ -44,15 +44,21 @@ class PyDMApplication(QApplication):
     display_args : list, optional
         A list of command line arguments that should be forwarded to the
         Display class.  This is only useful if a Related Display Button
-        is opening up a .py file with extra arguments specified, and 
+        is opening up a .py file with extra arguments specified, and
         probably isn't something you will ever need to use when writing
         code that instantiates PyDMApplication.
     perfmon : bool, optional
         Whether or not to enable performance monitoring using 'psutil'.
-        When enabled, CPU load information on a per-thread basis is 
+        When enabled, CPU load information on a per-thread basis is
         periodically printed to the terminal.
     hide_nav_bar : bool, optional
         Whether or not to display the navigation bar (forward/back/home buttons)
+        when the main window is first displayed.
+    hide_menu_bar: bool, optional
+        Whether or not to display the menu bar (File, View)
+        when the main window is first displayed.
+    hide_status_bar: bool, optional
+        Whether or not to display the status bar (general messages and errors)
         when the main window is first displayed.
     macros : dict, optional
         A dictionary of macro variables to be forwarded to the display class
@@ -75,7 +81,7 @@ class PyDMApplication(QApplication):
         True: QColor(0, 0, 0)
     }
 
-    def __init__(self, ui_file=None, command_line_args=[], display_args=[], perfmon=False, hide_nav_bar=False, macros=None):
+    def __init__(self, ui_file=None, command_line_args=[], display_args=[], perfmon=False, hide_nav_bar=False, hide_menu_bar=False, hide_status_bar=False, macros=None):
         super(PyDMApplication, self).__init__(command_line_args)
         # Enable High DPI display, if available.
         if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
@@ -93,6 +99,8 @@ class PyDMApplication(QApplication):
         self.windows = {}
         self.display_args = display_args
         self.hide_nav_bar = hide_nav_bar
+        self.hide_menu_bar = hide_menu_bar
+        self.hide_status_bar = hide_status_bar
         # Open a window if one was provided.
         if ui_file is not None:
             self.make_window(ui_file, macros, command_line_args)
@@ -147,7 +155,7 @@ class PyDMApplication(QApplication):
         new windows in PyDM typically actually spawn an entirely new PyDM process.
         This keeps each window isolated, so that one window cannot slow
         down or crash another.
-        
+
         Parameters
         ----------
         ui_file : str
@@ -177,6 +185,10 @@ class PyDMApplication(QApplication):
         args = [pydm_display_app_path]
         if self.hide_nav_bar:
             args.extend(["--hide-nav-bar"])
+        if self.hide_menu_bar:
+            args.extend(["--hide-menu-bar"])
+        if self.hide_status_bar:
+            args.extend(["--hide-status-bar"])
         if macros is not None:
             args.extend(["-m", json.dumps(macros)])
         args.append(filepath)
@@ -188,9 +200,9 @@ class PyDMApplication(QApplication):
         """
         Make a new window and open the supplied file.
         Currently, this method just calls `new_pydm_process`.
-        
+
         This is an internal method that typically will not be needed by users.
-        
+
         Parameters
         ----------
         ui_file : str
@@ -213,7 +225,7 @@ class PyDMApplication(QApplication):
         list of windows, and open the ui_file in the window.  Typically,
         this function is only called as part of starting up a new process,
         because PyDMApplications only have one window per process.
-        
+
         Parameters
         ----------
         ui_file : str
@@ -227,7 +239,9 @@ class PyDMApplication(QApplication):
             to pass in extra arguments.  It is probably rare that code you
             write needs to use this argument.
         """
-        main_window = PyDMMainWindow(hide_nav_bar=self.hide_nav_bar)
+        main_window = PyDMMainWindow(hide_nav_bar=self.hide_nav_bar,
+                                     hide_menu_bar=self.hide_menu_bar,
+                                     hide_status_bar=self.hide_status_bar)
         main_window.open_file(ui_file, macros, command_line_args)
         main_window.show()
         self.windows[main_window] = os.path.dirname(ui_file)
@@ -241,9 +255,9 @@ class PyDMApplication(QApplication):
     def load_ui_file(self, uifile, macros=None):
         """
         Load a .ui file, perform macro substitution, then return the resulting QWidget.
-        
+
         This is an internal method, users will usually want to use `open_file` instead.
-        
+
         Parameters
         ----------
         uifile : str
@@ -251,7 +265,7 @@ class PyDMApplication(QApplication):
         macros : dict, optional
             A dictionary of macro variables to supply to the file
             to be opened.
-        
+
         Returns
         -------
         QWidget
@@ -275,9 +289,9 @@ class PyDMApplication(QApplication):
         Load a .py file, performs some sanity checks to try and determine
         if the file actually contains a valid PyDM Display subclass, and if
         the checks pass, create and return an instance.
-        
+
         This is an internal method, users will usually want to use `open_file` instead.
-        
+
         Parameters
         ----------
         pyfile : str
@@ -286,9 +300,9 @@ class PyDMApplication(QApplication):
             A list of command-line arguments to pass to the
             loaded display subclass.
         macros : dict, optional
-            A dictionary of macro variables to supply to the 
+            A dictionary of macro variables to supply to the
             loaded display subclass.
-        
+
         Returns
         -------
         pydm.Display
@@ -334,7 +348,7 @@ class PyDMApplication(QApplication):
         This method is the entry point for all opening of new displays,
         and manages handling macros and relative file paths when opening
         nested displays.
-        
+
         Parameters
         ----------
         ui_file : str
@@ -347,7 +361,7 @@ class PyDMApplication(QApplication):
             Typically, this argument is used by related display buttons
             to pass in extra arguments.  It is probably rare that code you
             write needs to use this argument.
-        
+
         Returns
         -------
         QWidget
@@ -385,17 +399,17 @@ class PyDMApplication(QApplication):
     def get_path(self, ui_file):
         """
         Gives you the path to ui_file relative to where you are running pydm from.
-        
+
         Many widgets handle file paths (related display, embedded display,
         and drawing image come to mind) and the standard is that they expect
         paths to be given relative to the .ui or .py file in which the widget
         lives.  But, python and Qt want the file path relative to the directory
         you are running pydm from.  This function does that translation.
-        
+
         Parameters
         ----------
         ui_file : str
-        
+
         Returns
         -------
         str
@@ -429,11 +443,11 @@ class PyDMApplication(QApplication):
     def plugin_for_channel(self, channel):
         """
         Given a PyDMChannel object, determine the appropriate plugin to use.
-        
+
         Parameters
         ----------
         channel : PyDMChannel
-        
+
         Returns
         -------
         PyDMPlugin
@@ -457,7 +471,7 @@ class PyDMApplication(QApplication):
     def add_connection(self, channel):
         """
         Add a new connection to a channel.
-        
+
         Parameters
         ----------
         channel : PyDMChannel
@@ -469,7 +483,7 @@ class PyDMApplication(QApplication):
     def remove_connection(self, channel):
         """
         Remove a connection to a channel.
-        
+
         Parameters
         ----------
         channel : PyDMChannel
@@ -480,8 +494,8 @@ class PyDMApplication(QApplication):
 
 
     def eventFilter(self, obj, event):
-        #Override the eventFilter to capture all middle mouse button events,
-        #and show a tooltip if needed.
+        # Override the eventFilter to capture all middle mouse button events,
+        # and show a tooltip if needed.
         if event.type() == QEvent.MouseButtonPress:
             if event.button() == Qt.MiddleButton:
                 self.show_address_tooltip(obj, event)
@@ -504,10 +518,10 @@ class PyDMApplication(QApplication):
         """
         Given a widget to start from, traverse the tree of child widgets,
         and try to establish connections to any widgets with channels.
-        
+
         Display subclasses which dynamically create widgets may need to
         use this method.
-        
+
         Parameters
         ----------
         widget : QWidget
@@ -529,7 +543,7 @@ class PyDMApplication(QApplication):
         """
         Given a widget to start from, traverse the tree of child widgets,
         and try to close connections to any widgets with channels.
-        
+
         Parameters
         ----------
         widget : QWidget
