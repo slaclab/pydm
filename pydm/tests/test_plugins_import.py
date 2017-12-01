@@ -32,6 +32,11 @@ def test_import_embedded_display_plugin():
     from ..widgets.embedded_display import PyDMEmbeddedDisplay
     PyDMEmbeddedDisplayPlugin = qtplugin_factory(PyDMEmbeddedDisplay)
 
+def test_import_frame_plugin():
+    # Frame plugin
+    from ..widgets.frame import PyDMFrame
+    PyDMFramePlugin = qtplugin_factory(PyDMFrame, is_container=True)
+
 def test_import_combobox_plugin():
     # Enum Combobox plugin
     from ..widgets.enum_combo_box import PyDMEnumComboBox
