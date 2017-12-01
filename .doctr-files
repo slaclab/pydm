@@ -2,6 +2,7 @@
 ./_images/pydm_properties.png
 ./_modules/channel.html
 ./_modules/index.html
+./_modules/pydm/application.html
 ./_modules/pydm/widgets/byte.html
 ./_modules/pydm/widgets/checkbox.html
 ./_modules/pydm/widgets/drawing.html
@@ -20,6 +21,7 @@
 ./_modules/pydm/widgets/timeplot.html
 ./_modules/pydm/widgets/waveformplot.html
 ./_modules/pydm/widgets/waveformtable.html
+./_sources/application.rst.txt
 ./_sources/channel.rst.txt
 ./_sources/getting_started.rst.txt
 ./_sources/index.rst.txt
@@ -78,6 +80,7 @@
 ./_static/up-pressed.png
 ./_static/up.png
 ./_static/websupport.js
+./application.html
 ./channel.html
 ./genindex.html
 ./getting_started.html
