@@ -20,6 +20,7 @@ class PyDMConnection(QObject):
         self.listener_count = self.listener_count + 1
         if channel.connection_slot is not None:
             self.connection_state_signal.connect(channel.connection_slot, Qt.QueuedConnection)
+            
         if channel.value_slot is not None:
             try:
                 self.new_value_signal[int].connect(channel.value_slot, Qt.QueuedConnection)
@@ -61,7 +62,11 @@ class PyDMConnection(QObject):
       
     def remove_listener(self, channel):
         if channel.connection_slot is not None:
-            self.connection_state_signal.disconnect(channel.connection_slot)
+            try:
+                self.connection_state_signal.disconnect(channel.connection_slot)
+            except TypeError:
+                pass
+            
         if channel.value_slot is not None:
             try:
                 self.new_value_signal[int].disconnect(channel.value_slot)
