@@ -10,6 +10,7 @@ from .drawing import (PyDMDrawingLine, PyDMDrawingRectangle, PyDMDrawingTriangle
 
 from .embedded_display import PyDMEmbeddedDisplay
 from .enum_combo_box import PyDMEnumComboBox
+from .frame import PyDMFrame
 from .image import PyDMImageView
 from .indicator import PyDMIndicator
 from .label import PyDMLabel
@@ -64,6 +65,8 @@ PyDMEmbeddedDisplayPlugin = qtplugin_factory(PyDMEmbeddedDisplay, group=WidgetCa
 # Enum Combobox plugin
 PyDMEnumComboBoxPlugin = qtplugin_factory(PyDMEnumComboBox, group=WidgetCategory.INPUT)
 
+# Frame plugin
+PyDMFramePlugin = qtplugin_factory(PyDMFrame, group=WidgetCategory.DISPLAY, is_container=True)
 
 # Image plugin
 PyDMImageViewPlugin = qtplugin_factory(PyDMImageView, group=WidgetCategory.DISPLAY)
