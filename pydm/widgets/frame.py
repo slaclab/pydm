@@ -66,14 +66,17 @@ class PyDMFrame(QFrame, PyDMWidget):
             The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
             and 3 = INVALID
         """
+        if self._channel is None:
+            return
         # Cleanup the old alarm stylesheet used
         alarm_style = compose_stylesheet(style=self._style, obj=self)
         original_style = str(self.styleSheet()).replace(alarm_style, "")
 
         self._alarm_state = new_alarm_severity
         self._style = dict(self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity])
-        if "color" in self._style and self._alarm_state != 0:
-            self._style["background-color"] = self._style["color"]
+        if "color" in self._style:
+            if self._alarm_state != 0:
+                self._style["background-color"] = self._style["color"]
             del self._style["color"]
         style = compose_stylesheet(style=self._style, obj=self)
         self.setStyleSheet(original_style + style)

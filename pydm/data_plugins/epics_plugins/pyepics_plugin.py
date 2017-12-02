@@ -105,6 +105,8 @@ class Connection(PyDMConnection):
         if epics.ca.isConnected(self.pv.chid):
             self.send_connection_state(conn=True)
             self.pv.run_callbacks()
+        else:
+            self.send_connection_state(conn=False)
         # If the channel is used for writing to PVs, hook it up to the 'put' methods.  
         if channel.value_signal is not None:
             try:
