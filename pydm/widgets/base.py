@@ -28,7 +28,10 @@ def compose_stylesheet(style, base_class=None, obj=None):
     """
     if base_class is None and obj is not None:
         base_class = type(obj).__name__
-    style_str = base_class + " {"
+        widget_selector = ""
+        if hasattr(obj, "objectName") and obj.objectName() != "":
+            widget_selector = "#" + obj.objectName()
+    style_str = base_class + widget_selector + " {"
     for k, v in style.items():
         style_str += "{}: {}; ".format(k, v)
     style_str += "}"
