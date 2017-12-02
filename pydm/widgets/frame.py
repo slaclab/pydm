@@ -66,7 +66,7 @@ class PyDMFrame(QFrame, PyDMWidget):
             The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
             and 3 = INVALID
         """
-        if self.channel is None or self._channel is None:
+        if self._channel is None:
             return
         # Cleanup the old alarm stylesheet used
         alarm_style = compose_stylesheet(style=self._style, obj=self)
