@@ -49,9 +49,9 @@ class PyDMMainWindow(QMainWindow):
         QShortcut(QKeySequence(Qt.CTRL + Qt.Key_R), self, partial(self.reload_display, None))
         QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Equal), self, partial(self.increase_font_size, None))
         QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Minus), self, partial(self.decrease_font_size, None))
-        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Left), self, partial(self.back, None))
-        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Right), self, partial(self.forward, None))
-        QShortcut(QKeySequence(Qt.SHIFT + Qt.CTRL + Qt.Key_H), self, partial(self.home, None))
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Left), self, self.back)
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Right), self, self.forward)
+        QShortcut(QKeySequence(Qt.SHIFT + Qt.CTRL + Qt.Key_H), self, self.home)
         QShortcut(QKeySequence(Qt.CTRL + Qt.Key_O), self, partial(self.open_file_action, None))
 
         self.ui.actionShow_Status_Bar.triggered.connect(self.toggle_status_bar)
@@ -280,14 +280,14 @@ class PyDMMainWindow(QMainWindow):
         current_font = QApplication.instance().font()
         current_font.setPointSizeF(current_font.pointSizeF() * 1.1)
         QApplication.instance().setFont(current_font)
-        QTimer.singleShot(0, self.resizeToMinimum)
+        QTimer.singleShot(0, self.resizeForNewDisplayWidget)
 
     @pyqtSlot(bool)
     def decrease_font_size(self, checked):
         current_font = QApplication.instance().font()
         current_font.setPointSizeF(current_font.pointSizeF() / 1.1)
         QApplication.instance().setFont(current_font)
-        QTimer.singleShot(0, self.resizeToMinimum)
+        QTimer.singleShot(0, self.resizeForNewDisplayWidget)
 
     def resizeForNewDisplayWidget(self):
         self.resize(self._new_widget_size)
