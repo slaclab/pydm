@@ -426,20 +426,6 @@ class PyDMApplication(QApplication):
         full_path = self.get_path(ui_file)
         return self.open_file(full_path, macros=macros, command_line_args=command_line_args)
 
-    def initialize_plugins(self):
-        module = imp.load_source('intelclass', pyfile)
-        if hasattr(module, 'intelclass'):
-            cls = module.intelclass
-            if not issubclass(cls, Display):
-                raise ValueError("Invalid class definition at file {}. {} does not inherit from Display. Nothing to open at this time.".format(pyfile, cls.__name__))
-        else:
-            classes = [obj for name, obj in inspect.getmembers(module) if inspect.isclass(obj) and issubclass(obj, Display) and obj != Display]
-            if len(classes) == 0:
-                raise ValueError("Invalid File Format. {} has no class inheriting from Display. Nothing to open at this time.".format(pyfile))
-            if len(classes) > 1:
-                warnings.warn("More than one Display class in file {}. The first occurence (in alphabetical order) will be opened: {}".format(pyfile, classes[0].__name__), RuntimeWarning, stacklevel=2)
-            cls = classes[0]
-
     def plugin_for_channel(self, channel):
         """
         Given a PyDMChannel object, determine the appropriate plugin to use.
