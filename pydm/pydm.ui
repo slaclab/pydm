@@ -106,24 +106,15 @@
    <property name="text">
     <string>Reload Display</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+R</string>
-   </property>
   </action>
   <action name="actionIncrease_Font_Size">
    <property name="text">
     <string>Increase Font Size</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+=</string>
-   </property>
   </action>
   <action name="actionDecrease_Font_Size">
    <property name="text">
     <string>Decrease Font Size</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+-</string>
    </property>
   </action>
   <action name="actionShow_File_Path_in_Title_Bar">
@@ -138,24 +129,15 @@
    <property name="text">
     <string>Back</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+Left</string>
-   </property>
   </action>
   <action name="actionForward">
    <property name="text">
     <string>Forward</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+Right</string>
-   </property>
   </action>
   <action name="actionHome">
    <property name="text">
     <string>Home</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+H</string>
    </property>
   </action>
   <action name="actionShow_Navigation_Bar">
@@ -172,9 +154,6 @@
   <action name="actionOpen_File">
    <property name="text">
     <string>Open File...</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionShow_Menu_Bar">

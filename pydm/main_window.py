@@ -42,7 +42,18 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionShow_File_Path_in_Title_Bar.triggered.connect(self.toggle_file_path_in_title_bar)
         self.ui.actionShow_Navigation_Bar.triggered.connect(self.toggle_nav_bar)
         self.ui.actionShow_Menu_Bar.triggered.connect(self.toggle_menu_bar)
-        QShortcut(QKeySequence(Qt.CTRL+Qt.Key_M), self, partial(self.toggle_menu_bar, None))
+
+        # We need the shortcuts to be on the application level so they
+        # can be executed even when the menu is hidden
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_M), self, partial(self.toggle_menu_bar, None))
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_R), self, partial(self.reload_display, None))
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Equal), self, partial(self.increase_font_size, None))
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Minus), self, partial(self.decrease_font_size, None))
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Left), self, self.back)
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Right), self, self.forward)
+        QShortcut(QKeySequence(Qt.SHIFT + Qt.CTRL + Qt.Key_H), self, self.home)
+        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_O), self, partial(self.open_file_action, None))
+
         self.ui.actionShow_Status_Bar.triggered.connect(self.toggle_status_bar)
         self._new_widget_size = None
         if hide_nav_bar:
@@ -269,14 +280,14 @@ class PyDMMainWindow(QMainWindow):
         current_font = QApplication.instance().font()
         current_font.setPointSizeF(current_font.pointSizeF() * 1.1)
         QApplication.instance().setFont(current_font)
-        QTimer.singleShot(0, self.resizeToMinimum)
+        QTimer.singleShot(0, self.resizeForNewDisplayWidget)
 
     @pyqtSlot(bool)
     def decrease_font_size(self, checked):
         current_font = QApplication.instance().font()
         current_font.setPointSizeF(current_font.pointSizeF() / 1.1)
         QApplication.instance().setFont(current_font)
-        QTimer.singleShot(0, self.resizeToMinimum)
+        QTimer.singleShot(0, self.resizeForNewDisplayWidget)
 
     def resizeForNewDisplayWidget(self):
         self.resize(self._new_widget_size)
