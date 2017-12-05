@@ -27,7 +27,6 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         PyDMPrimitiveWidget.__init__(self)
         self.mouseReleaseEvent = self.push_button_release_event
 
-        make_cursor(icon="", include_arrow=False)
         self.iconFont = IconFont()
         icon = self.iconFont.icon("file")
         self.setIconSize(QSize(16, 16))
