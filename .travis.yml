@@ -18,6 +18,8 @@ matrix:
       env: PYQT_VERSION=5 BUILD_DOCS=1
 
 before_install:
+  # Make sure we have the tags no matter how far from them we are.
+  - git pull --unshallow
   - sudo apt-get update
   # We do this conditionally because it saves us some downloading if the
   # version is the same.
