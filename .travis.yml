@@ -35,7 +35,7 @@ before_install:
   # Useful for debugging any issues with conda
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pyqt=$PYQT_VERSION pip numpy scipy six psutil pyqtgraph -c conda-forge
   - source activate test-environment
-  - pip install requests pyepics coverage codecov coveralls pytest pytest-cov
+  - pip install requests pyepics coverage codecov coveralls pytest pytest-cov versioneer
 
 install:
   # Debug information
