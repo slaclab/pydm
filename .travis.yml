@@ -18,6 +18,8 @@ matrix:
       env: PYQT_VERSION=5 BUILD_DOCS=1
 
 before_install:
+  # Make sure we have the tags no matter how far from them we are.
+  - git pull --unshallow
   - sudo apt-get update
   # We do this conditionally because it saves us some downloading if the
   # version is the same.
@@ -35,9 +37,13 @@ before_install:
   # Useful for debugging any issues with conda
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pyqt=$PYQT_VERSION pip numpy scipy six psutil pyqtgraph -c conda-forge
   - source activate test-environment
-  - pip install requests pyepics coverage codecov coveralls pytest pytest-cov
+  - pip install requests pyepics coverage codecov coveralls pytest pytest-cov versioneer
 
 install:
+  # Debug information
+  - git describe --tags --dirty --always
+  - python setup.py version
+  # Do the proper install
   - python setup.py install
 
 script:
@@ -47,10 +53,6 @@ script:
   - |
     if [[ -n "$DOCTR_DEPLOY_ENCRYPTION_KEY" && $BUILD_DOCS ]]; then
       pip install -r docs-requirements.txt
-      # Install doctr from a custom branch until
-      # https://github.com/drdoctr/doctr/pull/190 is merged.
-      pip uninstall -y doctr
-      pip install git+https://github.com/danielballan/doctr@other-master
       pushd docs
       make html
       popd
