@@ -38,6 +38,10 @@ before_install:
   - pip install requests pyepics coverage codecov coveralls pytest pytest-cov
 
 install:
+  # Debug information
+  - git describe --tags --dirty --always
+  - python setup.py version
+  # Do the proper install
   - python setup.py install
 
 script:
@@ -47,10 +51,6 @@ script:
   - |
     if [[ -n "$DOCTR_DEPLOY_ENCRYPTION_KEY" && $BUILD_DOCS ]]; then
       pip install -r docs-requirements.txt
-      # Install doctr from a custom branch until
-      # https://github.com/drdoctr/doctr/pull/190 is merged.
-      pip uninstall -y doctr
-      pip install git+https://github.com/danielballan/doctr@other-master
       pushd docs
       make html
       popd
