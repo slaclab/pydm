@@ -1,9 +1,11 @@
+import functools
 import numpy as np
 from ..PyQt.QtGui import QApplication, QColor, QCursor
 from ..PyQt.QtCore import Qt, QEvent, pyqtSignal, pyqtSlot, pyqtProperty
 from .channel import PyDMChannel
 from ..application import PyDMApplication
 from ..utilities import is_pydm_app
+
 
 def compose_stylesheet(style, base_class=None, obj=None):
     """
@@ -39,6 +41,39 @@ def compose_stylesheet(style, base_class=None, obj=None):
     return style_str
 
 
+def is_channel_valid(channel):
+    """
+    Verify if a channel string is valid.
+    For now a valid channel is a channel in which:
+    - It is not None
+    - It is not an empty string
+
+    Parameters
+    ----------
+    channel : str
+        The channel value
+
+    Returns
+    -------
+    valid : bool
+        Returns True if the channel is valid, False otherwise.
+    """
+    return channel is not None and channel != ""
+
+
+def only_if_channel_set(fcn):
+    '''Decorator to avoid executing a method if a channel is not valid or configured.'''
+
+    @functools.wraps(fcn)
+    def wrapper(self, *args, **kwargs):
+        if is_channel_valid(self._channel):
+            return fcn(self, *args, **kwargs)
+        else:
+            return
+
+    return wrapper
+
+
 class PyDMPrimitiveWidget(object):
     """
     Primitive class that determines that a given widget is a PyDMWidget.
@@ -46,6 +81,7 @@ class PyDMPrimitiveWidget(object):
     isinstance(obj, PyDMPrimitiveWidget)
     """
     pass
+
 
 class PyDMWidget(PyDMPrimitiveWidget):
     """
@@ -120,6 +156,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
     def __init__(self, init_channel=None):
         super(PyDMWidget, self).__init__()
+        self._connected = True
         self._color = self.local_connection_status_color_map[False]
         self._channel = init_channel
         self._channels = None
@@ -129,7 +166,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | (self.ALARM_BORDER * self._alarm_sensitive_border)
         self._alarm_state = self.ALARM_DISCONNECTED
         self._style = self.alarm_style_sheet_map[self._alarm_flags][self._alarm_state]
-        self._connected = False
 
         self._precision_from_pv = True
         self._prec = 0
@@ -144,10 +180,12 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.value = None
         self.channeltype = None
         self.subtype = None
-        self.check_enable_state()
+
         # If this label is inside a PyDMApplication (not Designer) start it in the disconnected state.
         if is_pydm_app():
+            self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
+            self.check_enable_state()
 
     def init_for_designer(self):
         """
@@ -609,6 +647,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self.format_string += " {}".format(self._unit)
         return self.format_string
 
+    @only_if_channel_set
     def check_enable_state(self):
         """
         Checks whether or not the widget should be disable.
@@ -713,13 +752,16 @@ class PyDMWritableWidget(PyDMWidget):
             True to stop the event from being handled further; otherwise
             return false.
         """
-        status = self._write_access and self._connected
 
-        if event.type() == QEvent.Leave:
-            QApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
+        if is_channel_valid(self._channel):
+            status = self._write_access and self._connected
 
-        if event.type() == QEvent.Enter and not status:
-            QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
+            if event.type() == QEvent.Leave:
+                # QApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
+                QApplication.restoreOverrideCursor()
+
+            if event.type() == QEvent.Enter and not status:
+                QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
 
         return False
 
@@ -749,6 +791,7 @@ class PyDMWritableWidget(PyDMWidget):
         """
         self.write_access_changed(write_access)
 
+    @only_if_channel_set
     def check_enable_state(self):
         """
         Checks whether or not the widget should be disable.
