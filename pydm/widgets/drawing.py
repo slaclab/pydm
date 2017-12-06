@@ -1,7 +1,7 @@
 import math
 import os
 from ..PyQt.QtGui import QApplication, QWidget, QColor, QPainter, QBrush, QPen, QPolygon, QPixmap, QStyle, QStyleOption
-from ..PyQt.QtCore import pyqtProperty, Qt, QPoint
+from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, pyqtSlot
 from ..PyQt.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
 from ..utilities import is_pydm_app
@@ -414,13 +414,29 @@ class PyDMDrawingImage(PyDMDrawing):
     init_channel : str, optional
         The channel to be used by the widget.
     """
-    def __init__(self, parent=None, init_channel=None):
+    def __init__(self, parent=None, init_channel=None, filename=""):
         super(PyDMDrawingImage, self).__init__(parent, init_channel)
-        self._file = ""
+        self.filename = filename
         self._pixmap = QPixmap()
         self._aspect_ratio_mode = Qt.KeepAspectRatio
-        self.app = QApplication.instance()
+        if not is_pydm_app():
+            designer_window = self.get_designer_window()
+            if designer_window is not None:
+                designer_window.fileNameChanged.connect(self.designer_form_saved)
 
+    def get_designer_window(self):
+        #Internal function to find the designer window that owns this widget.
+        p = self.parent()
+        while p is not None:
+            if isinstance(p, QDesignerFormWindowInterface):
+                return p
+            p = p.parent()
+        return None
+    
+    @pyqtSlot(str)
+    def designer_form_saved(self, filename):
+        self.filename = self._file
+        
     @pyqtProperty(str)
     def filename(self):
         """
@@ -445,27 +461,20 @@ class PyDMDrawingImage(PyDMDrawing):
         new_file : str
             The filename to be used
         """
-        if new_file != self._file:
-            self._file = new_file
-            path_relative_to_ui_file = self._file
-            if not os.path.isabs(self._file):                
-                try:
-                    if is_pydm_app():
-                        path_relative_to_ui_file = self.app.get_path(self._file)
-                    else:
-                        p = self.parent()
-                        found = False
-                        while p is not None:
-                            if isinstance(p, QDesignerFormWindowInterface):
-                                found = True
-                                break
-                            p = p.parent()
-                        if found:
-                            path_relative_to_ui_file = os.path.join(p.absoluteDir().absolutePath(), self._file)
-                except Exception as e:
-                    print(e)
-            self._pixmap = QPixmap(path_relative_to_ui_file)
-            self.update()
+        self._file = new_file
+        path_relative_to_ui_file = self._file
+        if not os.path.isabs(self._file):                
+            try:
+                if is_pydm_app():
+                    path_relative_to_ui_file = QApplication.instance().get_path(self._file)
+                else:
+                    p = self.get_designer_window()
+                    if p is not None:
+                        path_relative_to_ui_file = os.path.join(p.absoluteDir().absolutePath(), self._file)
+            except Exception as e:
+                print(e)
+        self._pixmap = QPixmap(path_relative_to_ui_file)
+        self.update()
 
     @pyqtProperty(Qt.AspectRatioMode)
     def aspectRatioMode(self):
