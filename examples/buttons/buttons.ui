@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>472</width>
+    <height>97</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>PyDMPushButton</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>PyDMShellCommand</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>PyDMRelatedDisplayButton</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="PyDMPushButton" name="PyDMPushButton">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
+        <string>
+    Basic PushButton to send a fixed value.
+
+    The PyDMPushButton is meant to hold a specific value, and send that value
+    to a channel when it is clicked, much like the MessageButton does in EDM.
+    The PyDMPushButton works in two different modes of operation, first, a
+    fixed value can be given to the :attr:`.pressValue` attribute, whenever the
+    button is clicked a signal containing this value will be sent to the
+    connected channel. This is the default behavior of the button. However, if
+    the :attr:`.relativeChange` is set to True, the fixed value will be added
+    to the current value of the channel. This means that the button will
+    increment a channel by a fixed amount with every click, a consistent
+    relative move
+
+    Parameters
+    ----------
+    parent : QObject, optional
+        Parent of PyDMPushButton
+
+    label : str, optional
+        String to place on button
+
+    icon : QIcon, optional
+        An Icon to display on the PyDMPushButton
+
+    pressValue : int, float, str
+        Value to be sent when the button is clicked
+
+    relative : bool, optional
+        Choice to have the button perform a relative put, instead of always
+        setting to an absolute value
+
+    init_channel : str, optional
+        ID of channel to manipulate
+
+    </string>
+       </property>
+       <property name="text">
+        <string>Click Me!</string>
+       </property>
+       <property name="channel" stdset="0">
+        <string>ca://BLAH</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton">
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
+        <string>
+    A QPushButton capable of opening a new Display at the same of at a
+    new window.
+
+    Parameters
+    ----------
+    init_channel : str, optional
+        The channel to be used by the widget.
+
+    filename : str, optional
+        The file to be opened
+    </string>
+       </property>
+       <property name="text" stdset="0">
+        <string>Open Display</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="PyDMShellCommand" name="PyDMShellCommand">
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
+        <string>
+    A QPushButton capable of execute shell commands.
+    </string>
+       </property>
+       <property name="text">
+        <string>Run Command</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMPushButton</class>
+   <extends>QPushButton</extends>
+   <header>pydm.widgets.pushbutton</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMRelatedDisplayButton</class>
+   <extends>QFrame</extends>
+   <header>pydm.widgets.related_display_button</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMShellCommand</class>
+   <extends>QPushButton</extends>
+   <header>pydm.widgets.shell_command</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

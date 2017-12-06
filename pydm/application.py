@@ -385,7 +385,7 @@ class PyDMApplication(QApplication):
         else:
             self.directory_stack.pop()
             self.macro_stack.pop()
-            raise ValueError("invalid file type: {}".format(extension))
+            raise ValueError("Invalid file type: {}".format(extension))
         self.establish_widget_connections(widget)
         self.directory_stack.pop()
         self.macro_stack.pop()

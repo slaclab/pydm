@@ -1,7 +1,9 @@
-from ..PyQt.QtGui import QPushButton
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty
+from ..PyQt.QtGui import QPushButton, QCursor
+from ..PyQt.QtCore import pyqtSlot, pyqtProperty, QSize
 import shlex, subprocess
 from .base import PyDMPrimitiveWidget
+from ..utilities import IconFont
+
 
 class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
     """
@@ -11,6 +13,12 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
     def __init__(self, parent=None, command=None):
         QPushButton.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
+        self.iconFont = IconFont()
+        icon = self.iconFont.icon("cog")
+        self.setIconSize(QSize(16, 16))
+        self.setIcon(icon)
+        self.setCursor(QCursor(icon.pixmap(16, 16)))
+
         self._command = command
         self.process = None
 

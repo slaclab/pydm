@@ -1,9 +1,11 @@
-from ..PyQt.QtGui import QPushButton, QApplication, QFrame, QVBoxLayout, QSizePolicy, QLayout
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt
+from ..PyQt.QtGui import QPushButton, QCursor
+from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt, QSize
 import json
-from .base import PyDMWidget, compose_stylesheet
+from .base import PyDMPrimitiveWidget
+from ..utilities import IconFont
 
-class PyDMRelatedDisplayButton(QFrame, PyDMWidget):
+
+class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
     """
     A QPushButton capable of opening a new Display at the same of at a
     new window.
@@ -20,54 +22,21 @@ class PyDMRelatedDisplayButton(QFrame, PyDMWidget):
     EXISTING_WINDOW = 0;
     NEW_WINDOW = 1;
 
-    def __init__(self, parent=None, init_channel=None, filename=None):
-        QFrame.__init__(self, parent)
-        PyDMWidget.__init__(self, init_channel=init_channel)
-        self._layout = QVBoxLayout(self)
-        self._layout.setSpacing(0)
-        self._layout.setContentsMargins(0, 0, 0, 0)
-        self._layout.setSizeConstraint(QLayout.SetMaximumSize)
+    def __init__(self, parent=None, filename=None):
+        QPushButton.__init__(self, parent)
+        PyDMPrimitiveWidget.__init__(self)
+        self.mouseReleaseEvent = self.push_button_release_event
 
-        self.push_button = QPushButton(self)
-        self.push_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.push_button.mouseReleaseEvent = self.push_button_release_event
+        self.iconFont = IconFont()
+        icon = self.iconFont.icon("file")
+        self.setIconSize(QSize(16, 16))
+        self.setIcon(icon)
 
-        self._layout.addWidget(self.push_button)
-
-        self.setLayout(self._layout)
-        self.setFrameShape(QFrame.NoFrame)
-        self.setLineWidth(0)
+        self.setCursor(QCursor(icon.pixmap(16, 16)))
 
         self._display_filename = filename
         self._macro_string = None
         self._open_in_new_window = False
-        self.app = QApplication.instance()
-
-    def alarm_severity_changed(self, new_alarm_severity):
-        """
-        Callback invoked when the Channel alarm severity is changed.
-        This callback is not processed if the widget has no channel
-        associated with it.
-        This callback handles the composition of the stylesheet to be
-        applied and the call
-        to update to redraw the widget with the needed changes for the
-        new state.
-
-        Parameters
-        ----------
-        new_alarm_severity : int
-            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
-            and 3 = INVALID
-        """
-        PyDMWidget.alarm_severity_changed(self, new_alarm_severity)
-        if self._channels is not None:
-            self._alarm_state = new_alarm_severity
-            self._style = dict(self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity])
-            if 'border' in self._style:
-                del self._style['border']
-            style = compose_stylesheet(style=self._style, obj=self.push_button)
-            self.push_button.setStyleSheet(style)
-            self.push_button.update()
 
     def check_enable_state(self):
         """
@@ -75,28 +44,6 @@ class PyDMRelatedDisplayButton(QFrame, PyDMWidget):
         status, the widget is never disabled by connection state.
         """
         self.setEnabled(True)
-
-    @pyqtProperty(str)
-    def text(self):
-        """
-        The QPushButton text property
-
-        Returns
-        -------
-        str
-        """
-        return self.push_button.text()
-
-    @text.setter
-    def text(self, txt):
-        """
-        The QPushButton text property
-
-        Parameters
-        ----------
-        txt : str
-        """
-        self.push_button.setText(txt)
 
     @pyqtProperty(str)
     def displayFilename(self):
@@ -188,11 +135,15 @@ class PyDMRelatedDisplayButton(QFrame, PyDMWidget):
         mouse_event : QMouseEvent
 
         """
-        if mouse_event.modifiers() == Qt.ShiftModifier or self._open_in_new_window:
-            self.open_display(target=self.NEW_WINDOW)
-        else:
-            self.open_display()
-        super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
+        try:
+            if mouse_event.modifiers() == Qt.ShiftModifier or self._open_in_new_window:
+                self.open_display(target=self.NEW_WINDOW)
+            else:
+                self.open_display()
+        except:
+            pass
+        finally:
+            super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
 
     @pyqtSlot()
     def open_display(self, target=EXISTING_WINDOW):
