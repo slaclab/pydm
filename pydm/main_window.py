@@ -5,10 +5,13 @@ from .PyQt.QtGui import QApplication, QMainWindow, QFileDialog, QWidget, QShortc
 from .PyQt.QtCore import Qt, QTimer, pyqtSlot, QSize
 from .utilities import IconFont
 from .pydm_ui import Ui_MainWindow
+from .display_module import Display
 import subprocess
 import platform
 
+
 class PyDMMainWindow(QMainWindow):
+
     def __init__(self, parent=None, hide_nav_bar=False, hide_menu_bar=False, hide_status_bar=False):
         super(PyDMMainWindow, self).__init__(parent)
         self.app = QApplication.instance()
@@ -245,14 +248,32 @@ class PyDMMainWindow(QMainWindow):
 
     @pyqtSlot(bool)
     def edit_in_designer(self, checked):
-        if not self.designer_path:
-            return
-        filename, extension = path.splitext(self.current_file())
+
+        def open_editor_ui(fname):
+            if not self.designer_path or fname is None or fname == "":
+                return
+            self.statusBar().showMessage("Launching '{0}' in Qt Designer...".format(fname), 5000)
+            _ = subprocess.Popen('{0} "{1}"'.format(self.designer_path, fname), shell=True)
+
+        def open_editor_gen(fname):
+            central_widget = self.centralWidget() if isinstance(self.centralWidget(), Display) else None
+            if central_widget is not None:
+                ui_file = central_widget.ui_filepath()
+                open_editor_ui(ui_file)
+
+            if platform.system() == "Darwin":
+                subprocess.call(('open', fname))
+            elif platform.system() == "Linux":
+                subprocess.call(('xdg-open', fname))
+            elif platform.system() == "Windows":
+                os.startfile(fname)
+
+        _, extension = path.splitext(self.current_file())
         if extension == '.ui':
-            process = subprocess.Popen('{0} "{1}"'.format(self.designer_path, self.current_file()), shell=True)
-            self.statusBar().showMessage("Launching '{0}' in Qt Designer...".format(self.current_file()), 5000)
+            open_editor_ui(fname=self.current_file())
         else:
-            self.statusBar().showMessage("{0} is a Python file, and cannot be edited in Qt Designer.".format(self.current_file()), 5000)
+            # If it is not a 'ui' file it is for sure a 'py' file
+            open_editor_gen(self.current_file())
 
     @pyqtSlot(bool)
     def open_file_action(self, checked):
