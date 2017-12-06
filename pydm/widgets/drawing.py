@@ -1,7 +1,7 @@
 import math
 import os
 from ..PyQt.QtGui import QApplication, QWidget, QColor, QPainter, QBrush, QPen, QPolygon, QPixmap, QStyle, QStyleOption
-from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, pyqtSlot
+from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, QSize, pyqtSlot
 from ..PyQt.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
 from ..utilities import is_pydm_app
@@ -66,6 +66,9 @@ class PyDMDrawing(QWidget, PyDMWidget):
         self._pen_style = Qt.NoPen
         self._pen_width = 0
         self._pen_color = QColor(0, 0, 0)
+
+    def sizeHint(self):
+        return QSize(100,100)
 
     def paintEvent(self, _):
         """
@@ -475,6 +478,11 @@ class PyDMDrawingImage(PyDMDrawing):
                 print(e)
         self._pixmap = QPixmap(path_relative_to_ui_file)
         self.update()
+
+    def sizeHint(self):
+        if self._pixmap.size().isEmpty():
+            return super(PyDMDrawingImage, self).sizeHint()
+        return self._pixmap.size()
 
     @pyqtProperty(Qt.AspectRatioMode)
     def aspectRatioMode(self):
