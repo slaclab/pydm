@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.related_display_button &mdash; PyDM 0.3.0+93.ga01b80f documentation</title>
+  <title>pydm.widgets.related_display_button &mdash; PyDM 0.3.0+94.g757a24a documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+93.ga01b80f documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+94.g757a24a documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+93.ga01b80f
+                0.3.0+94.g757a24a
               </div>
             
           
@@ -159,12 +159,14 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.related_display_button</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QLayout</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Qt</span>
+<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QCursor</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">compose_stylesheet</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMPrimitiveWidget</span>
+<span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">IconFont</span>
 
-<div class="viewcode-block" id="PyDMRelatedDisplayButton"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton">[docs]</a><span class="k">class</span> <span class="nc">PyDMRelatedDisplayButton</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton">[docs]</a><span class="k">class</span> <span class="nc">PyDMRelatedDisplayButton</span><span class="p">(</span><span class="n">QPushButton</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QPushButton capable of opening a new Display at the same of at a</span>
 <span class="sd">    new window.</span>
@@ -181,54 +183,21 @@
     <span class="n">EXISTING_WINDOW</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="n">NEW_WINDOW</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">QFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
-        <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_layout</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_layout</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_layout</span><span class="o">.</span><span class="n">setSizeConstraint</span><span class="p">(</span><span class="n">QLayout</span><span class="o">.</span><span class="n">SetMaximumSize</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QPushButton</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="n">PyDMPrimitiveWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mouseReleaseEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">push_button_release_event</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">push_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="o">.</span><span class="n">mouseReleaseEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">push_button_release_event</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iconFont</span> <span class="o">=</span> <span class="n">IconFont</span><span class="p">()</span>
+        <span class="n">icon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iconFont</span><span class="o">.</span><span class="n">icon</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setIconSize</span><span class="p">(</span><span class="n">QSize</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">NoFrame</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setLineWidth</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCursor</span><span class="p">(</span><span class="n">QCursor</span><span class="p">(</span><span class="n">icon</span><span class="o">.</span><span class="n">pixmap</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">)))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_display_filename</span> <span class="o">=</span> <span class="n">filename</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_macro_string</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_open_in_new_window</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
-
-<div class="viewcode-block" id="PyDMRelatedDisplayButton.alarm_severity_changed"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.alarm_severity_changed">[docs]</a>    <span class="k">def</span> <span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Callback invoked when the Channel alarm severity is changed.</span>
-<span class="sd">        This callback is not processed if the widget has no channel</span>
-<span class="sd">        associated with it.</span>
-<span class="sd">        This callback handles the composition of the stylesheet to be</span>
-<span class="sd">        applied and the call</span>
-<span class="sd">        to update to redraw the widget with the needed changes for the</span>
-<span class="sd">        new state.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        new_alarm_severity : int</span>
-<span class="sd">            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR</span>
-<span class="sd">            and 3 = INVALID</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">=</span> <span class="n">new_alarm_severity</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_style</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alarm_style_sheet_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_alarm_flags</span><span class="p">][</span><span class="n">new_alarm_severity</span><span class="p">])</span>
-            <span class="k">if</span> <span class="s1">&#39;border&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">:</span>
-                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">[</span><span class="s1">&#39;border&#39;</span><span class="p">]</span>
-            <span class="n">style</span> <span class="o">=</span> <span class="n">compose_stylesheet</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">style</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMRelatedDisplayButton.check_enable_state"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.check_enable_state">[docs]</a>    <span class="k">def</span> <span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -236,28 +205,6 @@
 <span class="sd">        status, the widget is never disabled by connection state.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
-
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The QPushButton text property</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        str</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
-
-    <span class="nd">@text</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txt</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The QPushButton text property</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        txt : str</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">push_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
 
     <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">displayFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -349,11 +296,15 @@
 <span class="sd">        mouse_event : QMouseEvent</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">mouse_event</span><span class="o">.</span><span class="n">modifiers</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ShiftModifier</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_in_new_window</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">open_display</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NEW_WINDOW</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">open_display</span><span class="p">()</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMRelatedDisplayButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">mouseReleaseEvent</span><span class="p">(</span><span class="n">mouse_event</span><span class="p">)</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mouse_event</span><span class="o">.</span><span class="n">modifiers</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ShiftModifier</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_in_new_window</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">open_display</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NEW_WINDOW</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">open_display</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">PyDMRelatedDisplayButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">mouseReleaseEvent</span><span class="p">(</span><span class="n">mouse_event</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMRelatedDisplayButton.open_display"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.open_display">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">open_display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">EXISTING_WINDOW</span><span class="p">):</span>
@@ -415,7 +366,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0+93.ga01b80f',
+            VERSION:'0.3.0+94.g757a24a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
