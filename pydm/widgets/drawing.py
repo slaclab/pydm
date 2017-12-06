@@ -1,7 +1,10 @@
 import math
+import os
 from ..PyQt.QtGui import QApplication, QWidget, QColor, QPainter, QBrush, QPen, QPolygon, QPixmap, QStyle, QStyleOption
 from ..PyQt.QtCore import pyqtProperty, Qt, QPoint
+from ..PyQt.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
+from ..utilities import is_pydm_app
 
 def deg_to_qt(deg):
     """
@@ -445,12 +448,22 @@ class PyDMDrawingImage(PyDMDrawing):
         if new_file != self._file:
             self._file = new_file
             path_relative_to_ui_file = self._file
-            try:
-                # This could fail if we are in designer, where window()
-                # doesn't have the join_to_current_file_path method.
-                path_relative_to_ui_file = self.app.get_path(self._file)
-            except Exception:
-                pass
+            if not os.path.isabs(self._file):                
+                try:
+                    if is_pydm_app():
+                        path_relative_to_ui_file = self.app.get_path(self._file)
+                    else:
+                        p = self.parent()
+                        found = False
+                        while p is not None:
+                            if isinstance(p, QDesignerFormWindowInterface):
+                                found = True
+                                break
+                            p = p.parent()
+                        if found:
+                            path_relative_to_ui_file = os.path.join(p.absoluteDir().absolutePath(), self._file)
+                except Exception as e:
+                    print(e)
             self._pixmap = QPixmap(path_relative_to_ui_file)
             self.update()
 
