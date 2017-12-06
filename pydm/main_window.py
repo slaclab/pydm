@@ -122,6 +122,16 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionBack.setEnabled(len(self.back_stack) > 1)
         if self.home_file is None:
             self.home_file = (filename, merged_macros, command_line_args)
+        # Update here the Menu Editor text...
+        ui_file, py_file = self.get_files_in_display()
+        edit_in_text = "Open in "
+        editors = []
+        if ui_file is not None and ui_file != "":
+            editors.append("Designer")
+        if py_file is not None and py_file != "":
+            editors.append("Text Editor")
+        edit_in_text += ' and '.join(editors)
+        self.ui.actionEdit_in_Designer.setText(edit_in_text)
 
     def new_window(self, ui_file, macros=None, command_line_args=None):
         filename = self.join_to_current_file_path(ui_file)
@@ -246,6 +256,16 @@ class PyDMMainWindow(QMainWindow):
     def toggle_status_bar(self, checked):
         self.ui.statusbar.setHidden(not checked)
 
+    def get_files_in_display(self):
+        _, extension = path.splitext(self.current_file())
+        if extension == '.ui':
+            return self.current_file(), None
+        else:
+            central_widget = self.centralWidget() if isinstance(self.centralWidget(), Display) else None
+            if central_widget is not None:
+                ui_file = central_widget.ui_filepath()
+            return ui_file, self.current_file()
+
     @pyqtSlot(bool)
     def edit_in_designer(self, checked):
 
@@ -255,12 +275,7 @@ class PyDMMainWindow(QMainWindow):
             self.statusBar().showMessage("Launching '{0}' in Qt Designer...".format(fname), 5000)
             _ = subprocess.Popen('{0} "{1}"'.format(self.designer_path, fname), shell=True)
 
-        def open_editor_gen(fname):
-            central_widget = self.centralWidget() if isinstance(self.centralWidget(), Display) else None
-            if central_widget is not None:
-                ui_file = central_widget.ui_filepath()
-                open_editor_ui(ui_file)
-
+        def open_editor_generic(fname):
             if platform.system() == "Darwin":
                 subprocess.call(('open', fname))
             elif platform.system() == "Linux":
@@ -268,12 +283,11 @@ class PyDMMainWindow(QMainWindow):
             elif platform.system() == "Windows":
                 os.startfile(fname)
 
-        _, extension = path.splitext(self.current_file())
-        if extension == '.ui':
-            open_editor_ui(fname=self.current_file())
-        else:
-            # If it is not a 'ui' file it is for sure a 'py' file
-            open_editor_gen(self.current_file())
+        ui_file, py_file = self.get_files_in_display()
+        if ui_file is not None and ui_file != "":
+            open_editor_ui(fname=ui_file)
+        if py_file is not None and py_file != "":
+            open_editor_generic(fname=py_file)
 
     @pyqtSlot(bool)
     def open_file_action(self, checked):
