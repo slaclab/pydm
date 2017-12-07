@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.drawing &mdash; PyDM 0.3.0+96.g17e393c documentation</title>
+  <title>pydm.widgets.drawing &mdash; PyDM 0.3.0+98.gd6aefd1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+96.g17e393c documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+98.gd6aefd1 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+96.g17e393c
+                0.3.0+98.gd6aefd1
               </div>
             
           
@@ -580,9 +580,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingImage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">KeepAspectRatio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_pydm_app</span><span class="p">():</span>
             <span class="n">designer_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_designer_window</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">designer_window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -960,7 +960,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0+96.g17e393c',
+            VERSION:'0.3.0+98.gd6aefd1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
