@@ -166,6 +166,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | (self.ALARM_BORDER * self._alarm_sensitive_border)
         self._alarm_state = self.ALARM_DISCONNECTED
         self._style = self.alarm_style_sheet_map[self._alarm_flags][self._alarm_state]
+        self._tooltip = None
 
         self._precision_from_pv = True
         self._prec = 0
@@ -647,6 +648,11 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self.format_string += " {}".format(self._unit)
         return self.format_string
 
+    def restore_original_tooltip(self):
+        if self._tooltip is None:
+            self._tooltip = self.toolTip()
+        return self._tooltip 
+
     @only_if_channel_set
     def check_enable_state(self):
         """
@@ -655,9 +661,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
         with the reason why it is disabled.
         """
         status = self._connected
-        tooltip = ""
+        tooltip = self.restore_original_tooltip()
         if not status:
-            tooltip = "PV is disconnected."
+            if tooltip != '': tooltip += '\n'
+            tooltip += "PV is disconnected."
 
         self.setToolTip(tooltip)
         self.setEnabled(status)
@@ -799,10 +806,12 @@ class PyDMWritableWidget(PyDMWidget):
         with the reason why it is disabled.
         """
         status = self._write_access and self._connected
-        tooltip = ""
+        tooltip = self.restore_original_tooltip()
         if not self._connected:
+            if tooltip != '': tooltip += '\n'
             tooltip += "PV is disconnected."
         elif not self._write_access:
+            if tooltip != '': tooltip += '\n'
             tooltip += "Access denied by Channel Access Security."
         self.setToolTip(tooltip)
         self.setEnabled(status)
