@@ -2,7 +2,7 @@ import os
 from os import path, environ
 from functools import partial
 from .PyQt.QtGui import QApplication, QMainWindow, QFileDialog, QWidget, QShortcut, QKeySequence
-from .PyQt.QtCore import Qt, QTimer, pyqtSlot, QSize
+from .PyQt.QtCore import Qt, QTimer, pyqtSlot, QSize, QLibraryInfo
 from .utilities import IconFont
 from .pydm_ui import Ui_MainWindow
 from .display_module import Display
@@ -66,16 +66,18 @@ class PyDMMainWindow(QMainWindow):
         if hide_status_bar:
             self.toggle_status_bar(False)
         self.designer_path = None
-        if environ.get('QTHOME') is None:
-            self.ui.actionEdit_in_Designer.setEnabled(False)
+        designer_bin = QLibraryInfo.location(QLibraryInfo.BinariesPath)
+
+        if platform.system() == 'Darwin':
+            self.designer_path = os.path.join(designer_bin, 'Designer.app/Contents/MacOS/Designer')
+        elif platform.system() == 'Linux':
+            self.designer_path = os.path.join(designer_bin, 'designer')
         else:
-            qt_path = environ.get('QTHOME')
-            if platform.system() == 'Darwin':
-                # On OS X we have to launch designer in this ugly way if we want it to get access to environment variables.  Ugh.
-                self.designer_path = path.join(qt_path, 'Designer.app/Contents/MacOS/Designer')
-            else:
-                # This assumes some non-OS X unix.  No windows support right now.
-                self.designer_path = path.join(qt_path, 'bin/designer')
+            self.designer_path = os.path.join(designer_bin, 'designer.exe')
+
+        # Ensure that the file exists
+        if not os.path.isfile(self.designer_path):
+            self.designer_path = None
 
     def set_display_widget(self, new_widget):
         if new_widget == self._display_widget:
@@ -270,7 +272,7 @@ class PyDMMainWindow(QMainWindow):
     def edit_in_designer(self, checked):
 
         def open_editor_ui(fname):
-            if not self.designer_path or fname is None or fname == "":
+            if self.designer_path is None or fname is None or fname == "":
                 return
             self.statusBar().showMessage("Launching '{0}' in Qt Designer...".format(fname), 5000)
             _ = subprocess.Popen('{0} "{1}"'.format(self.designer_path, fname), shell=True)
