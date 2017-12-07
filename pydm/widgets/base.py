@@ -732,7 +732,10 @@ class PyDMWritableWidget(PyDMWidget):
     def __init__(self, init_channel=None):
         self._write_access = False
         super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
-        self.installEventFilter(self)
+        # We should  install the Event Filter only if we are running
+        # and not at the Designer
+        if is_pydm_app():
+            self.installEventFilter(self)
 
     def init_for_designer(self):
         """
