@@ -1,10 +1,14 @@
 from functools import partial
 from ..PyQt.QtGui import QLineEdit, QMenu
-from ..PyQt.QtCore import Qt
+from ..PyQt.QtCore import Qt, pyqtProperty, Q_ENUMS
 from .. import utilities
 from .base import PyDMWritableWidget
+from .display_format import DisplayFormat, parse_value_for_display
 
-class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
+
+class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
+    Q_ENUMS(DisplayFormat)
+    DisplayFormat = DisplayFormat
     """
     A QLineEdit (writable text field) with support for Channels and more
     from PyDM.
@@ -34,6 +38,18 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         self.menu = QMenu(self)
         self.unitMenu = self.menu.addMenu('Convert Units')
         self.create_unit_options()
+        self._display_format_type = self.DisplayFormat.Default
+
+    @pyqtProperty(DisplayFormat)
+    def displayFormat(self):
+        return self._display_format_type
+
+    @displayFormat.setter
+    def displayFormat(self, new_type):
+        if self._display_format_type != new_type:
+            self._display_format_type = new_type
+            # Trigger the update of display format
+            self.value_changed(self.value)
 
     def value_changed(self, new_val):
         """
@@ -172,18 +188,34 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         """
         if self.value is None:
             return
-        value = self.value
-        if not isinstance(value, str):
-            if self._scale and value:
-                value *= self.channeltype(self._scale)
-
-        if self.format_string:
-            value = self.format_string.format(value)
-
-        self._display = str(value)
-
-        if not self.hasFocus():
+                
+        if self.hasFocus():
+            return
+        
+        new_value = self.value
+        
+        if self._display_format_type in [DisplayFormat.Decimal, DisplayFormat.Exponential, DisplayFormat.Default]:
+            if not not isinstance(new_value, str):
+                new_value *= self.channeltype(self._scale)
+        
+        new_value = parse_value_for_display(new_value, self._display_format_type, self._prec, self)
+        
+        self._display = str(new_value)
+        # If the value is a string, just display it as-is, no formatting
+        # needed.
+        if isinstance(new_value, str):
+            
+            self.setText(new_value)
+            return
+        # If the value is a number (float or int), display it using a
+        # format string if necessary.
+        if isinstance(new_value, (int, float)):
+            self._display = str(self.format_string.format(new_value))
             self.setText(self._display)
+            return
+        # If you made it this far, just turn whatever the heck the value
+        # is into a string and display it.
+        self.setText(str(new_value))
 
     def focusOutEvent(self, event):
         """

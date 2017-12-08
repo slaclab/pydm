@@ -1,22 +1,7 @@
 from .base import PyDMWidget
 from ..PyQt.QtGui import QLabel
-from ..PyQt.QtCore import Qt, pyqtProperty, Q_ENUMS, QObject
-import numpy as np
-import math
-
-try:
-    # unichr is not available on Py3+
-    unichr(1)
-except NameError:
-    unichr = chr
-
-class DisplayFormat(object):
-    Default = 0
-    String = 1
-    Decimal = 2
-    Exponential = 3
-    Hex = 4
-    Binary = 5
+from ..PyQt.QtCore import Qt, pyqtProperty, Q_ENUMS
+from .display_format import DisplayFormat, parse_value_for_display
 
 class PyDMLabel(QLabel, PyDMWidget, DisplayFormat):
     Q_ENUMS(DisplayFormat)
@@ -35,7 +20,6 @@ class PyDMLabel(QLabel, PyDMWidget, DisplayFormat):
     def __init__(self, parent=None, init_channel=None):
         QLabel.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
-
         self.setTextFormat(Qt.PlainText)
         self.setTextInteractionFlags(Qt.NoTextInteraction)
         self.setText("PyDMLabel")
@@ -49,43 +33,8 @@ class PyDMLabel(QLabel, PyDMWidget, DisplayFormat):
     def displayFormat(self, new_type):
         if self._display_format_type != new_type:
             self._display_format_type = new_type
-
-    def parse_value_for_display(self, new_value):
-        if self._display_format_type == DisplayFormat.Default:
-            return new_value
-        elif self._display_format_type == DisplayFormat.String:
-            if isinstance(new_value, np.ndarray):
-                fmt_string = "{}"*len(new_value)
-                r = fmt_string.format(*[unichr(x) for x in new_value])
-                return r
-            else:
-                return new_value
-        elif self._display_format_type == DisplayFormat.Decimal:
-            # This case is taken care by the current string formatting 
-            # routine
-            return new_value
-        elif self._display_format_type == DisplayFormat.Exponential:
-            fmt_string = "{"+":.{}e".format(self._prec)+"}"
-            try:
-                r = fmt_string.format(new_value)
-            except (ValueError, TypeError):
-                print("Could not display value {} using displayFormat 'Exponential' at widget named '{}'.".format(new_value, self.objectName()))
-                r = new_value
-            return r
-        elif self._display_format_type == DisplayFormat.Hex:
-            try:
-                r = hex(math.floor(new_value))
-            except (ValueError, TypeError):
-                print("Could not display value {} using displayFormat 'Hex' at widget named '{}'.".format(new_value, self.objectName()))
-                r = new_value
-            return r
-        elif self._display_format_type == DisplayFormat.Binary:
-            try:
-                r = bin(math.floor(new_value))
-            except (ValueError, TypeError):
-                print("Could not display value {} using displayFormat 'Binary' at widget named '{}'.".format(new_value, self.objectName()))
-                r = new_value
-            return r
+            # Trigger the update of display format
+            self.value_changed(self.value)
 
     def value_changed(self, new_value):
         """
@@ -98,7 +47,7 @@ class PyDMLabel(QLabel, PyDMWidget, DisplayFormat):
             The new value from the channel. The type depends on the channel.
         """
         super(PyDMLabel, self).value_changed(new_value)
-        new_value = self.parse_value_for_display(new_value)
+        new_value = parse_value_for_display(new_value, self._display_format_type, self._prec, self)
         # If the value is a string, just display it as-is, no formatting
         # needed.
         if isinstance(new_value, str):
