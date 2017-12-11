@@ -1,5 +1,5 @@
 from .base import PyDMWidget, compose_stylesheet
-from ..PyQt.QtGui import QFrame, QVBoxLayout, QHBoxLayout, QPainter, QColor, QPolygon, QPen, QLabel, QSizePolicy
+from ..PyQt.QtGui import QFrame, QVBoxLayout, QHBoxLayout, QPainter, QColor, QPolygon, QPen, QLabel, QSizePolicy, QWidget
 from ..PyQt.QtCore import Qt, QPoint, pyqtProperty
 from .channel import PyDMChannel
 import sys
@@ -28,7 +28,27 @@ class QScale(QFrame):
         self._tick_size_rate = 0.1 # from 0 to 1
         self._painter = QPainter()
 
+        self._painter_rotation = None
+        self._painter_translation = None
+        self._orientation = None
+        self._widget_width = None
+        self._widget_height = None
+        self.setOrientation(Qt.Horizontal)
+
         self.setMinimumSize(0, 2)
+
+    def adjustDimensions(self):
+        if self._orientation == Qt.Horizontal:
+            self._widget_width = self.width()
+            self._widget_height = self.height()
+            self._painter_translation = 0
+            self._painter_rotation = 0
+        elif self._orientation == Qt.Vertical:
+            # Invert dimensions for paintEvent()
+            self._widget_width = self.height()
+            self._widget_height = self.width()
+            self._painter_translation = self._widget_width
+            self._painter_rotation = -90
 
     def setTickPen(self):
         self._tick_pen.setColor(self._tick_color)
@@ -39,23 +59,23 @@ class QScale(QFrame):
             return
         self.setTickPen()
         self._painter.setPen(self._tick_pen)
-        division_size = self.width() / self._num_divisions
-        tick_y0 = self.height()
-        tick_yf = tick_y0 - self._tick_size_rate*self.height()
-        tick_yf = (1 - self._tick_size_rate)*self.height()
+        division_size = self._widget_width / self._num_divisions
+        tick_y0 = self._widget_height
+        tick_yf = tick_y0 - self._tick_size_rate*self._widget_height
+        tick_yf = (1 - self._tick_size_rate)*self._widget_height
         for i in range(self._num_divisions+1):
             x = i*division_size
             self._painter.drawLine(x, tick_y0, x, tick_yf) # x1, y1, x2, y2
 
     def drawIndicator(self):
         # Draw a pointer as indicator of current value
-        if self.position < 0 or self.position > self.width():
+        if self.position < 0 or self.position > self._widget_width:
             return
         self.setPosition()
         self._painter.setPen(Qt.transparent)
         self._painter.setBrush(self._pointer_color)
-        pointer_width = self._pointer_width_rate * self.width()
-        pointer_height = self._bg_size_rate * self.height()
+        pointer_width = self._pointer_width_rate * self._widget_width
+        pointer_height = self._bg_size_rate * self._widget_height
         points = [
                 QPoint(self.position, 0),
                 QPoint(self.position + 0.5*pointer_width, 0.5*pointer_height),
@@ -67,17 +87,21 @@ class QScale(QFrame):
     def drawBackground(self):
         self._painter.setPen(Qt.transparent)
         self._painter.setBrush(self._bg_color)
-        bg_width = self.width()
-        bg_height = self._bg_size_rate * self.height()
+        bg_width = self._widget_width
+        bg_height = self._bg_size_rate * self._widget_height
         self._painter.drawRect(0, 0, bg_width, bg_height)
 
     def paintEvent(self, event):
+        self.adjustDimensions()
         self._painter.begin(self)
-        #self._painter.rotate(-90)
+        self._painter.translate(0, self._painter_translation)
+        self._painter.rotate(self._painter_rotation)
         self._painter.setRenderHint(QPainter.Antialiasing)
+
         self.drawBackground()
         self.drawTicks()
         self.drawIndicator()
+        
         self._painter.end()
 
     def setPosition(self):
@@ -108,6 +132,14 @@ class QScale(QFrame):
         if self._show_ticks != bool(checked):
             self._show_ticks = checked
             self.repaint()
+
+    def getOrientation(self):
+        return self._orientation
+
+    def setOrientation(self, orientation):
+        self._orientation = orientation
+        self.adjustDimensions()
+        self.repaint()
 
     def getBackgroundColor(self):
         return self._bg_color
@@ -170,12 +202,9 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.value_label.setText('<val>')
         self.lower_label.setText('<min>')
         self.upper_label.setText('<max>')
-        
-        self.value_label.setAlignment(Qt.AlignCenter)
-        self.lower_label.setAlignment(Qt.AlignLeft)
-        self.upper_label.setAlignment(Qt.AlignRight)
 
-        self.buildLayout()
+        self._orientation = Qt.Horizontal
+        self.setup_widgets_for_orientation(self._orientation)
 
     def updateAll(self):
         self.lower_label.setText(str(self.scale_indicator._lower_limit))
@@ -197,16 +226,37 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.scale_indicator.setLowerLimit(new_limit)
         self.updateAll()
 
-    def buildLayout(self):
-        self.limits_layout = QHBoxLayout()
-        self.limits_layout.addWidget(self.lower_label)
-        self.limits_layout.addWidget(self.upper_label)
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(self.value_label)
-        self.layout.addWidget(self.scale_indicator)
-        self.layout.setContentsMargins(1, 1, 1, 1)
-        self.layout.addItem(self.limits_layout)
-        self.setLayout(self.layout)
+    def setup_widgets_for_orientation(self, new_orientation):
+        self.limits_layout = None
+        self.widget_layout = None
+        if new_orientation == Qt.Horizontal:
+            self.limits_layout = QHBoxLayout()
+            self.limits_layout.addWidget(self.lower_label)
+            self.limits_layout.addWidget(self.upper_label)
+            self.widget_layout = QVBoxLayout()
+            self.widget_layout.addWidget(self.value_label)
+            self.widget_layout.addWidget(self.scale_indicator)
+            self.widget_layout.addItem(self.limits_layout)
+            self.value_label.setAlignment(Qt.AlignCenter)
+            self.lower_label.setAlignment(Qt.AlignLeft)
+            self.upper_label.setAlignment(Qt.AlignRight)
+
+        elif new_orientation == Qt.Vertical:
+            self.limits_layout = QVBoxLayout()
+            self.limits_layout.addWidget(self.upper_label)
+            self.limits_layout.addWidget(self.lower_label)
+            self.widget_layout = QHBoxLayout()
+            self.widget_layout.addWidget(self.value_label)
+            self.widget_layout.addWidget(self.scale_indicator)
+            self.widget_layout.addItem(self.limits_layout)
+            self.value_label.setAlignment(Qt.AlignCenter)
+            self.lower_label.setAlignment(Qt.AlignBottom)
+            self.upper_label.setAlignment(Qt.AlignTop)
+        if self.layout() is not None:
+            # Trick to remove the existing layout by re-parenting it in an empty widget.
+            QWidget().setLayout(self.layout())
+        self.widget_layout.setContentsMargins(1, 1, 1, 1)
+        self.setLayout(self.widget_layout)
 
     @pyqtProperty(bool)
     def showValue(self):
@@ -250,6 +300,15 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
     @showTicks.setter
     def showTicks(self, checked):
         self.scale_indicator.setShowTicks(checked)
+
+    @pyqtProperty(Qt.Orientation)
+    def orientation(self):
+        return self.scale_indicator.getOrientation()
+
+    @orientation.setter
+    def orientation(self, orientation):
+        self.scale_indicator.setOrientation(orientation)
+        self.setup_widgets_for_orientation(orientation)
 
     @pyqtProperty(QColor)
     def backgroundColor(self):
