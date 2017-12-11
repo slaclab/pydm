@@ -17,8 +17,9 @@ class QScale(QFrame):
         self._bg_color = QColor('darkgray')
         self._bg_size_rate = 0.8    # from 0 to 1
 
-        self._pointer_color = QColor('white')
+        self._indicator_color = QColor('black')
         self._pointer_width_rate = 0.05
+        self._barIndicator = False
 
         self._num_divisions = 10
         self._show_ticks = True
@@ -66,13 +67,23 @@ class QScale(QFrame):
             x = i*division_size
             self._painter.drawLine(x, tick_y0, x, tick_yf) # x1, y1, x2, y2
 
-    def drawIndicator(self):
+    def drawBar(self):
+        # Draw a bar as indicator of current value
+        if self.position < 0 or self.position > self._widget_width:
+            return
+        self.setPosition()
+        self._painter.setPen(Qt.transparent)
+        self._painter.setBrush(self._indicator_color)
+        bar_height = self._bg_size_rate * self._widget_height
+        self._painter.drawRect(0, 0, self.position, bar_height)
+
+    def drawPointer(self):
         # Draw a pointer as indicator of current value
         if self.position < 0 or self.position > self._widget_width:
             return
         self.setPosition()
         self._painter.setPen(Qt.transparent)
-        self._painter.setBrush(self._pointer_color)
+        self._painter.setBrush(self._indicator_color)
         pointer_width = self._pointer_width_rate * self._widget_width
         pointer_height = self._bg_size_rate * self._widget_height
         points = [
@@ -82,6 +93,12 @@ class QScale(QFrame):
                 QPoint(self.position - 0.5*pointer_width, 0.5*pointer_height)
         ]
         self._painter.drawPolygon(QPolygon(points))
+
+    def drawIndicator(self):
+        if self._barIndicator == True:
+            self.drawBar()
+        else:
+            self.drawPointer()
 
     def drawBackground(self):
         self._painter.setPen(Qt.transparent)
@@ -140,18 +157,27 @@ class QScale(QFrame):
         self.adjustDimensions()
         self.repaint()
 
+    def getBarIndicator(self):
+        return self._barIndicator
+
+    def setBarIndicator(self, checked):
+        if self._barIndicator != bool(checked):
+            self._barIndicator = checked
+            self.repaint()
+
     def getBackgroundColor(self):
         return self._bg_color
 
     def setBackgroundColor(self, color):
-        self._bg_color = color
-        self.repaint()
+        if self._show_ticks != bool(checked):
+            self._show_ticks = checked
+            self.repaint()
 
     def getIndicatorColor(self):
-        return self._pointer_color
+        return self._indicator_color
 
     def setIndicatorColor(self, color):
-        self._pointer_color = color
+        self._indicator_color = color
         self.repaint()
 
     def getTickColor(self):
@@ -308,6 +334,14 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
     def orientation(self, orientation):
         self.scale_indicator.setOrientation(orientation)
         self.setup_widgets_for_orientation(orientation)
+
+    @pyqtProperty(bool)
+    def barIndicator(self):
+        return self.scale_indicator.getBarIndicator()
+
+    @barIndicator.setter
+    def barIndicator(self, checked):
+        self.scale_indicator.setBarIndicator(checked)
 
     @pyqtProperty(QColor)
     def backgroundColor(self):
