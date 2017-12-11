@@ -8,7 +8,7 @@ import sys
 class QScale(QFrame):
     def __init__(self, parent=None):
         super(QScale, self).__init__(parent)
-        self._value = 5
+        self._value = 4
         self._lower_limit = 0
         self._upper_limit = 10
         self.position = None # unit: pixel
@@ -29,10 +29,13 @@ class QScale(QFrame):
         self._painter = QPainter()
 
         self._painter_rotation = None
-        self._painter_translation = None
+        self._painter_translation_y = None
+        self._painter_translation_x = None
+        self._painter_scale_x = None
         self._orientation = None
         self._widget_width = None
         self._widget_height = None
+        self._inverted_appearance = False
         self.setOrientation(Qt.Horizontal)
 
         self.setMinimumSize(0, 2)
@@ -42,14 +45,23 @@ class QScale(QFrame):
         if self._orientation == Qt.Horizontal:
             self._widget_width = self.width()
             self._widget_height = self.height()
-            self._painter_translation = 0
+            self._painter_translation_y = 0
             self._painter_rotation = 0
         elif self._orientation == Qt.Vertical:
             # Invert dimensions for paintEvent()
             self._widget_width = self.height()
             self._widget_height = self.width()
-            self._painter_translation = self._widget_width
+            self._painter_translation_y = self._widget_width
             self._painter_rotation = -90
+            self._painter_translation_x = None
+            self._painter_scale_x = None
+
+        if self._inverted_appearance == True:
+            self._painter_translation_x = self._widget_width
+            self._painter_scale_x = -1
+        else:
+            self._painter_translation_x = 0
+            self._painter_scale_x = 1
 
     def setTickPen(self):
         self._tick_pen.setColor(self._tick_color)
@@ -69,9 +81,9 @@ class QScale(QFrame):
 
     def drawBar(self):
         # Draw a bar as indicator of current value
+        self.setPosition()
         if self.position < 0 or self.position > self._widget_width:
             return
-        self.setPosition()
         self._painter.setPen(Qt.transparent)
         self._painter.setBrush(self._indicator_color)
         bar_height = self._bg_size_rate * self._widget_height
@@ -79,9 +91,9 @@ class QScale(QFrame):
 
     def drawPointer(self):
         # Draw a pointer as indicator of current value
+        self.setPosition()
         if self.position < 0 or self.position > self._widget_width:
             return
-        self.setPosition()
         self._painter.setPen(Qt.transparent)
         self._painter.setBrush(self._indicator_color)
         pointer_width = self._pointer_width_rate * self._widget_width
@@ -110,8 +122,10 @@ class QScale(QFrame):
     def paintEvent(self, event):
         self.adjustDimensions()
         self._painter.begin(self)
-        self._painter.translate(0, self._painter_translation)
+        self._painter.translate(0, self._painter_translation_y)
         self._painter.rotate(self._painter_rotation)
+        self._painter.translate(self._painter_translation_x, 0)
+        self._painter.scale(self._painter_scale_x, 1)
         self._painter.setRenderHint(QPainter.Antialiasing)
 
         self.drawBackground()
@@ -154,6 +168,14 @@ class QScale(QFrame):
 
     def setOrientation(self, orientation):
         self._orientation = orientation
+        self.adjustDimensions()
+        self.repaint()
+
+    def getInvertedAppearance(self):
+        return self._inverted_appearance
+
+    def setInvertedAppearance(self, inverted):
+        self._inverted_appearance = inverted
         self.adjustDimensions()
         self.repaint()
 
@@ -229,7 +251,8 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.upper_label.setText('<max>')
 
         self._orientation = Qt.Horizontal
-        self.setup_widgets_for_orientation(self._orientation)
+        self._inverted_appearance = False
+        self.setup_widgets_for_orientation(self._orientation, self._inverted_appearance)
 
     def updateAll(self):
         self.lower_label.setText(str(self.scale_indicator._lower_limit))
@@ -251,32 +274,45 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.scale_indicator.setLowerLimit(new_limit)
         self.updateAll()
 
-    def setup_widgets_for_orientation(self, new_orientation):
+    def setup_widgets_for_orientation(self, new_orientation, inverted):
         self.limits_layout = None
         self.widget_layout = None
         if new_orientation == Qt.Horizontal:
             self.limits_layout = QHBoxLayout()
-            self.limits_layout.addWidget(self.lower_label)
-            self.limits_layout.addWidget(self.upper_label)
+            if inverted == False:
+                self.limits_layout.addWidget(self.lower_label)
+                self.limits_layout.addWidget(self.upper_label)
+                self.lower_label.setAlignment(Qt.AlignLeft)
+                self.upper_label.setAlignment(Qt.AlignRight)
+            else:
+                self.limits_layout.addWidget(self.upper_label)
+                self.limits_layout.addWidget(self.lower_label)
+                self.lower_label.setAlignment(Qt.AlignRight)
+                self.upper_label.setAlignment(Qt.AlignLeft)
             self.widget_layout = QVBoxLayout()
             self.widget_layout.addWidget(self.value_label)
+            self.value_label.setAlignment(Qt.AlignCenter)
             self.widget_layout.addWidget(self.scale_indicator)
             self.widget_layout.addItem(self.limits_layout)
-            self.value_label.setAlignment(Qt.AlignCenter)
-            self.lower_label.setAlignment(Qt.AlignLeft)
-            self.upper_label.setAlignment(Qt.AlignRight)
 
         elif new_orientation == Qt.Vertical:
             self.limits_layout = QVBoxLayout()
-            self.limits_layout.addWidget(self.upper_label)
-            self.limits_layout.addWidget(self.lower_label)
+            if inverted == False:
+                self.limits_layout.addWidget(self.upper_label)
+                self.limits_layout.addWidget(self.lower_label)
+                self.lower_label.setAlignment(Qt.AlignBottom)
+                self.upper_label.setAlignment(Qt.AlignTop)
+            else:
+                self.limits_layout.addWidget(self.lower_label)
+                self.limits_layout.addWidget(self.upper_label)
+                self.lower_label.setAlignment(Qt.AlignTop)
+                self.upper_label.setAlignment(Qt.AlignBottom)
             self.widget_layout = QHBoxLayout()
             self.widget_layout.addWidget(self.value_label)
+            self.value_label.setAlignment(Qt.AlignCenter)
             self.widget_layout.addWidget(self.scale_indicator)
             self.widget_layout.addItem(self.limits_layout)
-            self.value_label.setAlignment(Qt.AlignCenter)
-            self.lower_label.setAlignment(Qt.AlignBottom)
-            self.upper_label.setAlignment(Qt.AlignTop)
+
         if self.layout() is not None:
             # Trick to remove the existing layout by re-parenting it in an empty widget.
             QWidget().setLayout(self.layout())
@@ -332,8 +368,19 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
 
     @orientation.setter
     def orientation(self, orientation):
+        self._orientation = orientation
         self.scale_indicator.setOrientation(orientation)
-        self.setup_widgets_for_orientation(orientation)
+        self.setup_widgets_for_orientation(orientation, self._inverted_appearance)
+
+    @pyqtProperty(bool)
+    def invertedAppearance(self):
+        return self.scale_indicator.getInvertedAppearance()
+
+    @invertedAppearance.setter
+    def invertedAppearance(self, inverted):
+        self._inverted_appearance = inverted
+        self.scale_indicator.setInvertedAppearance(inverted)
+        self.setup_widgets_for_orientation(self._orientation, inverted)
 
     @pyqtProperty(bool)
     def barIndicator(self):
