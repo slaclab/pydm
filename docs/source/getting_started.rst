@@ -116,12 +116,10 @@ We'll use one of the PVs supplied by the testing IOC.  Set the label's 'channel'
 to 'ca://MTEST:Float'.  Once that is done, go to File->Save... and save the .ui file
 somewhere.
 
-We can test the display in PyDM by first running the testing IOC.  Open up a new
-terminal and run the command::
+We can test the display in PyDM by first running the testing IOC available at the
+PyDM Examples repository (https://github.com/slaclab/pydm-examples). 
 
-  $ pydm-testing-ioc
-  
-to launch the IOC.  Once the IOC is running, run the command::
+Once the IOC is running, run the command::
   
   $ pydm <your file name>
   

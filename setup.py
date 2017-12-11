@@ -20,8 +20,7 @@ extras_require = {
     'PySide': ['PySide'],
     'pyepics': ['pyepics'],
     'perf': ['psutil'],
-    'testing-ioc': ['pcaspy'],
-    'test': ['codecov', 'pytest', 'pytest-cov', 'coverage', 'coveralls', 'pcaspy']
+    'test': ['codecov', 'pytest', 'pytest-cov', 'coverage', 'coveralls']
 }
 
 
@@ -53,10 +52,8 @@ setup(
     packages=find_packages(),
     description='Python Display Manager',
     url='https://github.com/slaclab/pydm',
-    scripts=['scripts/pydm', 'scripts/pydm-testing-ioc'],
-    package_data={'pydm': ['data/access_rules.as']},
+    scripts=['scripts/pydm'],
     license='BSD',
-
     install_requires=requirements,
     extras_require=extras_require,
     include_package_data=True,
