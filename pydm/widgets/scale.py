@@ -61,7 +61,6 @@ class QScale(QFrame):
         self._painter.setPen(self._tick_pen)
         division_size = self._widget_width / self._num_divisions
         tick_y0 = self._widget_height
-        tick_yf = tick_y0 - self._tick_size_rate*self._widget_height
         tick_yf = (1 - self._tick_size_rate)*self._widget_height
         for i in range(self._num_divisions+1):
             x = i*division_size
