@@ -8,11 +8,10 @@ import sys
 class QScale(QFrame):
     def __init__(self, parent=None):
         super(QScale, self).__init__(parent)
-        self._value = 0
+        self._value = 5
         self._lower_limit = 0
         self._upper_limit = 10
-        #self._orientation = 'horizontal'
-        self.position = 0 # unit: pixel
+        self.position = None # unit: pixel
 
         self._bg_color = QColor('darkgray')
         self._bg_size_rate = 0.8    # from 0 to 1
@@ -37,6 +36,7 @@ class QScale(QFrame):
         self.setOrientation(Qt.Horizontal)
 
         self.setMinimumSize(0, 2)
+        self.setPosition()
 
     def adjustDimensions(self):
         if self._orientation == Qt.Horizontal:
