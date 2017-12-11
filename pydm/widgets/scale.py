@@ -108,7 +108,7 @@ class QScale(QFrame):
             proportion = (self._value - self._lower_limit) / (self._upper_limit - self._lower_limit)
         except:
             proportion = -1 # Invalid
-        self.position = int(proportion * self.width())
+        self.position = int(proportion * self._widget_width)
 
     def updateIndicator(self):
         self.setPosition()
