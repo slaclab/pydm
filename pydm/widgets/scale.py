@@ -37,6 +37,7 @@ class QScale(QFrame):
     def drawTicks(self):
         if not self._show_ticks:
             return
+        self.setTickPen()
         self._painter.setPen(self._tick_pen)
         division_size = self.width() / self._num_divisions
         tick_y0 = self.height()
@@ -120,6 +121,13 @@ class QScale(QFrame):
 
     def setIndicatorColor(self, color):
         self._pointer_color = color
+        self.repaint()
+
+    def getTickColor(self):
+        return self._tick_color
+
+    def setTickColor(self, color):
+        self._tick_color = color
         self.repaint()
 
     def getBackgroundSizeRate(self):
@@ -258,6 +266,14 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
     @indicatorColor.setter
     def indicatorColor(self, color):
         self.scale_indicator.setIndicatorColor(color)
+
+    @pyqtProperty(QColor)
+    def tickColor(self):
+        return self.scale_indicator.getTickColor()
+
+    @tickColor.setter
+    def tickColor(self, color):
+        self.scale_indicator.setTickColor(color)
 
     @pyqtProperty(float)
     def backgroundSizeRate(self):
