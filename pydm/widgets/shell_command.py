@@ -20,7 +20,33 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         self.setCursor(QCursor(icon.pixmap(16, 16)))
 
         self._command = command
+        self._allow_multiple = False
         self.process = None
+
+    @pyqtProperty(bool)
+    def allowMultipleExecutions(self):
+        """
+        Whether or not we should allow the same command
+        to be executed even if it is still running.
+
+        Returns
+        -------
+        bool
+        """
+        return self._allow_multiple
+
+    @allowMultipleExecutions.setter
+    def allowMultipleExecutions(self, value):
+        """
+        Whether or not we should allow the same command
+        to be executed even if it is still running.
+
+        Parameters
+        ----------
+        value : bool
+        """
+        if self._allow_multiple != value:
+            self._allow_multiple = value
 
     @pyqtProperty(str)
     def command(self):
@@ -70,7 +96,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         if self._command is None or self._command == "":
             return
 
-        if self.process is None or self.process.poll() is not None:
+        if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
             args = shlex.split(self._command)
             self.process = subprocess.Popen(args)
         else:
