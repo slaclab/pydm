@@ -250,9 +250,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.lower_label.setText('<min>')
         self.upper_label.setText('<max>')
 
-        self._orientation = Qt.Horizontal
-        self._inverted_appearance = False
-        self.setup_widgets_for_orientation(self._orientation, self._inverted_appearance)
+        self.setup_widgets_for_orientation(Qt.Horizontal, False)
 
     def updateAll(self):
         self.lower_label.setText(str(self.scale_indicator._lower_limit))
@@ -368,9 +366,8 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
 
     @orientation.setter
     def orientation(self, orientation):
-        self._orientation = orientation
         self.scale_indicator.setOrientation(orientation)
-        self.setup_widgets_for_orientation(orientation, self._inverted_appearance)
+        self.setup_widgets_for_orientation(orientation, self.invertedAppearance)
 
     @pyqtProperty(bool)
     def invertedAppearance(self):
@@ -378,9 +375,8 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
 
     @invertedAppearance.setter
     def invertedAppearance(self, inverted):
-        self._inverted_appearance = inverted
         self.scale_indicator.setInvertedAppearance(inverted)
-        self.setup_widgets_for_orientation(self._orientation, inverted)
+        self.setup_widgets_for_orientation(self.orientation, inverted)
 
     @pyqtProperty(bool)
     def barIndicator(self):
