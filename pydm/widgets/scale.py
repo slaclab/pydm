@@ -38,7 +38,7 @@ class QScale(QFrame):
         self._inverted_appearance = False
         self.setOrientation(Qt.Horizontal)
 
-        self.setMinimumSize(0, 2)
+        self.setMinimumSize(2, 2)
         self.setPosition()
 
     def adjustDimensions(self):
@@ -122,9 +122,9 @@ class QScale(QFrame):
     def paintEvent(self, event):
         self.adjustDimensions()
         self._painter.begin(self)
-        self._painter.translate(0, self._painter_translation_y)
+        self._painter.translate(0, self._painter_translation_y) # Draw vertically if needed
         self._painter.rotate(self._painter_rotation)
-        self._painter.translate(self._painter_translation_x, 0)
+        self._painter.translate(self._painter_translation_x, 0) # Invert appearance if needed
         self._painter.scale(self._painter_scale_x, 1)
         self._painter.setRenderHint(QPainter.Antialiasing)
 
@@ -252,7 +252,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
 
         self.setup_widgets_for_orientation(Qt.Horizontal, False)
 
-    def updateAll(self):
+    def updateLabels(self):
         self.lower_label.setText(str(self.scale_indicator._lower_limit))
         self.upper_label.setText(str(self.scale_indicator._upper_limit))
         self.value_label.setText(self.format_string.format(self.scale_indicator._value))
@@ -260,17 +260,17 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
     def value_changed(self, new_value):
         super(PyDMScaleIndicator, self).value_changed(new_value)
         self.scale_indicator.setValue(new_value)
-        self.updateAll()
+        self.updateLabels()
 
     def upperCtrlLimitChanged(self, new_limit):
         super(PyDMScaleIndicator, self).upperCtrlLimitChanged(new_limit)
         self.scale_indicator.setUpperLimit(new_limit)
-        self.updateAll()
+        self.updateLabels()
 
     def lowerCtrlLimitChanged(self, new_limit):
         super(PyDMScaleIndicator, self).lowerCtrlLimitChanged(new_limit)
         self.scale_indicator.setLowerLimit(new_limit)
-        self.updateAll()
+        self.updateLabels()
 
     def setup_widgets_for_orientation(self, new_orientation, inverted):
         self.limits_layout = None
