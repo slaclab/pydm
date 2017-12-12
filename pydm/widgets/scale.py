@@ -213,9 +213,8 @@ class QScale(QFrame):
         return self._bg_color
 
     def setBackgroundColor(self, color):
-        if self._show_ticks != bool(checked):
-            self._show_ticks = checked
-            self.repaint()
+        self._bg_color = color
+        self.repaint()
 
     def getIndicatorColor(self):
         return self._indicator_color
