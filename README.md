@@ -18,11 +18,9 @@ Based on that the support for Qt4 and PyQt4 is being dropped since Qt4.8.11 seem
 
 # Running the Examples
 There are various examples of some of the features of the display manager.
-To launch a particular display run 'python scripts/pydm <filename>'.
+The examples can be found at their own [GitHub Repository](https://github.com/slaclab/pydm-examples)
 
-There is a 'home' display in the examples directory with buttons to launch all the examples:
-run 'python scripts/pydm examples/home.ui'
-
+# Documentation
 Documentation is available at http://slaclab.github.io/pydm/.  Documentation is somewhat sparse right now, unfortunately.
 
 # Widget Designer Plugins
