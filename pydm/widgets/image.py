@@ -169,7 +169,7 @@ class PyDMImageView(ImageView, PyDMWidget):
         new_image : np.ndarray
             The new image data.  This can be a flat 1D array, or a 2D array.
         """
-        if new_image is None:
+        if new_image is None or new_image.size == 0:
             return
         self.image_waveform = new_image
         self.needs_redraw = True
