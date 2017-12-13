@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.image &mdash; PyDM 0.3.0+105.g9a3527e documentation</title>
+  <title>pydm.widgets.image &mdash; PyDM v0.4.0+3.g1aa62b5 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+105.g9a3527e documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM v0.4.0+3.g1aa62b5 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+105.g9a3527e
+                v0.4.0+3.g1aa62b5
               </div>
             
           
@@ -320,14 +320,17 @@
     <span class="k">def</span> <span class="nf">image_value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_image</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Image Channel value is changed.</span>
-<span class="sd">        Reshape and display the new image.</span>
+<span class="sd">        We try to do as little as possible in this method, because it</span>
+<span class="sd">        gets called every time the image channel updates, which might</span>
+<span class="sd">        be extremely often.  Basically just store the data, and set</span>
+<span class="sd">        a flag requesting that the image be redrawn.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        new_image : np.ndarray</span>
 <span class="sd">            The new image data.  This can be a flat 1D array, or a 2D array.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">new_image</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">new_image</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">new_image</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span> <span class="o">=</span> <span class="n">new_image</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_redraw</span> <span class="o">=</span> <span class="kc">True</span>
@@ -339,7 +342,6 @@
     <span class="k">def</span> <span class="nf">image_width_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_width</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Image Width Channel value is changed.</span>
-<span class="sd">        Reshape the image data and triggers a ```redrawImage```</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -352,7 +354,8 @@
 
 <div class="viewcode-block" id="PyDMImageView.redrawImage"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.redrawImage">[docs]</a>    <span class="k">def</span> <span class="nf">redrawImage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the image data into the ImageItem</span>
+<span class="sd">        Set the image data into the ImageItem, if needed.</span>
+<span class="sd">        If necessary, reshape the image to 2D first.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">needs_redraw</span><span class="p">:</span>
             <span class="k">return</span>
@@ -500,7 +503,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0+105.g9a3527e',
+            VERSION:'v0.4.0+3.g1aa62b5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
