@@ -1,15 +1,15 @@
 from ..PyQt.QtGui import QActionGroup
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, QTimer
+from ..PyQt.QtCore import pyqtSlot, pyqtProperty, QTimer, Q_ENUMS
 from pyqtgraph import ImageView
 from pyqtgraph import ColorMap
 import numpy as np
 from .channel import PyDMChannel
-from .colormaps import cmaps
+from .colormaps import cmaps, cmap_names, PyDMColorMap
 from .base import PyDMWidget
 import pyqtgraph
 pyqtgraph.setConfigOption('imageAxisOrder', 'row-major')
 
-class PyDMImageView(ImageView, PyDMWidget):
+class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
     """
     A PyQtGraph ImageView with support for Channels and more from PyDM
 
@@ -23,7 +23,8 @@ class PyDMImageView(ImageView, PyDMWidget):
         The channel to be used by the widget to receive the image width
         information
     """
-
+    
+    Q_ENUMS(PyDMColorMap)
     color_maps = cmaps
     def __init__(self, parent=None, image_channel=None, width_channel=None):
         ImageView.__init__(self, parent)
@@ -40,18 +41,21 @@ class PyDMImageView(ImageView, PyDMWidget):
         self.cm_min = 0.0
         self.cm_max = 255.0
         self.data_max_int = None  # This is the max value for the image waveform's data type.  It gets set when the waveform updates.
-        self._colormapname = "inferno"
-        self._cm_colors = None
-        self.setColorMapToPreset(self._colormapname)
+        # Make a right-click menu for changing the color map.
         cm_menu = self.getView().getMenu(None).addMenu("Color Map")
-        cm_group = QActionGroup(self)
-        for map_name in self.color_maps:
-            action = cm_group.addAction(map_name)
+        self.cm_group = QActionGroup(self)
+        self.cmap_for_action = {}
+        for cm in self.color_maps:
+            action = self.cm_group.addAction(cmap_names[cm])
             action.setCheckable(True)
             cm_menu.addAction(action)
-            if map_name == self._colormapname:
-                action.setChecked(True)
+            self.cmap_for_action[action] = cm
         cm_menu.triggered.connect(self.changeColorMap)
+        # Set the default colormap.
+        self._colormap = PyDMColorMap.Inferno
+        self._cm_colors = None
+        self.setColorMapToPreset(self._colormap)
+        # Setup the redraw timer.
         self.needs_redraw = False
         self.redraw_timer = QTimer(self)
         self.redraw_timer.timeout.connect(self.redrawImage)
@@ -67,7 +71,7 @@ class PyDMImageView(ImageView, PyDMWidget):
         ----------
         action : QAction
         """
-        self.setColorMapToPreset(str(action.text()))
+        self.setColorMapToPreset(self.cmap_for_action[action])
 
     @pyqtSlot(int)
     def setColorMapMin(self, new_min):
@@ -116,17 +120,44 @@ class PyDMImageView(ImageView, PyDMWidget):
         self.cm_min = mn
         self.setColorMap()
 
-    def setColorMapToPreset(self, name):
+    @pyqtProperty(PyDMColorMap)
+    def colorMap(self):
+        """
+        The color map used by the ImageView.
+
+        Returns
+        -------
+        PyDMColorMap
+        """
+        return self._colormap
+    
+    @colorMap.setter
+    def colorMap(self, new_cmap):
+        """
+        The color map used by the ImageView.
+
+        Parameters
+        -------
+        new_cmap : PyDMColorMap
+        """
+        self.setColorMapToPreset(new_cmap)
+
+    def setColorMapToPreset(self, cmap):
         """
         Load a predefined colormap
 
         Parameters
         ----------
-        name : str
+        cmap : PyDMColorMap
         """
-        self._colormapname = str(name)
-        self._cm_colors = self.color_maps[str(name)]
+        self._colormap = cmap
+        self._cm_colors = self.color_maps[cmap]
         self.setColorMap()
+        for action in self.cm_group.actions():
+            if self.cmap_for_action[action] == self._colormap:
+                action.setChecked(True)
+            else:
+                action.setChecked(False)
 
     def setColorMap(self, cmap=None):
         """
@@ -147,7 +178,7 @@ class PyDMImageView(ImageView, PyDMWidget):
         lut = cmap.getLookupTable(0.0, 1.0, self.data_max_int, alpha=False)
         self.getImageItem().setLookupTable(lut)
         self.getImageItem().setLevels([self.cm_min, float(min(self.cm_max, self.data_max_int))])  # set levels from min to max of image (may improve min here)
-
+            
     @pyqtSlot(bool)
     def image_connection_state_changed(self, conn):
         if conn:
