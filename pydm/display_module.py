@@ -18,8 +18,9 @@ class Display(QWidget):
     def load_ui(self, parent=None, macros=None):
         if self.ui:
             return self.ui
-        if macros is not None:
-            f = macro.substitute_in_file(self.ui_filepath(), macros)
-        else:
-            f = self.ui_filepath()
-        self.ui = uic.loadUi(f, baseinstance=self)
+        if self.ui_filepath() is not None and self.ui_filepath() != "":
+            if macros is not None:
+                f = macro.substitute_in_file(self.ui_filepath(), macros)
+            else:
+                f = self.ui_filepath()
+            self.ui = uic.loadUi(f, baseinstance=self)

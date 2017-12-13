@@ -2,13 +2,16 @@ import os
 from os import path, environ
 from functools import partial
 from .PyQt.QtGui import QApplication, QMainWindow, QFileDialog, QWidget, QShortcut, QKeySequence
-from .PyQt.QtCore import Qt, QTimer, pyqtSlot, QSize
+from .PyQt.QtCore import Qt, QTimer, pyqtSlot, QSize, QLibraryInfo
 from .utilities import IconFont
 from .pydm_ui import Ui_MainWindow
+from .display_module import Display
 import subprocess
 import platform
 
+
 class PyDMMainWindow(QMainWindow):
+
     def __init__(self, parent=None, hide_nav_bar=False, hide_menu_bar=False, hide_status_bar=False):
         super(PyDMMainWindow, self).__init__(parent)
         self.app = QApplication.instance()
@@ -63,16 +66,18 @@ class PyDMMainWindow(QMainWindow):
         if hide_status_bar:
             self.toggle_status_bar(False)
         self.designer_path = None
-        if environ.get('QTHOME') is None:
-            self.ui.actionEdit_in_Designer.setEnabled(False)
+        designer_bin = QLibraryInfo.location(QLibraryInfo.BinariesPath)
+
+        if platform.system() == 'Darwin':
+            self.designer_path = os.path.join(designer_bin, 'Designer.app/Contents/MacOS/Designer')
+        elif platform.system() == 'Linux':
+            self.designer_path = os.path.join(designer_bin, 'designer')
         else:
-            qt_path = environ.get('QTHOME')
-            if platform.system() == 'Darwin':
-                # On OS X we have to launch designer in this ugly way if we want it to get access to environment variables.  Ugh.
-                self.designer_path = path.join(qt_path, 'Designer.app/Contents/MacOS/Designer')
-            else:
-                # This assumes some non-OS X unix.  No windows support right now.
-                self.designer_path = path.join(qt_path, 'bin/designer')
+            self.designer_path = os.path.join(designer_bin, 'designer.exe')
+
+        # Ensure that the file exists
+        if not os.path.isfile(self.designer_path):
+            self.designer_path = None
 
     def set_display_widget(self, new_widget):
         if new_widget == self._display_widget:
@@ -119,6 +124,16 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionBack.setEnabled(len(self.back_stack) > 1)
         if self.home_file is None:
             self.home_file = (filename, merged_macros, command_line_args)
+        # Update here the Menu Editor text...
+        ui_file, py_file = self.get_files_in_display()
+        edit_in_text = "Open in "
+        editors = []
+        if ui_file is not None and ui_file != "":
+            editors.append("Designer")
+        if py_file is not None and py_file != "":
+            editors.append("Text Editor")
+        edit_in_text += ' and '.join(editors)
+        self.ui.actionEdit_in_Designer.setText(edit_in_text)
 
     def new_window(self, ui_file, macros=None, command_line_args=None):
         filename = self.join_to_current_file_path(ui_file)
@@ -243,16 +258,38 @@ class PyDMMainWindow(QMainWindow):
     def toggle_status_bar(self, checked):
         self.ui.statusbar.setHidden(not checked)
 
+    def get_files_in_display(self):
+        _, extension = path.splitext(self.current_file())
+        if extension == '.ui':
+            return self.current_file(), None
+        else:
+            central_widget = self.centralWidget() if isinstance(self.centralWidget(), Display) else None
+            if central_widget is not None:
+                ui_file = central_widget.ui_filepath()
+            return ui_file, self.current_file()
+
     @pyqtSlot(bool)
     def edit_in_designer(self, checked):
-        if not self.designer_path:
-            return
-        filename, extension = path.splitext(self.current_file())
-        if extension == '.ui':
-            process = subprocess.Popen('{0} "{1}"'.format(self.designer_path, self.current_file()), shell=True)
-            self.statusBar().showMessage("Launching '{0}' in Qt Designer...".format(self.current_file()), 5000)
-        else:
-            self.statusBar().showMessage("{0} is a Python file, and cannot be edited in Qt Designer.".format(self.current_file()), 5000)
+
+        def open_editor_ui(fname):
+            if self.designer_path is None or fname is None or fname == "":
+                return
+            self.statusBar().showMessage("Launching '{0}' in Qt Designer...".format(fname), 5000)
+            _ = subprocess.Popen('{0} "{1}"'.format(self.designer_path, fname), shell=True)
+
+        def open_editor_generic(fname):
+            if platform.system() == "Darwin":
+                subprocess.call(('open', fname))
+            elif platform.system() == "Linux":
+                subprocess.call(('xdg-open', fname))
+            elif platform.system() == "Windows":
+                os.startfile(fname)
+
+        ui_file, py_file = self.get_files_in_display()
+        if ui_file is not None and ui_file != "":
+            open_editor_ui(fname=ui_file)
+        if py_file is not None and py_file != "":
+            open_editor_generic(fname=py_file)
 
     @pyqtSlot(bool)
     def open_file_action(self, checked):

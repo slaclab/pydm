@@ -7,6 +7,7 @@ our PyDMMainWindow class with navigation logic.
 import os
 import imp
 import sys
+import uuid
 import signal
 import subprocess
 import re
@@ -250,7 +251,12 @@ class PyDMApplication(QApplication):
             main_window.move(main_window.x() + 10, main_window.y() + 10)
 
     def close_window(self, window):
-        del self.windows[window]
+        try:
+            del self.windows[window]
+        except KeyError:
+            # If window is no longer at self.windows
+            # it means that we already closed it.
+            pass
 
     def load_ui_file(self, uifile, macros=None):
         """
@@ -310,9 +316,10 @@ class PyDMApplication(QApplication):
         # Add the intelligence module directory to the python path, so that submodules can be loaded.    Eventually, this should go away, and intelligence modules should behave as real python modules.
         module_dir = os.path.dirname(os.path.abspath(pyfile))
         sys.path.append(module_dir)
+        temp_name = str(uuid.uuid4())
 
         # Now load the intelligence module.
-        module = imp.load_source('intelclass', pyfile)
+        module = imp.load_source(temp_name, pyfile)
         self.__sanity_check_pyqt(module)
         if hasattr(module, 'intelclass'):
             cls = module.intelclass
