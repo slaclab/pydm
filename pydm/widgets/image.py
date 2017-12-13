@@ -159,7 +159,10 @@ class PyDMImageView(ImageView, PyDMWidget):
     def image_value_changed(self, new_image):
         """
         Callback invoked when the Image Channel value is changed.
-        Reshape and display the new image.
+        We try to do as little as possible in this method, because it
+        gets called every time the image channel updates, which might
+        be extremely often.  Basically just store the data, and set
+        a flag requesting that the image be redrawn.
 
         Parameters
         ----------
@@ -178,7 +181,6 @@ class PyDMImageView(ImageView, PyDMWidget):
     def image_width_changed(self, new_width):
         """
         Callback invoked when the Image Width Channel value is changed.
-        Reshape the image data and triggers a ```redrawImage```
 
         Parameters
         ----------
@@ -191,7 +193,8 @@ class PyDMImageView(ImageView, PyDMWidget):
 
     def redrawImage(self):
         """
-        Set the image data into the ImageItem
+        Set the image data into the ImageItem, if needed.
+        If necessary, reshape the image to 2D first.
         """
         if not self.needs_redraw:
             return
