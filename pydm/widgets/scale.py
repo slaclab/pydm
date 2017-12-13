@@ -39,12 +39,12 @@ class QScale(QFrame):
         self._widget_height = None
         self._inverted_appearance = False
         self._flip_scale = False
-        self.setOrientation(Qt.Horizontal)
+        self.set_orientation(Qt.Horizontal)
 
         self.setMinimumSize(2, 2)
-        self.setPosition()
+        self.set_position()
 
-    def adjustDimensions(self):
+    def adjust_dimensions(self):
         if self._orientation == Qt.Horizontal:
             self._widget_width = self.width()
             self._widget_height = self.height()
@@ -73,14 +73,14 @@ class QScale(QFrame):
             self._flip_traslation_y = 0
             self._flip_scale_y = 1
 
-    def setTickPen(self):
+    def set_tick_pen(self):
         self._tick_pen.setColor(self._tick_color)
         self._tick_pen.setWidth(self._tick_width)
 
-    def drawTicks(self):
+    def draw_ticks(self):
         if not self._show_ticks:
             return
-        self.setTickPen()
+        self.set_tick_pen()
         self._painter.setPen(self._tick_pen)
         division_size = self._widget_width / self._num_divisions
         tick_y0 = self._widget_height
@@ -89,9 +89,9 @@ class QScale(QFrame):
             x = i*division_size
             self._painter.drawLine(x, tick_y0, x, tick_yf) # x1, y1, x2, y2
 
-    def drawBar(self):
+    def draw_bar(self):
         # Draw a bar as indicator of current value
-        self.setPosition()
+        self.set_position()
         if self.position < 0 or self.position > self._widget_width:
             return
         self._painter.setPen(Qt.transparent)
@@ -99,9 +99,9 @@ class QScale(QFrame):
         bar_height = self._bg_size_rate * self._widget_height
         self._painter.drawRect(0, 0, self.position, bar_height)
 
-    def drawPointer(self):
+    def draw_pointer(self):
         # Draw a pointer as indicator of current value
-        self.setPosition()
+        self.set_position()
         if self.position < 0 or self.position > self._widget_width:
             return
         self._painter.setPen(Qt.transparent)
@@ -116,13 +116,13 @@ class QScale(QFrame):
         ]
         self._painter.drawPolygon(QPolygon(points))
 
-    def drawIndicator(self):
+    def draw_indicator(self):
         if self._barIndicator == True:
-            self.drawBar()
+            self.draw_bar()
         else:
-            self.drawPointer()
+            self.draw_pointer()
 
-    def drawBackground(self):
+    def draw_background(self):
         self._painter.setPen(Qt.transparent)
         self._painter.setBrush(self._bg_color)
         bg_width = self._widget_width
@@ -130,7 +130,7 @@ class QScale(QFrame):
         self._painter.drawRect(0, 0, bg_width, bg_height)
 
     def paintEvent(self, event):
-        self.adjustDimensions()
+        self.adjust_dimensions()
         self._painter.begin(self)
         self._painter.translate(0, self._painter_translation_y) # Draw vertically if needed
         self._painter.rotate(self._painter_rotation)
@@ -142,114 +142,114 @@ class QScale(QFrame):
 
         self._painter.setRenderHint(QPainter.Antialiasing)
 
-        self.drawBackground()
-        self.drawTicks()
-        self.drawIndicator()
+        self.draw_background()
+        self.draw_ticks()
+        self.draw_indicator()
         
         self._painter.end()
 
-    def setPosition(self):
+    def set_position(self):
         try:
             proportion = (self._value - self._lower_limit) / (self._upper_limit - self._lower_limit)
         except:
             proportion = -1 # Invalid
         self.position = int(proportion * self._widget_width)
 
-    def updateIndicator(self):
-        self.setPosition()
+    def update_indicator(self):
+        self.set_position()
         self.repaint()
 
-    def setValue(self, value):
+    def set_value(self, value):
         self._value = value
-        self.updateIndicator()
+        self.update_indicator()
 
-    def setUpperLimit(self, new_limit):
+    def set_upper_limit(self, new_limit):
         self._upper_limit = new_limit
 
-    def setLowerLimit(self, new_limit):
+    def set_lower_limit(self, new_limit):
         self._lower_limit = new_limit
 
-    def getShowTicks(self):
+    def get_show_ticks(self):
         return self._show_ticks
 
-    def setShowTicks(self, checked):
+    def set_show_ticks(self, checked):
         if self._show_ticks != bool(checked):
             self._show_ticks = checked
             self.repaint()
 
-    def getOrientation(self):
+    def get_orientation(self):
         return self._orientation
 
-    def setOrientation(self, orientation):
+    def set_orientation(self, orientation):
         self._orientation = orientation
-        self.adjustDimensions()
+        self.adjust_dimensions()
         self.repaint()
 
-    def getFlipScale(self):
+    def get_flip_scale(self):
         return self._flip_scale
 
-    def setFlipScale(self, checked):
+    def set_flip_scale(self, checked):
         self._flip_scale = checked
-        self.adjustDimensions()
+        self.adjust_dimensions()
         self.repaint()
 
-    def getInvertedAppearance(self):
+    def get_inverted_appearance(self):
         return self._inverted_appearance
 
-    def setInvertedAppearance(self, inverted):
+    def set_inverted_appearance(self, inverted):
         self._inverted_appearance = inverted
-        self.adjustDimensions()
+        self.adjust_dimensions()
         self.repaint()
 
-    def getBarIndicator(self):
+    def get_bar_indicator(self):
         return self._barIndicator
 
-    def setBarIndicator(self, checked):
+    def set_bar_indicator(self, checked):
         if self._barIndicator != bool(checked):
             self._barIndicator = checked
             self.repaint()
 
-    def getBackgroundColor(self):
+    def get_background_color(self):
         return self._bg_color
 
-    def setBackgroundColor(self, color):
+    def set_background_color(self, color):
         self._bg_color = color
         self.repaint()
 
-    def getIndicatorColor(self):
+    def get_indicator_color(self):
         return self._indicator_color
 
-    def setIndicatorColor(self, color):
+    def set_indicator_color(self, color):
         self._indicator_color = color
         self.repaint()
 
-    def getTickColor(self):
+    def get_tick_color(self):
         return self._tick_color
 
-    def setTickColor(self, color):
+    def set_tick_color(self, color):
         self._tick_color = color
         self.repaint()
 
-    def getBackgroundSizeRate(self):
+    def get_background_size_rate(self):
         return self._bg_size_rate
 
-    def setBackgroundSizeRate(self, rate):
+    def set_background_size_rate(self, rate):
         if rate >= 0 and rate <=1 and self._bg_size_rate != rate:
             self._bg_size_rate = rate
             self.repaint()
 
-    def getTickSizeRate(self):
+    def get_tick_size_rate(self):
         return self._tick_size_rate
 
-    def setTickSizeRate(self, rate):
+    def set_tick_size_rate(self, rate):
         if rate >= 0 and rate <=1 and self._tick_size_rate != rate:
             self._tick_size_rate = rate
             self.repaint()
 
-    def getNumDivisions(self):
+    def get_num_divisions(self):
         return self._num_divisions
 
-    def setNumDivisions(self, divisions):
+    def set_num_divisions(self, divisions):
         if isinstance(divisions, int) and divisions > 0 and self._num_divisions != divisions:
             self._num_divisions = divisions
             self.repaint()
@@ -273,25 +273,25 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
 
         self.setup_widgets_for_orientation(Qt.Horizontal, False, False)
 
-    def updateLabels(self):
+    def update_labels(self):
         self.lower_label.setText(str(self.scale_indicator._lower_limit))
         self.upper_label.setText(str(self.scale_indicator._upper_limit))
         self.value_label.setText(self.format_string.format(self.scale_indicator._value))
 
     def value_changed(self, new_value):
         super(PyDMScaleIndicator, self).value_changed(new_value)
-        self.scale_indicator.setValue(new_value)
-        self.updateLabels()
+        self.scale_indicator.set_value(new_value)
+        self.update_labels()
 
     def upperCtrlLimitChanged(self, new_limit):
         super(PyDMScaleIndicator, self).upperCtrlLimitChanged(new_limit)
-        self.scale_indicator.setUpperLimit(new_limit)
-        self.updateLabels()
+        self.scale_indicator.set_upper_limit(new_limit)
+        self.update_labels()
 
     def lowerCtrlLimitChanged(self, new_limit):
         super(PyDMScaleIndicator, self).lowerCtrlLimitChanged(new_limit)
-        self.scale_indicator.setLowerLimit(new_limit)
-        self.updateLabels()
+        self.scale_indicator.set_lower_limit(new_limit)
+        self.update_labels()
 
     def setup_widgets_for_orientation(self, new_orientation, flipped, inverted):
         self.limits_layout = None
@@ -386,92 +386,92 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
 
     @pyqtProperty(bool)
     def showTicks(self):
-        return self.scale_indicator.getShowTicks()
+        return self.scale_indicator.get_show_ticks()
 
     @showTicks.setter
     def showTicks(self, checked):
-        self.scale_indicator.setShowTicks(checked)
+        self.scale_indicator.set_show_ticks(checked)
 
     @pyqtProperty(Qt.Orientation)
     def orientation(self):
-        return self.scale_indicator.getOrientation()
+        return self.scale_indicator.get_orientation()
 
     @orientation.setter
     def orientation(self, orientation):
-        self.scale_indicator.setOrientation(orientation)
+        self.scale_indicator.set_orientation(orientation)
         self.setup_widgets_for_orientation(orientation, self.flipScale, self.invertedAppearance)
 
     @pyqtProperty(bool)
     def flipScale(self):
-        return self.scale_indicator.getFlipScale()
+        return self.scale_indicator.get_flip_scale()
 
     @flipScale.setter
     def flipScale(self, checked):
-        self.scale_indicator.setFlipScale(checked)
+        self.scale_indicator.set_flip_scale(checked)
         self.setup_widgets_for_orientation(self.orientation, checked, self.invertedAppearance)
 
     @pyqtProperty(bool)
     def invertedAppearance(self):
-        return self.scale_indicator.getInvertedAppearance()
+        return self.scale_indicator.get_inverted_appearance()
 
     @invertedAppearance.setter
     def invertedAppearance(self, inverted):
-        self.scale_indicator.setInvertedAppearance(inverted)
+        self.scale_indicator.set_inverted_appearance(inverted)
         self.setup_widgets_for_orientation(self.orientation, self.flipScale, inverted)
 
     @pyqtProperty(bool)
     def barIndicator(self):
-        return self.scale_indicator.getBarIndicator()
+        return self.scale_indicator.get_bar_indicator()
 
     @barIndicator.setter
     def barIndicator(self, checked):
-        self.scale_indicator.setBarIndicator(checked)
+        self.scale_indicator.set_bar_indicator(checked)
 
     @pyqtProperty(QColor)
     def backgroundColor(self):
-        return self.scale_indicator.getBackgroundColor()
+        return self.scale_indicator.get_background_color()
 
     @backgroundColor.setter
     def backgroundColor(self, color):
-        self.scale_indicator.setBackgroundColor(color)
+        self.scale_indicator.set_background_color(color)
 
     @pyqtProperty(QColor)
     def indicatorColor(self):
-        return self.scale_indicator.getIndicatorColor()
+        return self.scale_indicator.get_indicator_color()
 
     @indicatorColor.setter
     def indicatorColor(self, color):
-        self.scale_indicator.setIndicatorColor(color)
+        self.scale_indicator.set_indicator_color(color)
 
     @pyqtProperty(QColor)
     def tickColor(self):
-        return self.scale_indicator.getTickColor()
+        return self.scale_indicator.get_tick_color()
 
     @tickColor.setter
     def tickColor(self, color):
-        self.scale_indicator.setTickColor(color)
+        self.scale_indicator.set_tick_color(color)
 
     @pyqtProperty(float)
     def backgroundSizeRate(self):
-        return self.scale_indicator.getBackgroundSizeRate()
+        return self.scale_indicator.get_background_size_rate()
 
     @backgroundSizeRate.setter
     def backgroundSizeRate(self, rate):
-        self.scale_indicator.setBackgroundSizeRate(rate)
+        self.scale_indicator.set_background_size_rate(rate)
 
     @pyqtProperty(float)
     def tickSizeRate(self):
-        return self.scale_indicator.getTickSizeRate()
+        return self.scale_indicator.get_tick_size_rate()
 
     @tickSizeRate.setter
     def tickSizeRate(self, rate):
-        self.scale_indicator.setTickSizeRate(rate)
+        self.scale_indicator.set_tick_size_rate(rate)
 
     @pyqtProperty(int)
     def numDivisions(self):
-        return self.scale_indicator.getNumDivisions()
+        return self.scale_indicator.get_num_divisions()
 
     @numDivisions.setter
     def numDivisions(self, divisions):
-        self.scale_indicator.setNumDivisions(divisions)
+        self.scale_indicator.set_num_divisions(divisions)
 
