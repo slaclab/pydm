@@ -28,6 +28,7 @@ if DEFAULT_PROTOCOL is not None:
     # Get rid of the "://" part if it exists
     DEFAULT_PROTOCOL = DEFAULT_PROTOCOL.split("://")[0]
 
+
 class PyDMApplication(QApplication):
     """
     PyDMApplication handles loading PyDM display files, opening
@@ -129,7 +130,6 @@ class PyDMApplication(QApplication):
         if not self.had_file:
             self.make_connections()
         return super(PyDMApplication, self).exec_()
-
 
     @pyqtSlot()
     def get_CPU_usage(self):
@@ -378,7 +378,7 @@ class PyDMApplication(QApplication):
         dir_name, file_name, extra_args = path_info(ui_file)
         args.extend(extra_args)
         filepath = os.path.join(dir_name, file_name)
-        self.directory_stack.append(dir_name)        
+        self.directory_stack.append(dir_name)
         (filename, extension) = os.path.splitext(file_name)
         if macros is None:
             macros = {}
@@ -484,7 +484,6 @@ class PyDMApplication(QApplication):
         plugin = self.plugin_for_channel(channel)
         if plugin:
             plugin.remove_connection(channel)
-
 
     def eventFilter(self, obj, event):
         # Override the eventFilter to capture all middle mouse button events,
