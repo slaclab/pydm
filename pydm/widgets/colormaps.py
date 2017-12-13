@@ -1048,20 +1048,38 @@ _monochrome_data = [[0,0,0,255],[255,255,255,255]]
 _hot_data = [[0,0,0,255],[255,0,0,255],[255,255,0,255],[255,255,255,255]]
 import numpy as np
 cmaps = {}
-for (name, data) in (('magma', np.array(_magma_data)),
-                     ('inferno', np.array(_inferno_data)),
-                     ('plasma', np.array(_plasma_data)),
-                     ('viridis', np.array(_viridis_data)),
-                     ('jet', np.array(_jet_data)),
-                     ('monochrome', np.array(_monochrome_data)),
-                     ('hot', np.array(_hot_data))):
 
+class PyDMColorMap(object):
+    Magma = 0
+    Inferno = 1
+    Plasma = 2
+    Viridis = 3
+    Jet = 4
+    Monochrome = 5
+    Hot = 6
+
+for (name, data) in ((PyDMColorMap.Magma, np.array(_magma_data)),
+                     (PyDMColorMap.Inferno, np.array(_inferno_data)),
+                     (PyDMColorMap.Plasma, np.array(_plasma_data)),
+                     (PyDMColorMap.Viridis, np.array(_viridis_data)),
+                     (PyDMColorMap.Jet, np.array(_jet_data)),
+                     (PyDMColorMap.Monochrome, np.array(_monochrome_data)),
+                     (PyDMColorMap.Hot, np.array(_hot_data))):
     cmaps[name] = data
 
-magma = cmaps['magma']
-inferno = cmaps['inferno']
-plasma = cmaps['plasma']
-viridis = cmaps['viridis']
-jet = cmaps['jet']
-monochrome = cmaps['monochrome']
-hot = cmaps['hot']
+magma = cmaps[PyDMColorMap.Magma]
+inferno = cmaps[PyDMColorMap.Inferno]
+plasma = cmaps[PyDMColorMap.Plasma]
+viridis = cmaps[PyDMColorMap.Viridis]
+jet = cmaps[PyDMColorMap.Jet]
+monochrome = cmaps[PyDMColorMap.Monochrome]
+hot = cmaps[PyDMColorMap.Hot]
+
+cmap_names = {}
+cmap_names[PyDMColorMap.Magma] = "Magma"
+cmap_names[PyDMColorMap.Inferno] = "Inferno"
+cmap_names[PyDMColorMap.Plasma] = "Plasma"
+cmap_names[PyDMColorMap.Viridis] = "Viridis"
+cmap_names[PyDMColorMap.Jet] = "Jet"
+cmap_names[PyDMColorMap.Monochrome] = "Monochrome"
+cmap_names[PyDMColorMap.Hot] = "Hot"
