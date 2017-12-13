@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM 0.3.0+104.g3525bdd documentation</title>
+  <title>pydm.application &mdash; PyDM 0.3.0+105.g9a3527e documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="PyDM 0.3.0+104.g3525bdd documentation" href="../../index.html"/>
+    <link rel="top" title="PyDM 0.3.0+105.g9a3527e documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0+104.g3525bdd
+                0.3.0+105.g9a3527e
               </div>
             
           
@@ -168,6 +168,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">imp</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
 <span class="kn">import</span> <span class="nn">signal</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">re</span>
@@ -411,7 +412,12 @@
             <span class="n">main_window</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">main_window</span><span class="o">.</span><span class="n">x</span><span class="p">()</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="n">main_window</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">close_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">):</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">windows</span><span class="p">[</span><span class="n">window</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">windows</span><span class="p">[</span><span class="n">window</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># If window is no longer at self.windows</span>
+            <span class="c1"># it means that we already closed it.</span>
+            <span class="k">pass</span>
 
 <div class="viewcode-block" id="PyDMApplication.load_ui_file"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.load_ui_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_ui_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uifile</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -471,9 +477,10 @@
         <span class="c1"># Add the intelligence module directory to the python path, so that submodules can be loaded.    Eventually, this should go away, and intelligence modules should behave as real python modules.</span>
         <span class="n">module_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">pyfile</span><span class="p">))</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">module_dir</span><span class="p">)</span>
+        <span class="n">temp_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
 
         <span class="c1"># Now load the intelligence module.</span>
-        <span class="n">module</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">load_source</span><span class="p">(</span><span class="s1">&#39;intelclass&#39;</span><span class="p">,</span> <span class="n">pyfile</span><span class="p">)</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">load_source</span><span class="p">(</span><span class="n">temp_name</span><span class="p">,</span> <span class="n">pyfile</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__sanity_check_pyqt</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s1">&#39;intelclass&#39;</span><span class="p">):</span>
             <span class="bp">cls</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">intelclass</span>
@@ -740,7 +747,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.3.0+104.g3525bdd',
+            VERSION:'0.3.0+105.g9a3527e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
