@@ -98,6 +98,9 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
 
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
             args = shlex.split(self._command)
-            self.process = subprocess.Popen(args)
+            try:
+                self.process = subprocess.Popen(args)
+            except Exception as exc:
+                print("Error in command: ", exc)
         else:
             print("Command already active.")
