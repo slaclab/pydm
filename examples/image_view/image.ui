@@ -22,6 +22,9 @@
      <property name="whatsThis">
       <string>Displays an image from a PV.</string>
      </property>
+     <property name="colorMap" stdset="0">
+      <enum>PyDMImageView::Inferno</enum>
+     </property>
      <property name="imageChannel" stdset="0">
       <string>ca://MTEST:Image</string>
      </property>
