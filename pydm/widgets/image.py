@@ -54,7 +54,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         # Set the default colormap.
         self._colormap = PyDMColorMap.Inferno
         self._cm_colors = None
-        self.setColorMapToPreset(self._colormap)
+        self.set_color_map_to_preset(self._colormap)
         # Setup the redraw timer.
         self.needs_redraw = False
         self.redraw_timer = QTimer(self)
@@ -71,7 +71,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         ----------
         action : QAction
         """
-        self.setColorMapToPreset(self.cmap_for_action[action])
+        self.set_color_map_to_preset(self.cmap_for_action[action])
 
     @pyqtSlot(int)
     def setColorMapMin(self, new_min):
@@ -140,9 +140,9 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         -------
         new_cmap : PyDMColorMap
         """
-        self.setColorMapToPreset(new_cmap)
+        self.set_color_map_to_preset(new_cmap)
 
-    def setColorMapToPreset(self, cmap):
+    def set_color_map_to_preset(self, cmap):
         """
         Load a predefined colormap
 
