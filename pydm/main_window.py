@@ -45,19 +45,9 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionShow_File_Path_in_Title_Bar.triggered.connect(self.toggle_file_path_in_title_bar)
         self.ui.actionShow_Navigation_Bar.triggered.connect(self.toggle_nav_bar)
         self.ui.actionShow_Menu_Bar.triggered.connect(self.toggle_menu_bar)
-
-        # We need the shortcuts to be on the application level so they
-        # can be executed even when the menu is hidden
-        #QShortcut(QKeySequence(Qt.CTRL + Qt.Key_M), self, partial(self.toggle_menu_bar, None))
-        #QShortcut(QKeySequence(Qt.CTRL + Qt.Key_R), self, partial(self.reload_display, None))
-        #QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Equal), self, partial(self.increase_font_size, None))
-        #QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Minus), self, partial(self.decrease_font_size, None))
-        #QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Left), self, self.back)
-        #QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Right), self, self.forward)
-        #QShortcut(QKeySequence(Qt.SHIFT + Qt.CTRL + Qt.Key_H), self, self.home)
-        #QShortcut(QKeySequence(Qt.CTRL + Qt.Key_O), self, partial(self.open_file_action, None))
-
         self.ui.actionShow_Status_Bar.triggered.connect(self.toggle_status_bar)
+        self._saved_menu_geometry = None
+        self._saved_menu_height = None
         self._new_widget_size = None
         if hide_nav_bar:
             self.toggle_nav_bar(False)
@@ -248,11 +238,18 @@ class PyDMMainWindow(QMainWindow):
     @pyqtSlot(bool)
     def toggle_menu_bar(self, checked=None):
         if checked is None:
-            if self.ui.menubar.isVisible():
-                checked = False
-            else:
-                checked = True
-        self.ui.menubar.setHidden(not checked)
+            checked = not self.ui.menubar.isVisible()
+        # Crazy hack: we can't just do menubar.setVisible(), because that
+        # will disable all the QActions and their keyboard shortcuts when
+        # we hide the menu.  So instead, we set it to a height of 0 to hide
+        # it, and then restore the previous height value to show it again.     
+        if checked:
+            self.ui.menubar.restoreGeometry(self._saved_menu_geometry)
+            self.ui.menubar.setFixedHeight(self._saved_menu_height)
+        else:
+            self._saved_menu_geometry = self.ui.menubar.saveGeometry()
+            self._saved_menu_height = self.ui.menubar.height()
+            self.ui.menubar.setFixedHeight(0)
 
     @pyqtSlot(bool)
     def toggle_status_bar(self, checked):
