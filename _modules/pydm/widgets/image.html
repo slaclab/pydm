@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.image &mdash; PyDM v0.4.0+9.g6818580 documentation</title>
+  <title>pydm.widgets.image &mdash; PyDM v0.4.0+13.gb75e5e9 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM v0.4.0+9.g6818580 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM v0.4.0+13.gb75e5e9 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v0.4.0+9.g6818580
+                v0.4.0+13.gb75e5e9
               </div>
             
           
@@ -160,17 +160,17 @@
             
   <h1>Source code for pydm.widgets.image</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QActionGroup</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">QTimer</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
 <span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="k">import</span> <span class="n">ImageView</span>
 <span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="k">import</span> <span class="n">ColorMap</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="k">import</span> <span class="n">PyDMChannel</span>
-<span class="kn">from</span> <span class="nn">.colormaps</span> <span class="k">import</span> <span class="n">cmaps</span>
+<span class="kn">from</span> <span class="nn">.colormaps</span> <span class="k">import</span> <span class="n">cmaps</span><span class="p">,</span> <span class="n">cmap_names</span><span class="p">,</span> <span class="n">PyDMColorMap</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
 <span class="kn">import</span> <span class="nn">pyqtgraph</span>
 <span class="n">pyqtgraph</span><span class="o">.</span><span class="n">setConfigOption</span><span class="p">(</span><span class="s1">&#39;imageAxisOrder&#39;</span><span class="p">,</span> <span class="s1">&#39;row-major&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMImageView"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView">[docs]</a><span class="k">class</span> <span class="nc">PyDMImageView</span><span class="p">(</span><span class="n">ImageView</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMImageView"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView">[docs]</a><span class="k">class</span> <span class="nc">PyDMImageView</span><span class="p">(</span><span class="n">ImageView</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">PyDMColorMap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A PyQtGraph ImageView with support for Channels and more from PyDM</span>
 
@@ -184,7 +184,8 @@
 <span class="sd">        The channel to be used by the widget to receive the image width</span>
 <span class="sd">        information</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
+    
+    <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">PyDMColorMap</span><span class="p">)</span>
     <span class="n">color_maps</span> <span class="o">=</span> <span class="n">cmaps</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">image_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">ImageView</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
@@ -201,18 +202,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span> <span class="o">=</span> <span class="mf">255.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># This is the max value for the image waveform&#39;s data type.  It gets set when the waveform updates.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_colormapname</span> <span class="o">=</span> <span class="s2">&quot;inferno&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cm_colors</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setColorMapToPreset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_colormapname</span><span class="p">)</span>
+        <span class="c1"># Make a right-click menu for changing the color map.</span>
         <span class="n">cm_menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">()</span><span class="o">.</span><span class="n">getMenu</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s2">&quot;Color Map&quot;</span><span class="p">)</span>
-        <span class="n">cm_group</span> <span class="o">=</span> <span class="n">QActionGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">map_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_maps</span><span class="p">:</span>
-            <span class="n">action</span> <span class="o">=</span> <span class="n">cm_group</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">map_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cm_group</span> <span class="o">=</span> <span class="n">QActionGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap_for_action</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">cm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_maps</span><span class="p">:</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_group</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">cmap_names</span><span class="p">[</span><span class="n">cm</span><span class="p">])</span>
             <span class="n">action</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">cm_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">map_name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colormapname</span><span class="p">:</span>
-                <span class="n">action</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmap_for_action</span><span class="p">[</span><span class="n">action</span><span class="p">]</span> <span class="o">=</span> <span class="n">cm</span>
         <span class="n">cm_menu</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeColorMap</span><span class="p">)</span>
+        <span class="c1"># Set the default colormap.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_colormap</span> <span class="o">=</span> <span class="n">PyDMColorMap</span><span class="o">.</span><span class="n">Inferno</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cm_colors</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_color_map_to_preset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_colormap</span><span class="p">)</span>
+        <span class="c1"># Setup the redraw timer.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_redraw</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">redrawImage</span><span class="p">)</span>
@@ -228,7 +232,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        action : QAction</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setColorMapToPreset</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">text</span><span class="p">()))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_color_map_to_preset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmap_for_action</span><span class="p">[</span><span class="n">action</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="PyDMImageView.setColorMapMin"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.setColorMapMin">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">setColorMapMin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_min</span><span class="p">):</span>
@@ -277,17 +281,44 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">=</span> <span class="n">mn</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyDMImageView.setColorMapToPreset"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.setColorMapToPreset">[docs]</a>    <span class="k">def</span> <span class="nf">setColorMapToPreset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="n">PyDMColorMap</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">colorMap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The color map used by the ImageView.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyDMColorMap</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colormap</span>
+    
+    <span class="nd">@colorMap</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">colorMap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_cmap</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The color map used by the ImageView.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_cmap : PyDMColorMap</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_color_map_to_preset</span><span class="p">(</span><span class="n">new_cmap</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMImageView.set_color_map_to_preset"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.set_color_map_to_preset">[docs]</a>    <span class="k">def</span> <span class="nf">set_color_map_to_preset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load a predefined colormap</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        name : str</span>
+<span class="sd">        cmap : PyDMColorMap</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_colormapname</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cm_colors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_maps</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_colormap</span> <span class="o">=</span> <span class="n">cmap</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cm_colors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_maps</span><span class="p">[</span><span class="n">cmap</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_group</span><span class="o">.</span><span class="n">actions</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmap_for_action</span><span class="p">[</span><span class="n">action</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colormap</span><span class="p">:</span>
+                <span class="n">action</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">action</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMImageView.setColorMap"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.setColorMap">[docs]</a>    <span class="k">def</span> <span class="nf">setColorMap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -308,7 +339,7 @@
         <span class="n">lut</span> <span class="o">=</span> <span class="n">cmap</span><span class="o">.</span><span class="n">getLookupTable</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">setLookupTable</span><span class="p">(</span><span class="n">lut</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">setLevels</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span><span class="p">))])</span>  <span class="c1"># set levels from min to max of image (may improve min here)</span></div>
-
+            
     <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">image_connection_state_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">conn</span><span class="p">:</span>
@@ -503,7 +534,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v0.4.0+9.g6818580',
+            VERSION:'v0.4.0+13.gb75e5e9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

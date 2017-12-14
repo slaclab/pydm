@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMImageView &mdash; PyDM v0.4.0+9.g6818580 documentation</title>
+  <title>PyDMImageView &mdash; PyDM v0.4.0+13.gb75e5e9 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyDM v0.4.0+9.g6818580 documentation" href="../index.html"/>
+    <link rel="top" title="PyDM v0.4.0+13.gb75e5e9 documentation" href="../index.html"/>
         <link rel="up" title="PyDM Widgets" href="index.html"/>
         <link rel="next" title="PyDMLabel" href="label.html"/>
         <link rel="prev" title="PyDMEnumComboBox" href="enum_combo_box.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                v0.4.0+9.g6818580
+                v0.4.0+13.gb75e5e9
               </div>
             
           
@@ -234,6 +234,22 @@ current colormap used to render the image.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pydm.widgets.image.PyDMImageView.colorMap">
+<code class="descname">colorMap</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.colorMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>The color map used by the ImageView.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">PyDMColorMap</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pydm.widgets.image.PyDMImageView.imageChannel">
 <code class="descname">imageChannel</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.imageChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>The channel address in use for the image data .</p>
@@ -366,14 +382,14 @@ If necessary, reshape the image to 2D first.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.image.PyDMImageView.setColorMapToPreset">
-<code class="descname">setColorMapToPreset</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.setColorMapToPreset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setColorMapToPreset" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.image.PyDMImageView.set_color_map_to_preset">
+<code class="descname">set_color_map_to_preset</code><span class="sig-paren">(</span><em>cmap</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.set_color_map_to_preset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.set_color_map_to_preset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a predefined colormap</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>str</em>) – </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cmap</strong> (<em>PyDMColorMap</em>) – </td>
 </tr>
 </tbody>
 </table>
@@ -443,7 +459,7 @@ If necessary, reshape the image to 2D first.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v0.4.0+9.g6818580',
+            VERSION:'v0.4.0+13.gb75e5e9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
