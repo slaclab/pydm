@@ -20,8 +20,7 @@ extras_require = {
     'PySide': ['PySide'],
     'pyepics': ['pyepics'],
     'perf': ['psutil'],
-    'testing-ioc': ['pcaspy'],
-    'test': ['codecov', 'pytest', 'pytest-cov', 'coverage', 'coveralls', 'pcaspy']
+    'test': ['codecov', 'pytest', 'pytest-cov', 'coverage', 'coveralls']
 }
 
 if "CONDA_PREFIX" not in environ:
