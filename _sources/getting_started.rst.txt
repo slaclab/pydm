@@ -10,19 +10,51 @@ from scratch is probably using the Anaconda system.  If you have an existing
 python environment, and want to install PyDM for use with that, you can do that
 with pip.
 
-Installing with Anaconda
-^^^^^^^^^^^^^^^^^^^^^^^^
+Please note, this guide is written with Unix in mind.
+
+Installing PyDM and Prerequisites with Anaconda
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 After installing Anaconda (see https://www.anaconda.com/download/), create a new
 environment for PyDM::
   
   $ conda create -n pydm-environment python=3.6 pyqt=5 pip numpy scipy six psutil pyqtgraph -c conda-forge
   $ source activate pydm-environment
   
-Once the environment is setup, continue on with the instructions in the `Installing
-with PIP`_ section below.
+Once the environment is setup, continue on with the instructions in the `Installing PyDM
+with PIP`_ section below.  You do not need to build the prerequisites manually.
 
-Installing with PIP
-^^^^^^^^^^^^^^^^^^^
+Installing the Prerequisites
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Qt 5
+++++
+First, `download the source code for your platform <https://www1.qt.io/download-open-source/#section-5>`_.
+Once you've downloaded and extracted the archive somewhere, its time to configure the build.
+To see all the options, run::
+
+  $ ./configure --help
+
+Then, once you are ready::
+
+  $ ./configure <your options here>
+  $ make -j4 && make install
+
+SIP
++++
+You'll need SIP to build PyQt5.  `Download it <https://www.riverbankcomputing.com/software/sip/download>`_,
+and extract the archive.  Then, follow `the instructions <http://pyqt.sourceforge.net/Docs/sip4/installation.html>`_
+to build and install SIP.
+
+PyQt5
++++++
+`Download the source code for PyQt5 <https://riverbankcomputing.com/software/pyqt/download5>`_,
+and extract the archive.  Follow `the provided instructions <http://pyqt.sourceforge.net/Docs/PyQt5/installation.html#building-and-installing-from-source>`_ to
+build and install it.  Note that you may need to manually set the '--qmake' option to point to the
+qmake binary you created when you built Qt5.
+
+Installing PyDM with PIP
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 PyDM is not currently part of the Python Package Index (PyPI), so you'll have to
 first `download a release of PyDM <https://github.com/slaclab/pydm/releases/>`_,
