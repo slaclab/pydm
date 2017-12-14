@@ -48,14 +48,14 @@ class PyDMMainWindow(QMainWindow):
 
         # We need the shortcuts to be on the application level so they
         # can be executed even when the menu is hidden
-        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_M), self, partial(self.toggle_menu_bar, None))
-        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_R), self, partial(self.reload_display, None))
-        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Equal), self, partial(self.increase_font_size, None))
-        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Minus), self, partial(self.decrease_font_size, None))
-        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Left), self, self.back)
-        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Right), self, self.forward)
-        QShortcut(QKeySequence(Qt.SHIFT + Qt.CTRL + Qt.Key_H), self, self.home)
-        QShortcut(QKeySequence(Qt.CTRL + Qt.Key_O), self, partial(self.open_file_action, None))
+        #QShortcut(QKeySequence(Qt.CTRL + Qt.Key_M), self, partial(self.toggle_menu_bar, None))
+        #QShortcut(QKeySequence(Qt.CTRL + Qt.Key_R), self, partial(self.reload_display, None))
+        #QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Equal), self, partial(self.increase_font_size, None))
+        #QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Minus), self, partial(self.decrease_font_size, None))
+        #QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Left), self, self.back)
+        #QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Right), self, self.forward)
+        #QShortcut(QKeySequence(Qt.SHIFT + Qt.CTRL + Qt.Key_H), self, self.home)
+        #QShortcut(QKeySequence(Qt.CTRL + Qt.Key_O), self, partial(self.open_file_action, None))
 
         self.ui.actionShow_Status_Bar.triggered.connect(self.toggle_status_bar)
         self._new_widget_size = None

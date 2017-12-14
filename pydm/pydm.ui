@@ -113,6 +113,9 @@
    <property name="text">
     <string>Reload Display</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
    </property>
@@ -121,6 +124,9 @@
    <property name="text">
     <string>Increase Font Size</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+=</string>
+   </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
    </property>
@@ -128,6 +134,9 @@
   <action name="actionDecrease_Font_Size">
    <property name="text">
     <string>Decrease Font Size</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
@@ -148,6 +157,9 @@
    <property name="text">
     <string>Back</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Left</string>
+   </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
    </property>
@@ -156,6 +168,9 @@
    <property name="text">
     <string>Forward</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Right</string>
+   </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
    </property>
@@ -163,6 +178,9 @@
   <action name="actionHome">
    <property name="text">
     <string>Home</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
@@ -186,6 +204,9 @@
    <property name="text">
     <string>Open File...</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
    </property>
@@ -199,6 +220,9 @@
    </property>
    <property name="text">
     <string>Show Menu Bar</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
