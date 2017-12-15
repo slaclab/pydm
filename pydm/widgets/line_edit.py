@@ -79,16 +79,15 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
         ReturnPressed signal of the PyDMLineEdit
         """
         send_value = str(self.text())
-
         # Clean text of unit string
-        if self._show_units:
+        if self._show_units and self._unit in send_value:
             send_value = send_value[:-len(self._unit)].strip()
-
         try:
             if self.channeltype not in [str, np.ndarray]:
                 scale = self._scale
                 if scale is None or scale == 0:
                     scale = 1.0
+
                 if self._display_format_type in [DisplayFormat.Default, DisplayFormat.String]:
                     if self.channeltype == float:
                         num_value = locale.atof(send_value)

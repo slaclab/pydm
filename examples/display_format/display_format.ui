@@ -495,7 +495,7 @@
             <bool>false</bool>
            </property>
            <property name="showUnits" stdset="0">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="channel" stdset="0">
             <string>ca://MTEST:UpdateTime</string>
@@ -522,6 +522,9 @@
         The channel to be used by the widget.
     </string>
            </property>
+           <property name="showUnits" stdset="0">
+            <bool>true</bool>
+           </property>
            <property name="channel" stdset="0">
             <string>ca://MTEST:UpdateTime</string>
            </property>
@@ -546,6 +549,9 @@
     init_channel : str, optional
         The channel to be used by the widget.
     </string>
+           </property>
+           <property name="showUnits" stdset="0">
+            <bool>true</bool>
            </property>
            <property name="channel" stdset="0">
             <string>ca://MTEST:UpdateTime</string>
@@ -575,6 +581,9 @@
         The channel to be used by the widget.
     </string>
            </property>
+           <property name="showUnits" stdset="0">
+            <bool>true</bool>
+           </property>
            <property name="channel" stdset="0">
             <string>ca://MTEST:UpdateTime</string>
            </property>
@@ -602,6 +611,9 @@
     init_channel : str, optional
         The channel to be used by the widget.
     </string>
+           </property>
+           <property name="showUnits" stdset="0">
+            <bool>true</bool>
            </property>
            <property name="channel" stdset="0">
             <string>ca://MTEST:UpdateTime</string>
@@ -631,6 +643,9 @@
         The channel to be used by the widget.
     </string>
            </property>
+           <property name="showUnits" stdset="0">
+            <bool>true</bool>
+           </property>
            <property name="channel" stdset="0">
             <string>ca://MTEST:UpdateTime</string>
            </property>
@@ -658,6 +673,9 @@
     init_channel : str, optional
         The channel to be used by the widget.
     </string>
+           </property>
+           <property name="showUnits" stdset="0">
+            <bool>true</bool>
            </property>
            <property name="channel" stdset="0">
             <string>ca://MTEST:UpdateTime</string>
