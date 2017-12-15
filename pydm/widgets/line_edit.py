@@ -4,6 +4,7 @@ from ..PyQt.QtCore import Qt, pyqtProperty, Q_ENUMS
 from .. import utilities
 from .base import PyDMWritableWidget
 from .display_format import DisplayFormat, parse_value_for_display
+import numpy as np
 
 
 class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
@@ -75,20 +76,57 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
         before being sent back to the channel. This function is attached the
         ReturnPressed signal of the PyDMLineEdit
         """
+        print("-"*80)
+        print("Send Value")
+        print("-"*80)
         send_value = str(self.text())
-
+        print("Value = ", send_value)
         # Clean text of unit string
-        if self._unit:
-            send_value = send_value.replace(self._unit, '')
+        if self._show_units:
+            send_value = send_value[:-len(self._unit)].strip()
 
-        # Remove scale factor
-        if self._scale and self.channeltype != type(""):
-            send_value = (self.channeltype(send_value)
-                          / self.channeltype(self._scale))
+        print("Clean Value = ", send_value)
+        print("Channel Type = ", self.channeltype)
+        print("Format = ", self._display_format_type)
 
-        self.send_value_signal[self.channeltype].emit(self.channeltype(send_value))
+        if self.channeltype not in [str, np.ndarray]:
+            scale = self._scale
+            if scale is None or scale == 0:
+                scale = 1.0
+            print("Scale = ", scale)
+            if self._display_format_type in [DisplayFormat.Default, DisplayFormat.String]:
+                num_value = self.channeltype(send_value)
+                scale = self.channeltype(scale)
+                print("After Converting: ", num_value, " - ", scale)
+            elif self._display_format_type == DisplayFormat.Hex:
+                num_value = int(send_value, 16)
+            elif self._display_format_type == DisplayFormat.Binary:
+                num_value = int(send_value, 2)
+            elif self._display_format_type in [DisplayFormat.Exponential, DisplayFormat.Decimal]:
+                num_value = float(send_value)
+
+            num_value = num_value / scale
+            print("Will Emit: ", num_value)
+            self.send_value_signal[self.channeltype].emit(num_value)
+        elif self.channeltype == np.ndarray:
+            # Arrays will be in the [1.2 3.4 22.214] format
+            if self._display_format_type == DisplayFormat.String:
+                self.send_value_signal[str].emit(send_value)
+            else:
+                print("Channel Subtype = ", self.subtype)
+                arr_value = list(filter(None, send_value.replace("[", "").replace("]", "").split(" ")))
+                print("Arr Value = ", arr_value)
+                arr_value = np.array(arr_value, dtype=self.subtype)
+                print("Arr Value = ", arr_value)
+                self.send_value_signal[np.ndarray].emit(arr_value)
+        else:
+            # Channel Type is String
+            # Lets just send what we have after all
+            self.send_value_signal[str].emit(send_value)
+
         self.clearFocus()
         self.set_display()
+        print("-"*80)
 
     def write_access_changed(self, new_write_access):
         """
@@ -188,34 +226,37 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
         """
         if self.value is None:
             return
-                
+
         if self.hasFocus():
             return
-        
+
         new_value = self.value
-        
-        if self._display_format_type in [DisplayFormat.Decimal, DisplayFormat.Exponential, DisplayFormat.Default]:
-            if not not isinstance(new_value, str):
-                new_value *= self.channeltype(self._scale)
-        
+
+        if self._display_format_type in [DisplayFormat.Default,
+                                         DisplayFormat.Decimal,
+                                         DisplayFormat.Exponential,
+                                         DisplayFormat.Hex,
+                                         DisplayFormat.Binary]:
+            if not isinstance(new_value, (str, np.ndarray)):
+                try:
+                    new_value *= self.channeltype(self._scale)
+                except TypeError:
+                    print("Cannot convert channel: {} with type: {}", self._channel, self.channeltype)
+
         new_value = parse_value_for_display(new_value, self._display_format_type, self._prec, self)
-        
+
         self._display = str(new_value)
-        # If the value is a string, just display it as-is, no formatting
-        # needed.
-        if isinstance(new_value, str):
-            
-            self.setText(new_value)
-            return
-        # If the value is a number (float or int), display it using a
-        # format string if necessary.
-        if isinstance(new_value, (int, float)):
-            self._display = str(self.format_string.format(new_value))
-            self.setText(self._display)
-            return
-        # If you made it this far, just turn whatever the heck the value
-        # is into a string and display it.
-        self.setText(str(new_value))
+
+        if self._display_format_type == DisplayFormat.Default:
+            if isinstance(new_value, (int, float)):
+                self._display = str(self.format_string.format(new_value))
+                self.setText(self._display)
+                return
+
+        if self._show_units:
+            self._display += " {}".format(self._unit)
+
+        self.setText(self._display)
 
     def focusOutEvent(self, event):
         """

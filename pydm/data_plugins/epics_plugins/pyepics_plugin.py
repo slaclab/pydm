@@ -42,14 +42,20 @@ class Connection(PyDMConnection):
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
 
-    def send_new_value(self, value=None, char_value=None, count=None, ftype=None, *args, **kws):
+    def send_new_value(self, value=None, char_value=None, count=None, ftype=None, type=None, *args, **kws):
         self.update_ctrl_vars(**kws)
         if value is not None:
             if isinstance(value, np.ndarray):
                 self.new_value_signal[np.ndarray].emit(value)
             else:
                 if ftype in int_types:
-                    self.new_value_signal[int].emit(int(value))
+                    try:
+                        self.new_value_signal[int].emit(int(value))
+                    except ValueError:  # This happens when a string is empty
+                        # HACK since looks like for PyEpics a 1 element array
+                        # is in fact a scalar. =( I will try to address this
+                        # with Matt Newville
+                        self.new_value_signal[str].emit(char_value)
                 elif ftype in float_types:
                     self.new_value_signal[float].emit(float(value))
                 else:

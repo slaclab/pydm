@@ -22,6 +22,7 @@ def parse_value_for_display(new_value, display_format_type, precision, widget):
         return new_value
     elif display_format_type == DisplayFormat.String:
         if isinstance(new_value, np.ndarray):
+            new_value = new_value[new_value > 0]
             fmt_string = "{}"*len(new_value)
             r = fmt_string.format(*[unichr(x) for x in new_value])
             return r
