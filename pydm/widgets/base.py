@@ -3,7 +3,6 @@ import numpy as np
 from ..PyQt.QtGui import QApplication, QColor, QCursor
 from ..PyQt.QtCore import Qt, QEvent, pyqtSignal, pyqtSlot, pyqtProperty
 from .channel import PyDMChannel
-from ..application import PyDMApplication
 from ..utilities import is_pydm_app
 
 
@@ -651,7 +650,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
     def restore_original_tooltip(self):
         if self._tooltip is None:
             self._tooltip = self.toolTip()
-        return self._tooltip 
+        return self._tooltip
 
     @only_if_channel_set
     def check_enable_state(self):
@@ -732,6 +731,7 @@ class PyDMWritableWidget(PyDMWidget):
     def __init__(self, init_channel=None):
         self._write_access = False
         super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
+        self.app = QApplication.instance()
         # We should  install the Event Filter only if we are running
         # and not at the Designer
         if is_pydm_app():
@@ -815,7 +815,10 @@ class PyDMWritableWidget(PyDMWidget):
             tooltip += "PV is disconnected."
         elif not self._write_access:
             if tooltip != '': tooltip += '\n'
-            tooltip += "Access denied by Channel Access Security."
+            if is_pydm_app() and self.app.is_read_only():
+                tooltip += "Running PyDM on Read-Only mode."
+            else:
+                tooltip += "Access denied by Channel Access Security."
         self.setToolTip(tooltip)
         self.setEnabled(status)
 
