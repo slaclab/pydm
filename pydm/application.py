@@ -62,6 +62,8 @@ class PyDMApplication(QApplication):
     hide_status_bar: bool, optional
         Whether or not to display the status bar (general messages and errors)
         when the main window is first displayed.
+    read_only: bool, optional
+        Whether or not to launch PyDM in a read-only state.
     macros : dict, optional
         A dictionary of macro variables to be forwarded to the display class
         being loaded.

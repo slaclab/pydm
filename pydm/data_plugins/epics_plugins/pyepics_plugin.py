@@ -105,7 +105,6 @@ class Connection(PyDMConnection):
     @pyqtSlot(np.ndarray)
     def put_value(self, new_val):
         if is_pydm_app() and self.app.is_read_only():
-            self.write_access_signal.emit(False)
             return
 
         if self.pv.write_access:
