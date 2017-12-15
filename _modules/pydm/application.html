@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v0.4.0+13.gb75e5e9 documentation</title>
+  <title>pydm.application &mdash; PyDM v0.4.0+14.ga038fbe documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="PyDM v0.4.0+13.gb75e5e9 documentation" href="../../index.html"/>
+    <link rel="top" title="PyDM v0.4.0+14.ga038fbe documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v0.4.0+13.gb75e5e9
+                v0.4.0+14.ga038fbe
               </div>
             
           
@@ -181,13 +181,14 @@
 <span class="kn">from</span> <span class="nn">.PyQt.QtGui</span> <span class="k">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QToolTip</span><span class="p">,</span> <span class="n">QClipboard</span>
 <span class="kn">from</span> <span class="nn">.PyQt</span> <span class="k">import</span> <span class="n">uic</span>
 <span class="kn">from</span> <span class="nn">.main_window</span> <span class="k">import</span> <span class="n">PyDMMainWindow</span>
-<span class="kn">from</span> <span class="nn">.utilities</span> <span class="k">import</span> <span class="n">macro</span><span class="p">,</span> <span class="n">which</span>
+<span class="kn">from</span> <span class="nn">.utilities</span> <span class="k">import</span> <span class="n">macro</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">path_info</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">data_plugins</span>
 
 <span class="n">DEFAULT_PROTOCOL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYDM_DEFAULT_PROTOCOL&quot;</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">DEFAULT_PROTOCOL</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
     <span class="c1"># Get rid of the &quot;://&quot; part if it exists</span>
     <span class="n">DEFAULT_PROTOCOL</span> <span class="o">=</span> <span class="n">DEFAULT_PROTOCOL</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;://&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
 
 <div class="viewcode-block" id="PyDMApplication"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication">[docs]</a><span class="k">class</span> <span class="nc">PyDMApplication</span><span class="p">(</span><span class="n">QApplication</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -290,7 +291,6 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">had_file</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">make_connections</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMApplication</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
-
 
 <div class="viewcode-block" id="PyDMApplication.get_CPU_usage"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.get_CPU_usage">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">get_CPU_usage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -406,7 +406,7 @@
                                      <span class="n">hide_status_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span><span class="p">)</span>
         <span class="n">main_window</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="p">)</span>
         <span class="n">main_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">windows</span><span class="p">[</span><span class="n">main_window</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">ui_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">windows</span><span class="p">[</span><span class="n">main_window</span><span class="p">]</span> <span class="o">=</span> <span class="n">path_info</span><span class="p">(</span><span class="n">ui_file</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="c1"># If we are launching a new window, we don&#39;t want it to sit right on top of an existing window.</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">windows</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">main_window</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">main_window</span><span class="o">.</span><span class="n">x</span><span class="p">()</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="n">main_window</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span></div>
@@ -437,7 +437,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        QWidget</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">macros</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">macros</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">macros</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">macro</span><span class="o">.</span><span class="n">substitute_in_file</span><span class="p">(</span><span class="n">uifile</span><span class="p">,</span> <span class="n">macros</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">uifile</span>
@@ -536,11 +536,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># First split the ui_file string into a filepath and arguments</span>
         <span class="n">args</span> <span class="o">=</span> <span class="n">command_line_args</span> <span class="k">if</span> <span class="n">command_line_args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
-        <span class="n">split</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">ui_file</span><span class="p">)</span>
-        <span class="n">filepath</span> <span class="o">=</span> <span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">directory_stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
-        <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="n">dir_name</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">extra_args</span> <span class="o">=</span> <span class="n">path_info</span><span class="p">(</span><span class="n">ui_file</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">extra_args</span><span class="p">)</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory_stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">macros</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">macros</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">merged_macros</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">macro_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -646,7 +646,6 @@
         <span class="k">if</span> <span class="n">plugin</span><span class="p">:</span>
             <span class="n">plugin</span><span class="o">.</span><span class="n">remove_connection</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span></div>
 
-
     <span class="k">def</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="c1"># Override the eventFilter to capture all middle mouse button events,</span>
         <span class="c1"># and show a tooltip if needed.</span>
@@ -747,7 +746,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v0.4.0+13.gb75e5e9',
+            VERSION:'v0.4.0+14.ga038fbe',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
