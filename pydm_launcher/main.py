@@ -1,10 +1,10 @@
-#!/usr/bin/env python
 import sys
 import argparse
 from pydm import PyDMApplication
 import json
 
-if __name__ == "__main__":
+
+def main():
     parser = argparse.ArgumentParser(description="Python Display Manager")
     parser.add_argument('displayfile', help='A PyDM file to display.    Can be either a Qt .ui file, or a Python file.', nargs='?', default=None)
     parser.add_argument('--perfmon', action='store_true', help='Enable performance monitoring, and print CPU usage to the terminal.')
@@ -22,3 +22,7 @@ if __name__ == "__main__":
             raise ValueError("Could not parse macro argument as JSON.")
     app = PyDMApplication(ui_file=pydm_args.displayfile, command_line_args=pydm_args.display_args, perfmon=pydm_args.perfmon, hide_nav_bar=pydm_args.hide_nav_bar, hide_menu_bar=pydm_args.hide_menu_bar, hide_status_bar=pydm_args.hide_status_bar, macros=macros)
     sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main()

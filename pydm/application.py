@@ -20,13 +20,14 @@ from .PyQt.QtCore import Qt, QEvent, QTimer, pyqtSlot
 from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard
 from .PyQt import uic
 from .main_window import PyDMMainWindow
-from .utilities import macro, which
+from .utilities import macro, which, path_info
 from . import data_plugins
 
 DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
 if DEFAULT_PROTOCOL is not None:
     # Get rid of the "://" part if it exists
     DEFAULT_PROTOCOL = DEFAULT_PROTOCOL.split("://")[0]
+
 
 class PyDMApplication(QApplication):
     """
@@ -129,7 +130,6 @@ class PyDMApplication(QApplication):
         if not self.had_file:
             self.make_connections()
         return super(PyDMApplication, self).exec_()
-
 
     @pyqtSlot()
     def get_CPU_usage(self):
@@ -245,7 +245,7 @@ class PyDMApplication(QApplication):
                                      hide_status_bar=self.hide_status_bar)
         main_window.open_file(ui_file, macros, command_line_args)
         main_window.show()
-        self.windows[main_window] = os.path.dirname(ui_file)
+        self.windows[main_window] = path_info(ui_file)[0]
         # If we are launching a new window, we don't want it to sit right on top of an existing window.
         if len(self.windows) > 1:
             main_window.move(main_window.x() + 10, main_window.y() + 10)
@@ -276,7 +276,7 @@ class PyDMApplication(QApplication):
         -------
         QWidget
         """
-        if macros is not None:
+        if macros is not None and len(macros) > 0:
             f = macro.substitute_in_file(uifile, macros)
         else:
             f = uifile
@@ -375,11 +375,11 @@ class PyDMApplication(QApplication):
         """
         # First split the ui_file string into a filepath and arguments
         args = command_line_args if command_line_args is not None else []
-        split = shlex.split(ui_file)
-        filepath = split[0]
-        args.extend(split[1:])
-        self.directory_stack.append(os.path.dirname(filepath))
-        (filename, extension) = os.path.splitext(filepath)
+        dir_name, file_name, extra_args = path_info(ui_file)
+        args.extend(extra_args)
+        filepath = os.path.join(dir_name, file_name)
+        self.directory_stack.append(dir_name)
+        (filename, extension) = os.path.splitext(file_name)
         if macros is None:
             macros = {}
         merged_macros = self.macro_stack[-1].copy()
@@ -484,7 +484,6 @@ class PyDMApplication(QApplication):
         plugin = self.plugin_for_channel(channel)
         if plugin:
             plugin.remove_connection(channel)
-
 
     def eventFilter(self, obj, event):
         # Override the eventFilter to capture all middle mouse button events,

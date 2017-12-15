@@ -20,16 +20,14 @@ extras_require = {
     'PySide': ['PySide'],
     'pyepics': ['pyepics'],
     'perf': ['psutil'],
-    'testing-ioc': ['pcaspy'],
-    'test': ['codecov', 'pytest', 'pytest-cov', 'coverage', 'coveralls', 'pcaspy']
+    'test': ['codecov', 'pytest', 'pytest-cov', 'coverage', 'coveralls']
 }
-
 
 if "CONDA_PREFIX" not in environ:
     extras_require['PyQt5'] = ['PyQt5']
 else:
     print("******************************************************************")
-    print("*                              WARNING                           *") 
+    print("*                              WARNING                           *")
     print("******************************************************************")
     print("Installing at an Anaconda Environment, to avoid naming conflicts ")
     print("make sure you do:")
@@ -51,10 +49,16 @@ setup(
     author='SLAC National Accelerator Laboratory',
 
     packages=find_packages(),
+    package_dir={'pydm':'pydm', 'pydm_launcher':'pydm_launcher'},
     description='Python Display Manager',
     url='https://github.com/slaclab/pydm',
-    scripts=['scripts/pydm', 'scripts/pydm-testing-ioc'],
-    package_data={'pydm': ['data/access_rules.as']},
+    # scripts=['scripts/pydm', 'scripts/pydm-testing-ioc'],
+    # package_data={'pydm': ['data/access_rules.as']},
+    entry_points={
+        'gui_scripts': [
+            'pydm=pydm_launcher.main:main'
+        ]
+    },
     license='BSD',
 
     install_requires=requirements,
