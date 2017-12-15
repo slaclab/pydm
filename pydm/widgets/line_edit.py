@@ -1,9 +1,11 @@
+import locale
 from functools import partial
 from ..PyQt.QtGui import QLineEdit, QMenu
 from ..PyQt.QtCore import Qt, pyqtProperty, Q_ENUMS
 from .. import utilities
 from .base import PyDMWritableWidget
 from .display_format import DisplayFormat, parse_value_for_display
+
 import numpy as np
 
 
@@ -76,57 +78,49 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
         before being sent back to the channel. This function is attached the
         ReturnPressed signal of the PyDMLineEdit
         """
-        print("-"*80)
-        print("Send Value")
-        print("-"*80)
         send_value = str(self.text())
-        print("Value = ", send_value)
+
         # Clean text of unit string
         if self._show_units:
             send_value = send_value[:-len(self._unit)].strip()
 
-        print("Clean Value = ", send_value)
-        print("Channel Type = ", self.channeltype)
-        print("Format = ", self._display_format_type)
+        try:
+            if self.channeltype not in [str, np.ndarray]:
+                scale = self._scale
+                if scale is None or scale == 0:
+                    scale = 1.0
+                if self._display_format_type in [DisplayFormat.Default, DisplayFormat.String]:
+                    if self.channeltype == float:
+                        num_value = locale.atof(send_value)
+                    else:
+                        num_value = self.channeltype(send_value)
+                    scale = self.channeltype(scale)
+                elif self._display_format_type == DisplayFormat.Hex:
+                    num_value = int(send_value, 16)
+                elif self._display_format_type == DisplayFormat.Binary:
+                    num_value = int(send_value, 2)
+                elif self._display_format_type in [DisplayFormat.Exponential, DisplayFormat.Decimal]:
+                    num_value = locale.atof(send_value)
 
-        if self.channeltype not in [str, np.ndarray]:
-            scale = self._scale
-            if scale is None or scale == 0:
-                scale = 1.0
-            print("Scale = ", scale)
-            if self._display_format_type in [DisplayFormat.Default, DisplayFormat.String]:
-                num_value = self.channeltype(send_value)
-                scale = self.channeltype(scale)
-                print("After Converting: ", num_value, " - ", scale)
-            elif self._display_format_type == DisplayFormat.Hex:
-                num_value = int(send_value, 16)
-            elif self._display_format_type == DisplayFormat.Binary:
-                num_value = int(send_value, 2)
-            elif self._display_format_type in [DisplayFormat.Exponential, DisplayFormat.Decimal]:
-                num_value = float(send_value)
-
-            num_value = num_value / scale
-            print("Will Emit: ", num_value)
-            self.send_value_signal[self.channeltype].emit(num_value)
-        elif self.channeltype == np.ndarray:
-            # Arrays will be in the [1.2 3.4 22.214] format
-            if self._display_format_type == DisplayFormat.String:
-                self.send_value_signal[str].emit(send_value)
+                num_value = num_value / scale
+                self.send_value_signal[self.channeltype].emit(num_value)
+            elif self.channeltype == np.ndarray:
+                # Arrays will be in the [1.2 3.4 22.214] format
+                if self._display_format_type == DisplayFormat.String:
+                    self.send_value_signal[str].emit(send_value)
+                else:
+                    arr_value = list(filter(None, send_value.replace("[", "").replace("]", "").split(" ")))
+                    arr_value = np.array(arr_value, dtype=self.subtype)
+                    self.send_value_signal[np.ndarray].emit(arr_value)
             else:
-                print("Channel Subtype = ", self.subtype)
-                arr_value = list(filter(None, send_value.replace("[", "").replace("]", "").split(" ")))
-                print("Arr Value = ", arr_value)
-                arr_value = np.array(arr_value, dtype=self.subtype)
-                print("Arr Value = ", arr_value)
-                self.send_value_signal[np.ndarray].emit(arr_value)
-        else:
-            # Channel Type is String
-            # Lets just send what we have after all
-            self.send_value_signal[str].emit(send_value)
+                # Channel Type is String
+                # Lets just send what we have after all
+                self.send_value_signal[str].emit(send_value)
+        except ValueError:
+            print("Error trying to set data: {} with type {} and format {} at widget {}.".format(self.text(), self.channeltype, self._display_format_type, self.objectName()))
 
         self.clearFocus()
         self.set_display()
-        print("-"*80)
 
     def write_access_changed(self, new_write_access):
         """
