@@ -54,7 +54,7 @@ class QScale(QFrame):
         self.setMinimumSize(2, 2)
         self.set_position()
 
-    def adjust_dimensions(self):
+    def adjust_transformation(self):
         """
         This method sets parameters for the widget transformations (needed to for
         orientation, flipping and appearance inversion).
@@ -170,7 +170,7 @@ class QScale(QFrame):
         ----------
         event : QPaintEvent
         """
-        self.adjust_dimensions()
+        self.adjust_transformation()
         self._painter.begin(self)
         self._painter.translate(0, self._painter_translation_y) # Draw vertically if needed
         self._painter.rotate(self._painter_rotation)
@@ -247,7 +247,7 @@ class QScale(QFrame):
 
     def set_orientation(self, orientation):
         self._orientation = orientation
-        self.adjust_dimensions()
+        self.adjust_transformation()
         self.repaint()
 
     def get_flip_scale(self):
@@ -255,7 +255,7 @@ class QScale(QFrame):
 
     def set_flip_scale(self, checked):
         self._flip_scale = checked
-        self.adjust_dimensions()
+        self.adjust_transformation()
         self.repaint()
 
     def get_inverted_appearance(self):
@@ -263,7 +263,7 @@ class QScale(QFrame):
 
     def set_inverted_appearance(self, inverted):
         self._inverted_appearance = inverted
-        self.adjust_dimensions()
+        self.adjust_transformation()
         self.repaint()
 
     def get_bar_indicator(self):
