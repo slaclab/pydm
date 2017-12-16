@@ -12,6 +12,7 @@ class Connection(PyDMConnection):
         self.timer.timeout.connect(self.send_new_value)
         self.timer.start(1000)
         self.send_connection_state(True)
+        self.connected = True
 
     def send_new_value(self):
         val_to_send = "{0}-{1}".format(self.value, random.randint(0,9))

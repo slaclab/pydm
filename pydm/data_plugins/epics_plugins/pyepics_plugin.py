@@ -36,6 +36,7 @@ class Connection(PyDMConnection):
 
     def send_new_value(self, value=None, char_value=None, count=None, ftype=None, *args, **kws):
         self.update_ctrl_vars(**kws)
+        self.value = value
         if value is not None:
             if isinstance(value, np.ndarray):
                 self.new_value_signal[np.ndarray].emit(value)
@@ -83,6 +84,7 @@ class Connection(PyDMConnection):
         self.send_access_state(read_access, write_access)
 
     def send_connection_state(self, conn=None, *args, **kws):
+        self.connected = conn
         self.connection_state_signal.emit(conn)
         if conn:
             self.clear_cache()

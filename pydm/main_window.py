@@ -6,6 +6,7 @@ from .PyQt.QtCore import Qt, QTimer, pyqtSlot, QSize, QLibraryInfo
 from .utilities import IconFont
 from .pydm_ui import Ui_MainWindow
 from .display_module import Display
+from .connection_inspector import ConnectionInspector
 import subprocess
 import platform
 
@@ -46,6 +47,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionShow_Navigation_Bar.triggered.connect(self.toggle_nav_bar)
         self.ui.actionShow_Menu_Bar.triggered.connect(self.toggle_menu_bar)
         self.ui.actionShow_Status_Bar.triggered.connect(self.toggle_status_bar)
+        self.ui.actionShow_Connections.triggered.connect(self.show_connections)
         self._saved_menu_geometry = None
         self._saved_menu_height = None
         self._new_widget_size = None
@@ -322,6 +324,11 @@ class PyDMMainWindow(QMainWindow):
         current_font.setPointSizeF(current_font.pointSizeF() / 1.1)
         QApplication.instance().setFont(current_font)
         QTimer.singleShot(0, self.resizeForNewDisplayWidget)
+
+    @pyqtSlot(bool)
+    def show_connections(self, checked):
+        c = ConnectionInspector(self.app.list_all_connections(), self)
+        c.show()
 
     def resizeForNewDisplayWidget(self):
         self.resize(self._new_widget_size)

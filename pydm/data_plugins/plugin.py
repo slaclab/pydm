@@ -12,10 +12,14 @@ class PyDMConnection(QObject):
     upper_ctrl_limit_signal = pyqtSignal([float],[int])
     lower_ctrl_limit_signal = pyqtSignal([float],[int])
 
-    def __init__(self, channel, address, parent=None):
+    def __init__(self, channel, address, protocol=None, parent=None):
         super(PyDMConnection, self).__init__(parent)
+        self.protocol = protocol
+        self.address = address
+        self.connected = False
+        self.value = None
         self.listener_count = 0
-  
+    
     def add_listener(self, channel):
         self.listener_count = self.listener_count + 1
         if channel.connection_slot is not None:
@@ -127,7 +131,7 @@ class PyDMPlugin(object):
         if address in self.connections:
             self.connections[address].add_listener(channel)
         else:
-            self.connections[address] = self.connection_class(channel, address)
+            self.connections[address] = self.connection_class(channel, address, self.protocol)
   
     def remove_connection(self, channel):
         address = self.get_address(channel)
