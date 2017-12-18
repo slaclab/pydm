@@ -15,6 +15,7 @@ import shlex
 import json
 import inspect
 import warnings
+import platform
 from .display_module import Display
 from .PyQt.QtCore import Qt, QEvent, QTimer, pyqtSlot
 from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard
