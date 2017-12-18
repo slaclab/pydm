@@ -1,16 +1,17 @@
 from numpy import ndarray
-from ..PyQt.QtCore import pyqtSlot, pyqtSignal, QObject, Qt
+from ..PyQt.QtCore import pyqtSignal, QObject, Qt
+
 
 class PyDMConnection(QObject):
-    new_value_signal =        pyqtSignal([float],[int],[str], [ndarray])
+    new_value_signal = pyqtSignal([float], [int], [str], [ndarray])
     connection_state_signal = pyqtSignal(bool)
-    new_severity_signal =     pyqtSignal(int)
-    write_access_signal =     pyqtSignal(bool)
-    enum_strings_signal =     pyqtSignal(tuple)
-    unit_signal =             pyqtSignal(str)
-    prec_signal =             pyqtSignal(int)
-    upper_ctrl_limit_signal = pyqtSignal([float],[int])
-    lower_ctrl_limit_signal = pyqtSignal([float],[int])
+    new_severity_signal = pyqtSignal(int)
+    write_access_signal = pyqtSignal(bool)
+    enum_strings_signal = pyqtSignal(tuple)
+    unit_signal = pyqtSignal(str)
+    prec_signal = pyqtSignal(int)
+    upper_ctrl_limit_signal = pyqtSignal([float], [int])
+    lower_ctrl_limit_signal = pyqtSignal([float], [int])
 
     def __init__(self, channel, address, protocol=None, parent=None):
         super(PyDMConnection, self).__init__(parent)
@@ -24,7 +25,7 @@ class PyDMConnection(QObject):
         self.listener_count = self.listener_count + 1
         if channel.connection_slot is not None:
             self.connection_state_signal.connect(channel.connection_slot, Qt.QueuedConnection)
-            
+
         if channel.value_slot is not None:
             try:
                 self.new_value_signal[int].connect(channel.value_slot, Qt.QueuedConnection)
@@ -63,14 +64,14 @@ class PyDMConnection(QObject):
 
         if channel.prec_slot is not None:
             self.prec_signal.connect(channel.prec_slot, Qt.QueuedConnection)
-      
+
     def remove_listener(self, channel):
         if channel.connection_slot is not None:
             try:
                 self.connection_state_signal.disconnect(channel.connection_slot)
             except TypeError:
                 pass
-            
+
         if channel.value_slot is not None:
             try:
                 self.new_value_signal[int].disconnect(channel.value_slot)
@@ -109,30 +110,31 @@ class PyDMConnection(QObject):
 
         if channel.prec_slot is not None:
             self.prec_signal.disconnect(channel.prec_slot)
- 
+
         self.listener_count = self.listener_count - 1
         if self.listener_count < 1:
             self.close()
-  
+
     def close(self):
         pass
+
 
 class PyDMPlugin(object):
     protocol = None
     connection_class = PyDMConnection
+
     def __init__(self):
         self.connections = {}
-    
+
     def get_address(self, channel):
         return str(channel.address.split(self.protocol + "://")[-1])
-    
-    def add_connection(self, channel):  
+
+    def add_connection(self, channel):
         address = self.get_address(channel)
         if address in self.connections:
             self.connections[address].add_listener(channel)
         else:
             self.connections[address] = self.connection_class(channel, address, self.protocol)
-  
     def remove_connection(self, channel):
         address = self.get_address(channel)
         if address in self.connections:

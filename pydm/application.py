@@ -62,6 +62,8 @@ class PyDMApplication(QApplication):
     hide_status_bar: bool, optional
         Whether or not to display the status bar (general messages and errors)
         when the main window is first displayed.
+    read_only: bool, optional
+        Whether or not to launch PyDM in a read-only state.
     macros : dict, optional
         A dictionary of macro variables to be forwarded to the display class
         being loaded.
@@ -83,7 +85,7 @@ class PyDMApplication(QApplication):
         True: QColor(0, 0, 0)
     }
 
-    def __init__(self, ui_file=None, command_line_args=[], display_args=[], perfmon=False, hide_nav_bar=False, hide_menu_bar=False, hide_status_bar=False, macros=None):
+    def __init__(self, ui_file=None, command_line_args=[], display_args=[], perfmon=False, hide_nav_bar=False, hide_menu_bar=False, hide_status_bar=False, read_only=False, macros=None):
         super(PyDMApplication, self).__init__(command_line_args)
         # Enable High DPI display, if available.
         if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
@@ -103,6 +105,7 @@ class PyDMApplication(QApplication):
         self.hide_nav_bar = hide_nav_bar
         self.hide_menu_bar = hide_menu_bar
         self.hide_status_bar = hide_status_bar
+        self.__read_only = read_only
         # Open a window if one was provided.
         if ui_file is not None:
             self.make_window(ui_file, macros, command_line_args)
@@ -130,6 +133,9 @@ class PyDMApplication(QApplication):
         if not self.had_file:
             self.make_connections()
         return super(PyDMApplication, self).exec_()
+
+    def is_read_only(self):
+        return self.__read_only
 
     @pyqtSlot()
     def get_CPU_usage(self):
