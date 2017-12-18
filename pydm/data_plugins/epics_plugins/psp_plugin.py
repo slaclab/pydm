@@ -153,6 +153,7 @@ class Connection(PyDMConnection):
         :param isconnected: True if we are connected, False otherwise.
         :type isconnected:  bool
         """
+        self.connected = isconnected
         self.send_connection_state(isconnected)
         if isconnected:
             self.epics_type = self.pv.type()
