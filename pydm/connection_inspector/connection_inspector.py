@@ -27,12 +27,12 @@ class ConnectionInspector(QWidget):
                     f.write("{p}://{a}\n".format(p=conn.protocol, a=conn.address))
             self.save_status_label.setText("File saved to {}".format(filename))
         except Exception as e:
-			msgBox = QMessageBox()
-			msgBox.setText("Couldn't save connection list to file.")
-			msgBox.setInformativeText("Error: {}".format(str(e)))
-			msgBox.setStandardButtons(QMessageBox.Ok)
-			msgBox.exec_()
-        
+            msgBox = QMessageBox()
+            msgBox.setText("Couldn't save connection list to file.")
+            msgBox.setInformativeText("Error: {}".format(str(e)))
+            msgBox.setStandardButtons(QMessageBox.Ok)
+            msgBox.exec_()
+
 class ConnectionTableView(QTableView):
     def __init__(self, connections=[], parent=None):
         super(ConnectionTableView, self).__init__(parent)
