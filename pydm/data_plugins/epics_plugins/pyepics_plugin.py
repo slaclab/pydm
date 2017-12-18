@@ -36,7 +36,6 @@ class Connection(PyDMConnection):
 
     def send_new_value(self, value=None, char_value=None, count=None, ftype=None, *args, **kws):
         self.update_ctrl_vars(**kws)
-        self.value = value
         if value is not None:
             if isinstance(value, np.ndarray):
                 self.new_value_signal[np.ndarray].emit(value)
