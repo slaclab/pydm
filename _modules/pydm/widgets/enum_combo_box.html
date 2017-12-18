@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.enum_combo_box &mdash; PyDM v0.4.0+14.ga038fbe documentation</title>
+  <title>pydm.widgets.enum_combo_box &mdash; PyDM v0.4.0+15.g8bb2d81 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM v0.4.0+14.ga038fbe documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM v0.4.0+15.g8bb2d81 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v0.4.0+14.ga038fbe
+                v0.4.0+15.g8bb2d81
               </div>
             
           
@@ -162,6 +162,7 @@
 <span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QComboBox</span><span class="p">,</span> <span class="n">QHBoxLayout</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSignal</span><span class="p">,</span> <span class="n">pyqtSlot</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
+<span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="k">import</span> <span class="n">is_pydm_app</span>
 
 
 <div class="viewcode-block" id="PyDMEnumComboBox"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox">[docs]</a><span class="k">class</span> <span class="nc">PyDMEnumComboBox</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
@@ -235,7 +236,10 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span><span class="p">:</span>
             <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;PV is disconnected.&quot;</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_access</span><span class="p">:</span>
-            <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;Access denied by Channel Access Security.&quot;</span>
+            <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">is_read_only</span><span class="p">():</span>
+                <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;Running PyDM on Read-Only mode.&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;Access denied by Channel Access Security.&quot;</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_enums</span><span class="p">:</span>
             <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;Enums not available.&quot;</span>
 
@@ -391,7 +395,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v0.4.0+14.ga038fbe',
+            VERSION:'v0.4.0+15.g8bb2d81',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
