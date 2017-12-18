@@ -151,7 +151,7 @@ somewhere.
 We can test the display in PyDM by first running the testing IOC.  Open up a new
 terminal and run the command::
 
-  $ pydm-testing-ioc
+  $ python examples/testing_ioc/pydm-testing-ioc
   
 to launch the IOC.  Once the IOC is running, run the command::
   

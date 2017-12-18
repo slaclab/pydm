@@ -6,6 +6,9 @@ from .iconfont import IconFont
 
 import os
 import sys
+import ntpath
+import shlex
+
 
 def is_pydm_app():
     from ..application import PyDMApplication
@@ -15,6 +18,27 @@ def is_pydm_app():
         return True
     else:
         return False
+
+
+def path_info(path_str):
+    """
+
+    Returns
+    -------
+    tuple: base dir, file name, list of args
+    """
+    if "win" in sys.platform:
+        os_path_mod = ntpath
+    else:
+        os_path_mod = os.path
+
+    dir_name, other_parts = os_path_mod.split(path_str)
+    split = shlex.split(other_parts)
+    file_name = split.pop(0)
+    args = split
+
+    return dir_name, file_name, args
+
 
 try:  # Forced testing
     from shutil import which
@@ -30,6 +54,7 @@ except ImportError:  # Forced testing
         path.
         Note: This function was backported from the Python 3 source code.
         """
+
         # Check that a given file can be accessed with the correct mode.
         # Additionally check that `file` is not a directory, as on Windows
         # directories pass the os.access check.

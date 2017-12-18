@@ -1,1 +1,4 @@
 pydm/_version.py export-subst
+
+# Pickle files will always have LF endings on checkout
+*.pkl binary 
