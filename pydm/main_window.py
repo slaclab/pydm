@@ -224,9 +224,14 @@ class PyDMMainWindow(QMainWindow):
 
     def update_window_title(self):
         if self.showing_file_path_in_title_bar:
-            self.setWindowTitle(self.current_file() + " - PyDM")
+            title = self.current_file()
         else:
-            self.setWindowTitle(self._display_widget.windowTitle() + " - PyDM")
+            title = self._display_widget.windowTitle()
+        title += " - PyDM"
+        if self.app.is_read_only():
+            title += " [Read Only Mode]"
+        self.setWindowTitle(title)
+        
 
     @property
     def showing_file_path_in_title_bar(self):
