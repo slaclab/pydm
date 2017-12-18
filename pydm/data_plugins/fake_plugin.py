@@ -3,8 +3,8 @@ from ..PyQt.QtCore import QTimer, pyqtSignal, Qt
 import random
 
 class Connection(PyDMConnection):
-    def __init__(self, widget, address, parent=None):
-        super(Connection, self).__init__(widget, address, parent)
+    def __init__(self, widget, address, protocol=None, parent=None):
+        super(Connection, self).__init__(widget, address, protocol, parent)
         self.add_listener(widget)
         self.value = address
         self.rand = 0

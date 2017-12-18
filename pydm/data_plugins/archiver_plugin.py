@@ -4,8 +4,8 @@ import numpy as np
 import os
 
 class Connection(PyDMConnection):
-    def __init__(self, channel, address, parent=None):
-        super(Connection, self).__init__(channel, address, parent)
+    def __init__(self, channel, address, protocol=None, parent=None):
+        super(Connection, self).__init__(channel, address, protocol, parent)
         self.add_listener(channel)
         base_url = os.getenv("PYDM_ARCHIVER_URL", "http://lcls-archapp.slac.stanford.edu")
         url_string = "{base}/retrieval/data/getData.json?{params}".format(base=base_url, params=address)

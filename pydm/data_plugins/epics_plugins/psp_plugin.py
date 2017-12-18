@@ -116,7 +116,7 @@ class Connection(PyDMConnection):
     Class that manages channel access connections using pyca through psp.
     See :class:`PyDMConnection` class.
     """
-    def __init__(self, channel, pv, parent=None):
+    def __init__(self, channel, pv, protocol=None, parent=None):
         """
         Instantiate Pv object and set up the channel access connections.
 
@@ -127,7 +127,7 @@ class Connection(PyDMConnection):
         :param parent: PyQt widget that this widget is inside of.
         :type parent:  QWidget
         """
-        super(Connection,self).__init__(channel, pv, parent)
+        super(Connection,self).__init__(channel, pv, protocol, parent)
         self.python_type = None
         self.pv = setup_pv(pv, self.connected_cb, self.monitor_cb)
         self.enums = None
