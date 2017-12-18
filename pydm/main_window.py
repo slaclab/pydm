@@ -1,7 +1,7 @@
 import os
 from os import path, environ
 from functools import partial
-from .PyQt.QtGui import QApplication, QMainWindow, QFileDialog, QWidget, QShortcut, QKeySequence
+from .PyQt.QtGui import QApplication, QMainWindow, QFileDialog, QWidget, QAction
 from .PyQt.QtCore import Qt, QTimer, pyqtSlot, QSize, QLibraryInfo
 from .utilities import IconFont
 from .pydm_ui import Ui_MainWindow
@@ -54,7 +54,9 @@ class PyDMMainWindow(QMainWindow):
         if hide_nav_bar:
             self.toggle_nav_bar(False)
         if hide_menu_bar:
-            self.toggle_menu_bar(False)
+            # Toggle the menu bar via the QAction so that the menu item
+            # stays in sync with menu visibility.
+            self.ui.actionShow_Menu_Bar.activate(QAction.Trigger)
         if hide_status_bar:
             self.toggle_status_bar(False)
         self.designer_path = None
