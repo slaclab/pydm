@@ -555,3 +555,10 @@ class PyDMApplication(QApplication):
                         self.remove_connection(channel)
             except NameError:
                 pass
+
+    def list_all_connections(self):
+        conns = []
+        for p in self.plugins.values():
+            for connection in p.connections.values():
+                conns.append(connection)
+        return conns

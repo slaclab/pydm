@@ -54,6 +54,7 @@
     <addaction name="actionShow_Navigation_Bar"/>
     <addaction name="actionShow_Menu_Bar"/>
     <addaction name="actionShow_Status_Bar"/>
+    <addaction name="actionShow_Connections"/>
    </widget>
    <widget class="QMenu" name="menuHistory">
     <property name="title">
@@ -93,6 +94,9 @@
    <property name="text">
     <string>Edit in Designer</string>
    </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionAbout_PyDM">
    <property name="enabled">
@@ -101,20 +105,41 @@
    <property name="text">
     <string>About PyDM</string>
    </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionReload_Display">
    <property name="text">
     <string>Reload Display</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="actionIncrease_Font_Size">
    <property name="text">
     <string>Increase Font Size</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+=</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionDecrease_Font_Size">
    <property name="text">
     <string>Decrease Font Size</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="actionShow_File_Path_in_Title_Bar">
@@ -124,20 +149,41 @@
    <property name="text">
     <string>Show File Path in Title Bar</string>
    </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionBack">
    <property name="text">
     <string>Back</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Left</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="actionForward">
    <property name="text">
     <string>Forward</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Right</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionHome">
    <property name="text">
     <string>Home</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="actionShow_Navigation_Bar">
@@ -150,10 +196,19 @@
    <property name="text">
     <string>Show Navigation Bar</string>
    </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionOpen_File">
    <property name="text">
     <string>Open File...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="actionShow_Menu_Bar">
@@ -166,6 +221,12 @@
    <property name="text">
     <string>Show Menu Bar</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionShow_Status_Bar">
    <property name="checkable">
@@ -176,6 +237,17 @@
    </property>
    <property name="text">
     <string>Show Status Bar</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="actionShow_Connections">
+   <property name="text">
+    <string>Show Connections...</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
  </widget>

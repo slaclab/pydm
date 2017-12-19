@@ -17,8 +17,8 @@ float_types = set((epics.dbr.CTRL_FLOAT, epics.dbr.FLOAT, epics.dbr.TIME_FLOAT,
 
 class Connection(PyDMConnection):
 
-    def __init__(self, channel, pv, parent=None):
-        super(Connection, self).__init__(channel, pv, parent)
+    def __init__(self, channel, pv, protocol=None, parent=None):
+        super(Connection, self).__init__(channel, pv, protocol, parent)
         self.pv = epics.PV(pv, connection_callback=self.send_connection_state, form='ctrl', auto_monitor=True, access_callback=self.send_access_state)
         self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
         self.add_listener(channel)
@@ -92,6 +92,7 @@ class Connection(PyDMConnection):
         self.send_access_state(read_access, write_access)
 
     def send_connection_state(self, conn=None, *args, **kws):
+        self.connected = conn
         self.connection_state_signal.emit(conn)
         if conn:
             self.clear_cache()
