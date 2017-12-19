@@ -22,6 +22,9 @@
      <height>16</height>
     </rect>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::StrongFocus</enum>
+   </property>
    <property name="toolTip">
     <string/>
    </property>
@@ -33,6 +36,9 @@
    </property>
    <property name="channel" stdset="0">
     <string>ca://MTEST:Float</string>
+   </property>
+   <property name="displayFormat" stdset="0">
+    <enum>PyDMLabel::String</enum>
    </property>
   </widget>
  </widget>

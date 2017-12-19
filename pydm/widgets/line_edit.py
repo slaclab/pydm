@@ -1,10 +1,17 @@
+import locale
 from functools import partial
-from ..PyQt.QtGui import QLineEdit, QMenu
-from ..PyQt.QtCore import Qt
+from ..PyQt.QtGui import QLineEdit, QMenu, QApplication
+from ..PyQt.QtCore import Qt, pyqtProperty, Q_ENUMS
 from .. import utilities
 from .base import PyDMWritableWidget
+from .display_format import DisplayFormat, parse_value_for_display
 
-class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
+import numpy as np
+
+
+class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
+    Q_ENUMS(DisplayFormat)
+    DisplayFormat = DisplayFormat
     """
     A QLineEdit (writable text field) with support for Channels and more
     from PyDM.
@@ -22,6 +29,7 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
     def __init__(self, parent=None, init_channel=None):
         QLineEdit.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
+        self.app = QApplication.instance()
         self._display = None
         self._scale = 1
 
@@ -34,6 +42,21 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         self.menu = QMenu(self)
         self.unitMenu = self.menu.addMenu('Convert Units')
         self.create_unit_options()
+        self._display_format_type = self.DisplayFormat.Default
+        self._string_encoding = "utf_8"
+        if utilities.is_pydm_app():
+            self._string_encoding = self.app.get_string_encoding()
+
+    @pyqtProperty(DisplayFormat)
+    def displayFormat(self):
+        return self._display_format_type
+
+    @displayFormat.setter
+    def displayFormat(self, new_type):
+        if self._display_format_type != new_type:
+            self._display_format_type = new_type
+            # Trigger the update of display format
+            self.value_changed(self.value)
 
     def value_changed(self, new_val):
         """
@@ -60,17 +83,45 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         ReturnPressed signal of the PyDMLineEdit
         """
         send_value = str(self.text())
-
         # Clean text of unit string
-        if self._unit:
-            send_value = send_value.replace(self._unit, '')
+        if self._show_units and self._unit in send_value:
+            send_value = send_value[:-len(self._unit)].strip()
+        try:
+            if self.channeltype not in [str, np.ndarray]:
+                scale = self._scale
+                if scale is None or scale == 0:
+                    scale = 1.0
 
-        # Remove scale factor
-        if self._scale and self.channeltype != type(""):
-            send_value = (self.channeltype(send_value)
-                          / self.channeltype(self._scale))
+                if self._display_format_type in [DisplayFormat.Default, DisplayFormat.String]:
+                    if self.channeltype == float:
+                        num_value = locale.atof(send_value)
+                    else:
+                        num_value = self.channeltype(send_value)
+                    scale = self.channeltype(scale)
+                elif self._display_format_type == DisplayFormat.Hex:
+                    num_value = int(send_value, 16)
+                elif self._display_format_type == DisplayFormat.Binary:
+                    num_value = int(send_value, 2)
+                elif self._display_format_type in [DisplayFormat.Exponential, DisplayFormat.Decimal]:
+                    num_value = locale.atof(send_value)
 
-        self.send_value_signal[self.channeltype].emit(self.channeltype(send_value))
+                num_value = num_value / scale
+                self.send_value_signal[self.channeltype].emit(num_value)
+            elif self.channeltype == np.ndarray:
+                # Arrays will be in the [1.2 3.4 22.214] format
+                if self._display_format_type == DisplayFormat.String:
+                    self.send_value_signal[str].emit(send_value)
+                else:
+                    arr_value = list(filter(None, send_value.replace("[", "").replace("]", "").split(" ")))
+                    arr_value = np.array(arr_value, dtype=self.subtype)
+                    self.send_value_signal[np.ndarray].emit(arr_value)
+            else:
+                # Channel Type is String
+                # Lets just send what we have after all
+                self.send_value_signal[str].emit(send_value)
+        except ValueError:
+            print("Error trying to set data: {} with type {} and format {} at widget {}.".format(self.text(), self.channeltype, self._display_format_type, self.objectName()))
+
         self.clearFocus()
         self.set_display()
 
@@ -172,18 +223,40 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget):
         """
         if self.value is None:
             return
-        value = self.value
-        if not isinstance(value, str):
-            if self._scale and value:
-                value *= self.channeltype(self._scale)
 
-        if self.format_string:
-            value = self.format_string.format(value)
+        if self.hasFocus():
+            return
 
-        self._display = str(value)
+        new_value = self.value
 
-        if not self.hasFocus():
-            self.setText(self._display)
+        if self._display_format_type in [DisplayFormat.Default,
+                                         DisplayFormat.Decimal,
+                                         DisplayFormat.Exponential,
+                                         DisplayFormat.Hex,
+                                         DisplayFormat.Binary]:
+            if not isinstance(new_value, (str, np.ndarray)):
+                try:
+                    new_value *= self.channeltype(self._scale)
+                except TypeError:
+                    print("Cannot convert channel: {} with type: {}", self._channel, self.channeltype)
+
+        new_value = parse_value_for_display(value=new_value,  precision=self._prec,
+                                             display_format_type=self._display_format_type,
+                                             string_encoding=self._string_encoding,
+                                             widget=self)
+
+        self._display = str(new_value)
+
+        if self._display_format_type == DisplayFormat.Default:
+            if isinstance(new_value, (int, float)):
+                self._display = str(self.format_string.format(new_value))
+                self.setText(self._display)
+                return
+
+        if self._show_units:
+            self._display += " {}".format(self._unit)
+
+        self.setText(self._display)
 
     def focusOutEvent(self, event):
         """

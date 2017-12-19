@@ -30,9 +30,19 @@ pydm widgets are written in Python, and are loaded into Qt Designer via the PyQt
 If you want to use the pydm widgets in Qt Designer, add the pydm directory (which holds designer_plugin.py) to your PYQTDESIGNERPATH environment variable.  Eventually, this will happen automatically in some kind of setup script.
 
 # Easy Installing PyDM
-
+## Using the source code
 ```sh
 git clone https://github.com/slaclab/pydm.git
 cd pydm
 pip install .[all]
+```
+
+## Using Anaconda
+### Most Recent Development Build
+```sh
+conda install -c pydm-dev -c gsecars -c conda-forge pydm
+```
+### Most Recent Tagged Build
+```sh
+conda install -c pydm-tag -c gsecars -c conda-forge pydm
 ```
