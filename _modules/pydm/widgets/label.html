@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.label &mdash; PyDM v0.4.0+21.g06a59a7 documentation</title>
+  <title>pydm.widgets.label &mdash; PyDM v0.4.0+22.gbb5a05a documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM v0.4.0+21.g06a59a7 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM v0.4.0+22.gbb5a05a documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v0.4.0+21.g06a59a7
+                v0.4.0+22.gbb5a05a
               </div>
             
           
@@ -160,10 +160,15 @@
             
   <h1>Source code for pydm.widgets.label</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QLabel</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QApplication</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
+<span class="kn">from</span> <span class="nn">.display_format</span> <span class="k">import</span> <span class="n">DisplayFormat</span><span class="p">,</span> <span class="n">parse_value_for_display</span>
+<span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="k">import</span> <span class="n">is_pydm_app</span>
 
-<div class="viewcode-block" id="PyDMLabel"><a class="viewcode-back" href="../../../widgets/label.html#pydm.widgets.label.PyDMLabel">[docs]</a><span class="k">class</span> <span class="nc">PyDMLabel</span><span class="p">(</span><span class="n">QLabel</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PyDMLabel"><a class="viewcode-back" href="../../../widgets/label.html#pydm.widgets.label.PyDMLabel">[docs]</a><span class="k">class</span> <span class="nc">PyDMLabel</span><span class="p">(</span><span class="n">QLabel</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">DisplayFormat</span><span class="p">):</span>
+    <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">DisplayFormat</span><span class="p">)</span>
+    <span class="n">DisplayFormat</span> <span class="o">=</span> <span class="n">DisplayFormat</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QLabel with support for Channels and more from PyDM</span>
 
@@ -174,12 +179,29 @@
 <span class="sd">    init_channel : str, optional</span>
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QLabel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setTextFormat</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">PlainText</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setTextInteractionFlags</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">NoTextInteraction</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;PyDMLabel&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_string_encoding</span> <span class="o">=</span> <span class="s2">&quot;utf_8&quot;</span>
+        <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_string_encoding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get_string_encoding</span><span class="p">()</span>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="n">DisplayFormat</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">displayFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span>
+
+    <span class="nd">@displayFormat</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">displayFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">!=</span> <span class="n">new_type</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">=</span> <span class="n">new_type</span>
+            <span class="c1"># Trigger the update of display format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMLabel.value_changed"><a class="viewcode-back" href="../../../widgets/label.html#pydm.widgets.label.PyDMLabel.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -192,6 +214,10 @@
 <span class="sd">            The new value from the channel. The type depends on the channel.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMLabel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span>
+        <span class="n">new_value</span> <span class="o">=</span> <span class="n">parse_value_for_display</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">new_value</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prec</span><span class="p">,</span>
+                                             <span class="n">display_format_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span><span class="p">,</span>
+                                             <span class="n">string_encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_string_encoding</span><span class="p">,</span>
+                                             <span class="n">widget</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="c1"># If the value is a string, just display it as-is, no formatting</span>
         <span class="c1"># needed.</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -249,7 +275,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v0.4.0+21.g06a59a7',
+            VERSION:'v0.4.0+22.gbb5a05a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

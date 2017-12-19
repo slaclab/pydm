@@ -5,6 +5,7 @@
 ./_modules/pydm/application.html
 ./_modules/pydm/widgets/byte.html
 ./_modules/pydm/widgets/checkbox.html
+./_modules/pydm/widgets/display_format.html
 ./_modules/pydm/widgets/drawing.html
 ./_modules/pydm/widgets/embedded_display.html
 ./_modules/pydm/widgets/enum_combo_box.html

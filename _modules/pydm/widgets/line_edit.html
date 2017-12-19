@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.line_edit &mdash; PyDM v0.4.0+21.g06a59a7 documentation</title>
+  <title>pydm.widgets.line_edit &mdash; PyDM v0.4.0+22.gbb5a05a documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM v0.4.0+21.g06a59a7 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM v0.4.0+22.gbb5a05a documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v0.4.0+21.g06a59a7
+                v0.4.0+22.gbb5a05a
               </div>
             
           
@@ -159,13 +159,20 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.line_edit</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QMenu</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">Qt</span>
+<span></span><span class="kn">import</span> <span class="nn">locale</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QApplication</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">utilities</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
+<span class="kn">from</span> <span class="nn">.display_format</span> <span class="k">import</span> <span class="n">DisplayFormat</span><span class="p">,</span> <span class="n">parse_value_for_display</span>
 
-<div class="viewcode-block" id="PyDMLineEdit"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit">[docs]</a><span class="k">class</span> <span class="nc">PyDMLineEdit</span><span class="p">(</span><span class="n">QLineEdit</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="PyDMLineEdit"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit">[docs]</a><span class="k">class</span> <span class="nc">PyDMLineEdit</span><span class="p">(</span><span class="n">QLineEdit</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">DisplayFormat</span><span class="p">):</span>
+    <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">DisplayFormat</span><span class="p">)</span>
+    <span class="n">DisplayFormat</span> <span class="o">=</span> <span class="n">DisplayFormat</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QLineEdit (writable text field) with support for Channels and more</span>
 <span class="sd">    from PyDM.</span>
@@ -183,6 +190,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QLineEdit</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_display</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="mi">1</span>
 
@@ -195,6 +203,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s1">&#39;Convert Units&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_unit_options</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_string_encoding</span> <span class="o">=</span> <span class="s2">&quot;utf_8&quot;</span>
+        <span class="k">if</span> <span class="n">utilities</span><span class="o">.</span><span class="n">is_pydm_app</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_string_encoding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get_string_encoding</span><span class="p">()</span>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="n">DisplayFormat</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">displayFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span>
+
+    <span class="nd">@displayFormat</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">displayFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">!=</span> <span class="n">new_type</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">=</span> <span class="n">new_type</span>
+            <span class="c1"># Trigger the update of display format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMLineEdit.value_changed"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -221,17 +244,45 @@
 <span class="sd">        ReturnPressed signal of the PyDMLineEdit</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">send_value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
-
         <span class="c1"># Clean text of unit string</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">:</span>
-            <span class="n">send_value</span> <span class="o">=</span> <span class="n">send_value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_units</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="ow">in</span> <span class="n">send_value</span><span class="p">:</span>
+            <span class="n">send_value</span> <span class="o">=</span> <span class="n">send_value</span><span class="p">[:</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">)]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+                <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span>
+                <span class="k">if</span> <span class="n">scale</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">scale</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">scale</span> <span class="o">=</span> <span class="mf">1.0</span>
 
-        <span class="c1"># Remove scale factor</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span> <span class="o">!=</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-            <span class="n">send_value</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
-                          <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scale</span><span class="p">))</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="ow">in</span> <span class="p">[</span><span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Default</span><span class="p">,</span> <span class="n">DisplayFormat</span><span class="o">.</span><span class="n">String</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+                        <span class="n">num_value</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">atof</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">num_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
+                    <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">==</span> <span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Hex</span><span class="p">:</span>
+                    <span class="n">num_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">send_value</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">==</span> <span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Binary</span><span class="p">:</span>
+                    <span class="n">num_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">send_value</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="ow">in</span> <span class="p">[</span><span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Exponential</span><span class="p">,</span> <span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Decimal</span><span class="p">]:</span>
+                    <span class="n">num_value</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">atof</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">send_value</span><span class="p">))</span>
+                <span class="n">num_value</span> <span class="o">=</span> <span class="n">num_value</span> <span class="o">/</span> <span class="n">scale</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">num_value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+                <span class="c1"># Arrays will be in the [1.2 3.4 22.214] format</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">==</span> <span class="n">DisplayFormat</span><span class="o">.</span><span class="n">String</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">arr_value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">send_value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)))</span>
+                    <span class="n">arr_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr_value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subtype</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">arr_value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Channel Type is String</span>
+                <span class="c1"># Lets just send what we have after all</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error trying to set data: </span><span class="si">{}</span><span class="s2"> with type </span><span class="si">{}</span><span class="s2"> and format </span><span class="si">{}</span><span class="s2"> at widget </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">objectName</span><span class="p">()))</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">clearFocus</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_display</span><span class="p">()</span></div>
 
@@ -333,18 +384,40 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="ow">and</span> <span class="n">value</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scale</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasFocus</span><span class="p">():</span>
+            <span class="k">return</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_display</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">new_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasFocus</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_display</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="ow">in</span> <span class="p">[</span><span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Default</span><span class="p">,</span>
+                                         <span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Decimal</span><span class="p">,</span>
+                                         <span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Exponential</span><span class="p">,</span>
+                                         <span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Hex</span><span class="p">,</span>
+                                         <span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Binary</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_value</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">new_value</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scale</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot convert channel: </span><span class="si">{}</span><span class="s2"> with type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">)</span>
+
+        <span class="n">new_value</span> <span class="o">=</span> <span class="n">parse_value_for_display</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">new_value</span><span class="p">,</span>  <span class="n">precision</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prec</span><span class="p">,</span>
+                                             <span class="n">display_format_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span><span class="p">,</span>
+                                             <span class="n">string_encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_string_encoding</span><span class="p">,</span>
+                                             <span class="n">widget</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">==</span> <span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Default</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_display</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_value</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_display</span><span class="p">)</span>
+                <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_units</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_display</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_display</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMLineEdit.focusOutEvent"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.focusOutEvent">[docs]</a>    <span class="k">def</span> <span class="nf">focusOutEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -391,7 +464,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v0.4.0+21.g06a59a7',
+            VERSION:'v0.4.0+22.gbb5a05a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
