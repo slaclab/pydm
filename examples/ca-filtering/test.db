@@ -1,0 +1,13 @@
+record(calc, "FILTER:Incr"){
+    field(INPA, "FILTER:Incr.VAL")
+    field(CALC, "A+1")
+    field(SCAN, ".1 second")
+    field(VAL, 0)
+}
+
+record(calc, "FILTER:Calc"){
+    field(INPA, "FILTER:Incr")
+    field(CALC, "SIN(A % 360*0.01745329252)")
+    field(PINI, "YES")
+    field(SCAN, ".1 second")
+}
