@@ -684,11 +684,14 @@ class PyDMApplication(QApplication):
         for k, v in self.tools.items():
             if isinstance(v, dict):
                 m = QMenu(k, parent=parent_menu)
-                parent_menu.addMenu(m)
+                should_create_menu = False
                 for _, t in v.items():
                     if widget_only and not t.use_with_widgets:
                         continue
                     assemble_action(m, t)
+                    should_create_menu = True
+                if should_create_menu:
+                    parent_menu.addMenu(m)
             else:
                 if widget_only and not v.use_with_widgets:
                         continue
