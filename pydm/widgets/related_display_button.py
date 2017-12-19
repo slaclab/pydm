@@ -1,6 +1,7 @@
-from ..PyQt.QtGui import QPushButton, QCursor
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt, QSize
+from ..PyQt.QtGui import QPushButton, QCursor, QMenu, QAction
+from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt, QSize, QPoint
 import json
+from functools import partial
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
 
@@ -26,6 +27,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         QPushButton.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
         self.mouseReleaseEvent = self.push_button_release_event
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.show_context_menu)
 
         self.iconFont = IconFont()
         icon = self.iconFont.icon("file")
@@ -37,6 +40,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         self._display_filename = filename
         self._macro_string = None
         self._open_in_new_window = False
+        self.open_in_new_window_action = QAction("Open in New Window", self)
+        self.open_in_new_window_action.triggered.connect(partial(self.open_display, self.NEW_WINDOW))
 
     def check_enable_state(self):
         """
@@ -169,3 +174,19 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
                 self.window().new_window(self.displayFilename, macros=macros)
         except (IOError, OSError, ValueError, ImportError) as e:
             self.window().statusBar().showMessage("Cannot open file: '{0}'. Reason: '{1}'.".format(self.displayFilename, e), 5000)
+    
+    def context_menu(self):
+        try:
+            menu = super(PyDMRelatedDisplayButton, self).context_menu()
+        except:
+            menu = QMenu(self)
+        if len(menu.findChildren(QAction)) > 0:
+            menu.addSeparator()
+        menu.addAction(self.open_in_new_window_action)
+        return menu
+        
+    
+    @pyqtSlot(QPoint)
+    def show_context_menu(self, pos):
+        menu = self.context_menu()
+        menu.exec_(self.mapToGlobal(pos))
