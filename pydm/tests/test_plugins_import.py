@@ -47,11 +47,6 @@ def test_import_image_plugin():
     from ..widgets.image import PyDMImageView
     PyDMImageViewPlugin = qtplugin_factory(PyDMImageView)
 
-def test_import_indicator_plugin():
-    # Indicator plugin
-    from ..widgets.indicator import PyDMIndicator
-    PyDMIndicatorPlugin = qtplugin_factory(PyDMIndicator)
-
 def test_import_label_plugin():
     # Label plugin
     from ..widgets.label import PyDMLabel
