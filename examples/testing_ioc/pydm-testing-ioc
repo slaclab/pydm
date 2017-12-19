@@ -136,7 +136,7 @@ if __name__ == '__main__':
         print('Starting testing-ioc')
         print('To start processing records do: caput '+prefix+'Run 1')
         server = SimpleServer()
-        server.initAccessSecurityFile(os.path.join(os.path.dirname(os.path.realpath(__file__)),'../data/access_rules.as'), P=prefix)
+        server.initAccessSecurityFile(os.path.join(os.path.dirname(os.path.realpath(__file__)),'access_rules.as'), P=prefix)
         server.createPV(prefix, pvdb)
         driver = myDriver()
         #Manually set the ReadOnly PV to force access rule calculation.
