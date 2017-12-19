@@ -1,12 +1,6 @@
 import math
 import numpy as np
 
-try:
-    # unichr is not available on Py3+
-    unichr(1)
-except NameError:
-    unichr = chr
-
 
 class DisplayFormat(object):
     Default = 0
@@ -17,40 +11,42 @@ class DisplayFormat(object):
     Binary = 5
 
 
-def parse_value_for_display(new_value, display_format_type, precision, widget):
+def parse_value_for_display(value, precision, display_format_type=DisplayFormat.Default, string_encoding="utf_8", widget=None):
     if display_format_type == DisplayFormat.Default:
-        return new_value
+        return value
     elif display_format_type == DisplayFormat.String:
-        if isinstance(new_value, np.ndarray):
-            new_value = new_value[new_value > 0]
-            fmt_string = "{}"*len(new_value)
-            r = fmt_string.format(*[unichr(x) for x in new_value])
+        if isinstance(value, np.ndarray):
+            try:
+                r = value.tobytes().decode(string_encoding)
+                print("Could not decode {} using {} at widget named '{}'.".format(value, string_encoding, widget.objectName()))
+            except:
+                return value
             return r
         else:
-            return new_value
+            return value
     elif display_format_type == DisplayFormat.Decimal:
         # This case is taken care by the current string formatting
         # routine
-        return new_value
+        return value
     elif display_format_type == DisplayFormat.Exponential:
         fmt_string = "{" + ":.{}e".format(precision) + "}"
         try:
-            r = fmt_string.format(new_value)
+            r = fmt_string.format(value)
         except (ValueError, TypeError):
-            print("Could not display value {} using displayFormat 'Exponential' at widget named '{}'.".format(new_value, widget.objectName()))
-            r = new_value
+            print("Could not display value {} using displayFormat 'Exponential' at widget named '{}'.".format(value, widget.objectName()))
+            r = value
         return r
     elif display_format_type == DisplayFormat.Hex:
         try:
-            r = hex(math.floor(new_value))
+            r = hex(math.floor(value))
         except (ValueError, TypeError):
-            print("Could not display value {} using displayFormat 'Hex' at widget named '{}'.".format(new_value, widget.objectName()))
-            r = new_value
+            print("Could not display value {} using displayFormat 'Hex' at widget named '{}'.".format(value, widget.objectName()))
+            r = value
         return r
     elif display_format_type == DisplayFormat.Binary:
         try:
-            r = bin(math.floor(new_value))
+            r = bin(math.floor(value))
         except (ValueError, TypeError):
-            print("Could not display value {} using displayFormat 'Binary' at widget named '{}'.".format(new_value, widget.objectName()))
-            r = new_value
+            print("Could not display value {} using displayFormat 'Binary' at widget named '{}'.".format(value, widget.objectName()))
+            r = value
         return r

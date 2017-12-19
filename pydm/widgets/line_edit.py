@@ -1,6 +1,6 @@
 import locale
 from functools import partial
-from ..PyQt.QtGui import QLineEdit, QMenu
+from ..PyQt.QtGui import QLineEdit, QMenu, QApplication
 from ..PyQt.QtCore import Qt, pyqtProperty, Q_ENUMS
 from .. import utilities
 from .base import PyDMWritableWidget
@@ -29,6 +29,7 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
     def __init__(self, parent=None, init_channel=None):
         QLineEdit.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
+        self.app = QApplication.instance()
         self._display = None
         self._scale = 1
 
@@ -42,6 +43,9 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
         self.unitMenu = self.menu.addMenu('Convert Units')
         self.create_unit_options()
         self._display_format_type = self.DisplayFormat.Default
+        self._string_encoding = "utf_8"
+        if utilities.is_pydm_app():
+            self._string_encoding = self.app.get_string_encoding()
 
     @pyqtProperty(DisplayFormat)
     def displayFormat(self):
@@ -236,7 +240,10 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
                 except TypeError:
                     print("Cannot convert channel: {} with type: {}", self._channel, self.channeltype)
 
-        new_value = parse_value_for_display(new_value, self._display_format_type, self._prec, self)
+        new_value = parse_value_for_display(value=new_value,  precision=self._prec,
+                                             display_format_type=self._display_format_type,
+                                             string_encoding=self._string_encoding,
+                                             widget=self)
 
         self._display = str(new_value)
 

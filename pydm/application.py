@@ -124,6 +124,9 @@ class PyDMApplication(QApplication):
             self.perf_timer.timeout.connect(self.get_CPU_usage)
             self.perf_timer.start()
 
+    def get_string_encoding(self):
+        return os.getenv("PYDM_STRING_ENCODING", "utf_8")
+
     def exec_(self):
         """
         Execute the QApplication.
