@@ -113,9 +113,9 @@ class Connection(PyDMConnection):
         if self.pv.write_access:
             try:
                 self.pv.put(new_val)
-            except Exception:
-                logger.exception("Unable to put %s to %s",
-                                 new_val, self.pv.pvname)
+            except Exception as e:
+                logger.exception("Unable to put %s to %s.  Exception: %s",
+                                 new_val, self.pv.pvname, str(e))
 
     def add_listener(self, channel):
         super(Connection, self).add_listener(channel)
