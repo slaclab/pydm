@@ -705,6 +705,20 @@ class PyDMWidget(PyDMPrimitiveWidget):
                         write_access_slot=None)
         ]
         return self._channels
+    
+    def channels_for_tools(self):
+        """
+        Returns a list of channels useful for external tools.
+        The default implementation here is just to return 
+        self.channels(), but some widgets will want to re-implement
+        this, especially if they have multiple channels, but only
+        one real 'signal' channel.
+        
+        Returns
+        -------
+        list
+        """
+        return self.channels()
 
 
 class PyDMWritableWidget(PyDMWidget):
@@ -848,17 +862,3 @@ class PyDMWritableWidget(PyDMWidget):
                         write_access_slot=self.writeAccessChanged)
         ]
         return self._channels
-
-    def channels_for_tools(self):
-        """
-        Returns a list of channels useful for external tools.
-        The default implementation here is just to return 
-        self.channels(), but some widgets will want to re-implement
-        this, especially if they have multiple channels, but only
-        one real 'signal' channel.
-        
-        Returns
-        -------
-        list
-        """
-        return self.channels()
