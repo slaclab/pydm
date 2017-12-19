@@ -596,7 +596,7 @@ class PyDMApplication(QApplication):
             else:
                 locations = path.split(":")
             for loc in locations:
-                for root, dirs, files in os.walk(loc):
+                for root, _, files in os.walk(loc):
                     for name in files:
                         if name.endswith(EXT_TOOLS_TOKEN):
                             self.install_external_tool(os.path.join(root, name))
@@ -637,7 +637,7 @@ class PyDMApplication(QApplication):
 
         reorder_tools_dict()
         kwargs = {'channels': None, 'sender': self.main_window}
-        self.assemble_tools_menu(self.main_window.ui.menuTools, items=self.tools, **kwargs)
+        self.assemble_tools_menu(self.main_window.ui.menuTools, **kwargs)
 
     def assemble_tools_menu(self, parent_menu, widget_only=False, **kwargs):
 

@@ -9,10 +9,9 @@ class DummyTool(ExternalTool):
         use_with_widgets = False
         ExternalTool.__init__(self, icon=icon, name=name, group=group, use_with_widgets=use_with_widgets)
 
-    def call(self, channels, values, sender):
+    def call(self, channels, sender):
         print("Called Dummy Tool from: {} with:".format(sender))
         print("Channels: ", channels)
-        print("Values: ", values)
 
     def to_json(self):
         return ""
