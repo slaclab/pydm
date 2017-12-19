@@ -16,6 +16,7 @@ import json
 import inspect
 import warnings
 import platform
+import collections
 from functools import partial
 from .display_module import Display
 from .PyQt.QtCore import Qt, QEvent, QTimer, pyqtSlot
@@ -73,9 +74,7 @@ class PyDMApplication(QApplication):
     """
     # Instantiate our plugins.
     plugins = {plugin.protocol: plugin() for plugin in data_plugins.plugin_modules}
-
-    tools_menu = dict()
-    installed_tools = dict()
+    tools = dict()
 
     # HACK. To be replaced with some stylesheet stuff eventually.
     alarm_severity_color_map = {
@@ -568,6 +567,13 @@ class PyDMApplication(QApplication):
                 pass
 
     def list_all_connections(self):
+        """
+        List all the connections for all the data plugins.
+
+        Returns
+        -------
+        list of connections
+        """
         conns = []
         for p in self.plugins.values():
             for connection in p.connections.values():
@@ -575,6 +581,12 @@ class PyDMApplication(QApplication):
         return conns
 
     def load_external_tools(self):
+        """
+        Loads all the external tools available at the given
+        PYDM_TOOLS_PATH environment variable and subfolders that
+        follows the *_tool.py and have classes that inherits from
+        the pydm.tools.ExternalTool class.
+        """
         EXT_TOOLS_TOKEN = "_tool.py"
         path = os.getenv("PYDM_TOOLS_PATH", None)
         if path is not None:
@@ -592,6 +604,13 @@ class PyDMApplication(QApplication):
             print("External Tools not loaded. No External Tools Path specified.")
 
     def install_external_tool(self, tool):
+
+        def reorder_tools_dict():
+            self.tools = collections.OrderedDict(sorted(self.tools.items()))
+            for k in self.tools.keys():
+                if isinstance(self.tools[k], dict):
+                    self.tools[k] = collections.OrderedDict(sorted(self.tools[k].items()))
+
         if isinstance(tool, str):
             base_dir, _, _ = path_info(tool)
             sys.path.append(base_dir)
@@ -608,21 +627,39 @@ class PyDMApplication(QApplication):
         else:
             raise ValueError("Invalid argument for parameter 'tool'. String or ExternalTool expected.")
 
-        kwargs = {'channels': None, 'values': None, 'sender': self.main_window}
-        self.assemble_menu(self.main_window.ui.menuTools, items=obj, **kwargs)
-
-    def assemble_menu(self, parent_menu, items, **kargs):
-        for o in items:
+        for o in obj:
             if o.group is not None and o.group != "":
-                if parent_menu not in PyDMApplication.tools_menu:
-                    PyDMApplication.tools_menu[parent_menu] = dict()
-                if o.group in PyDMApplication.tools_menu[parent_menu]:
-                    menu = PyDMApplication.tools_menu[parent_menu][o.group]
-                else:
-                    menu = parent_menu.addMenu(o.group)
-                    PyDMApplication.tools_menu[parent_menu][o.group] = menu
+                if o.group not in self.tools:
+                    self.tools[o.group] = dict()
+                self.tools[o.group][o.name] = o
             else:
-                menu = parent_menu
-            action = QAction(o.icon, o.name, self.main_window)
-            action.triggered.connect(partial(o.call, **kargs))
+                self.tools[o.name] = o
+
+        reorder_tools_dict()
+        kwargs = {'channels': None, 'sender': self.main_window}
+        self.assemble_tools_menu(self.main_window.ui.menuTools, items=self.tools, **kwargs)
+
+    def assemble_tools_menu(self, parent_menu, widget_only=False, **kwargs):
+
+        def assemble_action(menu, tool_obj):
+            action = QAction(tool_obj.icon, tool_obj.name, kwargs['sender'])
+            action.triggered.connect(partial(tool_obj.call, **kwargs))
             menu.addAction(action)
+
+        parent_menu.clear()
+
+        for k, v in self.tools.items():
+            if isinstance(v, dict):
+                m = parent_menu.addMenu(k)
+                for _, t in v.items():
+                    if widget_only and not t.use_with_widgets:
+                        continue
+                    assemble_action(m, t)
+            else:
+                if widget_only and not t.use_with_widgets:
+                        continue
+                assemble_action(parent_menu, v)
+
+        if not widget_only:
+            parent_menu.addSeparator()
+            parent_menu.addAction(self.main_window.ui.actionLoadTool)

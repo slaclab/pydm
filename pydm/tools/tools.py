@@ -8,7 +8,7 @@ class ExternalTool():
         self.group = group
         self.use_with_widgets = use_with_widgets
 
-    def call(self, channels, values, sender):
+    def call(self, channels, sender):
         raise NotImplementedError
 
     def to_json(self):
