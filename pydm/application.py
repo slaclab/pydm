@@ -597,16 +597,13 @@ class PyDMApplication(QApplication):
             sys.path.append(base_dir)
             temp_name = str(uuid.uuid4())
 
-            # Now load the intelligence module.
             module = imp.load_source(temp_name, tool)
             classes = [obj for _, obj in inspect.getmembers(module) if inspect.isclass(obj) and issubclass(obj, ExternalTool) and obj != ExternalTool]
             if len(classes) == 0:
                 raise ValueError("Invalid File Format. {} has no class inheriting from ExternalTool. Nothing to open at this time.".format(tool))
             obj = [c() for c in classes]
-            print("Found Object: ", obj)
         elif isinstance(tool, ExternalTool):
             # The actual tool to be installed...
-            print("Install from: ", tool)
             obj = [tool]
         else:
             raise ValueError("Invalid argument for parameter 'tool'. String or ExternalTool expected.")
@@ -614,13 +611,15 @@ class PyDMApplication(QApplication):
         self.assemble_menu(self.main_window.ui.menuTools, items=obj, sender=self.main_window)
 
     def assemble_menu(self, parent_menu, items, sender):
-        for o in items: 
+        for o in items:
             if o.group is not None and o.group != "":
+                if parent_menu not in PyDMApplication.tools_menu:
+                    PyDMApplication.tools_menu[parent_menu] = dict()
                 if o.group in PyDMApplication.tools_menu[parent_menu]:
                     menu = PyDMApplication.tools_menu[parent_menu][o.group]
                 else:
                     menu = parent_menu.addMenu(o.group)
-                    PyDMApplication.tools_menu[o.group] = menu
+                    PyDMApplication.tools_menu[parent_menu][o.group] = menu
             else:
                 menu  = parent_menu
             action = QAction(o.icon, o.name, self.main_window)
