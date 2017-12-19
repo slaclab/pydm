@@ -1,6 +1,7 @@
 from ..PyQt import uic
 from ..PyQt.QtGui import QWidget, QApplication, QTableWidgetItem
 from ..PyQt.QtCore import Qt, PYQT_VERSION_STR, QT_VERSION_STR
+from .about_ui import Ui_Form
 from numpy import __version__ as numpyver
 from pyqtgraph import __version__ as pyqtgraphver
 import pydm
@@ -12,7 +13,8 @@ class AboutWindow(QWidget):
     def __init__(self, parent=None):
         super(AboutWindow, self).__init__(parent, Qt.Window)
         self.app = QApplication.instance()
-        self.ui = uic.loadUi(path.join(path.dirname(path.realpath(__file__)), "about.ui"), baseinstance=self)
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
         self.ui.pydmVersionLabel.setText(str(self.ui.pydmVersionLabel.text()).format(version=pydm.__version__))
         pyver = ".".join([str(v) for v in sys.version_info[0:3]])
         self.ui.modulesVersionLabel.setText(str(self.ui.modulesVersionLabel.text()).format(pyver=pyver,
