@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDM Application &mdash; PyDM v0.4.0+22.gbb5a05a documentation</title>
+  <title>PyDM Application &mdash; PyDM v0.4.0+23.gacf511b documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="PyDM v0.4.0+22.gbb5a05a documentation" href="index.html"/>
+    <link rel="top" title="PyDM v0.4.0+23.gacf511b documentation" href="index.html"/>
         <link rel="prev" title="PyDMWaveformTable" href="widgets/waveformtable.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v0.4.0+22.gbb5a05a
+                v0.4.0+23.gacf511b
               </div>
             
           
@@ -212,6 +212,29 @@ being loaded.</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydm.PyDMApplication.assemble_tools_menu">
+<code class="descname">assemble_tools_menu</code><span class="sig-paren">(</span><em>parent_menu</em>, <em>widget_only=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.assemble_tools_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.assemble_tools_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble the Tools menu for a given parent menu.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent_menu</strong> (<em>QMenu</em>) – The main menu item to hold the tools menu tree.</li>
+<li><strong>widget_only</strong> (<em>bool</em>) – Whether or not generate only the menu for widgets compatible
+tools. This should be True when creating the menu for the
+PyDMWidgets and False for most of the other cases.</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Parameters sent directly to the <cite>call</cite> method of the ExternalTool
+instance. In general this dict is composed by <cite>channels</cite> which
+is a list and <cite>sender</cite> which is a QWidget.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydm.PyDMApplication.close_widget_connections">
 <code class="descname">close_widget_connections</code><span class="sig-paren">(</span><em>widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.close_widget_connections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.close_widget_connections" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a widget to start from, traverse the tree of child widgets,
@@ -276,6 +299,47 @@ you are running pydm from.  This function does that translation.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.PyDMApplication.install_external_tool">
+<code class="descname">install_external_tool</code><span class="sig-paren">(</span><em>tool</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.install_external_tool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.install_external_tool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Install an External Tool at the PyDMApplication and add it to the
+main window Tools menu.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tool</strong> (<em>str</em><em> or </em><em>pydm.tools.ExternalTool</em>) – The full path to a file containing a ExternalTool definition
+or an Instance of an ExternalTool.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.PyDMApplication.list_all_connections">
+<code class="descname">list_all_connections</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.list_all_connections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.list_all_connections" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all the connections for all the data plugins.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of connections</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.PyDMApplication.load_external_tools">
+<code class="descname">load_external_tools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.load_external_tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.load_external_tools" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads all the external tools available at the given
+PYDM_TOOLS_PATH environment variable and subfolders that
+follows the <a href="#id1"><span class="problematic" id="id2">*</span></a>_tool.py and have classes that inherits from
+the pydm.tools.ExternalTool class.</p>
 </dd></dl>
 
 <dl class="method">
@@ -535,7 +599,7 @@ really only used by embedded displays.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v0.4.0+22.gbb5a05a',
+            VERSION:'v0.4.0+23.gacf511b',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

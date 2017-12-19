@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.line_edit &mdash; PyDM v0.4.0+22.gbb5a05a documentation</title>
+  <title>pydm.widgets.line_edit &mdash; PyDM v0.4.0+23.gacf511b documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM v0.4.0+22.gbb5a05a documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM v0.4.0+23.gacf511b documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v0.4.0+22.gbb5a05a
+                v0.4.0+23.gacf511b
               </div>
             
           
@@ -161,7 +161,7 @@
   <h1>Source code for pydm.widgets.line_edit</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">locale</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QApplication</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QAction</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">utilities</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
@@ -196,12 +196,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">returnPressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-
-        <span class="c1"># Create Context Menu upon Right Click</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">customContextMenuRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">launch_menu</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s1">&#39;Convert Units&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="s1">&#39;Convert Units&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_unit_options</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Default</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_string_encoding</span> <span class="o">=</span> <span class="s2">&quot;utf_8&quot;</span>
@@ -363,15 +358,12 @@
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning: Attempting to convert PyDMLineEdit unit, but </span><span class="si">{:}</span><span class="s1"> &#39;</span>\
                            <span class="s1">&#39;can not be converted to </span><span class="si">{:}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">,</span> <span class="n">unit</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="PyDMLineEdit.launch_menu"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.launch_menu">[docs]</a>    <span class="k">def</span> <span class="nf">launch_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Launch the context menu with the appropriate unit conversions.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        point : QPoint</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">point</span><span class="p">))</span></div>
+    <span class="k">def</span> <span class="nf">context_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">menu</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMLineEdit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">context_menu</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QAction</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">menu</span>
 
 <div class="viewcode-block" id="PyDMLineEdit.set_display"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.set_display">[docs]</a>    <span class="k">def</span> <span class="nf">set_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -464,7 +456,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v0.4.0+22.gbb5a05a',
+            VERSION:'v0.4.0+23.gacf511b',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
