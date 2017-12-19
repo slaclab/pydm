@@ -1,6 +1,6 @@
 import locale
 from functools import partial
-from ..PyQt.QtGui import QLineEdit, QMenu, QApplication
+from ..PyQt.QtGui import QLineEdit, QMenu, QApplication, QAction
 from ..PyQt.QtCore import Qt, pyqtProperty, Q_ENUMS
 from .. import utilities
 from .base import PyDMWritableWidget
@@ -35,12 +35,7 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
 
         self.returnPressed.connect(self.send_value)
         self.setEnabled(False)
-
-        # Create Context Menu upon Right Click
-        self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.customContextMenuRequested.connect(self.launch_menu)
-        self.menu = QMenu(self)
-        self.unitMenu = self.menu.addMenu('Convert Units')
+        self.unitMenu = QMenu('Convert Units', self)
         self.create_unit_options()
         self._display_format_type = self.DisplayFormat.Default
         self._string_encoding = "utf_8"
@@ -202,15 +197,12 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
             print('Warning: Attempting to convert PyDMLineEdit unit, but {:} '\
                            'can not be converted to {:}'.format(self._units, unit))
 
-    def launch_menu(self, point):
-        """
-        Launch the context menu with the appropriate unit conversions.
-
-        Parameters
-        ----------
-        point : QPoint
-        """
-        return self.menu.exec_(self.mapToGlobal(point))
+    def context_menu(self):
+        menu = super(PyDMLineEdit, self).context_menu()
+        if len(menu.findChildren(QAction)) > 0:
+            menu.addSeparator()
+        menu.addMenu(self.unitMenu)
+        return menu
 
     def set_display(self):
         """
