@@ -2,9 +2,9 @@
 
 # Form implementation generated from reading ui file 'pydm.ui'
 #
-# Created by: PyQt5 UI code generator 5.9, then hand-edited to use compatibility layer.
+# Created by: PyQt5 UI code generator 5.6
 #
-# WARNING! All changes made in this file will be lost if you regenerate with pyuic.
+# WARNING! All changes made in this file will be lost!
 
 from .PyQt import QtCore, QtGui
 
@@ -27,6 +27,8 @@ class Ui_MainWindow(object):
         self.menuView.setObjectName("menuView")
         self.menuHistory = QtGui.QMenu(self.menubar)
         self.menuHistory.setObjectName("menuHistory")
+        self.menuTools = QtGui.QMenu(self.menubar)
+        self.menuTools.setObjectName("menuTools")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -86,6 +88,8 @@ class Ui_MainWindow(object):
         self.actionShow_Connections = QtGui.QAction(MainWindow)
         self.actionShow_Connections.setShortcutContext(QtCore.Qt.ApplicationShortcut)
         self.actionShow_Connections.setObjectName("actionShow_Connections")
+        self.actionLoadTool = QtGui.QAction(MainWindow)
+        self.actionLoadTool.setObjectName("actionLoadTool")
         self.menuFile.addAction(self.actionOpen_File)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionEdit_in_Designer)
@@ -103,9 +107,12 @@ class Ui_MainWindow(object):
         self.menuHistory.addAction(self.actionBack)
         self.menuHistory.addAction(self.actionForward)
         self.menuHistory.addAction(self.actionHome)
+        self.menuTools.addAction(self.actionLoadTool)
+        self.menuTools.addSeparator()
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuView.menuAction())
         self.menubar.addAction(self.menuHistory.menuAction())
+        self.menubar.addAction(self.menuTools.menuAction())
         self.navbar.addAction(self.actionBack)
         self.navbar.addAction(self.actionForward)
         self.navbar.addSeparator()
@@ -120,6 +127,7 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuView.setTitle(_translate("MainWindow", "View"))
         self.menuHistory.setTitle(_translate("MainWindow", "History"))
+        self.menuTools.setTitle(_translate("MainWindow", "Tools"))
         self.navbar.setWindowTitle(_translate("MainWindow", "toolBar"))
         self.actionEdit_in_Designer.setText(_translate("MainWindow", "Edit in Designer"))
         self.actionAbout_PyDM.setText(_translate("MainWindow", "About PyDM"))
@@ -143,4 +151,5 @@ class Ui_MainWindow(object):
         self.actionShow_Menu_Bar.setShortcut(_translate("MainWindow", "Ctrl+M"))
         self.actionShow_Status_Bar.setText(_translate("MainWindow", "Show Status Bar"))
         self.actionShow_Connections.setText(_translate("MainWindow", "Show Connections..."))
+        self.actionLoadTool.setText(_translate("MainWindow", "Load..."))
 

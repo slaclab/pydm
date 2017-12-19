@@ -16,11 +16,13 @@ import json
 import inspect
 import warnings
 import platform
+from functools import partial
 from .display_module import Display
 from .PyQt.QtCore import Qt, QEvent, QTimer, pyqtSlot
-from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard
+from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard, QAction
 from .PyQt import uic
 from .main_window import PyDMMainWindow
+from .tools import ExternalTool
 from .utilities import macro, which, path_info
 from . import data_plugins
 
@@ -71,6 +73,9 @@ class PyDMApplication(QApplication):
     """
     # Instantiate our plugins.
     plugins = {plugin.protocol: plugin() for plugin in data_plugins.plugin_modules}
+
+    tools_menu = dict()
+    installed_tools = dict()
 
     # HACK. To be replaced with some stylesheet stuff eventually.
     alarm_severity_color_map = {
@@ -255,6 +260,8 @@ class PyDMApplication(QApplication):
                                      hide_status_bar=self.hide_status_bar)
         main_window.open_file(ui_file, macros, command_line_args)
         main_window.show()
+        self.main_window = main_window
+        self.load_external_tools()
         self.windows[main_window] = path_info(ui_file)[0]
         # If we are launching a new window, we don't want it to sit right on top of an existing window.
         if len(self.windows) > 1:
@@ -566,3 +573,56 @@ class PyDMApplication(QApplication):
             for connection in p.connections.values():
                 conns.append(connection)
         return conns
+
+    def load_external_tools(self):
+        EXT_TOOLS_TOKEN = "_tool.py"
+        path = os.getenv("PYDM_TOOLS_PATH", None)
+        if path is not None:
+            print("Looking for external tools at: {}".format(path))
+            if platform.system() == "Windows":
+                locations = path.split(";")
+            else:
+                locations = path.split(":")
+            for loc in locations:
+                for root, dirs, files in os.walk(loc):
+                    for name in files:
+                        if name.endswith(EXT_TOOLS_TOKEN):
+                            self.install_external_tool(os.path.join(root, name))
+        else:
+            print("External Tools not loaded. No External Tools Path specified.")
+
+    def install_external_tool(self, tool):
+        if isinstance(tool, str):
+            base_dir, _, _ = path_info(tool)
+            sys.path.append(base_dir)
+            temp_name = str(uuid.uuid4())
+
+            # Now load the intelligence module.
+            module = imp.load_source(temp_name, tool)
+            classes = [obj for _, obj in inspect.getmembers(module) if inspect.isclass(obj) and issubclass(obj, ExternalTool) and obj != ExternalTool]
+            if len(classes) == 0:
+                raise ValueError("Invalid File Format. {} has no class inheriting from ExternalTool. Nothing to open at this time.".format(tool))
+            obj = [c() for c in classes]
+            print("Found Object: ", obj)
+        elif isinstance(tool, ExternalTool):
+            # The actual tool to be installed...
+            print("Install from: ", tool)
+            obj = [tool]
+        else:
+            raise ValueError("Invalid argument for parameter 'tool'. String or ExternalTool expected.")
+        
+        self.assemble_menu(self.main_window.ui.menuTools, items=obj, sender=self.main_window)
+
+    def assemble_menu(self, parent_menu, items, sender):
+        for o in items: 
+            if o.group is not None and o.group != "":
+                if o.group in PyDMApplication.tools_menu[parent_menu]:
+                    menu = PyDMApplication.tools_menu[parent_menu][o.group]
+                else:
+                    menu = parent_menu.addMenu(o.group)
+                    PyDMApplication.tools_menu[o.group] = menu
+            else:
+                menu  = parent_menu
+            action = QAction(o.icon, o.name, self.main_window)
+            action.triggered.connect(partial(o.call, None, None, sender))
+            menu.addAction(action)

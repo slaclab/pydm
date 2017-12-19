@@ -48,6 +48,10 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionShow_Menu_Bar.triggered.connect(self.toggle_menu_bar)
         self.ui.actionShow_Status_Bar.triggered.connect(self.toggle_status_bar)
         self.ui.actionShow_Connections.triggered.connect(self.show_connections)
+        
+        self.ui.actionLoadTool.triggered.connect(self.load_tool)
+        self.ui.actionLoadTool.setIcon(self.iconFont.icon("rocket"))
+        
         self._saved_menu_geometry = None
         self._saved_menu_height = None
         self._new_widget_size = None
@@ -312,6 +316,14 @@ class PyDMMainWindow(QMainWindow):
                     self.open_file(filename)
             except (IOError, OSError, ValueError, ImportError) as e:
                 self.handle_open_file_error(filename, e)
+    
+    def load_tool(self, checked):
+        filename = QFileDialog.getOpenFileName(self, 'Load tool...', os.path.dirname(self.current_file()), 'PyDM External Tool Files (*_tool.py)')
+        filename = filename[0] if isinstance(filename, (list, tuple)) else filename
+
+        if filename:
+            filename = str(filename)
+            self.app.install_external_tool(filename)
 
     @pyqtSlot(bool)
     def reload_display(self, checked):
