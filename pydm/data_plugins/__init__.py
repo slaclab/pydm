@@ -25,7 +25,7 @@ for filename in filenames:
     if len(classes) == 0:
         continue
     if len(classes) > 1:
-        warnings.warn("More than one PyDMPlugin subclass in file {}. The first occurence (in alphabetical order) will be opened: {}".format(filename, classes[0].__name__), RuntimeWarning, stacklevel=0)
+        warnings.warn("More than one PyDMPlugin subclass in file {}. The first occurrence (in alphabetical order) will be opened: {}".format(filename, classes[0].__name__), RuntimeWarning, stacklevel=0)
     plugin = classes[0]
     if plugin.protocol is not None:
         if plugin.protocol in plugin_modules and plugin_modules[plugin.protocol] != plugin:
