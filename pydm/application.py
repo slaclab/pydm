@@ -611,38 +611,44 @@ class PyDMApplication(QApplication):
                 if isinstance(self.tools[k], dict):
                     self.tools[k] = collections.OrderedDict(sorted(self.tools[k].items()))
 
-        if isinstance(tool, str):
-            base_dir, _, _ = path_info(tool)
-            sys.path.append(base_dir)
-            temp_name = str(uuid.uuid4())
+        try:
+            if isinstance(tool, str):
+                base_dir, _, _ = path_info(tool)
+                sys.path.append(base_dir)
+                temp_name = str(uuid.uuid4())
 
-            module = imp.load_source(temp_name, tool)
-            classes = [obj for _, obj in inspect.getmembers(module) if inspect.isclass(obj) and issubclass(obj, ExternalTool) and obj != ExternalTool]
-            if len(classes) == 0:
-                raise ValueError("Invalid File Format. {} has no class inheriting from ExternalTool. Nothing to open at this time.".format(tool))
-            obj = [c() for c in classes]
-        elif isinstance(tool, ExternalTool):
-            # The actual tool to be installed...
-            obj = [tool]
-        else:
-            raise ValueError("Invalid argument for parameter 'tool'. String or ExternalTool expected.")
-
-        for o in obj:
-            if o.group is not None and o.group != "":
-                if o.group not in self.tools:
-                    self.tools[o.group] = dict()
-                self.tools[o.group][o.name] = o
+                module = imp.load_source(temp_name, tool)
+                classes = [obj for _, obj in inspect.getmembers(module) if inspect.isclass(obj) and issubclass(obj, ExternalTool) and obj != ExternalTool]
+                if len(classes) == 0:
+                    raise ValueError("Invalid File Format. {} has no class inheriting from ExternalTool. Nothing to open at this time.".format(tool))
+                obj = [c() for c in classes]
+            elif isinstance(tool, ExternalTool):
+                # The actual tool to be installed...
+                obj = [tool]
             else:
-                self.tools[o.name] = o
+                raise ValueError("Invalid argument for parameter 'tool'. String or ExternalTool expected.")
 
-        reorder_tools_dict()
-        kwargs = {'channels': None, 'sender': self.main_window}
-        self.assemble_tools_menu(self.main_window.ui.menuTools, **kwargs)
+            for o in obj:
+                if o.group is not None and o.group != "":
+                    if o.group not in self.tools:
+                        self.tools[o.group] = dict()
+                    self.tools[o.group][o.name] = o
+                else:
+                    self.tools[o.name] = o
+
+            reorder_tools_dict()
+            kwargs = {'channels': None, 'sender': self.main_window}
+            self.assemble_tools_menu(self.main_window.ui.menuTools, **kwargs)
+        except Exception as e:
+            print("Failed to load External Tool: ", tool, ". Exception was: ", str(e))
 
     def assemble_tools_menu(self, parent_menu, widget_only=False, **kwargs):
 
         def assemble_action(menu, tool_obj):
-            action = QAction(tool_obj.icon, tool_obj.name, kwargs['sender'])
+            if tool_obj.icon is not None:
+                action = QAction(tool_obj.icon, tool_obj.name, kwargs['sender'])
+            else:
+                action = QAction(tool_obj.name, kwargs['sender'])
             action.triggered.connect(partial(tool_obj.call, **kwargs))
             menu.addAction(action)
 
