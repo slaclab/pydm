@@ -690,7 +690,7 @@ class PyDMApplication(QApplication):
                         continue
                     assemble_action(m, t)
             else:
-                if widget_only and not t.use_with_widgets:
+                if widget_only and not v.use_with_widgets:
                         continue
                 assemble_action(parent_menu, v)
 
