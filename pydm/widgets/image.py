@@ -303,7 +303,8 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         channels : list
             List of PyDMChannel objects
         """
-        return [
+        if self._channels is not None:
+            self._channels = [
             PyDMChannel(address=self.imageChannel,
                         connection_slot=self.image_connection_state_changed,
                         value_slot=self.image_value_changed,
@@ -312,6 +313,10 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
                         connection_slot=self.connectionStateChanged,
                         value_slot=self.image_width_changed,
                         severity_slot=self.alarmSeverityChanged)]
+        return self._channels
+
+    def channels_for_tools(self):
+        return [c for c in self.channels() if c.address==self.imageChannel]
 
     @pyqtProperty(int)
     def maxRedrawRate(self):
