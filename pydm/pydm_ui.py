@@ -8,7 +8,9 @@
 
 from .PyQt import QtCore, QtGui
 
+
 class Ui_MainWindow(object):
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(677, 465)

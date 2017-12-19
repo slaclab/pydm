@@ -8,7 +8,7 @@ class DummyTool2(ExternalTool):
         icon = IconFont().icon("code")
         name = "Dummy Tool 2"
         group = "Example"
-        use_with_widgets = False
+        use_with_widgets = True
         ExternalTool.__init__(self, icon=icon, name=name, group=group, use_with_widgets=use_with_widgets)
 
     def call(self, channels, sender):

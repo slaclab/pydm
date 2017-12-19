@@ -20,7 +20,7 @@ import collections
 from functools import partial
 from .display_module import Display
 from .PyQt.QtCore import Qt, QEvent, QTimer, pyqtSlot
-from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard, QAction
+from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard, QAction, QMenu
 from .PyQt import uic
 from .main_window import PyDMMainWindow
 from .tools import ExternalTool
@@ -604,6 +604,16 @@ class PyDMApplication(QApplication):
             print("External Tools not loaded. No External Tools Path specified.")
 
     def install_external_tool(self, tool):
+        """
+        Install an External Tool at the PyDMApplication and add it to the
+        main window Tools menu.
+
+        Parameters
+        ----------
+        tool : str or pydm.tools.ExternalTool
+            The full path to a file containing a ExternalTool definition
+            or an Instance of an ExternalTool.
+        """
 
         def reorder_tools_dict():
             self.tools = collections.OrderedDict(sorted(self.tools.items()))
@@ -643,12 +653,29 @@ class PyDMApplication(QApplication):
             print("Failed to load External Tool: ", tool, ". Exception was: ", str(e))
 
     def assemble_tools_menu(self, parent_menu, widget_only=False, **kwargs):
+        """
+        Assemble the Tools menu for a given parent menu.
+
+        Parameters
+        ----------
+        parent_menu : QMenu
+            The main menu item to hold the tools menu tree.
+        widget_only : bool
+            Whether or not generate only the menu for widgets compatible
+            tools. This should be True when creating the menu for the
+            PyDMWidgets and False for most of the other cases.
+        kwargs : dict
+            Parameters sent directly to the `call` method of the ExternalTool
+            instance. In general this dict is composed by `channels` which
+            is a list and `sender` which is a QWidget.
+
+        """
 
         def assemble_action(menu, tool_obj):
             if tool_obj.icon is not None:
-                action = QAction(tool_obj.icon, tool_obj.name, kwargs['sender'])
+                action = QAction(tool_obj.icon, tool_obj.name, menu)
             else:
-                action = QAction(tool_obj.name, kwargs['sender'])
+                action = QAction(tool_obj.name, menu)
             action.triggered.connect(partial(tool_obj.call, **kwargs))
             menu.addAction(action)
 
@@ -656,7 +683,8 @@ class PyDMApplication(QApplication):
 
         for k, v in self.tools.items():
             if isinstance(v, dict):
-                m = parent_menu.addMenu(k)
+                m = QMenu(k, parent=parent_menu)
+                parent_menu.addMenu(m)
                 for _, t in v.items():
                     if widget_only and not t.use_with_widgets:
                         continue

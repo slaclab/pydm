@@ -1,6 +1,6 @@
 import functools
 import numpy as np
-from ..PyQt.QtGui import QApplication, QColor, QCursor
+from ..PyQt.QtGui import QApplication, QColor, QCursor, QMenu
 from ..PyQt.QtCore import Qt, QEvent, pyqtSignal, pyqtSlot, pyqtProperty
 from .channel import PyDMChannel
 from ..utilities import is_pydm_app
@@ -155,6 +155,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
     def __init__(self, init_channel=None):
         super(PyDMWidget, self).__init__()
+        self.app = QApplication.instance()
         self._connected = True
         self._color = self.local_connection_status_color_map[False]
         self._channel = init_channel
@@ -186,6 +187,26 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
+
+            self.setContextMenuPolicy(Qt.CustomContextMenu)
+            self.customContextMenuRequested.connect(self.open_tools_menu)
+
+    def open_tools_menu(self, position):
+        """
+        Handler for when the Custom Context Menu is requested.
+        This method generates the custom context menu for the tools.
+
+        Parameters
+        ----------
+        position : QPoint
+        """
+        menu = QMenu(self)
+        kwargs = {'channels': self.channels_for_tools(), 'sender': self}
+        self.app.assemble_tools_menu(menu, widget_only=True, **kwargs)
+        menu.exec_(self.mapToGlobal(position))
+
+        menu.close()
+        del menu
 
     def init_for_designer(self):
         """
@@ -706,6 +727,20 @@ class PyDMWidget(PyDMPrimitiveWidget):
         ]
         return self._channels
 
+    def channels_for_tools(self):
+        """
+        Returns a list of channels useful for external tools.
+        The default implementation here is just to return
+        self.channels(), but some widgets will want to re-implement
+        this, especially if they have multiple channels, but only
+        one real 'signal' channel.
+
+        Returns
+        -------
+        list
+        """
+        return self.channels()
+
 
 class PyDMWritableWidget(PyDMWidget):
     """
@@ -828,7 +863,7 @@ class PyDMWritableWidget(PyDMWidget):
 
         Returns
         -------
-        channels : list
+        list
             List of PyDMChannel objects
         """
         if self._channels is not None:
