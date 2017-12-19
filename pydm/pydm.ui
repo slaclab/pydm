@@ -108,7 +108,7 @@
   </action>
   <action name="actionAbout_PyDM">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>About PyDM</string>

@@ -7,6 +7,7 @@ from .utilities import IconFont
 from .pydm_ui import Ui_MainWindow
 from .display_module import Display
 from .connection_inspector import ConnectionInspector
+from .about_pydm import AboutWindow
 import subprocess
 import platform
 
@@ -48,7 +49,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionShow_Menu_Bar.triggered.connect(self.toggle_menu_bar)
         self.ui.actionShow_Status_Bar.triggered.connect(self.toggle_status_bar)
         self.ui.actionShow_Connections.triggered.connect(self.show_connections)
-
+        self.ui.actionAbout_PyDM.triggered.connect(self.show_about_window)
         self.ui.actionLoadTool.triggered.connect(self.load_tool)
         self.ui.actionLoadTool.setIcon(self.iconFont.icon("rocket"))
 
@@ -347,6 +348,11 @@ class PyDMMainWindow(QMainWindow):
     def show_connections(self, checked):
         c = ConnectionInspector(self.app.list_all_connections(), self)
         c.show()
+    
+    @pyqtSlot(bool)
+    def show_about_window(self, checked):
+        a = AboutWindow(self)
+        a.show()
 
     def resizeForNewDisplayWidget(self):
         self.resize(self._new_widget_size)
