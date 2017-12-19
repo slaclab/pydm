@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>870</width>
+    <height>578</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>30</y>
+     <width>511</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Normal Data - ca://FILTER:Calc</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>270</y>
+     <width>641</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>CA Filtered Data - ca://FILTER:Calc.{&quot;dbnd&quot;:{&quot;d&quot;:0.5}}</string>
+   </property>
+  </widget>
+  <widget class="PyDMTimePlot" name="PyDMTimePlot">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>50</y>
+     <width>811</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="curves">
+    <stringlist>
+     <string>{&quot;channel&quot;: &quot;ca://FILTER:Calc&quot;, &quot;name&quot;: &quot;Raw Value&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: &quot;o&quot;, &quot;symbolSize&quot;: 10}</string>
+    </stringlist>
+   </property>
+  </widget>
+  <widget class="PyDMTimePlot" name="PyDMTimePlot_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>290</y>
+     <width>811</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="curves">
+    <stringlist>
+     <string>{&quot;channel&quot;: &quot;ca://FILTER:Calc.{\&quot;dbnd\&quot;:{\&quot;d\&quot;:0.5}}&quot;, &quot;name&quot;: &quot;Val with 0.5 Deadband&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: &quot;o&quot;, &quot;symbolSize&quot;: 10}</string>
+    </stringlist>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMTimePlot</class>
+   <extends>QGraphicsView</extends>
+   <header>pydm.widgets.timeplot</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
