@@ -2,3 +2,4 @@ include versioneer.py
 include pydm/_version.py
 include pydm/utilities/*.pkl
 include pydm/utilities/fontawesome*
+include pydm/about_pydm/contributors.txt
