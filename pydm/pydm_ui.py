@@ -44,7 +44,7 @@ class Ui_MainWindow(object):
         self.actionEdit_in_Designer.setShortcutContext(QtCore.Qt.ApplicationShortcut)
         self.actionEdit_in_Designer.setObjectName("actionEdit_in_Designer")
         self.actionAbout_PyDM = QtGui.QAction(MainWindow)
-        self.actionAbout_PyDM.setEnabled(False)
+        self.actionAbout_PyDM.setEnabled(True)
         self.actionAbout_PyDM.setShortcutContext(QtCore.Qt.ApplicationShortcut)
         self.actionAbout_PyDM.setObjectName("actionAbout_PyDM")
         self.actionReload_Display = QtGui.QAction(MainWindow)
