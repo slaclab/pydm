@@ -1,9 +1,12 @@
 import epics
+import logging
 import numpy as np
 from ..plugin import PyDMPlugin, PyDMConnection
 from ...PyQt.QtCore import pyqtSlot, Qt
 from ...PyQt.QtGui import QApplication
 from ...utilities import is_pydm_app
+
+logger = logging.getLogger(__name__)
 
 int_types = set((epics.dbr.INT, epics.dbr.CTRL_INT, epics.dbr.TIME_INT,
                  epics.dbr.ENUM, epics.dbr.CTRL_ENUM, epics.dbr.TIME_ENUM,
@@ -109,7 +112,11 @@ class Connection(PyDMConnection):
             return
 
         if self.pv.write_access:
-            self.pv.put(new_val)
+            try:
+                self.pv.put(new_val)
+            except Exception as e:
+                logger.exception("Unable to put %s to %s.  Exception: %s",
+                                 new_val, self.pv.pvname, str(e))
 
     def add_listener(self, channel):
         super(Connection, self).add_listener(channel)
