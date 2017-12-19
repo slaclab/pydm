@@ -607,10 +607,11 @@ class PyDMApplication(QApplication):
             obj = [tool]
         else:
             raise ValueError("Invalid argument for parameter 'tool'. String or ExternalTool expected.")
-        
-        self.assemble_menu(self.main_window.ui.menuTools, items=obj, sender=self.main_window)
 
-    def assemble_menu(self, parent_menu, items, sender):
+        kwargs = {'channels': None, 'values': None, 'sender': self.main_window}
+        self.assemble_menu(self.main_window.ui.menuTools, items=obj, **kwargs)
+
+    def assemble_menu(self, parent_menu, items, **kargs):
         for o in items:
             if o.group is not None and o.group != "":
                 if parent_menu not in PyDMApplication.tools_menu:
@@ -621,7 +622,7 @@ class PyDMApplication(QApplication):
                     menu = parent_menu.addMenu(o.group)
                     PyDMApplication.tools_menu[parent_menu][o.group] = menu
             else:
-                menu  = parent_menu
+                menu = parent_menu
             action = QAction(o.icon, o.name, self.main_window)
-            action.triggered.connect(partial(o.call, None, None, sender))
+            action.triggered.connect(partial(o.call, **kargs))
             menu.addAction(action)
