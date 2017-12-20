@@ -303,7 +303,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         channels : list
             List of PyDMChannel objects
         """
-        if self._channels is not None:
+        if self._channels is None:
             self._channels = [
             PyDMChannel(address=self.imageChannel,
                         connection_slot=self.image_connection_state_changed,
