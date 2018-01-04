@@ -45,36 +45,38 @@ class QScale(QFrame):
         self._painter_scale_x = None
         self._flip_traslation_y = None
         self._flip_scale_y = None
-        self._orientation = None
-        self._widget_width = None
-        self._widget_height = None
+        
+        self._widget_width = self.width()
+        self._widget_height = self.height()
+
+        self._orientation = Qt.Horizontal
         self._inverted_appearance = False
         self._flip_scale = False
-        self._scale_height = None
+        self._scale_height = 35
 
-        self.set_scale_height(35)
-        self.set_orientation(Qt.Horizontal)
         self.set_position()
 
     def adjust_transformation(self):
         """
         This method sets parameters for the widget transformations (needed to for
         orientation, flipping and appearance inversion).
-
         """
+        self.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX) # Unset fixed size
         if self._orientation == Qt.Horizontal:
             self._widget_width = self.width()
             self._widget_height = self.height()
             self._painter_translation_y = 0
             self._painter_rotation = 0
+            self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+            self.setFixedHeight(self._scale_height)
         elif self._orientation == Qt.Vertical:
             # Invert dimensions for paintEvent()
             self._widget_width = self.height()
             self._widget_height = self.width()
             self._painter_translation_y = self._widget_width
             self._painter_rotation = -90
-            self._painter_translation_x = None
-            self._painter_scale_x = None
+            self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+            self.setFixedWidth(self._scale_height)
 
         if self._inverted_appearance == True:
             self._painter_translation_x = self._widget_width
@@ -249,11 +251,6 @@ class QScale(QFrame):
 
     def set_orientation(self, orientation):
         self._orientation = orientation
-        if self._orientation == Qt.Horizontal:
-            self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        elif self._orientation == Qt.Vertical:
-            self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        self.set_scale_height(self._scale_height)
         self.adjust_transformation()
         self.repaint()
 
@@ -331,11 +328,7 @@ class QScale(QFrame):
 
     def set_scale_height(self, value):
         self._scale_height = int(value)
-        self.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)
-        if self._orientation == Qt.Horizontal:
-            self.setFixedHeight(value)
-        elif self._orientation == Qt.Vertical:
-            self.setFixedWidth(value)
+        self.adjust_transformation()
         self.repaint()
 
 class PyDMScaleIndicator(QFrame, PyDMWidget):
