@@ -1,6 +1,7 @@
 from .base import PyDMWidget, compose_stylesheet
 from ..PyQt.QtGui import QFrame, QVBoxLayout, QHBoxLayout, QPainter, QColor, QPolygon, QPen, QLabel, QSizePolicy, QWidget
 from ..PyQt.QtCore import Qt, QPoint, pyqtProperty
+from PyQt5.Qt import QWIDGETSIZE_MAX
 from .channel import PyDMChannel
 import sys
 
@@ -49,9 +50,10 @@ class QScale(QFrame):
         self._widget_height = None
         self._inverted_appearance = False
         self._flip_scale = False
-        self.set_orientation(Qt.Horizontal)
+        self._scale_height = None
 
-        self.setMinimumSize(2, 2)
+        self.set_scale_height(35)
+        self.set_orientation(Qt.Horizontal)
         self.set_position()
 
     def adjust_transformation(self):
@@ -247,6 +249,11 @@ class QScale(QFrame):
 
     def set_orientation(self, orientation):
         self._orientation = orientation
+        if self._orientation == Qt.Horizontal:
+            self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        elif self._orientation == Qt.Vertical:
+            self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        self.set_scale_height(self._scale_height)
         self.adjust_transformation()
         self.repaint()
 
@@ -319,6 +326,18 @@ class QScale(QFrame):
             self._num_divisions = divisions
             self.repaint()
     
+    def get_scale_height(self):
+        return self._scale_height
+
+    def set_scale_height(self, value):
+        self._scale_height = int(value)
+        self.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)
+        if self._orientation == Qt.Horizontal:
+            self.setFixedHeight(value)
+        elif self._orientation == Qt.Vertical:
+            self.setFixedWidth(value)
+        self.repaint()
+
 class PyDMScaleIndicator(QFrame, PyDMWidget):
     """
     A bar-shaped indicator for scalar value with support for Channels and
@@ -766,7 +785,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         """
         The rate of tick marks height size (from bottom to top).
 
-        Returns
+        Parameters
         -------
         rate : float
             Between 0 and 1.
@@ -789,10 +808,32 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         """
         The number in which the scale is divided.
 
-        Returns
+        Parameters
         -------
         divisions : int
             The number of scale divisions.
         """
         self.scale_indicator.set_num_divisions(divisions)
 
+    @pyqtProperty(int)
+    def scaleHeight(self):
+        """
+        The scale height, fixed so it do not wiggle when value label resizes.
+
+        Returns
+        -------
+        int
+        """
+        return self.scale_indicator.get_scale_height()
+
+    @scaleHeight.setter
+    def scaleHeight(self, value):
+        """
+        The scale height, fixed so it do not wiggle when value label resizes.
+
+        Parameters
+        -------
+        divisions : int
+            The scale height.
+        """
+        self.scale_indicator.set_scale_height(value)
