@@ -27,10 +27,7 @@ path = os.getenv("PYDM_DATA_PLUGINS_PATH", None)
 if path is None:
     locations = []
 else:
-    if platform.system() == "Windows":
-        locations = path.split(";")
-    else:
-        locations = path.split(":")
+    locations = path.split(os.pathsep)
 
 # Ensure that we first visit the local data_plugins location
 locations.insert(0, plugin_dir)
