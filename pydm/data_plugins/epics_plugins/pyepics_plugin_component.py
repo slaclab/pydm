@@ -1,10 +1,10 @@
 import epics
 import logging
 import numpy as np
-from ..plugin import PyDMPlugin, PyDMConnection
-from ...PyQt.QtCore import pyqtSlot, Qt
-from ...PyQt.QtGui import QApplication
-from ...utilities import is_pydm_app
+from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
+from pydm.PyQt.QtCore import pyqtSlot, Qt
+from pydm.PyQt.QtGui import QApplication
+from pydm.utilities import is_pydm_app
 
 logger = logging.getLogger(__name__)
 

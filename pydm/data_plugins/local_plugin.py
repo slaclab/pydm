@@ -2,12 +2,12 @@
 Plugin to allow users to arbitrarily connect python object attributes to widget
 channels. This handles the polling tasks to update the gui.
 """
-import re
 import inspect
 import numpy as np
-from ..PyQt.QtGui import QWidget
-from ..PyQt.QtCore import pyqtSlot, pyqtSignal, Qt, QCoreApplication, QTimer
-from .plugin import PyDMPlugin, PyDMConnection
+from pydm.PyQt.QtGui import QWidget
+from pydm.PyQt.QtCore import pyqtSlot, Qt, QCoreApplication, QTimer
+from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
+
 
 class LocalPlugin(PyDMPlugin):
     """
@@ -38,6 +38,7 @@ class LocalPlugin(PyDMPlugin):
 
     Note that function args will be casted as floats or strings for simplicity.
     """
+
     def __init__(self, protocol, obj, widgets=[], refresh=1.0):
         """
         :param protocol: custom local protocol
@@ -108,10 +109,12 @@ def connection_class_factory(obj, refresh=1.0):
     :param refresh: default refresh rate for fields
     :type refresh:  float
     """
+
     class Connection(PyDMConnection):
         """
         Class that manages object attribute access.
         """
+
         def __init__(self, channel, address, parent=None):
             """
             Parse address, apply options, and add the first listener.
@@ -127,7 +130,7 @@ def connection_class_factory(obj, refresh=1.0):
             :param parent: PyQt widget that this widget is inside of.
             :type parent:  QWidget
             """
-            super(Connection,self).__init__(channel, address, parent)
+            super(Connection, self).__init__(channel, address, parent)
             self.obj = obj
             self.refresh = refresh
             # remove all whitespace from address and convert to str
@@ -325,4 +328,5 @@ def connection_class_factory(obj, refresh=1.0):
                 channel.waveform_signal.connect(self.put_value, Qt.QueuedConnection)
             except:
                 pass
+
     return Connection

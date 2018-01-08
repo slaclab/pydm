@@ -5,36 +5,34 @@ This is used instead of pyepics for better performance.
 import numpy as np
 import pyca
 from psp.Pv import Pv
-from ...PyQt.QtCore import pyqtSlot, pyqtSignal, Qt, QTimer
-from ..plugin import PyDMPlugin, PyDMConnection
-
-import datetime
+from pydm.PyQt.QtCore import pyqtSlot, Qt, QTimer
+from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
 # Map how we will interpret EPICS types in python.
 type_map = dict(
-    DBF_STRING = str,
-    DBF_CHAR = str,
-    DBF_UCHAR = str,
-    DBF_SHORT = int,
-    DBF_USHORT = int,
-    DBF_LONG = int,
-    DBF_ULONG = int,
-    DBF_FLOAT = float,
-    DBF_DOUBLE = float,
-    DBF_ENUM = int,
-    DBF_MENU = None,
-    DBF_DEVICE = None,
-    DBF_INLINK = None,
-    DBF_OUTLINK = None,
-    DBF_FWDLINK = None,
-    DBF_NOACCESS = None,
+    DBF_STRING=str,
+    DBF_CHAR=str,
+    DBF_UCHAR=str,
+    DBF_SHORT=int,
+    DBF_USHORT=int,
+    DBF_LONG=int,
+    DBF_ULONG=int,
+    DBF_FLOAT=float,
+    DBF_DOUBLE=float,
+    DBF_ENUM=int,
+    DBF_MENU=None,
+    DBF_DEVICE=None,
+    DBF_INLINK=None,
+    DBF_OUTLINK=None,
+    DBF_FWDLINK=None,
+    DBF_NOACCESS=None,
 )
 
 # .SCAN mapping to override throttle
 scan_list = [
-    float("inf"), #passive
-    float("inf"), #event
-    float("inf"), #IO Intr
+    float("inf"),  # passive
+    float("inf"),  # event
+    float("inf"),  # IO Intr
     10.0,
     5.0,
     2.0,
@@ -43,6 +41,7 @@ scan_list = [
     0.2,
     0.1,
 ]
+
 
 def generic_con_cb(pv_obj):
     """
@@ -53,10 +52,13 @@ def generic_con_cb(pv_obj):
     :type pv_obj:  Pv
     :rtype: function(is_connected)
     """
+
     def cb(is_connected):
         if is_connected and not pv_obj.ismonitored:
             pv_obj.monitor()
+
     return cb
+
 
 def generic_mon_cb(source, signal):
     """
@@ -70,13 +72,16 @@ def generic_mon_cb(source, signal):
     :type signal:  pyqtSignal
     :rtype: function(errors=None)
     """
+
     def cb(e=None):
         if e is None:
             try:
                 signal.emit(source.value)
             except AttributeError:
                 raise
+
     return cb
+
 
 def setup_pv(pvname, con_cb=None, mon_cb=None, signal=None, mon_cb_once=False):
     """
@@ -116,6 +121,7 @@ class Connection(PyDMConnection):
     Class that manages channel access connections using pyca through psp.
     See :class:`PyDMConnection` class.
     """
+
     def __init__(self, channel, pv, protocol=None, parent=None):
         """
         Instantiate Pv object and set up the channel access connections.
@@ -127,7 +133,7 @@ class Connection(PyDMConnection):
         :param parent: PyQt widget that this widget is inside of.
         :type parent:  QWidget
         """
-        super(Connection,self).__init__(channel, pv, protocol, parent)
+        super(Connection, self).__init__(channel, pv, protocol, parent)
         self.python_type = None
         self.pv = setup_pv(pv, self.connected_cb, self.monitor_cb)
         self.enums = None
@@ -158,8 +164,8 @@ class Connection(PyDMConnection):
         if isconnected:
             self.epics_type = self.pv.type()
             self.count = self.pv.count or 1
-            
-            #Get the control info for the PV.
+
+            # Get the control info for the PV.
             self.pv.get_data(True, -1.0, self.count)
             pyca.flush_io()
             if self.epics_type == "DBF_ENUM":
@@ -191,7 +197,7 @@ class Connection(PyDMConnection):
             secs, nanos = self.pv.timestamp()
         except KeyError:
             return None
-        return float(secs + nanos/1.0e9)
+        return float(secs + nanos / 1.0e9)
 
     def send_new_value(self, value=None):
         """
@@ -215,13 +221,13 @@ class Connection(PyDMConnection):
             if rwacc != self.rwacc:
                 self.rwacc = rwacc
                 self.write_access_signal.emit(rwacc == 3)
-        
+
         if self.enums is None:
             try:
                 self.update_enums()
             except KeyError:
                 self.pv.get_enum_strings(-1.0)
-        
+
         if self.pv.severity != self.sevr:
             self.sevr = self.pv.severity
             self.new_severity_signal.emit(self.sevr)
@@ -232,21 +238,21 @@ class Connection(PyDMConnection):
                 self.prec_signal.emit(int(self.prec))
             except KeyError:
                 pass
-        
+
         if self.units is None:
             try:
                 self.units = self.pv.data['units']
                 self.unit_signal.emit(self.units.decode(encoding='ascii'))
             except KeyError:
                 pass
-        
+
         if self.ctrl_llim is None:
             try:
                 self.ctrl_llim = self.pv.data['ctrl_llim']
                 self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
             except KeyError:
                 pass
-          
+
         if self.ctrl_hlim is None:
             try:
                 self.ctrl_hlim = self.pv.data['ctrl_hlim']
@@ -320,9 +326,9 @@ class Connection(PyDMConnection):
             self.pv.wait_ready()
             count = self.pv.count or 1
             if count > 1:
-                max_data_rate = 1000000. # bytes/s
-                bytes = self.pv.value.itemsize # bytes
-                throttle = max_data_rate/(bytes*count) # Hz
+                max_data_rate = 1000000.  # bytes/s
+                bytes = self.pv.value.itemsize  # bytes
+                throttle = max_data_rate / (bytes * count)  # Hz
                 if throttle < 120:
                     self.set_throttle(throttle)
 
@@ -340,9 +346,9 @@ class Connection(PyDMConnection):
             scan = scan_list[self.scan_pv.value]
         except:
             scan = float("inf")
-        if 0 < refresh_rate < 1/scan:
+        if 0 < refresh_rate < 1 / scan:
             self.pv.monitor_stop()
-            self.throttle.setInterval(1000.0/refresh_rate)
+            self.throttle.setInterval(1000.0 / refresh_rate)
             self.throttle.start()
         else:
             self.throttle.stop()
@@ -357,8 +363,8 @@ class Connection(PyDMConnection):
         :type channel:  :class:`PyDMChannel`
         """
         super(Connection, self).add_listener(channel)
-        #If we are adding a listener to an already existing PV, we need to
-        #manually send the signals indicating that the PV is connected, what the latest value is, etc.
+        # If we are adding a listener to an already existing PV, we need to
+        # manually send the signals indicating that the PV is connected, what the latest value is, etc.
         if self.pv.isconnected and self.pv.isinitialized:
             self.send_connection_state(conn=True)
             self.monitor_cb()
@@ -411,12 +417,13 @@ class Connection(PyDMConnection):
         self.scan_pv.monitor_stop()
         self.scan_pv.disconnect()
 
+
 class PSPPlugin(PyDMPlugin):
     """
     Class to define our protocol and point to our :class:`Connection` Class
     """
-    #NOTE: protocol is intentionally "None" to keep this plugin from getting directly imported.
-    #If this plugin is chosen as the One True EPICS Plugin in epics_plugin.py, the protocol will
-    #be properly set before it is used.
+    # NOTE: protocol is intentionally "None" to keep this plugin from getting directly imported.
+    # If this plugin is chosen as the One True EPICS Plugin in epics_plugin.py, the protocol will
+    # be properly set before it is used.
     protocol = None
     connection_class = Connection
