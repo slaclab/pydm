@@ -20,7 +20,7 @@ class PyDMConnection(QObject):
         self.connected = False
         self.value = None
         self.listener_count = 0
-    
+
     def add_listener(self, channel):
         self.listener_count = self.listener_count + 1
         if channel.connection_slot is not None:
@@ -135,6 +135,7 @@ class PyDMPlugin(object):
             self.connections[address].add_listener(channel)
         else:
             self.connections[address] = self.connection_class(channel, address, self.protocol)
+
     def remove_connection(self, channel):
         address = self.get_address(channel)
         if address in self.connections:

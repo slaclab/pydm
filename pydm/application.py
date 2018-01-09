@@ -589,6 +589,11 @@ class PyDMApplication(QApplication):
         """
         EXT_TOOLS_TOKEN = "_tool.py"
         path = os.getenv("PYDM_TOOLS_PATH", None)
+
+        print("*"*80)
+        print("* Loading PyDM External Tools")
+        print("*"*80)
+
         if path is not None:
             print("Looking for external tools at: {}".format(path))
             if platform.system() == "Windows":
