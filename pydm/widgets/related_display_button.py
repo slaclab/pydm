@@ -1,4 +1,4 @@
-from ..PyQt.QtGui import QPushButton, QCursor, QMenu, QAction
+from ..PyQt.QtGui import QPushButton, QCursor, QMenu, QAction, QIcon
 from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt, QSize, QPoint
 import json
 from functools import partial
@@ -31,17 +31,47 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         self.customContextMenuRequested.connect(self.show_context_menu)
 
         self.iconFont = IconFont()
-        icon = self.iconFont.icon("file")
+        self._icon = self.iconFont.icon("file")
         self.setIconSize(QSize(16, 16))
-        self.setIcon(icon)
+        self.setIcon(self._icon)
 
-        self.setCursor(QCursor(icon.pixmap(16, 16)))
+        self.setCursor(QCursor(self._icon.pixmap(16, 16)))
 
         self._display_filename = filename
         self._macro_string = None
         self._open_in_new_window = False
         self.open_in_new_window_action = QAction("Open in New Window", self)
         self.open_in_new_window_action.triggered.connect(partial(self.open_display, self.NEW_WINDOW))
+        self._show_icon = True
+
+    @pyqtProperty(bool)
+    def showIcon(self):
+        """
+        Whether or not we should show the selected Icon.
+
+        Returns
+        -------
+        bool
+        """
+        return self._show_icon
+
+    @showIcon.setter
+    def showIcon(self, value):
+        """
+        Whether or not we should show the selected Icon.
+
+        Parameters
+        ----------
+        value : bool
+        """
+        if self._show_icon != value:
+            self._show_icon = value
+
+            if self._show_icon:
+                self.setIcon(self._icon)
+            else:
+                self._icon = self.icon()
+                self.setIcon(QIcon())
 
     def check_enable_state(self):
         """
@@ -174,7 +204,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
                 self.window().new_window(self.displayFilename, macros=macros)
         except (IOError, OSError, ValueError, ImportError) as e:
             self.window().statusBar().showMessage("Cannot open file: '{0}'. Reason: '{1}'.".format(self.displayFilename, e), 5000)
-    
+
     def context_menu(self):
         try:
             menu = super(PyDMRelatedDisplayButton, self).context_menu()
@@ -184,8 +214,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             menu.addSeparator()
         menu.addAction(self.open_in_new_window_action)
         return menu
-        
-    
+
     @pyqtSlot(QPoint)
     def show_context_menu(self, pos):
         menu = self.context_menu()

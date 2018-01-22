@@ -1,4 +1,4 @@
-from ..PyQt.QtGui import QPushButton, QCursor
+from ..PyQt.QtGui import QPushButton, QCursor, QIcon
 from ..PyQt.QtCore import pyqtSlot, pyqtProperty, QSize
 import shlex, subprocess
 from .base import PyDMPrimitiveWidget
@@ -14,14 +14,44 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         QPushButton.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
         self.iconFont = IconFont()
-        icon = self.iconFont.icon("cog")
+        self._icon = self.iconFont.icon("cog")
         self.setIconSize(QSize(16, 16))
-        self.setIcon(icon)
-        self.setCursor(QCursor(icon.pixmap(16, 16)))
+        self.setIcon(self._icon)
+        self.setCursor(QCursor(self._icon.pixmap(16, 16)))
 
         self._command = command
         self._allow_multiple = False
         self.process = None
+        self._show_icon = True
+
+    @pyqtProperty(bool)
+    def showIcon(self):
+        """
+        Whether or not we should show the selected Icon.
+
+        Returns
+        -------
+        bool
+        """
+        return self._show_icon
+
+    @showIcon.setter
+    def showIcon(self, value):
+        """
+        Whether or not we should show the selected Icon.
+
+        Parameters
+        ----------
+        value : bool
+        """
+        if self._show_icon != value:
+            self._show_icon = value
+
+            if self._show_icon:
+                self.setIcon(self._icon)
+            else:
+                self._icon = self.icon()
+                self.setIcon(QIcon())
 
     @pyqtProperty(bool)
     def allowMultipleExecutions(self):
