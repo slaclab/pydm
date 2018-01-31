@@ -196,7 +196,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         Generates the custom context menu, and populates it with any external
         tools that have been loaded.  PyDMWidget subclasses should override
         this method (after calling superclass implementation) to add the menu.
-        
+
         Returns
         -------
         QMenu
@@ -673,7 +673,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self.format_string = "{}"
         if isinstance(self.value, (int, float)):
-            self.format_string = "{:." + str(self._prec) + "f}"
+            number_len = str(len(str(int(self.value))) + self._prec)
+            self.format_string = "{:." + number_len + "n}"
         if self._show_units and self._unit != "":
             self.format_string += " {}".format(self._unit)
         return self.format_string

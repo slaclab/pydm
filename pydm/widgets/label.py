@@ -74,7 +74,7 @@ class PyDMLabel(QLabel, PyDMWidget, DisplayFormat):
         # If the value is a number (float or int), display it using a
         # format string if necessary.
         if isinstance(new_value, (int, float)):
-            self.setText(self.format_string.format(new_value).replace('.', locale.localeconv()['decimal_point']))
+            self.setText(self.format_string.format(new_value))
             return
         # If you made it this far, just turn whatever the heck the value
         # is into a string and display it.
