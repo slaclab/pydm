@@ -673,7 +673,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self.format_string = "{}"
         if isinstance(self.value, (int, float)):
-            number_len = str(len(str(int(self.value))) + self._prec)
+            number_len = str(len(str(int(abs(self.value)))) + self._prec)
             self.format_string = "{:." + number_len + "n}"
         if self._show_units and self._unit != "":
             self.format_string += " {}".format(self._unit)
