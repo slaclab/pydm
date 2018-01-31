@@ -1,4 +1,3 @@
-import locale
 from .base import PyDMWidget
 from ..PyQt.QtGui import QLabel, QApplication
 from ..PyQt.QtCore import Qt, pyqtProperty, Q_ENUMS
