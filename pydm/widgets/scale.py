@@ -1,5 +1,5 @@
 from .base import PyDMWidget, compose_stylesheet
-from ..PyQt.QtGui import QFrame, QVBoxLayout, QHBoxLayout, QPainter, QColor, QPolygon, QPen, QLabel, QSizePolicy, QWidget
+from ..PyQt.QtGui import QFrame, QVBoxLayout, QHBoxLayout, QPainter, QColor, QPolygon, QPen, QLabel, QSizePolicy, QWidget, QGridLayout
 from ..PyQt.QtCore import Qt, QPoint, pyqtProperty
 from ..PyQt.Qt import QWIDGETSIZE_MAX
 from .channel import PyDMChannel
@@ -75,7 +75,7 @@ class QScale(QFrame):
             self._widget_height = self.width()
             self._painter_translation_y = self._widget_width
             self._painter_rotation = -90
-            self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+            self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
             self.setFixedWidth(self._scale_height)
 
         if self._inverted_appearance == True:
@@ -361,7 +361,10 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.lower_label.setText('<min>')
         self.upper_label.setText('<max>')
 
-        self.setup_widgets_for_orientation(Qt.Horizontal, False, False)
+        self._value_position = Qt.TopEdge
+
+        self.value_label.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.setup_widgets_for_orientation(Qt.Horizontal, False, False, self._value_position)
 
     def update_labels(self):
         """
@@ -412,7 +415,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.scale_indicator.set_lower_limit(new_limit)
         self.update_labels()
 
-    def setup_widgets_for_orientation(self, new_orientation, flipped, inverted):
+    def setup_widgets_for_orientation(self, new_orientation, flipped, inverted, value_position):
         """
         Reconstruct the widget given the orientation.
 
@@ -432,46 +435,130 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
             if inverted == False:
                 self.limits_layout.addWidget(self.lower_label)
                 self.limits_layout.addWidget(self.upper_label)
-                self.lower_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-                self.upper_label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
             else:
                 self.limits_layout.addWidget(self.upper_label)
                 self.limits_layout.addWidget(self.lower_label)
-                self.lower_label.setAlignment(Qt.AlignRight |Qt.AlignVCenter)
-                self.upper_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
             
-            self.widget_layout = QVBoxLayout()
+            self.widget_layout = QGridLayout()
             if flipped == False:
-                self.widget_layout.addWidget(self.value_label)
-                self.widget_layout.addWidget(self.scale_indicator)
-                self.widget_layout.addItem(self.limits_layout)
+                if value_position == Qt.LeftEdge:
+                    self.widget_layout.addWidget(self.value_label, 0, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, 0, 1)
+                    self.widget_layout.addItem(self.limits_layout, 1, 1)
+                elif value_position == Qt.RightEdge:
+                    self.widget_layout.addWidget(self.value_label, 0, 1)
+                    self.widget_layout.addWidget(self.scale_indicator, 0, 0)
+                    self.widget_layout.addItem(self.limits_layout, 1, 0)
+                elif value_position == Qt.TopEdge:
+                    self.widget_layout.addWidget(self.value_label, 0, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, 1, 0)
+                    self.widget_layout.addItem(self.limits_layout, 2, 0)
+                elif value_position == Qt.BottomEdge:
+                    self.widget_layout.addWidget(self.scale_indicator, 0, 0)
+                    self.widget_layout.addItem(self.limits_layout, 1, 0)
+                    self.widget_layout.addWidget(self.value_label, 2, 0)
+                
+                if inverted == False:
+                    self.lower_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+                    self.upper_label.setAlignment(Qt.AlignTop | Qt.AlignRight)
+                elif inverted == True:
+                    self.lower_label.setAlignment(Qt.AlignTop | Qt.AlignRight)
+                    self.upper_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
             else:
-                self.widget_layout.addItem(self.limits_layout)
-                self.widget_layout.addWidget(self.scale_indicator)
-                self.widget_layout.addWidget(self.value_label)
+                if value_position == Qt.LeftEdge:
+                    self.widget_layout.addItem(self.limits_layout, 0, 1)
+                    self.widget_layout.addWidget(self.scale_indicator, 1, 1)
+                    self.widget_layout.addWidget(self.value_label, 1, 0)
+                elif value_position == Qt.RightEdge:
+                    self.widget_layout.addItem(self.limits_layout, 0, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, 1, 0)
+                    self.widget_layout.addWidget(self.value_label, 1, 1)
+                elif value_position == Qt.TopEdge:
+                    self.widget_layout.addWidget(self.value_label, 0, 0)
+                    self.widget_layout.addItem(self.limits_layout, 1, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, 2, 0)
+                elif value_position == Qt.BottomEdge:
+                    self.widget_layout.addItem(self.limits_layout, 0, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, 1, 0)
+                    self.widget_layout.addWidget(self.value_label, 2, 0)
+                
+                if inverted == False:
+                    self.lower_label.setAlignment(Qt.AlignBottom | Qt.AlignLeft)
+                    self.upper_label.setAlignment(Qt.AlignBottom | Qt.AlignRight)
+                elif inverted == True:
+                    self.lower_label.setAlignment(Qt.AlignBottom | Qt.AlignRight)
+                    self.upper_label.setAlignment(Qt.AlignBottom | Qt.AlignLeft)
 
         elif new_orientation == Qt.Vertical:
             self.limits_layout = QVBoxLayout()
+            if (value_position == Qt.RightEdge and flipped == False) or \
+                   (value_position == Qt.LeftEdge and flipped == True):
+                add_value_between_limits = True
+            else:
+                add_value_between_limits = False
             if inverted == False:
                 self.limits_layout.addWidget(self.upper_label)
+                if add_value_between_limits:
+                    self.limits_layout.addWidget(self.value_label)
                 self.limits_layout.addWidget(self.lower_label)
                 self.lower_label.setAlignment(Qt.AlignHCenter | Qt.AlignBottom)
                 self.upper_label.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
             else:
                 self.limits_layout.addWidget(self.lower_label)
+                if add_value_between_limits:
+                    self.limits_layout.addWidget(self.value_label)
                 self.limits_layout.addWidget(self.upper_label)
                 self.lower_label.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
                 self.upper_label.setAlignment(Qt.AlignHCenter | Qt.AlignBottom)
 
-            self.widget_layout = QHBoxLayout()
+            self.widget_layout = QGridLayout()
             if flipped == False:
-                self.widget_layout.addWidget(self.value_label)
-                self.widget_layout.addWidget(self.scale_indicator)
-                self.widget_layout.addItem(self.limits_layout)
+                if value_position == Qt.LeftEdge:
+                    self.widget_layout.addWidget(self.value_label, 0, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, 0, 1)
+                    self.widget_layout.addItem(self.limits_layout, 0, 2)
+                elif value_position == Qt.RightEdge:
+                    self.widget_layout.addWidget(self.scale_indicator, 0, 0)
+                    self.widget_layout.addItem(self.limits_layout, 0, 1)
+                elif value_position == Qt.TopEdge:
+                    self.widget_layout.addWidget(self.value_label, 0, 0, 1, 2)
+                    self.widget_layout.addWidget(self.scale_indicator, 1, 0)
+                    self.widget_layout.addItem(self.limits_layout, 1, 1)
+                elif value_position == Qt.BottomEdge:
+                    self.widget_layout.addWidget(self.scale_indicator, 0, 0)
+                    self.widget_layout.addItem(self.limits_layout, 0, 1)
+                    self.widget_layout.addWidget(self.value_label, 1, 0, 1, 2)
+
+                if inverted == False:
+                    self.lower_label.setAlignment(Qt.AlignLeft | Qt.AlignBottom)
+                    self.upper_label.setAlignment(Qt.AlignLeft | Qt.AlignTop)
+                elif inverted == True:
+                    self.lower_label.setAlignment(Qt.AlignLeft | Qt.AlignTop)
+                    self.upper_label.setAlignment(Qt.AlignLeft | Qt.AlignBottom)
             else:
-                self.widget_layout.addItem(self.limits_layout)
-                self.widget_layout.addWidget(self.scale_indicator)
-                self.widget_layout.addWidget(self.value_label)
+                if value_position == Qt.LeftEdge:
+                    self.widget_layout.addItem(self.limits_layout, 0, 1)
+                    self.widget_layout.addWidget(self.scale_indicator, 0, 2)
+                elif value_position == Qt.RightEdge:
+                    self.widget_layout.addItem(self.limits_layout, 0, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, 0, 1)
+                    self.widget_layout.addWidget(self.value_label, 0, 2)
+                elif value_position == Qt.TopEdge:
+                    self.widget_layout.addWidget(self.value_label, 0, 0, 1, 2)
+                    self.widget_layout.addItem(self.limits_layout, 1, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, 1, 1)
+                elif value_position == Qt.BottomEdge:
+                    self.widget_layout.addItem(self.limits_layout, 0, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, 0, 1)
+                    self.widget_layout.addWidget(self.value_label, 1, 0, 1, 2)
+
+                if inverted == False:
+                    self.lower_label.setAlignment(Qt.AlignRight | Qt.AlignBottom)
+                    self.upper_label.setAlignment(Qt.AlignRight | Qt.AlignTop)
+                elif inverted == True:
+                    self.lower_label.setAlignment(Qt.AlignRight | Qt.AlignTop)
+                    self.upper_label.setAlignment(Qt.AlignRight | Qt.AlignBottom)
+
         self.value_label.setAlignment(Qt.AlignCenter)
 
         if self.layout() is not None:
@@ -603,7 +690,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
             Qt.Horizontal or Qt.Vertical
         """
         self.scale_indicator.set_orientation(orientation)
-        self.setup_widgets_for_orientation(orientation, self.flipScale, self.invertedAppearance)
+        self.setup_widgets_for_orientation(orientation, self.flipScale, self.invertedAppearance, self._value_position)
 
     @pyqtProperty(bool)
     def flipScale(self):
@@ -626,7 +713,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         checked : bool
         """
         self.scale_indicator.set_flip_scale(checked)
-        self.setup_widgets_for_orientation(self.orientation, checked, self.invertedAppearance)
+        self.setup_widgets_for_orientation(self.orientation, checked, self.invertedAppearance, self._value_position)
 
     @pyqtProperty(bool)
     def invertedAppearance(self):
@@ -649,7 +736,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         inverted : bool
         """
         self.scale_indicator.set_inverted_appearance(inverted)
-        self.setup_widgets_for_orientation(self.orientation, self.flipScale, inverted)
+        self.setup_widgets_for_orientation(self.orientation, self.flipScale, inverted, self._value_position)
 
     @pyqtProperty(bool)
     def barIndicator(self):
@@ -830,3 +917,28 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
             The scale height.
         """
         self.scale_indicator.set_scale_height(value)
+
+    @pyqtProperty(Qt.Edge)
+    def valuePosition(self):
+        """
+        The position of the value label (Top, Bottom, Left or Right).
+
+        Returns
+        -------
+        int
+            Qt.TopEdge, Qt.BottomEdge, Qt.LeftEdge or Qt.RightEdge
+        """
+        return self._value_position
+
+    @valuePosition.setter
+    def valuePosition(self, position):
+        """
+       The position of the value label (Top, Bottom, Left or Right).
+
+        Parameters
+        ----------
+        position : int
+            Qt.TopEdge, Qt.BottomEdge, Qt.LeftEdge or Qt.RightEdge
+        """
+        self._value_position = position
+        self.setup_widgets_for_orientation(self.orientation, self.flipScale, self.invertedAppearance, position)
