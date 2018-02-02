@@ -19,9 +19,9 @@ class QScale(QFrame):
     """
     def __init__(self, parent=None):
         super(QScale, self).__init__(parent)
-        self._value = 4
-        self._lower_limit = 0
-        self._upper_limit = 10
+        self._value = 1
+        self._lower_limit = -5
+        self._upper_limit = 5
         self.position = None # unit: pixel
 
         self._bg_color = QColor('darkgray')
@@ -53,6 +53,8 @@ class QScale(QFrame):
         self._inverted_appearance = False
         self._flip_scale = False
         self._scale_height = 35
+        self._origin_at_zero = False
+        self._origin_position = 0
 
         self.set_position()
 
@@ -118,13 +120,16 @@ class QScale(QFrame):
         """
         Draw a bar as indicator of current value.
         """
+        self.set_origin()
         self.set_position()
+
         if self.position < 0 or self.position > self._widget_width:
             return
         self._painter.setPen(Qt.transparent)
         self._painter.setBrush(self._indicator_color)
+        bar_width = self.position - self._origin_position
         bar_height = self._bg_size_rate * self._widget_height
-        self._painter.drawRect(0, 0, self.position, bar_height)
+        self._painter.drawRect(self._origin_position, 0, bar_width, bar_height)
 
     def draw_pointer(self):
         """
@@ -192,15 +197,33 @@ class QScale(QFrame):
         
         self._painter.end()
 
+    def calculate_position_for_value(self, value):
+        """
+        Calculate the position (pixel) in which the pointer should be drawn for a given value.
+        """
+        if value < self._lower_limit or value > self._upper_limit or \
+           self._upper_limit - self._lower_limit == 0:
+            proportion = -1 # Invalid
+        else:
+            proportion = (value - self._lower_limit) / (self._upper_limit - self._lower_limit)
+        
+        position = int(proportion * self._widget_width)
+        return position
+
+    def set_origin(self):
+        """
+        Set the position (pixel) in which the origin should be drawn.
+        """
+        if self._origin_at_zero == True:
+            self._origin_position = self.calculate_position_for_value(0)
+        else:
+            self._origin_position = 0
+
     def set_position(self):
         """
-        Calculate the position (pixel) in which the pointer should be drawn.
+        Set the position (pixel) in which the pointer should be drawn.
         """
-        try:
-            proportion = (self._value - self._lower_limit) / (self._upper_limit - self._lower_limit)
-        except:
-            proportion = -1 # Invalid
-        self.position = int(proportion * self._widget_width)
+        self.position = self.calculate_position_for_value(self._value)
 
     def update_indicator(self):
         """
@@ -258,7 +281,7 @@ class QScale(QFrame):
         return self._flip_scale
 
     def set_flip_scale(self, checked):
-        self._flip_scale = checked
+        self._flip_scale = bool(checked)
         self.adjust_transformation()
         self.repaint()
 
@@ -330,6 +353,14 @@ class QScale(QFrame):
         self._scale_height = int(value)
         self.adjust_transformation()
         self.repaint()
+
+    def get_origin_at_zero(self):
+        return self._origin_at_zero
+
+    def set_origin_at_zero(self, checked):
+        if self._origin_at_zero != bool(checked):
+            self._origin_at_zero = checked
+            self.repaint()
 
 class PyDMScaleIndicator(QFrame, PyDMWidget):
     """
@@ -942,3 +973,27 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         """
         self._value_position = position
         self.setup_widgets_for_orientation(self.orientation, self.flipScale, self.invertedAppearance, position)
+
+    @pyqtProperty(bool)
+    def originAtZero(self):
+        """
+        Whether or not the scale indicator should start at zero value.
+        Applies only for bar indicator.
+
+        Returns
+        -------
+        bool
+        """
+        return self.scale_indicator.get_origin_at_zero()
+
+    @originAtZero.setter
+    def originAtZero(self, checked):
+        """
+        Whether or not the scale indicator should start at zero value.
+        Applies only for bar indicator.
+
+        Parameters
+        ----------
+        checked : bool
+        """
+        self.scale_indicator.set_origin_at_zero(checked)
