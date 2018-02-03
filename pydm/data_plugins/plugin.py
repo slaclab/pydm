@@ -15,6 +15,7 @@ class PyDMConnection(QObject):
 
     def __init__(self, channel, address, protocol=None, parent=None):
         super(PyDMConnection, self).__init__(parent)
+        self.channel = channel
         self.protocol = protocol
         self.address = address
         self.connected = False
@@ -91,25 +92,40 @@ class PyDMConnection(QObject):
                 pass
 
         if channel.severity_slot is not None:
-            self.new_severity_signal.disconnect(channel.severity_slot)
-
-        if channel.write_access_slot is not None:
-            self.write_access_signal.disconnect(channel.write_access_slot)
-
-        if channel.enum_strings_slot is not None:
-            self.enum_strings_signal.disconnect(channel.enum_strings_slot)
-
-        if channel.unit_slot is not None:
-            self.unit_signal.disconnect(channel.unit_slot)
-
-        if channel.upper_ctrl_limit_slot is not None:
-            self.upper_ctrl_limit_signal.disconnect(channel.upper_ctrl_limit_slot)
-
-        if channel.lower_ctrl_limit_slot is not None:
-            self.lower_ctrl_limit_signal.disconnect(channel.lower_ctrl_limit_slot)
-
-        if channel.prec_slot is not None:
-            self.prec_signal.disconnect(channel.prec_slot)
+            try:
+                self.new_severity_signal.disconnect(channel.severity_slot)
+            except TypeError:
+                pass
+            try:
+                if channel.write_access_slot is not None:
+                    self.write_access_signal.disconnect(channel.write_access_slot)
+            except TypeError:
+                pass
+            try:
+                if channel.enum_strings_slot is not None:
+                    self.enum_strings_signal.disconnect(channel.enum_strings_slot)
+            except TypeError:
+                pass
+            try:
+                if channel.unit_slot is not None:
+                    self.unit_signal.disconnect(channel.unit_slot)
+            except TypeError:
+                pass
+            try:
+                if channel.upper_ctrl_limit_slot is not None:
+                    self.upper_ctrl_limit_signal.disconnect(channel.upper_ctrl_limit_slot)
+            except TypeError:
+                pass
+            try:
+                if channel.lower_ctrl_limit_slot is not None:
+                    self.lower_ctrl_limit_signal.disconnect(channel.lower_ctrl_limit_slot)
+            except TypeError:
+                pass
+            try:
+                if channel.prec_slot is not None:
+                    self.prec_signal.disconnect(channel.prec_slot)
+            except TypeError:
+                pass
 
         self.listener_count = self.listener_count - 1
         if self.listener_count < 1:

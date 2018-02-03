@@ -87,6 +87,27 @@ class Connection(PyDMConnection):
             self._lower_ctrl_limit = lower_ctrl_limit
             self.lower_ctrl_limit_signal.emit(lower_ctrl_limit)
 
+    def force_ctrl_vars(self):
+        # TODO: Remove this method once we find the reason why
+        # new clients are not receiving the data with Epics Base
+        # R3.14.12.4 here at SLAC. So far we are forcing the ctrl_vars
+        # on every new client that connects.
+        # This does not affect much older clients since we check at the
+        # widget if the info is different before calling the callbacks.
+        # Or at least we should.
+        if self._severity is not None:
+            self.new_severity_signal.emit(int(self._severity))
+        if self._precision is not None:
+            self.prec_signal.emit(self._precision)
+        if self._enum_strs is not None:
+            self.enum_strings_signal.emit(self._enum_strs)
+        if self._unit is not None:
+            self.unit_signal.emit(self._unit)
+        if self._upper_ctrl_limit is not None:
+            self.upper_ctrl_limit_signal.emit(self._upper_ctrl_limit)
+        if self._lower_ctrl_limit is not None:
+            self.lower_ctrl_limit_signal.emit(self._lower_ctrl_limit)
+
     def send_access_state(self, read_access, write_access, *args, **kws):
         if is_pydm_app() and self.app.is_read_only():
             self.write_access_signal.emit(False)
@@ -108,6 +129,7 @@ class Connection(PyDMConnection):
             if hasattr(self, 'pv'):
                 self.reload_access_state()
                 self.pv.run_callbacks()
+                self.force_ctrl_vars()
 
     @pyqtSlot(int)
     @pyqtSlot(float)
@@ -131,6 +153,7 @@ class Connection(PyDMConnection):
         if epics.ca.isConnected(self.pv.chid):
             self.send_connection_state(conn=True)
             self.pv.run_callbacks()
+            self.force_ctrl_vars()
         else:
             self.send_connection_state(conn=False)
         # If the channel is used for writing to PVs, hook it up to the 'put' methods.
