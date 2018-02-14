@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.0.0+14.g22fcba2 documentation</title>
+  <title>pydm.application &mdash; PyDM v1.1.0+2.g675543c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="PyDM v1.0.0+14.g22fcba2 documentation" href="../../index.html"/>
+    <link rel="top" title="PyDM v1.1.0+2.g675543c documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v1.0.0+14.g22fcba2
+                v1.1.0+2.g675543c
               </div>
             
           
@@ -300,8 +300,8 @@
         <span class="c1"># Connect to top-level widgets that were not loaded from file</span>
         <span class="c1"># These are usually testing/debug widgets</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">had_file</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">make_connections</span><span class="p">()</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMApplication</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">make_connections</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMApplication</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">is_read_only</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_only</span>
@@ -314,16 +314,16 @@
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">perf</span><span class="o">.</span><span class="n">oneshot</span><span class="p">():</span>
             <span class="n">total_percent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">perf</span><span class="o">.</span><span class="n">cpu_percent</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
             <span class="n">total_time</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">perf</span><span class="o">.</span><span class="n">cpu_times</span><span class="p">())</span>
-            <span class="n">usage</span> <span class="o">=</span> <span class="p">[</span><span class="n">total_percent</span> <span class="o">*</span> <span class="p">((</span><span class="n">t</span><span class="o">.</span><span class="n">system_time</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">user_time</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_time</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">perf</span><span class="o">.</span><span class="n">threads</span><span class="p">()]</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total: </span><span class="si">{tot}</span><span class="s2">, Per Thread: </span><span class="si">{percpu}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tot</span><span class="o">=</span><span class="n">total_percent</span><span class="p">,</span> <span class="n">percpu</span><span class="o">=</span><span class="n">usage</span><span class="p">))</span></div>
+            <span class="n">usage</span> <span class="o">=</span> <span class="p">[</span><span class="n">total_percent</span> <span class="o">*</span> <span class="p">((</span><span class="n">t</span><span class="o">.</span><span class="n">system_time</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">user_time</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_time</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">perf</span><span class="o">.</span><span class="n">threads</span><span class="p">()]</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total: </span><span class="si">{tot}</span><span class="s2">, Per Thread: </span><span class="si">{percpu}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tot</span><span class="o">=</span><span class="n">total_percent</span><span class="p">,</span> <span class="n">percpu</span><span class="o">=</span><span class="n">usage</span><span class="p">))</span>
 
 <div class="viewcode-block" id="PyDMApplication.make_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.make_connections">[docs]</a>    <span class="k">def</span> <span class="nf">make_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Establish initial connections to all PyDM channels found while traversing</span>
 <span class="sd">        the widget tree.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">topLevelWidgets</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">establish_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span></div>
+        <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">topLevelWidgets</span><span class="p">():</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">establish_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMApplication.new_pydm_process"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.new_pydm_process">[docs]</a>    <span class="k">def</span> <span class="nf">new_pydm_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -369,8 +369,8 @@
             <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">macros</span><span class="p">)])</span>
         <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display_args</span><span class="p">)</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">filepath_args</span><span class="p">)</span>
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+        <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">filepath_args</span><span class="p">)</span></div>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMApplication.new_window"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.new_window">[docs]</a>    <span class="k">def</span> <span class="nf">new_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -392,8 +392,8 @@
 <span class="sd">            to pass in extra arguments.  It is probably rare that code you</span>
 <span class="sd">            write needs to use this argument.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># All new windows are spawned as new processes.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">new_pydm_process</span><span class="p">(</span><span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="p">)</span></div>
+        <span class="c1"># All new windows are spawned as new processes.</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_pydm_process</span><span class="p">(</span><span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMApplication.make_window"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.make_window">[docs]</a>    <span class="k">def</span> <span class="nf">make_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -424,8 +424,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">load_external_tools</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">windows</span><span class="p">[</span><span class="n">main_window</span><span class="p">]</span> <span class="o">=</span> <span class="n">path_info</span><span class="p">(</span><span class="n">ui_file</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="c1"># If we are launching a new window, we don&#39;t want it to sit right on top of an existing window.</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">windows</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">main_window</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">main_window</span><span class="o">.</span><span class="n">x</span><span class="p">()</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="n">main_window</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">windows</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span></div>
+            <span class="n">main_window</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">main_window</span><span class="o">.</span><span class="n">x</span><span class="p">()</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="n">main_window</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">close_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -456,8 +456,8 @@
         <span class="k">if</span> <span class="n">macros</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">macros</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">macro</span><span class="o">.</span><span class="n">substitute_in_file</span><span class="p">(</span><span class="n">uifile</span><span class="p">,</span> <span class="n">macros</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="n">uifile</span>
-        <span class="k">return</span> <span class="n">uic</span><span class="o">.</span><span class="n">loadUi</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">uifile</span></div>
+        <span class="k">return</span> <span class="n">uic</span><span class="o">.</span><span class="n">loadUi</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__sanity_check_pyqt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">itm</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
@@ -523,8 +523,8 @@
         <span class="k">if</span> <span class="s1">&#39;args&#39;</span> <span class="ow">in</span> <span class="n">module_params</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span>
         <span class="k">if</span> <span class="s1">&#39;macros&#39;</span> <span class="ow">in</span> <span class="n">module_params</span><span class="p">:</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;macros&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">macros</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;macros&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">macros</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMApplication.open_file"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.open_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -572,8 +572,8 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid file type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extension</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">establish_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">directory_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">macro_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">widget</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">macro_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="n">widget</span>
 
     <span class="c1"># get_path gives you the path to ui_file relative to where you are running pydm from.</span>
     <span class="c1"># Many widgets handle file paths (related display, embedded display, and drawing image come to mind)</span>
@@ -599,16 +599,16 @@
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dirname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ui_file</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">full_path</span></div>
+        <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ui_file</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">full_path</span>
 
 <div class="viewcode-block" id="PyDMApplication.open_relative"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.open_relative">[docs]</a>    <span class="k">def</span> <span class="nf">open_relative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="p">[]):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        open_relative opens a ui file with a relative path.  This is</span>
 <span class="sd">        really only used by embedded displays.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="n">ui_file</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="n">command_line_args</span><span class="p">)</span></div>
+        <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="n">ui_file</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="n">command_line_args</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMApplication.plugin_for_channel"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.plugin_for_channel">[docs]</a>    <span class="k">def</span> <span class="nf">plugin_for_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -635,8 +635,8 @@
             <span class="k">return</span> <span class="n">plugin_to_use</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t find plugin for protocol: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]))</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Channel </span><span class="si">{addr}</span><span class="s2"> did not specify a valid protocol and no default protocol is defined.  This channel will receive no data.  To specify a default protocol, set the PYDM_DEFAULT_PROTOCOL environment variable.&quot;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Channel </span><span class="si">{addr}</span><span class="s2"> did not specify a valid protocol and no default protocol is defined.  This channel will receive no data.  To specify a default protocol, set the PYDM_DEFAULT_PROTOCOL environment variable.&quot;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="PyDMApplication.add_connection"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.add_connection">[docs]</a>    <span class="k">def</span> <span class="nf">add_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -647,8 +647,8 @@
 <span class="sd">        channel : PyDMChannel</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">plugin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_for_channel</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">plugin</span><span class="p">:</span>
-            <span class="n">plugin</span><span class="o">.</span><span class="n">add_connection</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">plugin</span><span class="p">:</span></div>
+            <span class="n">plugin</span><span class="o">.</span><span class="n">add_connection</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMApplication.remove_connection"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.remove_connection">[docs]</a>    <span class="k">def</span> <span class="nf">remove_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -659,16 +659,16 @@
 <span class="sd">        channel : PyDMChannel</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">plugin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_for_channel</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">plugin</span><span class="p">:</span>
-            <span class="n">plugin</span><span class="o">.</span><span class="n">remove_connection</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">plugin</span><span class="p">:</span></div>
+            <span class="n">plugin</span><span class="o">.</span><span class="n">remove_connection</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication.eventFilter"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.eventFilter">[docs]</a>    <span class="k">def</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="c1"># Override the eventFilter to capture all middle mouse button events,</span>
         <span class="c1"># and show a tooltip if needed.</span>
         <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">.</span><span class="n">MouseButtonPress</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MiddleButton</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">show_address_tooltip</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
-                <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">return</span> <span class="kc">True</span></div>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="c1"># Not sure if showing the tooltip should be the job of the app,</span>
@@ -705,8 +705,8 @@
                     <span class="c1"># Take this opportunity to install a filter that intercepts middle-mouse clicks,</span>
                     <span class="c1"># which we use to display a tooltip with the address of the widget&#39;s first channel.</span>
                     <span class="n">child_widget</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-                <span class="k">pass</span></div>
+            <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span></div>
+                <span class="k">pass</span>
 
 <div class="viewcode-block" id="PyDMApplication.close_widget_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.close_widget_connections">[docs]</a>    <span class="k">def</span> <span class="nf">close_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -724,8 +724,8 @@
                 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child_widget</span><span class="p">,</span> <span class="s1">&#39;channels&#39;</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">child_widget</span><span class="o">.</span><span class="n">channels</span><span class="p">():</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">remove_connection</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-                <span class="k">pass</span></div>
+            <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span></div>
+                <span class="k">pass</span>
 
 <div class="viewcode-block" id="PyDMApplication.list_all_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.list_all_connections">[docs]</a>    <span class="k">def</span> <span class="nf">list_all_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -738,8 +738,8 @@
         <span class="n">conns</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">connection</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">connections</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="n">conns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">conns</span></div>
+                <span class="n">conns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">conns</span>
 
 <div class="viewcode-block" id="PyDMApplication.load_external_tools"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.load_external_tools">[docs]</a>    <span class="k">def</span> <span class="nf">load_external_tools</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -766,8 +766,8 @@
                     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">EXT_TOOLS_TOKEN</span><span class="p">):</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">install_external_tool</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;External Tools not loaded. No External Tools Path specified.&quot;</span><span class="p">)</span></div>
+        <span class="k">else</span><span class="p">:</span></div>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;External Tools not loaded. No External Tools Path specified.&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMApplication.install_external_tool"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.install_external_tool">[docs]</a>    <span class="k">def</span> <span class="nf">install_external_tool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -815,8 +815,8 @@
             <span class="n">reorder_tools_dict</span><span class="p">()</span>
             <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;channels&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;sender&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">}</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">assemble_tools_menu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">menuTools</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to load External Tool: &quot;</span><span class="p">,</span> <span class="n">tool</span><span class="p">,</span> <span class="s2">&quot;. Exception was: &quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span></div>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to load External Tool: &quot;</span><span class="p">,</span> <span class="n">tool</span><span class="p">,</span> <span class="s2">&quot;. Exception was: &quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
 <div class="viewcode-block" id="PyDMApplication.assemble_tools_menu"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.assemble_tools_menu">[docs]</a>    <span class="k">def</span> <span class="nf">assemble_tools_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_menu</span><span class="p">,</span> <span class="n">widget_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -864,8 +864,8 @@
                 <span class="n">assemble_action</span><span class="p">(</span><span class="n">parent_menu</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">widget_only</span><span class="p">:</span>
-            <span class="n">parent_menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
-            <span class="n">parent_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionLoadTool</span><span class="p">)</span></div></div>
+            <span class="n">parent_menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span></div></div>
+            <span class="n">parent_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionLoadTool</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -902,7 +902,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v1.0.0+14.g22fcba2',
+            VERSION:'v1.1.0+2.g675543c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDM Channel &mdash; PyDM v1.0.0+14.g22fcba2 documentation</title>
+  <title>PyDM Channel &mdash; PyDM v1.1.0+2.g675543c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="PyDM v1.0.0+14.g22fcba2 documentation" href="index.html"/> 
+    <link rel="top" title="PyDM v1.1.0+2.g675543c documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v1.0.0+14.g22fcba2
+                v1.1.0+2.g675543c
               </div>
             
           
@@ -167,10 +167,10 @@ external plugin</p>
 <p>The purpose of this class is to create a templated slot and signals
 list that can be sent to an external plugin. The type of plugin is
 determined by the PyDMApplication based on the identifier placed at
-the beginning of the <code class="xref py py-attr docutils literal"><span class="pre">address</span></code> attribute. This allows a generic
+the beginning of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">address</span></code> attribute. This allows a generic
 way to connect slots and signals to functionality within your PyDM
 Widget. Slots should be connected to functions on your created widget
-that perform actions upon changes. For instance, the <code class="xref py py-attr docutils literal"><span class="pre">value_slot</span></code>
+that perform actions upon changes. For instance, the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code>
 will be automatically called everytime a new value is found by the
 plugin. This should probably linked to a function that updates the
 display to report the new value. Signals perform the reverse operation.
@@ -178,11 +178,11 @@ These should be used to send new values back to the plugin to update
 the source.</p>
 <p>Using this structure to interface with plugins allows your created PyDM
 Widget a greater flexibility in choosing its underlying source. For
-instance, returning to the example of the <code class="xref py py-attr docutils literal"><span class="pre">value_slot</span></code>,
+instance, returning to the example of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code>,
 getting a value to display from channel access or from the EPICS Archiver
 are very different operations. However, actually displaying the value
 should be identical. By simplying attching your PyDM Widget’s display
-functionality to the <code class="xref py py-attr docutils literal"><span class="pre">value_slot</span></code> you have created a
+functionality to the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code> you have created a
 Widget that can do either interchangeably, all the user has to do is
 specify the correct address signature and the rest of the work is done
 by the underlying plugins.</p>
@@ -248,7 +248,7 @@ through the plugin</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v1.0.0+14.g22fcba2',
+            VERSION:'v1.1.0+2.g675543c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

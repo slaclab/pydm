@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMDrawing Widgets &mdash; PyDM v1.0.0+14.g22fcba2 documentation</title>
+  <title>PyDMDrawing Widgets &mdash; PyDM v1.1.0+2.g675543c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyDM v1.0.0+14.g22fcba2 documentation" href="../index.html"/>
+    <link rel="top" title="PyDM v1.1.0+2.g675543c documentation" href="../index.html"/>
         <link rel="up" title="PyDM Widgets" href="index.html"/>
         <link rel="next" title="PyDMEmbeddedDisplay" href="embedded_display.html"/>
         <link rel="prev" title="PyDMCheckbox" href="checkbox.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                v1.0.0+14.g22fcba2
+                v1.1.0+2.g675543c
               </div>
             
           
@@ -244,7 +244,7 @@ drawing</p>
 <code class="descname">draw_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawing.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.draw_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>The classes inheriting from PyDMDrawing must overwrite this method.
 This method translate the painter to the center point given by
-<code class="docutils literal"><span class="pre">`get_center`</span></code> and rotate the canvas by the given amount of
+<code class="docutils literal notranslate"><span class="pre">`get_center`</span></code> and rotate the canvas by the given amount of
 degrees.</p>
 </dd></dl>
 
@@ -258,7 +258,7 @@ degrees.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>maxsize</strong> (<em>bool</em><em>, </em><em>default is False</em>) – If True, width and height information are based on the
-maximum inner rectangle dimensions given by <code class="docutils literal"><span class="pre">`get_inner_max`</span></code>,
+maximum inner rectangle dimensions given by <code class="docutils literal notranslate"><span class="pre">`get_inner_max`</span></code>,
 otherwise width and height will receive the widget size.</li>
 <li><strong>force_no_pen</strong> (<em>bool</em><em>, </em><em>default is False</em>) – If True the pen width will not be considered when calculating
 the bounds.</li>
@@ -349,7 +349,7 @@ Pen Style and Pen width.</p>
 for instance when part of a widget is exposed because a covering
 widget was moved.</p>
 <p>At PyDMDrawing this method handles the alarm painting with parameters
-from the stylesheet, configures the brush, pen and calls <code class="docutils literal"><span class="pre">`draw_item`</span></code>
+from the stylesheet, configures the brush, pen and calls <code class="docutils literal notranslate"><span class="pre">`draw_item`</span></code>
 so the specifics can be performed for each of the drawing classes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -426,6 +426,11 @@ to be applied to the drawing.</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="pydm.widgets.drawing.PyDMDrawing.sizeHint">
+<code class="descname">sizeHint</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span> &#x2192; QSize<a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawing.sizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.sizeHint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -449,7 +454,7 @@ This class inherits from PyDMDrawing.</p>
 <dt id="pydm.widgets.drawing.PyDMDrawingLine.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingLine.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.draw_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the line after setting up the canvas with a call to
-<code class="docutils literal"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -457,7 +462,7 @@ This class inherits from PyDMDrawing.</p>
 <dl class="class">
 <dt id="pydm.widgets.drawing.PyDMDrawingImage">
 <em class="property">class </em><code class="descclassname">pydm.widgets.drawing.</code><code class="descname">PyDMDrawingImage</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em>, <em>filename=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage" title="Permalink to this definition">¶</a></dt>
-<dd><p>Renders an image given by the <code class="docutils literal"><span class="pre">`filename`</span></code> property.
+<dd><p>Renders an image given by the <code class="docutils literal notranslate"><span class="pre">`filename`</span></code> property.
 This class inherits from PyDMDrawing.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -492,7 +497,7 @@ the image</p>
 <dt id="pydm.widgets.drawing.PyDMDrawingImage.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingImage.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.draw_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the image after setting up the canvas with a call to
-<code class="docutils literal"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -511,6 +516,11 @@ This can be an absolute or relative path to the display file.</p>
 </tbody>
 </table>
 </dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.drawing.PyDMDrawingImage.sizeHint">
+<code class="descname">sizeHint</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span> &#x2192; QSize<a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingImage.sizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.sizeHint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -535,7 +545,7 @@ This class inherits from PyDMDrawing.</p>
 <dt id="pydm.widgets.drawing.PyDMDrawingRectangle.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingRectangle.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingRectangle.draw_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the rectangle after setting up the canvas with a call to
-<code class="docutils literal"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -561,7 +571,7 @@ This class inherits from PyDMDrawing.</p>
 <dt id="pydm.widgets.drawing.PyDMDrawingTriangle.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingTriangle.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingTriangle.draw_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the triangle after setting up the canvas with a call to
-<code class="docutils literal"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -587,7 +597,7 @@ This class inherits from PyDMDrawing.</p>
 <dt id="pydm.widgets.drawing.PyDMDrawingEllipse.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingEllipse.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingEllipse.draw_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the ellipse after setting up the canvas with a call to
-<code class="docutils literal"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -613,7 +623,7 @@ This class inherits from PyDMDrawing.</p>
 <dt id="pydm.widgets.drawing.PyDMDrawingCircle.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingCircle.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingCircle.draw_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the circle after setting up the canvas with a call to
-<code class="docutils literal"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -639,7 +649,7 @@ This class inherits from PyDMDrawing.</p>
 <dt id="pydm.widgets.drawing.PyDMDrawingArc.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingArc.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc.draw_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the arc after setting up the canvas with a call to
-<code class="docutils literal"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -697,7 +707,7 @@ This class inherits from PyDMDrawing.</p>
 <dt id="pydm.widgets.drawing.PyDMDrawingPie.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingPie.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPie.draw_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the pie after setting up the canvas with a call to
-<code class="docutils literal"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -723,7 +733,7 @@ This class inherits from PyDMDrawing.</p>
 <dt id="pydm.widgets.drawing.PyDMDrawingChord.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingChord.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingChord.draw_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the chord after setting up the canvas with a call to
-<code class="docutils literal"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -774,7 +784,7 @@ This class inherits from PyDMDrawing.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v1.0.0+14.g22fcba2',
+            VERSION:'v1.1.0+2.g675543c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

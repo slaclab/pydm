@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.0.0+14.g22fcba2 documentation</title>
+  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.1.0+2.g675543c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM v1.0.0+14.g22fcba2 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM v1.1.0+2.g675543c documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v1.0.0+14.g22fcba2
+                v1.1.0+2.g675543c
               </div>
             
           
@@ -221,8 +221,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">combo_box</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">enum</span> <span class="ow">in</span> <span class="n">enums</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">combo_box</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">enum</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_has_enums</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_enums</span> <span class="o">=</span> <span class="kc">True</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.check_enable_state"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.check_enable_state">[docs]</a>    <span class="k">def</span> <span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -243,8 +243,8 @@
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_enums</span><span class="p">:</span>
             <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;Enums not available.&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">tooltip</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">status</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">tooltip</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.enum_strings_changed"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.enum_strings_changed">[docs]</a>    <span class="k">def</span> <span class="nf">enum_strings_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_enum_strings</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -257,8 +257,8 @@
 <span class="sd">        new_enum_strings : tuple</span>
 <span class="sd">            The new list of values</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">enum_strings_changed</span><span class="p">(</span><span class="n">new_enum_strings</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_items</span><span class="p">(</span><span class="n">new_enum_strings</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">enum_strings_changed</span><span class="p">(</span><span class="n">new_enum_strings</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_items</span><span class="p">(</span><span class="n">new_enum_strings</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.value_changed"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -271,8 +271,8 @@
 <span class="sd">            The new value from the channel. The type depends on the channel.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">combo_box</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span></div>
+            <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">combo_box</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
 
     <span class="c1"># Internal combo box signal handling.</span>
     <span class="c1"># In places where we just forward the signal, we may want to instead</span>
@@ -290,8 +290,8 @@
 <span class="sd">        index : int</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">activated</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activated</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.internal_combo_box_activated_str"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.internal_combo_box_activated_str">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">internal_combo_box_activated_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
@@ -303,8 +303,8 @@
 <span class="sd">        ----------</span>
 <span class="sd">        text : str</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">activated</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activated</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.internal_combo_box_index_changed_int"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.internal_combo_box_index_changed_int">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">internal_combo_box_index_changed_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
@@ -316,8 +316,8 @@
 <span class="sd">        ----------</span>
 <span class="sd">        index : int</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.internal_combo_box_index_changed_str"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.internal_combo_box_index_changed_str">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">internal_combo_box_index_changed_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
@@ -329,8 +329,8 @@
 <span class="sd">        ----------</span>
 <span class="sd">        text : str</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.internal_combo_box_highlighted_int"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.internal_combo_box_highlighted_int">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">internal_combo_box_highlighted_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
@@ -343,8 +343,8 @@
 <span class="sd">        ----------</span>
 <span class="sd">        index : int</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">highlighted</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlighted</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.internal_combo_box_highlighted_str"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.internal_combo_box_highlighted_str">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">internal_combo_box_highlighted_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
@@ -357,8 +357,8 @@
 <span class="sd">        ----------</span>
 <span class="sd">        text : str</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">highlighted</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div></div>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlighted</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -395,7 +395,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.0.0+14.g22fcba2',
+            VERSION:'v1.1.0+2.g675543c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

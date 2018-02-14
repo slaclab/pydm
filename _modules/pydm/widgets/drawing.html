@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.drawing &mdash; PyDM v1.0.0+14.g22fcba2 documentation</title>
+  <title>pydm.widgets.drawing &mdash; PyDM v1.1.0+2.g675543c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM v1.0.0+14.g22fcba2 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM v1.1.0+2.g675543c documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v1.0.0+14.g22fcba2
+                v1.1.0+2.g675543c
               </div>
             
           
@@ -228,7 +228,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_pen_width</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pen_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawing.sizeHint"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.sizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
         <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMDrawing.paintEvent"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.paintEvent">[docs]</a>    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
@@ -262,8 +262,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">setBrush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_brush</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMDrawing.alarm_severity_changed"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.alarm_severity_changed">[docs]</a>    <span class="k">def</span> <span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -281,8 +281,8 @@
 <span class="sd">            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR</span>
 <span class="sd">            and 3 = INVALID</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+        <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMDrawing.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -292,8 +292,8 @@
 <span class="sd">        degrees.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">xc</span><span class="p">,</span> <span class="n">yc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_center</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">yc</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">yc</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMDrawing.get_center"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.get_center">[docs]</a>    <span class="k">def</span> <span class="nf">get_center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -303,8 +303,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        x, y : float</span>
 <span class="sd">            Tuple with X and Y coordinates of the center.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.5</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.5</span>
 
 <div class="viewcode-block" id="PyDMDrawing.get_bounds"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.get_bounds">[docs]</a>    <span class="k">def</span> <span class="nf">get_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxsize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">force_no_pen</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -341,8 +341,8 @@
             <span class="n">y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen_width</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="n">xc</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">yc</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span></div>
+            <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span></div>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="n">xc</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">yc</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span>
 
 <div class="viewcode-block" id="PyDMDrawing.has_border"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.has_border">[docs]</a>    <span class="k">def</span> <span class="nf">has_border</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -356,8 +356,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">style</span><span class="p">()</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">NoPen</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">else</span><span class="p">:</span></div>
+            <span class="k">return</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="PyDMDrawing.is_square"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.is_square">[docs]</a>    <span class="k">def</span> <span class="nf">is_square</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -367,8 +367,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">            True in case the widget has a square shape, False otherwise.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMDrawing.get_inner_max"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.get_inner_max">[docs]</a>    <span class="k">def</span> <span class="nf">get_inner_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -405,8 +405,8 @@
             <span class="n">h</span> <span class="o">=</span> <span class="n">h0</span> <span class="o">*</span> <span class="n">c</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">w</span> <span class="o">=</span> <span class="n">h0</span> <span class="o">*</span> <span class="n">c</span>
-            <span class="n">h</span> <span class="o">=</span> <span class="n">w0</span> <span class="o">*</span> <span class="n">c</span>
-        <span class="k">return</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span></div>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">w0</span> <span class="o">*</span> <span class="n">c</span></div>
+        <span class="k">return</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span>
 
     <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="n">QBrush</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">brush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -537,8 +537,8 @@
 <span class="sd">        new_angle : float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_angle</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span> <span class="o">=</span> <span class="n">new_angle</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span> <span class="o">=</span> <span class="n">new_angle</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="PyDMDrawingLine"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingLine">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingLine</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
@@ -562,8 +562,8 @@
 <span class="sd">        ```PyDMDrawing.draw_item```.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingLine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawRect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div></div>
+        <span class="n">x</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">()</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawRect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="PyDMDrawingImage"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingImage</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
@@ -640,9 +640,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">path_relative_to_ui_file</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingImage.sizeHint"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.sizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">isEmpty</span><span class="p">():</span>
-            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingImage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">sizeHint</span><span class="p">()</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingImage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">sizeHint</span><span class="p">()</span></div>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
 
     <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AspectRatioMode</span><span class="p">)</span>
@@ -681,8 +681,8 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingImage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">force_no_pen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">_scaled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span><span class="p">,</span>
-                                      <span class="n">Qt</span><span class="o">.</span><span class="n">SmoothTransformation</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawPixmap</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">_scaled</span><span class="p">)</span></div></div>
+                                      <span class="n">Qt</span><span class="o">.</span><span class="n">SmoothTransformation</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawPixmap</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">_scaled</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="PyDMDrawingRectangle"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingRectangle">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingRectangle</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
@@ -706,8 +706,8 @@
 <span class="sd">        ```PyDMDrawing.draw_item```.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingRectangle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawRect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span></div></div>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawRect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="PyDMDrawingTriangle"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingTriangle">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingTriangle</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
@@ -736,8 +736,8 @@
             <span class="n">QPoint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
             <span class="n">QPoint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
             <span class="n">QPoint</span><span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawPolygon</span><span class="p">(</span><span class="n">QPolygon</span><span class="p">(</span><span class="n">points</span><span class="p">))</span></div></div>
+        <span class="p">]</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawPolygon</span><span class="p">(</span><span class="n">QPolygon</span><span class="p">(</span><span class="n">points</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="PyDMDrawingEllipse"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingEllipse">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingEllipse</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
@@ -762,8 +762,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingEllipse</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
         <span class="n">maxsize</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_square</span><span class="p">()</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">maxsize</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawEllipse</span><span class="p">(</span><span class="n">QPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">w</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span></div></div>
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">maxsize</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawEllipse</span><span class="p">(</span><span class="n">QPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">w</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMDrawingCircle"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingCircle">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingCircle</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -787,8 +787,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingCircle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">()</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawEllipse</span><span class="p">(</span><span class="n">QPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span></div></div>
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawEllipse</span><span class="p">(</span><span class="n">QPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="PyDMDrawingArc"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingArc">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingArc</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
@@ -869,8 +869,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingArc</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
         <span class="n">maxsize</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_square</span><span class="p">()</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">maxsize</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawArc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_angle</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_span_angle</span><span class="p">)</span></div></div>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">maxsize</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawArc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_angle</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_span_angle</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="PyDMDrawingPie"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPie">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingPie</span><span class="p">(</span><span class="n">PyDMDrawingArc</span><span class="p">):</span>
@@ -895,8 +895,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingPie</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
         <span class="n">maxsize</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_square</span><span class="p">()</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">maxsize</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawPie</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_angle</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_span_angle</span><span class="p">)</span></div></div>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">maxsize</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawPie</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_angle</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_span_angle</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="PyDMDrawingChord"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingChord">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingChord</span><span class="p">(</span><span class="n">PyDMDrawingArc</span><span class="p">):</span>
@@ -921,8 +921,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingChord</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
         <span class="n">maxsize</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_square</span><span class="p">()</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">maxsize</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawChord</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_angle</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_span_angle</span><span class="p">)</span></div></div>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">maxsize</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawChord</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_angle</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_span_angle</span><span class="p">)</span>
 
 </pre></div>
 
@@ -960,7 +960,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.0.0+14.g22fcba2',
+            VERSION:'v1.1.0+2.g675543c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

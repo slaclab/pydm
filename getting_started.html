@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started with PyDM &mdash; PyDM v1.0.0+14.g22fcba2 documentation</title>
+  <title>Getting Started with PyDM &mdash; PyDM v1.1.0+2.g675543c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="PyDM v1.0.0+14.g22fcba2 documentation" href="index.html"/>
+    <link rel="top" title="PyDM v1.1.0+2.g675543c documentation" href="index.html"/>
         <link rel="next" title="Making Python-based Displays" href="scripted_displays.html"/>
         <link rel="prev" title="Welcome to PyDM’s documentation!" href="index.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                v1.0.0+14.g22fcba2
+                v1.1.0+2.g675543c
               </div>
             
           
@@ -192,7 +192,7 @@ with pip.</p>
 <h3>Installing PyDM and Prerequisites with Anaconda<a class="headerlink" href="#installing-pydm-and-prerequisites-with-anaconda" title="Permalink to this headline">¶</a></h3>
 <p>After installing Anaconda (see <a class="reference external" href="https://www.anaconda.com/download/">https://www.anaconda.com/download/</a>), create a new
 environment for PyDM:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ conda create -n pydm-environment python=3.6 pyqt=5 pip numpy scipy six psutil pyqtgraph -c conda-forge
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda create -n pydm-environment python=3.6 pyqt=5 pip numpy scipy six psutil pyqtgraph -c conda-forge
 $ source activate pydm-environment
 </pre></div>
 </div>
@@ -206,11 +206,11 @@ with PIP</a> section below.  You do not need to build the prerequisites manually
 <p>First, <a class="reference external" href="https://www1.qt.io/download-open-source/#section-5">download the source code for your platform</a>.
 Once you’ve downloaded and extracted the archive somewhere, its time to configure the build.
 To see all the options, run:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ ./configure --help
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./configure --help
 </pre></div>
 </div>
 <p>Then, once you are ready:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ ./configure &lt;your options here&gt;
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./configure &lt;your options here&gt;
 $ make -j4 &amp;&amp; make install
 </pre></div>
 </div>
@@ -234,11 +234,11 @@ qmake binary you created when you built Qt5.</p>
 <p>PyDM is not currently part of the Python Package Index (PyPI), so you’ll have to
 first <a class="reference external" href="https://github.com/slaclab/pydm/releases/">download a release of PyDM</a>,
 or clone PyDM’s git repository:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ git clone https://github.com/slaclab/pydm.git
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/slaclab/pydm.git
 </pre></div>
 </div>
 <p>After you download PyDM, enter the directory where you saved it, and run:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install .[all]
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install .[all]
 </pre></div>
 </div>
 <p>This will download and install all the necessary dependencies, then will install
@@ -314,11 +314,11 @@ to ‘ca://MTEST:Float’.  Once that is done, go to File-&gt;Save… and save t
 somewhere.</p>
 <p>We can test the display in PyDM by first running the testing IOC.  Open up a new
 terminal and run the command:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ python examples/testing_ioc/pydm-testing-ioc
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python examples/testing_ioc/pydm-testing-ioc
 </pre></div>
 </div>
 <p>to launch the IOC.  Once the IOC is running, run the command:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ pydm &lt;your file name&gt;
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pydm &lt;your file name&gt;
 </pre></div>
 </div>
 <p>with the .ui file you just saved.  This will open your display in PyDM.  If everything
@@ -379,7 +379,7 @@ investigate the system for writing your own displays using Python code (see
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v1.0.0+14.g22fcba2',
+            VERSION:'v1.1.0+2.g675543c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

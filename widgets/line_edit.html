@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMLineEdit &mdash; PyDM v1.0.0+14.g22fcba2 documentation</title>
+  <title>PyDMLineEdit &mdash; PyDM v1.1.0+2.g675543c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyDM v1.0.0+14.g22fcba2 documentation" href="../index.html"/>
+    <link rel="top" title="PyDM v1.1.0+2.g675543c documentation" href="../index.html"/>
         <link rel="up" title="PyDM Widgets" href="index.html"/>
         <link rel="next" title="PyDMPushButton" href="pushbutton.html"/>
         <link rel="prev" title="PyDMLabel" href="label.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                v1.0.0+14.g22fcba2
+                v1.1.0+2.g675543c
               </div>
             
           
@@ -210,13 +210,31 @@ conversion.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydm.widgets.line_edit.PyDMLineEdit.context_menu">
+<code class="descname">context_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.context_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.context_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the custom context menu, and populates it with any external
+tools that have been loaded.  PyDMWidget subclasses should override
+this method (after calling superclass implementation) to add the menu.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QMenu</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydm.widgets.line_edit.PyDMLineEdit.create_unit_options">
 <code class="descname">create_unit_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.create_unit_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.create_unit_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the menu for displaying possible unit values</p>
 <p>The menu is filled with possible unit conversions based on the
 current PyDMLineEdit. If either the unit is not found in the by
-the <code class="xref py py-func docutils literal"><span class="pre">utilities.find_unit_options()</span></code> function, or, the
-<code class="xref py py-attr docutils literal"><span class="pre">showUnits</span></code> attribute is set to False, the menu will tell
+the <code class="xref py py-func docutils literal notranslate"><span class="pre">utilities.find_unit_options()</span></code> function, or, the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">showUnits</span></code> attribute is set to False, the menu will tell
 the user that there are no available conversions</p>
 </dd></dl>
 
@@ -229,9 +247,25 @@ current channel value.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydm.widgets.line_edit.PyDMLineEdit.precision_changed">
+<code class="descname">precision_changed</code><span class="sig-paren">(</span><em>new_precision</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.precision_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.precision_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel has new precision value.
+This callback also triggers an update_format_string call so the
+new precision value is considered.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_precison</strong> (<em>int</em><em> or </em><em>float</em>) – The new precision value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydm.widgets.line_edit.PyDMLineEdit.send_value">
 <code class="descname">send_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.send_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.send_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Emit a <code class="xref py py-attr docutils literal"><span class="pre">send_value_signal</span></code> to update channel value.</p>
+<dd><p>Emit a <code class="xref py py-attr docutils literal notranslate"><span class="pre">send_value_signal</span></code> to update channel value.</p>
 <p>The text is cleaned of all units, user-formatting and scale values
 before being sent back to the channel. This function is attached the
 ReturnPressed signal of the PyDMLineEdit</p>
@@ -251,7 +285,7 @@ value in the PyDMLineEdit the text will not be changed.</p>
 <dt id="pydm.widgets.line_edit.PyDMLineEdit.unit_changed">
 <code class="descname">unit_changed</code><span class="sig-paren">(</span><em>new_unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.unit_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.unit_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accept a unit to display with a channel’s value</p>
-<p>The unit may or may not be displayed based on the <code class="xref py py-attr docutils literal"><span class="pre">showUnits</span></code>
+<p>The unit may or may not be displayed based on the <code class="xref py py-attr docutils literal notranslate"><span class="pre">showUnits</span></code>
 attribute. Receiving a new value for the unit causes the display to
 reset.</p>
 </dd></dl>
@@ -262,7 +296,7 @@ reset.</p>
 <dd><p>Receive and update the PyDMLineEdit for a new channel value</p>
 <p>The actual value of the input is saved as well as the type received.
 This also resets the PyDMLineEdit display text using
-<a class="reference internal" href="#pydm.widgets.line_edit.PyDMLineEdit.set_display" title="pydm.widgets.line_edit.PyDMLineEdit.set_display"><code class="xref py py-meth docutils literal"><span class="pre">set_display()</span></code></a></p>
+<a class="reference internal" href="#pydm.widgets.line_edit.PyDMLineEdit.set_display" title="pydm.widgets.line_edit.PyDMLineEdit.set_display"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_display()</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -327,7 +361,7 @@ This also resets the PyDMLineEdit display text using
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v1.0.0+14.g22fcba2',
+            VERSION:'v1.1.0+2.g675543c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

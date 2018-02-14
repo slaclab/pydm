@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Making Python-based Displays &mdash; PyDM v1.0.0+14.g22fcba2 documentation</title>
+  <title>Making Python-based Displays &mdash; PyDM v1.1.0+2.g675543c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="PyDM v1.0.0+14.g22fcba2 documentation" href="index.html"/>
+    <link rel="top" title="PyDM v1.1.0+2.g675543c documentation" href="index.html"/>
         <link rel="next" title="Macro Substitution" href="macros.html"/>
         <link rel="prev" title="Getting Started with PyDM" href="getting_started.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                v1.0.0+14.g22fcba2
+                v1.1.0+2.g675543c
               </div>
             
           
@@ -182,7 +182,7 @@
 <div class="section" id="subclassing-display">
 <h3>Subclassing Display<a class="headerlink" href="#subclassing-display" title="Permalink to this headline">¶</a></h3>
 <p>Python-based displays are just PyQt widgets, based on PyDM’s ‘Display’ class.  Your display must subclass Display, and implement a few required methods:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span>
 <span class="kn">from</span> <span class="nn">pydm</span> <span class="k">import</span> <span class="n">Display</span>
 <span class="k">class</span> <span class="nc">MyDisplay</span><span class="p">(</span><span class="n">Display</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[]):</span>
@@ -196,25 +196,25 @@
 </pre></div>
 </div>
 <p>Lets look at this in detail:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span>
 <span class="kn">from</span> <span class="nn">pydm</span> <span class="k">import</span> <span class="n">Display</span>
 </pre></div>
 </div>
 <p>First, we import the modules we need.  You will probably want to import more of your own modules here as well.</p>
 <p>Next, we define our Display subclass, and its initializer:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyDisplay</span><span class="p">(</span><span class="n">Display</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyDisplay</span><span class="p">(</span><span class="n">Display</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="nb">super</span><span class="p">(</span><span class="n">MyDisplay</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>It is important to remember that you must always call the superclass’ initializer in your own, and pass it the ‘parent’ argument from your initializer.  Otherwise, your display might get garbage collected by Python and crash.</p>
 <p>Now we must implement two methods that tell PyDM where the .ui file for this display lives:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ui_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ui_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
   <span class="k">return</span> <span class="s1">&#39;my_display.ui&#39;</span>
 </pre></div>
 </div>
 <p>lets PyDM know what the .ui file to load is called, and:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ui_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ui_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
   <span class="k">return</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui_filename</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -224,11 +224,11 @@
 <div class="section" id="handling-command-line-arguments">
 <h3>Handling Command Line Arguments<a class="headerlink" href="#handling-command-line-arguments" title="Permalink to this headline">¶</a></h3>
 <p>Displays can accept command line arguments supplied at launch.  Your display’s initializer has a named argument called ‘args’:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[]):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[]):</span>
 </pre></div>
 </div>
 <p>It is recommended to use python’s <cite>argparse</cite> module to parse your arguments.  For example, you could write a method like this in your display to do this:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">parse_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">parse_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
   <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
   <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--list&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;magnet_list&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;File containing a list of magnet names to use.&#39;</span><span class="p">)</span>
   <span class="n">parsed_args</span><span class="p">,</span> <span class="n">_unknown_args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
@@ -241,7 +241,7 @@
 <h3>Building Your Interface Dynamically<a class="headerlink" href="#building-your-interface-dynamically" title="Permalink to this headline">¶</a></h3>
 <p>A common reason to build a Python-based display is to generate your UI dynamically, from some other source of data, like a file or database.  As mentioned in <a class="reference internal" href="#handling-command-line-arguments">Handling Command Line Arguments</a>, you can read in command line arguments to help get data into your display.</p>
 <p>Once you have a source of data, you can use PyQt to make new widgets, and add them to your display.  For example, if you get a list of devices from somewhere, you can make widgets for each device, and add them to a layout you defined in the .ui file:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">device_name</span> <span class="ow">in</span> <span class="n">device_list</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">device_name</span> <span class="ow">in</span> <span class="n">device_list</span><span class="p">:</span>
   <span class="n">device_label</span> <span class="o">=</span> <span class="n">PyDMLabel</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">device_name</span><span class="p">)</span>
   <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">deviceListLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">device_label</span><span class="p">)</span>
 </pre></div>
@@ -295,7 +295,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v1.0.0+14.g22fcba2',
+            VERSION:'v1.1.0+2.g675543c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

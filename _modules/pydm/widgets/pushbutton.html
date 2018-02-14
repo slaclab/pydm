@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.pushbutton &mdash; PyDM v1.0.0+14.g22fcba2 documentation</title>
+  <title>pydm.widgets.pushbutton &mdash; PyDM v1.1.0+2.g675543c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM v1.0.0+14.g22fcba2 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM v1.1.0+2.g675543c documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v1.0.0+14.g22fcba2
+                v1.1.0+2.g675543c
               </div>
             
           
@@ -435,8 +435,8 @@
             <span class="n">msg</span><span class="o">.</span><span class="n">setDefaultButton</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
             <span class="n">ret</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">ret</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="kc">True</span></div>
+                <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="PyDMPushButton.validate_password"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.validate_password">[docs]</a>    <span class="k">def</span> <span class="nf">validate_password</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -471,8 +471,8 @@
             <span class="n">msg</span><span class="o">.</span><span class="n">setDefaultButton</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
             <span class="n">msg</span><span class="o">.</span><span class="n">setEscapeButton</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
             <span class="n">msg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="PyDMPushButton.alarm_severity_changed"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.alarm_severity_changed">[docs]</a>    <span class="k">def</span> <span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -492,8 +492,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_style</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alarm_style_sheet_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ALARM_CONTENT</span><span class="p">][</span>
                                                         <span class="n">new_alarm_severity</span><span class="p">])</span>
             <span class="n">style</span> <span class="o">=</span> <span class="n">compose_stylesheet</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">style</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">style</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMPushButton.sendValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.sendValue">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">sendValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -514,8 +514,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span>
                                         <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">send_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span></div>
+            <span class="n">send_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMPushButton.updatePressValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.updatePressValue">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
@@ -536,8 +536,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pressValue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:}</span><span class="s1"> is not a valid pressValue &#39;</span>
-                  <span class="s1">&#39;for </span><span class="si">{:}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">))</span></div></div>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:}</span><span class="s1"> is not a valid pressValue &#39;</span></div></div>
+                  <span class="s1">&#39;for </span><span class="si">{:}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">))</span>
 </pre></div>
 
            </div>
@@ -574,7 +574,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.0.0+14.g22fcba2',
+            VERSION:'v1.1.0+2.g675543c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

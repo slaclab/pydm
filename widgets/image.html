@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMImageView &mdash; PyDM v1.0.0+14.g22fcba2 documentation</title>
+  <title>PyDMImageView &mdash; PyDM v1.1.0+2.g675543c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyDM v1.0.0+14.g22fcba2 documentation" href="../index.html"/>
+    <link rel="top" title="PyDM v1.1.0+2.g675543c documentation" href="../index.html"/>
         <link rel="up" title="PyDM Widgets" href="index.html"/>
         <link rel="next" title="PyDMLabel" href="label.html"/>
         <link rel="prev" title="PyDMEnumComboBox" href="enum_combo_box.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                v1.0.0+14.g22fcba2
+                v1.1.0+2.g675543c
               </div>
             
           
@@ -233,6 +233,26 @@ current colormap used to render the image.</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="pydm.widgets.image.PyDMImageView.channels_for_tools">
+<code class="descname">channels_for_tools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.channels_for_tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.channels_for_tools" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of channels useful for external tools.
+The default implementation here is just to return
+self.channels(), but some widgets will want to re-implement
+this, especially if they have multiple channels, but only
+one real ‘signal’ channel.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pydm.widgets.image.PyDMImageView.colorMap">
 <code class="descname">colorMap</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.colorMap" title="Permalink to this definition">¶</a></dt>
@@ -296,6 +316,11 @@ a flag requesting that the image be redrawn.</p>
 </tbody>
 </table>
 </dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.image.PyDMImageView.keyPressEvent">
+<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.image.PyDMImageView.maxRedrawRate">
@@ -459,7 +484,7 @@ If necessary, reshape the image to 2D first.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v1.0.0+14.g22fcba2',
+            VERSION:'v1.1.0+2.g675543c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
