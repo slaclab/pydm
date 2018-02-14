@@ -63,26 +63,31 @@ class IconFont(object):
         font.setPixelSize(size)
         return font
 
-    def icon(self, name):
+    def icon(self, name, color=None):
         char = self.get_char_for_name(name)
-        engine = CharIconEngine(self, char)
+        engine = CharIconEngine(self, char, color)
         return QIcon(engine)
 
 
 class CharIconEngine(QIconEngine):
     """Subclass of QIconEngine that is designed to draw characters from icon fonts."""
 
-    def __init__(self, icon_font, char):
+    def __init__(self, icon_font, char, color=None):
         super(CharIconEngine, self).__init__()
         self.icon_font = icon_font
         self.char = char
-
+        if color is None:
+            self._base_color = QColor(90,90,90)
+        else:
+            self._base_color = color
+        self._disabled_color = QColor.fromHslF(self._base_color.hueF(), self._base_color.saturationF(), max(min(self._base_color.lightnessF()+0.25,1.0),0.0))
+    
     def paint(self, painter, rect, mode, state):
         painter.save()
         if mode == QIcon.Disabled:
-            color = QColor(150, 150, 150)
+            color = self._disabled_color
         else:
-            color = QColor(90, 90, 90)
+            color = self._base_color
         painter.setPen(color)
         scale_factor = 1.0
         draw_size = 0.875 * qRound(rect.height() * scale_factor)
