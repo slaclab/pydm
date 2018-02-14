@@ -110,15 +110,22 @@ class PyDMWidget(PyDMPrimitiveWidget):
         True: QColor(0, 0, 0,)
     }
 
-    NO_ALARM = 0x0
-    ALARM_CONTENT = 0x1
-    ALARM_BORDER = 0x2
+    NO_ALARM = 0x0 #Stylesheet for widgets which don't react to alarm status
+    ALARM_CONTENT = 0x1 #Stylesheet for the 'content' of widgets (text, usually).
+    ALARM_BORDER = 0x2 #Stylesheet for the border of widgets.
+    ALARM_INDICATOR = 0x4 #Stylesheet for 'indicator' ornaments, where you want the "OK" status to actually have a color.
 
     ALARM_NONE = 0
     ALARM_MINOR = 1
     ALARM_MAJOR = 2
     ALARM_INVALID = 3
     ALARM_DISCONNECTED = 4
+
+    GREEN_ALARM = "#00EB00"
+    YELLOW_ALARM = "#EBEB00"
+    RED_ALARM = "#EB0000"
+    MAGENTA_ALARM = "#EB00EB"
+    WHITE_ALARM = "#EBEBEB"
 
     # We put all this in a big dictionary to try to avoid constantly
     # allocating and deallocating new stylesheet strings.
@@ -132,24 +139,31 @@ class PyDMWidget(PyDMPrimitiveWidget):
         },
         ALARM_CONTENT: {
             ALARM_NONE: {"color": "black"},
-            ALARM_MINOR: {"color": "yellow"},
-            ALARM_MAJOR: {"color": "red"},
-            ALARM_INVALID: {"color": "purple"},
-            ALARM_DISCONNECTED: {"color": "white"}
+            ALARM_MINOR: {"color": YELLOW_ALARM},
+            ALARM_MAJOR: {"color": RED_ALARM},
+            ALARM_INVALID: {"color": MAGENTA_ALARM},
+            ALARM_DISCONNECTED: {"color": WHITE_ALARM}
+        },
+        ALARM_INDICATOR: {
+            ALARM_NONE: {"color": GREEN_ALARM},
+            ALARM_MINOR: {"color": YELLOW_ALARM},
+            ALARM_MAJOR: {"color": RED_ALARM},
+            ALARM_INVALID: {"color": MAGENTA_ALARM},
+            ALARM_DISCONNECTED: {"color": WHITE_ALARM}
         },
         ALARM_BORDER: {
             ALARM_NONE: {"border": "2px solid transparent"},
-            ALARM_MINOR: {"border": "2px solid yellow"},
-            ALARM_MAJOR: {"border": "2px solid red"},
-            ALARM_INVALID: {"border": "2px solid purple"},
-            ALARM_DISCONNECTED: {"border": "2px solid white"}
+            ALARM_MINOR: {"border": "2px solid " + YELLOW_ALARM},
+            ALARM_MAJOR: {"border": "2px solid " + RED_ALARM},
+            ALARM_INVALID: {"border": "2px solid " + MAGENTA_ALARM},
+            ALARM_DISCONNECTED: {"border": "2px solid " + WHITE_ALARM}
         },
         ALARM_CONTENT | ALARM_BORDER: {
             ALARM_NONE: {"color": "black", "border": "2px solid transparent"},
-            ALARM_MINOR: {"color": "yellow", "border": "2px solid yellow"},
-            ALARM_MAJOR: {"color": "red", "border": "2px solid red"},
-            ALARM_INVALID: {"color": "purple", "border": "2px solid purple"},
-            ALARM_DISCONNECTED: {"color": "white", "border": "2px solid white"}
+            ALARM_MINOR: {"color": YELLOW_ALARM, "border": "2px solid " + YELLOW_ALARM},
+            ALARM_MAJOR: {"color": RED_ALARM, "border": "2px solid " + RED_ALARM},
+            ALARM_INVALID: {"color": MAGENTA_ALARM, "border": "2px solid " + MAGENTA_ALARM},
+            ALARM_DISCONNECTED: {"color": WHITE_ALARM, "border": "2px solid " + WHITE_ALARM}
         }
     }
 
@@ -750,6 +764,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         list
         """
         return self.channels()
+        
+    def qcolor_for_alarm(self, alarm, alarm_type=ALARM_CONTENT):
+        return QColor(self.alarm_style_sheet_map[alarm_type][alarm]["color"])
 
 
 class PyDMWritableWidget(PyDMWidget):
