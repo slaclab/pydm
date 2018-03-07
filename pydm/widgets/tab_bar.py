@@ -5,7 +5,8 @@ from pydm.PyQt.QtCore import pyqtProperty, Q_ENUMS, Qt, QVariant
 from functools import partial
 from ..utilities.iconfont import IconFont
 
-class PyDMTabBar(QTabBar, PyDMWidget):                
+class PyDMTabBar(QTabBar, PyDMWidget):
+    """PyDMTabBar is used internally by PyDMTabWidget, and shouldn't be directly used on its own."""
     def __init__(self, parent=None):
         super(PyDMTabBar, self).__init__(parent=parent)
         self.tab_channels = {}
@@ -80,13 +81,30 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         self.set_initial_icon_for_tab(index)
         
 class PyDMTabWidget(QTabWidget):
+    """PyDMTabWidget provides a tabbed container widget.  Each tab has an
+    alarm channel property which can be used to show an alarm indicator on
+    the tab.  The indicator is driven by the alarm severity of the specified
+    channel, not the value.
+    
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Tab Widget
+    """
+    
     def __init__(self, parent=None):
         super(PyDMTabWidget, self).__init__(parent=parent)
         self.setTabBar(PyDMTabBar(parent=self))
     
     @pyqtProperty(str)
     def currentTabAlarmChannel(self):
-        """A channel to use for this tab's alarm indicator."""
+        """
+        A channel to use for the current tab's alarm indicator.
+        
+        Returns
+        -------
+        str
+        """
         return self.tabBar().currentTabAlarmChannel
     
     @currentTabAlarmChannel.setter
@@ -94,6 +112,13 @@ class PyDMTabWidget(QTabWidget):
         self.tabBar().currentTabAlarmChannel = new_alarm_channel
     
     def channels(self):
+        """
+        A list of the channels used by the tab widget.
+        
+        Returns
+        -------
+        list
+        """
         return self.tabBar().channels()
     
     def getAlarmChannels(self):
@@ -101,14 +126,17 @@ class PyDMTabWidget(QTabWidget):
         when it has been created in Qt Designer.  This property isn't directly editable
         by users, they will go through the currentTabAlarmChannel property to edit this
         information."""
-        #return self._ac
         return self.tabBar().getAlarmChannels()
     
     def setAlarmChannels(self, new_alarm_channels):
-        #self._ac = new_alarm_channels
+        """
+        Sets the list of alarm channels for each tab.  This is needed for instantiating
+        a tab widget from a .ui file, and is probably not very useful for users.
+        """
         self.tabBar().setAlarmChannels(new_alarm_channels)
         
     alarmChannels = pyqtProperty("QStringList", getAlarmChannels, setAlarmChannels, designable=False)
+    
     #We make a bunch of dummy properties to block out properties available on QTabWidget,
     #but that we don't want to support on PyDMTabWidget.
     currentTabIcon = pyqtProperty("QIcon", None, None, designable=False)
