@@ -21,6 +21,7 @@ PyDM comes with a set of widgets useful for operating a control system.
     slider.rst
     spinbox.rst
     symbol.rst
+    tab_widget.rst
     timeplot.rst
     waveformplot.rst
     waveformtable.rst
