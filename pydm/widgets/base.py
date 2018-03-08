@@ -1,4 +1,5 @@
 import functools
+from locale import format_string as locale_format
 import numpy as np
 from ..PyQt.QtGui import QApplication, QColor, QCursor, QMenu
 from ..PyQt.QtCore import Qt, QEvent, pyqtSignal, pyqtSlot, pyqtProperty
@@ -176,7 +177,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._lower_ctrl_limit = None
 
         self.enum_strings = None
-        self.format_string = "{}"
 
         self.value = None
         self.channeltype = None
@@ -662,22 +662,28 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
     def update_format_string(self):
         """
-        Reconstruct the format string to be used when representing the
+        Indicate a PV property (value, unit, precision) or PyDMWidget
+        property () has changed.
+        """
+        pass
+
+    def get_formatted_string(self, value):
+        """Return the formatted string to be used when representing the
         output value.
 
         Returns
         -------
-        format_string : str
-            The format string to be used including or not the precision
-            and unit
+        string : str
+            The formated string to be used as the output value
         """
-        self.format_string = "{}"
-        if isinstance(self.value, (int, float)):
-            number_len = str(len(str(int(abs(self.value)))) + self._prec)
-            self.format_string = "{:." + number_len + "n}"
+        if isinstance(value, float):
+            string = locale_format('%.' + str(self._prec) + 'f', value)
+        else:
+            string = '{}'.format(value)
+
         if self._show_units and self._unit != "":
-            self.format_string += " {}".format(self._unit)
-        return self.format_string
+            string += " {}".format(self._unit)
+        return string
 
     def restore_original_tooltip(self):
         if self._tooltip is None:
