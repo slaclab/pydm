@@ -145,7 +145,7 @@ class QScale(QFrame):
         if isinstance(divisions, int) and divisions > 0 and self._num_divisions != divisions:
             self._num_divisions = divisions
             self.repaint()
-    
+
 class PyDMScaleIndicator(QFrame, PyDMWidget):
 
     def __init__(self, parent=None, init_channel=None):
@@ -162,7 +162,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.value_label.setText('<val>')
         self.lower_label.setText('<min>')
         self.upper_label.setText('<max>')
-        
+
         self.value_label.setAlignment(Qt.AlignCenter)
         self.lower_label.setAlignment(Qt.AlignLeft)
         self.upper_label.setAlignment(Qt.AlignRight)
@@ -172,7 +172,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
     def updateAll(self):
         self.lower_label.setText(str(self.scale_indicator._lower_limit))
         self.upper_label.setText(str(self.scale_indicator._upper_limit))
-        self.value_label.setText(self.format_string.format(self.scale_indicator._value))
+        self.value_label.setText(self.get_formatted_string(self.scale_indicator._value))
 
     def value_changed(self, new_value):
         super(PyDMScaleIndicator, self).value_changed(new_value)
@@ -282,4 +282,3 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
     @numDivisions.setter
     def numDivisions(self, divisions):
         self.scale_indicator.setNumDivisions(divisions)
-
