@@ -119,3 +119,9 @@ def test_import_scatterplot_plugin():
     # Scatter Plot plugin
     PyDMScatterPlotPlugin = qtplugin_plot_factory(
                                 PyDMScatterPlot, ScatterPlotCurveEditorDialog)
+                                
+def test_import_tab_widget_plugin():
+    # Symbol plugin
+    from ..widgets.tab_bar import PyDMTabWidget
+    from ..widgets.tab_bar_qtplugin import TabWidgetPlugin
+    PyDMTabWidgetPlugin = TabWidgetPlugin()

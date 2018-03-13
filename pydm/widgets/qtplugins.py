@@ -1,6 +1,6 @@
 from .qtplugin_base import qtplugin_factory, WidgetCategory
 from .baseplot_qtplugin import qtplugin_plot_factory
-
+from .tab_bar_qtplugin import TabWidgetPlugin
 from .byte import PyDMByteIndicator
 
 from .checkbox import PyDMCheckbox
@@ -28,6 +28,7 @@ from .waveformplot import PyDMWaveformPlot
 from .waveformplot_curve_editor import WaveformPlotCurveEditorDialog
 from .scatterplot import PyDMScatterPlot
 from .scatterplot_curve_editor import ScatterPlotCurveEditorDialog
+from .tab_bar import PyDMTabWidget
 
 # Time Plot plugin
 PyDMTimePlotPlugin = qtplugin_plot_factory(
@@ -101,3 +102,6 @@ PyDMSymbolPlugin = qtplugin_factory(PyDMSymbol, group=WidgetCategory.DISPLAY)
 
 # Waveform Table plugin
 PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable, group=WidgetCategory.DISPLAY)
+
+# Tab Widget plugin
+PyDMTabWidgetPlugin = TabWidgetPlugin()
