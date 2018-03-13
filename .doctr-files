@@ -1,5 +1,6 @@
 ./_images/designer.png
 ./_images/pydm_properties.png
+./_images/tab_widget.png
 ./_modules/channel.html
 ./_modules/index.html
 ./_modules/pydm/application.html
@@ -19,6 +20,7 @@
 ./_modules/pydm/widgets/slider.html
 ./_modules/pydm/widgets/spinbox.html
 ./_modules/pydm/widgets/symbol.html
+./_modules/pydm/widgets/tab_bar.html
 ./_modules/pydm/widgets/timeplot.html
 ./_modules/pydm/widgets/waveformplot.html
 ./_modules/pydm/widgets/waveformtable.html
@@ -44,6 +46,7 @@
 ./_sources/widgets/slider.rst.txt
 ./_sources/widgets/spinbox.rst.txt
 ./_sources/widgets/symbol.rst.txt
+./_sources/widgets/tab_widget.rst.txt
 ./_sources/widgets/timeplot.rst.txt
 ./_sources/widgets/waveformplot.rst.txt
 ./_sources/widgets/waveformtable.rst.txt
@@ -108,6 +111,7 @@
 ./widgets/slider.html
 ./widgets/spinbox.html
 ./widgets/symbol.html
+./widgets/tab_widget.html
 ./widgets/timeplot.html
 ./widgets/waveformplot.html
 ./widgets/waveformtable.html
