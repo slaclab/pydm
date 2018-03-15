@@ -21,8 +21,6 @@ matrix:
 before_install:
   # Make sure we have the tags no matter how far from them we are.
   - git pull --unshallow
-  # We do this conditionally because it saves us some downloading if the
-  # version is the same.
   - wget $MC_URL -O miniconda.sh;
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
@@ -30,7 +28,6 @@ before_install:
   - conda config --set always_yes yes
   - conda install conda-build anaconda-client
   - conda update -q conda conda-build
-  # Useful for debugging any issues with conda
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pyqt=$PYQT_VERSION pip numpy scipy six psutil pyqtgraph -c conda-forge
   - source activate test-environment
   - pip install requests pyepics coverage codecov coveralls pytest pytest-cov versioneer
@@ -43,9 +40,9 @@ install:
   - python setup.py install
 
 script:
-  - py.test -sv --cov=pydm --cov-report term-missing
-  - set -e
+  - python run_tests.py
   #Build docs
+  - set -e
   - |
     if [[ -n "$DOCTR_DEPLOY_ENCRYPTION_KEY" && $BUILD_DOCS ]]; then
       pip install -r docs-requirements.txt
