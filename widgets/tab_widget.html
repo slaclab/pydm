@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMTabWidget &mdash; PyDM v1.1.0+29.g298228e documentation</title>
+  <title>PyDMTabWidget &mdash; PyDM v1.1.0+31.g6777013 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyDM v1.1.0+29.g298228e documentation" href="../index.html"/>
+    <link rel="top" title="PyDM v1.1.0+31.g6777013 documentation" href="../index.html"/>
         <link rel="up" title="PyDM Widgets" href="index.html"/>
         <link rel="next" title="PyDMTimePlot" href="timeplot.html"/>
         <link rel="prev" title="PyDMSymbol" href="symbol.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                v1.1.0+29.g298228e
+                v1.1.0+31.g6777013
               </div>
             
           
@@ -113,6 +113,7 @@
 <li class="toctree-l2"><a class="reference internal" href="symbol.html">PyDMSymbol</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">PyDMTabWidget</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#using-the-pydm-tab-widget-in-designer">Using the PyDM Tab Widget in Designer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#widget-properties">Widget Properties</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#api-documentation">API Documentation</a></li>
 </ul>
 </li>
@@ -197,6 +198,36 @@
 <div class="section" id="using-the-pydm-tab-widget-in-designer">
 <h2>Using the PyDM Tab Widget in Designer<a class="headerlink" href="#using-the-pydm-tab-widget-in-designer" title="Permalink to this headline">¶</a></h2>
 <p>In designer, drag a tab widget from the widget list onto your display, and resize it appropriately.  You can use the property editor to give the current tab a label (the ‘currentTabText’ property), a name (the ‘currentTabName’ property - this is what you will use to refer to this tab in code), and an alarm channel (‘currentTabAlarmChannel’).  To add a new tab to the tab widget, right click on the widget and select ‘Insert Page’.  You can choose to insert before or after the current tab.  To remove a tab, right click on the tab widget, and select ‘Page X of Y’ -&gt; Delete.</p>
+</div>
+<div class="section" id="widget-properties">
+<h2>Widget Properties<a class="headerlink" href="#widget-properties" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="4%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>currentTabAlarmChannel</td>
+<td>str</td>
+<td>A channel to use for the alarm indicator on the current tab.</td>
+</tr>
+<tr class="row-odd"><td>currentTabText</td>
+<td>str</td>
+<td>The label to use for the current tab.</td>
+</tr>
+<tr class="row-even"><td>currentTabName</td>
+<td>str</td>
+<td>A name for the tab.  This is how you will refer to the tab in python code.</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="api-documentation">
 <h2>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
@@ -321,7 +352,7 @@ a tab widget from a .ui file, and is probably not very useful for users.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v1.1.0+29.g298228e',
+            VERSION:'v1.1.0+31.g6777013',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
