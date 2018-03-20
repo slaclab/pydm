@@ -6,16 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>338</width>
-    <height>137</height>
+    <width>603</width>
+    <height>306</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="3">
-    <widget class="PyDMScaleIndicator" name="PyDMScaleIndicator">
+   <item row="2" column="1" colspan="3">
+    <widget class="PyDMScaleIndicator" name="PyDMScaleIndicator_2">
      <property name="toolTip">
       <string/>
      </property>
@@ -44,7 +44,7 @@
       <bool>true</bool>
      </property>
      <property name="channel" stdset="0">
-         <string>ca://MTEST:Float</string>
+      <string>ca://MTEST:Float</string>
      </property>
      <property name="showValue" stdset="0">
       <bool>true</bool>
@@ -52,12 +52,21 @@
      <property name="showLimits" stdset="0">
       <bool>true</bool>
      </property>
+     <property name="flipScale" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="invertedAppearance" stdset="0">
+      <bool>true</bool>
+     </property>
      <property name="numDivisions" stdset="0">
       <number>10</number>
      </property>
+     <property name="valuePosition" stdset="0">
+      <enum>Qt::BottomEdge</enum>
+     </property>
     </widget>
    </item>
-   <item row="1" column="1" colspan="2">
+   <item row="4" column="2" colspan="2">
     <widget class="PyDMLineEdit" name="PyDMLineEdit">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -90,11 +99,173 @@
       <bool>false</bool>
      </property>
      <property name="channel" stdset="0">
-         <string>ca://MTEST:Float</string>
+      <string>ca://MTEST:Float</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="0" column="0" rowspan="3">
+    <widget class="PyDMScaleIndicator" name="PyDMScaleIndicator_5">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
+     </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="precision" stdset="0">
+      <number>0</number>
+     </property>
+     <property name="showUnits" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Float</string>
+     </property>
+     <property name="showValue" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="showLimits" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="orientation" stdset="0">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="flipScale" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="invertedAppearance" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="barIndicator" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="numDivisions" stdset="0">
+      <number>10</number>
+     </property>
+     <property name="valuePosition" stdset="0">
+      <enum>Qt::BottomEdge</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="4" rowspan="3">
+    <widget class="PyDMScaleIndicator" name="PyDMScaleIndicator_4">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
+     </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="precision" stdset="0">
+      <number>0</number>
+     </property>
+     <property name="showUnits" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Float</string>
+     </property>
+     <property name="showValue" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="showLimits" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="orientation" stdset="0">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="flipScale" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="invertedAppearance" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="barIndicator" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="numDivisions" stdset="0">
+      <number>10</number>
+     </property>
+     <property name="valuePosition" stdset="0">
+      <enum>Qt::BottomEdge</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="3">
+    <widget class="PyDMScaleIndicator" name="PyDMScaleIndicator">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
+     </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="precision" stdset="0">
+      <number>0</number>
+     </property>
+     <property name="showUnits" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Float</string>
+     </property>
+     <property name="showValue" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="showLimits" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="flipScale" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="numDivisions" stdset="0">
+      <number>10</number>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
     <widget class="PyDMLabel" name="PyDMLabel">
      <property name="toolTip">
       <string/>
@@ -112,7 +283,62 @@
     </string>
      </property>
      <property name="text">
-         <string>ca://MTEST:Float</string>
+      <string>ca://MTEST:Float</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="3">
+    <widget class="PyDMScaleIndicator" name="PyDMScaleIndicator_3">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
+     </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="precision" stdset="0">
+      <number>0</number>
+     </property>
+     <property name="showUnits" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Float</string>
+     </property>
+     <property name="showValue" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="showLimits" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="flipScale" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="barIndicator" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="numDivisions" stdset="0">
+      <number>10</number>
+     </property>
+     <property name="originAtZero" stdset="0">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

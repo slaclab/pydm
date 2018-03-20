@@ -38,6 +38,10 @@ pip install .[all]
 ```
 
 ## Using Anaconda
+
+When using Anaconda to install PyDM at a Linux Environment it will automatically define the PYQTDESIGNERPATH environment variable pointing to /etc/pydm which will have a file named designer_plugin.py which
+will make all the PyDM widgets available to the Qt Designer.
+
 ### Most Recent Development Build
 ```sh
 conda install -c pydm-dev -c gsecars -c conda-forge pydm
