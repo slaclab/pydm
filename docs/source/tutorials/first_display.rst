@@ -8,7 +8,7 @@ building user interfaces.  Once you open Designer, you'll be greeted by a mostly
 blank screen, with a list of widgets on the left, and a property inspector on the
 right.
 
-.. figure:: /_static/designer.png
+.. figure:: /_static/tutorials/designer.png
    :scale: 33 %
    :alt: Screenshot of newly-opened Qt Designer.
 
@@ -28,7 +28,7 @@ are for the basic QLabel widget that PyDMLabel is based on, and control the labe
 appearance and size (things like the font).  At the bottom of the properties list
 are the PyDM-specific properties.
 
-.. figure:: /_static/pydm_properties.png
+.. figure:: /_static/tutorials/pydm_properties.png
    :scale: 33 %
    :alt: Screenshot showing the PyDMLabel's properties.
 
