@@ -334,7 +334,6 @@ class PyDMWaveformPlot(BasePlot):
         lineWidth: int, optional
             Width of the line connecting the data points.
         redraw_mode: int, optional
-            Must be one four values:
             WaveformCurveItem.REDRAW_ON_EITHER: (Default)
                 Redraw after either X or Y receives new data.
             WaveformCurveItem.REDRAW_ON_X:

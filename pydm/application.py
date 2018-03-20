@@ -583,9 +583,9 @@ class PyDMApplication(QApplication):
     def load_external_tools(self):
         """
         Loads all the external tools available at the given
-        PYDM_TOOLS_PATH environment variable and subfolders that
-        follows the *_tool.py and have classes that inherits from
-        the pydm.tools.ExternalTool class.
+        `PYDM_TOOLS_PATH` environment variable and subfolders that
+        follows the `*_tool.py` and have classes that inherits from
+        the `pydm.tools.ExternalTool` class.
         """
         EXT_TOOLS_TOKEN = "_tool.py"
         path = os.getenv("PYDM_TOOLS_PATH", None)

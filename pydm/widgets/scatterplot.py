@@ -313,7 +313,6 @@ class PyDMScatterPlot(BasePlot):
         lineWidth: int, optional
             Width of the line connecting the data points.
         redraw_mode: int, optional
-            Must be one four values:
             ScatterPlotCurveItem.REDRAW_ON_EITHER: (Default)
                 Redraw after either X or Y receives new data.
             ScatterPlotCurveItem.REDRAW_ON_X:

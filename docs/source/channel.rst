@@ -1,5 +1,5 @@
 ========================
-PyDM Channel
+Channel
 ========================
 
 .. autoclass:: channel.PyDMChannel
