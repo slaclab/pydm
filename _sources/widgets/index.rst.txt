@@ -1,10 +1,10 @@
 ============================
-PyDM Widgets
+Widgets
 ============================
 PyDM comes with a set of widgets useful for operating a control system.
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     byte.rst
     checkbox.rst

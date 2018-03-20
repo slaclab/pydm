@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDM Application &mdash; PyDM v1.1.0+34.g12ebe5f documentation</title>
+  <title>Application &mdash; PyDM v1.1.0+44.g52d9ade documentation</title>
   
 
   
@@ -35,7 +35,8 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="PyDM v1.1.0+34.g12ebe5f documentation" href="index.html"/>
+    <link rel="top" title="PyDM v1.1.0+44.g52d9ade documentation" href="index.html"/>
+        <link rel="next" title="Channel" href="channel.html"/>
         <link rel="prev" title="PyDMWaveformTable" href="widgets/waveformtable.html"/> 
 
   
@@ -65,7 +66,7 @@
             
             
               <div class="version">
-                v1.1.0+34.g12ebe5f
+                v1.1.0+44.g52d9ade
               </div>
             
           
@@ -89,12 +90,26 @@
               
             
             
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with PyDM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scripted_displays.html">Making Python-based Displays</a></li>
-<li class="toctree-l1"><a class="reference internal" href="macros.html">Macro Substitution</a></li>
-<li class="toctree-l1"><a class="reference internal" href="widgets/index.html">PyDM Widgets</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">PyDM Application</a></li>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/first_display.html">Building Your First Display with Qt Designer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/scripted_displays.html">Making Python-based Displays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/macros.html">Macro Substitution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="widgets/index.html">Widgets</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="development/development.html">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development/resources.html">Recommended Resources</a></li>
 </ul>
 
             
@@ -139,7 +154,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>PyDM Application</li>
+      <li>Application</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -158,8 +173,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pydm-application">
-<h1>PyDM Application<a class="headerlink" href="#pydm-application" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="application">
+<h1>Application<a class="headerlink" href="#application" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pydm.PyDMApplication">
 <em class="property">class </em><code class="descclassname">pydm.</code><code class="descname">PyDMApplication</code><span class="sig-paren">(</span><em>ui_file=None</em>, <em>command_line_args=[]</em>, <em>display_args=[]</em>, <em>perfmon=False</em>, <em>hide_nav_bar=False</em>, <em>hide_menu_bar=False</em>, <em>hide_status_bar=False</em>, <em>read_only=False</em>, <em>macros=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication" title="Permalink to this definition">¶</a></dt>
@@ -342,9 +357,9 @@ or an Instance of an ExternalTool.</td>
 <dt id="pydm.PyDMApplication.load_external_tools">
 <code class="descname">load_external_tools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.load_external_tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.load_external_tools" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads all the external tools available at the given
-PYDM_TOOLS_PATH environment variable and subfolders that
-follows the <a href="#id1"><span class="problematic" id="id2">*</span></a>_tool.py and have classes that inherits from
-the pydm.tools.ExternalTool class.</p>
+<cite>PYDM_TOOLS_PATH</cite> environment variable and subfolders that
+follows the <cite>*_tool.py</cite> and have classes that inherits from
+the <cite>pydm.tools.ExternalTool</cite> class.</p>
 </dd></dl>
 
 <dl class="method">
@@ -572,6 +587,8 @@ really only used by embedded displays.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="channel.html" class="btn btn-neutral float-right" title="Channel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
       
         <a href="widgets/waveformtable.html" class="btn btn-neutral" title="PyDMWaveformTable" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
@@ -604,7 +621,7 @@ really only used by embedded displays.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v1.1.0+34.g12ebe5f',
+            VERSION:'v1.1.0+44.g52d9ade',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

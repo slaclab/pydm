@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started with PyDM &mdash; PyDM v1.1.0+34.g12ebe5f documentation</title>
+  <title>Installation &mdash; PyDM v1.1.0+44.g52d9ade documentation</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="PyDM v1.1.0+34.g12ebe5f documentation" href="index.html"/>
-        <link rel="next" title="Making Python-based Displays" href="scripted_displays.html"/>
-        <link rel="prev" title="Welcome to PyDM’s documentation!" href="index.html"/> 
+    <link rel="top" title="PyDM v1.1.0+44.g52d9ade documentation" href="index.html"/>
+        <link rel="next" title="Building Your First Display with Qt Designer" href="tutorials/first_display.html"/>
+        <link rel="prev" title="PyDM - Python Display Manager" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                v1.1.0+34.g12ebe5f
+                v1.1.0+44.g52d9ade
               </div>
             
           
@@ -90,32 +90,42 @@
               
             
             
-              <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started with PyDM</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#installing-pydm-and-prerequisites-with-anaconda">Installing PyDM and Prerequisites with Anaconda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#installing-the-prerequisites">Installing the Prerequisites</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#qt-5">Qt 5</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sip">SIP</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#pyqt5">PyQt5</a></li>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installing-pydm-and-prerequisites-with-anaconda">Installing PyDM and Prerequisites with Anaconda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-the-prerequisites">Installing the Prerequisites</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#qt-5">Qt 5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sip">SIP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyqt5">PyQt5</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#installing-pydm-with-pip">Installing PyDM with PIP</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#setting-environment-variables">Setting Environment Variables</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#designer-plugin-path">Designer Plugin Path</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#default-data-source">Default Data Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-pydm-with-pip">Installing PyDM with PIP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-environment-variables">Setting Environment Variables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#designer-plugin-path">Designer Plugin Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#default-data-source">Default Data Source</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#troubleshooting-pydm-widgets-in-designer">Troubleshooting PyDM Widgets in Designer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting-pydm-widgets-in-designer">Troubleshooting PyDM Widgets in Designer</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#building-your-first-display-with-qt-designer">Building Your First Display with Qt Designer</a></li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="scripted_displays.html">Making Python-based Displays</a></li>
-<li class="toctree-l1"><a class="reference internal" href="macros.html">Macro Substitution</a></li>
-<li class="toctree-l1"><a class="reference internal" href="widgets/index.html">PyDM Widgets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="application.html">PyDM Application</a></li>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/first_display.html">Building Your First Display with Qt Designer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/scripted_displays.html">Making Python-based Displays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/macros.html">Macro Substitution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="development/development.html">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development/resources.html">Recommended Resources</a></li>
 </ul>
 
             
@@ -160,13 +170,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Getting Started with PyDM</li>
+      <li>Installation</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/getting_started.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -179,17 +189,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="getting-started-with-pydm">
-<h1>Getting Started with PyDM<a class="headerlink" href="#getting-started-with-pydm" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <p>There are a few different ways to install PyDM.  The easiest way to install it
 from scratch is probably using the Anaconda system.  If you have an existing
 python environment, and want to install PyDM for use with that, you can do that
 with pip.</p>
 <p>Please note, this guide is written with Unix in mind.</p>
 <div class="section" id="installing-pydm-and-prerequisites-with-anaconda">
-<h3>Installing PyDM and Prerequisites with Anaconda<a class="headerlink" href="#installing-pydm-and-prerequisites-with-anaconda" title="Permalink to this headline">¶</a></h3>
+<h2>Installing PyDM and Prerequisites with Anaconda<a class="headerlink" href="#installing-pydm-and-prerequisites-with-anaconda" title="Permalink to this headline">¶</a></h2>
 <p>After installing Anaconda (see <a class="reference external" href="https://www.anaconda.com/download/">https://www.anaconda.com/download/</a>), create a new
 environment for PyDM:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda create -n pydm-environment python=3.6 pyqt=5 pip numpy scipy six psutil pyqtgraph -c conda-forge
@@ -200,9 +208,9 @@ $ source activate pydm-environment
 with PIP</a> section below.  You do not need to build the prerequisites manually.</p>
 </div>
 <div class="section" id="installing-the-prerequisites">
-<h3>Installing the Prerequisites<a class="headerlink" href="#installing-the-prerequisites" title="Permalink to this headline">¶</a></h3>
+<h2>Installing the Prerequisites<a class="headerlink" href="#installing-the-prerequisites" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="qt-5">
-<h4>Qt 5<a class="headerlink" href="#qt-5" title="Permalink to this headline">¶</a></h4>
+<h3>Qt 5<a class="headerlink" href="#qt-5" title="Permalink to this headline">¶</a></h3>
 <p>First, <a class="reference external" href="https://www1.qt.io/download-open-source/#section-5">download the source code for your platform</a>.
 Once you’ve downloaded and extracted the archive somewhere, its time to configure the build.
 To see all the options, run:</p>
@@ -216,13 +224,13 @@ $ make -j4 &amp;&amp; make install
 </div>
 </div>
 <div class="section" id="sip">
-<h4>SIP<a class="headerlink" href="#sip" title="Permalink to this headline">¶</a></h4>
+<h3>SIP<a class="headerlink" href="#sip" title="Permalink to this headline">¶</a></h3>
 <p>You’ll need SIP to build PyQt5.  <a class="reference external" href="https://www.riverbankcomputing.com/software/sip/download">Download it</a>,
 and extract the archive.  Then, follow <a class="reference external" href="http://pyqt.sourceforge.net/Docs/sip4/installation.html">the instructions</a>
 to build and install SIP.</p>
 </div>
 <div class="section" id="pyqt5">
-<h4>PyQt5<a class="headerlink" href="#pyqt5" title="Permalink to this headline">¶</a></h4>
+<h3>PyQt5<a class="headerlink" href="#pyqt5" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://riverbankcomputing.com/software/pyqt/download5">Download the source code for PyQt5</a>,
 and extract the archive.  Follow <a class="reference external" href="http://pyqt.sourceforge.net/Docs/PyQt5/installation.html#building-and-installing-from-source">the provided instructions</a> to
 build and install it.  Note that you may need to manually set the ‘–qmake’ option to point to the
@@ -230,7 +238,7 @@ qmake binary you created when you built Qt5.</p>
 </div>
 </div>
 <div class="section" id="installing-pydm-with-pip">
-<h3>Installing PyDM with PIP<a class="headerlink" href="#installing-pydm-with-pip" title="Permalink to this headline">¶</a></h3>
+<h2>Installing PyDM with PIP<a class="headerlink" href="#installing-pydm-with-pip" title="Permalink to this headline">¶</a></h2>
 <p>PyDM is not currently part of the Python Package Index (PyPI), so you’ll have to
 first <a class="reference external" href="https://github.com/slaclab/pydm/releases/">download a release of PyDM</a>,
 or clone PyDM’s git repository:</p>
@@ -245,20 +253,20 @@ or clone PyDM’s git repository:</p>
 PyDM.</p>
 </div>
 <div class="section" id="setting-environment-variables">
-<h3>Setting Environment Variables<a class="headerlink" href="#setting-environment-variables" title="Permalink to this headline">¶</a></h3>
+<h2>Setting Environment Variables<a class="headerlink" href="#setting-environment-variables" title="Permalink to this headline">¶</a></h2>
 <p>PyDM has several environment variables that let you configure its behavior, and
 where it looks for certain types of files.  To ensure these variables are always
 set, you probably want to add them to your shell startup file (like ~/.bashrc, if you
 are using bash).</p>
 <div class="section" id="designer-plugin-path">
-<h4>Designer Plugin Path<a class="headerlink" href="#designer-plugin-path" title="Permalink to this headline">¶</a></h4>
+<h3>Designer Plugin Path<a class="headerlink" href="#designer-plugin-path" title="Permalink to this headline">¶</a></h3>
 <p>If you want to use Designer to build displays with PyDM widgets, you’ll need to
 add the PyDM install location to the PYQTDESIGNERPATH environment variable.  This
 directory might be buried pretty deep, depending on how Python is installed on your
 system.  For example, mine lives at ‘/usr/local/lib/python2.7/site-packages/pydm/’.</p>
 </div>
 <div class="section" id="default-data-source">
-<h4>Default Data Source<a class="headerlink" href="#default-data-source" title="Permalink to this headline">¶</a></h4>
+<h3>Default Data Source<a class="headerlink" href="#default-data-source" title="Permalink to this headline">¶</a></h3>
 <p>PyDM lets you get data from multiple data sources.  To accomplish this, all
 addresses are prefixed by a ‘scheme’, much like a URL.  For example, the
 EPICS plugin that comes with PyDM registers the scheme ‘ca’, and to specify
@@ -271,67 +279,12 @@ channel access.</p>
 </div>
 </div>
 <div class="section" id="troubleshooting-pydm-widgets-in-designer">
-<h3>Troubleshooting PyDM Widgets in Designer<a class="headerlink" href="#troubleshooting-pydm-widgets-in-designer" title="Permalink to this headline">¶</a></h3>
+<h2>Troubleshooting PyDM Widgets in Designer<a class="headerlink" href="#troubleshooting-pydm-widgets-in-designer" title="Permalink to this headline">¶</a></h2>
 <p>For Qt Designer to see the PyDM widgets, the PyQt Designer Plugin needs to be
 installed.  This is usually done as part of the PyQt install process, but some
 package managers (like homebrew on OSX) don’t install the plugin when PyQt is
 installed.  In that case, you’ll probably need to install PyQt from source.
 Follow the directions from the PyQt documentation: <a class="reference external" href="http://pyqt.sourceforge.net/Docs/PyQt5/installation.html#building-and-installing-from-source">http://pyqt.sourceforge.net/Docs/PyQt5/installation.html#building-and-installing-from-source</a></p>
-</div>
-</div>
-<div class="section" id="building-your-first-display-with-qt-designer">
-<h2>Building Your First Display with Qt Designer<a class="headerlink" href="#building-your-first-display-with-qt-designer" title="Permalink to this headline">¶</a></h2>
-<p>Once you have PyDM installed, you can start making displays.  The easiest way
-to make a display is to use Qt Designer, which is Qt’s drag-and-drop tool for
-building user interfaces.  Once you open Designer, you’ll be greeted by a mostly
-blank screen, with a list of widgets on the left, and a property inspector on the
-right.</p>
-<div class="figure" id="id1">
-<a class="reference internal image-reference" href="_images/designer.png"><img alt="Screenshot of newly-opened Qt Designer." src="_images/designer.png" style="width: 809.82px; height: 539.88px;" /></a>
-<p class="caption"><span class="caption-text">A newly-opened Qt Designer.  Notice the PyDM widgets at the bottom of
-the widget list on the left.</span></p>
-</div>
-<p>To make a new PyDM display, go to File-&gt;New…, then choose to build a new Widget.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">All PyDM displays must have a Widget for the base - if you try to use MainWindow, your
-display will not work properly.</p>
-</div>
-<p>Now you should see a blank form on which you can drag widgets.  Drag a PyDMLabel
-(in the ‘PyDM Display Widgets’ section) onto the form.  On the right side of the
-screen, you can see all the properties for the widget.  Most of these properties
-are for the basic QLabel widget that PyDMLabel is based on, and control the label’s
-appearance and size (things like the font).  At the bottom of the properties list
-are the PyDM-specific properties.</p>
-<div class="figure" id="id2">
-<a class="reference internal image-reference" href="_images/pydm_properties.png"><img alt="Screenshot showing the PyDMLabel's properties." src="_images/pydm_properties.png" style="width: 911.46px; height: 539.88px;" /></a>
-<p class="caption"><span class="caption-text">The PyDMLabel’s properties are highlighted in red.</span></p>
-</div>
-<p>Lets fill in the ‘channel’ property for this label, which will connect it to a source
-of data.  PyDM comes with a Python-based IOC which is useful for testing widgets out.
-We’ll use one of the PVs supplied by the testing IOC.  Set the label’s ‘channel’ property
-to ‘ca://MTEST:Float’.  Once that is done, go to File-&gt;Save… and save the .ui file
-somewhere.</p>
-<p>We can test the display in PyDM by first running the testing IOC.  Open up a new
-terminal and run the command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python examples/testing_ioc/pydm-testing-ioc
-</pre></div>
-</div>
-<p>to launch the IOC.  Once the IOC is running, run the command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pydm &lt;your file name&gt;
-</pre></div>
-</div>
-<p>with the .ui file you just saved.  This will open your display in PyDM.  If everything
-works correctly, you should see a label with the text ‘0.000’.  This value will update
-whenever the MTEST:Float PV updates.  You can test this by using ‘caput’ at the terminal
-to change the value of MTEST:Float, and observing the label on the display.</p>
-<p>You now know almost all you need to build simple displays!  At this point, the
-best thing you can do is play around with the various widgets and their properties.
-For example, try adding a slider to your display and connect it to the same PV - you
-should see the label change as the slider moves around.</p>
-<p>Once you’ve become comfortable with building displays in Designer, you should
-investigate the system for writing your own displays using Python code (see
-<a class="reference internal" href="scripted_displays.html"><span class="doc">Making Python-based Displays</span></a>).</p>
 </div>
 </div>
 
@@ -345,10 +298,10 @@ investigate the system for writing your own displays using Python code (see
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="scripted_displays.html" class="btn btn-neutral float-right" title="Making Python-based Displays" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tutorials/first_display.html" class="btn btn-neutral float-right" title="Building Your First Display with Qt Designer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Welcome to PyDM’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="PyDM - Python Display Manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -379,7 +332,7 @@ investigate the system for writing your own displays using Python code (see
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v1.1.0+34.g12ebe5f',
+            VERSION:'v1.1.0+44.g52d9ade',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

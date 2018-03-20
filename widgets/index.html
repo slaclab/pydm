@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDM Widgets &mdash; PyDM v1.1.0+34.g12ebe5f documentation</title>
+  <title>Widgets &mdash; PyDM v1.1.0+44.g52d9ade documentation</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyDM v1.1.0+34.g12ebe5f documentation" href="../index.html"/>
+    <link rel="top" title="PyDM v1.1.0+44.g52d9ade documentation" href="../index.html"/>
         <link rel="next" title="PyDMByteIndicator" href="byte.html"/>
-        <link rel="prev" title="Macro Substitution" href="../macros.html"/> 
+        <link rel="prev" title="Macro Substitution" href="../tutorials/macros.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                v1.1.0+34.g12ebe5f
+                v1.1.0+44.g52d9ade
               </div>
             
           
@@ -90,11 +90,19 @@
               
             
             
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started with PyDM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../scripted_displays.html">Making Python-based Displays</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../macros.html">Macro Substitution</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">PyDM Widgets</a><ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/first_display.html">Building Your First Display with Qt Designer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/scripted_displays.html">Making Python-based Displays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/macros.html">Macro Substitution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Widgets</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="byte.html">PyDMByteIndicator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="checkbox.html">PyDMCheckbox</a></li>
 <li class="toctree-l2"><a class="reference internal" href="drawing.html">PyDMDrawing Widgets</a></li>
@@ -116,7 +124,13 @@
 <li class="toctree-l2"><a class="reference internal" href="waveformtable.html">PyDMWaveformTable</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../application.html">PyDM Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../channel.html">Channel</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/development.html">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/resources.html">Recommended Resources</a></li>
 </ul>
 
             
@@ -161,7 +175,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>PyDM Widgets</li>
+      <li>Widgets</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -180,8 +194,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pydm-widgets">
-<h1>PyDM Widgets<a class="headerlink" href="#pydm-widgets" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="widgets">
+<h1>Widgets<a class="headerlink" href="#widgets" title="Permalink to this headline">¶</a></h1>
 <p>PyDM comes with a set of widgets useful for operating a control system.</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -200,12 +214,7 @@
 <li class="toctree-l1"><a class="reference internal" href="slider.html">PyDMSlider</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spinbox.html">PyDMSpinbox</a></li>
 <li class="toctree-l1"><a class="reference internal" href="symbol.html">PyDMSymbol</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tab_widget.html">PyDMTabWidget</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tab_widget.html#using-the-pydm-tab-widget-in-designer">Using the PyDM Tab Widget in Designer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tab_widget.html#widget-properties">Widget Properties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tab_widget.html#api-documentation">API Documentation</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="tab_widget.html">PyDMTabWidget</a></li>
 <li class="toctree-l1"><a class="reference internal" href="timeplot.html">PyDMTimePlot</a></li>
 <li class="toctree-l1"><a class="reference internal" href="waveformplot.html">PyDMWaveformPlot</a></li>
 <li class="toctree-l1"><a class="reference internal" href="waveformtable.html">PyDMWaveformTable</a></li>
@@ -226,7 +235,7 @@
         <a href="byte.html" class="btn btn-neutral float-right" title="PyDMByteIndicator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../macros.html" class="btn btn-neutral" title="Macro Substitution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../tutorials/macros.html" class="btn btn-neutral" title="Macro Substitution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -257,7 +266,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v1.1.0+34.g12ebe5f',
+            VERSION:'v1.1.0+44.g52d9ade',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

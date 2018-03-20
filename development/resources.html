@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMTimePlot &mdash; PyDM v1.1.0+44.g52d9ade documentation</title>
+  <title>Recommended Resources &mdash; PyDM v1.1.0+44.g52d9ade documentation</title>
   
 
   
@@ -36,9 +36,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="PyDM v1.1.0+44.g52d9ade documentation" href="../index.html"/>
-        <link rel="up" title="Widgets" href="index.html"/>
-        <link rel="next" title="PyDMWaveformPlot" href="waveformplot.html"/>
-        <link rel="prev" title="PyDMTabWidget" href="tab_widget.html"/> 
+        <link rel="prev" title="Development" href="development.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -102,36 +100,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/macros.html">Macro Substitution</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Widgets</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="byte.html">PyDMByteIndicator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="checkbox.html">PyDMCheckbox</a></li>
-<li class="toctree-l2"><a class="reference internal" href="drawing.html">PyDMDrawing Widgets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="embedded_display.html">PyDMEmbeddedDisplay</a></li>
-<li class="toctree-l2"><a class="reference internal" href="enum_combo_box.html">PyDMEnumComboBox</a></li>
-<li class="toctree-l2"><a class="reference internal" href="image.html">PyDMImageView</a></li>
-<li class="toctree-l2"><a class="reference internal" href="label.html">PyDMLabel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="line_edit.html">PyDMLineEdit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pushbutton.html">PyDMPushButton</a></li>
-<li class="toctree-l2"><a class="reference internal" href="related_display_button.html">PyDMRelatedDisplayButton</a></li>
-<li class="toctree-l2"><a class="reference internal" href="scatterplot.html">PyDMScatterPlot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="shell_command.html">PyDMShellCommand</a></li>
-<li class="toctree-l2"><a class="reference internal" href="slider.html">PyDMSlider</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spinbox.html">PyDMSpinbox</a></li>
-<li class="toctree-l2"><a class="reference internal" href="symbol.html">PyDMSymbol</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tab_widget.html">PyDMTabWidget</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">PyDMTimePlot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="waveformplot.html">PyDMWaveformPlot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="waveformtable.html">PyDMWaveformTable</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../channel.html">Channel</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developers Corner</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../development/development.html">Development</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../development/resources.html">Recommended Resources</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Recommended Resources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#packages-we-recommend">Packages We Recommend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#external-tutorials-and-guides">External Tutorials and Guides</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -176,15 +157,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">Widgets</a> &raquo;</li>
-        
-      <li>PyDMTimePlot</li>
+      <li>Recommended Resources</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/widgets/timeplot.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/development/resources.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -197,32 +176,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pydmtimeplot">
-<h1>PyDMTimePlot<a class="headerlink" href="#pydmtimeplot" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pydm.widgets.timeplot.PyDMTimePlot">
-<em class="property">class </em><code class="descclassname">pydm.widgets.timeplot.</code><code class="descname">PyDMTimePlot</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_y_channels=[]</em>, <em>background='default'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="pydm.widgets.timeplot.PyDMTimePlot.autoRangeY">
-<code class="descname">autoRangeY</code><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.autoRangeY" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether or not the Y-axis automatically rescales to fit the data.
-If true, the values in minYRange and maxYRange are ignored.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydm.widgets.timeplot.PyDMTimePlot.maxYRange">
-<code class="descname">maxYRange</code><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.maxYRange" title="Permalink to this definition">¶</a></dt>
-<dd><p>Maximum Y-axis value visible on the plot.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydm.widgets.timeplot.PyDMTimePlot.minYRange">
-<code class="descname">minYRange</code><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.minYRange" title="Permalink to this definition">¶</a></dt>
-<dd><p>Minimum Y-axis value visible on the plot.</p>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="recommended-resources">
+<h1>Recommended Resources<a class="headerlink" href="#recommended-resources" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="packages-we-recommend">
+<h2>Packages We Recommend<a class="headerlink" href="#packages-we-recommend" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://docs.pytest.org/en/latest">Pytest</a> – Python Testing Framework</li>
+<li><a class="reference external" href="http://flake8.pycqa.org/en/latest">Flake8</a> – Style Enforcement</li>
+<li><a class="reference external" href="http://www.sphinx-doc.org/en/stable">Sphinx</a> – Automated HTML Documentation</li>
+</ul>
+</div>
+<div class="section" id="external-tutorials-and-guides">
+<h2>External Tutorials and Guides<a class="headerlink" href="#external-tutorials-and-guides" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://swcarpentry.github.io/git-novice">Git Tutorial</a> – Thorough Git beginner guide</li>
+<li><a class="reference external" href="https://docs.scipy.org/doc/numpy/dev/gitwash/development_workflow.html">Numpy Development Guide</a> – A development guide from the folks at NumPy</li>
+<li><a class="reference external" href="https://www.python.org/dev/peps/pep-0008">PEP8</a> – Python Coding Conventions</li>
+<li><a class="reference external" href="https://github.com/k88hudson/git-flight-rules">Git Flight Rules</a> – Specific instructions for performing advanced tasks in Git</li>
+<li><a class="reference external" href="https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt">NumPy Documentation Guide</a> – Guide to making NumPy style documentation</li>
+<li><a class="reference external" href="https://conda.io/docs/user-guide/getting-started.html">Conda</a> – Getting started guide for using Conda</li>
+</ul>
+</div>
 </div>
 
 
@@ -235,10 +209,8 @@ If true, the values in minYRange and maxYRange are ignored.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="waveformplot.html" class="btn btn-neutral float-right" title="PyDMWaveformPlot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="tab_widget.html" class="btn btn-neutral" title="PyDMTabWidget" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="development.html" class="btn btn-neutral" title="Development" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
