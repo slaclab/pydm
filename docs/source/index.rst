@@ -1,26 +1,34 @@
-.. PyDM documentation master file, created by
-   sphinx-quickstart on Fri Aug 12 11:26:53 2016.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+PyDM - Python Display Manager
+=============================
 
-Welcome to PyDM's documentation!
-================================
+PyDM is a PyQt-based framework for building user interfaces for control systems.
 
-Contents:
+The goal is to provide a no-code, drag-and-drop system to make simple screens,
+as well as a straightforward python framework to build complex applications.
 
 .. toctree::
    :maxdepth: 2
+   :caption: Getting Started
+   :hidden:
 
    getting_started.rst
    scripted_displays.rst
    macros.rst
    widgets/index.rst
-   application.rst
-   
-Indices and tables
-==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. toctree::
+   :maxdepth: 2
+   :caption: API Documentation
+   :hidden:
+
+   application.rst
+   channel.rst
+   
+.. toctree::
+   :maxdepth: 2
+   :caption: Developers Corner
+   :hidden:
+
+   development/development.rst
+   development/resources.rst
 
