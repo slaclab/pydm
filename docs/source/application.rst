@@ -1,5 +1,5 @@
 ========================
-PyDM Application
+Application
 ========================
 
 .. autoclass:: pydm.PyDMApplication
