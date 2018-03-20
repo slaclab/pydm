@@ -4,7 +4,7 @@ PyDMTabWidget
 
 The PyDM Tab Widget is a container widget that lets you switch between different pages of content using a tab bar.  Each tab has an optional alarm channel.  When a tab specifies an alarm channel, an alarm indicator will appear next to the label for that tab.  When the channel's alarm severity changes, the indicator will update accordingly.  This is most useful for 'summary' alarms, where you have one alarm that represents the alarm state of a whole group of devices.
 
-.. figure:: tab_widget.png
+.. figure:: /_static/widgets/tab_widget.png
    :scale: 100 %
    :alt: A screenshot of the PyDM Tab Widget.
 
