@@ -30,12 +30,12 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         Method invoked when a key press event happens on the QDoubleSpinBox.
 
         For PyDMSpinBox we are interested on the Keypress events for:
-        - CTRL + Left/Right : Increase or Decrease the step exponent;
-        - Up / Down : Add or Remove `singleStep` units to the value;
-        - PageUp / PageDown : Add or Remove 10 times `singleStep` units
-          to the value;
-        - Return or Enter : Send the value to the channel using the
-          `send_value_signal`.
+            - CTRL + Left/Right : Increase or Decrease the step exponent;
+            - Up / Down : Add or Remove `singleStep` units to the value;
+            - PageUp / PageDown : Add or Remove 10 times `singleStep` units
+              to the value;
+            - Return or Enter : Send the value to the channel using the
+              `send_value_signal`.
 
         Parameters
         ----------
