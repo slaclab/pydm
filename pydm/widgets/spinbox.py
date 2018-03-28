@@ -51,7 +51,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         else:
             super(PyDMSpinbox, self).keyPressEvent(ev)
 
-    def contextMenuEvent(self, ev):
+    def context_menu(self):
         """Increment LineEdit menu to toggle the display of the step size."""
         def toogle():
             self.showStepExponent = not self.showStepExponent
@@ -60,7 +60,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         menu.addSeparator()
         ac = menu.addAction('Toggle Show Step Size')
         ac.triggered.connect(toogle)
-        menu.exec_(ev.globalPos())
+        return menu
 
     def update_step_size(self):
         """
