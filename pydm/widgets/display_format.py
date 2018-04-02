@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import sys
 
 
 class DisplayFormat(object):
@@ -18,6 +19,7 @@ def parse_value_for_display(value, precision, display_format_type=DisplayFormat.
         if isinstance(value, np.ndarray):
             try:
                 r = value.tobytes().decode(string_encoding)
+                sys.stderr.write("Could not decode\n")
                 print("Could not decode {} using {} at widget named '{}'.".format(value, string_encoding, widget.objectName()))
             except:
                 return value
