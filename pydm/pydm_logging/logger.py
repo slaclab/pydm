@@ -17,7 +17,7 @@ _log_dir = None
 # Global logging
 logger = logging.getLogger("pyDM Logger")
 
-def init()
+def init():
     global _log_file
     global _log_dir
     global _stdout
