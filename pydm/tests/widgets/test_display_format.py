@@ -2,7 +2,7 @@ import pytest
 import numpy as np
 from pydm.PyQt.QtGui import QWidget
 
-from ...widgets.display_format import  DisplayFormat, parse_value_for_display
+from pydm.widgets.display_format import  DisplayFormat, parse_value_for_display
 
 
 # --------------------
@@ -66,22 +66,3 @@ def test_parse_value_for_display_precision_incorrect_display_format(
 
     out, err = capfd.readouterr()
     assert expected in err
-
-
-
-# Test for exceptions thrown for precisions inapplicable to corresponding values
-
-
-# Test for null widgets being provided in correct display formats
-
-# Test for null widgets being provided in incorrect display formats
-
-"""
-@pytest.mark.parametrize("value, precision, display_format, widget, expected", [
-    (np.ndarray([80, 121, 68, 77, 32, 82, 111, 99, 107, 115, 33]),
-     0, DisplayFormat.String, QWidget,
-     np.ndarray([80, 121, 68, 77, 32, 82, 111, 99, 107, 115, 33])),
-])
-def test_parse_value_for_display_negative(value, precision, display_format, widget, expected):
-    pass
-"""
