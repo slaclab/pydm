@@ -34,9 +34,9 @@ def test_parse_value_for_display_format(value, precision, display_format, widget
     (3.000e-02, 2, DisplayFormat.Exponential, QWidget, "3.00e-02"),
     (3.000e-02, 3, DisplayFormat.Exponential, QWidget, "3.000e-02"),
     (1.234, 3, DisplayFormat.Hex, QWidget, "0x1"),
-    (-1.234, 3, DisplayFormat.Hex, QWidget, "-0x1"),
+    (-1.234, 3, DisplayFormat.Hex, QWidget, "-0x2"),
     (1.234, 3, DisplayFormat.Binary, QWidget, "0b1"),
-    (-1.234, 3, DisplayFormat.Binary, QWidget, "-0b1")
+    (-1.234, 3, DisplayFormat.Binary, QWidget, "-0b10")
 
 ])
 def test_parse_value_for_display_precision(value, precision, display_format, widget, expected):
