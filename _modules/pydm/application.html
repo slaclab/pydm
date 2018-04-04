@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.1.0+46.g7f287ef documentation</title>
+  <title>pydm.application &mdash; PyDM v1.1.0+48.g7d7cac0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="PyDM v1.1.0+46.g7f287ef documentation" href="../../index.html"/>
+    <link rel="top" title="PyDM v1.1.0+48.g7d7cac0 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v1.1.0+46.g7f287ef
+                v1.1.0+48.g7d7cac0
               </div>
             
           
@@ -189,6 +189,7 @@
 <span class="kn">import</span> <span class="nn">shlex</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">platform</span>
 <span class="kn">import</span> <span class="nn">collections</span>
@@ -202,6 +203,7 @@
 <span class="kn">from</span> <span class="nn">.utilities</span> <span class="k">import</span> <span class="n">macro</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">path_info</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">data_plugins</span>
 
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">DEFAULT_PROTOCOL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYDM_DEFAULT_PROTOCOL&quot;</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">DEFAULT_PROTOCOL</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
     <span class="c1"># Get rid of the &quot;://&quot; part if it exists</span>
@@ -765,12 +767,12 @@
         <span class="n">EXT_TOOLS_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;_tool.py&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYDM_TOOLS_PATH&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;* Loading PyDM External Tools&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;* Loading PyDM External Tools&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Looking for external tools at: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Looking for external tools at: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
                 <span class="n">locations</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -781,7 +783,7 @@
                         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">EXT_TOOLS_TOKEN</span><span class="p">):</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">install_external_tool</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;External Tools not loaded. No External Tools Path specified.&quot;</span><span class="p">)</span></div>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;External Tools not loaded. No External Tools Path specified.&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.install_external_tool"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.install_external_tool">[docs]</a>    <span class="k">def</span> <span class="nf">install_external_tool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -916,7 +918,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v1.1.0+46.g7f287ef',
+            VERSION:'v1.1.0+48.g7d7cac0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
