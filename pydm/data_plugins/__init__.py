@@ -1,6 +1,7 @@
 import os
 import sys
 import inspect
+import logging
 import imp
 import uuid
 import warnings
@@ -13,6 +14,7 @@ from .plugin import PyDMPlugin
 
 # PyDMApplication uses the plugin_modules list to create an instance of each plugin.
 
+logger = logging.getLogger(__name__)
 plugin_dir = os.path.dirname(os.path.realpath(__file__))
 plugin_modules = []
 
@@ -32,20 +34,20 @@ else:
 # Ensure that we first visit the local data_plugins location
 locations.insert(0, plugin_dir)
 
-print("*"*80)
-print("* Loading PyDM Data Plugins")
-print("*"*80)
+logger.info("*"*80)
+logger.info("* Loading PyDM Data Plugins")
+logger.info("*"*80)
 
 for loc in locations:
     for root, _, files in os.walk(loc):
         if root.split(os.path.sep)[-1].startswith("__"):
             continue
 
-        print("Looking for PyDM Data Plugins at: {}".format(root))
+        logger.info("Looking for PyDM Data Plugins at: {}".format(root))
         for name in files:
             if name.endswith(DATA_PLUGIN_TOKEN):
                 try:
-                    print("\tTrying to load {}...".format(name))
+                    logger.info("\tTrying to load {}...".format(name))
                     sys.path.append(root)
                     temp_name = str(uuid.uuid4())
                     module = imp.load_source(temp_name, os.path.join(root, name))
