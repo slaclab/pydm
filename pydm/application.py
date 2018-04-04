@@ -14,6 +14,7 @@ import re
 import shlex
 import json
 import inspect
+import logging
 import warnings
 import platform
 import collections
@@ -27,6 +28,7 @@ from .tools import ExternalTool
 from .utilities import macro, which, path_info
 from . import data_plugins
 
+logger = logging.getLogger(__name__)
 DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
 if DEFAULT_PROTOCOL is not None:
     # Get rid of the "://" part if it exists
@@ -590,12 +592,12 @@ class PyDMApplication(QApplication):
         EXT_TOOLS_TOKEN = "_tool.py"
         path = os.getenv("PYDM_TOOLS_PATH", None)
 
-        print("*"*80)
-        print("* Loading PyDM External Tools")
-        print("*"*80)
+        logger.info("*"*80)
+        logger.info("* Loading PyDM External Tools")
+        logger.info("*"*80)
 
         if path is not None:
-            print("Looking for external tools at: {}".format(path))
+            logger.info("Looking for external tools at: {}".format(path))
             if platform.system() == "Windows":
                 locations = path.split(";")
             else:
@@ -606,7 +608,7 @@ class PyDMApplication(QApplication):
                         if name.endswith(EXT_TOOLS_TOKEN):
                             self.install_external_tool(os.path.join(root, name))
         else:
-            print("External Tools not loaded. No External Tools Path specified.")
+            logger.warning("External Tools not loaded. No External Tools Path specified.")
 
     def install_external_tool(self, tool):
         """
