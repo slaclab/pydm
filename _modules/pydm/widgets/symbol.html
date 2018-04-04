@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.symbol &mdash; PyDM v1.1.0+44.g52d9ade documentation</title>
+  <title>pydm.widgets.symbol &mdash; PyDM v1.1.0+46.g7f287ef documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM v1.1.0+44.g52d9ade documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM v1.1.0+46.g7f287ef documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v1.1.0+44.g52d9ade
+                v1.1.0+46.g7f287ef
               </div>
             
           
@@ -203,8 +203,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method called after the constructor to tweak configurations for</span>
 <span class="sd">        when using the widget with the Qt Designer</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span></div>
 
     <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">imageFiles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -296,8 +296,8 @@
 <span class="sd">        connected : int</span>
 <span class="sd">            When this value is 0 the channel is disconnected, 1 otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSymbol</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">connection_changed</span><span class="p">(</span><span class="n">connected</span><span class="p">)</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSymbol</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">connection_changed</span><span class="p">(</span><span class="n">connected</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMSymbol.value_changed"><a class="viewcode-back" href="../../../widgets/symbol.html#pydm.widgets.symbol.PyDMSymbol.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -308,8 +308,8 @@
 <span class="sd">        new_val : int</span>
 <span class="sd">            The new value from the channel.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSymbol</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSymbol</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMSymbol.sizeHint"><a class="viewcode-back" href="../../../widgets/symbol.html#pydm.widgets.symbol.PyDMSymbol.sizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -318,8 +318,8 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QSize</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sizeHint</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sizeHint</span></div>
 
 <div class="viewcode-block" id="PyDMSymbol.minimumSizeHint"><a class="viewcode-back" href="../../../widgets/symbol.html#pydm.widgets.symbol.PyDMSymbol.minimumSizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">minimumSizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -328,8 +328,8 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QSize</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-        <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># This is totally arbitrary, I just want *some* visible nonzero size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># This is totally arbitrary, I just want *some* visible nonzero size</span></div>
 
 <div class="viewcode-block" id="PyDMSymbol.paintEvent"><a class="viewcode-back" href="../../../widgets/symbol.html#pydm.widgets.symbol.PyDMSymbol.paintEvent">[docs]</a>    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -369,12 +369,12 @@
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image_to_draw</span><span class="p">,</span> <span class="n">QSvgRenderer</span><span class="p">):</span>
             <span class="n">draw_size</span> <span class="o">=</span> <span class="n">QSizeF</span><span class="p">(</span><span class="n">image_to_draw</span><span class="o">.</span><span class="n">defaultSize</span><span class="p">())</span>
             <span class="n">draw_size</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">QSizeF</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">size</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span><span class="p">)</span>
-            <span class="n">image_to_draw</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="p">,</span> <span class="n">QRectF</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">draw_size</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">draw_size</span><span class="o">.</span><span class="n">height</span><span class="p">()))</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+            <span class="n">image_to_draw</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="p">,</span> <span class="n">QRectF</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">draw_size</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">draw_size</span><span class="o">.</span><span class="n">height</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">qt_message_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_type</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="c1"># Intentionally suppress all qt messages.  Make sure not to leave this handler installed.</span></div>
-        <span class="k">pass</span>
+        <span class="c1"># Intentionally suppress all qt messages.  Make sure not to leave this handler installed.</span>
+        <span class="k">pass</span></div>
 </pre></div>
 
            </div>
@@ -411,7 +411,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+44.g52d9ade',
+            VERSION:'v1.1.0+46.g7f287ef',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

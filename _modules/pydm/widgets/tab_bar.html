@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.tab_bar &mdash; PyDM v1.1.0+44.g52d9ade documentation</title>
+  <title>pydm.widgets.tab_bar &mdash; PyDM v1.1.0+46.g7f287ef documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM v1.1.0+44.g52d9ade documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM v1.1.0+46.g7f287ef documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v1.1.0+44.g52d9ade
+                v1.1.0+46.g7f287ef
               </div>
             
           
@@ -293,22 +293,22 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">channels</span><span class="p">()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">channels</span><span class="p">()</span></div>
     
 <div class="viewcode-block" id="PyDMTabWidget.getAlarmChannels"><a class="viewcode-back" href="../../../widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.getAlarmChannels">[docs]</a>    <span class="k">def</span> <span class="nf">getAlarmChannels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;alarmChannels is a property used to store the configuration of this tab bar</span>
 <span class="sd">        when it has been created in Qt Designer.  This property isn&#39;t directly editable</span>
 <span class="sd">        by users, they will go through the currentTabAlarmChannel property to edit this</span>
-<span class="sd">        information.&quot;&quot;&quot;</span></div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">getAlarmChannels</span><span class="p">()</span>
+<span class="sd">        information.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">getAlarmChannels</span><span class="p">()</span></div>
     
 <div class="viewcode-block" id="PyDMTabWidget.setAlarmChannels"><a class="viewcode-back" href="../../../widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.setAlarmChannels">[docs]</a>    <span class="k">def</span> <span class="nf">setAlarmChannels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_channels</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the list of alarm channels for each tab.  This is needed for instantiating</span>
 <span class="sd">        a tab widget from a .ui file, and is probably not very useful for users.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">setAlarmChannels</span><span class="p">(</span><span class="n">new_alarm_channels</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">setAlarmChannels</span><span class="p">(</span><span class="n">new_alarm_channels</span><span class="p">)</span></div>
         
     <span class="n">alarmChannels</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getAlarmChannels</span><span class="p">,</span> <span class="n">setAlarmChannels</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     
@@ -316,8 +316,8 @@
     <span class="c1">#but that we don&#39;t want to support on PyDMTabWidget.</span>
     <span class="n">currentTabIcon</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="s2">&quot;QIcon&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">documentMode</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">tabsClosable</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
-    <span class="n">movable</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">tabsClosable</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">movable</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
     
 </pre></div>
 
@@ -355,7 +355,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+44.g52d9ade',
+            VERSION:'v1.1.0+46.g7f287ef',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

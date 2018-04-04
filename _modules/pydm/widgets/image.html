@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.image &mdash; PyDM v1.1.0+44.g52d9ade documentation</title>
+  <title>pydm.widgets.image &mdash; PyDM v1.1.0+46.g7f287ef documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="PyDM v1.1.0+44.g52d9ade documentation" href="../../../index.html"/>
+    <link rel="top" title="PyDM v1.1.0+46.g7f287ef documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                v1.1.0+44.g52d9ade
+                v1.1.0+46.g7f287ef
               </div>
             
           
@@ -245,8 +245,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        action : QAction</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_color_map_to_preset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmap_for_action</span><span class="p">[</span><span class="n">action</span><span class="p">])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_color_map_to_preset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmap_for_action</span><span class="p">[</span><span class="n">action</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="PyDMImageView.setColorMapMin"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.setColorMapMin">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">setColorMapMin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_min</span><span class="p">):</span>
@@ -260,8 +260,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">!=</span> <span class="n">new_min</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">=</span> <span class="n">new_min</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span></div>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMImageView.setColorMapMax"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.setColorMapMax">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">setColorMapMax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_max</span><span class="p">):</span>
@@ -277,8 +277,8 @@
                 <span class="n">new_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span> <span class="o">=</span> <span class="n">new_max</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span></div>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMImageView.setColorMapLimits"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.setColorMapLimits">[docs]</a>    <span class="k">def</span> <span class="nf">setColorMapLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mn</span><span class="p">,</span> <span class="n">mx</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -292,8 +292,8 @@
 <span class="sd">            The upper limit</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span> <span class="o">=</span> <span class="n">mx</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">=</span> <span class="n">mn</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">=</span> <span class="n">mn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span></div>
 
     <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="n">PyDMColorMap</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">colorMap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -331,8 +331,8 @@
         <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_group</span><span class="o">.</span><span class="n">actions</span><span class="p">():</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmap_for_action</span><span class="p">[</span><span class="n">action</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colormap</span><span class="p">:</span>
                 <span class="n">action</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span></div>
-                <span class="n">action</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">action</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMImageView.setColorMap"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.setColorMap">[docs]</a>    <span class="k">def</span> <span class="nf">setColorMap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -351,8 +351,8 @@
             <span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cm_colors</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">()</span><span class="o">.</span><span class="n">setBackgroundColor</span><span class="p">(</span><span class="n">cmap</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
         <span class="n">lut</span> <span class="o">=</span> <span class="n">cmap</span><span class="o">.</span><span class="n">getLookupTable</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">setLookupTable</span><span class="p">(</span><span class="n">lut</span><span class="p">)</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">setLevels</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span><span class="p">))])</span>  <span class="c1"># set levels from min to max of image (may improve min here)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">setLookupTable</span><span class="p">(</span><span class="n">lut</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">setLevels</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span><span class="p">))])</span>  <span class="c1"># set levels from min to max of image (may improve min here)</span></div>
             
     <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">image_connection_state_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">):</span>
@@ -380,8 +380,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span> <span class="o">=</span> <span class="n">new_image</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_redraw</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">max</span></div>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span> <span class="c1">#Now that we know the max size, set the color map appropriately.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span> <span class="c1">#Now that we know the max size, set the color map appropriately.</span></div>
 
 <div class="viewcode-block" id="PyDMImageView.image_width_changed"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.image_width_changed">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">image_width_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_width</span><span class="p">):</span>
@@ -394,8 +394,8 @@
 <span class="sd">            The new image width</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">image_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_width</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_width</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMImageView.redrawImage"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.redrawImage">[docs]</a>    <span class="k">def</span> <span class="nf">redrawImage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -413,11 +413,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">setImage</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">autoLevels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">autoDownsample</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
-            <span class="bp">self</span><span class="o">.</span><span class="n">needs_redraw</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">setImage</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">autoLevels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">autoDownsample</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">needs_redraw</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="PyDMImageView.keyPressEvent"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span></div>
-        <span class="k">return</span>
+<div class="viewcode-block" id="PyDMImageView.keyPressEvent"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="k">return</span></div>
 
     <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">imageChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -487,11 +487,11 @@
             <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthChannel</span><span class="p">,</span>
                         <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connectionStateChanged</span><span class="p">,</span>
                         <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_width_changed</span><span class="p">,</span>
-                        <span class="n">severity_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alarmSeverityChanged</span><span class="p">)]</span></div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span>
+                        <span class="n">severity_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alarmSeverityChanged</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span></div>
 
-<div class="viewcode-block" id="PyDMImageView.channels_for_tools"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.channels_for_tools">[docs]</a>    <span class="k">def</span> <span class="nf">channels_for_tools</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
-        <span class="k">return</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">address</span><span class="o">==</span><span class="bp">self</span><span class="o">.</span><span class="n">imageChannel</span><span class="p">]</span>
+<div class="viewcode-block" id="PyDMImageView.channels_for_tools"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.channels_for_tools">[docs]</a>    <span class="k">def</span> <span class="nf">channels_for_tools</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">address</span><span class="o">==</span><span class="bp">self</span><span class="o">.</span><span class="n">imageChannel</span><span class="p">]</span></div>
 
     <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">maxRedrawRate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -515,8 +515,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        redraw_rate : int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span> <span class="o">=</span> <span class="n">redraw_rate</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">setInterval</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="mf">1.0</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span> <span class="o">=</span> <span class="n">redraw_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">setInterval</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="mf">1.0</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="p">))</span></div>
 </pre></div>
 
            </div>
@@ -553,7 +553,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+44.g52d9ade',
+            VERSION:'v1.1.0+46.g7f287ef',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
