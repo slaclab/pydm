@@ -11,9 +11,9 @@ pytest_plugins = 'pytester'
 
 
 """
-PyDMLabel Style Sheet
+PyDMWidget Style Sheet
 
-This serves as the invariance for the label widget's appearance, depending on the alarm type, and the content and border
+This serves as the invariance for the widget's appearance, depending on the alarm type, and the content and border
 appearances.
 
 In case of style assertion failures, check if the widget styles in the main PyDM code have changed, and whether those
