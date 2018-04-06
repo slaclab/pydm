@@ -84,7 +84,7 @@ class ConnectionSignals(QObject):
     lower_ctrl_limit_signal = pyqtSignal([float], [int])
 
     def __init__(self):
-        super().__init__()
+        super(ConnectionSignals, self).__init__()
         self._value = None
 
     @property
@@ -104,11 +104,14 @@ class ConnectionSignals(QObject):
 
 @pytest.fixture(scope="function")
 def signals():
-    """Wraparound signal collection to work as a fixture for all unit tests.
-       This fixture has a function scope to ensure we have a fresh fixture, i.e. a new set of signals, for every
-       unit test run.
-       :return: A collection of signals to bind to slots.
-       :rtype: ConnectionSignals
+    """
+    Wraparound signal collection to work as a fixture for all unit tests.
+    This fixture has a function scope to ensure we have a fresh fixture, i.e. a new set of signals, for every unit
+    test run.
+
+    Returns
+    -------
+    A collection of signals to bind to slots.
     """
     return ConnectionSignals()
 
@@ -116,11 +119,15 @@ def signals():
 @pytest.yield_fixture(scope='session')
 def qapp(qapp_args):
     """
-    Fixture that instantiates the QApplication instance that will be used by
-    the tests.
+    Fixture for a PyDMApplication app instance.
 
-    You can use the ``qapp`` fixture in tests which require a ``QApplication``
-    to run, but where you don't need full ``qtbot`` functionality.
+    Parameters
+    ----------
+    qapp_args: Arguments for the QApp.
+
+    Returns
+    -------
+    An instance of PyDMApplication.
     """
     app = qt_api.QApplication.instance()
     if app is None or not isinstance(app, PyDMApplication):
