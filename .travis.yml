@@ -30,7 +30,7 @@ before_install:
   - conda update -q conda conda-build
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pyqt=$PYQT_VERSION pip numpy scipy six psutil pyqtgraph -c conda-forge
   - source activate test-environment
-  - pip install requests pyepics coverage codecov coveralls pytest pytest-cov versioneer
+  - pip install requests pyepics coverage codecov coveralls pytest pytest-qt pytest-cov versioneer
 
 install:
   # Debug information

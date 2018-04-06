@@ -85,6 +85,21 @@ def test_parse_value_for_display_precision(value, precision, display_format, wid
 def test_parse_value_for_display_precision_incorrect_display_format(
         capfd, value, precision, display_format, widget, expected):
     """
+
+    Parameters
+    ----------
+    capfd
+    value
+    precision
+    display_format
+    widget
+    expected
+
+    Returns
+    -------
+
+    """
+    """
     Test that errors will be output into stderr.
     TODO: Provide logging for errors, and check the log for the appropriate error messages.
     :param capfd: stderr capturing fixture
@@ -100,8 +115,9 @@ def test_parse_value_for_display_precision_incorrect_display_format(
     :param expected: The expected error message to be streamed to stderr
     :type: str
     """
-    parse_value_for_display(
+    parsed_value = parse_value_for_display(
         value, precision, display_format_type=display_format, widget=widget)
+    assert(value == parsed_value)
 
     out, err = capfd.readouterr()
     assert expected in err
