@@ -48,7 +48,7 @@ def parse_value_for_display(value, precision, display_format_type=DisplayFormat.
         return r
     elif display_format_type == DisplayFormat.Hex:
         try:
-            r = hex(math.floor(value))
+            r = hex(int(math.floor(value)))
         except (ValueError, TypeError):
             sys.stderr.write("Could not display in 'Hex' format\n")
             print("Could not display value {0} using displayFormat 'Hex' at widget named '{1}'."
@@ -57,7 +57,7 @@ def parse_value_for_display(value, precision, display_format_type=DisplayFormat.
         return r
     elif display_format_type == DisplayFormat.Binary:
         try:
-            r = bin(math.floor(value))
+            r = bin(int(math.floor(value)))
         except (ValueError, TypeError):
             sys.stderr.write("Could not display in 'Binary' format\n")
             print("Could not display value {0} using displayFormat 'Binary' at widget named '{1}'."
