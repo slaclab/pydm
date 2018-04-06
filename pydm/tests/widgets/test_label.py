@@ -6,7 +6,6 @@ import os
 import pytest
 from numpy import ndarray
 
-from ...PyQt.QtCore import QObject, pyqtSignal
 from ...utilities import is_pydm_app
 from ...widgets.label import PyDMLabel
 from ...widgets.base import PyDMWidget
@@ -22,12 +21,16 @@ current_dir = os.path.abspath(os.path.dirname(__file__))
 def test_construct(qtbot):
     """
     Test the basic instantiation of the widget.
-    Invariance:
+
+    Expectations:
     The widget was created with the following default settings:
     1. DisplayFormat is Default
     2. String encoding is the same as that specified in the PyDM App, or UTF-8
-    :param qtbot: pytest-qt window for widget testing
-    :type: qtbot
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
     """
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
@@ -73,14 +76,22 @@ def test_construct(qtbot):
 def test_value_changed(qtbot, signals, value, display_format):
     """
     Test the widget's handling of the value changed event.
-    Invariance:
+
+    Expectations:
     The following settings are in place after the value changed signal is emitted:
     1. The value displayed by the widget is the new value
     2. The value format maintained by the widget the correct format for the new value
-    :param qtbot: pytest-qt window for widget testing
-    :type: qtbot
-    :param signals: The signals fixture, which provides access signals to be bound to the appropriate slots.
-    :type: ConnectionSignals
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    value : int, float, bin, hex, str
+        The value to be displayed by the widget
+    display_format : int
+        The format of the widget's displayed value
     """
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
@@ -102,6 +113,26 @@ def test_value_changed(qtbot, signals, value, display_format):
     (("ON", "OFF"), 1, "OFF"),
 ])
 def test_enum_strings_changed(qtbot, signals, value, selected_index, expected):
+    """
+    Test the widget's handling of enum strings, which are choices presented to the user, and the widget's ability to
+    update the selected enum string when the user provides a choice index.
+
+    Expectations:
+    The widget displays the correct enum string whose index from the enum string tuple is selected by the user.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    value : tuple
+        A set of enum strings for the user to choose from
+    selected_index : int
+        The index from the enum string tuple chosen by the user
+    expected : str
+        The expected enum string displayed by the widget after receiving the user's choice index
+    """
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
 
@@ -152,6 +183,28 @@ def test_enum_strings_changed(qtbot, signals, value, selected_index, expected):
     (0x1FF, DisplayFormat.Binary, "light years", "0b111111111"),
 ])
 def test_show_units(qtbot, signals, value, display_format, unit_name, expected):
+    """
+    Test the widget's capability to display a unit following a value if the user enables unit displaying.
+
+    Expectations:
+    1. The unit will be displayed following a space after the value
+    2. The unit displayed can be toggled, depending on the user's value for the "show unit" flag to True, i.e.
+       display the unit, or False, i.e. do not display the unit
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    value : int, float, bin, hex, str
+        The value to be displayed by the widget
+    display_format : int
+        The format of the widget's displayed value
+    unit_name : str
+        The name of the unit to be displayed by the widget, next to the value, separated with a space
+    expected : str
+        The expected string to be displayed by the widget
+    """
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
 
@@ -171,10 +224,12 @@ def test_show_units(qtbot, signals, value, display_format, unit_name, expected):
     assert (pydm_label.text() == expected)
     assert (pydm_label.displayFormat == display_format)
 
+    # Now, turn of showUnits
     pydm_label.showUnits = False
     signals.new_value_signal[type(value)].emit(value)
     assert (pydm_label.value == value)
     if " " in expected:
+        # We expect no unit to be displayed now, so the expected result must be adjusted to contain just the value
         expected = expected[0 : expected.find(" ")]
     assert (pydm_label.text() == expected)
     assert (pydm_label.displayFormat == display_format)
@@ -210,28 +265,28 @@ def test_label_alarms(qtbot, signals, test_alarm_style_sheet_map, alarm_severity
                       alarm_sensitive_border):
     """
     Test the widget's appearance changes according to changes in alarm severity.
-    Invariance:
+
+    Expectations:
     1. The widget receives the correct alarm severity
     2. The appearance changes to check for are the alarm content (alarm color), and the widget's border appearance, e.g.
        solid, transparent, etc.
     3. The alarm color and border appearance will change only if each corresponding Boolean flag is set to True
 
-    We use the style dictionary above as the guidelines to check whether the alarm color and widget's border appearance
-    are correct.
-
-    :param qtbot: pytest-qt window for widget testing
-    :type: qtbot
-    :param signals: The signals fixture, which provides access signals to be bound to the appropriate slots.
-    :type: ConnectionSignals
-    :para test_alarm_style_sheet_map: The alarm style sheet map fixture, which provides a style sheet inventory to
-        to compare against the widget's changing style
-    :type: dict
-    :param alarm_severity: The severity of an alarm (NONE, MINOR, MAJOR, INVALID, or DISCONNECTED)
-    :type: int
-    :param alarm_sensitive_content: Essentially an HTML-compliant hexadecimal color code
-    :type: str
-    :param alarm_sensitive_border: A CSS-style dictionary of the appearance settings of the widget's border
-    :type: dict
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    test_alarm_style_sheet_map : dict
+        The alarm style sheet map fixture, which provides a style sheet inventory to compare against the widget's
+        changing style
+    alarm_severity : int
+        The severity of an alarm (NONE, MINOR, MAJOR, INVALID, or DISCONNECTED)
+    alarm_sensitive_content : bool
+        True if the widget will change color accordingly to the alarm's severity; False if not
+    alarm_sensitive_border : bool
+        True if the widget's border will change color and thickness accordingly to the alarm's severity; False if not
     """
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
@@ -261,13 +316,15 @@ TOOLTIP_TEXT = "Testing with Alarm State Changes, Channel Provided."
     (False, True, ""),
     (False, False, ""),
 ])
-def test_alarm_connection_changes_with_channel(qtbot, signals, test_alarm_style_sheet_map, alarm_sensitive_content,
+def test_channel_connection_changes_with_alarm(qtbot, signals, test_alarm_style_sheet_map, alarm_sensitive_content,
                                                alarm_sensitive_border, tooltip):
     """
     Test the widget's appearance and tooltip changes if a data channel is provided, and the is disconnected,
     and then is reconnected.
-    Invariance:
-    1. The widget receives the correct alarm severity
+
+    Expectations:
+    1. The widget receives the correct alarm severity when an alarm signal is emitted accordingly to the channel
+       connection/disconnection
     2. The appearance changes to check for are the alarm content (alarm color), and the widget's border appearance, e.g.
        solid, transparent, etc.
     3. The alarm color and border appearance will change only if each corresponding Boolean flag is set to True
@@ -276,21 +333,22 @@ def test_alarm_connection_changes_with_channel(qtbot, signals, test_alarm_style_
        appended to the existing text, to inform the user about the channel disconnection status. This tooltip will be
        reverted to the original content when the data channel is re-connected.
     6. The widget will be disabled during the disconnection, and become enabled again at the reconnection.
-    :param qtbot: pytest-qt window for widget testing
-    :type: qtbot
-    :param signals: The signals fixture, which provides access signals to be bound to the appropriate slots.
-    :type: ConnectionSignals
-    :para test_alarm_style_sheet_map: The alarm style sheet map fixture, which provides a style sheet inventory to
-        to compare against the widget's changing style
-    :type: dict
-    :param alarm_severity: The severity of an alarm (NONE, MINOR, MAJOR, INVALID, or DISCONNECTED)
-    :type: int
-    :param alarm_sensitive_content: Essentially an HTML-compliant hexadecimal color code
-    :type: str
-    :param alarm_sensitive_border: A CSS-style dictionary of the appearance settings of the widget's border
-    :type: dict
-    :param tooltip: The tooltip for the widget. This can be an empty string
-    :type: str
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    test_alarm_style_sheet_map : dict
+        The alarm style sheet map fixture, which provides a style sheet inventory to compare against the widget's
+        changing style
+    alarm_sensitive_content : bool
+        True if the widget will change color accordingly to the alarm's severity; False if not
+    alarm_sensitive_border : bool
+        True if the widget's border will change color and thickness accordingly to the alarm's severity; False if not
+    tooltip : str
+        The tooltip for the widget. This can be an empty string
     """
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
@@ -358,34 +416,37 @@ def test_alarm_connection_changes_with_channel(qtbot, signals, test_alarm_style_
     (False, True, ""),
     (False, False, ""),
 ])
-def test_alarm_connection_changes_with_no_channel(qtbot, signals, test_alarm_style_sheet_map, alarm_sensitive_content,
-                                                  alarm_sensitive_border, tooltip):
+def test_connection_changes_with_alarm_and_no_channel(qtbot, signals, test_alarm_style_sheet_map,
+                                                      alarm_sensitive_content, alarm_sensitive_border, tooltip):
     """
     Test the widget's appearance and tooltip changes if a data channel is not provided, and the connection is not
     available, and available again.
-    Invariance:
-    1. The widget receives the correct alarm severity
+
+    Expectations:
+    1. The widget receives the correct alarm severity when an alarm signal is emitted accordingly to the channel
+       connection/disconnection
     2. The appearance changes to check for are the alarm content (alarm color), and the widget's border appearance, e.g.
        solid, transparent, etc.
     3. The alarm color and border appearance will change only if each corresponding Boolean flag is set to True
     4. The connection state is correctly set for the widget
     5. The tooltip will not change throughout the sequence of the connection events.
     6. The widget will remain enabled throughout the sequence of the connection events.
-    :param qtbot: pytest-qt window for widget testing
-    :type: qtbot
-    :param signals: The signals fixture, which provides access signals to be bound to the appropriate slots.
-    :type: ConnectionSignals
-    :para test_alarm_style_sheet_map: The alarm style sheet map fixture, which provides a style sheet inventory to
-        to compare against the widget's changing style
-    :type: dict
-    :param alarm_severity: The severity of an alarm (NONE, MINOR, MAJOR, INVALID, or DISCONNECTED)
-    :type: int
-    :param alarm_sensitive_content: Essentially an HTML-compliant hexadecimal color code
-    :type: str
-    :param alarm_sensitive_border: A CSS-style dictionary of the appearance settings of the widget's border
-    :type: dict
-    :param tooltip: The tooltip for the widget. This can be an empty string
-    :type: str
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    test_alarm_style_sheet_map : dict
+        The alarm style sheet map fixture, which provides a style sheet inventory to compare against the widget's
+        changing style
+    alarm_sensitive_content : bool
+        True if the widget will change color accordingly to the alarm's severity; False if not
+    alarm_sensitive_border : bool
+        True if the widget's border will change color and thickness accordingly to the alarm's severity; False if not
+    tooltip : str
+        The tooltip for the widget. This can be an empty string
     """
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
@@ -394,7 +455,6 @@ def test_alarm_connection_changes_with_no_channel(qtbot, signals, test_alarm_sty
     pydm_label.alarmSensitiveBorder = alarm_sensitive_border
     alarm_flags = (PyDMWidget.ALARM_CONTENT * alarm_sensitive_content) | \
                   (PyDMWidget.ALARM_BORDER * alarm_sensitive_border)
-    TOOLTIP_TEXT = "Testing with Alarm State Changes, No Channel."
     pydm_label.setToolTip(tooltip)
 
     # Do not the channel, but set the alarm severity to normal (NONE)
@@ -454,22 +514,24 @@ def test_alarm_connection_changes_with_no_channel(qtbot, signals, test_alarm_sty
 def test_value_changed_incorrect_display_format(qtbot, signals, capfd, value, display_format, expected):
     """
     Test the widget's handling of incorrect provided values.
-    Invariance:
-    The following settings are in place after the value changed signal is emitted:
-    1. The value displayed by the widget is the new value
-    2. The value format maintained by the widget the correct format for the new value
-    :param qtbot: pytest-qt window for widget testing
-    :type: qtbot
-    :param signals: The signals fixture, which provides access signals to be bound to the appropriate slots.
-    :type: ConnectionSignals
-    :param capfd: stderr capturing fixture
-    :type: fixture
-    :param value: The data to be formatted
-    :type: int, float, hex, bin, or str
-    :param display_format: The format type for the provided value
-    :type: int
-    :param expected: The expected error message to be streamed to stderr
-    :type: str
+
+    Expectations:
+    The correct error message is output in stderr.
+    
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    capfd : fixture
+        The fixture to capture stderr outputs
+    value : int, float, hex, bin, str
+        The value to be displayed by the widget
+    display_format : int
+        The incorrect format type for the provided value
+    expected : str
+        The expected error message in stderr
     """
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
@@ -488,16 +550,22 @@ def test_value_changed_incorrect_display_format(qtbot, signals, capfd, value, di
 def test_enum_strings_changed_incorrect_index(qtbot, signals, value, selected_index, expected):
     """
     Test the widget's handling of incorrect provided enum string index.
-    :param qtbot: pytest-qt window for widget testing
-    :type: qtbot
-    :param signals: The signals fixture, which provides access signals to be bound to the appropriate slots.
-    :type: ConnectionSignals
-    :param value: The enum strings as available options for the widget to display to the user
-    :type: tuple
-    :param selected_index: The user-selected index for the enum string tuple
-    :type: int
-    :param expected: The expected selected enum string or error message to be displayed by the widget
-    :type: str
+
+    Expectations:
+    The widget will display an error message to notify the user of the invalid index choice.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    value : tuple
+        A set of enum strings for the user to choose from
+    selected_index : int
+        The incorrect (out-of-bound) index from the enum string tuple chosen by the user
+    expected : int
+        The expected text displayed by the widget to notify the user of the incorrect choice index
     """
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)

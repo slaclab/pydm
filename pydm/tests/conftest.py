@@ -2,9 +2,13 @@
 # Fixtures for PyDM Unit Tests
 
 import pytest
+from pytestqt.qt_compat import qt_api
+
 from numpy import ndarray
 
 from ..PyQt.QtCore import QObject, pyqtSignal, pyqtSlot
+
+from ..application import PyDMApplication
 from ..widgets.base import PyDMWidget
 
 pytest_plugins = 'pytester'
@@ -93,7 +97,6 @@ class ConnectionSignals(QObject):
     @pyqtSlot(ndarray)
     def receiveValue(self, val):
         """
-        Slot to receive the value from a PyDM widget
         :param val: The value from a PyDM widget
         """
         self._value = val
@@ -108,3 +111,21 @@ def signals():
        :rtype: ConnectionSignals
     """
     return ConnectionSignals()
+
+
+@pytest.yield_fixture(scope='session')
+def qapp(qapp_args):
+    """
+    Fixture that instantiates the QApplication instance that will be used by
+    the tests.
+
+    You can use the ``qapp`` fixture in tests which require a ``QApplication``
+    to run, but where you don't need full ``qtbot`` functionality.
+    """
+    app = qt_api.QApplication.instance()
+    if app is None or not isinstance(app, PyDMApplication):
+        global _qapp_instance
+        _qapp_instance = PyDMApplication(*qapp_args)
+        yield _qapp_instance
+    else:
+        yield app  # pragma: no cover
