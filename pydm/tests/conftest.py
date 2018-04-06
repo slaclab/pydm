@@ -89,6 +89,13 @@ class ConnectionSignals(QObject):
 
     @property
     def value(self):
+        """
+        The property to retrieve the value received from a PyDM widget.
+
+        Returns
+        -------
+        The value received from a PyDM widget.
+        """
         return self._value
 
     @pyqtSlot(int)
@@ -97,7 +104,12 @@ class ConnectionSignals(QObject):
     @pyqtSlot(ndarray)
     def receiveValue(self, val):
         """
-        :param val: The value from a PyDM widget
+        The slot to receive the value from a PyDM widget.
+
+        Parameters
+        ----------
+        val : int, float, str, ndarray
+            The value received from a PyDM widget
         """
         self._value = val
 

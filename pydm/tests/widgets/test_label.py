@@ -224,7 +224,7 @@ def test_show_units(qtbot, signals, value, display_format, unit_name, expected):
     assert (pydm_label.text() == expected)
     assert (pydm_label.displayFormat == display_format)
 
-    # Now, turn of showUnits
+    # Now, turn off showUnits
     pydm_label.showUnits = False
     signals.new_value_signal[type(value)].emit(value)
     assert (pydm_label.value == value)
@@ -526,7 +526,7 @@ def test_value_changed_incorrect_display_format(qtbot, signals, capfd, value, di
         The signals fixture, which provides access signals to be bound to the appropriate slots
     capfd : fixture
         The fixture to capture stderr outputs
-    value : int, float, hex, bin, str
+    value : ndarray, str
         The value to be displayed by the widget
     display_format : int
         The incorrect format type for the provided value
