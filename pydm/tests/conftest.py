@@ -5,6 +5,8 @@ import pytest
 from pytestqt.qt_compat import qt_api
 
 from numpy import ndarray
+import tempfile
+import logging
 
 from ..PyQt.QtCore import QObject, pyqtSignal, pyqtSlot
 
@@ -12,6 +14,12 @@ from ..application import PyDMApplication
 from ..widgets.base import PyDMWidget
 
 pytest_plugins = 'pytester'
+
+
+logger = logging.getLogger(__name__)
+_, file_path = tempfile.mkstemp(suffix=".log")
+handler = logging.FileHandler(file_path)
+logger.addHandler(handler)
 
 
 """

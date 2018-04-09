@@ -1,13 +1,8 @@
 import math
 import numpy as np
-import tempfile
+
 import logging
-
-
 logger = logging.getLogger(__name__)
-_, file_path = tempfile.mkstemp(suffix=".log")
-handler = logging.FileHandler(file_path)
-logger.addHandler(handler)
 
 
 class DisplayFormat(object):
