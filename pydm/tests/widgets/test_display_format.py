@@ -1,5 +1,7 @@
 import pytest
 import numpy as np
+import logging
+
 from pydm.PyQt.QtGui import QWidget
 
 from pydm.widgets.display_format import  DisplayFormat, parse_value_for_display
@@ -10,6 +12,7 @@ from pydm.widgets.display_format import  DisplayFormat, parse_value_for_display
 # --------------------
 
 @pytest.mark.parametrize("value, precision, display_format, widget, expected", [
+    (np.array([65, 66]), 1, DisplayFormat.String, QWidget, ('A', 'B')),
     ("abc", 0, DisplayFormat.Default, QWidget, "abc"),
     (123, 0, DisplayFormat.Default, QWidget, 123),
     (123.45, 0, DisplayFormat.Default, QWidget, 123.45),
@@ -40,8 +43,13 @@ def test_parse_value_for_display_format(value, precision, display_format, widget
     expected : str
         The expected formatted presentation of the provided value
     """
-    assert parse_value_for_display(
-        value, precision, display_format_type=display_format, widget=widget) == expected
+    parsed_value = parse_value_for_display(
+        value, precision, display_format_type=display_format, widget=widget)
+
+    if isinstance(value, np.ndarray):
+        all(i in parsed_value for i in expected)
+    else:
+        assert(parsed_value == expected)
 
 
 @pytest.mark.parametrize("value, precision, display_format, widget, expected", [
@@ -84,7 +92,8 @@ def test_parse_value_for_display_precision(value, precision, display_format, wid
 # ---------------------
 
 @pytest.mark.parametrize("value, precision, display_format, widget, expected", [
-    (np.ndarray([65, 66, 67, 68]), 1, DisplayFormat.String, QWidget, "Could not decode"),
+    (np.array([-1, -2]), 1, DisplayFormat.String, QWidget, "Could not decode"),
+    (np.array([0xfffe, 0xffff]), 1, DisplayFormat.String, QWidget, "Could not decode"),
     ("aaa", 1, DisplayFormat.Exponential, QWidget, "Could not display value 'aaa' using displayFormat 'Exponential'"),
     ("zzz", 2, DisplayFormat.Hex, QWidget, "Could not display value 'zzz' using displayFormat 'Hex'"),
     ("zzz", 3, DisplayFormat.Binary, QWidget, "Could not display value 'zzz' using displayFormat 'Binary'"),
@@ -110,14 +119,14 @@ def test_parse_value_for_display_precision_incorrect_display_format(
         The expected formatted presentation of the provided value
     """
     parsed_value = parse_value_for_display(value, precision, display_format_type=display_format, widget=widget)
-    if not isinstance(value, np.ndarray):
-        # The parsed value is an array of bytes, which cannot be compared to an ndarray. So, only assert for returned
-        # values other than ndarray
+    if isinstance(value, np.ndarray):
+        assert (np.array_equal(value, parsed_value))
+    else:
         assert(parsed_value == value)
 
     # Make sure logging capture the error, and have the correct error message
     for record in caplog.records:
-        assert record.levelname == 'ERROR'
+        assert record.levelno == logging.ERROR
     assert expected in caplog.text
 
 

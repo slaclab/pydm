@@ -26,9 +26,9 @@ def parse_value_for_display(value, precision, display_format_type=DisplayFormat.
         if isinstance(value, np.ndarray):
             try:
                 r = value.tobytes().decode(string_encoding)
+            except:
                 logger.error("Could not decode {0} using {1} at widget named '{2}'.".format(
                     value, string_encoding, widget_name))
-            except:
                 return value
             return r
         else:

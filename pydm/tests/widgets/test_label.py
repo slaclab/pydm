@@ -4,7 +4,8 @@
 
 import os
 import pytest
-from numpy import ndarray
+import numpy as np
+import logging
 
 from ...utilities import is_pydm_app
 from ...widgets.label import PyDMLabel
@@ -506,9 +507,10 @@ def test_connection_changes_with_alarm_and_no_channel(qtbot, signals, test_alarm
 # --------------------
 
 @pytest.mark.parametrize("value, display_format, expected", [
-    (ndarray([65, 66, 67, 68]), DisplayFormat.String, "Could not decode"),
+    (np.array([-1, -2]), DisplayFormat.String, "Could not decode"),
+    (np.array([0xfffe, 0xffff]), DisplayFormat.String, "Could not decode"),
     ("aaa", DisplayFormat.Exponential, "Could not display value 'aaa' using displayFormat 'Exponential'"),
-    ("zzz", DisplayFormat.Hex,  "Could not display value 'zzz' using displayFormat 'Hex'"),
+    ("zzz", DisplayFormat.Hex, "Could not display value 'zzz' using displayFormat 'Hex'"),
     ("zzz", DisplayFormat.Binary, "Could not display value 'zzz' using displayFormat 'Binary'"),
 ])
 def test_value_changed_incorrect_display_format(qtbot, signals, caplog, value, display_format, expected):
@@ -542,7 +544,7 @@ def test_value_changed_incorrect_display_format(qtbot, signals, caplog, value, d
 
     # Make sure logging capture the error, and have the correct error message
     for record in caplog.records:
-        assert record.levelname == 'ERROR'
+        assert record.levelno == logging.ERROR
     assert expected in caplog.text
 
 
