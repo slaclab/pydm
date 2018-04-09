@@ -507,11 +507,11 @@ def test_connection_changes_with_alarm_and_no_channel(qtbot, signals, test_alarm
 
 @pytest.mark.parametrize("value, display_format, expected", [
     (ndarray([65, 66, 67, 68]), DisplayFormat.String, "Could not decode"),
-    ("aaa", DisplayFormat.Exponential, "Could not display in 'Exponential'"),
-    ("zzz", DisplayFormat.Hex, "Could not display in 'Hex'"),
-    ("zzz", DisplayFormat.Binary, "Could not display in 'Binary'"),
+    ("aaa", DisplayFormat.Exponential, "Could not display value 'aaa' using displayFormat 'Exponential'"),
+    ("zzz", DisplayFormat.Hex,  "Could not display value 'zzz' using displayFormat 'Hex'"),
+    ("zzz", DisplayFormat.Binary, "Could not display value 'zzz' using displayFormat 'Binary'"),
 ])
-def test_value_changed_incorrect_display_format(qtbot, signals, capfd, value, display_format, expected):
+def test_value_changed_incorrect_display_format(qtbot, signals, caplog, value, display_format, expected):
     """
     Test the widget's handling of incorrect provided values.
 
@@ -524,8 +524,8 @@ def test_value_changed_incorrect_display_format(qtbot, signals, capfd, value, di
         pytest-qt window for widget testing
     signals : fixture
         The signals fixture, which provides access signals to be bound to the appropriate slots
-    capfd : fixture
-        The fixture to capture stderr outputs
+    caplog : fixture
+        The fixture to capture log outputs
     value : ndarray, str
         The value to be displayed by the widget
     display_format : int
@@ -540,8 +540,10 @@ def test_value_changed_incorrect_display_format(qtbot, signals, capfd, value, di
     signals.new_value_signal[type(value)].emit(value)
     pydm_label.displayFormat = display_format
 
-    out, err = capfd.readouterr()
-    assert expected in err
+    # Make sure logging capture the error, and have the correct error message
+    for record in caplog.records:
+        assert record.levelname == 'ERROR'
+    assert expected in caplog.text
 
 
 @pytest.mark.parametrize("value, selected_index, expected", [

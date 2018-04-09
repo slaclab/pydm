@@ -85,19 +85,19 @@ def test_parse_value_for_display_precision(value, precision, display_format, wid
 
 @pytest.mark.parametrize("value, precision, display_format, widget, expected", [
     (np.ndarray([65, 66, 67, 68]), 1, DisplayFormat.String, QWidget, "Could not decode"),
-    ("aaa", 1, DisplayFormat.Exponential, QWidget, "Could not display in 'Exponential'"),
-    ("zzz", 2, DisplayFormat.Hex, QWidget, "Could not display in 'Hex'"),
-    ("zzz", 3, DisplayFormat.Binary, QWidget, "Could not display in 'Binary'"),
+    ("aaa", 1, DisplayFormat.Exponential, QWidget, "Could not display value 'aaa' using displayFormat 'Exponential'"),
+    ("zzz", 2, DisplayFormat.Hex, QWidget, "Could not display value 'zzz' using displayFormat 'Hex'"),
+    ("zzz", 3, DisplayFormat.Binary, QWidget, "Could not display value 'zzz' using displayFormat 'Binary'"),
 ])
 def test_parse_value_for_display_precision_incorrect_display_format(
-        capfd, value, precision, display_format, widget, expected):
+        caplog, value, precision, display_format, widget, expected):
     """
     Test that errors will be output into stderr.
 
     Parameters
     ----------
-    capfd : fixture
-        The fixture to capture stderr outputs
+    caplog : fixture
+        The fixture to capture log outputs
     value : int, float, hex, bin, str
         The incorrect data
     precision : int
@@ -109,10 +109,15 @@ def test_parse_value_for_display_precision_incorrect_display_format(
     expected : str
         The expected formatted presentation of the provided value
     """
-    parsed_value = parse_value_for_display(
-        value, precision, display_format_type=display_format, widget=widget)
+    parsed_value = parse_value_for_display(value, precision, display_format_type=display_format, widget=widget)
+    if not isinstance(value, np.ndarray):
+        # The parsed value is an array of bytes, which cannot be compared to an ndarray. So, only assert for returned
+        # values other than ndarray
+        assert(parsed_value == value)
 
-    out, err = capfd.readouterr()
-    assert expected in err
-    #assert(parsed_value == value)
+    # Make sure logging capture the error, and have the correct error message
+    for record in caplog.records:
+        assert record.levelname == 'ERROR'
+    assert expected in caplog.text
+
 

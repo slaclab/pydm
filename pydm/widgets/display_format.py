@@ -1,6 +1,13 @@
 import math
 import numpy as np
-import sys
+import tempfile
+import logging
+
+
+logger = logging.getLogger(__name__)
+_, file_path = tempfile.mkstemp(suffix=".log")
+handler = logging.FileHandler(file_path)
+logger.addHandler(handler)
 
 
 class DisplayFormat(object):
@@ -24,9 +31,8 @@ def parse_value_for_display(value, precision, display_format_type=DisplayFormat.
         if isinstance(value, np.ndarray):
             try:
                 r = value.tobytes().decode(string_encoding)
-                sys.stderr.write("Could not decode\n")
-                print("Could not decode {0} using {1} at widget named '{2}'."
-                      .format(value, string_encoding, widget_name))
+                logger.error("Could not decode {0} using {1} at widget named '{2}'.".format(
+                    value, string_encoding, widget_name))
             except:
                 return value
             return r
@@ -41,26 +47,23 @@ def parse_value_for_display(value, precision, display_format_type=DisplayFormat.
         try:
             r = fmt_string.format(value)
         except (ValueError, TypeError):
-            sys.stderr.write("Could not display in 'Exponential' format\n")
-            print("Could not display value {0} using displayFormat 'Exponential' at widget named '{1}'."
-                  .format(value, widget_name))
+            logger.error("Could not display value '{0}' using displayFormat 'Exponential' at widget named "
+                         "'{1}'.".format(value, widget_name))
             r = value
         return r
     elif display_format_type == DisplayFormat.Hex:
         try:
             r = hex(int(math.floor(value)))
         except (ValueError, TypeError):
-            sys.stderr.write("Could not display in 'Hex' format\n")
-            print("Could not display value {0} using displayFormat 'Hex' at widget named '{1}'."
-                  .format(value, widget_name))
+            logger.error("Could not display value '{0}' using displayFormat 'Hex' at widget named "
+                         "'{1}'.".format(value, widget_name))
             r = value
         return r
     elif display_format_type == DisplayFormat.Binary:
         try:
             r = bin(int(math.floor(value)))
         except (ValueError, TypeError):
-            sys.stderr.write("Could not display in 'Binary' format\n")
-            print("Could not display value {0} using displayFormat 'Binary' at widget named '{1}'."
-                  .format(value, widget_name))
+            logger.error("Could not display value '{0}' using displayFormat 'Binary' at widget named "
+                         "'{1}'.".format(value, widget_name))
             r = value
         return r
