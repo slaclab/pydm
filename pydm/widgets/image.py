@@ -61,7 +61,17 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         self.redraw_timer.timeout.connect(self.redrawImage)
         self._redraw_rate = 30
         self.maxRedrawRate = self._redraw_rate
-        
+
+    def context_menu(self):
+        """
+        Return custom context menu created in ImageView.
+
+        Returns
+        -------
+        context_menu : ViewBoxMenu
+        """
+        return self.getView().getMenu(None)
+
     def changeColorMap(self, action):
         """
         Method invoked by the colormap Action Menu that changes the
