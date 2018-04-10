@@ -12,7 +12,7 @@ from pydm.widgets.display_format import  DisplayFormat, parse_value_for_display
 # --------------------
 
 @pytest.mark.parametrize("value, precision, display_format, widget, expected", [
-    (np.array([65, 66]), 1, DisplayFormat.String, QWidget, ('A', 'B')),
+    (np.array([65, 66], dtype=np.uint8), 1, DisplayFormat.String, QWidget, "AB"),
     ("abc", 0, DisplayFormat.Default, QWidget, "abc"),
     (123, 0, DisplayFormat.Default, QWidget, 123),
     (123.45, 0, DisplayFormat.Default, QWidget, 123.45),
@@ -45,11 +45,7 @@ def test_parse_value_for_display_format(value, precision, display_format, widget
     """
     parsed_value = parse_value_for_display(
         value, precision, display_format_type=display_format, widget=widget)
-
-    if isinstance(value, np.ndarray):
-        all(i in parsed_value for i in expected)
-    else:
-        assert(parsed_value == expected)
+    assert(parsed_value == expected)
 
 
 @pytest.mark.parametrize("value, precision, display_format, widget, expected", [
@@ -128,5 +124,3 @@ def test_parse_value_for_display_precision_incorrect_display_format(
     for record in caplog.records:
         assert record.levelno == logging.ERROR
     assert expected in caplog.text
-
-
