@@ -197,10 +197,17 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
             print('Warning: Attempting to convert PyDMLineEdit unit, but {:} '\
                            'can not be converted to {:}'.format(self._units, unit))
 
-    def context_menu(self):
-        menu = super(PyDMLineEdit, self).context_menu()
-        if len(menu.findChildren(QAction)) > 0:
-            menu.addSeparator()
+    def widget_ctx_menu(self):
+        """
+        Fetch the Widget specific context menu which will be populated with additional tools by `assemble_tools_menu`.
+
+        Returns
+        -------
+        QMenu or None
+            If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.
+        """
+        menu = self.createStandardContextMenu()
+        menu.addSeparator()
         menu.addMenu(self.unitMenu)
         return menu
 

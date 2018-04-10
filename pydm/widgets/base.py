@@ -202,8 +202,19 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
 
-            self.setContextMenuPolicy(Qt.CustomContextMenu)
-            self.customContextMenuRequested.connect(self.open_context_menu)
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.open_context_menu)
+
+    def widget_ctx_menu(self):
+        """
+        Fetch the Widget specific context menu which will be populated with additional tools by `assemble_tools_menu`.
+
+        Returns
+        -------
+        QMenu or None
+            If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.
+        """
+        return None
 
     def context_menu(self):
         """
@@ -215,7 +226,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
         -------
         QMenu
         """
-        menu = QMenu(self)
+        menu = self.widget_ctx_menu()
+        if menu is None:
+            menu = QMenu(parent=self)
+
         kwargs = {'channels': self.channels_for_tools(), 'sender': self}
         self.app.assemble_tools_menu(menu, widget_only=True, **kwargs)
         return menu
