@@ -2,12 +2,14 @@ from ..PyQt.QtGui import QActionGroup
 from ..PyQt.QtCore import pyqtSlot, pyqtProperty, QTimer, Q_ENUMS
 from pyqtgraph import ImageView
 from pyqtgraph import ColorMap
+from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
 import numpy as np
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
 from .base import PyDMWidget
 import pyqtgraph
 pyqtgraph.setConfigOption('imageAxisOrder', 'row-major')
+
 
 class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
     """
@@ -26,6 +28,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
     
     Q_ENUMS(PyDMColorMap)
     color_maps = cmaps
+
     def __init__(self, parent=None, image_channel=None, width_channel=None):
         ImageView.__init__(self, parent)
         PyDMWidget.__init__(self)
@@ -42,15 +45,12 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         self.cm_max = 255.0
         self.data_max_int = None  # This is the max value for the image waveform's data type.  It gets set when the waveform updates.
         # Make a right-click menu for changing the color map.
-        cm_menu = self.getView().getMenu(None).addMenu("Color Map")
         self.cm_group = QActionGroup(self)
         self.cmap_for_action = {}
         for cm in self.color_maps:
             action = self.cm_group.addAction(cmap_names[cm])
             action.setCheckable(True)
-            cm_menu.addAction(action)
             self.cmap_for_action[action] = cm
-        cm_menu.triggered.connect(self.changeColorMap)
         # Set the default colormap.
         self._colormap = PyDMColorMap.Inferno
         self._cm_colors = None
@@ -61,7 +61,23 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         self.redraw_timer.timeout.connect(self.redrawImage)
         self._redraw_rate = 30
         self.maxRedrawRate = self._redraw_rate
-        
+
+    def widget_ctx_menu(self):
+        """
+        Fetch the Widget specific context menu which will be populated with additional tools by `assemble_tools_menu`.
+
+        Returns
+        -------
+        QMenu or None
+            If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.
+        """
+        self.menu = ViewBoxMenu(self.getView())
+        cm_menu = self.menu.addMenu("Color Map")
+        for act in self.cmap_for_action.keys():
+            cm_menu.addAction(act)
+        cm_menu.triggered.connect(self.changeColorMap)
+        return self.menu
+
     def changeColorMap(self, action):
         """
         Method invoked by the colormap Action Menu that changes the
