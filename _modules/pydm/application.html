@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.1.0+49.gbc5dcd3 documentation</title>
+  <title>pydm.application &mdash; PyDM v1.1.0+52.g0213d9c documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+49.gbc5dcd3
+                v1.1.0+52.g0213d9c
               </div>
             
           
@@ -801,7 +801,8 @@
                 <span class="n">temp_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
 
                 <span class="n">module</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">load_source</span><span class="p">(</span><span class="n">temp_name</span><span class="p">,</span> <span class="n">tool</span><span class="p">)</span>
-                <span class="n">classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">module</span><span class="p">)</span> <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ExternalTool</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span> <span class="o">!=</span> <span class="n">ExternalTool</span><span class="p">]</span>
+                <span class="n">classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+                           <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ExternalTool</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span> <span class="o">!=</span> <span class="n">ExternalTool</span><span class="p">]</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">classes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid File Format. </span><span class="si">{}</span><span class="s2"> has no class inheriting from ExternalTool. Nothing to open at this time.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tool</span><span class="p">))</span>
                 <span class="n">obj</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">]</span>
@@ -821,11 +822,11 @@
 
             <span class="n">reorder_tools_dict</span><span class="p">()</span>
             <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;channels&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;sender&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">}</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">assemble_tools_menu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">menuTools</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assemble_tools_menu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">menuTools</span><span class="p">,</span> <span class="n">clear_menu</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to load External Tool: &quot;</span><span class="p">,</span> <span class="n">tool</span><span class="p">,</span> <span class="s2">&quot;. Exception was: &quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="PyDMApplication.assemble_tools_menu"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.assemble_tools_menu">[docs]</a>    <span class="k">def</span> <span class="nf">assemble_tools_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_menu</span><span class="p">,</span> <span class="n">widget_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication.assemble_tools_menu"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.assemble_tools_menu">[docs]</a>    <span class="k">def</span> <span class="nf">assemble_tools_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_menu</span><span class="p">,</span> <span class="n">clear_menu</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">widget_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Assemble the Tools menu for a given parent menu.</span>
 
@@ -833,6 +834,8 @@
 <span class="sd">        ----------</span>
 <span class="sd">        parent_menu : QMenu</span>
 <span class="sd">            The main menu item to hold the tools menu tree.</span>
+<span class="sd">        clear_menu : bool</span>
+<span class="sd">            Whether of not we should clear the menu before adding the tools.</span>
 <span class="sd">        widget_only : bool</span>
 <span class="sd">            Whether or not generate only the menu for widgets compatible</span>
 <span class="sd">            tools. This should be True when creating the menu for the</span>
@@ -843,16 +846,18 @@
 <span class="sd">            is a list and `sender` which is a QWidget.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">def</span> <span class="nf">assemble_action</span><span class="p">(</span><span class="n">menu</span><span class="p">,</span> <span class="n">tool_obj</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">tool_obj</span><span class="o">.</span><span class="n">icon</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="n">tool_obj</span><span class="o">.</span><span class="n">icon</span><span class="p">,</span> <span class="n">tool_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">menu</span><span class="p">)</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">tool_obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">action</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">tool_obj</span><span class="o">.</span><span class="n">icon</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="n">tool_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">menu</span><span class="p">)</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">tool_obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="n">action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">tool_obj</span><span class="o">.</span><span class="n">call</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
-            <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
 
-        <span class="n">parent_menu</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">clear_menu</span><span class="p">:</span>
+            <span class="n">parent_menu</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parent_menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -907,7 +912,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v1.1.0+49.gbc5dcd3',
+            VERSION:'v1.1.0+52.g0213d9c',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

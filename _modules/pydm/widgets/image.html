@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.image &mdash; PyDM v1.1.0+49.gbc5dcd3 documentation</title>
+  <title>pydm.widgets.image &mdash; PyDM v1.1.0+52.g0213d9c documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+49.gbc5dcd3
+                v1.1.0+52.g0213d9c
               </div>
             
           
@@ -168,12 +168,14 @@
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
 <span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="k">import</span> <span class="n">ImageView</span>
 <span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="k">import</span> <span class="n">ColorMap</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu</span> <span class="k">import</span> <span class="n">ViewBoxMenu</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="k">import</span> <span class="n">PyDMChannel</span>
 <span class="kn">from</span> <span class="nn">.colormaps</span> <span class="k">import</span> <span class="n">cmaps</span><span class="p">,</span> <span class="n">cmap_names</span><span class="p">,</span> <span class="n">PyDMColorMap</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
 <span class="kn">import</span> <span class="nn">pyqtgraph</span>
 <span class="n">pyqtgraph</span><span class="o">.</span><span class="n">setConfigOption</span><span class="p">(</span><span class="s1">&#39;imageAxisOrder&#39;</span><span class="p">,</span> <span class="s1">&#39;row-major&#39;</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="PyDMImageView"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView">[docs]</a><span class="k">class</span> <span class="nc">PyDMImageView</span><span class="p">(</span><span class="n">ImageView</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">PyDMColorMap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -192,6 +194,7 @@
     
     <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">PyDMColorMap</span><span class="p">)</span>
     <span class="n">color_maps</span> <span class="o">=</span> <span class="n">cmaps</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">image_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">ImageView</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -208,15 +211,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span> <span class="o">=</span> <span class="mf">255.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_max_int</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># This is the max value for the image waveform&#39;s data type.  It gets set when the waveform updates.</span>
         <span class="c1"># Make a right-click menu for changing the color map.</span>
-        <span class="n">cm_menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">()</span><span class="o">.</span><span class="n">getMenu</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s2">&quot;Color Map&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cm_group</span> <span class="o">=</span> <span class="n">QActionGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cmap_for_action</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">cm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_maps</span><span class="p">:</span>
             <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_group</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">cmap_names</span><span class="p">[</span><span class="n">cm</span><span class="p">])</span>
             <span class="n">action</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">cm_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cmap_for_action</span><span class="p">[</span><span class="n">action</span><span class="p">]</span> <span class="o">=</span> <span class="n">cm</span>
-        <span class="n">cm_menu</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeColorMap</span><span class="p">)</span>
         <span class="c1"># Set the default colormap.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_colormap</span> <span class="o">=</span> <span class="n">PyDMColorMap</span><span class="o">.</span><span class="n">Inferno</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cm_colors</span> <span class="o">=</span> <span class="kc">None</span>
@@ -227,7 +227,23 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">redrawImage</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span> <span class="o">=</span> <span class="mi">30</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maxRedrawRate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span>
-        
+
+<div class="viewcode-block" id="PyDMImageView.widget_ctx_menu"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.widget_ctx_menu">[docs]</a>    <span class="k">def</span> <span class="nf">widget_ctx_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetch the Widget specific context menu which will be populated with additional tools by `assemble_tools_menu`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        QMenu or None</span>
+<span class="sd">            If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="n">ViewBoxMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">())</span>
+        <span class="n">cm_menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s2">&quot;Color Map&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">act</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmap_for_action</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">cm_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">act</span><span class="p">)</span>
+        <span class="n">cm_menu</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeColorMap</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span></div>
+
 <div class="viewcode-block" id="PyDMImageView.changeColorMap"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.changeColorMap">[docs]</a>    <span class="k">def</span> <span class="nf">changeColorMap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method invoked by the colormap Action Menu that changes the</span>
@@ -542,7 +558,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+49.gbc5dcd3',
+            VERSION:'v1.1.0+52.g0213d9c',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

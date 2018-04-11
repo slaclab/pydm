@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.spinbox &mdash; PyDM v1.1.0+49.gbc5dcd3 documentation</title>
+  <title>pydm.widgets.spinbox &mdash; PyDM v1.1.0+52.g0213d9c documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+49.gbc5dcd3
+                v1.1.0+52.g0213d9c
               </div>
             
           
@@ -164,7 +164,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.spinbox</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QDoubleSpinBox</span><span class="p">,</span> <span class="n">QApplication</span>
+<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QDoubleSpinBox</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QMenu</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">QEvent</span><span class="p">,</span> <span class="n">Qt</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
 
@@ -217,8 +217,15 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMSpinbox.contextMenuEvent"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.contextMenuEvent">[docs]</a>    <span class="k">def</span> <span class="nf">contextMenuEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Increment LineEdit menu to toggle the display of the step size.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="PyDMSpinbox.widget_ctx_menu"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.widget_ctx_menu">[docs]</a>    <span class="k">def</span> <span class="nf">widget_ctx_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetch the Widget specific context menu which will be populated with additional tools by `assemble_tools_menu`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        QMenu or None</span>
+<span class="sd">            If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">def</span> <span class="nf">toogle</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">showStepExponent</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">showStepExponent</span>
 
@@ -226,7 +233,7 @@
         <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
         <span class="n">ac</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s1">&#39;Toggle Show Step Size&#39;</span><span class="p">)</span>
         <span class="n">ac</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">toogle</span><span class="p">)</span>
-        <span class="n">menu</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">globalPos</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="n">menu</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.update_step_size"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.update_step_size">[docs]</a>    <span class="k">def</span> <span class="nf">update_step_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -371,7 +378,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+49.gbc5dcd3',
+            VERSION:'v1.1.0+52.g0213d9c',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
