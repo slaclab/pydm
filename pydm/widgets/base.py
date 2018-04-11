@@ -202,10 +202,21 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
 
-            self.setContextMenuPolicy(Qt.CustomContextMenu)
-            self.customContextMenuRequested.connect(self.open_context_menu)
+        self.setContextMenuPolicy(Qt.DefaultContextMenu)
+        self.contextMenuEvent = self.open_context_menu
 
-    def context_menu(self):
+    def widget_ctx_menu(self):
+        """
+        Fetch the Widget specific context menu which will be populated with additional tools by `assemble_tools_menu`.
+
+        Returns
+        -------
+        QMenu or None
+            If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.
+        """
+        return None
+
+    def generate_context_menu(self):
         """
         Generates the custom context menu, and populates it with any external
         tools that have been loaded.  PyDMWidget subclasses should override
@@ -215,21 +226,24 @@ class PyDMWidget(PyDMPrimitiveWidget):
         -------
         QMenu
         """
-        menu = QMenu(self)
+        menu = self.widget_ctx_menu()
+        if menu is None:
+            menu = QMenu(parent=self)
+
         kwargs = {'channels': self.channels_for_tools(), 'sender': self}
         self.app.assemble_tools_menu(menu, widget_only=True, **kwargs)
         return menu
 
-    def open_context_menu(self, position):
+    def open_context_menu(self, ev):
         """
-        Handler for when the Custom Context Menu is requested.
+        Handler for when the Default Context Menu is requested.
 
         Parameters
         ----------
-        position : QPoint
+        ev : QEvent
         """
-        menu = self.context_menu()
-        menu.exec_(self.mapToGlobal(position))
+        menu = self.generate_context_menu()
+        action = menu.exec_(self.mapToGlobal(ev.pos()))
         del menu
 
     def init_for_designer(self):

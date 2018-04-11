@@ -635,7 +635,8 @@ class PyDMApplication(QApplication):
                 temp_name = str(uuid.uuid4())
 
                 module = imp.load_source(temp_name, tool)
-                classes = [obj for _, obj in inspect.getmembers(module) if inspect.isclass(obj) and issubclass(obj, ExternalTool) and obj != ExternalTool]
+                classes = [obj for _, obj in inspect.getmembers(module)
+                           if inspect.isclass(obj) and issubclass(obj, ExternalTool) and obj != ExternalTool]
                 if len(classes) == 0:
                     raise ValueError("Invalid File Format. {} has no class inheriting from ExternalTool. Nothing to open at this time.".format(tool))
                 obj = [c() for c in classes]
@@ -655,11 +656,11 @@ class PyDMApplication(QApplication):
 
             reorder_tools_dict()
             kwargs = {'channels': None, 'sender': self.main_window}
-            self.assemble_tools_menu(self.main_window.ui.menuTools, **kwargs)
+            self.assemble_tools_menu(self.main_window.ui.menuTools, clear_menu=True, **kwargs)
         except Exception as e:
             print("Failed to load External Tool: ", tool, ". Exception was: ", str(e))
 
-    def assemble_tools_menu(self, parent_menu, widget_only=False, **kwargs):
+    def assemble_tools_menu(self, parent_menu, clear_menu=False, widget_only=False, **kwargs):
         """
         Assemble the Tools menu for a given parent menu.
 
@@ -667,6 +668,8 @@ class PyDMApplication(QApplication):
         ----------
         parent_menu : QMenu
             The main menu item to hold the tools menu tree.
+        clear_menu : bool
+            Whether of not we should clear the menu before adding the tools.
         widget_only : bool
             Whether or not generate only the menu for widgets compatible
             tools. This should be True when creating the menu for the
@@ -677,16 +680,18 @@ class PyDMApplication(QApplication):
             is a list and `sender` which is a QWidget.
 
         """
-
         def assemble_action(menu, tool_obj):
             if tool_obj.icon is not None:
-                action = QAction(tool_obj.icon, tool_obj.name, menu)
+                action = menu.addAction(tool_obj.name)
+                action.setIcon(tool_obj.icon)
             else:
-                action = QAction(tool_obj.name, menu)
+                action = menu.addAction(tool_obj.name)
             action.triggered.connect(partial(tool_obj.call, **kwargs))
-            menu.addAction(action)
 
-        parent_menu.clear()
+        if clear_menu:
+            parent_menu.clear()
+        else:
+            parent_menu.addSeparator()
 
         for k, v in self.tools.items():
             if isinstance(v, dict):

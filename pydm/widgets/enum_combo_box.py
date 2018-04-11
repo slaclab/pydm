@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QFrame, QComboBox, QHBoxLayout
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, Qt
 from .base import PyDMWritableWidget
 from pydm.utilities import is_pydm_app
 
@@ -45,6 +45,8 @@ class PyDMEnumComboBox(QFrame, PyDMWritableWidget):
         self.combo_box.currentIndexChanged[str].connect(self.internal_combo_box_index_changed_str)
         self.combo_box.highlighted[int].connect(self.internal_combo_box_highlighted_int)
         self.combo_box.highlighted[str].connect(self.internal_combo_box_highlighted_str)
+        self.combo_box.setContextMenuPolicy(Qt.DefaultContextMenu)
+        self.combo_box.contextMenuEvent = self.open_context_menu
 
     # Internal methods
     def set_items(self, enums):
