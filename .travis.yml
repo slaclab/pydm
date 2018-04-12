@@ -67,9 +67,11 @@ after_success:
   - codecov
   - |
     if [[ $TRAVIS_PULL_REQUEST == false && $TRAVIS_REPO_SLUG == $OFFICIAL_REPO && $TRAVIS_BRANCH == $TRAVIS_TAG  && $TRAVIS_TAG != '' && $CONDA_UPLOAD_TOKEN_TAG != '' ]]; then
-      conda build . -c defaults -c conda-forge -c gsecars --token $CONDA_UPLOAD_TOKEN_TAG --python $TRAVIS_PYTHON_VERSION
+      export ANACONDA_API_TOKEN=$CONDA_UPLOAD_TOKEN_TAG  
+      anaconda upload bld-dir/linux-64/*.tar.bz2
     fi
   - |
     if [[ $TRAVIS_PULL_REQUEST == false && $TRAVIS_REPO_SLUG == $OFFICIAL_REPO && $TRAVIS_BRANCH == 'master' && $TRAVIS_TAG == '' && $CONDA_UPLOAD_TOKEN_DEV != '' ]]; then
-      conda build . -c defaults -c conda-forge -c gsecars --token $CONDA_UPLOAD_TOKEN_DEV --python $TRAVIS_PYTHON_VERSION
+      export ANACONDA_API_TOKEN=$CONDA_UPLOAD_TOKEN_DEV  
+      anaconda upload bld-dir/linux-64/*.tar.bz2
     fi
