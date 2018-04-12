@@ -44,9 +44,9 @@ will make all the PyDM widgets available to the Qt Designer.
 
 ### Most Recent Development Build
 ```sh
-conda install -c pydm-dev -c gsecars -c conda-forge pydm
+conda install -c pydm-dev -c conda-forge pydm
 ```
 ### Most Recent Tagged Build
 ```sh
-conda install -c pydm-tag -c gsecars -c conda-forge pydm
+conda install -c pydm-tag -c conda-forge pydm
 ```
