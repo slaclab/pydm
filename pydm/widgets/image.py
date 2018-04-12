@@ -8,7 +8,17 @@ from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
 from .base import PyDMWidget
 import pyqtgraph
+from collections import OrderedDict
 pyqtgraph.setConfigOption('imageAxisOrder', 'row-major')
+
+READINGORDER = OrderedDict([('Fortranlike', 0),
+                            ('Clike', 1),
+                            ])
+
+
+class _ReadingOrderMap(object):
+    for k in sorted(READINGORDER.keys()):
+        locals()[k] = READINGORDER[k]
 
 
 class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
@@ -25,8 +35,14 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         The channel to be used by the widget to receive the image width
         information
     """
-    
+
+    Q_ENUMS(_ReadingOrderMap)
     Q_ENUMS(PyDMColorMap)
+
+    readingorderdict = {}
+    for rd, i in READINGORDER.items():
+        readingorderdict[i] = rd
+
     color_maps = cmaps
 
     def __init__(self, parent=None, image_channel=None, width_channel=None):
@@ -36,14 +52,16 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         self._imagechannel = image_channel
         self._widthchannel = width_channel
         self.image_waveform = np.zeros(0)
-        self.image_width = 0
+        self._image_width = 0
+        self._normalize_data = False
         self.ui.histogram.hide()
         self.getImageItem().sigImageChanged.disconnect(self.ui.histogram.imageChanged)
         self.ui.roiBtn.hide()
         self.ui.menuBtn.hide()
         self.cm_min = 0.0
         self.cm_max = 255.0
-        self.data_max_int = None  # This is the max value for the image waveform's data type.  It gets set when the waveform updates.
+        # Set default reading order of numpy array data to Fortranlike
+        self._readingOrder = 0
         # Make a right-click menu for changing the color map.
         self.cm_group = QActionGroup(self)
         self.cmap_for_action = {}
@@ -54,7 +72,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         # Set the default colormap.
         self._colormap = PyDMColorMap.Inferno
         self._cm_colors = None
-        self.set_color_map_to_preset(self._colormap)
+        self.colorMap = self._colormap
         # Setup the redraw timer.
         self.needs_redraw = False
         self.redraw_timer = QTimer(self)
@@ -75,10 +93,10 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         cm_menu = self.menu.addMenu("Color Map")
         for act in self.cmap_for_action.keys():
             cm_menu.addAction(act)
-        cm_menu.triggered.connect(self.changeColorMap)
+        cm_menu.triggered.connect(self._changeColorMap)
         return self.menu
 
-    def changeColorMap(self, action):
+    def _changeColorMap(self, action):
         """
         Method invoked by the colormap Action Menu that changes the
         current colormap used to render the image.
@@ -87,16 +105,28 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         ----------
         action : QAction
         """
-        self.set_color_map_to_preset(self.cmap_for_action[action])
+        self.colorMap = self.cmap_for_action[action]
 
-    @pyqtSlot(int)
-    def setColorMapMin(self, new_min):
+    @pyqtProperty(int)
+    def colorMapMin(self):
         """
-        Set the minimal value for the colormap
+        Minimum value for the colormap
+
+        Returns
+        -------
+        float
+        """
+        return self.cm_min
+
+    @colorMapMin.setter
+    @pyqtSlot(int)
+    def colorMapMin(self, new_min):
+        """
+        Set the minimum value for the colormap
 
         Parameters
         ----------
-        new_min : int
+        new_min : float
         """
         if self.cm_min != new_min:
             self.cm_min = new_min
@@ -104,18 +134,28 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
                 self.cm_max = self.cm_min
             self.setColorMap()
 
+    @pyqtProperty(int)
+    def colorMapMax(self):
+        """
+        Maximum value for the colormap
+
+        Returns
+        -------
+        float
+        """
+        return self.cm_max
+
+    @colorMapMax.setter
     @pyqtSlot(int)
-    def setColorMapMax(self, new_max):
+    def colorMapMax(self, new_max):
         """
         Set the maximum value for the colormap
 
         Parameters
         ----------
-        new_max : int
+        new_max : float
         """
         if self.cm_max != new_max:
-            if new_max >= self.data_max_int:
-                new_max = self.data_max_int
             self.cm_max = new_max
             if self.cm_max < self.cm_min:
                 self.cm_min = self.cm_max
@@ -132,6 +172,8 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         mx : int
             The upper limit
         """
+        if mn >= mx:
+            return
         self.cm_max = mx
         self.cm_min = mn
         self.setColorMap()
@@ -139,35 +181,25 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
     @pyqtProperty(PyDMColorMap)
     def colorMap(self):
         """
-        The color map used by the ImageView.
+        Returns the color map used by the ImageView.
 
         Returns
         -------
         PyDMColorMap
         """
         return self._colormap
-    
+
     @colorMap.setter
     def colorMap(self, new_cmap):
         """
-        The color map used by the ImageView.
+        Set the color map used by the ImageView.
 
         Parameters
         -------
         new_cmap : PyDMColorMap
         """
-        self.set_color_map_to_preset(new_cmap)
-
-    def set_color_map_to_preset(self, cmap):
-        """
-        Load a predefined colormap
-
-        Parameters
-        ----------
-        cmap : PyDMColorMap
-        """
-        self._colormap = cmap
-        self._cm_colors = self.color_maps[cmap]
+        self._colormap = new_cmap
+        self._cm_colors = self.color_maps[new_cmap]
         self.setColorMap()
         for action in self.cm_group.actions():
             if self.cmap_for_action[action] == self._colormap:
@@ -183,18 +215,16 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         ----------
         cmap : ColorMap
         """
-        if self.data_max_int is None:
-            return
         if not cmap:
             if not self._cm_colors.any():
                 return
             pos = np.linspace(0.0, 1.0, num=len(self._cm_colors))  # take default values
             cmap = ColorMap(pos, self._cm_colors)
         self.getView().setBackgroundColor(cmap.map(0))
-        lut = cmap.getLookupTable(0.0, 1.0, self.data_max_int, alpha=False)
+        lut = cmap.getLookupTable(0.0, 1.0, alpha=False)
         self.getImageItem().setLookupTable(lut)
-        self.getImageItem().setLevels([self.cm_min, float(min(self.cm_max, self.data_max_int))])  # set levels from min to max of image (may improve min here)
-            
+        self.needs_redraw = True
+
     @pyqtSlot(bool)
     def image_connection_state_changed(self, conn):
         if conn:
@@ -220,9 +250,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
             return
         self.image_waveform = new_image
         self.needs_redraw = True
-        if self.data_max_int is None:
-            self.data_max_int = np.iinfo(self.image_waveform.dtype).max
-            self.setColorMap() #Now that we know the max size, set the color map appropriately.
 
     @pyqtSlot(int)
     def image_width_changed(self, new_width):
@@ -236,7 +263,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         """
         if new_width is None:
             return
-        self.image_width = int(new_width)
+        self._image_width = int(new_width)
 
     def redrawImage(self):
         """
@@ -247,15 +274,103 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
             return
         image_dimensions = len(self.image_waveform.shape)
         if image_dimensions == 1:
-            if self.image_width < 1:
+            if self.imageWidth < 1:
                 #We don't have a width for this image yet, so we can't draw it.
                 return
-            img = self.image_waveform.reshape(self.image_width, -1, order='F')
+            img = self.image_waveform.reshape(self.imageWidth, -1, order=self.readingorderdict[self._readingOrder])
         else:
             img = self.image_waveform
-        if len(img) > 0:
-            self.getImageItem().setImage(img, autoLevels=False, autoDownsample=True)
-            self.needs_redraw = False
+
+        if len(img) <= 0:
+            return
+        if self._normalize_data:
+            mini = self.image_waveform.min()
+            maxi = self.image_waveform.max()
+        else:
+            mini = self.cm_min
+            maxi = self.cm_max
+        self.getImageItem().setLevels([mini, maxi])
+        self.getImageItem().setImage(img, autoLevels=False, autoDownsample=True)
+        self.needs_redraw = False
+
+    @pyqtProperty(int)
+    def imageWidth(self):
+        """
+        Returns the width of the image.
+
+        Return
+        ------
+        int
+        """
+        return self._image_width
+
+    @imageWidth.setter
+    def imageWidth(self, new_width):
+        """
+        Set the width of the image.
+
+        Can be overridden by :attr:`widthChannel`.
+
+        Parameters
+        ----------
+        new_width: int
+        """
+        if self._image_width != int(new_width) and self._widthchannel is None:
+            self._image_width = int(new_width)
+
+    @pyqtProperty(bool)
+    def normalizeData(self):
+        """
+        Returns True if the colors are relative to data maximum and minimum.
+
+        Returns
+        -------
+        bool
+        """
+        return self._normalize_data
+
+    @normalizeData.setter
+    @pyqtSlot(bool)
+    def normalizeData(self, new_norm):
+        """
+        Define if the colors are relative to minimum and maximum of the data.
+
+        Parameters
+        ----------
+        new_norm: bool
+        """
+        if self._normalize_data == new_norm:
+            return
+        self._normalize_data = new_norm
+        self.needs_redraw = True
+
+    @pyqtProperty(_ReadingOrderMap)
+    def readingOrder(self):
+        """
+        Returns the reading order of the :attr:`imageChannel` array.
+
+        It is 0 if the reading order is Fortranlike or 1 if it is Clike.
+
+        Returns
+        -------
+        _ReadingOrderMap
+        """
+        return self._readingOrder
+
+    @readingOrder.setter
+    def readingOrder(self, new_order):
+        """
+        Set reading order of the :attr:`imageChannel` array.
+
+        It is 0 if the reading order is Fortranlike or 1 if it is Clike.
+
+        Parameters
+        ----------
+        new_order: _ReadingOrderMap
+        """
+        if self._readingOrder != new_order:
+            self._readingOrder = new_order
+        self.needs_redraw = True
 
     def keyPressEvent(self, ev):
         return
@@ -339,19 +454,19 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         """
         The maximum rate (in Hz) at which the plot will be redrawn.
         The plot will not be redrawn if there is not new data to draw.
-        
+
         Returns
         -------
         int
         """
         return self._redraw_rate
-    
+
     @maxRedrawRate.setter
     def maxRedrawRate(self, redraw_rate):
         """
         The maximum rate (in Hz) at which the plot will be redrawn.
         The plot will not be redrawn if there is not new data to draw.
-        
+
         Parameters
         -------
         redraw_rate : int
