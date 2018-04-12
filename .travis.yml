@@ -35,7 +35,6 @@ before_install:
   - conda update -q conda conda-build
   # Add the channels needed for install
   - conda config --append channels conda-forge
-  - conda config --append channels gsecars
   # Build the recipe and use it the local build for install
   - conda build -q conda-recipe --python=$TRAVIS_PYTHON_VERSION --output-folder bld-dir
   - conda config --add channels "file://`pwd`/bld-dir"
