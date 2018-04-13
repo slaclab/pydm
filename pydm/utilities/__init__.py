@@ -6,6 +6,7 @@ from .iconfont import IconFont
 
 import os
 import sys
+import platform
 import ntpath
 import shlex
 
@@ -22,12 +23,19 @@ def is_pydm_app():
 
 def path_info(path_str):
     """
+    Retrieve basic information about the given path.
+
+    Parameters
+    ----------
+    path_str : str
+        The path from which to extract information.
 
     Returns
     -------
-    tuple: base dir, file name, list of args
+    tuple
+        base dir, file name, list of args
     """
-    if "win" in sys.platform:
+    if platform.system() == "Windows":
         os_path_mod = ntpath
     else:
         os_path_mod = os.path
