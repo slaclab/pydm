@@ -8,20 +8,15 @@ from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
 from .base import PyDMWidget
 import pyqtgraph
-from collections import OrderedDict
 pyqtgraph.setConfigOption('imageAxisOrder', 'row-major')
 
-READINGORDER = OrderedDict([('Fortranlike', 0),
-                            ('Clike', 1),
-                            ])
+
+class ReadingOrder(object):
+    Fortranlike = 0
+    Clike = 1
 
 
-class _ReadingOrderMap(object):
-    for k in sorted(READINGORDER.keys()):
-        locals()[k] = READINGORDER[k]
-
-
-class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
+class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
     """
     A PyQtGraph ImageView with support for Channels and more from PyDM
 
@@ -36,13 +31,11 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         information
     """
 
-    Q_ENUMS(_ReadingOrderMap)
+    Q_ENUMS(ReadingOrder)
     Q_ENUMS(PyDMColorMap)
 
-    readingorderdict = {}
-    for rd, i in READINGORDER.items():
-        readingorderdict[i] = rd
-
+    reading_orders = {ReadingOrder.Fortranlike: 'F',
+                      ReadingOrder.Clike: 'C'}
     color_maps = cmaps
 
     def __init__(self, parent=None, image_channel=None, width_channel=None):
@@ -61,7 +54,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         self.cm_min = 0.0
         self.cm_max = 255.0
         # Set default reading order of numpy array data to Fortranlike
-        self._readingOrder = 0
+        self._reading_order = ReadingOrder.Fortranlike
         # Make a right-click menu for changing the color map.
         self.cm_group = QActionGroup(self)
         self.cmap_for_action = {}
@@ -277,7 +270,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
             if self.imageWidth < 1:
                 #We don't have a width for this image yet, so we can't draw it.
                 return
-            img = self.image_waveform.reshape(self.imageWidth, -1, order=self.readingorderdict[self._readingOrder])
+            img = self.image_waveform.reshape(self.imageWidth, -1, order=self.reading_orders[self._reading_order])
         else:
             img = self.image_waveform
 
@@ -344,32 +337,28 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap):
         self._normalize_data = new_norm
         self.needs_redraw = True
 
-    @pyqtProperty(_ReadingOrderMap)
+    @pyqtProperty(ReadingOrder)
     def readingOrder(self):
         """
         Returns the reading order of the :attr:`imageChannel` array.
 
-        It is 0 if the reading order is Fortranlike or 1 if it is Clike.
-
         Returns
         -------
-        _ReadingOrderMap
+        ReadingOrder
         """
-        return self._readingOrder
+        return self._reading_order
 
     @readingOrder.setter
     def readingOrder(self, new_order):
         """
         Set reading order of the :attr:`imageChannel` array.
 
-        It is 0 if the reading order is Fortranlike or 1 if it is Clike.
-
         Parameters
         ----------
-        new_order: _ReadingOrderMap
+        new_order: ReadingOrder
         """
-        if self._readingOrder != new_order:
-            self._readingOrder = new_order
+        if self._reading_order != new_order:
+            self._reading_order = new_order
         self.needs_redraw = True
 
     def keyPressEvent(self, ev):
