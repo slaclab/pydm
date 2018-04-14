@@ -12,6 +12,14 @@ import shlex
 
 
 def is_pydm_app():
+    """
+    Check whether or not `QApplication.instance()` is a PyDMApplication.
+
+    Returns
+    -------
+    bool
+        True if it is a PyDMApplication, False otherwise.
+    """
     from ..application import PyDMApplication
     from ..PyQt.QtGui import QApplication
     app = QApplication.instance()
