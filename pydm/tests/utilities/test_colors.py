@@ -14,8 +14,8 @@ def test_svg_color_from_hex():
     svg = colors.svg_color_from_hex('#000000', hex_on_fail=True)
     assert (svg == 'black')
 
-    with pytest.raises(KeyError) as e_info:
-        svg = colors.svg_color_from_hex('#XXXXXXX', hex_on_fail=False)
+    with pytest.raises(KeyError):
+        colors.svg_color_from_hex('#XXXXXXX', hex_on_fail=False)
     svg = colors.svg_color_from_hex('#XXXXXXX', hex_on_fail=True)
     assert(svg == '#XXXXXXX')
 
@@ -24,5 +24,5 @@ def test_hex_from_svg_color():
     hex = colors.hex_from_svg_color('black')
     assert (hex == '#000000')
 
-    with pytest.raises(KeyError) as e_info:
-        hex = colors.hex_from_svg_color('invalid_color')
+    with pytest.raises(KeyError):
+        colors.hex_from_svg_color('invalid_color')
