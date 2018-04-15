@@ -5,12 +5,14 @@ from ...application import PyDMApplication
 
 def test_is_pydm_app():
     app = PyDMApplication()
-    assert is_pydm_app()
+    assert is_pydm_app(app)
+    app.deleteLater()
 
 
 def test_negative_is_pydm_app():
     app = QtGui.QApplication([])
-    assert not is_pydm_app()
+    assert not is_pydm_app(app)
+    app.deleteLater()
 
 
 def test_path_info():
