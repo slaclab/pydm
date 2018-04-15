@@ -24,7 +24,7 @@ def test_icon_font_load_font(qtbot):
 def test_icon_font_get_char_for_name(qtbot):
     icon_f = iconfont.IconFont()
     c = icon_f.get_char_for_name('cogs')
-    assert (c == '\uf085')
+    assert (c == u'\uf085')
 
     with pytest.raises(ValueError):
         icon_f.get_char_for_name('foo')
