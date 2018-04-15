@@ -11,9 +11,14 @@ import ntpath
 import shlex
 
 
-def is_pydm_app():
+def is_pydm_app(app=None):
     """
     Check whether or not `QApplication.instance()` is a PyDMApplication.
+
+    Parameters
+    ----------
+    app : QApplication
+        The app to inspect.
 
     Returns
     -------
@@ -22,7 +27,8 @@ def is_pydm_app():
     """
     from ..application import PyDMApplication
     from ..PyQt.QtGui import QApplication
-    app = QApplication.instance()
+    if app is None:
+        app = QApplication.instance()
     if isinstance(app, PyDMApplication):
         return True
     else:
