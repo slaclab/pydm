@@ -21,7 +21,7 @@ class IconFont(object):
     def __init__(self):
         if self.__initialized:
             return
-        self.font_file = "fontawesome.ttf"  # specify these relative to this file.
+        self.font_file = "fontawesome.ttf" # specify these relative to this file.
         self.charmap_file = "fontawesome-charmap.json"
         self.font_name = None
         self.char_map = None

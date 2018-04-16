@@ -4,7 +4,7 @@
 import pytest
 from pytestqt.qt_compat import qt_api
 
-from numpy import ndarray
+import numpy as np
 import tempfile
 import logging
 
@@ -81,11 +81,12 @@ class ConnectionSignals(QObject):
     """
     An assortment of signals, to which a unit test can choose from and bind an appropriate slot
     """
-    new_value_signal = pyqtSignal([float], [int], [str], [ndarray])
+    new_value_signal = pyqtSignal([float], [int], [str], [np.ndarray])
     connection_state_signal = pyqtSignal(bool)
     new_severity_signal = pyqtSignal(int)
     write_access_signal = pyqtSignal(bool)
     enum_strings_signal = pyqtSignal(tuple)
+    send_value_signal = pyqtSignal([int], [float], [str], [bool], [np.ndarray])
     unit_signal = pyqtSignal(str)
     prec_signal = pyqtSignal(int)
     upper_ctrl_limit_signal = pyqtSignal([float], [int])
@@ -109,7 +110,7 @@ class ConnectionSignals(QObject):
     @pyqtSlot(int)
     @pyqtSlot(float)
     @pyqtSlot(str)
-    @pyqtSlot(ndarray)
+    @pyqtSlot(np.ndarray)
     def receiveValue(self, val):
         """
         The slot to receive the value from a PyDM widget.

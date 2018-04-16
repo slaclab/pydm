@@ -4,6 +4,9 @@ from ..PyQt.QtGui import QPushButton, QMessageBox, QInputDialog, QLineEdit
 from ..PyQt.QtCore import pyqtSlot, pyqtProperty
 from .base import PyDMWritableWidget, compose_stylesheet
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class PyDMPushButton(QPushButton, PyDMWritableWidget):
     """
@@ -43,7 +46,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
     """
 
-    DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed ?"
+    DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
 
     def __init__(self, parent=None, label=None, icon=None,
                  pressValue=None, relative=False,
@@ -68,7 +71,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @pyqtProperty(bool)
     def passwordProtected(self):
         """
-        Wether or not this button is password protected.
+        Whether or not this button is password protected.
 
         Returns
         -------
@@ -79,7 +82,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @passwordProtected.setter
     def passwordProtected(self, value):
         """
-        Wether or not this button is password protected.
+        Whether or not this button is password protected.
 
         Parameters
         ----------
@@ -116,7 +119,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if value is not None and value != "":
             sha = hashlib.sha256()
             sha.update(value.encode())
-            self._protected_password = sha.hexdigest()
+            # Use the setter as it also checks whether the existing password is the same with the
+            # new one, and only updates if the new password is different
+            self.protectedPassword = sha.hexdigest()
 
     @pyqtProperty(str)
     def protectedPassword(self):
@@ -328,6 +333,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             New severity: 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR and 3 = INVALID
         """
         if self._alarm_sensitive_content:
+            self._alarm_state = new_alarm_severity
             self._style = dict(self.alarm_style_sheet_map[self.ALARM_CONTENT][
                                                         new_alarm_severity])
             style = compose_stylesheet(style=self._style, obj=self)
@@ -374,6 +380,5 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         try:
             self.pressValue = self.channeltype(value)
-        except ValueError:
-            print('{:} is not a valid pressValue '
-                  'for {:}'.format(value, self.channel))
+        except(ValueError, TypeError):
+            logger.error("'{0}' is not a valid pressValue for '{1}'.".format(value, self.channel))
