@@ -17,8 +17,8 @@ def is_pydm_app(app=None):
 
     Parameters
     ----------
-    app : QApplication
-        The app to inspect.
+    app : QApplication, Optional
+        The app to inspect. If no application is provided the current running `QApplication` will be queried.
 
     Returns
     -------
