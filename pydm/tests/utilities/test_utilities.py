@@ -1,3 +1,5 @@
+import platform
+
 from ...utilities import is_pydm_app, path_info, which
 from ...PyQt import QtGui
 from ...application import PyDMApplication
@@ -28,11 +30,18 @@ def test_path_info():
 
 
 def test_which():
-    out = which('ls')
-    assert (out == '/bin/ls')
+    if platform.system() == 'Windows':
+        out = which('ping')
+        assert (out.lower() == 'c:\windows\system32\ping.exe')
 
-    out = which('/bin/ls')
-    assert (out == '/bin/ls')
+        out = which('C:\Windows\System32\PING.EXE')
+        assert (out.lower() == 'c:\windows\system32\ping.exe')
+    else:
+        out = which('ls')
+        assert (out == '/bin/ls')
+
+        out = which('/bin/ls')
+        assert (out == '/bin/ls')
 
     out = which('non_existant_binary')
     assert (out is None)
