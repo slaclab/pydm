@@ -6,14 +6,29 @@ from .iconfont import IconFont
 
 import os
 import sys
+import platform
 import ntpath
 import shlex
 
 
-def is_pydm_app():
+def is_pydm_app(app=None):
+    """
+    Check whether or not `QApplication.instance()` is a PyDMApplication.
+
+    Parameters
+    ----------
+    app : QApplication, Optional
+        The app to inspect. If no application is provided the current running `QApplication` will be queried.
+
+    Returns
+    -------
+    bool
+        True if it is a PyDMApplication, False otherwise.
+    """
     from ..application import PyDMApplication
     from ..PyQt.QtGui import QApplication
-    app = QApplication.instance()
+    if app is None:
+        app = QApplication.instance()
     if isinstance(app, PyDMApplication):
         return True
     else:
@@ -22,12 +37,19 @@ def is_pydm_app():
 
 def path_info(path_str):
     """
+    Retrieve basic information about the given path.
+
+    Parameters
+    ----------
+    path_str : str
+        The path from which to extract information.
 
     Returns
     -------
-    tuple: base dir, file name, list of args
+    tuple
+        base dir, file name, list of args
     """
-    if "win" in sys.platform:
+    if platform.system() == "Windows":
         os_path_mod = ntpath
     else:
         os_path_mod = os.path

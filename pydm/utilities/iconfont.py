@@ -8,6 +8,7 @@ import sys
 import json
 from ..PyQt.QtGui import QFontDatabase, QIconEngine, QPixmap, QPainter, QColor, QFont, QIcon
 from ..PyQt.QtCore import Qt, QRect, QPoint, qRound
+
 if sys.version_info[0] == 3:
     unichr = chr
 
@@ -24,6 +25,7 @@ class IconFont(object):
         self.charmap_file = "fontawesome-charmap.json"
         self.font_name = None
         self.char_map = None
+        self.loaded_fonts = {}
         self.load_font(self.font_file, self.charmap_file)
         self.__initialized = True
 
@@ -42,20 +44,31 @@ class IconFont(object):
             return result
 
         if self.char_map is None:
-            font_id = QFontDatabase.addApplicationFont(os.path.join(os.path.dirname(os.path.realpath(__file__)), ttf_filename))
-            font_families = QFontDatabase.applicationFontFamilies(font_id)
-            if font_families:
-                self.font_name = font_families[0]
+            cache_key = ttf_filename + "|" + charmap_filename
+            ttf_fname = os.path.join(os.path.dirname(os.path.realpath(__file__)), ttf_filename)
+            font_id = QFontDatabase.addApplicationFont(ttf_fname)
+            if font_id >= 0:
+                font_families = QFontDatabase.applicationFontFamilies(font_id)
             else:
-                raise IOError("Could not load ttf file for icon font.")
+                cache = self.loaded_fonts.get(cache_key, None)
+                if cache is None:
+                    raise OSError("Could not load ttf file for icon font.")
+                else:
+                    self.char_map = cache['char_map']
+                    self.font_name = cache['font_name']
+                    return
+
+            self.font_name = font_families[0]
+
             with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), charmap_filename), 'r') as codes:
                 self.char_map = json.load(codes, object_hook=hook)
+
+            self.loaded_fonts[cache_key] = {'char_map': self.char_map, 'font_name': self.font_name}
 
     def get_char_for_name(self, name):
         if name in self.char_map:
             return self.char_map[name]
         else:
-            print(self.char_map)
             raise ValueError("Invalid icon name for font.")
 
     def font(self, size):
@@ -77,11 +90,12 @@ class CharIconEngine(QIconEngine):
         self.icon_font = icon_font
         self.char = char
         if color is None:
-            self._base_color = QColor(90,90,90)
+            self._base_color = QColor(90, 90, 90)
         else:
             self._base_color = color
-        self._disabled_color = QColor.fromHslF(self._base_color.hueF(), self._base_color.saturationF(), max(min(self._base_color.lightnessF()+0.25,1.0),0.0))
-    
+        self._disabled_color = QColor.fromHslF(self._base_color.hueF(), self._base_color.saturationF(),
+                                               max(min(self._base_color.lightnessF() + 0.25, 1.0), 0.0))
+
     def paint(self, painter, rect, mode, state):
         painter.save()
         if mode == QIcon.Disabled:

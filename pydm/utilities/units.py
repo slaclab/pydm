@@ -53,6 +53,16 @@ UNITS = {'length':   {'m': 1,
 def find_unittype(unit):
     """
     Find the type of a unit string.
+
+    Parameters
+    ----------
+    unit : str
+        The unit string
+
+    Returns
+    -------
+    tp : str
+        The unit type name or None if not found.
     """
     for tp in UNITS.keys():
         if unit in UNITS[tp].keys():
@@ -63,6 +73,16 @@ def find_unittype(unit):
 def find_unit(unit):
     """
     Find the conversion of a unit string.
+
+    Parameters
+    ----------
+    unit : str
+        The unit string
+
+    Returns
+    -------
+    float or None
+        The unit value relative to the standard or None if not found.
     """
     tp = find_unittype(unit)
     if tp:
@@ -74,6 +94,18 @@ def find_unit(unit):
 def convert(unit, desired):
     """
     Find the conversion rate of two different unit strings.
+
+    Parameters
+    ----------
+    unit : str
+        The current unit string
+    desired : str
+        The desired unit string
+
+    Returns
+    -------
+    float or None
+        The relation between unit and desired or None if not found.
     """
     current = find_unit(unit)
     final = find_unit(desired)
@@ -84,13 +116,20 @@ def convert(unit, desired):
     if current and final:
         return current/final
 
-    else:
-        return None
-
 
 def find_unit_options(unit):
     """
     Find the options for a given unit.
+
+    Parameters
+    ----------
+    unit : str
+        The unit string
+
+    Returns
+    -------
+    list or None
+        The list of similar units in crescent order or None if not found.
     """
     tp = find_unittype(unit)
     if tp:
