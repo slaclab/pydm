@@ -92,7 +92,8 @@ class PyDMApplication(QApplication):
         True: QColor(0, 0, 0)
     }
 
-    def __init__(self, ui_file=None, command_line_args=[], display_args=[], perfmon=False, hide_nav_bar=False, hide_menu_bar=False, hide_status_bar=False, read_only=False, macros=None):
+    def __init__(self, ui_file=None, command_line_args=[], display_args=[], perfmon=False, hide_nav_bar=False,
+                 hide_menu_bar=False, hide_status_bar=False, read_only=False, macros=None):
         super(PyDMApplication, self).__init__(command_line_args)
         # Enable High DPI display, if available.
         if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
