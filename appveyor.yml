@@ -1,0 +1,93 @@
+build: false
+
+clone_folder: C:\projects\pydm
+
+platform:
+  - x64
+
+environment:
+  PYQT_VERSION: 5
+  OFFICIAL_REPO: "slaclab/pydm"
+  ANACONDA_PYDM_DEV:
+    secure: ccW0d6nCipLq5cps11ptt16klr2qn8bYhv7WX5pZ3d+WaC1QbXs6q+Pl9RPa578L
+  ANACONDA_PYDM_TAG:
+    secure: qROm2iOANaz9zZRZzyde8b7SMNpEC3rDP78SLAGaoRZBrLiE1MzP62VLjqfXMYBN
+
+  matrix:
+    - PYTHON_VERSION: 2.7
+      MINICONDA: C:\Miniconda
+    - PYTHON_VERSION: 3.5
+      MINICONDA: C:\Miniconda35
+    - PYTHON_VERSION: 3.6
+      MINICONDA: C:\Miniconda36
+
+
+init:
+  - ps: if ($Env:PLATFORM -eq "x64") { $Env:MINICONDA = "${Env:MINICONDA}-x64" }
+  - ps: Write-Host $Env:PYTHON_VERSION
+  - ps: Write-Host $Env:MINICONDA
+  - ps: Write-Host $Env:GITHUB_REPO_NAME
+  - ps: Write-Host $Env:PLATFORM
+  - ps: Write-Host $Env:APPVEYOR_REPO_TAG
+  - ps: Write-Host $Env:APPVEYOR_REPO_TAG_NAME
+  - ps: Write-Host $Env:APPVEYOR_REPO_NAME
+  - ps: Write-Host $Env:APPVEYOR_PULL_REQUEST_NUMBER
+  - ps: Write-Host $Env:APPVEYOR_REPO_BRANCH
+
+install:
+  - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%"
+  - conda config --set always_yes yes
+  - conda install conda-build anaconda-client
+  - conda update -q conda conda-build
+  # Add the channels needed for install
+  - conda config --append channels conda-forge
+  # Build the recipe and use it the local build for install
+  - "conda build -q conda-recipe --python=%TRAVIS_PYTHON_VERSION% --output-folder bld-dir"
+  - "conda config --add channels \"file:///C:/projects/pydm/bld-dir\""
+  - "conda create -q -n test-environment python=%TRAVIS_PYTHON_VERSION% pydm --file dev-requirements.txt"
+  - activate test-environment
+
+test_script:
+  - python run_tests.py
+
+after_test:
+  - codecov
+
+artifacts:
+  - path: bld-dir/win-*/*.tar.bz2
+
+on_success:
+# Upload to anaconda.
+# This is virtually impossible with a normal dos batch script...
+# It also contains an incredibly clunky way to avoid build failure when anaconda writes
+# something harmless to stderr. The normal way does not work!
+# & anaconda $parameters 2>&1
+# Powershell should be called Powerhell!
+# Credits and based on: https://github.com/theochem/python-cython-ci-example/blob/master/.appveyor.yml
+  - ps:
+      if (!$Env:APPVEYOR_PULL_REQUEST_NUMBER) {
+        if ($Env:APPVEYOR_REPO_NAME -eq ${Env:OFFICIAL_REPO}) {
+          if ($Env:APPVEYOR_REPO_TAG -eq "true") {
+            if (${Env:ANACONDA_PYDM_TAG}) {
+              Write-Host "Uploading to PYDM-TAG";
+              $Env:ANACONDA_API_TOKEN = "${Env:ANACONDA_PYDM_TAG}";
+              $parameters = '-t', "$Env:ANACONDA_API_TOKEN", 'upload', "bld-dir/win-*/*.tar.bz2",
+                            '--force', '--no-progress';
+              & cmd /c 'anaconda 2>&1' $parameters;
+            }
+          } elseif ($Env:APPVEYOR_REPO_BRANCH -eq "master") {
+            if (${Env:ANACONDA_PYDM_DEV}) {
+              Write-Host "Uploading to PYDM-DEV";
+              $Env:ANACONDA_API_TOKEN = "${Env:ANACONDA_PYDM_DEV}";
+              $parameters = '-t', "$Env:ANACONDA_API_TOKEN", 'upload', "bld-dir/win-*/*.tar.bz2",
+                            '--force', '--no-progress';
+              & cmd /c 'anaconda 2>&1' $parameters;
+            }
+          }
+        } else {
+          Write-Host "Building for $Env:APPVEYOR_REPO_NAME... No package will be uploaded.";
+        }
+      } else {
+        Write-Host "Building for Pull Request... No package will be uploaded.";
+      };
+
