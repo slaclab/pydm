@@ -277,7 +277,7 @@ class PyDMMainWindow(QMainWindow):
         try:
             curr_file = self.current_file()
         except IndexError:
-            logger.info("The display manager does not have a display loaded.")
+            logger.error("The display manager does not have a display loaded.")
             return None, None
 
         _, extension = path.splitext(curr_file)
@@ -347,7 +347,7 @@ class PyDMMainWindow(QMainWindow):
         try:
             curr_file = self.current_file()
         except IndexError:
-            logger.info("The display manager does not have a display loaded.")
+            logger.error("The display manager does not have a display loaded.")
             return
         self.statusBar().showMessage("Reloading '{0}'...".format(self.current_file()), 5000)
         self.go_abs(self.current_file())
