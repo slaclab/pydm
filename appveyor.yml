@@ -1,5 +1,7 @@
 build: false
 
+clone_folder: C:\projects\pydm
+
 platform:
   #- x86
   - x64
