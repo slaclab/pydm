@@ -1,6 +1,5 @@
 import os
-from os import path, environ
-from functools import partial
+from os import path
 from .PyQt.QtGui import QApplication, QMainWindow, QFileDialog, QWidget, QAction
 from .PyQt.QtCore import Qt, QTimer, pyqtSlot, QSize, QLibraryInfo
 from .utilities import IconFont
@@ -10,6 +9,9 @@ from .connection_inspector import ConnectionInspector
 from .about_pydm import AboutWindow
 import subprocess
 import platform
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class PyDMMainWindow(QMainWindow):
@@ -275,6 +277,7 @@ class PyDMMainWindow(QMainWindow):
         try:
             curr_file = self.current_file()
         except IndexError:
+            logger.info("The display manager does not have a display loaded.")
             return None, None
 
         _, extension = path.splitext(curr_file)
@@ -314,10 +317,11 @@ class PyDMMainWindow(QMainWindow):
         modifiers = QApplication.keyboardModifiers()
         try:
             curr_file = self.current_file()
+            folder = os.path.dirname(curr_file)
         except IndexError:
-            curr_file = os.getcwd()
+            folder = os.getcwd()
 
-        filename = QFileDialog.getOpenFileName(self, 'Open File...', os.path.dirname(curr_file), 'PyDM Display Files (*.ui *.py)')
+        filename = QFileDialog.getOpenFileName(self, 'Open File...', folder, 'PyDM Display Files (*.ui *.py)')
         filename = filename[0] if isinstance(filename, (list, tuple)) else filename
 
         if filename:
@@ -343,6 +347,7 @@ class PyDMMainWindow(QMainWindow):
         try:
             curr_file = self.current_file()
         except IndexError:
+            logger.info("The display manager does not have a display loaded.")
             return
         self.statusBar().showMessage("Reloading '{0}'...".format(self.current_file()), 5000)
         self.go_abs(self.current_file())
