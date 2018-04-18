@@ -362,7 +362,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             type_to_check = unicode
         except NameError:
             type_to_check = str
-        if not self._relative or self.channeltype == str or self.channeltype == type_to_check:
+        if not self._relative or self.channeltype == type_to_check:
             self.send_value_signal[self.channeltype].emit(
                                         self.channeltype(self._pressValue))
         else:
