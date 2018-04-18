@@ -296,7 +296,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if not self._password_protected:
             return True
 
-        pwd, ok = QInputDialog.getText(None, "Authentication",
+        pwd, ok = QInputDialog().getText(None, "Authentication",
                                        "Please enter your password:",
                                        QLineEdit.Password, "")
         pwd = str(pwd)
@@ -355,7 +355,14 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
         if not self.validate_password():
             return None
-        if not self._relative or self.channeltype == str:
+
+        # Check the channel type against both str and unicode types due to Python 2.7 specs
+        try:
+            # To accommodate Python 2.7 specs
+            type_to_check = unicode
+        except NameError:
+            type_to_check = str
+        if not self._relative or self.channeltype == str or self.channeltype == type_to_check:
             self.send_value_signal[self.channeltype].emit(
                                         self.channeltype(self._pressValue))
         else:

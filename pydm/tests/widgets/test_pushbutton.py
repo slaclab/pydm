@@ -401,6 +401,7 @@ def test_send_value(qtbot, monkeypatch, signals, press_value, updated_value, is_
                 assert pydm_pushbutton.confirmMessage == PyDMPushButton.DEFAULT_CONFIRM_MESSAGE
 
         if not is_value_relative or channel_type == str:
+            # Limit the decimal places since Python 2.7. provided more floating point
             assert signals.value == pydm_pushbutton.channeltype(pydm_pushbutton.pressValue)
         else:
             assert signals.value == updated_value + pydm_pushbutton.channeltype(pydm_pushbutton.pressValue)
