@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Application &mdash; PyDM v1.1.0+80.ga3192a3 documentation</title>
+  <title>Application &mdash; PyDM v1.1.0+86.g3ca73b0 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.1.0+80.ga3192a3
+                v1.1.0+86.g3ca73b0
               </div>
             
           
@@ -421,12 +421,18 @@ the widget tree.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydm.PyDMApplication.make_main_window">
+<code class="descname">make_main_window</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.make_main_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.make_main_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate a new PyDMMainWindow, add it to the application’s
+list of windows. Typically, this function is only called as part
+of starting up a new process, because PyDMApplications only have
+one window per process.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydm.PyDMApplication.make_window">
 <code class="descname">make_window</code><span class="sig-paren">(</span><em>ui_file</em>, <em>macros=None</em>, <em>command_line_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.make_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.make_window" title="Permalink to this definition">¶</a></dt>
-<dd><p>Instantiate a new PyDMMainWindow, add it to the application’s
-list of windows, and open the ui_file in the window.  Typically,
-this function is only called as part of starting up a new process,
-because PyDMApplications only have one window per process.</p>
+<dd><p>Open the ui_file in the window.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -614,7 +620,7 @@ really only used by embedded displays.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v1.1.0+80.ga3192a3',
+            VERSION:'v1.1.0+86.g3ca73b0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.1.0+80.ga3192a3 documentation</title>
+  <title>pydm.application &mdash; PyDM v1.1.0+86.g3ca73b0 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+80.ga3192a3
+                v1.1.0+86.g3ca73b0
               </div>
             
           
@@ -258,7 +258,8 @@
         <span class="kc">True</span><span class="p">:</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="p">[],</span> <span class="n">display_args</span><span class="o">=</span><span class="p">[],</span> <span class="n">perfmon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_nav_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_menu_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_status_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="p">[],</span> <span class="n">display_args</span><span class="o">=</span><span class="p">[],</span> <span class="n">perfmon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_nav_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">hide_menu_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_status_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMApplication</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">command_line_args</span><span class="p">)</span>
         <span class="c1"># Enable High DPI display, if available.</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Qt</span><span class="p">,</span> <span class="s1">&#39;AA_UseHighDpiPixmaps&#39;</span><span class="p">):</span>
@@ -271,6 +272,7 @@
         <span class="c1"># being called hierarchially (i.e., parent calls it first, then on down the ancestor tree, with no unrelated</span>
         <span class="c1"># calls in between).    If something crazy happens and PyDM somehow gains the ability to open files in a</span>
         <span class="c1"># multi-threaded way, for example, this system will fail.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">directory_stack</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">macro_stack</span> <span class="o">=</span> <span class="p">[{}]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">windows</span> <span class="o">=</span> <span class="p">{}</span>
@@ -280,6 +282,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span> <span class="o">=</span> <span class="n">hide_status_bar</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__read_only</span> <span class="o">=</span> <span class="n">read_only</span>
         <span class="c1"># Open a window if one was provided.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_main_window</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="n">ui_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">make_window</span><span class="p">(</span><span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">had_file</span> <span class="o">=</span> <span class="kc">True</span>
@@ -402,12 +406,27 @@
         <span class="c1"># All new windows are spawned as new processes.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">new_pydm_process</span><span class="p">(</span><span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMApplication.make_window"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.make_window">[docs]</a>    <span class="k">def</span> <span class="nf">make_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication.make_main_window"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.make_main_window">[docs]</a>    <span class="k">def</span> <span class="nf">make_main_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Instantiate a new PyDMMainWindow, add it to the application&#39;s</span>
-<span class="sd">        list of windows, and open the ui_file in the window.  Typically,</span>
-<span class="sd">        this function is only called as part of starting up a new process,</span>
-<span class="sd">        because PyDMApplications only have one window per process.</span>
+<span class="sd">        list of windows. Typically, this function is only called as part</span>
+<span class="sd">        of starting up a new process, because PyDMApplications only have</span>
+<span class="sd">        one window per process.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">main_window</span> <span class="o">=</span> <span class="n">PyDMMainWindow</span><span class="p">(</span><span class="n">hide_nav_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_nav_bar</span><span class="p">,</span>
+                                     <span class="n">hide_menu_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_menu_bar</span><span class="p">,</span>
+                                     <span class="n">hide_status_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span> <span class="o">=</span> <span class="n">main_window</span>
+        <span class="n">main_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_external_tools</span><span class="p">()</span>
+        <span class="c1"># If we are launching a new window, we don&#39;t want it to sit right on top of an existing window.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">windows</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">main_window</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">main_window</span><span class="o">.</span><span class="n">x</span><span class="p">()</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="n">main_window</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMApplication.make_window"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.make_window">[docs]</a>    <span class="k">def</span> <span class="nf">make_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open the ui_file in the window.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -422,17 +441,9 @@
 <span class="sd">            to pass in extra arguments.  It is probably rare that code you</span>
 <span class="sd">            write needs to use this argument.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">main_window</span> <span class="o">=</span> <span class="n">PyDMMainWindow</span><span class="p">(</span><span class="n">hide_nav_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_nav_bar</span><span class="p">,</span>
-                                     <span class="n">hide_menu_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_menu_bar</span><span class="p">,</span>
-                                     <span class="n">hide_status_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span><span class="p">)</span>
-        <span class="n">main_window</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="p">)</span>
-        <span class="n">main_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span> <span class="o">=</span> <span class="n">main_window</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">load_external_tools</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">windows</span><span class="p">[</span><span class="n">main_window</span><span class="p">]</span> <span class="o">=</span> <span class="n">path_info</span><span class="p">(</span><span class="n">ui_file</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="c1"># If we are launching a new window, we don&#39;t want it to sit right on top of an existing window.</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">windows</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">main_window</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">main_window</span><span class="o">.</span><span class="n">x</span><span class="p">()</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="n">main_window</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">ui_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">windows</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">]</span> <span class="o">=</span> <span class="n">path_info</span><span class="p">(</span><span class="n">ui_file</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
 
     <span class="k">def</span> <span class="nf">close_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -912,7 +923,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v1.1.0+80.ga3192a3',
+            VERSION:'v1.1.0+86.g3ca73b0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
