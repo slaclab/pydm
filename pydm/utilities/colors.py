@@ -18,9 +18,11 @@ def svg_color_from_hex(hex_string, hex_on_fail=False):
     Parameters
     ----------
     hex_string: str
-        The color code in hex. E.g. `#000000`
-    hex_on_fail: bool
+        The color code in hex. E.g. #000000
+
+    hex_on_fail: bool, Optional
         Whether or not to return the `hex_string` when an invalid color is submitted.
+        Default is False.
 
     Returns
     -------
@@ -42,7 +44,7 @@ def hex_from_svg_color(color_string):
     Parameters
     ----------
     color_string: str
-        The SVG color string. E.g. `black`
+        The SVG color string. E.g. black
 
     Returns
     -------

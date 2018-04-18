@@ -86,8 +86,8 @@ class IconFont(object):
             The Icon string identifier.
             Icon strings can be found at: https://fontawesome.com/icons?d=gallery
 
-        color : QColor
-            The base color to use when constructing the Icon.
+        color : QColor, Optional
+            The base color to use when constructing the Icon. Default is QColor(90, 90, 90).
 
         Returns
         -------
