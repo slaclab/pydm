@@ -2,6 +2,7 @@ import sys
 import argparse
 from pydm import PyDMApplication
 import json
+import logging
 
 
 def main():
@@ -12,6 +13,7 @@ def main():
     parser.add_argument('--hide-menu-bar', action='store_true', help='Start PyDM with the menu bar hidden.')
     parser.add_argument('--hide-status-bar', action='store_true', help='Start PyDM with the status bar hidden.')
     parser.add_argument('--read-only', action='store_true', help='Start PyDM in a Read-Only mode.')
+    parser.add_argument('--log_level', help='Configure level of log display', default=logging.INFO)
     parser.add_argument('-m', '--macro', help='Specify macro replacements to use, in JSON object format.    Reminder: JSON requires double quotes for strings, so you should wrap this whole argument in single quotes.  Example: -m \'{"sector": "LI25", "facility": "LCLS"}')
     parser.add_argument('display_args', help='Arguments to be passed to the PyDM client application (which is a QApplication subclass).', nargs=argparse.REMAINDER)
     pydm_args = parser.parse_args()
@@ -21,6 +23,9 @@ def main():
             macros = json.loads(pydm_args.macro)
         except ValueError:
             raise ValueError("Could not parse macro argument as JSON.")
+
+    logging.basicConfig(level=pydm_args.log_level, format='[%(asctime)s] - %(message)s')
+
     app = PyDMApplication(ui_file=pydm_args.displayfile, command_line_args=pydm_args.display_args,
                           perfmon=pydm_args.perfmon,
                           hide_nav_bar=pydm_args.hide_nav_bar,

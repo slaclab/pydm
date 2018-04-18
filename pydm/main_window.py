@@ -1,6 +1,5 @@
 import os
-from os import path, environ
-from functools import partial
+from os import path
 from .PyQt.QtGui import QApplication, QMainWindow, QFileDialog, QWidget, QAction
 from .PyQt.QtCore import Qt, QTimer, pyqtSlot, QSize, QLibraryInfo
 from .utilities import IconFont
@@ -10,6 +9,9 @@ from .connection_inspector import ConnectionInspector
 from .about_pydm import AboutWindow
 import subprocess
 import platform
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class PyDMMainWindow(QMainWindow):
@@ -187,6 +189,9 @@ class PyDMMainWindow(QMainWindow):
                 self.open_abs_file(filename=stack_item[0], macros=stack_item[1], command_line_args=stack_item[2])
 
     def home(self):
+        if self.home_file is None:
+            return
+
         if QApplication.keyboardModifiers() == Qt.ShiftModifier:
             self.new_abs_window(filename=self.home_file[0], macros=self.home_file[1], command_line_args=self.home_file[2])
         else:
@@ -269,7 +274,13 @@ class PyDMMainWindow(QMainWindow):
         self.ui.statusbar.setHidden(not checked)
 
     def get_files_in_display(self):
-        _, extension = path.splitext(self.current_file())
+        try:
+            curr_file = self.current_file()
+        except IndexError:
+            logger.error("The display manager does not have a display loaded.")
+            return None, None
+
+        _, extension = path.splitext(curr_file)
         if extension == '.ui':
             return self.current_file(), None
         else:
@@ -304,7 +315,13 @@ class PyDMMainWindow(QMainWindow):
     @pyqtSlot(bool)
     def open_file_action(self, checked):
         modifiers = QApplication.keyboardModifiers()
-        filename = QFileDialog.getOpenFileName(self, 'Open File...', os.path.dirname(self.current_file()), 'PyDM Display Files (*.ui *.py)')
+        try:
+            curr_file = self.current_file()
+            folder = os.path.dirname(curr_file)
+        except IndexError:
+            folder = os.getcwd()
+
+        filename = QFileDialog.getOpenFileName(self, 'Open File...', folder, 'PyDM Display Files (*.ui *.py)')
         filename = filename[0] if isinstance(filename, (list, tuple)) else filename
 
         if filename:
@@ -327,6 +344,11 @@ class PyDMMainWindow(QMainWindow):
 
     @pyqtSlot(bool)
     def reload_display(self, checked):
+        try:
+            curr_file = self.current_file()
+        except IndexError:
+            logger.error("The display manager does not have a display loaded.")
+            return
         self.statusBar().showMessage("Reloading '{0}'...".format(self.current_file()), 5000)
         self.go_abs(self.current_file())
 

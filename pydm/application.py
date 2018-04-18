@@ -92,7 +92,8 @@ class PyDMApplication(QApplication):
         True: QColor(0, 0, 0)
     }
 
-    def __init__(self, ui_file=None, command_line_args=[], display_args=[], perfmon=False, hide_nav_bar=False, hide_menu_bar=False, hide_status_bar=False, read_only=False, macros=None):
+    def __init__(self, ui_file=None, command_line_args=[], display_args=[], perfmon=False, hide_nav_bar=False,
+                 hide_menu_bar=False, hide_status_bar=False, read_only=False, macros=None):
         super(PyDMApplication, self).__init__(command_line_args)
         # Enable High DPI display, if available.
         if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
@@ -105,6 +106,7 @@ class PyDMApplication(QApplication):
         # being called hierarchially (i.e., parent calls it first, then on down the ancestor tree, with no unrelated
         # calls in between).    If something crazy happens and PyDM somehow gains the ability to open files in a
         # multi-threaded way, for example, this system will fail.
+        self.main_window = None
         self.directory_stack = ['']
         self.macro_stack = [{}]
         self.windows = {}
@@ -114,6 +116,8 @@ class PyDMApplication(QApplication):
         self.hide_status_bar = hide_status_bar
         self.__read_only = read_only
         # Open a window if one was provided.
+        self.make_main_window()
+
         if ui_file is not None:
             self.make_window(ui_file, macros, command_line_args)
             self.had_file = True
@@ -236,12 +240,27 @@ class PyDMApplication(QApplication):
         # All new windows are spawned as new processes.
         self.new_pydm_process(ui_file, macros, command_line_args)
 
-    def make_window(self, ui_file, macros=None, command_line_args=None):
+    def make_main_window(self):
         """
         Instantiate a new PyDMMainWindow, add it to the application's
-        list of windows, and open the ui_file in the window.  Typically,
-        this function is only called as part of starting up a new process,
-        because PyDMApplications only have one window per process.
+        list of windows. Typically, this function is only called as part
+        of starting up a new process, because PyDMApplications only have
+        one window per process.
+        """
+        main_window = PyDMMainWindow(hide_nav_bar=self.hide_nav_bar,
+                                     hide_menu_bar=self.hide_menu_bar,
+                                     hide_status_bar=self.hide_status_bar)
+
+        self.main_window = main_window
+        main_window.show()
+        self.load_external_tools()
+        # If we are launching a new window, we don't want it to sit right on top of an existing window.
+        if len(self.windows) > 1:
+            main_window.move(main_window.x() + 10, main_window.y() + 10)
+
+    def make_window(self, ui_file, macros=None, command_line_args=None):
+        """
+        Open the ui_file in the window.
 
         Parameters
         ----------
@@ -256,17 +275,9 @@ class PyDMApplication(QApplication):
             to pass in extra arguments.  It is probably rare that code you
             write needs to use this argument.
         """
-        main_window = PyDMMainWindow(hide_nav_bar=self.hide_nav_bar,
-                                     hide_menu_bar=self.hide_menu_bar,
-                                     hide_status_bar=self.hide_status_bar)
-        main_window.open_file(ui_file, macros, command_line_args)
-        main_window.show()
-        self.main_window = main_window
-        self.load_external_tools()
-        self.windows[main_window] = path_info(ui_file)[0]
-        # If we are launching a new window, we don't want it to sit right on top of an existing window.
-        if len(self.windows) > 1:
-            main_window.move(main_window.x() + 10, main_window.y() + 10)
+        if ui_file is not None:
+            self.main_window.open_file(ui_file, macros, command_line_args)
+            self.windows[self.main_window] = path_info(ui_file)[0]
 
     def close_window(self, window):
         try:
