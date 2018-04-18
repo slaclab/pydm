@@ -100,7 +100,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """
         self.colorMap = self.cmap_for_action[action]
 
-    @pyqtProperty(int)
+    @pyqtProperty(float)
     def colorMapMin(self):
         """
         Minimum value for the colormap
@@ -112,7 +112,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         return self.cm_min
 
     @colorMapMin.setter
-    @pyqtSlot(int)
+    @pyqtSlot(float)
     def colorMapMin(self, new_min):
         """
         Set the minimum value for the colormap
@@ -127,7 +127,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
                 self.cm_max = self.cm_min
             self.setColorMap()
 
-    @pyqtProperty(int)
+    @pyqtProperty(float)
     def colorMapMax(self):
         """
         Maximum value for the colormap
@@ -139,7 +139,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         return self.cm_max
 
     @colorMapMax.setter
-    @pyqtSlot(int)
+    @pyqtSlot(float)
     def colorMapMax(self, new_max):
         """
         Set the maximum value for the colormap
@@ -308,7 +308,8 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         ----------
         new_width: int
         """
-        if self._image_width != int(new_width) and self._widthchannel is None:
+        if (self._image_width != int(new_width) and
+                (self._widthchannel is None or self._widthchannel == '')):
             self._image_width = int(new_width)
 
     @pyqtProperty(bool)
