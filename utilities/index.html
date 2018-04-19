@@ -1,0 +1,505 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Utilities &mdash; PyDM v1.1.0+89.gea82c3d documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Development" href="../development/development.html" />
+    <link rel="prev" title="Channel" href="../channel.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.1.0+89.gea82c3d
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/first_display.html">Building Your First Display with Qt Designer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/scripted_displays.html">Making Python-based Displays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/macros.html">Macro Substitution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../channel.html">Channel</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydm.utilities">General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#icons">Icons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydm.utilities.macro">Macro</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydm.utilities.colors">Colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydm.utilities.units">Units</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/development.html">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyDM</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Utilities</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/utilities/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="utilities">
+<h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h1>
+<p>PyDM comes with a set of utility methods ranging from simple replacement
+of protocol in a string, handling macro substitution in files, etc.</p>
+<div class="section" id="module-pydm.utilities">
+<span id="general"></span><h2>General<a class="headerlink" href="#module-pydm.utilities" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pydm.utilities.is_pydm_app">
+<code class="descclassname">pydm.utilities.</code><code class="descname">is_pydm_app</code><span class="sig-paren">(</span><em>app=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#is_pydm_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.is_pydm_app" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether or not <cite>QApplication.instance()</cite> is a PyDMApplication.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>app</strong> (<em>QApplication</em><em>, </em><em>Optional</em>) – The app to inspect. If no application is provided the current running <cite>QApplication</cite> will be queried.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if it is a PyDMApplication, False otherwise.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydm.utilities.path_info">
+<code class="descclassname">pydm.utilities.</code><code class="descname">path_info</code><span class="sig-paren">(</span><em>path_str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#path_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.path_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve basic information about the given path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_str</strong> (<em>str</em>) – The path from which to extract information.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">base dir, file name, list of args</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="module-pydm.utilities.remove_protocol"></span><dl class="function">
+<dt id="pydm.utilities.remove_protocol.remove_protocol">
+<code class="descclassname">pydm.utilities.remove_protocol.</code><code class="descname">remove_protocol</code><span class="sig-paren">(</span><em>addr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/remove_protocol.html#remove_protocol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.remove_protocol.remove_protocol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the first occurrence of the protocol string (‘://’) from the string <cite>addr</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>addr</strong> (<em>str</em>) – The address from which to remove the address prefix.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="icons">
+<h2>Icons<a class="headerlink" href="#icons" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pydm.utilities.iconfont.IconFont">
+<em class="property">class </em><code class="descclassname">pydm.utilities.iconfont.</code><code class="descname">IconFont</code><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont" title="Permalink to this definition">¶</a></dt>
+<dd><p>IconFont represents an icon font.  Users will generally want
+to use IconFont.icon() to get a QIcon object for the character they want.</p>
+<dl class="method">
+<dt id="pydm.utilities.iconfont.IconFont.icon">
+<code class="descname">icon</code><span class="sig-paren">(</span><em>name</em>, <em>color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont.icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the icon given a name and color.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>str</em>) – The Icon string identifier.
+Icon strings can be found at: <a class="reference external" href="https://fontawesome.com/icons?d=gallery">https://fontawesome.com/icons?d=gallery</a></li>
+<li><strong>color</strong> (<em>QColor</em><em>, </em><em>Optional</em>) – The base color to use when constructing the Icon. Default is QColor(90, 90, 90).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The desired Icon.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">QIcon</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydm.utilities.macro">
+<span id="macro"></span><h2>Macro<a class="headerlink" href="#module-pydm.utilities.macro" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pydm.utilities.macro.substitute_in_file">
+<code class="descclassname">pydm.utilities.macro.</code><code class="descname">substitute_in_file</code><span class="sig-paren">(</span><em>file_path</em>, <em>macros</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/macro.html#substitute_in_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.macro.substitute_in_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substitute the macros given by ${name} at the given file with the entries on the <cite>macros</cite> dictionary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>file_path</strong> (<em>str</em>) – The path to the file in which to substitute</li>
+<li><strong>macros</strong> (<em>dict</em>) – Dictionary containing macro name as key and value as what will be substituted.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>temp_filename</strong> – The path to the new generated file with the proper substitutions.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydm.utilities.colors">
+<span id="colors"></span><h2>Colors<a class="headerlink" href="#module-pydm.utilities.colors" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pydm.utilities.colors.hex_from_svg_color">
+<code class="descclassname">pydm.utilities.colors.</code><code class="descname">hex_from_svg_color</code><span class="sig-paren">(</span><em>color_string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/colors.html#hex_from_svg_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.colors.hex_from_svg_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the HEX color based on its SVG equivalent.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>color_string</strong> (<em>str</em>) – The SVG color string. E.g. black</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The HEX color string.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydm.utilities.colors.svg_color_from_hex">
+<code class="descclassname">pydm.utilities.colors.</code><code class="descname">svg_color_from_hex</code><span class="sig-paren">(</span><em>hex_string</em>, <em>hex_on_fail=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/colors.html#svg_color_from_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.colors.svg_color_from_hex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the SVG color based on its HEX equivalent.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>hex_string</strong> (<em>str</em>) – The color code in hex. E.g. #000000</li>
+<li><strong>hex_on_fail</strong> (<em>bool</em><em>, </em><em>Optional</em>) – Whether or not to return the <cite>hex_string</cite> when an invalid color is submitted.
+Default is False.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The SVG color string.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydm.utilities.units">
+<span id="units"></span><h2>Units<a class="headerlink" href="#module-pydm.utilities.units" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pydm.utilities.units.convert">
+<code class="descclassname">pydm.utilities.units.</code><code class="descname">convert</code><span class="sig-paren">(</span><em>unit</em>, <em>desired</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the conversion rate of two different unit strings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>unit</strong> (<em>str</em>) – The current unit string</li>
+<li><strong>desired</strong> (<em>str</em>) – The desired unit string</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The relation between unit and desired or None if not found.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydm.utilities.units.find_unit">
+<code class="descclassname">pydm.utilities.units.</code><code class="descname">find_unit</code><span class="sig-paren">(</span><em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#find_unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.find_unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the conversion of a unit string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>unit</strong> (<em>str</em>) – The unit string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The unit value relative to the standard or None if not found.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float or None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydm.utilities.units.find_unit_options">
+<code class="descclassname">pydm.utilities.units.</code><code class="descname">find_unit_options</code><span class="sig-paren">(</span><em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#find_unit_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.find_unit_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the options for a given unit.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>unit</strong> (<em>str</em>) – The unit string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The list of similar units in crescent order or None if not found.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list or None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydm.utilities.units.find_unittype">
+<code class="descclassname">pydm.utilities.units.</code><code class="descname">find_unittype</code><span class="sig-paren">(</span><em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#find_unittype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.find_unittype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the type of a unit string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>unit</strong> (<em>str</em>) – The unit string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>tp</strong> – The unit type name or None if not found.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../development/development.html" class="btn btn-neutral float-right" title="Development" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../channel.html" class="btn btn-neutral" title="Channel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'v1.1.0+89.gea82c3d',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>

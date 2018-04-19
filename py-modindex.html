@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Channel &mdash; PyDM v1.1.0+89.gea82c3d documentation</title>
+  <title>Python Module Index &mdash; PyDM v1.1.0+89.gea82c3d documentation</title>
   
 
   
@@ -29,8 +29,9 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Utilities" href="utilities/index.html" />
-    <link rel="prev" title="Application" href="application.html" /> 
+ 
+
+
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -94,10 +95,10 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/macros.html">Macro Substitution</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="widgets/index.html">Widgets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application.html">Application</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities/index.html">Utilities</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developers Corner</span></p>
@@ -154,14 +155,10 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Channel</li>
+      <li>Python Module Index</li>
     
     
       <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="_sources/channel.rst.txt" rel="nofollow"> View page source</a>
-          
         
       </li>
     
@@ -173,76 +170,55 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="channel">
-<h1>Channel<a class="headerlink" href="#channel" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="channel.PyDMChannel">
-<em class="property">class </em><code class="descclassname">channel.</code><code class="descname">PyDMChannel</code><span class="sig-paren">(</span><em>address=None</em>, <em>connection_slot=None</em>, <em>value_slot=None</em>, <em>severity_slot=None</em>, <em>write_access_slot=None</em>, <em>enum_strings_slot=None</em>, <em>unit_slot=None</em>, <em>prec_slot=None</em>, <em>upper_ctrl_limit_slot=None</em>, <em>lower_ctrl_limit_slot=None</em>, <em>value_signal=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/channel.html#PyDMChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#channel.PyDMChannel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Object to hold signals and slots for a PyDM Widget interface to an
-external plugin</p>
-<p>The purpose of this class is to create a templated slot and signals
-list that can be sent to an external plugin. The type of plugin is
-determined by the PyDMApplication based on the identifier placed at
-the beginning of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">address</span></code> attribute. This allows a generic
-way to connect slots and signals to functionality within your PyDM
-Widget. Slots should be connected to functions on your created widget
-that perform actions upon changes. For instance, the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code>
-will be automatically called everytime a new value is found by the
-plugin. This should probably linked to a function that updates the
-display to report the new value. Signals perform the reverse operation.
-These should be used to send new values back to the plugin to update
-the source.</p>
-<p>Using this structure to interface with plugins allows your created PyDM
-Widget a greater flexibility in choosing its underlying source. For
-instance, returning to the example of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code>,
-getting a value to display from channel access or from the EPICS Archiver
-are very different operations. However, actually displaying the value
-should be identical. By simplying attching your PyDM Widget’s display
-functionality to the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code> you have created a
-Widget that can do either interchangeably, all the user has to do is
-specify the correct address signature and the rest of the work is done
-by the underlying plugins.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>address</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the address to be used by the plugin. This
-should usually be a user inputted field when a specific
-PyDM widget is initialized</li>
-<li><strong>connection_slot</strong> (<em>pyqtSlot</em><em>, </em><em>optional</em>) – A function to be run when the connection state
-changes</li>
-<li><strong>value_slot</strong> (<em>pyqtSlot</em><em>, </em><em>optional</em>) – A function to be run when the value updates</li>
-<li><strong>severity_slot</strong> (<em>pyqtSlot</em><em>, </em><em>optional</em>) – A function to be run when the severity changes</li>
-<li><strong>write_access_slot</strong> (<em>pyqtSlot</em><em>, </em><em>optional</em>) – A function to be run when the write access changes</li>
-<li><strong>enum_strings_slot</strong> (<em>pyqtSlot</em><em>, </em><em>optional</em>) – A function to be run when the enum_strings change</li>
-<li><strong>unit_slot</strong> (<em>pyqtSlot</em><em>, </em><em>optional</em>) – A function to be run when the unit changes</li>
-<li><strong>prec_slot</strong> (<em>pyqtSlot</em><em>, </em><em>optional</em>) – A function to be run when the precision value changes</li>
-<li><strong>value_signal</strong> (<em>pyqtSignal</em><em>, </em><em>optional</em>) – Attach a signal here that emits a desired value to be sent
-through the plugin</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
 
-</div>
+   <h1>Python Module Index</h1>
+
+   <div class="modindex-jumpbox">
+   <a href="#cap-p"><strong>p</strong></a>
+   </div>
+
+   <table class="indextable modindextable">
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-p"><td></td><td>
+       <strong>p</strong></td><td></td></tr>
+     <tr>
+       <td><img src="_static/minus.png" class="toggler"
+              id="toggle-1" style="display: none" alt="-" /></td>
+       <td>
+       <code class="xref">pydm</code></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="utilities/index.html#module-pydm.utilities"><code class="xref">pydm.utilities</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="utilities/index.html#module-pydm.utilities.colors"><code class="xref">pydm.utilities.colors</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="utilities/index.html#module-pydm.utilities.macro"><code class="xref">pydm.utilities.macro</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="utilities/index.html#module-pydm.utilities.remove_protocol"><code class="xref">pydm.utilities.remove_protocol</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="utilities/index.html#module-pydm.utilities.units"><code class="xref">pydm.utilities.units</code></a></td><td>
+       <em></em></td></tr>
+   </table>
 
 
            </div>
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="utilities/index.html" class="btn btn-neutral float-right" title="Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="application.html" class="btn btn-neutral" title="Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

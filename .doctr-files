@@ -4,6 +4,12 @@
 ./_modules/channel.html
 ./_modules/index.html
 ./_modules/pydm/application.html
+./_modules/pydm/utilities.html
+./_modules/pydm/utilities/colors.html
+./_modules/pydm/utilities/iconfont.html
+./_modules/pydm/utilities/macro.html
+./_modules/pydm/utilities/remove_protocol.html
+./_modules/pydm/utilities/units.html
 ./_modules/pydm/widgets/byte.html
 ./_modules/pydm/widgets/checkbox.html
 ./_modules/pydm/widgets/display_format.html
@@ -33,6 +39,7 @@
 ./_sources/tutorials/first_display.rst.txt
 ./_sources/tutorials/macros.rst.txt
 ./_sources/tutorials/scripted_displays.rst.txt
+./_sources/utilities/index.rst.txt
 ./_sources/widgets/byte.rst.txt
 ./_sources/widgets/checkbox.rst.txt
 ./_sources/widgets/drawing.rst.txt
@@ -102,11 +109,13 @@
 ./index.html
 ./installation.html
 ./objects.inv
+./py-modindex.html
 ./search.html
 ./searchindex.js
 ./tutorials/first_display.html
 ./tutorials/macros.html
 ./tutorials/scripted_displays.html
+./utilities/index.html
 ./widgets/byte.html
 ./widgets/checkbox.html
 ./widgets/drawing.html

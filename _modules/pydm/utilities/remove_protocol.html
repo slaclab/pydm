@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.checkbox &mdash; PyDM v1.1.0+89.gea82c3d documentation</title>
+  <title>pydm.utilities.remove_protocol &mdash; PyDM v1.1.0+89.gea82c3d documentation</title>
   
 
   
@@ -154,7 +154,9 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>pydm.widgets.checkbox</li>
+          <li><a href="../utilities.html">pydm.utilities</a> &raquo;</li>
+        
+      <li>pydm.utilities.remove_protocol</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -169,59 +171,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for pydm.widgets.checkbox</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QCheckBox</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
-
-<div class="viewcode-block" id="PyDMCheckbox"><a class="viewcode-back" href="../../../widgets/checkbox.html#pydm.widgets.checkbox.PyDMCheckbox">[docs]</a><span class="k">class</span> <span class="nc">PyDMCheckbox</span><span class="p">(</span><span class="n">QCheckBox</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
+  <h1>Source code for pydm.utilities.remove_protocol</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="remove_protocol"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.remove_protocol.remove_protocol">[docs]</a><span></span><span class="k">def</span> <span class="nf">remove_protocol</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A QCheckbox with support for Channels and more from PyDM</span>
+<span class="sd">    Removes the first occurrence of the protocol string (&#39;://&#39;) from the string `addr`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    parent : QWidget</span>
-<span class="sd">        The parent widget for the Label</span>
-<span class="sd">    init_channel : str, optional</span>
-<span class="sd">        The channel to be used by the widget.</span>
+<span class="sd">    addr : str</span>
+<span class="sd">        The address from which to remove the address prefix.</span>
 
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">QCheckBox</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
-        <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMCheckbox.value_changed"><a class="viewcode-back" href="../../../widgets/checkbox.html#pydm.widgets.checkbox.PyDMCheckbox.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Callback invoked when the Channel value is changed.</span>
-<span class="sd">        Sets the checkbox checked or not based on the new value.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        new_val : int</span>
-<span class="sd">            The new value from the channel.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMCheckbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">new_val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span>
-        <span class="k">if</span> <span class="n">new_val</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="PyDMCheckbox.send_value"><a class="viewcode-back" href="../../../widgets/checkbox.html#pydm.widgets.checkbox.PyDMCheckbox.send_value">[docs]</a>    <span class="k">def</span> <span class="nf">send_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method that emit the signal to notify the Channel that a new</span>
-<span class="sd">        value was written at the widget.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        checked : bool</span>
-<span class="sd">            True in case the checkbox was checked, False otherwise.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">checked</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div></div>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">addr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;://&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># maxsplit = 1... removes only the first occurrence</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">addr</span>
+    <span class="k">return</span> <span class="n">name</span></div>
 </pre></div>
 
            </div>
