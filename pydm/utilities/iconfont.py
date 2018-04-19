@@ -77,6 +77,23 @@ class IconFont(object):
         return font
 
     def icon(self, name, color=None):
+        """
+        Retrieve the icon given a name and color.
+
+        Parameters
+        ----------
+        name : str
+            The Icon string identifier.
+            Icon strings can be found at: https://fontawesome.com/icons?d=gallery
+
+        color : QColor, Optional
+            The base color to use when constructing the Icon. Default is QColor(90, 90, 90).
+
+        Returns
+        -------
+        QIcon
+            The desired Icon.
+        """
         char = self.get_char_for_name(name)
         engine = CharIconEngine(self, char, color)
         return QIcon(engine)
