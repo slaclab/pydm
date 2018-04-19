@@ -347,27 +347,35 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
         This function interprets the settings of the PyDMPushButton and sends
         the appropriate value out through the :attr:`.send_value_signal`.
+
+        Returns
+        -------
+        None if any of the following condition is False:
+            1. There's no new value (pressValue) for the widget
+            2. There's no initial or current value for the widget
+            3. The confirmation dialog returns No as the user's answer to the dialog
+            4. The password validation dialog returns a validation error
+        Otherwise, return the value sent to the channel:
+            1. The value sent to the channel is the same as the pressValue if the existing
+               channel type is a str, or the relative flag is False
+            2. The value sent to the channel is the sum of the existing value and the pressValue
+               if the relative flag is True, and the channel type is not a str
         """
-        if self._pressValue is None or self.value is None:
-            return None
-        if not self.confirm_dialog():
-            return None
-
-        if not self.validate_password():
-            return None
-
-        # Check the channel type against both str and unicode types due to Python 2.7 specs
-        try:
-            # To accommodate Python 2.7 specs
-            type_to_check = unicode
-        except NameError:
-            type_to_check = str
-        if not self._relative or self.channeltype == type_to_check:
-            self.send_value_signal[self.channeltype].emit(
-                                        self.channeltype(self._pressValue))
-        else:
-            send_value = self.value + self.channeltype(self._pressValue)
-            self.send_value_signal[self.channeltype].emit(send_value)
+        send_value = None
+        if self._pressValue and self.value and self.confirm_dialog() and self.validate_password():
+            # Check the channel type against both str and unicode types due to Python 2.7 specs
+            try:
+                # To accommodate Python 2.7 specs
+                type_to_check = unicode
+            except NameError:
+                type_to_check = str
+            if not self._relative or self.channeltype == type_to_check:
+                send_value = self._pressValue
+                self.send_value_signal[self.channeltype].emit(self.channeltype(send_value))
+            else:
+                send_value = self.value + self.channeltype(self._pressValue)
+                self.send_value_signal[self.channeltype].emit(send_value)
+        return send_value
 
     @pyqtSlot(int)
     @pyqtSlot(float)

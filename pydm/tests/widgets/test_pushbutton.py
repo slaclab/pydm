@@ -1,4 +1,3 @@
-# coding: utf-8
 # Unit Tests for the PyDMPushButton Widget
 
 
@@ -144,15 +143,12 @@ def test_password_protected(qtbot, password_is_protected):
 @pytest.mark.parametrize("relative_choice", [
     (True),
     (False),
-    (False),
-    (True),
 ])
 def test_relative_change(qtbot, relative_choice):
     """
     Test that the relative attribute of the button.
     Expectations:
-    1. The button retains the relative attribute setting.
-    2. The button retains the relative attribute setting correctly even with successions of the same relative value
+    The button retains the relative attribute setting
 
     Parameters
     ----------
@@ -281,33 +277,35 @@ def test_validate_password(qtbot, monkeypatch, is_widget_protected_with_password
         assert validation_status == expected_validation_status
 
 
-@pytest.mark.parametrize("press_value, updated_value, is_password_protected, show_confirm_dialog,"
-                         "confirm_message, confirm_dialog_response, is_password_validated, is_value_relative,"
-                         "channel_type", [
-    ("123", 345, True, True, "Êtes-vous sur de vouloir continuer?", QMessageBox.Yes, True, True, int),
-    ("123", 345, True, True, "", QMessageBox.Yes, True, True, int),
-    ("123.345", 345.678, True, True, "", QMessageBox.Yes, True, True, float),
-    ("123.345", "345.678", True, True, "", QMessageBox.Yes, True, True, str),
+@pytest.mark.parametrize("initial_value, press_value, is_password_protected, show_confirm_dialog,"
+                         "confirm_message, confirm_dialog_response, is_password_validated, is_value_relative,", [
+    (123, 345, True, True, "Continue?", QMessageBox.Yes, True, True),
+    (123, "345", True, True, "", QMessageBox.Yes, True, True),
+    (123.345, 345.678, True, True, "", QMessageBox.Yes, True, True),
+    (123.345, "345.678", True, True, "", QMessageBox.Yes, True, True),
 
-    ("123", 345, False, True, "", QMessageBox.Yes, True, True, int),
-    ("123", 345, True, False, "", QMessageBox.Yes, True, True, int),
-    ("123", 345, False, False, "", QMessageBox.Yes, True, True, int),
+    ("123", 345, False, True, "", QMessageBox.Yes, True, True),
+    ("123", 345.678, True, False, "", QMessageBox.Yes, True, True),
+    ("123.345", 345.678, False, False, "", QMessageBox.Yes, True, True),
+    ("123.345", "345.678", False, False, "", QMessageBox.Yes, True, True),
 
-    ("123", 345, True, True, "", QMessageBox.No, True, True, int),
-    ("123", 345, False, True, "", QMessageBox.No, True, True, int),
+    ("123", 345, True, True, "", QMessageBox.No, True, True),
+    ("123", 345, False, True, "", QMessageBox.No, True, True),
 
-    ("123", 345, True, True, "Êtes-vous sur de vouloir continuer?", QMessageBox.Yes, True, False, int),
-    ("123", 345, True, True, "", QMessageBox.Yes, True, False, int),
-    ("123.345", 345.678, True, True, "", QMessageBox.Yes, True, False, float),
-    ("123.345", "345.678", True, True, "", QMessageBox.Yes, True, False, str),
+    ("123", 345, True, True, "Continue?", QMessageBox.Yes, True, False),
+    ("123", 345, True, True, "", QMessageBox.Yes, True, False),
+    ("123.345", 345.678, True, True, "", QMessageBox.Yes, True, False),
+    ("123.345", "345.678", True, True, "", QMessageBox.Yes, True, False),
 
-    ("123", 345, True, True, "Êtes-vous sur de vouloir continuer?", QMessageBox.Yes, False, True, int),
-    ("123", 345, True, True, "", QMessageBox.Yes, False, False, int),
-    (None, 345, True, True, "Êtes-vous sur de vouloir continuer?", QMessageBox.Yes, True, True, int),
-    ("123", None, True, True, "Êtes-vous sur de vouloir continuer?", QMessageBox.Yes, True, True, int),
+    ("123", 345, True, True, "Continue?", QMessageBox.Yes, False, True),
+    ("123", 345, True, True, "", QMessageBox.Yes, False, False),
+    ("abc", "def", True, True, "", QMessageBox.Yes, False, False),
+    ("abc", None, True, True, "", QMessageBox.Yes, False, False),
+    (None, "def", True, True, "", QMessageBox.Yes, False, False),
+    (None, None, True, True, "", QMessageBox.Yes, False, False),
 ])
-def test_send_value(qtbot, monkeypatch, signals, press_value, updated_value, is_password_protected, show_confirm_dialog,
-                    confirm_message, confirm_dialog_response, is_password_validated, is_value_relative, channel_type):
+def test_send_value(qtbot, monkeypatch, signals, initial_value, press_value, is_password_protected, show_confirm_dialog,
+                    confirm_message, confirm_dialog_response, is_password_validated, is_value_relative):
     """
     Test sending a new value to the channel.
     Expectations:
@@ -327,9 +325,9 @@ def test_send_value(qtbot, monkeypatch, signals, press_value, updated_value, is_
         To override dialog behaviors
     signals : fixture
         The signals fixture, which provides access signals to be bound to the appropriate slots
+    initial_value : int, float, str
+        The first value given to the button
     press_value : int, float, str
-        The current value the button is holding
-    updated_value : int, float, str
         The new value to send to the channel
     is_password_protected : bool
         True if password validation is required; False otherwise
@@ -340,71 +338,64 @@ def test_send_value(qtbot, monkeypatch, signals, press_value, updated_value, is_
         The customized question to be displayed in the confirmation dialog
     confirm_dialog_response : str
         The simulated response (Yes/No) for the confirmation dialog
+    is_password_validated : bool
+        The simulated response (True/False) of the dialog validation dialog. True means the user has provided the
+        correct password. False otherwise
     is_value_relative : bool
         If True, the new value will be added to the existing pressValue; if False, the widget, when pressed, will send
         only the new value
-    channel_type : type
-        The type of the value to be sent to the channel
     """
-
     pydm_pushbutton = PyDMPushButton()
     qtbot.addWidget(pydm_pushbutton)
 
     pydm_pushbutton.showConfirmDialog = show_confirm_dialog
     pydm_pushbutton.confirmMessage = confirm_message
     pydm_pushbutton.relativeChange = is_value_relative
-    pydm_pushbutton.channeltype = channel_type
+    pydm_pushbutton.pressValue = press_value
 
-    if press_value:
-        signals.new_value_signal[type(press_value)].connect(pydm_pushbutton.updatePressValue)
-        signals.new_value_signal[type(press_value)].emit(press_value)
+    if initial_value:
+        # If the user sets the initial value, emit the channel change signal. Otherwise, skip this signal emit part
+        # and continue the test to see if the widget can handle a None initial value
+        channel_type = type(initial_value)
 
-        if channel_type == str:
-            assert pydm_pushbutton.pressValue == str(press_value)
+        # Change the channel value, and make sure the signal is received
+        signals.new_value_signal[channel_type].connect(pydm_pushbutton.channelValueChanged)
+        signals.new_value_signal[channel_type].emit(initial_value)
+        assert pydm_pushbutton.value == initial_value
 
-    if updated_value:
-        signals.new_value_signal[type(updated_value)].connect(pydm_pushbutton.channelValueChanged)
-        signals.new_value_signal[type(updated_value)].emit(updated_value)
-
-        if channel_type == str:
-            assert pydm_pushbutton.pressValue == str(updated_value)
-        else:
-            assert pydm_pushbutton.channeltype == type(updated_value)
-
-    assert pydm_pushbutton.relativeChange == is_value_relative
+        # Set up the conftest fixture to receive the value sent out to the channel
+        pydm_pushbutton.send_value_signal[channel_type].connect(signals.receiveValue)
 
     if show_confirm_dialog:
+        # Monkeypatch the confirm dialog call if popping up the dialog is enabled for testing
         monkeypatch.setattr(QMessageBox, 'exec_', lambda *args: confirm_dialog_response)
 
     pydm_pushbutton.passwordProtected = is_password_protected
     if is_password_protected:
+        # Monkeypatch the password input dialog if this dialog is enabled for testing
         # We assume the QInputDialog returns success. Further testing scenarios are performed at test_validate_password
         plain_text_password = "$L4C_p4$$wd"
         pydm_pushbutton.password = plain_text_password
         monkeypatch.setattr(QInputDialog, 'getText', lambda *args: (plain_text_password, is_password_validated))
 
-    # Set up the conftest fixture to receive the value sent out to the channel
-    pydm_pushbutton.send_value_signal[channel_type].connect(signals.receiveValue)
-
-    # Send the value out to the channel
-    if updated_value:
-        signals.new_value_signal[type(updated_value)].connect(pydm_pushbutton.sendValue)
-        signals.new_value_signal[type(updated_value)].emit(updated_value)
-
-    if confirm_dialog_response == QMessageBox.No or not is_password_validated or None in (press_value, updated_value):
-        assert not signals.value
+    send_value = pydm_pushbutton.sendValue()
+    if not pydm_pushbutton.pressValue or not initial_value:
+        # send_value() should return None if either the initial value or the pressValue is empty
+        assert send_value is None
     else:
-        if pydm_pushbutton.showConfirmDialog:
-            if confirm_message and len(confirm_message):
-                assert pydm_pushbutton.confirmMessage == confirm_message
-            else:
-                assert pydm_pushbutton.confirmMessage == PyDMPushButton.DEFAULT_CONFIRM_MESSAGE
-
-        if not is_value_relative or channel_type == str:
-            # Limit the decimal places since Python 2.7. provided more floating point
-            assert signals.value == pydm_pushbutton.channeltype(pydm_pushbutton.pressValue)
+        if confirm_dialog_response == QMessageBox.No or not is_password_validated:
+            assert not signals.value
         else:
-            assert signals.value == updated_value + pydm_pushbutton.channeltype(pydm_pushbutton.pressValue)
+            if pydm_pushbutton.showConfirmDialog:
+                if confirm_message and len(confirm_message):
+                    assert pydm_pushbutton.confirmMessage == confirm_message
+                else:
+                    assert pydm_pushbutton.confirmMessage == PyDMPushButton.DEFAULT_CONFIRM_MESSAGE
+
+            if not is_value_relative or channel_type == str:
+                assert signals.value == pydm_pushbutton.channeltype(pydm_pushbutton.pressValue)
+            else:
+                assert signals.value == pydm_pushbutton.value + pydm_pushbutton.channeltype(pydm_pushbutton.pressValue)
 
 
 @pytest.mark.parametrize("current_channel_value, updated_value", [
@@ -462,23 +453,34 @@ def test_password():
     pass
 
 
-@pytest.mark.parametrize("alarm_severity, alarm_sensitive_content", [
-    (PyDMWidget.ALARM_NONE, True),
-    (PyDMWidget.ALARM_NONE, False),
+@pytest.mark.parametrize("alarm_severity, alarm_sensitive_content, alarm_sensitive_border", [
+    (PyDMWidget.ALARM_NONE, True, True),
+    (PyDMWidget.ALARM_NONE, True, False),
+    (PyDMWidget.ALARM_NONE, False, True),
+    (PyDMWidget.ALARM_NONE, False, False),
 
-    (PyDMWidget.ALARM_MINOR, True),
-    (PyDMWidget.ALARM_MINOR, False),
+    (PyDMWidget.ALARM_MINOR, True, True),
+    (PyDMWidget.ALARM_MINOR, True, False),
+    (PyDMWidget.ALARM_MINOR, False, True),
+    (PyDMWidget.ALARM_MINOR, False, False),
 
-    (PyDMWidget.ALARM_MAJOR, True),
-    (PyDMWidget.ALARM_MAJOR, False),
+    (PyDMWidget.ALARM_MAJOR, True, True),
+    (PyDMWidget.ALARM_MAJOR, True, False),
+    (PyDMWidget.ALARM_MAJOR, False, True),
+    (PyDMWidget.ALARM_MAJOR, False, False),
 
-    (PyDMWidget.ALARM_INVALID, True),
-    (PyDMWidget.ALARM_INVALID, False),
+    (PyDMWidget.ALARM_INVALID, True, True),
+    (PyDMWidget.ALARM_INVALID, True, False),
+    (PyDMWidget.ALARM_INVALID, False, True),
+    (PyDMWidget.ALARM_INVALID, False, False),
 
-    (PyDMWidget.ALARM_DISCONNECTED, True),
-    (PyDMWidget.ALARM_DISCONNECTED, False),
+    (PyDMWidget.ALARM_DISCONNECTED, True, True),
+    (PyDMWidget.ALARM_DISCONNECTED, True, False),
+    (PyDMWidget.ALARM_DISCONNECTED, False, True),
+    (PyDMWidget.ALARM_DISCONNECTED, False, False)
 ])
-def test_push_button_alarms(qtbot, signals, test_alarm_style_sheet_map, alarm_severity, alarm_sensitive_content):
+def test_push_button_alarms(qtbot, signals, test_alarm_style_sheet_map, alarm_severity, alarm_sensitive_content,
+                            alarm_sensitive_border):
     """
     Test the widget's appearance changes according to changes in alarm severity.
 
@@ -500,11 +502,23 @@ def test_push_button_alarms(qtbot, signals, test_alarm_style_sheet_map, alarm_se
         The severity of an alarm (NONE, MINOR, MAJOR, INVALID, or DISCONNECTED)
     alarm_sensitive_content : bool
         True if the widget will change color accordingly to the alarm's severity; False if not
+    alarm_sensitive_border : bool
+        Can be True or False; but will not be a part of the button's style. This parameter is only used to verify
+        that the border will not affect the button's style
     """
     pydm_pushbutton = PyDMPushButton()
     qtbot.addWidget(pydm_pushbutton)
 
+    # PyDM PushButton doesn't take the sensitive border flag into its style. Still, try out different True/False flag
+    # values to make sure this expectation will hold for all testing scenarios
+    pydm_pushbutton.alarmSensitiveBorder = alarm_sensitive_border
+
+    assert pydm_pushbutton.alarmSensitiveContent == PyDMWidget.ALARM_NONE
+    assert pydm_pushbutton._alarm_state == PyDMWidget.ALARM_DISCONNECTED
+
     if alarm_sensitive_content:
+        # If we change the alarm sensitive content, alarm state and the widget's style will change, so check to ensure
+        # those changes will happen
         pydm_pushbutton.alarmSensitiveContent = alarm_sensitive_content
 
         signals.new_severity_signal.connect(pydm_pushbutton.alarmSeverityChanged)
@@ -513,8 +527,6 @@ def test_push_button_alarms(qtbot, signals, test_alarm_style_sheet_map, alarm_se
         assert pydm_pushbutton._alarm_state == alarm_severity
         expected_style = dict(test_alarm_style_sheet_map[PyDMWidget.ALARM_CONTENT][alarm_severity])
         assert pydm_pushbutton._style == expected_style
-    else:
-        assert pydm_pushbutton.alarmSensitiveContent == PyDMWidget.ALARM_NONE
 
 
 # --------------------
