@@ -50,7 +50,7 @@ def main():
         help='Specify macro replacements to use, in JSON object format.' +
              '    Reminder: JSON requires double quotes for strings, ' +
              'so you should wrap this whole argument in single quotes.' +
-             '  Example: -m \'{"sector": "LI25", "facility": "LCLS"}'
+             '  Example: -m \'{"sector": "LI25", "facility": "LCLS"}\''
         )
     parser.add_argument(
         'display_args',
