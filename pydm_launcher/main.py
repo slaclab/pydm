@@ -82,9 +82,6 @@ def main():
         macros=macros
         )
 
-    if pydm_args.displayfile is None:
-        app.make_main_window()
-
     sys.exit(app.exec_())
 
 
