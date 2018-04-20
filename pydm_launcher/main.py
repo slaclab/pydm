@@ -25,6 +25,8 @@ def main():
             raise ValueError("Could not parse macro argument as JSON.")
 
     logging.basicConfig(level=pydm_args.log_level, format='[%(asctime)s] - %(message)s')
+    if pydm_args.displayfile is None:
+        app.make_main_window()
 
     app = PyDMApplication(ui_file=pydm_args.displayfile, command_line_args=pydm_args.display_args,
                           perfmon=pydm_args.perfmon,

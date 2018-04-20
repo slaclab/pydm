@@ -116,8 +116,6 @@ class PyDMApplication(QApplication):
         self.hide_status_bar = hide_status_bar
         self.__read_only = read_only
         # Open a window if one was provided.
-        self.make_main_window()
-
         if ui_file is not None:
             self.make_window(ui_file, macros, command_line_args)
             self.had_file = True
