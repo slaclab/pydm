@@ -35,7 +35,8 @@ class GuiHandler(QObject, logging.Handler):
     message = pyqtSignal(str)
 
     def __init__(self, level=logging.NOTSET, parent=None):
-        super().__init__(level=level)
+        logging.Handler.__init__(self, level=level)
+        QObject.__init__(self)
         # Set the parent widget
         self.setParent(parent)
 
@@ -69,7 +70,7 @@ class PyDMLogDisplay(QWidget):
     default_level = logging.INFO
 
     def __init__(self, logname=None, level=logging.NOTSET, parent=None):
-        super().__init__(parent=parent)
+        QWidget.__init__(self, parent=parent)
         # Create Widgets
         self.label = QLabel('Minimum displayed log level: ')
         self.combo = QComboBox()
