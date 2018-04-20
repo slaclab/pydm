@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMPushButton &mdash; PyDM v1.1.0+89.gea82c3d documentation</title>
+  <title>PyDMPushButton &mdash; PyDM v1.1.0+94.g99f512f documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.1.0+89.gea82c3d
+                v1.1.0+94.g99f512f
               </div>
             
           
@@ -305,7 +305,7 @@ always returns an empty string.</p>
 <dl class="attribute">
 <dt id="pydm.widgets.pushbutton.PyDMPushButton.passwordProtected">
 <code class="descname">passwordProtected</code><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.passwordProtected" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wether or not this button is password protected.</p>
+<dd><p>Whether or not this button is password protected.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -382,6 +382,30 @@ mathematical addition.</p>
 <dd><p>Send a new value to the channel.</p>
 <p>This function interprets the settings of the PyDMPushButton and sends
 the appropriate value out through the <code class="xref py py-attr docutils literal notranslate"><span class="pre">send_value_signal</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><em>None if any of the following condition is False</em> –<ol class="arabic">
+<li>There’s no new value (pressValue) for the widget</li>
+<li>There’s no initial or current value for the widget</li>
+<li>The confirmation dialog returns No as the user’s answer to the dialog</li>
+<li>The password validation dialog returns a validation error</li>
+</ol>
+</li>
+<li><em>Otherwise, return the value sent to the channel</em> –<ol class="arabic">
+<li>The value sent to the channel is the same as the pressValue if the existing
+channel type is a str, or the relative flag is False</li>
+<li>The value sent to the channel is the sum of the existing value and the pressValue
+if the relative flag is True, and the channel type is not a str</li>
+</ol>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -482,7 +506,7 @@ password protected.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v1.1.0+89.gea82c3d',
+            VERSION:'v1.1.0+94.g99f512f',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
