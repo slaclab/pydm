@@ -73,6 +73,9 @@ class PyDMApplication(QApplication):
     macros : dict, optional
         A dictionary of macro variables to be forwarded to the display class
         being loaded.
+    use_main_window : bool, optional
+        If ui_file is note given, this parameter controls whether or not to
+        create a PyDMMainWindow in the initialization (Default is True).
     """
     # Instantiate our plugins.
     plugins = {plugin.protocol: plugin() for plugin in data_plugins.plugin_modules}
