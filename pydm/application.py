@@ -73,6 +73,9 @@ class PyDMApplication(QApplication):
     macros : dict, optional
         A dictionary of macro variables to be forwarded to the display class
         being loaded.
+    use_main_window : bool, optional
+        If ui_file is note given, this parameter controls whether or not to
+        create a PyDMMainWindow in the initialization (Default is True).
     """
     # Instantiate our plugins.
     plugins = {plugin.protocol: plugin() for plugin in data_plugins.plugin_modules}
@@ -92,8 +95,10 @@ class PyDMApplication(QApplication):
         True: QColor(0, 0, 0)
     }
 
-    def __init__(self, ui_file=None, command_line_args=[], display_args=[], perfmon=False, hide_nav_bar=False,
-                 hide_menu_bar=False, hide_status_bar=False, read_only=False, macros=None):
+    def __init__(self, ui_file=None, command_line_args=[], display_args=[],
+                 perfmon=False, hide_nav_bar=False, hide_menu_bar=False,
+                 hide_status_bar=False, read_only=False, macros=None,
+                 use_main_window=True):
         super(PyDMApplication, self).__init__(command_line_args)
         # Enable High DPI display, if available.
         if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
@@ -115,14 +120,14 @@ class PyDMApplication(QApplication):
         self.hide_menu_bar = hide_menu_bar
         self.hide_status_bar = hide_status_bar
         self.__read_only = read_only
-        # Open a window if one was provided.
-        self.make_main_window()
-
+        # Open a window if required.
         if ui_file is not None:
+            self.make_main_window()
             self.make_window(ui_file, macros, command_line_args)
-            self.had_file = True
-        else:
-            self.had_file = False
+        elif use_main_window:
+            self.make_main_window()
+
+        self.had_file = ui_file is not None
         # Re-enable sigint (usually blocked by pyqt)
         signal.signal(signal.SIGINT, signal.SIG_DFL)
 
