@@ -216,7 +216,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self.getView().setBackgroundColor(cmap.map(0))
         lut = cmap.getLookupTable(0.0, 1.0, alpha=False)
         self.getImageItem().setLookupTable(lut)
-        self.needs_redraw = True
 
     @pyqtSlot(bool)
     def image_connection_state_changed(self, conn):
@@ -336,7 +335,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         if self._normalize_data == new_norm:
             return
         self._normalize_data = new_norm
-        self.needs_redraw = True
 
     @pyqtProperty(ReadingOrder)
     def readingOrder(self):
@@ -360,7 +358,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """
         if self._reading_order != new_order:
             self._reading_order = new_order
-        self.needs_redraw = True
 
     def keyPressEvent(self, ev):
         return
