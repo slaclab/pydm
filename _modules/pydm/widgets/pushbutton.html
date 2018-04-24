@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.pushbutton &mdash; PyDM v1.1.0+100.g90f1868 documentation</title>
+  <title>pydm.widgets.pushbutton &mdash; PyDM v1.1.0+102.g3b72e0f documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+100.g90f1868
+                v1.1.0+102.g3b72e0f
               </div>
             
           
@@ -534,19 +534,27 @@
 <span class="sd">               if the relative flag is True, and the channel type is not a str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">send_value</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_dialog</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_password</span><span class="p">():</span>
-            <span class="c1"># Check the channel type against both str and unicode types due to Python 2.7 specs</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="c1"># To accommodate Python 2.7 specs</span>
-                <span class="n">type_to_check</span> <span class="o">=</span> <span class="n">unicode</span>
-            <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-                <span class="n">type_to_check</span> <span class="o">=</span> <span class="nb">str</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span> <span class="o">==</span> <span class="n">type_to_check</span><span class="p">:</span>
-                <span class="n">send_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">send_value</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">send_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_dialog</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_password</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># Check the channel type against both str and unicode types due to Python 2.7 specs</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># To accommodate Python 2.7 specs</span>
+            <span class="n">type_to_check</span> <span class="o">=</span> <span class="n">unicode</span>
+        <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+            <span class="n">type_to_check</span> <span class="o">=</span> <span class="nb">str</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span> <span class="o">==</span> <span class="n">type_to_check</span><span class="p">:</span>
+            <span class="n">send_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">send_value</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">send_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">send_value</span></div>
 
 <div class="viewcode-block" id="PyDMPushButton.updatePressValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.updatePressValue">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
@@ -603,7 +611,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+100.g90f1868',
+            VERSION:'v1.1.0+102.g3b72e0f',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
