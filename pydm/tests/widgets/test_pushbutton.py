@@ -279,6 +279,7 @@ def test_validate_password(qtbot, monkeypatch, is_widget_protected_with_password
 
 @pytest.mark.parametrize("initial_value, press_value, is_password_protected, show_confirm_dialog,"
                          "confirm_message, confirm_dialog_response, is_password_validated, is_value_relative,", [
+    (0, 1, True, True, "Continue?", QMessageBox.Yes, True, False),
     (123, 345, True, True, "Continue?", QMessageBox.Yes, True, True),
     (123, "345", True, True, "", QMessageBox.Yes, True, True),
     (123.345, 345.678, True, True, "", QMessageBox.Yes, True, True),

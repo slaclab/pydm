@@ -362,19 +362,27 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
                if the relative flag is True, and the channel type is not a str
         """
         send_value = None
-        if self._pressValue and self.value and self.confirm_dialog() and self.validate_password():
-            # Check the channel type against both str and unicode types due to Python 2.7 specs
-            try:
-                # To accommodate Python 2.7 specs
-                type_to_check = unicode
-            except NameError:
-                type_to_check = str
-            if not self._relative or self.channeltype == type_to_check:
-                send_value = self._pressValue
-                self.send_value_signal[self.channeltype].emit(self.channeltype(send_value))
-            else:
-                send_value = self.value + self.channeltype(self._pressValue)
-                self.send_value_signal[self.channeltype].emit(send_value)
+        if self._pressValue is None or self.value is None:
+            return None
+
+        if not self.confirm_dialog():
+            return None
+
+        if not self.validate_password():
+            return None
+
+        # Check the channel type against both str and unicode types due to Python 2.7 specs
+        try:
+            # To accommodate Python 2.7 specs
+            type_to_check = unicode
+        except NameError:
+            type_to_check = str
+        if not self._relative or self.channeltype == type_to_check:
+            send_value = self._pressValue
+            self.send_value_signal[self.channeltype].emit(self.channeltype(send_value))
+        else:
+            send_value = self.value + self.channeltype(self._pressValue)
+            self.send_value_signal[self.channeltype].emit(send_value)
         return send_value
 
     @pyqtSlot(int)
