@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMImageView &mdash; PyDM v1.1.0+102.g3b72e0f documentation</title>
+  <title>PyDMImageView &mdash; PyDM v1.1.0+108.g844dbf7 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.1.0+102.g3b72e0f
+                v1.1.0+108.g844dbf7
               </div>
             
           
@@ -201,7 +201,7 @@
 <dl class="class">
 <dt id="pydm.widgets.image.PyDMImageView">
 <em class="property">class </em><code class="descclassname">pydm.widgets.image.</code><code class="descname">PyDMImageView</code><span class="sig-paren">(</span><em>parent=None</em>, <em>image_channel=None</em>, <em>width_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView" title="Permalink to this definition">¶</a></dt>
-<dd><p>A PyQtGraph ImageView with support for Channels and more from PyDM</p>
+<dd><p>A PyQtGraph ImageView with support for Channels and more from PyDM.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -217,24 +217,9 @@ information</li>
 </tbody>
 </table>
 <dl class="method">
-<dt id="pydm.widgets.image.PyDMImageView.changeColorMap">
-<code class="descname">changeColorMap</code><span class="sig-paren">(</span><em>action</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.changeColorMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.changeColorMap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method invoked by the colormap Action Menu that changes the
-current colormap used to render the image.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>action</strong> (<em>QAction</em>) – </td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydm.widgets.image.PyDMImageView.channels">
 <code class="descname">channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.channels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the channels being used for this Widget.</p>
+<dd><p>Return the channels being used for this Widget.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -250,27 +235,13 @@ current colormap used to render the image.</p>
 <dl class="method">
 <dt id="pydm.widgets.image.PyDMImageView.channels_for_tools">
 <code class="descname">channels_for_tools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.channels_for_tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.channels_for_tools" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a list of channels useful for external tools.
-The default implementation here is just to return
-self.channels(), but some widgets will want to re-implement
-this, especially if they have multiple channels, but only
-one real ‘signal’ channel.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dd><p>Return channels for tools.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.image.PyDMImageView.colorMap">
 <code class="descname">colorMap</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.colorMap" title="Permalink to this definition">¶</a></dt>
-<dd><p>The color map used by the ImageView.</p>
+<dd><p>Return the color map used by the ImageView.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -278,6 +249,38 @@ one real ‘signal’ channel.</p>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">PyDMColorMap</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.image.PyDMImageView.colorMapMax">
+<code class="descname">colorMapMax</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.colorMapMax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum value for the colormap.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.image.PyDMImageView.colorMapMin">
+<code class="descname">colorMapMin</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.colorMapMin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum value for the colormap.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
 </tr>
 </tbody>
 </table>
@@ -299,11 +302,41 @@ one real ‘signal’ channel.</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pydm.widgets.image.PyDMImageView.imageWidth">
+<code class="descname">imageWidth</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.imageWidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the width of the image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.image.PyDMImageView.image_connection_state_changed">
+<code class="descname">image_connection_state_changed</code><span class="sig-paren">(</span><em>conn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.image_connection_state_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.image_connection_state_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Image Channel connection state is changed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>conn</strong> (<em>bool</em>) – The new connection state.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydm.widgets.image.PyDMImageView.image_value_changed">
 <code class="descname">image_value_changed</code><span class="sig-paren">(</span><em>new_image</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.image_value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.image_value_changed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Callback invoked when the Image Channel value is changed.
-We try to do as little as possible in this method, because it
+<dd><p>Callback invoked when the Image Channel value is changed.</p>
+<p>We try to do as little as possible in this method, because it
 gets called every time the image channel updates, which might
 be extremely often.  Basically just store the data, and set
 a flag requesting that the image be redrawn.</p>
@@ -333,14 +366,15 @@ a flag requesting that the image be redrawn.</p>
 
 <dl class="method">
 <dt id="pydm.widgets.image.PyDMImageView.keyPressEvent">
-<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.keyPressEvent" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>ev</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle keypress events.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.image.PyDMImageView.maxRedrawRate">
 <code class="descname">maxRedrawRate</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.maxRedrawRate" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum rate (in Hz) at which the plot will be redrawn.
-The plot will not be redrawn if there is not new data to draw.</p>
+<dd><p>The maximum rate (in Hz) at which the plot will be redrawn.</p>
+<p>The plot will not be redrawn if there is not new data to draw.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -353,17 +387,49 @@ The plot will not be redrawn if there is not new data to draw.</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pydm.widgets.image.PyDMImageView.normalizeData">
+<code class="descname">normalizeData</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.normalizeData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the colors are relative to data maximum and minimum.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.image.PyDMImageView.readingOrder">
+<code class="descname">readingOrder</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.readingOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the reading order of the <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.imageChannel" title="pydm.widgets.image.PyDMImageView.imageChannel"><code class="xref py py-attr docutils literal notranslate"><span class="pre">imageChannel</span></code></a> array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">ReadingOrder</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydm.widgets.image.PyDMImageView.redrawImage">
 <code class="descname">redrawImage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.redrawImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.redrawImage" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the image data into the ImageItem, if needed.
-If necessary, reshape the image to 2D first.</p>
+<dd><p>Set the image data into the ImageItem, if needed.</p>
+<p>If necessary, reshape the image to 2D first.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.image.PyDMImageView.setColorMap">
 <code class="descname">setColorMap</code><span class="sig-paren">(</span><em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.setColorMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setColorMap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update the image colormap</p>
+<dd><p>Update the image colormap.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -377,7 +443,7 @@ If necessary, reshape the image to 2D first.</p>
 <dl class="method">
 <dt id="pydm.widgets.image.PyDMImageView.setColorMapLimits">
 <code class="descname">setColorMapLimits</code><span class="sig-paren">(</span><em>mn</em>, <em>mx</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.setColorMapLimits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setColorMapLimits" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the limit values for the colormap</p>
+<dd><p>Set the limit values for the colormap.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -393,56 +459,16 @@ If necessary, reshape the image to 2D first.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.image.PyDMImageView.setColorMapMax">
-<code class="descname">setColorMapMax</code><span class="sig-paren">(</span><em>new_max</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.setColorMapMax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setColorMapMax" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the maximum value for the colormap</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_max</strong> (<em>int</em>) – </td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydm.widgets.image.PyDMImageView.setColorMapMin">
-<code class="descname">setColorMapMin</code><span class="sig-paren">(</span><em>new_min</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.setColorMapMin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setColorMapMin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the minimal value for the colormap</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_min</strong> (<em>int</em>) – </td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydm.widgets.image.PyDMImageView.set_color_map_to_preset">
-<code class="descname">set_color_map_to_preset</code><span class="sig-paren">(</span><em>cmap</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.set_color_map_to_preset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.set_color_map_to_preset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load a predefined colormap</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cmap</strong> (<em>PyDMColorMap</em>) – </td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydm.widgets.image.PyDMImageView.widget_ctx_menu">
 <code class="descname">widget_ctx_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.widget_ctx_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.widget_ctx_menu" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch the Widget specific context menu which will be populated with additional tools by <cite>assemble_tools_menu</cite>.</p>
+<dd><p>Fetch the Widget specific context menu.</p>
+<p>It will be populated with additional tools by <cite>assemble_tools_menu</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">If the return of this method is None a new QMenu will be created by <cite>assemble_tools_menu</cite>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">If the return of this method is None a new QMenu will be created by
+<cite>assemble_tools_menu</cite>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QMenu or None</td>
 </tr>
@@ -512,7 +538,7 @@ If necessary, reshape the image to 2D first.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v1.1.0+102.g3b72e0f',
+            VERSION:'v1.1.0+108.g844dbf7',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
