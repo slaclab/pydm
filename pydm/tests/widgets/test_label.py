@@ -1,8 +1,6 @@
-# coding: utf-8
 # Unit Tests for the PyDMLabel Widget
 
 
-import os
 import pytest
 import numpy as np
 import logging
@@ -11,8 +9,6 @@ from ...utilities import is_pydm_app
 from ...widgets.label import PyDMLabel
 from ...widgets.base import PyDMWidget
 from pydm.widgets.display_format import parse_value_for_display, DisplayFormat
-
-current_dir = os.path.abspath(os.path.dirname(__file__))
 
 
 # --------------------
@@ -37,9 +33,8 @@ def test_construct(qtbot):
     qtbot.addWidget(pydm_label)
 
     display_format_type = pydm_label.displayFormat
-    assert (display_format_type == pydm_label.DisplayFormat.Default)
-    assert(pydm_label._string_encoding == pydm_label.app.get_string_encoding()
-           if is_pydm_app() else "utf_8")
+    assert display_format_type == pydm_label.DisplayFormat.Default
+    assert pydm_label._string_encoding == pydm_label.app.get_string_encoding() if is_pydm_app() else "utf_8"
 
 
 @pytest.mark.parametrize("value, display_format", [
@@ -105,8 +100,8 @@ def test_value_changed(qtbot, signals, value, display_format):
                                               display_format_type=pydm_label.displayFormat, widget=pydm_label)
     expected_value = parse_value_for_display(value=value, precision=1,
                                              display_format_type=display_format, widget=pydm_label)
-    assert(displayed_value == expected_value)
-    assert (pydm_label.displayFormat == display_format)
+    assert displayed_value == expected_value
+    assert pydm_label.displayFormat == display_format
 
 
 @pytest.mark.parametrize("value, selected_index, expected", [
@@ -144,9 +139,9 @@ def test_enum_strings_changed(qtbot, signals, value, selected_index, expected):
     signals.enum_strings_signal.emit(value)
     pydm_label.displayFormat = DisplayFormat.String
 
-    assert(pydm_label.value == selected_index)
-    assert(pydm_label.text() == expected)
-    assert (pydm_label.displayFormat == DisplayFormat.String)
+    assert pydm_label.value == selected_index
+    assert pydm_label.text() == expected
+    assert pydm_label.displayFormat == DisplayFormat.String
 
 
 @pytest.mark.parametrize("value, display_format, unit_name, expected", [
@@ -213,7 +208,7 @@ def test_show_units(qtbot, signals, value, display_format, unit_name, expected):
     signals.new_value_signal[type(value)].emit(value)
     pydm_label.displayFormat = display_format
     pydm_label.showUnits = False
-    assert(pydm_label.value == value)
+    assert pydm_label.value == value
 
     # showUnits must be set first for the unit change to take effect
     pydm_label.showUnits = True
@@ -221,19 +216,19 @@ def test_show_units(qtbot, signals, value, display_format, unit_name, expected):
     signals.unit_signal[str].emit(unit_name)
     signals.new_value_signal[type(value)].emit(value)
 
-    assert (pydm_label.value == value)
-    assert (pydm_label.text() == expected)
-    assert (pydm_label.displayFormat == display_format)
+    assert pydm_label.value == value
+    assert pydm_label.text() == expected
+    assert pydm_label.displayFormat == display_format
 
     # Now, turn off showUnits
     pydm_label.showUnits = False
     signals.new_value_signal[type(value)].emit(value)
-    assert (pydm_label.value == value)
+    assert pydm_label.value == value
     if " " in expected:
         # We expect no unit to be displayed now, so the expected result must be adjusted to contain just the value
         expected = expected[0 : expected.find(" ")]
-    assert (pydm_label.text() == expected)
-    assert (pydm_label.displayFormat == display_format)
+    assert pydm_label.text() == expected
+    assert pydm_label.displayFormat == display_format
 
 
 @pytest.mark.parametrize("alarm_severity, alarm_sensitive_content, alarm_sensitive_border", [
@@ -300,9 +295,9 @@ def test_label_alarms(qtbot, signals, test_alarm_style_sheet_map, alarm_severity
     signals.new_severity_signal.connect(pydm_label.alarmSeverityChanged)
     signals.new_severity_signal.emit(alarm_severity)
 
-    assert(pydm_label._alarm_state == alarm_severity)
+    assert pydm_label._alarm_state == alarm_severity
     expected_style = dict(test_alarm_style_sheet_map[alarm_flags][alarm_severity])
-    assert(pydm_label._style == expected_style)
+    assert pydm_label._style == expected_style
 
 
 TOOLTIP_TEXT = "Testing with Alarm State Changes, Channel Provided."
@@ -372,12 +367,12 @@ def test_channel_connection_changes_with_alarm(qtbot, signals, test_alarm_style_
     signals.connection_state_signal.emit(True)
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
-    assert (pydm_label._alarm_state == alarm_severity)
+    assert pydm_label._alarm_state == alarm_severity
     expected_style = dict(test_alarm_style_sheet_map[alarm_flags][alarm_severity])
-    assert (pydm_label._style == expected_style)
-    assert(pydm_label._connected == True)
-    assert (pydm_label.toolTip() == tooltip)
-    assert (pydm_label.isEnabled() == True)
+    assert pydm_label._style == expected_style
+    assert pydm_label._connected == True
+    assert pydm_label.toolTip() == tooltip
+    assert pydm_label.isEnabled() == True
 
     # Next, disconnect the alarm, and check for the alarm severity, style, connection state, enabling state, and
     # tooltip
@@ -385,12 +380,12 @@ def test_channel_connection_changes_with_alarm(qtbot, signals, test_alarm_style_
 
     signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
     signals.connection_state_signal.emit(False)
-    assert (pydm_label._alarm_state == alarm_severity)
+    assert pydm_label._alarm_state == alarm_severity
     expected_style = dict(test_alarm_style_sheet_map[alarm_flags][alarm_severity])
-    assert (pydm_label._style == expected_style)
-    assert(pydm_label._connected == False)
-    assert(all(i in pydm_label.toolTip() for i in (tooltip, "PV is disconnected.")))
-    assert(pydm_label.isEnabled() == False)
+    assert pydm_label._style == expected_style
+    assert pydm_label._connected == False
+    assert all(i in pydm_label.toolTip() for i in (tooltip, "PV is disconnected."))
+    assert pydm_label.isEnabled() == False
 
     # Finally, reconnect the alarm, and check for the same attributes
     signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
@@ -398,12 +393,12 @@ def test_channel_connection_changes_with_alarm(qtbot, signals, test_alarm_style_
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
     # TODO Set alarm_severity back to NONE
-    assert (pydm_label._alarm_state == alarm_severity)
+    assert pydm_label._alarm_state == alarm_severity
     expected_style = dict(test_alarm_style_sheet_map[alarm_flags][alarm_severity])
-    assert (pydm_label._style == expected_style)
-    assert (pydm_label._connected == True)
-    assert (pydm_label.toolTip() == tooltip)
-    assert (pydm_label.isEnabled() == True)
+    assert pydm_label._style == expected_style
+    assert pydm_label._connected == True
+    assert pydm_label.toolTip() == tooltip
+    assert pydm_label.isEnabled() == True
 
 
 @pytest.mark.parametrize("alarm_sensitive_content, alarm_sensitive_border, tooltip", [
@@ -469,12 +464,12 @@ def test_connection_changes_with_alarm_and_no_channel(qtbot, signals, test_alarm
     signals.connection_state_signal.emit(True)
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
-    assert (pydm_label._alarm_state == alarm_severity)
+    assert pydm_label._alarm_state == alarm_severity
     expected_style = dict(test_alarm_style_sheet_map[alarm_flags][alarm_severity])
-    assert (pydm_label._style == expected_style)
-    assert (pydm_label._connected == True)
-    assert (pydm_label.toolTip() == tooltip)
-    assert (pydm_label.isEnabled() == True)
+    assert pydm_label._style == expected_style
+    assert pydm_label._connected == True
+    assert pydm_label.toolTip() == tooltip
+    assert pydm_label.isEnabled() == True
 
     # Next, disconnect the alarm, and check for the alarm severity, style, connection state, enabling state, and
     # tooltip
@@ -482,24 +477,24 @@ def test_connection_changes_with_alarm_and_no_channel(qtbot, signals, test_alarm
 
     signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
     signals.connection_state_signal.emit(False)
-    assert (pydm_label._alarm_state == alarm_severity)
+    assert pydm_label._alarm_state == alarm_severity
     expected_style = dict(test_alarm_style_sheet_map[alarm_flags][alarm_severity])
-    assert (pydm_label._style == expected_style)
-    assert (pydm_label._connected == False)
-    assert (pydm_label.toolTip() == tooltip)
-    assert (pydm_label.isEnabled() == True)
+    assert pydm_label._style == expected_style
+    assert pydm_label._connected == False
+    assert pydm_label.toolTip() == tooltip
+    assert pydm_label.isEnabled() == True
 
     # Finally, reconnect the alarm, and check for the same attributes
     signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
     signals.connection_state_signal.emit(True)
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
-    assert (pydm_label._alarm_state == alarm_severity)
+    assert pydm_label._alarm_state == alarm_severity
     expected_style = dict(test_alarm_style_sheet_map[alarm_flags][alarm_severity])
-    assert (pydm_label._style == expected_style)
-    assert (pydm_label._connected == True)
-    assert (pydm_label.toolTip() == tooltip)
-    assert (pydm_label.isEnabled() == True)
+    assert pydm_label._style == expected_style
+    assert pydm_label._connected == True
+    assert pydm_label.toolTip() == tooltip
+    assert pydm_label.isEnabled() == True
 
 
 # --------------------
@@ -581,6 +576,6 @@ def test_enum_strings_changed_incorrect_index(qtbot, signals, value, selected_in
     signals.enum_strings_signal.emit(value)
     pydm_label.displayFormat = DisplayFormat.String
 
-    assert(pydm_label.value == selected_index)
-    assert(pydm_label.text() == expected)
-    assert (pydm_label.displayFormat == DisplayFormat.String)
+    assert pydm_label.value == selected_index
+    assert pydm_label.text() == expected
+    assert pydm_label.displayFormat == DisplayFormat.String

@@ -1,7 +1,6 @@
 # Unit Tests for the PyDMPushButton Widget
 
 
-import os
 import pytest
 import hashlib
 import numpy as np
@@ -13,9 +12,6 @@ from ...PyQt.QtGui import QColor, QInputDialog, QMessageBox
 from ...widgets.base import PyDMWidget
 from ...widgets.pushbutton import PyDMPushButton
 from ...utilities.iconfont import IconFont
-
-
-current_dir = os.path.abspath(os.path.dirname(__file__))
 
 
 # --------------------
@@ -84,7 +80,6 @@ def test_construct(qtbot, label, press_value, relative, init_channel, icon_font_
 
     pydm_pushbutton = PyDMPushButton(label=label, pressValue=press_value, relative=relative,
                                      init_channel=init_channel, icon=icon)
-    pydm_pushbutton.icon()
     qtbot.addWidget(pydm_pushbutton)
 
     assert pydm_pushbutton.text() == label if label else pydm_pushbutton.text() == ""
@@ -147,6 +142,7 @@ def test_password_protected(qtbot, password_is_protected):
 def test_relative_change(qtbot, relative_choice):
     """
     Test that the relative attribute of the button.
+
     Expectations:
     The button retains the relative attribute setting
 
@@ -175,6 +171,7 @@ def test_relative_change(qtbot, relative_choice):
 def test_set_password(qtbot, password_protected, plain_text_password):
     """
     Test the widget's password encryption mechanism.
+
     Expectations:
     1. The widget will retain the attribute specifying whether the button requires a password
     2. The widget's encrypted password must be the same as the expected encrypted password, i.e. if the encryption
@@ -214,7 +211,6 @@ def test_set_password(qtbot, password_protected, plain_text_password):
     assert pydm_pushbutton._password_protected == password_protected
     assert encrypted_password == expected_encrypted_password
 
-
 @pytest.mark.parametrize("is_widget_protected_with_password, plain_text_password, input_dialog_status,"
                          "expected_validation_status", [
     (True, "$L4C_p4$$wd", True, True),
@@ -236,6 +232,7 @@ def test_validate_password(qtbot, monkeypatch, is_widget_protected_with_password
                            input_dialog_status, expected_validation_status):
     """
     Test password validation.
+
     Expectations:
     1. The user-provided password to the QInputDialog produces the same message disgest like that of the existing
         password's message digest.
@@ -309,6 +306,7 @@ def test_send_value(qtbot, monkeypatch, signals, initial_value, press_value, is_
                     confirm_message, confirm_dialog_response, is_password_validated, is_value_relative):
     """
     Test sending a new value to the channel.
+
     Expectations:
     1. The new value will be sent to the channel and converted to the current channel type
     2. If the relativeChange attribute is set to True, the channel's value is the total of the current value and the
@@ -421,6 +419,7 @@ def test_send_value(qtbot, monkeypatch, signals, initial_value, press_value, is_
 def test_update_press_value(qtbot, signals, current_channel_value, updated_value):
     """
     Test the conversion of a new press value given the existing channel type.
+
     Expectations:
     For supported types (int, float, str), the conversions to the existing value type must be successful.
 
