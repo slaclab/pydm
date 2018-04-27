@@ -1,12 +1,15 @@
 import locale
 from functools import partial
-from ..PyQt.QtGui import QLineEdit, QMenu, QApplication, QAction
-from ..PyQt.QtCore import Qt, pyqtProperty, Q_ENUMS
+import numpy as np
+
+import logging
+logger = logging.getLogger(__name__)
+
+from ..PyQt.QtGui import QLineEdit, QMenu, QApplication
+from ..PyQt.QtCore import pyqtProperty, Q_ENUMS
 from .. import utilities
 from .base import PyDMWritableWidget
 from .display_format import DisplayFormat, parse_value_for_display
-
-import numpy as np
 
 
 class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
@@ -115,7 +118,8 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
                 # Lets just send what we have after all
                 self.send_value_signal[str].emit(send_value)
         except ValueError:
-            print("Error trying to set data: {} with type {} and format {} at widget {}.".format(self.text(), self.channeltype, self._display_format_type, self.objectName()))
+            logger.error("Error trying to set data '{0}' with type '{1}' and format '{2}' at widget '{3}'."
+                         .format(self.text(), self.channeltype, self._display_format_type, self.objectName()))
 
         self.clearFocus()
         self.set_display()
@@ -182,8 +186,7 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
             String name of desired units
         """
         if not self._unit:
-            print('Warning: Attempting to convert PyDMLineEdit unit, '\
-                           'but no initial units supplied')
+            logger.warning("Warning: Attempting to convert PyDMLineEdit unit, but no initial units supplied.")
             return None
 
         scale = utilities.convert(str(self._unit), unit)
@@ -194,8 +197,8 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
             self.clearFocus()
             self.set_display()
         else:
-            print('Warning: Attempting to convert PyDMLineEdit unit, but {:} '\
-                           'can not be converted to {:}'.format(self._units, unit))
+            logging.warning("Warning: Attempting to convert PyDMLineEdit unit, but '{0}' can not be converted to '{1}'."
+                            .format(self._unit, unit))
 
     def widget_ctx_menu(self):
         """
@@ -237,7 +240,8 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
                 try:
                     new_value *= self.channeltype(self._scale)
                 except TypeError:
-                    print("Cannot convert channel: {} with type: {}", self._channel, self.channeltype)
+                    logger.error("Cannot convert the value '{0}', for channel '{1}', to type '{2}'. ".format(
+                        self._scale, self._channel, self.channeltype))
 
         new_value = parse_value_for_display(value=new_value,  precision=self._prec,
                                              display_format_type=self._display_format_type,

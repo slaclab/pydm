@@ -2,19 +2,14 @@ import platform
 
 from ...utilities import is_pydm_app, path_info, which
 from ...PyQt import QtGui
-from ...application import PyDMApplication
 
 
-def test_is_pydm_app():
-    app = PyDMApplication()
-    assert is_pydm_app(app)
-    app.deleteLater()
+def test_is_pydm_app(qapp):
+    assert is_pydm_app(qapp)
 
 
 def test_negative_is_pydm_app():
-    app = QtGui.QApplication([])
-    assert not is_pydm_app(app)
-    app.deleteLater()
+    assert not is_pydm_app(QtGui.QLabel())
 
 
 def test_path_info():

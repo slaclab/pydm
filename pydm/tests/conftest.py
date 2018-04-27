@@ -153,7 +153,7 @@ def qapp(qapp_args):
     app = qt_api.QApplication.instance()
     if app is None or not isinstance(app, PyDMApplication):
         global _qapp_instance
-        _qapp_instance = PyDMApplication(*qapp_args)
+        _qapp_instance = PyDMApplication(use_main_window=False, *qapp_args)
         yield _qapp_instance
     else:
         yield app  # pragma: no cover
