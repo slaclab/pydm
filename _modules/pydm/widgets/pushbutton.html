@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.pushbutton &mdash; PyDM v1.1.0+108.g844dbf7 documentation</title>
+  <title>pydm.widgets.pushbutton &mdash; PyDM v1.1.0+110.g7e1ca89 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+108.g844dbf7
+                v1.1.0+110.g7e1ca89
               </div>
             
           
@@ -468,9 +468,8 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
 
-        <span class="n">pwd</span><span class="p">,</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">QInputDialog</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Authentication&quot;</span><span class="p">,</span>
-                                       <span class="s2">&quot;Please enter your password:&quot;</span><span class="p">,</span>
-                                       <span class="n">QLineEdit</span><span class="o">.</span><span class="n">Password</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">pwd</span><span class="p">,</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">QInputDialog</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Authentication&quot;</span><span class="p">,</span> <span class="s2">&quot;Please enter your password:&quot;</span><span class="p">,</span>
+                                         <span class="n">QLineEdit</span><span class="o">.</span><span class="n">Password</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="n">pwd</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pwd</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span> <span class="ow">or</span> <span class="n">pwd</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
@@ -543,13 +542,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_password</span><span class="p">():</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="c1"># Check the channel type against both str and unicode types due to Python 2.7 specs</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># To accommodate Python 2.7 specs</span>
-            <span class="n">type_to_check</span> <span class="o">=</span> <span class="n">unicode</span>
-        <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-            <span class="n">type_to_check</span> <span class="o">=</span> <span class="nb">str</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span> <span class="o">==</span> <span class="n">type_to_check</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
             <span class="n">send_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">send_value</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
@@ -611,7 +604,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+108.g844dbf7',
+            VERSION:'v1.1.0+110.g7e1ca89',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

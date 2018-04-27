@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.line_edit &mdash; PyDM v1.1.0+108.g844dbf7 documentation</title>
+  <title>pydm.widgets.line_edit &mdash; PyDM v1.1.0+110.g7e1ca89 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+108.g844dbf7
+                v1.1.0+110.g7e1ca89
               </div>
             
           
@@ -172,13 +172,16 @@
   <h1>Source code for pydm.widgets.line_edit</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">locale</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QAction</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QApplication</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">utilities</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
 <span class="kn">from</span> <span class="nn">.display_format</span> <span class="k">import</span> <span class="n">DisplayFormat</span><span class="p">,</span> <span class="n">parse_value_for_display</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
 <div class="viewcode-block" id="PyDMLineEdit"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit">[docs]</a><span class="k">class</span> <span class="nc">PyDMLineEdit</span><span class="p">(</span><span class="n">QLineEdit</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">DisplayFormat</span><span class="p">):</span>
@@ -287,7 +290,8 @@
                 <span class="c1"># Lets just send what we have after all</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error trying to set data: </span><span class="si">{}</span><span class="s2"> with type </span><span class="si">{}</span><span class="s2"> and format </span><span class="si">{}</span><span class="s2"> at widget </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">objectName</span><span class="p">()))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error trying to set data &#39;</span><span class="si">{0}</span><span class="s2">&#39; with type &#39;</span><span class="si">{1}</span><span class="s2">&#39; and format &#39;</span><span class="si">{2}</span><span class="s2">&#39; at widget &#39;</span><span class="si">{3}</span><span class="s2">&#39;.&quot;</span>
+                         <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">objectName</span><span class="p">()))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">clearFocus</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_display</span><span class="p">()</span></div>
@@ -354,8 +358,7 @@
 <span class="sd">            String name of desired units</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning: Attempting to convert PyDMLineEdit unit, &#39;</span>\
-                           <span class="s1">&#39;but no initial units supplied&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Warning: Attempting to convert PyDMLineEdit unit, but no initial units supplied.&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="n">scale</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">),</span> <span class="n">unit</span><span class="p">)</span>
@@ -366,8 +369,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">clearFocus</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_display</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning: Attempting to convert PyDMLineEdit unit, but </span><span class="si">{:}</span><span class="s1"> &#39;</span>\
-                           <span class="s1">&#39;can not be converted to </span><span class="si">{:}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">,</span> <span class="n">unit</span><span class="p">))</span></div>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Warning: Attempting to convert PyDMLineEdit unit, but &#39;</span><span class="si">{0}</span><span class="s2">&#39; can not be converted to &#39;</span><span class="si">{1}</span><span class="s2">&#39;.&quot;</span>
+                            <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">,</span> <span class="n">unit</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="PyDMLineEdit.widget_ctx_menu"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.widget_ctx_menu">[docs]</a>    <span class="k">def</span> <span class="nf">widget_ctx_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -409,7 +412,8 @@
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">new_value</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scale</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot convert channel: </span><span class="si">{}</span><span class="s2"> with type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Cannot convert the value &#39;</span><span class="si">{0}</span><span class="s2">&#39;, for channel &#39;</span><span class="si">{1}</span><span class="s2">&#39;, to type &#39;</span><span class="si">{2}</span><span class="s2">&#39;. &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">))</span>
 
         <span class="n">new_value</span> <span class="o">=</span> <span class="n">parse_value_for_display</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">new_value</span><span class="p">,</span>  <span class="n">precision</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prec</span><span class="p">,</span>
                                              <span class="n">display_format_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span><span class="p">,</span>
@@ -472,7 +476,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+108.g844dbf7',
+            VERSION:'v1.1.0+110.g7e1ca89',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
