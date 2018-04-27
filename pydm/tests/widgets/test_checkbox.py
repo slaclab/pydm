@@ -52,7 +52,7 @@ def test_value_changed(qtbot, init_checked_status, new_value):
 
     Expectations:
 
-    1. If the channel data value is None, the widget is unchecked.
+    1. If the channel data value is None, the widget is unchecked
     2. If the channel data value is larger than 0, the widget is checked; it is unchecked otherwise.
 
     Parameters
@@ -69,8 +69,8 @@ def test_value_changed(qtbot, init_checked_status, new_value):
 
     pydm_checkbox.setChecked(init_checked_status)
 
-    pydm_checkbox.send_value_signal.connect(pydm_checkbox.channelValueChanged)
-    pydm_checkbox.send_value_signal.emit(new_value)
+    pydm_checkbox.send_value_signal[int].connect(pydm_checkbox.channelValueChanged)
+    pydm_checkbox.send_value_signal[int].emit(new_value)
 
     if new_value is None:
         assert not pydm_checkbox.isChecked()
@@ -110,7 +110,4 @@ def test_send_value(qtbot, signals, is_checked):
     pydm_checkbox.send_value(is_checked)
 
     assert signals.value == 1 if is_checked else signals.value == 0
-
-
-
 
