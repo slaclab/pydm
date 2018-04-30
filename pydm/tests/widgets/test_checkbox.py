@@ -42,18 +42,16 @@ def test_construct(qtbot, init_channel):
     (False, 1),
     (True, 999),
     (False, 999),
-    (True, None),
-    (False, None),
 ])
-def test_value_changed(qtbot, init_checked_status, new_value):
+def test_value_changed(qtbot, signals, init_checked_status, new_value):
     """
 
     Test the widget's checked status when the value changes via the data channel.
 
     Expectations:
 
-    1. If the channel data value is None, the widget is unchecked
-    2. If the channel data value is larger than 0, the widget is checked; it is unchecked otherwise.
+    1. If the channel data value is larger than 0, the widget is checked
+    2. The widget is unchecked if the channel value is 0
 
     Parameters
     ----------
@@ -69,13 +67,10 @@ def test_value_changed(qtbot, init_checked_status, new_value):
 
     pydm_checkbox.setChecked(init_checked_status)
 
-    pydm_checkbox.send_value_signal[int].connect(pydm_checkbox.channelValueChanged)
-    pydm_checkbox.send_value_signal[int].emit(new_value)
+    signals.send_value_signal[type(new_value)].connect(pydm_checkbox.channelValueChanged)
+    signals.send_value_signal[type(new_value)].emit(new_value)
 
-    if new_value is None:
-        assert not pydm_checkbox.isChecked()
-    else:
-        assert pydm_checkbox.isChecked() if new_value > 0 else not pydm_checkbox.isChecked()
+    assert pydm_checkbox.isChecked() if new_value > 0 else not pydm_checkbox.isChecked()
 
 
 @pytest.mark.parametrize("is_checked", [
