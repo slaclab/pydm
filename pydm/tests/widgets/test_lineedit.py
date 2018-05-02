@@ -546,7 +546,7 @@ def test_set_display(qtbot, qapp, value, has_focus, channel_type, display_format
         def wait_nofocus():
             return not pydm_lineedit.hasFocus()
 
-        qtbot.waitUntil(wait_nofocus, timeout=2000)
+        qtbot.waitUntil(wait_nofocus, timeout=5000)
         pydm_lineedit.set_display()
 
         new_value = value

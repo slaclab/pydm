@@ -27,11 +27,13 @@ def compose_stylesheet(style, base_class=None, obj=None):
     style_str : str
         The composed stylesheet with the proper base class.
     """
+    widget_selector = ""
     if base_class is None and obj is not None:
         base_class = type(obj).__name__
-        widget_selector = ""
         if hasattr(obj, "objectName") and obj.objectName() != "":
             widget_selector = "#" + obj.objectName()
+    elif base_class:
+        base_class = base_class.__name__
     style_str = base_class + widget_selector + " {"
     for k, v in style.items():
         style_str += "{}: {}; ".format(k, v)
@@ -826,7 +828,7 @@ class PyDMWritableWidget(PyDMWidget):
         Method called after the constructor to tweak configurations for
         when using the widget with the Qt Designer
         """
-        super(PyDMWidget, self).init_for_designer()
+        super(PyDMWritableWidget, self).init_for_designer()
         self._write_access = True
 
     def eventFilter(self, obj, event):
