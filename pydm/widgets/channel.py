@@ -10,7 +10,7 @@ class PyDMChannel:
     way to connect slots and signals to functionality within your PyDM
     Widget. Slots should be connected to functions on your created widget
     that perform actions upon changes. For instance, the :attr:`.value_slot`
-    will be automatically called everytime a new value is found by the
+    will be automatically called every time a new value is found by the
     plugin. This should probably linked to a function that updates the
     display to report the new value. Signals perform the reverse operation.
     These should be used to send new values back to the plugin to update
@@ -21,7 +21,7 @@ class PyDMChannel:
     instance, returning to the example of the :attr:`.value_slot`,
     getting a value to display from channel access or from the EPICS Archiver
     are very different operations. However, actually displaying the value
-    should be identical. By simplying attching your PyDM Widget's display
+    should be identical. By simply attaching your PyDM Widget's display
     functionality to the :attr:`.value_slot` you have created a
     Widget that can do either interchangeably, all the user has to do is
     specify the correct address signature and the rest of the work is done
@@ -81,3 +81,40 @@ class PyDMChannel:
         self.lower_ctrl_limit_slot = lower_ctrl_limit_slot
 
         self.value_signal = value_signal
+
+    def __eq__(self, other):
+        if isinstance(self, other.__class__):
+            address_matched = self.address == other.address
+            connection_slot_matched = self.connection_slot == other.connection_slot
+            value_slot_matched = self.value_slot == other.value_slot
+            severity_slot_matched = self.severity_slot == other.severity_slot
+            enum_strings_slot_matched = self.enum_strings_slot == other.enum_strings_slot
+            unit_slot_matched = self.unit_slot == other.unit_slot
+            prec_slot_matched = self.prec_slot == other.prec_slot
+            upper_ctrl_slot_matched = self.upper_ctrl_limit_slot == other.upper_ctrl_limit_slot
+            lower_ctrl_slot_matched = self.lower_ctrl_limit_slot == other.lower_ctrl_limit_slot
+            write_access_slot_matched = self.write_access_slot == other.write_access_slot
+
+            value_signal_matched = True
+            if self.value_signal and other.value_signal:
+                value_signal_matched = self.value_signal.signal == other.value_signal.signal
+
+            return address_matched and \
+                   connection_slot_matched and \
+                   value_slot_matched and \
+                   severity_slot_matched and \
+                   enum_strings_slot_matched and \
+                   unit_slot_matched and \
+                   prec_slot_matched and \
+                   upper_ctrl_slot_matched and \
+                   lower_ctrl_slot_matched and \
+                   write_access_slot_matched and \
+                   value_signal_matched
+
+        return NotImplemented
+
+    def __ne__(self, other):
+        equality_result = self.__eq__(other)
+        if equality_result is not NotImplemented:
+            return not equality_result
+        return NotImplemented

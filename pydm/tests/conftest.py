@@ -9,9 +9,11 @@ import tempfile
 import logging
 
 from ..PyQt.QtCore import QObject, pyqtSignal, pyqtSlot
+from ..PyQt.QtGui import QColor
 
 from ..application import PyDMApplication
 from ..widgets.base import PyDMWidget
+
 
 pytest_plugins = 'pytester'
 
@@ -71,10 +73,19 @@ alarm_style_sheet_map = {
     }
 }
 
+local_connection_status_color_map = {
+        False: QColor(0, 0, 0),
+        True: QColor(0, 0, 0,)
+    }
 
 @pytest.fixture(scope="session")
 def test_alarm_style_sheet_map():
     return alarm_style_sheet_map
+
+
+@pytest.fixture(scope="session")
+def test_local_connection_status_color_map():
+    return local_connection_status_color_map
 
 
 class ConnectionSignals(QObject):
@@ -89,8 +100,8 @@ class ConnectionSignals(QObject):
     send_value_signal = pyqtSignal([int], [float], [str], [bool], [np.ndarray])
     unit_signal = pyqtSignal(str)
     prec_signal = pyqtSignal(int)
-    upper_ctrl_limit_signal = pyqtSignal([float], [int])
-    lower_ctrl_limit_signal = pyqtSignal([float], [int])
+    upper_ctrl_limit_signal = pyqtSignal([float])
+    lower_ctrl_limit_signal = pyqtSignal([float])
 
     def __init__(self):
         super(ConnectionSignals, self).__init__()
