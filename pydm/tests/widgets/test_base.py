@@ -19,11 +19,12 @@ from ...widgets.channel import PyDMChannel
 # --------------------
 
 @pytest.mark.parametrize("base_class, obj_class_name, obj_name, expected_style", [
-    (PyDMWritableWidget, PyDMPushButton, None, "PyDMWritableWidget {color: #EB0000; }"),
-    (PyDMWidget, PyDMLabel, None, "PyDMWidget {color: #EB0000; }"),
-    (PyDMWritableWidget, None, None, "PyDMWritableWidget {color: #EB0000; }"),
+    ("PyDMWritableWidget", PyDMPushButton, None, "PyDMWritableWidget {color: #EB0000; }"),
+    ("PyDMWidget", PyDMLabel, None, "PyDMWidget {color: #EB0000; }"),
+    ("PyDMWritableWidget", None, None, "PyDMWritableWidget {color: #EB0000; }"),
     (None, PyDMPushButton, None, "PyDMPushButton {color: #EB0000; }"),
     (None, PyDMPushButton, "PushButton", "PyDMPushButton#PushButton {color: #EB0000; }"),
+    (None, None, "PushButton", " {color: #EB0000; }"),
 ])
 def test_compose_stylesheet(monkeypatch, test_alarm_style_sheet_map, base_class, obj_class_name, obj_name,
                             expected_style):
@@ -40,10 +41,10 @@ def test_compose_stylesheet(monkeypatch, test_alarm_style_sheet_map, base_class,
         To temporarily override the behavior of a class
     test_alarm_style_sheet_map : fixture
         The widget's style map depending on the alarm event
-    base_class : type
-        The base class of the widget
+    base_class : str
+        The base class name of the widget
     obj_class_name : type
-        The class object of the widget
+        The object type of the widget -- used for creating a new widget object
     obj_name : str
         The name of a widget object
     expected_style : str
@@ -84,13 +85,17 @@ def test_is_channel_valid(channel_address, expected):
     assert is_channel_valid(channel_address) == expected
 
 
+test_local_connection_status_color_map = {
+        False: QColor(0, 0, 0),
+        True: QColor(0, 0, 0,)
+}
+
 @pytest.mark.parametrize("init_channel", [
     "CA://MA_TEST",
     "",
     None,
 ])
-def test_pydm_widget_construct(qtbot, test_alarm_style_sheet_map, test_local_connection_status_color_map,
-                               init_channel):
+def test_pydm_widget_construct(qtbot, test_alarm_style_sheet_map, init_channel):
     """
     Test the construction of the widget.
 
@@ -103,8 +108,6 @@ def test_pydm_widget_construct(qtbot, test_alarm_style_sheet_map, test_local_con
         Window for widget testing
     test_alarm_style_sheet_map : dict
         The map containing the styles corresponding to alarm events
-    test_local_connection_status_color_map : dict
-        The map containing the colors corresponding to the connection status
     init_channel : str
         The channel the widget is going to be initialized with
     """
@@ -178,7 +181,7 @@ def test_widget_ctx_menu(qtbot, init_channel):
     "",
     None,
 ])
-def test_init_for_designer_for_pydmwidget(qtbot, init_channel):
+def test_pydmwidget_init_for_designer(qtbot, init_channel):
     """
     Test the initialization sequence of a PyDMWidget object.
 
@@ -205,7 +208,7 @@ def test_init_for_designer_for_pydmwidget(qtbot, init_channel):
     "",
     None,
 ])
-def test_init_for_designer_for_pydmwritablewidget(qtbot, init_channel):
+def test_pydmwritablewidget_init_for_designer(qtbot, init_channel):
     """
     Test the initialization sequence of a PyDMWritableWidget object.
 
@@ -265,6 +268,27 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
         assert pydm_label.get_ctrl_limits()[0] == new_limit
 
 
+def test_force_redraw(qtbot, signals):
+    """
+    Test the forced redraw of a PyDMWidget object to ensure no exception will be raised.
+
+    Expectations:
+    The signal connected to the force_redraw slot will respond to the emit without raising any exception.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget test
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    """
+    pydm_label = PyDMLabel()
+    qtbot.addWidget(pydm_label)
+
+    signals.send_value_signal[int].connect(pydm_label.force_redraw)
+    signals.send_value_signal[int].emit(123)
+
+
 def test_precision_from_pv(qtbot):
     """
     Test setting the flag whether the precision is set to the widget from the PV.
@@ -310,7 +334,26 @@ def test_precision(qtbot):
     assert pydm_label.precision == precision * 4
 
 
-def test_channels_for_pydmwidget_base(qtbot):
+def test_channels_for_tools(qtbot):
+    """
+    Test the channel exposure for external tools.
+
+    Expectations:
+    The current default implementation is to provide the same channels via channel_for_tools as with channels(). This
+    test ensures that will happen.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
+    pydm_label = PyDMLabel()
+    qtbot.addWidget(pydm_label)
+
+    assert all(x == y for x, y in zip(pydm_label.channels(), pydm_label.channels_for_tools()))
+
+
+def test_pydmwidget_channels(qtbot):
     """
     Test the channels population for the widget whose base class PyDMWidget
 
@@ -330,7 +373,7 @@ def test_channels_for_pydmwidget_base(qtbot):
     assert pydm_label._channel is None
     assert pydm_label._channels is None
 
-    pydm_channels = pydm_label.channels_for_tools()[0]
+    pydm_channels = pydm_label.channels()[0]
 
     default_pydm_channels = PyDMChannel(address=pydm_label.channel,
                                         connection_slot=pydm_label.connectionStateChanged,
@@ -350,10 +393,10 @@ def test_channels_for_pydmwidget_base(qtbot):
                               upper_ctrl_limit_slot=None,
                               lower_ctrl_limit_slot=None)
     pydm_label._channels = [new_channel]
-    assert pydm_label.channels_for_tools()[0] == new_channel
+    assert pydm_label.channels()[0] == new_channel
 
 
-def test_channels_for_pydmwritablewidget_base(qtbot):
+def test_pydmwritablewidget_channels(qtbot):
     """
     Test the channels population for the widget whose base class PyDMWritableWidget
 
@@ -374,7 +417,7 @@ def test_channels_for_pydmwritablewidget_base(qtbot):
     assert pydm_lineedit._channel is None
     assert pydm_lineedit._channels is None
 
-    pydm_channels = pydm_lineedit.channels_for_tools()[0]
+    pydm_channels = pydm_lineedit.channels()[0]
 
     default_pydm_channels = PyDMChannel(address=pydm_lineedit.channel,
                                         connection_slot=pydm_lineedit.connectionStateChanged,
@@ -394,7 +437,7 @@ def test_channels_for_pydmwritablewidget_base(qtbot):
                               upper_ctrl_limit_slot=None,
                               lower_ctrl_limit_slot=None)
     pydm_lineedit._channels = [new_channel]
-    assert pydm_lineedit.channels_for_tools()[0] == new_channel
+    assert pydm_lineedit.channels()[0] == new_channel
 
 
 @pytest.mark.parametrize("channel_address, connected, write_access, is_app_read_only", [
@@ -409,8 +452,8 @@ def test_channels_for_pydmwritablewidget_base(qtbot):
     ("", False, False, False),
     (None, False, False, False),
 ])
-def test_check_enable_state_for_pydmwritablewidget(qtbot, monkeypatch, channel_address, connected, write_access,
-                                                   is_app_read_only):
+def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address, connected, write_access,
+                                         is_app_read_only):
     """
     Test the tooltip generated depending on the channel address validation, connection, write access, and whether the
     app is read-only. This test is for a widget whose base class is PyDMWritableWidget.
@@ -505,36 +548,3 @@ def test_qcolor_for_alarm(qtbot, alarm_type, alarm, expected_qcolor):
 
     qcolor = pydm_label.qcolor_for_alarm(alarm, alarm_type)
     assert qcolor == QColor(expected_qcolor["color"])
-
-
-# --------------------
-# NEGATIVE TEST CASES
-# --------------------
-
-@pytest.mark.parametrize("base_class, obj_class_name", [
-    (None, None),
-])
-def test_compose_stylesheet_wrong_base_type(test_alarm_style_sheet_map, base_class, obj_class_name):
-    """
-    Test whether an exception is correctly raised if the wrong base type is provided during style sheet composition.
-
-    Expectations:
-    The correct exception, with the correct error message, is raised
-
-    Parameters
-    ----------
-    test_alarm_style_sheet_map : fixture
-       The widget's style map depending on the alarm event
-    base_class : type
-       The base class of the widget
-    obj_class_name : type
-       The class object of the widget
-   """
-    obj = None
-    if obj_class_name:
-        obj = obj_class_name()
-
-    style = dict(test_alarm_style_sheet_map[PyDMWidget.ALARM_CONTENT][PyDMWidget.ALARM_MAJOR])
-    with pytest.raises(TypeError) as e:
-        compose_stylesheet(style, base_class=base_class, obj=obj)
-    assert all(x in str(e) for x in ("unsupported operand type(s) for +:", "'NoneType' and 'str'"))

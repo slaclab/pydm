@@ -13,7 +13,6 @@ from ..PyQt.QtGui import QColor
 
 from ..application import PyDMApplication
 from ..widgets.base import PyDMWidget
-from ..widgets.channel import PyDMChannel
 
 
 pytest_plugins = 'pytester'

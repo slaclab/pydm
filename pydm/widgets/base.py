@@ -28,12 +28,13 @@ def compose_stylesheet(style, base_class=None, obj=None):
         The composed stylesheet with the proper base class.
     """
     widget_selector = ""
-    if base_class is None and obj is not None:
-        base_class = type(obj).__name__
-        if hasattr(obj, "objectName") and obj.objectName() != "":
-            widget_selector = "#" + obj.objectName()
-    elif base_class:
-        base_class = base_class.__name__
+    if base_class is None:
+        if obj is not None:
+            base_class = type(obj).__name__
+            if hasattr(obj, "objectName") and obj.objectName() != "":
+                widget_selector = "#" + obj.objectName()
+        else:
+            base_class = ""
     style_str = base_class + widget_selector + " {"
     for k, v in style.items():
         style_str += "{}: {}; ".format(k, v)
