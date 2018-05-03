@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Channel &mdash; PyDM v1.1.0+113.gd481a6b documentation</title>
+  <title>Channel &mdash; PyDM v1.1.0+116.g419dfb8 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.1.0+113.gd481a6b
+                v1.1.0+116.g419dfb8
               </div>
             
           
@@ -187,7 +187,7 @@ the beginning of the <code class="xref py py-attr docutils literal notranslate">
 way to connect slots and signals to functionality within your PyDM
 Widget. Slots should be connected to functions on your created widget
 that perform actions upon changes. For instance, the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code>
-will be automatically called everytime a new value is found by the
+will be automatically called every time a new value is found by the
 plugin. This should probably linked to a function that updates the
 display to report the new value. Signals perform the reverse operation.
 These should be used to send new values back to the plugin to update
@@ -197,7 +197,7 @@ Widget a greater flexibility in choosing its underlying source. For
 instance, returning to the example of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code>,
 getting a value to display from channel access or from the EPICS Archiver
 are very different operations. However, actually displaying the value
-should be identical. By simplying attching your PyDM Widget’s display
+should be identical. By simply attaching your PyDM Widget’s display
 functionality to the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code> you have created a
 Widget that can do either interchangeably, all the user has to do is
 specify the correct address signature and the rest of the work is done
@@ -271,7 +271,7 @@ through the plugin</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v1.1.0+113.gd481a6b',
+            VERSION:'v1.1.0+116.g419dfb8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -292,9 +292,7 @@ through the plugin</li>
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 
