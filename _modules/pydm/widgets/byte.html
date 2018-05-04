@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.byte &mdash; PyDM v1.1.0+116.g419dfb8 documentation</title>
+  <title>pydm.widgets.byte &mdash; PyDM v1.1.0+119.gf83b9fc documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+116.g419dfb8
+                v1.1.0+119.gf83b9fc
               </div>
             
           
@@ -594,7 +594,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_bits</span> <span class="o">=</span> <span class="n">new_num_bits</span>
         <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indicators</span><span class="p">:</span>
             <span class="n">indicator</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_indicators</span> <span class="o">=</span> <span class="p">[</span><span class="n">PyDMBitIndicator</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_bits</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_indicators</span> <span class="o">=</span> <span class="p">[</span><span class="n">PyDMBitIndicator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_bits</span><span class="p">)]</span>
         <span class="n">old_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span>
         <span class="n">new_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Bit </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_bits</span><span class="p">)]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">old_label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">old_labels</span><span class="p">):</span>
@@ -648,7 +648,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="p">:</span>
             <span class="n">label</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">QLabel</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">new_labels</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">QLabel</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">new_labels</span><span class="p">]</span>
         <span class="c1"># Have to reset showLabels to hide or show all the new labels we just made.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">showLabels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_labels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
@@ -702,7 +702,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+116.g419dfb8',
+            VERSION:'v1.1.0+119.gf83b9fc',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
