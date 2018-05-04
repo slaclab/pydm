@@ -422,7 +422,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self._num_bits = new_num_bits
         for indicator in self._indicators:
             indicator.deleteLater()
-        self._indicators = [PyDMBitIndicator() for i in range(0, self._num_bits)]
+        self._indicators = [PyDMBitIndicator(self) for i in range(0, self._num_bits)]
         old_labels = self.labels
         new_labels = ["Bit {}".format(i) for i in range(0, self._num_bits)]
         for i, old_label in enumerate(old_labels):
@@ -476,7 +476,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         for label in self._labels:
             label.deleteLater()
-        self._labels = [QLabel(text) for text in new_labels]
+        self._labels = [QLabel(text, parent=self) for text in new_labels]
         # Have to reset showLabels to hide or show all the new labels we just made.
         self.showLabels = self._show_labels
         self.rebuild_layout()
