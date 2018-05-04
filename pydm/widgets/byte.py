@@ -422,7 +422,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self._num_bits = new_num_bits
         for indicator in self._indicators:
             indicator.deleteLater()
-        self._indicators = [PyDMBitIndicator() for i in range(0, self._num_bits)]
+        self._indicators = [PyDMBitIndicator(self) for i in range(0, self._num_bits)]
         old_labels = self.labels
         new_labels = ["Bit {}".format(i) for i in range(0, self._num_bits)]
         for i, old_label in enumerate(old_labels):
