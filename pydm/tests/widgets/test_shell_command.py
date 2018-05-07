@@ -254,3 +254,46 @@ def test_execute_command(qtbot, signals, caplog, cmd):
             assert "Error in command" in caplog.text
     else:
         assert pydm_shell_command.process is None
+
+
+@pytest.mark.parametrize("allow_multiple", [
+    True,
+    False,
+])
+def test_execute_multiple_commands(qtbot, signals, caplog, allow_multiple):
+    """
+    Test the widget's ability to execute multiple shell commands when this setting is enabled.
+
+    Expectations:
+    1. If the multiple execution setting is enabled, the widget must execute another shell command while the previous
+        one is still running.
+    2. If the multiple execution setting is disabled, the widget will log the error "Command already active."
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    caplog : fixture
+        To capture the log messages
+    allow_multiple : bool
+        True if multiple command executions are allowed for the widget; False otherwise
+    """
+    pydm_shell_command = PyDMShellCommand()
+    qtbot.addWidget(pydm_shell_command)
+
+    pydm_shell_command._allow_multiple = allow_multiple
+
+    cmd = "ping google.com -n 10" if platform.system() == "Windows" else "ping google.com"
+    pydm_shell_command.command = cmd
+    signals.send_value_signal[str].connect(pydm_shell_command.execute_command)
+    signals.send_value_signal[str].emit(cmd)
+    signals.send_value_signal[str].emit(cmd)
+
+    if not allow_multiple:
+        for record in caplog.records:
+            assert record.levelno == ERROR
+        assert "Command already active." in caplog.text
+    else:
+        assert not caplog.text

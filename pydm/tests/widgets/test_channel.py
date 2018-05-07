@@ -59,6 +59,7 @@ def test_construct(qtbot):
     pydm_lineedit = PyDMLineEdit()
     qtbot.addWidget(pydm_lineedit)
 
+    # Test equal and not equal comparisons
     pydm_lineedit_channels = pydm_lineedit.channels()[0]
     assert pydm_lineedit_channels != default_pydm_label_channels
 
@@ -66,4 +67,3 @@ def test_construct(qtbot):
     equal_result = not_same_type == default_pydm_label_channels
     not_equal_result = not_same_type != default_pydm_label_channels
     assert equal_result is False and not_equal_result is True
-

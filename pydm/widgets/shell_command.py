@@ -137,4 +137,4 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
             except Exception as exc:
                 logger.error("Error in command: {0}".format(exc))
         else:
-            logging.info("Command already active.")
+            logging.error("Command already active.")
