@@ -14,6 +14,7 @@ from .frame import PyDMFrame
 from .image import PyDMImageView
 from .label import PyDMLabel
 from .line_edit import PyDMLineEdit
+from .logdisplay import PyDMLogDisplay
 from .pushbutton import PyDMPushButton
 from .related_display_button import PyDMRelatedDisplayButton
 from .shell_command import PyDMShellCommand
@@ -76,6 +77,9 @@ PyDMLabelPlugin = qtplugin_factory(PyDMLabel, group=WidgetCategory.DISPLAY)
 
 # Line Edit plugin
 PyDMLineEditPlugin = qtplugin_factory(PyDMLineEdit, group=WidgetCategory.INPUT)
+
+# Log Viewer
+PyDMLogDisplayPlugin = qtplugin_factory(PyDMLogDisplay, group=WidgetCategory.DISPLAY)
 
 # Push Button plugin
 PyDMPushButtonPlugin = qtplugin_factory(PyDMPushButton, group=WidgetCategory.INPUT)
