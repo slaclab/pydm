@@ -56,20 +56,21 @@ class PyDMLogDisplay(QWidget):
 
     Parameters
     ----------
+    parent : QObject, optional
+
     logname : str
         Name of log to display in widget
 
     level : logging.Level
         Initial level of log display
 
-    parent : QObject, optional
     """
     terminator = '\n'
     levels = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
     default_format = '%(asctime)s %(message)s'
     default_level = logging.INFO
 
-    def __init__(self, logname=None, level=logging.NOTSET, parent=None):
+    def __init__(self, parent=None, logname=None, level=logging.NOTSET):
         QWidget.__init__(self, parent=parent)
         # Create Widgets
         self.label = QLabel('Minimum displayed log level: ')

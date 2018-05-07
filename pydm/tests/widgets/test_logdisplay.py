@@ -11,7 +11,7 @@ def log():
 
 
 def test_write(qtbot, log):
-    logd = PyDMLogDisplay(log.name, level=logging.INFO)
+    logd = PyDMLogDisplay(parent=None, logname=log.name, level=logging.INFO)
     logd.show()
     # Watch our error message show up in the log
     err_msg = 'This is a test of the emergency broadcast system'
