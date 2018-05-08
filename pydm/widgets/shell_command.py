@@ -4,6 +4,9 @@ import shlex, subprocess
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
     """
@@ -124,13 +127,14 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         """
 
         if self._command is None or self._command == "":
+            logger.info("The command is not set, so no command was executed.")
             return
 
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
             args = shlex.split(self._command)
             try:
-                self.process = subprocess.Popen(args)
+                self.process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             except Exception as exc:
-                print("Error in command: ", exc)
+                logger.error("Error in command: {0}".format(exc))
         else:
-            print("Command already active.")
+            logging.error("Command already active.")
