@@ -78,7 +78,7 @@ class PyDMApplication(QApplication):
         create a PyDMMainWindow in the initialization (Default is True).
     """
     # Instantiate our plugins.
-    plugins = {plugin.protocol: plugin() for plugin in data_plugins.plugin_modules}
+    plugins = data_plugins.plugin_modules
     tools = dict()
 
     # HACK. To be replaced with some stylesheet stuff eventually.
