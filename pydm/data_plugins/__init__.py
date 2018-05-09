@@ -9,7 +9,6 @@ import inspect
 import logging
 import imp
 import uuid
-import warnings
 from .plugin import PyDMPlugin
 
 logger = logging.getLogger(__name__)
@@ -66,11 +65,10 @@ def load_plugins_from_path(locations, token):
                         module = imp.load_source(temp_name,
                                                  os.path.join(root, name))
                     except Exception as e:
-                        warnings.warn("Unable to import plugin file {}."
-                                      "This plugin will be skipped."
-                                      "The exception raised was: {}"
-                                      "".format(name, e),
-                                      RuntimeWarning, stacklevel=2)
+                        logger.exception("Unable to import plugin file {}."
+                                         "This plugin will be skipped."
+                                         "The exception raised was: {}",
+                                         name, e)
                     classes = [obj for name, obj in inspect.getmembers(module)
                                if (inspect.isclass(obj)
                                    and issubclass(obj, PyDMPlugin)
@@ -80,24 +78,18 @@ def load_plugins_from_path(locations, token):
                     if len(classes) == 0:
                         continue
                     if len(classes) > 1:
-                        warnings.warn("More than one PyDMPlugin subclass "
-                                      "in file {}. The first occurrence "
-                                      "(in alphabetical order) will be "
-                                      "opened: {}"
-                                      "".format(name, classes[0].__name__),
-                                      RuntimeWarning,
-                                      stacklevel=0)
+                        logger.warning("More than one PyDMPlugin subclass "
+                                       "in file {}. The first occurrence "
+                                       "(in alphabetical order) will be "
+                                       "opened: {}", name, classes[0].__name__)
                     plugin = classes[0]
                     if plugin.protocol is not None:
                         if plugin_modules.get(plugin.protocol) != plugin:
-                            warnings.warn("More than one plugin is attempting "
-                                          "to register the {protocol} "
-                                          "protocol. Which plugin will get "
-                                          "called to handle this protocol "
-                                          "is undefined."
-                                          "".format(protocol=plugin.protocol,
-                                                    plugin=plugin.__name__),
-                                          RuntimeWarning, stacklevel=0)
+                            logger.warning("More than one plugin is "
+                                           "attempting to register the %s "
+                                           "protocol. Which plugin will get "
+                                           "called to handle this protocol "
+                                           "is undefined.", plugin.protocol)
                         add_plugin(plugin)
 
 
