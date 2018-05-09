@@ -16,7 +16,7 @@ from .plugin import PyDMPlugin
 
 logger = logging.getLogger(__name__)
 plugin_dir = os.path.dirname(os.path.realpath(__file__))
-plugin_modules = []
+plugin_modules = {}
 
 """
 Loads all the data plugins available at the given
@@ -37,6 +37,23 @@ locations.insert(0, plugin_dir)
 logger.info("*"*80)
 logger.info("* Loading PyDM Data Plugins")
 logger.info("*"*80)
+
+
+def add_plugin(plugin):
+    """
+    Add a PyDM plugin to the global registry of protocol vs. plugins
+
+    Parameters
+    ----------
+    plugin: PyDMPlugin
+    """
+    # Warn users if we are overwriting a protocol which already has a plugin
+    if plugin.protocol in plugin_modules:
+        logger.warning("Replacing %s plugin with %s for use with protocol %s",
+                       plugin, plugin_modules[plugin.protocol],
+                       plugin.protocol)
+    plugin_modules[plugin.protocol] = plugin
+
 
 for loc in locations:
     for root, _, files in os.walk(loc):
