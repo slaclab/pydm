@@ -68,7 +68,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
         self._pen_color = QColor(0, 0, 0)
 
     def sizeHint(self):
-        return QSize(100,100)
+        return QSize(100, 100)
 
     def paintEvent(self, _):
         """
@@ -91,7 +91,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
         self._painter.setRenderHint(QPainter.Antialiasing)
 
         color = self._default_color
-        if self._alarm_sensitive_content and self._alarm_state != 0 and self.channels() is not None:
+        if self._alarm_sensitive_content and self._alarm_state != PyDMWidget.ALARM_NONE and self.channels() is not None:
             alarm_color = self._style.get("color", None)
             if alarm_color is not None:
                 color = QColor(alarm_color)
@@ -193,7 +193,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
         bool
             True if the drawing has a border, False otherwise.
         """
-        if self._pen.style() != Qt.NoPen and self._pen.width() > 0:
+        if self._pen.style() != Qt.NoPen and self._pen_width > 0:
             return True
         else:
             return False
