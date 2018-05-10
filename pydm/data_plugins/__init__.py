@@ -50,6 +50,7 @@ def load_plugins_from_path(locations, token):
     plugins: dict
         Dictionary of plugins
     """
+    added_plugins = dict()
     for loc in locations:
         for root, _, files in os.walk(loc):
             if root.split(os.path.sep)[-1].startswith("__"):
@@ -90,7 +91,11 @@ def load_plugins_from_path(locations, token):
                                            "protocol. Which plugin will get "
                                            "called to handle this protocol "
                                            "is undefined.", plugin.protocol)
+                        # Add to global plugin list
                         add_plugin(plugin)
+                        # Add to return dictionary of added plugins
+                        added_plugins[plugin.protocol] = plugin
+    return added_plugins
 
 
 # Load the data plugins from PYDM_DATA_PLUGINS_PATH
