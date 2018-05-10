@@ -296,9 +296,14 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             if self.imageWidth < 1:
                 # We don't have a width for this image yet, so we can't draw it
                 return
-            img = self.image_waveform.reshape(
-                self.imageWidth, -1,
-                order=self.reading_orders[self._reading_order])
+            if self.readingOrder == ReadingOrder.Clike:
+                img = self.image_waveform.reshape(
+                    (-1, self.imageWidth),
+                    order=self.reading_orders[self._reading_order])
+            else:
+                img = self.image_waveform.reshape(
+                    (self.imageWidth, -1),
+                    order=self.reading_orders[self._reading_order])
         else:
             img = self.image_waveform
 
