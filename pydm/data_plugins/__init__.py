@@ -48,7 +48,7 @@ def load_plugins_from_path(locations, token):
     Returns
     -------
     plugins: dict
-        Dictionary of plugins
+        Dictionary of plugins add from this folder
     """
     added_plugins = dict()
     for loc in locations:
