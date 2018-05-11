@@ -32,12 +32,11 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         The channel to be used by the widget to receive the image width
         information
     """
+    ReadingOrder = ReadingOrder
 
     Q_ENUMS(ReadingOrder)
     Q_ENUMS(PyDMColorMap)
 
-    reading_orders = {ReadingOrder.Fortranlike: 'F',
-                      ReadingOrder.Clike: 'C'}
     color_maps = cmaps
 
     def __init__(self, parent=None, image_channel=None, width_channel=None):
@@ -297,13 +296,11 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
                 # We don't have a width for this image yet, so we can't draw it
                 return
             if self.readingOrder == ReadingOrder.Clike:
-                img = self.image_waveform.reshape(
-                    (-1, self.imageWidth),
-                    order=self.reading_orders[self._reading_order])
+                img = self.image_waveform.reshape((-1, self.imageWidth),
+                                                  order='C')
             else:
-                img = self.image_waveform.reshape(
-                    (self.imageWidth, -1),
-                    order=self.reading_orders[self._reading_order])
+                img = self.image_waveform.reshape((self.imageWidth, -1),
+                                                  order='F')
         else:
             img = self.image_waveform
 
