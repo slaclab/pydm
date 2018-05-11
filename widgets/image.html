@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMImageView &mdash; PyDM v1.1.0+122.g884efe5 documentation</title>
+  <title>PyDMImageView &mdash; PyDM v1.1.0+127.g67d7779 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.1.0+122.g884efe5
+                v1.1.0+127.g67d7779
               </div>
             
           
@@ -202,6 +202,11 @@
 <dt id="pydm.widgets.image.PyDMImageView">
 <em class="property">class </em><code class="descclassname">pydm.widgets.image.</code><code class="descname">PyDMImageView</code><span class="sig-paren">(</span><em>parent=None</em>, <em>image_channel=None</em>, <em>width_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView" title="Permalink to this definition">¶</a></dt>
 <dd><p>A PyQtGraph ImageView with support for Channels and more from PyDM.</p>
+<p>If there is no <code class="xref py py-attr docutils literal notranslate"><span class="pre">channelWidth</span></code> it is possible to define the width of
+the image with the <code class="xref py py-attr docutils literal notranslate"><span class="pre">width</span></code> property.</p>
+<p>The <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.normalizeData" title="pydm.widgets.image.PyDMImageView.normalizeData"><code class="xref py py-attr docutils literal notranslate"><span class="pre">normalizeData</span></code></a> property defines if the colors of the images are
+relative to the <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.colorMapMin" title="pydm.widgets.image.PyDMImageView.colorMapMin"><code class="xref py py-attr docutils literal notranslate"><span class="pre">colorMapMin</span></code></a> and <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.colorMapMax" title="pydm.widgets.image.PyDMImageView.colorMapMax"><code class="xref py py-attr docutils literal notranslate"><span class="pre">colorMapMax</span></code></a> property or to
+the minimum and maximum values of the image.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -216,6 +221,12 @@ information</li>
 </tr>
 </tbody>
 </table>
+<dl class="class">
+<dt id="pydm.widgets.image.PyDMImageView.ReadingOrder">
+<em class="property">class </em><code class="descname">ReadingOrder</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.ReadingOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to build ReadingOrder ENUM property.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydm.widgets.image.PyDMImageView.channels">
 <code class="descname">channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.channels" title="Permalink to this definition">¶</a></dt>
@@ -413,7 +424,7 @@ a flag requesting that the image be redrawn.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">ReadingOrder</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pydm.widgets.image.PyDMImageView.ReadingOrder" title="pydm.widgets.image.PyDMImageView.ReadingOrder">ReadingOrder</a></td>
 </tr>
 </tbody>
 </table>
@@ -538,7 +549,7 @@ a flag requesting that the image be redrawn.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v1.1.0+122.g884efe5',
+            VERSION:'v1.1.0+127.g67d7779',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.image &mdash; PyDM v1.1.0+122.g884efe5 documentation</title>
+  <title>pydm.widgets.image &mdash; PyDM v1.1.0+127.g67d7779 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+122.g884efe5
+                v1.1.0+127.g67d7779
               </div>
             
           
@@ -194,6 +194,13 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A PyQtGraph ImageView with support for Channels and more from PyDM.</span>
 
+<span class="sd">    If there is no :attr:`channelWidth` it is possible to define the width of</span>
+<span class="sd">    the image with the :attr:`width` property.</span>
+
+<span class="sd">    The :attr:`normalizeData` property defines if the colors of the images are</span>
+<span class="sd">    relative to the :attr:`colorMapMin` and :attr:`colorMapMax` property or to</span>
+<span class="sd">    the minimum and maximum values of the image.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    parent : QWidget</span>
@@ -205,11 +212,11 @@
 <span class="sd">        information</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">ReadingOrder</span> <span class="o">=</span> <span class="n">ReadingOrder</span>
+
     <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">ReadingOrder</span><span class="p">)</span>
     <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">PyDMColorMap</span><span class="p">)</span>
 
-    <span class="n">reading_orders</span> <span class="o">=</span> <span class="p">{</span><span class="n">ReadingOrder</span><span class="o">.</span><span class="n">Fortranlike</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span>
-                      <span class="n">ReadingOrder</span><span class="o">.</span><span class="n">Clike</span><span class="p">:</span> <span class="s1">&#39;C&#39;</span><span class="p">}</span>
     <span class="n">color_maps</span> <span class="o">=</span> <span class="n">cmaps</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">image_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -313,7 +320,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">=</span> <span class="n">new_min</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span>
 
     <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">colorMapMax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -340,7 +346,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span> <span class="o">=</span> <span class="n">new_max</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMImageView.setColorMapLimits"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.setColorMapLimits">[docs]</a>    <span class="k">def</span> <span class="nf">setColorMapLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mn</span><span class="p">,</span> <span class="n">mx</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -356,8 +361,7 @@
         <span class="k">if</span> <span class="n">mn</span> <span class="o">&gt;=</span> <span class="n">mx</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cm_max</span> <span class="o">=</span> <span class="n">mx</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">=</span> <span class="n">mn</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setColorMap</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cm_min</span> <span class="o">=</span> <span class="n">mn</span></div>
 
     <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="n">PyDMColorMap</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">colorMap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -468,9 +472,12 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">imageWidth</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="c1"># We don&#39;t have a width for this image yet, so we can&#39;t draw it</span>
                 <span class="k">return</span>
-            <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">imageWidth</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-                <span class="n">order</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reading_orders</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_reading_order</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">readingOrder</span> <span class="o">==</span> <span class="n">ReadingOrder</span><span class="o">.</span><span class="n">Clike</span><span class="p">:</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imageWidth</span><span class="p">),</span>
+                                                  <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">imageWidth</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+                                                  <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span>
 
@@ -704,7 +711,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+122.g884efe5',
+            VERSION:'v1.1.0+127.g67d7779',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
