@@ -22,6 +22,13 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
     """
     A PyQtGraph ImageView with support for Channels and more from PyDM.
 
+    If there is no :attr:`channelWidth` it is possible to define the width of
+    the image with the :attr:`width` property.
+
+    The :attr:`normalizeData` property defines if the colors of the images are
+    relative to the :attr:`colorMapMin` and :attr:`colorMapMax` property or to
+    the minimum and maximum values of the image.
+
     Parameters
     ----------
     parent : QWidget
@@ -32,6 +39,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         The channel to be used by the widget to receive the image width
         information
     """
+
     ReadingOrder = ReadingOrder
 
     Q_ENUMS(ReadingOrder)
