@@ -148,7 +148,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             self.cm_min = new_min
             if self.cm_min > self.cm_max:
                 self.cm_max = self.cm_min
-            self.setColorMap()
 
     @pyqtProperty(float)
     def colorMapMax(self):
@@ -175,7 +174,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             self.cm_max = new_max
             if self.cm_max < self.cm_min:
                 self.cm_min = self.cm_max
-            self.setColorMap()
 
     def setColorMapLimits(self, mn, mx):
         """
@@ -192,7 +190,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             return
         self.cm_max = mx
         self.cm_min = mn
-        self.setColorMap()
 
     @pyqtProperty(PyDMColorMap)
     def colorMap(self):
