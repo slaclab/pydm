@@ -105,6 +105,66 @@ def test_pydmdrawing_get_center(qtbot, monkeypatch, widget_width, widget_height,
     assert pydm_drawing.get_center() == expected_results
 
 
+@pytest.mark.parametrize("width, height, rotation, pen_width, has_border, max_size, force_no_pen, expected", [
+    # Zero rotation, with typical width, height, pen_width, and variable max_size, has_border, and force_no_pen
+    # width > height
+    (25.53, 10.35, 0, 2, True, True, True, (-12.765, -5.175, 25.53, 10.35)),
+    (25.53, 10.35, 0, 2, True, True, False, (-12.765, -5.175, 25.53, 10.35)),
+    (25.53, 10.35, 0, 2, True, False, True,  (-12.765, -5.175, 25.53, 10.35)),
+    (25.53, 10.35, 0, 2, True, False, False,  (-12.765, -5.175, 25.53, 10.35)),
+    (25.53, 10.35, 0, 2, False, True, True, (-12.765, -5.175, 25.53, 10.35)),
+    (25.53, 10.35, 0, 2, False, True, False, (-12.765, -5.175, 25.53, 10.35)),
+    (25.53, 10.35, 0, 2, False, False, True, (-12.765, -5.175, 25.53, 10.35)),
+
+    # width < height
+    (10.35, 25.53, 0, 2, True, True, True, (-5.175, -12.765, 10.35, 25.53)),
+    (10.35, 25.53, 0, 2, True, True, False, (-5.175, -12.765, 10.35, 25.53)),
+    (10.35, 25.53, 0, 2, True, False, True, (-5.175, -12.765, 10.35, 25.53)),
+    (10.35, 25.53, 0, 2, True, False, False, (-5.175, -12.765, 10.35, 25.53)),
+    (10.35, 25.53, 0, 2, False, True, True, (-5.175, -12.765, 10.35, 25.53)),
+    (10.35, 25.53, 0, 2, False, True, False, (-5.175, -12.765, 10.35, 25.53)),
+    (10.35, 25.53, 0, 2, False, False, True, (-5.175, -12.765, 10.35, 25.53)),
+
+    # width == height
+    (10.35, 10.35, 0, 2, True, True, True, (-5.175, -5.175, 10.35, 10.35)),
+
+    # Variable rotation, max_size, and force_no_pen, has_border is True
+    (25.53, 10.35, 45, 2, True, True, True, (-12.765, -5.175, 25.53, 10.35)),
+    (25.53, 10.35, 90, 2, True, True, False, (-12.765, -5.175, 25.53, 10.35)),
+    (25.53, 10.35, 180, 2, True, False, True, (-12.765, -5.175, 25.53, 10.35)),
+    (25.53, 10.35, 270, 2, True, False, False, (-12.765, -5.175, 25.53, 10.35)),
+    (25.53, 10.35, 360, 2, False, True, True, (-12.765, -5.175, 25.53, 10.35)),
+    (25.53, 10.35, 0.72, 2, False, True, False, (-12.765, -5.175, 25.53, 10.35)),
+    (25.53, 10.35, 71.333, 2, False, False, True, (-12.765, -5.175, 25.53, 10.35)),
+])
+def test_pydmdrawing_get_bounds(qtbot, monkeypatch, width, height, rotation, pen_width, has_border, max_size,
+                                force_no_pen, expected):
+    """
+    Test the useful area calculations and compare the resulted tuple to the expected one
+    Parameters
+    ----------
+    qtbot
+    max_size
+    force_no_pen
+    expected
+    """
+    pydm_drawing = PyDMDrawing()
+    qtbot.addWidget(pydm_drawing)
+
+    monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
+    monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
+    monkeypatch.setattr(PyDMDrawing, "rotation", lambda *args: rotation)
+    monkeypatch.setattr(PyDMDrawing, "penWidth", lambda *args: pen_width)
+
+    if has_border:
+        monkeypatch.setattr(PyDMDrawing, "has_border", lambda *args: True)
+    else:
+        monkeypatch.setattr(PyDMDrawing, "has_border", lambda *args: False)
+
+    calculated_bounds = pydm_drawing.get_bounds(max_size, force_no_pen)
+    assert calculated_bounds == expected
+
+
 @pytest.mark.parametrize("pen_style, pen_width, expected_result", [
     (Qt.NoPen, 0, False),
     (Qt.NoPen, 1, False),
@@ -141,3 +201,25 @@ def test_pydmdrawing_is_square(qtbot, monkeypatch, width, height, expected_resul
     assert pydm_drawing.is_square() == expected_result
 
 
+@pytest.mark.parametrize("width, height, rotation, expected", [
+    # Zero rotation, with typical width, height, pen_width, and variable max_size, has_border, and force_no_pen
+    # width > height
+    (25.53, 10.35, 0, (-12.765, -5.175, 25.53, 10.35)),
+    (10.35, 25.53, 0, (-12.765, -5.175, 25.53, 10.35)),
+    (25.53, 10.35, 45, (-12.765, -5.175, 25.53, 10.35)),
+    (10.35, 25.53, 45, (-12.765, -5.175, 25.53, 10.35)),
+    (10.35, 25.53, 360, (-12.765, -5.175, 25.53, 10.35)),
+    (10.35, 25.53, -45, (-12.765, -5.175, 25.53, 10.35)),
+    (10.35, 25.53, -270, (-12.765, -5.175, 25.53, 10.35)),
+    (10.35, 25.53, -360, (-12.765, -5.175, 25.53, 10.35)),
+])
+def test_get_inner_max(qtbot, monkeypatch, width, height, rotation, expected):
+    pydm_drawing = PyDMDrawing()
+    qtbot.addWidget(pydm_drawing)
+
+    monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
+    monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
+    monkeypatch.setattr(PyDMDrawing, "rotation", lambda *args: rotation)
+
+    calculated_inner_max = pydm_drawing.get_inner_max()
+    assert calculated_inner_max == expected
