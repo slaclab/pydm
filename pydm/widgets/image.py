@@ -22,6 +22,13 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
     """
     A PyQtGraph ImageView with support for Channels and more from PyDM.
 
+    If there is no :attr:`channelWidth` it is possible to define the width of
+    the image with the :attr:`width` property.
+
+    The :attr:`normalizeData` property defines if the colors of the images are
+    relative to the :attr:`colorMapMin` and :attr:`colorMapMax` property or to
+    the minimum and maximum values of the image.
+
     Parameters
     ----------
     parent : QWidget
@@ -33,11 +40,11 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         information
     """
 
+    ReadingOrder = ReadingOrder
+
     Q_ENUMS(ReadingOrder)
     Q_ENUMS(PyDMColorMap)
 
-    reading_orders = {ReadingOrder.Fortranlike: 'F',
-                      ReadingOrder.Clike: 'C'}
     color_maps = cmaps
 
     def __init__(self, parent=None, image_channel=None, width_channel=None):
@@ -141,7 +148,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             self.cm_min = new_min
             if self.cm_min > self.cm_max:
                 self.cm_max = self.cm_min
-            self.setColorMap()
 
     @pyqtProperty(float)
     def colorMapMax(self):
@@ -168,7 +174,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             self.cm_max = new_max
             if self.cm_max < self.cm_min:
                 self.cm_min = self.cm_max
-            self.setColorMap()
 
     def setColorMapLimits(self, mn, mx):
         """
@@ -185,7 +190,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             return
         self.cm_max = mx
         self.cm_min = mn
-        self.setColorMap()
 
     @pyqtProperty(PyDMColorMap)
     def colorMap(self):
@@ -296,9 +300,12 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             if self.imageWidth < 1:
                 # We don't have a width for this image yet, so we can't draw it
                 return
-            img = self.image_waveform.reshape(
-                self.imageWidth, -1,
-                order=self.reading_orders[self._reading_order])
+            if self.readingOrder == ReadingOrder.Clike:
+                img = self.image_waveform.reshape((-1, self.imageWidth),
+                                                  order='C')
+            else:
+                img = self.image_waveform.reshape((self.imageWidth, -1),
+                                                  order='F')
         else:
             img = self.image_waveform
 
