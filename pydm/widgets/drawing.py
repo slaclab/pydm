@@ -1,5 +1,9 @@
 import math
 import os
+
+import logging
+logger = logging.getLogger(__name__)
+
 from ..PyQt.QtGui import QApplication, QWidget, QColor, QPainter, QBrush, QPen, QPolygon, QPixmap, QStyle, QStyleOption
 from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, QSize, pyqtSlot
 from ..PyQt.QtDesigner import QDesignerFormWindowInterface
@@ -225,6 +229,15 @@ class PyDMDrawing(QWidget, PyDMWidget):
         angle = math.radians(self._rotation)
         origWidth = self.width()
         origHeight = self.height()
+
+        if origWidth == 0:
+            logger.error("Invalid width. The value must be greater than {0}".format(origWidth))
+            return
+
+        if origHeight == 0:
+            logger.error("Invalid height. The value must be greater than {0}".format(origHeight))
+            return
+
         if (origWidth <= origHeight):
             w0 = origWidth
             h0 = origHeight
@@ -428,7 +441,7 @@ class PyDMDrawingImage(PyDMDrawing):
                 designer_window.fileNameChanged.connect(self.designer_form_saved)
 
     def get_designer_window(self):
-        #Internal function to find the designer window that owns this widget.
+        # Internal function to find the designer window that owns this widget.
         p = self.parent()
         while p is not None:
             if isinstance(p, QDesignerFormWindowInterface):
