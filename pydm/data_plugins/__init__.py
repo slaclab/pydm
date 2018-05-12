@@ -22,13 +22,14 @@ def add_plugin(plugin):
     Parameters
     ----------
     plugin: PyDMPlugin
+        The class of plugin to instantiate
     """
     # Warn users if we are overwriting a protocol which already has a plugin
     if plugin.protocol in plugin_modules:
         logger.warning("Replacing %s plugin with %s for use with protocol %s",
                        plugin, plugin_modules[plugin.protocol],
                        plugin.protocol)
-    plugin_modules[plugin.protocol] = plugin
+    plugin_modules[plugin.protocol] = plugin()
 
 
 def load_plugins_from_path(locations, token):
