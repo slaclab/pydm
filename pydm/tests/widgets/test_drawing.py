@@ -30,6 +30,21 @@ from ...utilities import is_pydm_app
     (-1, -16),
 ])
 def test_deg_to_qt(deg, expected_qt_deg):
+    """
+    Test the conversion from degrees to Qt degrees.
+
+    Expections:
+    The angle measurement in degrees is converted correctly to Qt degrees, which are 16 times more than the degree
+    value, i.e. 1 degree = 16 Qt degrees.
+
+    Parameters
+    ----------
+    deg : int, float
+        The angle value in degrees
+
+    expected_qt_deg : int, floag
+        The expected Qt degrees after the conversion
+    """
     assert deg_to_qt(deg) == expected_qt_deg
 
 
@@ -41,10 +56,36 @@ def test_deg_to_qt(deg, expected_qt_deg):
     (16.16, 1.01)
 ])
 def test_qt_to_deg(qt_deg, expected_deg):
+    """
+       Test the conversion from Qt degrees to degrees.
+
+       Expections:
+       The angle measurement in Qt degrees is converted correctly to degrees, which are 16 times less than the Qt degree
+       value, i.e. 1 Qt degree = 1/16 degree
+
+       Parameters
+       ----------
+       qt_deg : int, float
+           The angle value in Qt degrees
+
+       expected_deg : int, floag
+           The expected degrees after the conversion
+       """
     assert qt_to_deg(qt_deg) == expected_deg
 
 
 def test_pydmdrawing_construct(qtbot):
+    """
+    Test the construction of a PyDM base object.
+
+    Expectations:
+    Attributes are assigned with the appropriate default values.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
     pydm_drawing = PyDMDrawing()
     qtbot.addWidget(pydm_drawing)
 
@@ -59,6 +100,17 @@ def test_pydmdrawing_construct(qtbot):
 
 
 def test_pydmdrawing_sizeHint(qtbot):
+    """
+    Test the default size of the widget.
+
+    Expectations:
+    The size hint is a fixed size.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
     pydm_drawing = PyDMDrawing()
     qtbot.addWidget(pydm_drawing)
 
@@ -74,12 +126,19 @@ def test_pydmdrawing_paintEvent(qtbot, signals, test_alarm_style_sheet_map, alar
     Test the paintEvent handling of the widget. This test method will also execute PyDMDrawing alarm_severity_changed
     and draw_item().
 
+    Expectations:
+    The paintEvent will be triggered, and the widget's brush color is correctly set.
+
     Parameters
     ----------
-    qtbot
-    signals
-    test_alarm_style_sheet_map
-    alarm_sensitive_content
+    qtbot : fixture
+        Window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    test_alarm_style_sheet_map : fixture
+        The widget's style map, e.g. color, for different alarm severity levels
+    alarm_sensitive_content : bool
+        True if the widget will be redraw with a different color if an alarm is triggered; False otherwise
     """
     pydm_drawing = PyDMDrawing()
     qtbot.addWidget(pydm_drawing)
@@ -94,7 +153,6 @@ def test_pydmdrawing_paintEvent(qtbot, signals, test_alarm_style_sheet_map, alar
 
     def wait_focus():
         return pydm_drawing.hasFocus()
-
     qtbot.waitUntil(wait_focus, timeout=5000)
 
     alarm_color = test_alarm_style_sheet_map[PyDMWidget.ALARM_CONTENT][pydm_drawing._alarm_state]
@@ -111,6 +169,25 @@ def test_pydmdrawing_paintEvent(qtbot, signals, test_alarm_style_sheet_map, alar
     (0, 0, (0, 0))
 ])
 def test_pydmdrawing_get_center(qtbot, monkeypatch, widget_width, widget_height, expected_results):
+    """
+    Test the calculation of the widget's center from its width and height.
+
+    Expectations:
+    The center of the widget is correctly calculated.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override default attribute values
+    widget_width : int, float
+        The width of the widget
+    widget_height : int, float
+        The height of the widget
+    expected_results : tuple
+        The location of the center. This is a tuple of the distance from the width and that from the height.
+    """
     pydm_drawing = PyDMDrawing()
     qtbot.addWidget(pydm_drawing)
 
@@ -162,13 +239,24 @@ def test_pydmdrawing_get_center(qtbot, monkeypatch, widget_width, widget_height,
 def test_pydmdrawing_get_bounds(qtbot, monkeypatch, width, height, rotation_deg, pen_width, has_border, max_size,
                                 force_no_pen, expected):
     """
-    Test the useful area calculations and compare the resulted tuple to the expected one
+    Test the useful area calculations and compare the resulted tuple to the expected one.
+
+    Expectations:
+    The drawable area boundaries are correctly calculated.
+
     Parameters
     ----------
-    qtbot
-    max_size
-    force_no_pen
-    expected
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override default attribute values
+    max_size : bool
+        If True, draw the widget within the maximum rectangular dimensions given by ```get_inner_max```. If False,
+        draw the widget within the user-provided width and height
+    force_no_pen : bool
+        If True, consider the pen width while calculating the bounds. If False, do not take into account the pen width
+    expected : tuple
+        The (x, y) coordinates of the starting point, and the maximum width and height of the rendered image
     """
     pydm_drawing = PyDMDrawing()
     qtbot.addWidget(pydm_drawing)
@@ -197,6 +285,23 @@ def test_pydmdrawing_get_bounds(qtbot, monkeypatch, width, height, rotation_deg,
     (Qt.DashLine, 10, True)
 ])
 def test_pydmdrawing_has_border(qtbot, pen_style, pen_width, expected_result):
+    """
+    Test the determination whether the widget will be drawn with a border, taking into account the pen style and width
+
+    Expectations:
+    The widget has a border if the pen style is not Qt.NoPen, and the pen width is greater than 0.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    pen_style : PenStyle
+        The style (patterns) of the pen
+    pen_width : int
+        The thickness of the pen's lines
+    expected_result : bool
+        True if the widget has a border, False otherwise
+    """
     pydm_drawing = PyDMDrawing()
     qtbot.addWidget(pydm_drawing)
 
@@ -215,6 +320,25 @@ def test_pydmdrawing_has_border(qtbot, pen_style, pen_width, expected_result):
     (70, 70, True),
 ])
 def test_pydmdrawing_is_square(qtbot, monkeypatch, width, height, expected_result):
+    """
+    Check if the widget has the same width and height values.
+
+    Expectations:
+    The widget's squareness checking returns True if its width and height are the same; False otherwise.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override dialog behaviors
+    width : int, float
+        The width of the widget
+    height : int, float
+        The height of a widget
+    expected_result
+        True if the widget has equal width and height; False otherwise
+    """
     pydm_drawing = PyDMDrawing()
     qtbot.addWidget(pydm_drawing)
 
