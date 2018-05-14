@@ -78,14 +78,9 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
 
     def update_format_string(self):
         """
-        Reconstruct the format string to be used when representing the
-        output value.
-
-        Returns
-        -------
-        format_string : str
-            The format string to be used including or not the precision
-            and unit
+        Indicate a PV property (value, unit, precision) or PyDMWidget
+        property (precision, showUnits, step_size, showStepExponent)
+        has changed.
         """
         if self._show_units:
             units = " {}".format(self._unit)

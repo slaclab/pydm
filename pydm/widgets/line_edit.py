@@ -252,7 +252,7 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
 
         if self._display_format_type == DisplayFormat.Default:
             if isinstance(new_value, (int, float)):
-                self._display = str(self.format_string.format(new_value))
+                self._display = self.get_formatted_string(new_value)
                 self.setText(self._display)
                 return
 

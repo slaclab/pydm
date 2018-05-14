@@ -140,15 +140,15 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         if self.minimum is None:
             self.low_lim_label.setText("")
         else:
-            self.low_lim_label.setText(self.format_string.format(self.minimum))
+            self.low_lim_label.setText(self.get_formatted_string(self.minimum))
         if self.maximum is None:
             self.high_lim_label.setText("")
         else:
-            self.high_lim_label.setText(self.format_string.format(self.maximum))
+            self.high_lim_label.setText(self.get_formatted_string(self.maximum))
         if self.value is None:
             self.value_label.setText("")
         else:
-            self.value_label.setText(self.format_string.format(self.value))
+            self.value_label.setText(self.get_formatted_string(self.value))
 
     def reset_slider_limits(self):
         """
@@ -218,7 +218,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         """
         PyDMWritableWidget.value_changed(self, new_val)
         if hasattr(self, "value_label"):
-            self.value_label.setText(self.format_string.format(self.value))
+            self.value_label.setText(self.get_formatted_string(self.value))
         if not self._slider.isSliderDown():
             self.set_slider_to_closest_value(self.value)
 
@@ -263,15 +263,11 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
 
     def update_format_string(self):
         """
-        Reconstruct the format string to be used when representing the
-        output value.
-
-        Returns
-        -------
-        format_string : str
-            The format string to be used including or not the precision
-            and unit
+        Indicate a PV property (value, unit, precision) or PyDMWidget
+        property (precision, showUnits, step_size, showStepExponent)
+        has changed.
         """
+
         fs = PyDMWritableWidget.update_format_string(self)
         self.update_labels()
         return fs

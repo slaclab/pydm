@@ -70,11 +70,4 @@ class PyDMLabel(QLabel, PyDMWidget, DisplayFormat):
             except IndexError:
                 self.setText("**INVALID**")
             return
-        # If the value is a number (float or int), display it using a
-        # format string if necessary.
-        if isinstance(new_value, (int, float)):
-            self.setText(self.format_string.format(new_value))
-            return
-        # If you made it this far, just turn whatever the heck the value
-        # is into a string and display it.
-        self.setText(str(new_value))
+        self.setText(self.get_formatted_string(new_value))
