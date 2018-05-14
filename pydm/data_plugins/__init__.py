@@ -86,7 +86,7 @@ def load_plugins_from_path(locations, token):
                                        "opened: {}", name, classes[0].__name__)
                     plugin = classes[0]
                     if plugin.protocol is not None:
-                        if plugin_modules.get(plugin.protocol) != plugin:
+                        if plugin_modules.get(plugin.protocol, plugin) != plugin:
                             logger.warning("More than one plugin is "
                                            "attempting to register the %s "
                                            "protocol. Which plugin will get "
