@@ -247,7 +247,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
         # Angle normalization in range [-PI..PI)
         ang = angle - math.floor((angle + math.pi) / (2 * math.pi)) * 2 * math.pi
         ang = math.fabs(ang)
-        if (ang > math.pi / 2):
+        if ang > math.pi / 2:
             ang = math.pi - ang
         c = w0 / (h0 * math.sin(ang) + w0 * math.cos(ang))
         w = 0
@@ -577,6 +577,13 @@ class PyDMDrawingTriangle(PyDMDrawing):
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingTriangle, self).__init__(parent, init_channel)
 
+    def _calculate_drawing_points(self, x, y, w, h):
+        return [
+            QPoint(x, h / 2.0),
+            QPoint(x, y),
+            QPoint(w / 2.0, y)
+        ]
+
     def draw_item(self):
         """
         Draws the triangle after setting up the canvas with a call to
@@ -584,11 +591,8 @@ class PyDMDrawingTriangle(PyDMDrawing):
         """
         super(PyDMDrawingTriangle, self).draw_item()
         x, y, w, h = self.get_bounds(maxsize=True)
-        points = [
-            QPoint(x, h / 2.0),
-            QPoint(x, y),
-            QPoint(w / 2.0, y)
-        ]
+        points = self._calculate_drawing_points(x, y, w, h)
+
         self._painter.drawPolygon(QPolygon(points))
 
 
@@ -632,6 +636,9 @@ class PyDMDrawingCircle(PyDMDrawing):
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingCircle, self).__init__(parent, init_channel)
 
+    def _calculate_radius(self, width, height):
+        return min(width, height) / 2.0
+
     def draw_item(self):
         """
         Draws the circle after setting up the canvas with a call to
@@ -639,7 +646,7 @@ class PyDMDrawingCircle(PyDMDrawing):
         """
         super(PyDMDrawingCircle, self).draw_item()
         _, _, w, h = self.get_bounds()
-        r = min(w, h) / 2.0
+        r = self._calculate_radius(w, h)
         self._painter.drawEllipse(QPoint(0, 0), r, r)
 
 
