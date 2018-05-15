@@ -32,7 +32,7 @@ def test_deg_to_qt(deg, expected_qt_deg):
     """
     Test the conversion from degrees to Qt degrees.
 
-    Expections:
+    Expectations:
     The angle measurement in degrees is converted correctly to Qt degrees, which are 16 times more than the degree
     value, i.e. 1 degree = 16 Qt degrees.
 
@@ -58,7 +58,7 @@ def test_qt_to_deg(qt_deg, expected_deg):
     """
        Test the conversion from Qt degrees to degrees.
 
-       Expections:
+       Expectations:
        The angle measurement in Qt degrees is converted correctly to degrees, which are 16 times less than the Qt degree
        value, i.e. 1 Qt degree = 1/16 degree
 
