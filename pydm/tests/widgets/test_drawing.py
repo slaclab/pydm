@@ -4,16 +4,15 @@
 from logging import ERROR
 import pytest
 
-from ...PyQt.QtGui import QApplication, QWidget, QColor, QPainter, QBrush, QPen, QPolygon, QPixmap, QStyle, QStyleOption
-from ...PyQt.QtCore import pyqtProperty, Qt, QPoint, QSize, pyqtSlot
-from ...PyQt.QtDesigner import QDesignerFormWindowInterface, QFormBuilder
+from ...PyQt.QtGui import QColor, QBrush, QPixmap
+from ...PyQt.QtCore import pyqtProperty, Qt, QPoint, QSize
+from ...PyQt.QtDesigner import QDesignerFormWindowInterface
 
 from ...widgets.base import PyDMWidget
 from ...widgets.drawing import deg_to_qt, qt_to_deg, PyDMDrawing, PyDMDrawingLine, PyDMDrawingImage, \
     PyDMDrawingRectangle, PyDMDrawingTriangle, PyDMDrawingEllipse, PyDMDrawingCircle, PyDMDrawingArc, \
     PyDMDrawingPie, PyDMDrawingChord
 
-from ...application import PyDMApplication
 from ...utilities import is_pydm_app
 
 
@@ -359,6 +358,27 @@ def test_pydmdrawing_is_square(qtbot, monkeypatch, width, height, expected_resul
     (10.35, 25.53, -360.0, (10.35, 25.53)),
 ])
 def test_pydmdrawing_get_inner_max(qtbot, monkeypatch, width, height, rotation_deg, expected):
+    """
+    Test the calculation of the inner rectangle in a rotated rectangle.
+
+    Expectations:
+    The returned inner rectangle's width and height are in a tuple, and must match with the values expected.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override existing method behaviors
+    width : int, float
+        The width of the rotated rectangle
+    height : int, float
+        The height of the rotated rectangle
+    rotation_deg : float
+        The rectangle's rotation angle (in degrees)
+    expected : tuple
+        The tuple containing the width and height of the inner rectangle
+    """
     pydm_drawing = PyDMDrawing()
     qtbot.addWidget(pydm_drawing)
 
@@ -372,6 +392,17 @@ def test_pydmdrawing_get_inner_max(qtbot, monkeypatch, width, height, rotation_d
 
 
 def test_pydmdrawing_properties_and_setters(qtbot):
+    """
+    Test the PyDMDrawing base class properties and setters.
+
+    Expectations:
+    Attribute values are to be retained and retrieved correctly.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
     pydm_drawing = PyDMDrawing()
     qtbot.addWidget(pydm_drawing)
 
@@ -381,21 +412,22 @@ def test_pydmdrawing_properties_and_setters(qtbot):
     assert pydm_drawing._brush.style() == Qt.SolidPattern
     assert pydm_drawing.penStyle == Qt.NoPen
 
+    # The pen width will retain the previously set value if a negative value is attempted to be assigned to it
     pydm_drawing.penWidth = -1
     assert pydm_drawing.penWidth == 0
 
     pydm_drawing.penWidth = 5
+    pydm_drawing.penWidth = -1
+    assert pydm_drawing.penWidth == 5
+
     pydm_drawing.penColor = QColor(255, 0, 0)
     pydm_drawing.rotation = 99.99
     pydm_drawing.brush = QBrush(Qt.Dense3Pattern)
 
-    assert pydm_drawing.penWidth == 5
     assert pydm_drawing.penColor == QColor(255, 0, 0)
     assert pydm_drawing.rotation == 99.99
     assert pydm_drawing._brush.style() == Qt.Dense3Pattern
 
-    pydm_drawing.penWidth = -1
-    assert pydm_drawing.penWidth == 5
 
 # # ----------------
 # # PyDMDrawingLine
@@ -405,34 +437,63 @@ def test_pydmdrawing_properties_and_setters(qtbot):
     False,
 ])
 def test_pydmdrawingline_draw_item(qtbot, signals, test_alarm_style_sheet_map, alarm_sensitive_content):
-   pydm_drawingline = PyDMDrawingLine()
-   qtbot.addWidget(pydm_drawingline)
+    """
+    Test PyDMDrawingLine base class drawing handling.
 
-   pydm_drawingline.alarmSensitiveContent = alarm_sensitive_content
-   signals.new_severity_signal.connect(pydm_drawingline.alarmSeverityChanged)
-   signals.new_severity_signal.emit(PyDMWidget.ALARM_MAJOR)
+    Expectations:
+    The focus manipulation of the base widget object triggers the draw_item() method of the PyDMDrawLine object.
 
-   with qtbot.waitExposed(pydm_drawingline):
-       pydm_drawingline.show()
-   pydm_drawingline.setFocus()
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    signals : fixture
+        To emit the alarm severity change signal in order to make an appearance change for the widget, thus triggering
+        a redraw
+    test_alarm_style_sheet_map : fixture
+        The widget's style map, e.g. color, for different alarm severity levels
+    alarm_sensitive_content : bool
+        True if the widget will be redraw with a different color if an alarm is triggered; False otherwise
+    """
+    pydm_drawingline = PyDMDrawingLine()
+    qtbot.addWidget(pydm_drawingline)
 
-   def wait_focus():
-       return pydm_drawingline.hasFocus()
+    pydm_drawingline.alarmSensitiveContent = alarm_sensitive_content
+    signals.new_severity_signal.connect(pydm_drawingline.alarmSeverityChanged)
+    signals.new_severity_signal.emit(PyDMWidget.ALARM_MAJOR)
 
-   qtbot.waitUntil(wait_focus, timeout=5000)
+    with qtbot.waitExposed(pydm_drawingline):
+        pydm_drawingline.show()
+    pydm_drawingline.setFocus()
 
-   alarm_color = test_alarm_style_sheet_map[PyDMWidget.ALARM_CONTENT][pydm_drawingline._alarm_state]
+    def wait_focus():
+        return pydm_drawingline.hasFocus()
 
-   if alarm_sensitive_content:
-       assert pydm_drawingline.brush.color() == QColor(alarm_color["color"])
-   else:
-       assert pydm_drawingline.brush.color() == pydm_drawingline._default_color
+    qtbot.waitUntil(wait_focus, timeout=5000)
+
+    alarm_color = test_alarm_style_sheet_map[PyDMWidget.ALARM_CONTENT][pydm_drawingline._alarm_state]
+
+    if alarm_sensitive_content:
+        assert pydm_drawingline.brush.color() == QColor(alarm_color["color"])
+    else:
+        assert pydm_drawingline.brush.color() == pydm_drawingline._default_color
 
 
 # # -----------------
 # # PyDMDrawingImage
 # # -----------------
 def test_pydmdrawingimage_construct(qtbot):
+    """
+    Test the construct of a PyDMDrawingImage object.
+
+    Expectations:
+    The default attribute values are correctly set.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
     pydm_drawingimage = PyDMDrawingImage()
     qtbot.addWidget(pydm_drawingimage)
 
@@ -444,17 +505,16 @@ def test_pydmdrawingimage_construct(qtbot):
         assert pydm_drawingimage.get_designer_window()
 
 
-@pytest.mark.parametrize("parent_type", [
-    None,
-    #"parent"
-])
-def test_pydmdrawingimage_get_designer_window(qtbot, parent_type):
-    parent = None
-    # if parent_type is not None:
-    #     pydm_drawingimage_parent = PyDMDrawingImage()
-    #     qtbot.addWidget(pydm_drawingimage_parent)
-    #     parent = DesignerParentForm(parent=pydm_drawingimage_parent)
+def test_pydmdrawingimage_get_designer_window(qtbot):
+    """
+    Test getting the designer window that owns the widget. Currently, only test with the parent window being None.
 
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
+    parent = None
     pydm_drawingimage = PyDMDrawingImage(parent=parent)
     qtbot.addWidget(pydm_drawingimage)
 
@@ -468,11 +528,18 @@ def test_pydmdrawingimage_get_designer_window(qtbot, parent_type):
         assert designer_window == parent.parent()
 
 
-@pytest.mark.parametrize("is_pydm_app, designer_window_path", [
-    (True, "test_file.png"),
-     (False, "test_file.png"),
-])
-def test_pydmdrawingimage_test_properties_and_setters(qtbot, signals, monkeypatch, is_pydm_app, designer_window_path):
+def test_pydmdrawingimage_test_properties_and_setters(qtbot):
+    """
+    Test the PyDMDrawing base class properties and setters.
+
+    Expectations:
+    Attribute values are to be retained and retrieved correctly.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
     pydm_drawingimage = PyDMDrawingImage()
     qtbot.addWidget(pydm_drawingimage)
 
@@ -480,35 +547,34 @@ def test_pydmdrawingimage_test_properties_and_setters(qtbot, signals, monkeypatc
     assert pydm_drawingimage.aspectRatioMode == Qt.KeepAspectRatioByExpanding
 
 
-#     pydm_drawingimage.filename = "displayed_image_file_name.png"
-#
-#     monkeypatch.setattr(PyDMDrawingImage, "is_pydm_app", lambda *args: is_pydm_app)
-#
-#     if designer_window_path:
-#         monkeypatch.setattr(PyDMDrawingImage, "get_designer_window", lambda *args:
-#
-#
-#     pydm_drawingimage._file = "displayed_image_file_name.png"
-#
-#     signals.send_value_signal[str].connect(pydm_drawingimage.designer_form_saved)
-#     signals.send_value_signal[str].connect(pydm_drawingimage.receiveValue)
-#     signals.send_value_signal[str].emit(pydm_drawingimage._file)
-#
-#     assert pydm_drawingimage.designer_form_saved
-
-
 @pytest.mark.parametrize("is_pixmap_empty", [
     True,
     False,
 ])
 def test_pydmdrawingimage_size_hint(qtbot, monkeypatch, is_pixmap_empty):
+    """
+    Test the size hint of a PyDMDrawingImage object.
+
+    Expectations:
+    If the image is empty, the widget assumes the default size of width == height == 100 pixels. If not, the widget
+    takes the size from the off screen image presentation (QPixmap).
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override attribute values
+    is_pixmap_empty : bool
+        True if the image presentation is empty; False otherwise
+    """
     pydm_drawingimage = PyDMDrawingImage()
     qtbot.addWidget(pydm_drawingimage)
 
     if is_pixmap_empty:
         monkeypatch.setattr(QSize, "isEmpty", lambda *args: True)
     else:
-        monkeypatch.setattr(QPixmap, "size", lambda *args: QSize(2, 2))
+        monkeypatch.setattr(QPixmap, "size", lambda *args: QSize(125, 125))
 
     size_hint = pydm_drawingimage.sizeHint()
     assert size_hint == QSize(100, 100) if is_pixmap_empty else size_hint == pydm_drawingimage._pixmap.size()
@@ -523,6 +589,25 @@ def test_pydmdrawingimage_size_hint(qtbot, monkeypatch, is_pixmap_empty):
     (100.0, 10.25, 5.125),
 ])
 def test_pydmdrawingimage_draw_item(qtbot, monkeypatch, width, height, pen_width):
+    """
+    Test the rendering of a PyDMDrawingImage object.
+
+    Expectations:
+    The drawing of the object takes place without any problems.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override attribute values
+    width : int, float
+        The width to the widget
+    height : int, float
+        The height of the widget
+    pen_width : int
+        The width of the pen stroke
+    """
     pydm_drawingimage = PyDMDrawingImage()
     qtbot.addWidget(pydm_drawingimage)
 
@@ -546,6 +631,25 @@ def test_pydmdrawingimage_draw_item(qtbot, monkeypatch, width, height, pen_width
     (100.0, 10.25, 5.125),
 ])
 def test_pydmdrawingrectangle_draw_item(qtbot, monkeypatch, width, height, pen_width):
+    """
+    Test the rendering of a PyDMDrawingRectangle object.
+
+    Expectations:
+    The drawing of the object takes place without any problems.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override attribute values
+    width : int, float
+        The width to the widget
+    height : int, float
+        The height of the widget
+    pen_width : int
+        The width of the pen stroke
+    """
     pydm_drawingrectangle = PyDMDrawingRectangle()
     qtbot.addWidget(pydm_drawingrectangle)
 
@@ -571,6 +675,27 @@ def test_pydmdrawingrectangle_draw_item(qtbot, monkeypatch, width, height, pen_w
     (1, 2, 5.0, 5.0, [QPoint(1, 2), QPoint(1, 2), QPoint(2, 2)]),
 ])
 def test_pydmdrawingtriangle_calculate_drawing_points(qtbot, x, y, width, height, expected_points):
+    """
+    Test the calculations of the point coordinates of a PyDMDrawingTriangle widget.
+
+    Expectations:
+    The calculations match with the expected values.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    x : int, float
+        The x-coordinate of the top of the triangle
+    y: int, float
+        The y-coordinate of the top of the triangle
+    width : int, float
+        The base measurement of the triangle
+    height : int, float
+        The height measurement of the triangle
+    expected_points : tuple
+        The collection of the three x and y coordinate sets of the triangle to draw
+    """
     pydm_drawingtriangle = PyDMDrawingTriangle()
     qtbot.addWidget(pydm_drawingtriangle)
 
@@ -587,6 +712,25 @@ def test_pydmdrawingtriangle_calculate_drawing_points(qtbot, x, y, width, height
     (100.0, 10.25, 5.125),
 ])
 def test_pydmdrawingtriangle_draw_item(qtbot, monkeypatch, width, height, pen_width):
+    """
+    Test the rendering of a PyDMDrawingTriangle object.
+
+    Expectations:
+    The drawing of the object takes place without any problems.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override attribute values
+    width : int, float
+        The width to the widget
+    height : int, float
+        The height of the widget
+    pen_width : int
+        The width of the pen stroke
+    """
     pydm_drawingtriangle = PyDMDrawingTriangle()
     qtbot.addWidget(pydm_drawingtriangle)
 
@@ -607,6 +751,25 @@ def test_pydmdrawingtriangle_draw_item(qtbot, monkeypatch, width, height, pen_wi
     (10.25, 100.0, 5.125),
 ])
 def test_pydmdrawingeclipse_draw_item(qtbot, monkeypatch, width, height, pen_width):
+    """
+    Test the rendering of a PyDMDrawingEclipse object.
+
+    Expectations:
+    The drawing of the object takes place without any problems.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override attribute values
+    width : int, float
+        The width to the widget
+    height : int, float
+        The height of the widget
+    pen_width : int
+        The width of the pen stroke
+    """
     pydm_dymdrawingeclipse = PyDMDrawingEllipse()
     qtbot.addWidget(pydm_dymdrawingeclipse)
 
@@ -627,6 +790,23 @@ def test_pydmdrawingeclipse_draw_item(qtbot, monkeypatch, width, height, pen_wid
     (10.25, 100.0, 5.125),
 ])
 def test_pydmdrawingcircle_calculate_radius(qtbot, width, height, expected_radius):
+    """
+    Test the calculation of a PyDMDrawingCircle's radius.
+
+    Expectations:
+    Given the width and height of the circle, the calculated radius will match with the expected value.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    width : int, float
+        The width to the widget
+    height : int, float
+        The height of the widget
+    expected_radius : int, float
+        The expected radius calculated from the given width and height
+    """
     pydm_dymdrawingcircle = PyDMDrawingCircle()
     qtbot.addWidget(pydm_dymdrawingcircle)
 
@@ -640,6 +820,25 @@ def test_pydmdrawingcircle_calculate_radius(qtbot, width, height, expected_radiu
     (10.25, 100.0, 5.125),
 ])
 def test_pydmdrawingcircle_draw_item(qtbot, monkeypatch, width, height, pen_width):
+    """
+    Test the rendering of a PyDMDrawingCircle object.
+
+    Expectations:
+    The drawing of the object takes place without any problems.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override attribute values
+    width : int, float
+        The width to the widget
+    height : int, float
+        The height of the widget
+    pen_width : int
+        The width of the pen stroke
+    """
     pydm_dymdrawingcircle = PyDMDrawingCircle()
     qtbot.addWidget(pydm_dymdrawingcircle)
 
@@ -655,6 +854,17 @@ def test_pydmdrawingcircle_draw_item(qtbot, monkeypatch, width, height, pen_widt
 # # PyDMDrawingArc
 # # ---------------
 def test_pydmdrawingarc_construct(qtbot):
+    """
+    Test the construct of a PyDMDrawingArc widget.
+
+    Expectations:
+    The default attribute values are as expected.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
     pydm_drawingarc = PyDMDrawingArc()
     qtbot.addWidget(pydm_drawingarc)
 
@@ -674,6 +884,27 @@ def test_pydmdrawingarc_construct(qtbot):
     (10.333, 11.777, -11, -25),
 ])
 def test_pydmdrawingarc_draw_item(qtbot, monkeypatch, width, height, start_angle_deg, span_angle_deg):
+    """
+    Test the rendering of a PyDMDrawingArc object.
+
+    Expectations:
+    The drawing of the object takes place without any problems.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override attribute values
+    width : int, float
+        The width to the widget
+    height : int, float
+        The height of the widget
+    start_angle_deg : int
+        The start angle in degrees
+    span_angle_deg : int
+        The span angle in degrees
+    """
     pydm_drawingarc = PyDMDrawingArc()
     qtbot.addWidget(pydm_drawingarc)
 
@@ -705,6 +936,31 @@ def test_pydmdrawingarc_draw_item(qtbot, monkeypatch, width, height, start_angle
 ])
 def test_pydmdrawingpie_draw_item(qtbot, monkeypatch, width, height, pen_width, rotation_deg, start_angle_deg,
                                   span_angle_deg):
+    """
+    Test the rendering of a PyDMDrawingPie object.
+
+    Expectations:
+    The drawing of the object takes place without any problems.
+
+    Parameters
+    ----------
+    qtbot : fixture
+       Window for widget testing
+    monkeypatch : fixture
+       To override attribute values
+    width : int, float
+       The width to the widget
+    height : int, float
+       The height of the widget
+    pen_width: int
+        The thickness of the pen stroke
+    rotation_deg : int
+        The rotation in degrees
+    start_angle_deg : int
+       The start angle in degrees
+    span_angle_deg : int
+       The span angle in degrees
+    """
     pydm_drawingpie = PyDMDrawingPie()
     qtbot.addWidget(pydm_drawingpie)
 
@@ -735,6 +991,31 @@ def test_pydmdrawingpie_draw_item(qtbot, monkeypatch, width, height, pen_width, 
 ])
 def test_pydmdrawingchord_draw_item(qtbot, monkeypatch, width, height, pen_width, rotation_deg, start_angle_deg,
                                     span_angle_deg):
+    """
+    Test the rendering of a PyDMDrawingChord object.
+
+    Expectations:
+    The drawing of the object takes place without any problems.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override attribute values
+    width : int, float
+        The width to the widget
+    height : int, float
+        The height of the widget
+    pen_width: int
+        The thickness of the pen stroke
+    rotation_deg : int
+        The rotation in degrees
+    start_angle_deg : int
+        The start angle in degrees
+    span_angle_deg : int
+        The span angle in degrees
+    """
     pydm_drawingchord = PyDMDrawingChord()
     qtbot.addWidget(pydm_drawingchord)
 
@@ -760,8 +1041,32 @@ def test_pydmdrawingchord_draw_item(qtbot, monkeypatch, width, height, pen_width
     (0, 10.35, 0.0),
     (10.35, 0, 0.0),
     (0, 0, 45.0),
+    (-10.5, 10.35, 15.0),
+    (10.35, -5, 17.5),
+    (-10.7, -10, 45.50),
 ])
 def test_get_inner_max_neg(qtbot, monkeypatch, caplog, width, height, rotation_deg):
+    """
+    Test the handling of invalid width and/or height value during the inner rectangle calculations.
+
+    Expectations:
+    Invalid values will be logged as errors.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override attribute values
+    caplog : fixture
+        To capture the error logging
+    width : int, float
+        The width of the widget
+    height : int, float
+        The height of the widget
+    rotation_deg : int, float
+        The widget's rotation, in degrees
+    """
     pydm_drawing = PyDMDrawing()
     qtbot.addWidget(pydm_drawing)
 
