@@ -1,4 +1,4 @@
-from ..PyQt.QtGui import QDoubleSpinBox, QApplication, QMenu
+from ..PyQt.QtGui import QDoubleSpinBox, QApplication
 from ..PyQt.QtCore import pyqtProperty, QEvent, Qt
 from .base import PyDMWritableWidget
 
@@ -60,13 +60,13 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         QMenu or None
             If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.
         """
-        def toogle():
+        def toggle():
             self.showStepExponent = not self.showStepExponent
 
         menu = self.lineEdit().createStandardContextMenu()
         menu.addSeparator()
         ac = menu.addAction('Toggle Show Step Size')
-        ac.triggered.connect(toogle)
+        ac.triggered.connect(toggle)
         return menu
 
     def update_step_size(self):
@@ -93,13 +93,11 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
             units = ""
 
         if self._show_step_exponent:
-            self.setSuffix("{units} Step: 1E{exp}".format(
-                units=units, exp=self.step_exponent))
+            self.setSuffix("{0} Step: 1E{1}".format(units, self.step_exponent))
             self.lineEdit().setToolTip("")
         else:
             self.setSuffix(units)
-            self.lineEdit().setToolTip(
-                            'Step: 1E{0:+d}'.format(self.step_exponent))
+            self.lineEdit().setToolTip('Step: 1E{0:+d}'.format(self.step_exponent))
 
     def value_changed(self, new_val):
         """
