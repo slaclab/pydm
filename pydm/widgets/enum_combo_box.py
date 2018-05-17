@@ -30,7 +30,6 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
     def __init__(self, parent=None, init_channel=None):
         QComboBox.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
-        # Internal values for properties
         self._has_enums = False
         self.activated[int].connect(self.internal_combo_box_activated_int)
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
@@ -107,9 +106,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
     def internal_combo_box_activated_int(self, index):
         """
         PyQT Slot for when the user chooses an item in the combobox.
-        This slot triggers the ```send_value_signal``` and
-        ```activated``` signals.
-
+        This slot triggers the ```send_value_signal```.
         Parameters
         ----------
         index : int
