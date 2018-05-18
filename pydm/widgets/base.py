@@ -180,7 +180,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._show_units = False
         self._alarm_sensitive_content = False
         self._alarm_sensitive_border = True
-        self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | (self.ALARM_BORDER * self._alarm_sensitive_border)
+        self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | \
+                            (self.ALARM_BORDER * self._alarm_sensitive_border)
         self._alarm_state = self.ALARM_DISCONNECTED
         self._style = self.alarm_style_sheet_map[self._alarm_flags][self._alarm_state]
         self._tooltip = None
