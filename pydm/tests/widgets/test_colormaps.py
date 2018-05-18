@@ -1,4 +1,4 @@
-# Unit Tests for the Frame Widget
+# Unit Tests for the Color Map
 
 
 import pytest
@@ -13,20 +13,14 @@ from ...widgets.colormaps import PyDMColorMap, _magma_data, _inferno_data, _plas
 # POSITIVE TEST CASES
 # --------------------
 
-def test_construct(qtbot):
+def test_construct():
     """
-    Test the construction of the ColorMap widget, and the creations of auxiliary helper objects.
+    Test the construction of the ColorMaps, and the creations of auxiliary helper objects.
 
     Expecations:
     The default values are assigned to the attributes correctly.
-
-    Parameters
-    ----------
-    qtbot : fixture
-        pytest-qt window for widget test
     """
     pydm_colormap = PyDMColorMap()
-    qtbot.addWidget(pydm_colormap)
 
     for (name, data) in ((PyDMColorMap.Magma, np.array(_magma_data)),
                          (PyDMColorMap.Inferno, np.array(_inferno_data)),
