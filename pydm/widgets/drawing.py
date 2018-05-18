@@ -484,15 +484,20 @@ class PyDMDrawingImage(PyDMDrawing):
             The filename to be used
         """
         self._file = new_file
-        path_relative_to_ui_file = self._file
-        if not os.path.isabs(self._file):                
+        abs_path = self._file
+        is_app = is_pydm_app()
+        # Find the absolute path relative to UI
+        if not os.path.isabs(self._file):
             try:
-                if is_pydm_app():
-                    path_relative_to_ui_file = QApplication.instance().get_path(self._file)
+                # Based on the QApplication
+                if is_app:
+                    abs_path = QApplication.instance().get_path(self._file)
+                # Based on the QtDesigner
                 else:
                     p = self.get_designer_window()
                     if p is not None:
-                        path_relative_to_ui_file = os.path.join(p.absoluteDir().absolutePath(), self._file)
+                        ui_dir = p.absoluteDir().absolutePath()
+                        abs_path = os.path.join(ui_dir, self._file)
             except Exception:
                 logger.exception("Unable to find full filepath for %s",
                                  self._file)
