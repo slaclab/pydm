@@ -431,6 +431,8 @@ class PyDMDrawingImage(PyDMDrawing):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+    null_color = Qt.gray
+
     def __init__(self, parent=None, init_channel=None, filename=""):
         super(PyDMDrawingImage, self).__init__(parent, init_channel)
         self._pixmap = QPixmap()
@@ -501,7 +503,19 @@ class PyDMDrawingImage(PyDMDrawing):
             except Exception:
                 logger.exception("Unable to find full filepath for %s",
                                  self._file)
-        self._pixmap = QPixmap(path_relative_to_ui_file)
+        # Check that the path exists
+        if os.path.isfile(abs_path):
+            pixmap = QPixmap(abs_path)
+        # Return a blank image if we don't have a valid path
+        else:
+            # Warn the user loudly if their file does not exist, but avoid
+            # doing this in Designer as this spams the user as they are typing
+            if is_app:
+                logger.error("Image file  %r does not exist", abs_path)
+            pixmap = QPixmap(self.sizeHint())
+            pixmap.fill(self.null_color)
+        # Update the display
+        self._pixmap = pixmap
         self.update()
 
     def sizeHint(self):
