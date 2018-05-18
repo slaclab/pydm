@@ -534,6 +534,13 @@ class PyDMDrawingImage(PyDMDrawing):
         x, y, w, h = self.get_bounds(maxsize=True, force_no_pen=True)
         _scaled = self._pixmap.scaled(w, h, self._aspect_ratio_mode,
                                       Qt.SmoothTransformation)
+        # Make sure the image is centered if smaller than the widget itself
+        if w > _scaled.width():
+            logger.debug("Centering image horizontally ...")
+            x += (w-_scaled.width())/2
+        if h > _scaled.height():
+            logger.debug("Centering image vertically ...")
+            y += (h - _scaled.height())/2
         self._painter.drawPixmap(x, y, _scaled)
 
 
