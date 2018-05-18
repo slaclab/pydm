@@ -435,7 +435,12 @@ class PyDMDrawingImage(PyDMDrawing):
         super(PyDMDrawingImage, self).__init__(parent, init_channel)
         self._pixmap = QPixmap()
         self._aspect_ratio_mode = Qt.KeepAspectRatio
-        self.filename = filename
+        # Make sure we don't set a non-existant file
+        if filename:
+            self.filename = filename
+        # But we always have an internal value to reference
+        else:
+            self._file = filename
         if not is_pydm_app():
             designer_window = self.get_designer_window()
             if designer_window is not None:
