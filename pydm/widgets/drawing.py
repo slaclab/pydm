@@ -421,7 +421,7 @@ class PyDMDrawingLine(PyDMDrawing):
 
 class PyDMDrawingImage(PyDMDrawing):
     """
-    Renders an image given by the ```filename``` property.
+    Renders an image given by the ``filename`` property.
     This class inherits from PyDMDrawing.
 
     Parameters
@@ -430,6 +430,11 @@ class PyDMDrawingImage(PyDMDrawing):
         The parent widget for the Label
     init_channel : str, optional
         The channel to be used by the widget.
+
+    Attributes
+    ----------
+    null_color : Qt.Color
+        QColor to fill the image if the filename is not found.
     """
     null_color = Qt.gray
 
@@ -478,7 +483,10 @@ class PyDMDrawingImage(PyDMDrawing):
     def filename(self, new_file):
         """
         The filename of the image to be displayed.
-        This can be an absolute or relative path to the display file.
+
+        This file can be either relative to the ``.ui`` file or absolute. If
+        the path does not exist, a shape of ``.null_color`` will be displayed
+        instead.
 
         Parameters
         -------
