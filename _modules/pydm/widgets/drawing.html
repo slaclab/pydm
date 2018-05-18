@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.drawing &mdash; PyDM v1.1.0+129.gb51172b documentation</title>
+  <title>pydm.widgets.drawing &mdash; PyDM v1.1.0+130.g38ed2c8 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+129.gb51172b
+                v1.1.0+130.g38ed2c8
               </div>
             
           
@@ -172,6 +172,10 @@
   <h1>Source code for pydm.widgets.drawing</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
 <span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span> <span class="n">QPolygon</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">pyqtSlot</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtDesigner</span> <span class="k">import</span> <span class="n">QDesignerFormWindowInterface</span>
@@ -240,7 +244,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_pen_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMDrawing.sizeHint"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.sizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMDrawing.paintEvent"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.paintEvent">[docs]</a>    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -263,7 +267,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span>
 
         <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_color</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_sensitive_content</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_sensitive_content</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">!=</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">ALARM_NONE</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">alarm_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">alarm_color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="n">alarm_color</span><span class="p">)</span>
@@ -365,7 +369,7 @@
 <span class="sd">        bool</span>
 <span class="sd">            True if the drawing has a border, False otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">style</span><span class="p">()</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">NoPen</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">style</span><span class="p">()</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">NoPen</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen_width</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
@@ -397,6 +401,15 @@
         <span class="n">angle</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span><span class="p">)</span>
         <span class="n">origWidth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span>
         <span class="n">origHeight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">origWidth</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Invalid width. The value must be greater than </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">origWidth</span><span class="p">))</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">origHeight</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Invalid height. The value must be greater than </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">origHeight</span><span class="p">))</span>
+            <span class="k">return</span>
+
         <span class="k">if</span> <span class="p">(</span><span class="n">origWidth</span> <span class="o">&lt;=</span> <span class="n">origHeight</span><span class="p">):</span>
             <span class="n">w0</span> <span class="o">=</span> <span class="n">origWidth</span>
             <span class="n">h0</span> <span class="o">=</span> <span class="n">origHeight</span>
@@ -406,7 +419,7 @@
         <span class="c1"># Angle normalization in range [-PI..PI)</span>
         <span class="n">ang</span> <span class="o">=</span> <span class="n">angle</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">angle</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
         <span class="n">ang</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ang</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">ang</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ang</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">ang</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">ang</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">w0</span> <span class="o">/</span> <span class="p">(</span><span class="n">h0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ang</span><span class="p">)</span> <span class="o">+</span> <span class="n">w0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ang</span><span class="p">))</span>
         <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span>
@@ -600,7 +613,7 @@
                 <span class="n">designer_window</span><span class="o">.</span><span class="n">fileNameChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">designer_form_saved</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_designer_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1">#Internal function to find the designer window that owns this widget.</span>
+        <span class="c1"># Internal function to find the designer window that owns this widget.</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
         <span class="k">while</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">QDesignerFormWindowInterface</span><span class="p">):</span>
@@ -736,6 +749,13 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingTriangle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">_calculate_drawing_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">QPoint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+            <span class="n">QPoint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+            <span class="n">QPoint</span><span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="p">]</span>
+
 <div class="viewcode-block" id="PyDMDrawingTriangle.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingTriangle.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the triangle after setting up the canvas with a call to</span>
@@ -743,11 +763,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingTriangle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">points</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">QPoint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
-            <span class="n">QPoint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
-            <span class="n">QPoint</span><span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="p">]</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_drawing_points</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawPolygon</span><span class="p">(</span><span class="n">QPolygon</span><span class="p">(</span><span class="n">points</span><span class="p">))</span></div></div>
 
 
@@ -791,6 +808,9 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingCircle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">_calculate_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+
 <div class="viewcode-block" id="PyDMDrawingCircle.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingCircle.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the circle after setting up the canvas with a call to</span>
@@ -798,7 +818,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingCircle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">()</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_radius</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawEllipse</span><span class="p">(</span><span class="n">QPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span></div></div>
 
 
@@ -969,7 +989,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+129.gb51172b',
+            VERSION:'v1.1.0+130.g38ed2c8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
