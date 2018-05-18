@@ -31,7 +31,7 @@ def test_construct(qtbot, command):
 
     Parameters
     ----------
-     qtbot : fixture
+    qtbot : fixture
         Window for widget testing
     command : str
         The shell command to be executed when the widget is pressed
@@ -232,6 +232,8 @@ def test_execute_command(qtbot, signals, caplog, cmd):
     ----------
     qtbot : fixture
         Window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
     caplog : fixture
         To capture the log messages
     cmd : str
