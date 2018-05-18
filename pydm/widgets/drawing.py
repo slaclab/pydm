@@ -1,14 +1,15 @@
 import math
 import os
-
 import logging
-logger = logging.getLogger(__name__)
 
 from ..PyQt.QtGui import QApplication, QWidget, QColor, QPainter, QBrush, QPen, QPolygon, QPixmap, QStyle, QStyleOption
 from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, QSize, pyqtSlot
 from ..PyQt.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
 from ..utilities import is_pydm_app
+
+logger = logging.getLogger(__name__)
+
 
 def deg_to_qt(deg):
     """
@@ -487,8 +488,9 @@ class PyDMDrawingImage(PyDMDrawing):
                     p = self.get_designer_window()
                     if p is not None:
                         path_relative_to_ui_file = os.path.join(p.absoluteDir().absolutePath(), self._file)
-            except Exception as e:
-                print(e)
+            except Exception:
+                logger.exception("Unable to find full filepath for %s",
+                                 self._file)
         self._pixmap = QPixmap(path_relative_to_ui_file)
         self.update()
 
