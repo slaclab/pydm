@@ -1,5 +1,9 @@
 import math
 import os
+
+import logging
+logger = logging.getLogger(__name__)
+
 from ..PyQt.QtGui import QApplication, QWidget, QColor, QPainter, QBrush, QPen, QPolygon, QPixmap, QStyle, QStyleOption
 from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, QSize, pyqtSlot
 from ..PyQt.QtDesigner import QDesignerFormWindowInterface
@@ -68,7 +72,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
         self._pen_color = QColor(0, 0, 0)
 
     def sizeHint(self):
-        return QSize(100,100)
+        return QSize(100, 100)
 
     def paintEvent(self, _):
         """
@@ -91,7 +95,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
         self._painter.setRenderHint(QPainter.Antialiasing)
 
         color = self._default_color
-        if self._alarm_sensitive_content and self._alarm_state != 0 and self.channels() is not None:
+        if self._alarm_sensitive_content and self._alarm_state != PyDMWidget.ALARM_NONE and self.channels() is not None:
             alarm_color = self._style.get("color", None)
             if alarm_color is not None:
                 color = QColor(alarm_color)
@@ -193,7 +197,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
         bool
             True if the drawing has a border, False otherwise.
         """
-        if self._pen.style() != Qt.NoPen and self._pen.width() > 0:
+        if self._pen.style() != Qt.NoPen and self._pen_width > 0:
             return True
         else:
             return False
@@ -225,6 +229,15 @@ class PyDMDrawing(QWidget, PyDMWidget):
         angle = math.radians(self._rotation)
         origWidth = self.width()
         origHeight = self.height()
+
+        if origWidth == 0:
+            logger.error("Invalid width. The value must be greater than {0}".format(origWidth))
+            return
+
+        if origHeight == 0:
+            logger.error("Invalid height. The value must be greater than {0}".format(origHeight))
+            return
+
         if (origWidth <= origHeight):
             w0 = origWidth
             h0 = origHeight
@@ -234,7 +247,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
         # Angle normalization in range [-PI..PI)
         ang = angle - math.floor((angle + math.pi) / (2 * math.pi)) * 2 * math.pi
         ang = math.fabs(ang)
-        if (ang > math.pi / 2):
+        if ang > math.pi / 2:
             ang = math.pi - ang
         c = w0 / (h0 * math.sin(ang) + w0 * math.cos(ang))
         w = 0
@@ -428,7 +441,7 @@ class PyDMDrawingImage(PyDMDrawing):
                 designer_window.fileNameChanged.connect(self.designer_form_saved)
 
     def get_designer_window(self):
-        #Internal function to find the designer window that owns this widget.
+        # Internal function to find the designer window that owns this widget.
         p = self.parent()
         while p is not None:
             if isinstance(p, QDesignerFormWindowInterface):
@@ -564,6 +577,13 @@ class PyDMDrawingTriangle(PyDMDrawing):
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingTriangle, self).__init__(parent, init_channel)
 
+    def _calculate_drawing_points(self, x, y, w, h):
+        return [
+            QPoint(x, h / 2.0),
+            QPoint(x, y),
+            QPoint(w / 2.0, y)
+        ]
+
     def draw_item(self):
         """
         Draws the triangle after setting up the canvas with a call to
@@ -571,11 +591,8 @@ class PyDMDrawingTriangle(PyDMDrawing):
         """
         super(PyDMDrawingTriangle, self).draw_item()
         x, y, w, h = self.get_bounds(maxsize=True)
-        points = [
-            QPoint(x, h / 2.0),
-            QPoint(x, y),
-            QPoint(w / 2.0, y)
-        ]
+        points = self._calculate_drawing_points(x, y, w, h)
+
         self._painter.drawPolygon(QPolygon(points))
 
 
@@ -619,6 +636,9 @@ class PyDMDrawingCircle(PyDMDrawing):
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingCircle, self).__init__(parent, init_channel)
 
+    def _calculate_radius(self, width, height):
+        return min(width, height) / 2.0
+
     def draw_item(self):
         """
         Draws the circle after setting up the canvas with a call to
@@ -626,7 +646,7 @@ class PyDMDrawingCircle(PyDMDrawing):
         """
         super(PyDMDrawingCircle, self).draw_item()
         _, _, w, h = self.get_bounds()
-        r = min(w, h) / 2.0
+        r = self._calculate_radius(w, h)
         self._painter.drawEllipse(QPoint(0, 0), r, r)
 
 
