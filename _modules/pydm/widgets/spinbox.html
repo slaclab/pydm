@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.spinbox &mdash; PyDM v1.1.0+130.g38ed2c8 documentation</title>
+  <title>pydm.widgets.spinbox &mdash; PyDM v1.1.0+135.g513ef85 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+130.g38ed2c8
+                v1.1.0+135.g513ef85
               </div>
             
           
@@ -170,7 +170,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.spinbox</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QDoubleSpinBox</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QMenu</span>
+<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QDoubleSpinBox</span><span class="p">,</span> <span class="n">QApplication</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">QEvent</span><span class="p">,</span> <span class="n">Qt</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
 
@@ -232,13 +232,13 @@
 <span class="sd">        QMenu or None</span>
 <span class="sd">            If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">def</span> <span class="nf">toogle</span><span class="p">():</span>
+        <span class="k">def</span> <span class="nf">toggle</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">showStepExponent</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">showStepExponent</span>
 
         <span class="n">menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit</span><span class="p">()</span><span class="o">.</span><span class="n">createStandardContextMenu</span><span class="p">()</span>
         <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
         <span class="n">ac</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s1">&#39;Toggle Show Step Size&#39;</span><span class="p">)</span>
-        <span class="n">ac</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">toogle</span><span class="p">)</span>
+        <span class="n">ac</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">toggle</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">menu</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.update_step_size"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.update_step_size">[docs]</a>    <span class="k">def</span> <span class="nf">update_step_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -265,13 +265,11 @@
             <span class="n">units</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_step_exponent</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setSuffix</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{units}</span><span class="s2"> Step: 1E</span><span class="si">{exp}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span> <span class="n">exp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setSuffix</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> Step: 1E</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">units</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit</span><span class="p">()</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setSuffix</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit</span><span class="p">()</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
-                            <span class="s1">&#39;Step: 1E</span><span class="si">{0:+d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span><span class="p">))</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit</span><span class="p">()</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Step: 1E</span><span class="si">{0:+d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.value_changed"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -384,7 +382,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+130.g38ed2c8',
+            VERSION:'v1.1.0+135.g513ef85',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
