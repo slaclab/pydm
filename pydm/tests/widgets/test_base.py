@@ -7,7 +7,7 @@ from ...PyQt.QtCore import Qt
 from ...PyQt.QtGui import QColor
 from ...utilities import is_pydm_app
 from ...application import PyDMApplication
-from ...widgets.base import compose_stylesheet, is_channel_valid, PyDMWidget, PyDMWritableWidget
+from ...widgets.base import compose_stylesheet, is_channel_valid, PyDMWidget
 from ...widgets.label import PyDMLabel
 from ...widgets.pushbutton import PyDMPushButton
 from ...widgets.line_edit import PyDMLineEdit
@@ -487,7 +487,7 @@ def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address, co
     pydm_lineedit._connected = connected
     pydm_lineedit._write_access = write_access
 
-    monkeypatch.setattr(PyDMApplication, 'is_read_only', lambda *args: (is_app_read_only))
+    monkeypatch.setattr(PyDMApplication, 'is_read_only', lambda *args: is_app_read_only)
 
     original_tooltip = "Original Tooltip"
     pydm_lineedit.setToolTip(original_tooltip)

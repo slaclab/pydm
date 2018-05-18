@@ -73,9 +73,16 @@ class PyDMFrame(QFrame, PyDMWidget):
         original_style = str(self.styleSheet()).replace(alarm_style, "")
 
         self._alarm_state = new_alarm_severity
+
+        # Must update the alarm flags here as the alarm sensitive content and alarm sensitive border flags
+        # can be toggled after the widget's construction
+        self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | \
+                            (self.ALARM_BORDER * self._alarm_sensitive_border)
+
         self._style = dict(self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity])
         if "color" in self._style:
-            if self._alarm_state != 0:
+            if self._alarm_state != PyDMWidget.ALARM_NONE:
+                # The style doesn't take the color attribute, but replace it with the background-color one
                 self._style["background-color"] = self._style["color"]
             del self._style["color"]
         style = compose_stylesheet(style=self._style, obj=self)
