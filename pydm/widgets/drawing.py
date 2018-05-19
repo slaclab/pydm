@@ -1,14 +1,15 @@
 import math
 import os
-
 import logging
-logger = logging.getLogger(__name__)
 
 from ..PyQt.QtGui import QApplication, QWidget, QColor, QPainter, QBrush, QPen, QPolygon, QPixmap, QStyle, QStyleOption
 from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, QSize, pyqtSlot
 from ..PyQt.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
 from ..utilities import is_pydm_app
+
+logger = logging.getLogger(__name__)
+
 
 def deg_to_qt(deg):
     """
@@ -420,7 +421,7 @@ class PyDMDrawingLine(PyDMDrawing):
 
 class PyDMDrawingImage(PyDMDrawing):
     """
-    Renders an image given by the ```filename``` property.
+    Renders an image given by the ``filename`` property.
     This class inherits from PyDMDrawing.
 
     Parameters
@@ -429,12 +430,26 @@ class PyDMDrawingImage(PyDMDrawing):
         The parent widget for the Label
     init_channel : str, optional
         The channel to be used by the widget.
+
+    Attributes
+    ----------
+    null_color : Qt.Color
+        QColor to fill the image if the filename is not found.
     """
+    null_color = Qt.gray
+
     def __init__(self, parent=None, init_channel=None, filename=""):
         super(PyDMDrawingImage, self).__init__(parent, init_channel)
-        self._pixmap = QPixmap()
+        hint = super(PyDMDrawingImage, self).sizeHint()
+        self._pixmap = QPixmap(hint)
+        self._pixmap.fill(self.null_color)
         self._aspect_ratio_mode = Qt.KeepAspectRatio
-        self.filename = filename
+        # Make sure we don't set a non-existant file
+        if filename:
+            self.filename = filename
+        # But we always have an internal value to reference
+        else:
+            self._file = filename
         if not is_pydm_app():
             designer_window = self.get_designer_window()
             if designer_window is not None:
@@ -470,26 +485,48 @@ class PyDMDrawingImage(PyDMDrawing):
     def filename(self, new_file):
         """
         The filename of the image to be displayed.
-        This can be an absolute or relative path to the display file.
+
+        This file can be either relative to the ``.ui`` file or absolute. If
+        the path does not exist, a shape of ``.null_color`` will be displayed
+        instead.
 
         Parameters
         -------
         new_file : str
             The filename to be used
         """
+        # Expand user (~ or ~user) and environment variables.
         self._file = new_file
-        path_relative_to_ui_file = self._file
-        if not os.path.isabs(self._file):                
+        abs_path = os.path.expanduser(os.path.expandvars(self._file))
+        is_app = is_pydm_app()
+        # Find the absolute path relative to UI
+        if not os.path.isabs(abs_path):
             try:
-                if is_pydm_app():
-                    path_relative_to_ui_file = QApplication.instance().get_path(self._file)
+                # Based on the QApplication
+                if is_app:
+                    abs_path = QApplication.instance().get_path(abs_path)
+                # Based on the QtDesigner
                 else:
                     p = self.get_designer_window()
                     if p is not None:
-                        path_relative_to_ui_file = os.path.join(p.absoluteDir().absolutePath(), self._file)
-            except Exception as e:
-                print(e)
-        self._pixmap = QPixmap(path_relative_to_ui_file)
+                        ui_dir = p.absoluteDir().absolutePath()
+                        abs_path = os.path.join(ui_dir, abs_path)
+            except Exception:
+                logger.exception("Unable to find full filepath for %s",
+                                 self._file)
+        # Check that the path exists
+        if os.path.isfile(abs_path):
+            pixmap = QPixmap(abs_path)
+        # Return a blank image if we don't have a valid path
+        else:
+            # Warn the user loudly if their file does not exist, but avoid
+            # doing this in Designer as this spams the user as they are typing
+            if is_app:
+                logger.error("Image file  %r does not exist", abs_path)
+            pixmap = QPixmap(self.sizeHint())
+            pixmap.fill(self.null_color)
+        # Update the display
+        self._pixmap = pixmap
         self.update()
 
     def sizeHint(self):
@@ -534,6 +571,13 @@ class PyDMDrawingImage(PyDMDrawing):
         x, y, w, h = self.get_bounds(maxsize=True, force_no_pen=True)
         _scaled = self._pixmap.scaled(w, h, self._aspect_ratio_mode,
                                       Qt.SmoothTransformation)
+        # Make sure the image is centered if smaller than the widget itself
+        if w > _scaled.width():
+            logger.debug("Centering image horizontally ...")
+            x += (w-_scaled.width())/2
+        if h > _scaled.height():
+            logger.debug("Centering image vertically ...")
+            y += (h - _scaled.height())/2
         self._painter.drawPixmap(x, y, _scaled)
 
 

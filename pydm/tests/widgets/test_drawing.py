@@ -1,6 +1,6 @@
 # Unit Tests for the PyDM drawing widgets
 
-
+import os
 from logging import ERROR
 import pytest
 
@@ -503,6 +503,17 @@ def test_pydmdrawingimage_construct(qtbot):
 
     if not is_pydm_app():
         assert pydm_drawingimage.get_designer_window()
+
+    base_path = os.path.dirname(__file__)
+    test_file = os.path.join(base_path, '..', '..', '..', 'examples', 'drawing', 'SLAC_logo.jpeg')
+    pydm_drawingimage2 = PyDMDrawingImage(filename=test_file)
+    qtbot.addWidget(pydm_drawingimage2)
+
+    pydm_drawingimage3 = PyDMDrawingImage(filename=os.path.abspath(test_file))
+    qtbot.addWidget(pydm_drawingimage3)
+
+    pydm_drawingimage4 = PyDMDrawingImage(filename="foo")
+    qtbot.addWidget(pydm_drawingimage4)
 
 
 def test_pydmdrawingimage_get_designer_window(qtbot):
