@@ -440,7 +440,9 @@ class PyDMDrawingImage(PyDMDrawing):
 
     def __init__(self, parent=None, init_channel=None, filename=""):
         super(PyDMDrawingImage, self).__init__(parent, init_channel)
-        self._pixmap = QPixmap()
+        hint = super(PyDMDrawingImage, self).sizeHint()
+        self._pixmap = QPixmap(hint)
+        self._pixmap.fill(self.null_color)
         self._aspect_ratio_mode = Qt.KeepAspectRatio
         # Make sure we don't set a non-existant file
         if filename:
@@ -493,21 +495,22 @@ class PyDMDrawingImage(PyDMDrawing):
         new_file : str
             The filename to be used
         """
+        # Expand user (~ or ~user) and environment variables.
         self._file = new_file
-        abs_path = self._file
+        abs_path = os.path.expanduser(os.path.expandvars(self._file))
         is_app = is_pydm_app()
         # Find the absolute path relative to UI
-        if not os.path.isabs(self._file):
+        if not os.path.isabs(abs_path):
             try:
                 # Based on the QApplication
                 if is_app:
-                    abs_path = QApplication.instance().get_path(self._file)
+                    abs_path = QApplication.instance().get_path(abs_path)
                 # Based on the QtDesigner
                 else:
                     p = self.get_designer_window()
                     if p is not None:
                         ui_dir = p.absoluteDir().absolutePath()
-                        abs_path = os.path.join(ui_dir, self._file)
+                        abs_path = os.path.join(ui_dir, abs_path)
             except Exception:
                 logger.exception("Unable to find full filepath for %s",
                                  self._file)
