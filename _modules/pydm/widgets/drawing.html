@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.drawing &mdash; PyDM v1.1.0+135.g513ef85 documentation</title>
+  <title>pydm.widgets.drawing &mdash; PyDM v1.1.0+144.gca8508d documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+135.g513ef85
+                v1.1.0+144.gca8508d
               </div>
             
           
@@ -172,15 +172,16 @@
   <h1>Source code for pydm.widgets.drawing</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">os</span>
-
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span> <span class="n">QPolygon</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">pyqtSlot</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtDesigner</span> <span class="k">import</span> <span class="n">QDesignerFormWindowInterface</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
 <span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">is_pydm_app</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
 
 <span class="k">def</span> <span class="nf">deg_to_qt</span><span class="p">(</span><span class="n">deg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -592,7 +593,7 @@
 
 <div class="viewcode-block" id="PyDMDrawingImage"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingImage</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Renders an image given by the ```filename``` property.</span>
+<span class="sd">    Renders an image given by the ``filename`` property.</span>
 <span class="sd">    This class inherits from PyDMDrawing.</span>
 
 <span class="sd">    Parameters</span>
@@ -601,12 +602,26 @@
 <span class="sd">        The parent widget for the Label</span>
 <span class="sd">    init_channel : str, optional</span>
 <span class="sd">        The channel to be used by the widget.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    null_color : Qt.Color</span>
+<span class="sd">        QColor to fill the image if the filename is not found.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">null_color</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">gray</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingImage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">()</span>
+        <span class="n">hint</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingImage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">sizeHint</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">null_color</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">KeepAspectRatio</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="c1"># Make sure we don&#39;t set a non-existant file</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="c1"># But we always have an internal value to reference</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">filename</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_pydm_app</span><span class="p">():</span>
             <span class="n">designer_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_designer_window</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">designer_window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -642,26 +657,48 @@
     <span class="k">def</span> <span class="nf">filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_file</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The filename of the image to be displayed.</span>
-<span class="sd">        This can be an absolute or relative path to the display file.</span>
+
+<span class="sd">        This file can be either relative to the ``.ui`` file or absolute. If</span>
+<span class="sd">        the path does not exist, a shape of ``.null_color`` will be displayed</span>
+<span class="sd">        instead.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        -------</span>
 <span class="sd">        new_file : str</span>
 <span class="sd">            The filename to be used</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Expand user (~ or ~user) and environment variables.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">new_file</span>
-        <span class="n">path_relative_to_ui_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">):</span>                
+        <span class="n">abs_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expandvars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">))</span>
+        <span class="n">is_app</span> <span class="o">=</span> <span class="n">is_pydm_app</span><span class="p">()</span>
+        <span class="c1"># Find the absolute path relative to UI</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">abs_path</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">():</span>
-                    <span class="n">path_relative_to_ui_file</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">)</span>
+                <span class="c1"># Based on the QApplication</span>
+                <span class="k">if</span> <span class="n">is_app</span><span class="p">:</span>
+                    <span class="n">abs_path</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="n">abs_path</span><span class="p">)</span>
+                <span class="c1"># Based on the QtDesigner</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_designer_window</span><span class="p">()</span>
                     <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="n">path_relative_to_ui_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">absoluteDir</span><span class="p">()</span><span class="o">.</span><span class="n">absolutePath</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">path_relative_to_ui_file</span><span class="p">)</span>
+                        <span class="n">ui_dir</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">absoluteDir</span><span class="p">()</span><span class="o">.</span><span class="n">absolutePath</span><span class="p">()</span>
+                        <span class="n">abs_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ui_dir</span><span class="p">,</span> <span class="n">abs_path</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Unable to find full filepath for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">)</span>
+        <span class="c1"># Check that the path exists</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">abs_path</span><span class="p">):</span>
+            <span class="n">pixmap</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">abs_path</span><span class="p">)</span>
+        <span class="c1"># Return a blank image if we don&#39;t have a valid path</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Warn the user loudly if their file does not exist, but avoid</span>
+            <span class="c1"># doing this in Designer as this spams the user as they are typing</span>
+            <span class="k">if</span> <span class="n">is_app</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Image file  </span><span class="si">%r</span><span class="s2"> does not exist&quot;</span><span class="p">,</span> <span class="n">abs_path</span><span class="p">)</span>
+            <span class="n">pixmap</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sizeHint</span><span class="p">())</span>
+            <span class="n">pixmap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">null_color</span><span class="p">)</span>
+        <span class="c1"># Update the display</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span> <span class="o">=</span> <span class="n">pixmap</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMDrawingImage.sizeHint"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.sizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -706,6 +743,13 @@
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">force_no_pen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">_scaled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span><span class="p">,</span>
                                       <span class="n">Qt</span><span class="o">.</span><span class="n">SmoothTransformation</span><span class="p">)</span>
+        <span class="c1"># Make sure the image is centered if smaller than the widget itself</span>
+        <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="n">_scaled</span><span class="o">.</span><span class="n">width</span><span class="p">():</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Centering image horizontally ...&quot;</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">+=</span> <span class="p">(</span><span class="n">w</span><span class="o">-</span><span class="n">_scaled</span><span class="o">.</span><span class="n">width</span><span class="p">())</span><span class="o">/</span><span class="mi">2</span>
+        <span class="k">if</span> <span class="n">h</span> <span class="o">&gt;</span> <span class="n">_scaled</span><span class="o">.</span><span class="n">height</span><span class="p">():</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Centering image vertically ...&quot;</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">+=</span> <span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="n">_scaled</span><span class="o">.</span><span class="n">height</span><span class="p">())</span><span class="o">/</span><span class="mi">2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawPixmap</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">_scaled</span><span class="p">)</span></div></div>
 
 
@@ -989,7 +1033,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+135.g513ef85',
+            VERSION:'v1.1.0+144.gca8508d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
