@@ -1,10 +1,10 @@
-from ..PyQt.QtGui import QFrame, QComboBox, QHBoxLayout
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, Qt
+from ..PyQt.QtGui import QComboBox
+from ..PyQt.QtCore import pyqtSlot, Qt
 from .base import PyDMWritableWidget
 from pydm.utilities import is_pydm_app
 
 
-class PyDMEnumComboBox(QFrame, PyDMWritableWidget):
+class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
     """
     A QComboBox with support for Channels and more from PyDM
 
@@ -27,26 +27,13 @@ class PyDMEnumComboBox(QFrame, PyDMWritableWidget):
         Emitted when an item in the combobox popup list is highlighted
         by the user.
     """
-    activated = pyqtSignal([int], [str])
-    currentIndexChanged = pyqtSignal([int], [str])
-    highlighted = pyqtSignal([int], [str])
-
     def __init__(self, parent=None, init_channel=None):
-        QFrame.__init__(self, parent)
+        QComboBox.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
-        self.horizontal_layout = QHBoxLayout(self)
-        self.combo_box = QComboBox(self)
-        self.horizontal_layout.addWidget(self.combo_box)
-        # Internal values for properties
         self._has_enums = False
-        self.combo_box.activated[int].connect(self.internal_combo_box_activated_int)
-        self.combo_box.activated[str].connect(self.internal_combo_box_activated_str)
-        self.combo_box.currentIndexChanged[int].connect(self.internal_combo_box_index_changed_int)
-        self.combo_box.currentIndexChanged[str].connect(self.internal_combo_box_index_changed_str)
-        self.combo_box.highlighted[int].connect(self.internal_combo_box_highlighted_int)
-        self.combo_box.highlighted[str].connect(self.internal_combo_box_highlighted_str)
-        self.combo_box.setContextMenuPolicy(Qt.DefaultContextMenu)
-        self.combo_box.contextMenuEvent = self.open_context_menu
+        self.activated[int].connect(self.internal_combo_box_activated_int)
+        self.setContextMenuPolicy(Qt.DefaultContextMenu)
+        self.contextMenuEvent = self.open_context_menu
 
     # Internal methods
     def set_items(self, enums):
@@ -59,9 +46,9 @@ class PyDMEnumComboBox(QFrame, PyDMWritableWidget):
         new_enum_strings : tuple
             The new list of values
         """
-        self.combo_box.clear()
+        self.clear()
         for enum in enums:
-            self.combo_box.addItem(enum)
+            self.addItem(enum)
         self._has_enums = True
         self.check_enable_state()
 
@@ -113,90 +100,16 @@ class PyDMEnumComboBox(QFrame, PyDMWritableWidget):
         """
         if new_val is not None:
             super(PyDMEnumComboBox, self).value_changed(new_val)
-            self.combo_box.setCurrentIndex(new_val)
+            self.setCurrentIndex(new_val)
 
-    # Internal combo box signal handling.
-    # In places where we just forward the signal, we may want to instead
-    # just do self.signal = self.combo_box.signal
-    # in __init__...
     @pyqtSlot(int)
     def internal_combo_box_activated_int(self, index):
         """
         PyQT Slot for when the user chooses an item in the combobox.
-        This slot triggers the ```send_value_signal``` and
-        ```activated``` signals.
-
+        This slot triggers the ```send_value_signal```.
         Parameters
         ----------
         index : int
 
         """
         self.send_value_signal.emit(index)
-        self.activated[int].emit(index)
-
-    @pyqtSlot(str)
-    def internal_combo_box_activated_str(self, text):
-        """
-        PyQT Slot for when the user chooses an item in the combobox.
-        This slot triggers the ```activated``` signal.
-
-        Parameters
-        ----------
-        text : str
-
-        """
-        self.activated[str].emit(text)
-
-    @pyqtSlot(int)
-    def internal_combo_box_index_changed_int(self, index):
-        """
-        PyQT Slot for when the index is changed in the combobox.
-        This slot triggers the ```currentIndexChanged``` signal.
-
-        Parameters
-        ----------
-        index : int
-
-        """
-        self.currentIndexChanged[int].emit(index)
-
-    @pyqtSlot(str)
-    def internal_combo_box_index_changed_str(self, text):
-        """
-        PyQT Slot for when the index is changed in the combobox.
-        This slot triggers the ```currentIndexChanged``` signal.
-
-        Parameters
-        ----------
-        text : str
-
-        """
-        self.currentIndexChanged[str].emit(text)
-
-    @pyqtSlot(int)
-    def internal_combo_box_highlighted_int(self, index):
-        """
-        PyQT Slot for when an item in the combobox popup list is
-        highlighted by the user.
-        This slot triggers the ```highlighted``` signal.
-
-        Parameters
-        ----------
-        index : int
-
-        """
-        self.highlighted[int].emit(index)
-
-    @pyqtSlot(str)
-    def internal_combo_box_highlighted_str(self, text):
-        """
-        PyQT Slot for when an item in the combobox popup list is
-        highlighted by the user.
-        This slot triggers the ```highlighted``` signal.
-
-        Parameters
-        ----------
-        text : str
-
-        """
-        self.highlighted[str].emit(text)
