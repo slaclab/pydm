@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 from ..PyQt.QtGui import QComboBox
 from ..PyQt.QtCore import pyqtSlot, Qt
 from .base import PyDMWritableWidget
@@ -46,6 +49,10 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         new_enum_strings : tuple
             The new list of values
         """
+        if not enums:
+            logger.error("Invalid enum value '{0}'. The value is expected to be a valid a string.".format(enums))
+            return
+
         self.clear()
         for enum in enums:
             self.addItem(enum)
