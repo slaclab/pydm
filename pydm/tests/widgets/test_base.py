@@ -370,8 +370,8 @@ def test_pydmwidget_channel_change(qtbot):
 
     pydm_label.channel = 'foo://bar'
     assert pydm_label._channel == 'foo://bar'
+    assert pydm_label._channels is None
     assert pydm_label.channels()[0].address == 'foo://bar'
-    assert pydm_label._channels is not None
 
     pydm_label.channel = 'abc://def'
     assert pydm_label._channel == 'abc://def'
