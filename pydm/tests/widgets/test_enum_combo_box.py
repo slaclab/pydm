@@ -128,8 +128,10 @@ def test_check_enable_state(qtbot, signals, monkeypatch, connected, write_access
     signals.connection_state_signal[bool].connect(pydm_enumcombobox.connectionStateChanged)
     signals.connection_state_signal[bool].emit(connected)
 
-    signals.enum_strings_signal[tuple].connect(pydm_enumcombobox.enumStringsChanged)
-    signals.enum_strings_signal[tuple].emit(("START", "STOP", "PAUSE"))
+    if has_enum:
+        signals.enum_strings_signal[tuple].connect(pydm_enumcombobox.enumStringsChanged)
+        signals.enum_strings_signal[tuple].emit(("START", "STOP", "PAUSE"))
+        assert pydm_enumcombobox._has_enums
 
     monkeypatch.setattr(PyDMApplication, 'is_read_only', lambda *args: is_app_read_only)
 
@@ -223,8 +225,6 @@ def test_value_changed(qtbot, signals, value):
     0,
     1,
     -1,
-    25,
-    -25,
 ])
 def test_internal_combo_box_activated_int(qtbot, signals, index):
     """
@@ -296,6 +296,7 @@ def test_set_items_neg(qtbot, caplog, enums, expected_error_message):
 
 @pytest.mark.parametrize("values, selected_index, expected", [
     (("ON", "OFF"), 3, ""),
+    (("ON", "OFF"), -1, ""),
 ])
 def test_enum_strings_changed_incorrect_index(qtbot, signals, values, selected_index, expected):
     """
