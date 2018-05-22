@@ -50,12 +50,21 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
             The new list of values
         """
         if not enums:
-            logger.error("Invalid enum value '{0}'. The value is expected to be a valid a string.".format(enums))
+            logger.error("Invalid enum value '{0}'. The value is expected to be a valid list of string values."
+                         .format(enums))
             return
 
         self.clear()
         for enum in enums:
-            self.addItem(enum)
+            if enum is None:
+                logger.error("Invalid enum type '{0}'. The expected type is 'string'.".format(type(enum)))
+                return
+
+            try:
+                self.addItem(enum)
+            except TypeError as error:
+                logger.error(
+                    "Invalid enum type '{0}'. The expected type is 'string'. Exception: {1}".format(type(enum), error))
         self._has_enums = True
         self.check_enable_state()
 

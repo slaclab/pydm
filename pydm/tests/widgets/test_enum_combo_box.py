@@ -37,7 +37,7 @@ def test_construct(qtbot):
 @pytest.mark.parametrize("enums", [
     ("spam", "eggs", "ham"),
     ("spam",),
-    ("",)
+    ("",),
 ])
 def test_set_items(qtbot, enums):
     """
@@ -90,7 +90,7 @@ def test_set_items(qtbot, enums):
     (False, False, False, True),
     (False, False, False, False),
 ])
-def test_check_enable_state(qtbot, monkeypatch, connected, write_access, has_enum, is_app_read_only):
+def test_check_enable_state(qtbot, signals, monkeypatch, connected, write_access, has_enum, is_app_read_only):
     """
     Test the tooltip generated depending on the channel connection, write access, whether the widget has enum strings,
     and whether the app is read-only.
@@ -106,6 +106,8 @@ def test_check_enable_state(qtbot, monkeypatch, connected, write_access, has_enu
     ----------
     qtbot : fixture
         Window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
     monkeypatch : fixture
         To override the default behavior of PyDMApplication.is_read_only()
     connected : bool
@@ -120,9 +122,14 @@ def test_check_enable_state(qtbot, monkeypatch, connected, write_access, has_enu
     pydm_enumcombobox = PyDMEnumComboBox()
     qtbot.addWidget(pydm_enumcombobox)
 
-    pydm_enumcombobox._write_access = write_access
-    pydm_enumcombobox._connected = connected
-    pydm_enumcombobox._has_enums = has_enum
+    signals.write_access_signal[bool].connect(pydm_enumcombobox.writeAccessChanged)
+    signals.write_access_signal[bool].emit(write_access)
+
+    signals.connection_state_signal[bool].connect(pydm_enumcombobox.connectionStateChanged)
+    signals.connection_state_signal[bool].emit(connected)
+
+    signals.enum_strings_signal[tuple].connect(pydm_enumcombobox.enumStringsChanged)
+    signals.enum_strings_signal[tuple].emit(("START", "STOP", "PAUSE"))
 
     monkeypatch.setattr(PyDMApplication, 'is_read_only', lambda *args: is_app_read_only)
 
@@ -250,10 +257,18 @@ def test_internal_combo_box_activated_int(qtbot, signals, index):
 # NEGATIVE TEST CASES
 # --------------------
 
-@pytest.mark.parametrize("enums", [
-    None,
+@pytest.mark.parametrize("enums, expected_error_message", [
+    (None, "Invalid enum value '{0}'. The value is expected to be a valid list of string values.".format(None)),
+    ((None, "abc"), "Invalid enum type '{0}'. The expected type is 'string'.".format(type(None))),
+    ((None, 123.456), "Invalid enum type '{0}'. The expected type is 'string'".format(type(None))),
+    ((None, None, None), "Invalid enum type '{0}'. The expected type is 'string'".format(type(None))),
+    ((123,),  "Invalid enum type '{0}'. The expected type is 'string'".format(type(123))),
+    ((123.45,),  "Invalid enum type '{0}'. The expected type is 'string'".format(type(123.45))),
+    ((123, 456), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123))),
+    ((123.456, None), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123.456))),
+    (("spam", 123, "eggs", "ham"), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123))),
 ])
-def test_set_items_neg(qtbot, caplog, enums):
+def test_set_items_neg(qtbot, caplog, enums, expected_error_message):
     """
     Test sending setting the widget with an undefined list of enum strings.
 
@@ -276,7 +291,7 @@ def test_set_items_neg(qtbot, caplog, enums):
 
     for record in caplog.records:
         assert record.levelno == ERROR
-    assert "Invalid enum value 'None'. The value is expected to be a valid a string." in caplog.text
+    assert expected_error_message in caplog.text
 
 
 @pytest.mark.parametrize("values, selected_index, expected", [
