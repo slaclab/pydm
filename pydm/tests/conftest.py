@@ -97,6 +97,7 @@ class ConnectionSignals(QObject):
     new_severity_signal = pyqtSignal(int)
     write_access_signal = pyqtSignal(bool)
     enum_strings_signal = pyqtSignal(tuple)
+    internal_slider_moved = pyqtSignal(int)
     send_value_signal = pyqtSignal([int], [float], [str], [bool], [np.ndarray])
     unit_signal = pyqtSignal(str)
     prec_signal = pyqtSignal(int)
