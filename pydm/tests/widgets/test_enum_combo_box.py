@@ -160,6 +160,8 @@ def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     Test the widget's handling of enum strings, which are choices presented to the user, and the widget's ability to
     update the selected enum string when the user provides a choice index.
 
+    This test will also cover value_changed() testing.
+
     Expectations:
     The widget displays the correct enum string whose index from the enum string tuple is selected by the user.
 
@@ -187,38 +189,6 @@ def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
 
     assert pydm_enumcombobox.value == selected_index
     assert pydm_enumcombobox.currentText() == expected
-
-
-@pytest.mark.parametrize("value", [
-    0,
-    -1,
-    -2,
-    1,
-    2,
-])
-def test_value_changed(qtbot, signals, value):
-    """
-    Test the widget's handling of the value changed event. In this case, it's the enum string index choice change.
-
-    Expectations:
-    The widget records the correct the enum string index change.
-
-    Parameters
-    ----------
-    qtbot : fixture
-       pytest-qt window for widget testing
-    signals : fixture
-       The signals fixture, which provides access signals to be bound to the appropriate slots
-    value : int
-       The index of the enum string to be displayed by the widget
-    """
-    pydm_enumcombobox = PyDMEnumComboBox()
-    qtbot.addWidget(pydm_enumcombobox)
-
-    signals.new_value_signal[type(value)].connect(pydm_enumcombobox.channelValueChanged)
-    signals.new_value_signal[type(value)].emit(value)
-
-    assert pydm_enumcombobox.value == value
 
 
 @pytest.mark.parametrize("index", [
