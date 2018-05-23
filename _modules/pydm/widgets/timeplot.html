@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.timeplot &mdash; PyDM v1.1.0+151.g6819433 documentation</title>
+  <title>pydm.widgets.timeplot &mdash; PyDM v1.1.0+153.g749060e documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+151.g6819433
+                v1.1.0+153.g749060e
               </div>
             
           
@@ -336,6 +336,7 @@
                                       <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
                                       <span class="o">**</span><span class="n">plot_opts</span><span class="p">)</span>
         <span class="n">new_curve</span><span class="o">.</span><span class="n">setUpdatesAsynchronously</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updatesAsynchronously</span><span class="p">)</span>
+        <span class="n">new_curve</span><span class="o">.</span><span class="n">setBufferSize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">new_curve</span><span class="o">.</span><span class="n">asyncUpdate</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">addCurve</span><span class="p">(</span><span class="n">new_curve</span><span class="p">,</span> <span class="n">curve_color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -552,7 +553,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+151.g6819433',
+            VERSION:'v1.1.0+153.g749060e',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
