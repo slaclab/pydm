@@ -79,12 +79,6 @@ def load_plugins_from_path(locations, token):
                     classes = list(set(classes))
                     for plugin in classes:
                         if plugin.protocol is not None:
-                            if plugin_modules.get(plugin.protocol, plugin) != plugin:
-                                logger.warning("More than one plugin is "
-                                               "attempting to register the %s "
-                                               "protocol. Which plugin will get "
-                                               "called to handle this protocol "
-                                               "is undefined.", plugin.protocol)
                             # Add to global plugin list
                             add_plugin(plugin)
                             # Add to return dictionary of added plugins
