@@ -71,6 +71,7 @@ def load_plugins_from_path(locations, token):
                                          "This plugin will be skipped."
                                          "The exception raised was: {}",
                                          name, e)
+                        continue
                     classes = [obj for name, obj in inspect.getmembers(module)
                                if (inspect.isclass(obj)
                                    and issubclass(obj, PyDMPlugin)
