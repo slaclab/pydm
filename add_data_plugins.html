@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Channel &mdash; PyDM v1.1.0+172.g131b650 documentation</title>
+  <title>Including Data Plugins &mdash; PyDM v1.1.0+172.g131b650 documentation</title>
   
 
   
@@ -29,8 +29,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Utilities" href="utilities/index.html" />
-    <link rel="prev" title="Application" href="application.html" /> 
+    <link rel="next" title="Application" href="application.html" />
+    <link rel="prev" title="PyDMWaveformTable" href="widgets/waveformtable.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -96,9 +96,9 @@
 <p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="widgets/index.html">Widgets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Including Data Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application.html">Application</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities/index.html">Utilities</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developers Corner</span></p>
@@ -155,13 +155,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Channel</li>
+      <li>Including Data Plugins</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/channel.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/add_data_plugins.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -174,54 +174,58 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="channel">
-<h1>Channel<a class="headerlink" href="#channel" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="channel.PyDMChannel">
-<em class="property">class </em><code class="descclassname">channel.</code><code class="descname">PyDMChannel</code><span class="sig-paren">(</span><em>address=None</em>, <em>connection_slot=None</em>, <em>value_slot=None</em>, <em>severity_slot=None</em>, <em>write_access_slot=None</em>, <em>enum_strings_slot=None</em>, <em>unit_slot=None</em>, <em>prec_slot=None</em>, <em>upper_ctrl_limit_slot=None</em>, <em>lower_ctrl_limit_slot=None</em>, <em>value_signal=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/channel.html#PyDMChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#channel.PyDMChannel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Object to hold signals and slots for a PyDM Widget interface to an
-external plugin</p>
-<p>The purpose of this class is to create a templated slot and signals
-list that can be sent to an external plugin. The type of plugin is
-determined by the PyDMApplication based on the identifier placed at
-the beginning of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">address</span></code> attribute. This allows a generic
-way to connect slots and signals to functionality within your PyDM
-Widget. Slots should be connected to functions on your created widget
-that perform actions upon changes. For instance, the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code>
-will be automatically called every time a new value is found by the
-plugin. This should probably linked to a function that updates the
-display to report the new value. Signals perform the reverse operation.
-These should be used to send new values back to the plugin to update
-the source.</p>
-<p>Using this structure to interface with plugins allows your created PyDM
-Widget a greater flexibility in choosing its underlying source. For
-instance, returning to the example of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code>,
-getting a value to display from channel access or from the EPICS Archiver
-are very different operations. However, actually displaying the value
-should be identical. By simply attaching your PyDM Widget’s display
-functionality to the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code> you have created a
-Widget that can do either interchangeably, all the user has to do is
-specify the correct address signature and the rest of the work is done
-by the underlying plugins.</p>
+  <div class="section" id="including-data-plugins">
+<h1>Including Data Plugins<a class="headerlink" href="#including-data-plugins" title="Permalink to this headline">¶</a></h1>
+<p>PyDM is built with a flexible architecture such that information from multiple
+sources can be displayed without changing widget code. This allows widgets to
+be agnostic of the data source that updates them and focus on the logic of
+displaying information.  PyDM will always import the built-in plugins found in
+the <code class="docutils literal notranslate"><span class="pre">data_plugins</span></code> folder,  but some advanced users may want to include
+custom data plugins as well. A mapping of <code class="docutils literal notranslate"><span class="pre">protocol</span></code> to <code class="docutils literal notranslate"><span class="pre">PyDMPlugin</span></code> is
+kept within <code class="docutils literal notranslate"><span class="pre">pydm.data_plugins.plugin_modules</span></code> and mirrored in
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">PyDMApplication.plugins</span></code>. This is where the <code class="docutils literal notranslate"><span class="pre">PyDMApplication</span></code> will
+determine which plugin to use when you provided it with a channel.</p>
+<p>If you would like add a library of plugins from a specific folder for every
+session, PyDM will check all paths provided by the environment variable
+<code class="docutils literal notranslate"><span class="pre">$PYDM_DATA_PLUGINS_PATH</span></code>. This folder will be searched for files that fit
+the name <code class="docutils literal notranslate"><span class="pre">{}_plugin.py</span></code> and attempt to load the contained plugin. Each of
+these files should contain a single <code class="docutils literal notranslate"><span class="pre">PyDMPlugin</span></code>. For those searching for a
+more programmatic approach the API is documented below. Take note that all
+plugins should be registered before the <code class="docutils literal notranslate"><span class="pre">PyDMApplication</span></code> is launched,
+otherwise they will not be registered in time for connections to be made.</p>
+<dl class="function">
+<dt id="pydm.data_plugins.add_plugin">
+<code class="descclassname">pydm.data_plugins.</code><code class="descname">add_plugin</code><span class="sig-paren">(</span><em>plugin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/data_plugins.html#add_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.data_plugins.add_plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a PyDM plugin to the global registry of protocol vs. plugins</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>address</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the address to be used by the plugin. This
-should usually be a user inputted field when a specific
-PyDM widget is initialized</li>
-<li><strong>connection_slot</strong> (<em>pyqtSlot</em><em>, </em><em>optional</em>) – A function to be run when the connection state
-changes</li>
-<li><strong>value_slot</strong> (<em>pyqtSlot</em><em>, </em><em>optional</em>) – A function to be run when the value updates</li>
-<li><strong>severity_slot</strong> (<em>pyqtSlot</em><em>, </em><em>optional</em>) – A function to be run when the severity changes</li>
-<li><strong>write_access_slot</strong> (<em>pyqtSlot</em><em>, </em><em>optional</em>) – A function to be run when the write access changes</li>
-<li><strong>enum_strings_slot</strong> (<em>pyqtSlot</em><em>, </em><em>optional</em>) – A function to be run when the enum_strings change</li>
-<li><strong>unit_slot</strong> (<em>pyqtSlot</em><em>, </em><em>optional</em>) – A function to be run when the unit changes</li>
-<li><strong>prec_slot</strong> (<em>pyqtSlot</em><em>, </em><em>optional</em>) – A function to be run when the precision value changes</li>
-<li><strong>value_signal</strong> (<em>pyqtSignal</em><em>, </em><em>optional</em>) – Attach a signal here that emits a desired value to be sent
-through the plugin</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin</strong> (<em>PyDMPlugin</em>) – The class of plugin to instantiate</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydm.data_plugins.load_plugins_from_path">
+<code class="descclassname">pydm.data_plugins.</code><code class="descname">load_plugins_from_path</code><span class="sig-paren">(</span><em>locations</em>, <em>token</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/data_plugins.html#load_plugins_from_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.data_plugins.load_plugins_from_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load plugins from file locations that match a specific token</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>locations</strong> (<em>list</em>) – List of file locations</li>
+<li><strong>token</strong> (<em>str</em>) – Phrase that must match the end of the filename for it to be checked for
+PyDMPlugins</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>plugins</strong> – Dictionary of plugins add from this folder</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -238,10 +242,10 @@ through the plugin</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="utilities/index.html" class="btn btn-neutral float-right" title="Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="application.html" class="btn btn-neutral float-right" title="Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="application.html" class="btn btn-neutral" title="Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="widgets/waveformtable.html" class="btn btn-neutral" title="PyDMWaveformTable" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

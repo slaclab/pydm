@@ -4,6 +4,7 @@
 ./_modules/channel.html
 ./_modules/index.html
 ./_modules/pydm/application.html
+./_modules/pydm/data_plugins.html
 ./_modules/pydm/utilities.html
 ./_modules/pydm/utilities/colors.html
 ./_modules/pydm/utilities/iconfont.html
@@ -30,6 +31,7 @@
 ./_modules/pydm/widgets/timeplot.html
 ./_modules/pydm/widgets/waveformplot.html
 ./_modules/pydm/widgets/waveformtable.html
+./_sources/add_data_plugins.rst.txt
 ./_sources/application.rst.txt
 ./_sources/channel.rst.txt
 ./_sources/development/development.rst.txt
@@ -101,6 +103,7 @@
 ./_static/up.png
 ./_static/websupport.js
 ./_static/widgets/tab_widget.png
+./add_data_plugins.html
 ./application.html
 ./channel.html
 ./development/development.html
