@@ -39,23 +39,23 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         self.contextMenuEvent = self.open_context_menu
 
     # Internal methods
-    def set_items(self, new_enum_strings):
+    def set_items(self, enums):
         """
         Internal method to fill the ComboBox items based on a list
         of strings.
 
         Parameters
         ----------
-        new_enum_strings : tuple
+        enums : tuple
             The new list of values
         """
-        if not new_enum_strings:
+        if not enums:
             logger.error("Invalid enum value '{0}'. The value is expected to be a valid list of string values."
-                         .format(new_enum_strings))
+                         .format(enums))
             return
 
         self.clear()
-        for e_str in new_enum_strings:
+        for e_str in enums:
             if e_str is None:
                 logger.error("Invalid enum type '{0}'. The expected type is 'string'.".format(type(e_str)))
                 return
