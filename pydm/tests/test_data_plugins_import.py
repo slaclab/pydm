@@ -1,5 +1,8 @@
-from pydm.data_plugins import add_plugin, PyDMPlugin, plugin_modules
+import os.path
+import tempfile
 
+from pydm.data_plugins import (add_plugin, PyDMPlugin, plugin_modules,
+                               load_plugins_from_path)
 
 def test_data_plugin_add(qapp):
     # Create test PyDMPlugin with mock protocol
@@ -11,7 +14,26 @@ def test_data_plugin_add(qapp):
     assert isinstance(qapp.plugins['tst'], test_plug)
 
 
-def test_default_plugin_loading(qapp):
-    # Making assumption we will always have a ca plugin in standard lib
-    assert 'ca' in plugin_modules
-    assert 'ca' in qapp.plugins
+def test_plugin_directroy_loading(qapp):
+    # Create a fake file
+    with tempfile.NamedTemporaryFile(mode='w+', suffix='.py') as tmp:
+        tmp.write(fake_file)
+        tmp.flush()
+        dirname = os.path.dirname(tmp.name)
+        load_plugins_from_path([dirname], '.py')
+        assert 'tst1' in plugin_modules
+        assert 'tst2' in plugin_modules
+
+
+fake_file = """\
+from pydm.data_plugins import PyDMPlugin
+
+
+class TestPlugin1(PyDMPlugin):
+    protocol = 'tst1'
+
+
+class TestPlugin2(PyDMPlugin):
+    protocol = 'tst2'
+"""
+
