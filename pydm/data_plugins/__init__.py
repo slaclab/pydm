@@ -59,7 +59,7 @@ def load_plugins_from_path(locations, token):
 
             logger.info("Looking for PyDM Data Plugins at: {}".format(root))
             for name in files:
-                if name.endswith(DATA_PLUGIN_TOKEN):
+                if name.endswith(token):
                     try:
                         logger.info("\tTrying to load {}...".format(name))
                         sys.path.append(root)
