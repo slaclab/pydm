@@ -77,25 +77,18 @@ def load_plugins_from_path(locations, token):
                                    and obj is not PyDMPlugin)]
                     # De-duplicate classes.
                     classes = list(set(classes))
-                    if len(classes) == 0:
-                        continue
-                    if len(classes) > 1:
-                        logger.warning("More than one PyDMPlugin subclass "
-                                       "in file {}. The first occurrence "
-                                       "(in alphabetical order) will be "
-                                       "opened: {}", name, classes[0].__name__)
-                    plugin = classes[0]
-                    if plugin.protocol is not None:
-                        if plugin_modules.get(plugin.protocol, plugin) != plugin:
-                            logger.warning("More than one plugin is "
-                                           "attempting to register the %s "
-                                           "protocol. Which plugin will get "
-                                           "called to handle this protocol "
-                                           "is undefined.", plugin.protocol)
-                        # Add to global plugin list
-                        add_plugin(plugin)
-                        # Add to return dictionary of added plugins
-                        added_plugins[plugin.protocol] = plugin
+                    for plugin in classes:
+                        if plugin.protocol is not None:
+                            if plugin_modules.get(plugin.protocol, plugin) != plugin:
+                                logger.warning("More than one plugin is "
+                                               "attempting to register the %s "
+                                               "protocol. Which plugin will get "
+                                               "called to handle this protocol "
+                                               "is undefined.", plugin.protocol)
+                            # Add to global plugin list
+                            add_plugin(plugin)
+                            # Add to return dictionary of added plugins
+                            added_plugins[plugin.protocol] = plugin
     return added_plugins
 
 
