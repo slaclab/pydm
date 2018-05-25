@@ -57,19 +57,19 @@ def load_plugins_from_path(locations, token):
             if root.split(os.path.sep)[-1].startswith("__"):
                 continue
 
-            logger.info("Looking for PyDM Data Plugins at: {}".format(root))
+            logger.info("Looking for PyDM Data Plugins at: %s", root)
             for name in files:
                 if name.endswith(token):
                     try:
-                        logger.info("\tTrying to load {}...".format(name))
+                        logger.info("Trying to load %s...", name)
                         sys.path.append(root)
                         temp_name = str(uuid.uuid4())
                         module = imp.load_source(temp_name,
                                                  os.path.join(root, name))
                     except Exception as e:
-                        logger.exception("Unable to import plugin file {}."
+                        logger.exception("Unable to import plugin file %s."
                                          "This plugin will be skipped."
-                                         "The exception raised was: {}",
+                                         "The exception raised was: %s",
                                          name, e)
                         continue
                     classes = [obj for name, obj in inspect.getmembers(module)
