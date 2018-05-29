@@ -245,7 +245,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         """
         PyDMWritableWidget.alarm_severity_changed(self, new_alarm_severity)
         if hasattr(self, "value_label"):
-            if self._channels is not None:
+            if self._channel is not None:
                 style = compose_stylesheet(style=self._style, obj=self.value_label)
                 self.value_label.setStyleSheet(style)
                 self.update()
@@ -462,7 +462,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         ----------
         new_min : float
         """
-        self._user_minimum = float(new_min)
+        self._user_minimum = float(new_min) if new_min is not None else None
         if self.userDefinedLimits:
             self.reset_slider_limits()
 
@@ -486,7 +486,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         ----------
         new_max : float
         """
-        self._user_maximum = float(new_max)
+        self._user_maximum = float(new_max) if new_max is not None else None
         if self.userDefinedLimits:
             self.reset_slider_limits()
 

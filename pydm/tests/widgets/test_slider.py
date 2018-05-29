@@ -4,11 +4,11 @@ import pytest
 from logging import ERROR
 import numpy as np
 
-from ...PyQt.QtGui import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
-from ...PyQt.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty, QMargins
+from ...PyQt.QtGui import QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy
+from ...PyQt.QtCore import Qt, pyqtSignal, pyqtProperty, QMargins
 
 from ...widgets.slider import PyDMSlider
-from ...widgets.base import PyDMWritableWidget, compose_stylesheet
+from ...widgets.base import PyDMWidget, PyDMWritableWidget, compose_stylesheet
 
 
 # --------------------
@@ -16,6 +16,17 @@ from ...widgets.base import PyDMWritableWidget, compose_stylesheet
 # --------------------
 
 def test_construct(qtbot):
+    """
+    Test the construction of the widget.
+
+    Expectations:
+    Default values are correctly assigned.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
 
@@ -52,6 +63,17 @@ def test_construct(qtbot):
 
 
 def test_init_for_designer(qtbot):
+    """
+    Test the configuration method for using with Qt Designer.
+
+    Expectations:
+    The widget's internal value is set to 0.0.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
 
@@ -59,7 +81,107 @@ def test_init_for_designer(qtbot):
     assert pydm_slider.value == 0.0
 
 
-def test_properties_and_setters(qtbot):
+def test_actions_triggered(qtbot, signals):
+    """
+    Test emitting values via the widget's action slots.
+
+    Expectations:
+    The slot's actions are triggered.
+
+    qtbot : fixture
+        pytest-qt window for widget test
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    """
+    pydm_slider = PyDMSlider()
+    qtbot.addWidget(pydm_slider)
+
+    signals.internal_slider_moved.connect(pydm_slider.internal_slider_action_triggered)
+    signals.internal_slider_moved.emit(1)
+
+    signals.internal_slider_clicked.connect(pydm_slider.internal_slider_pressed)
+    signals.internal_slider_clicked.emit()
+
+    signals.internal_slider_clicked.connect(pydm_slider.internal_slider_released)
+    signals.internal_slider_clicked.emit()
+
+
+@pytest.mark.parametrize("new_value, mute_change", [
+    (15, False),
+    (15, True),
+])
+def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
+    """
+    Test widget's change of its text value if its internal value has changed.
+
+    Expectations:
+
+    If the `_mute_internal_slider_changes` flag is True, the value will not be propagated to PyDM, and the widget's text
+    will remain the same.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget test
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    new_value : int
+        The new value from changing the slider widget.
+    mute_change : bool
+        True if the new slider value is not to be propagated into changing the widget's text component; False otherwise.
+    """
+    pydm_slider = PyDMSlider()
+    qtbot.addWidget(pydm_slider)
+
+    pydm_slider.userDefinedLimits = True
+    pydm_slider.userMinimum = 10
+    pydm_slider.userMaximum = 100
+
+    pydm_slider._slider.setValue(0)
+    assert pydm_slider._slider.value() == 0
+    pydm_slider.value_label.setText("0")
+
+    pydm_slider._mute_internal_slider_changes = mute_change
+    pydm_slider.value = new_value
+
+    signals.send_value_signal[int].connect(pydm_slider.internal_slider_value_changed)
+    pydm_slider.send_value_signal[float].connect(pydm_slider.channelValueChanged)
+    signals.send_value_signal[int].emit(new_value)
+
+    if not mute_change:
+        assert pydm_slider.value_label.text() == str(new_value)
+    else:
+        assert pydm_slider.value_label.text() == "0"
+
+
+@pytest.mark.parametrize("show_labels, tick_position", [
+    (True, 0),
+    (True, -10),
+    (True, 10),
+    (False, 0),
+    (False, -10),
+    (False, 10),
+])
+def test_properties_and_setters(qtbot, show_labels, tick_position):
+    """
+    Test the widget's various properties and setters.
+
+    Expectations:
+    The setters will update the values of the corresponding properties, which will return the up-to-date values.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget test
+    show_labels : bool
+        True if the labels (min and max values) will be shown; False otherwise
+    tick_position : int
+        The tick position for the slider component.
+
+    Returns
+    -------
+
+    """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
 
@@ -67,12 +189,45 @@ def test_properties_and_setters(qtbot):
     pydm_slider.orientation = Qt.Vertical
     assert pydm_slider.orientation == Qt.Vertical
 
+    pydm_slider.tickPosition = tick_position
+    assert pydm_slider.tickPosition == tick_position
+    pydm_slider.num_steps = 5
+    assert pydm_slider.num_steps == 5
+
+    pydm_slider.showLimitLabels = show_labels
+    assert pydm_slider.showLimitLabels == show_labels
+
+    pydm_slider.showValueLabel = show_labels
+    assert pydm_slider.showValueLabel == show_labels
+
+    if show_labels:
+        assert pydm_slider.low_lim_label.isVisibleTo(pydm_slider)
+        assert pydm_slider.high_lim_label.isVisibleTo(pydm_slider)
+        assert pydm_slider.value_label.isVisibleTo(pydm_slider)
+    else:
+        assert not pydm_slider.low_lim_label.isVisibleTo(pydm_slider)
+        assert not pydm_slider.high_lim_label.isVisibleTo(pydm_slider)
+        assert not pydm_slider.value_label.isVisibleTo(pydm_slider)
+
 
 @pytest.mark.parametrize("new_orientation", [
     Qt.Horizontal,
     Qt.Vertical
 ])
 def test_setup_widgets_for_orientation(qtbot, new_orientation):
+    """
+    Test setting up the slider's orientation.
+
+    Expectations:
+    The widget's box layout and margins are correct for the general orientation of the widget.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget test
+    new_orientation : Orientation
+        The orientation for the widget.
+    """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
 
@@ -105,10 +260,33 @@ def test_setup_widgets_for_orientation(qtbot, new_orientation):
 
 
 @pytest.mark.parametrize("minimum, maximum, current_value", [
-    (None, None, None),
     (10, 20.5, 11),
+    (10, 1, 5),
+    (10, 20, 30),
+    (-10, 20.5, -5),
 ])
 def test_update_labels(qtbot, signals, minimum, maximum, current_value):
+    """
+    Test the changes in the user minimum, user maximum, and the current value labels as the widget's slider component
+    moves.
+
+    Expecations:
+
+    The widget's min, max, and current values are reflected correctly on the correponsiding labels.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget test
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    minimum : int
+        The slider's minimum value as set by the user
+    maximum : int
+        The slider's maximum value as set by the user
+    current_value : int
+        The current slider's value as set by the user
+    """
     def validate(value, widget):
         if value is None:
             assert widget.text() == ""
@@ -131,6 +309,260 @@ def test_update_labels(qtbot, signals, minimum, maximum, current_value):
     validate(maximum, pydm_slider.high_lim_label)
     validate(pydm_slider._slider_position_to_value_map[current_value], pydm_slider.value_label)
 
+
+@pytest.mark.parametrize("minimum, maximum, write_access, connected", [
+    (None, None, True, True),
+    (None, 10, True, True),
+    (10, None, True, True),
+    (10, 20, True, True),
+    (20, 20, True, True),
+    (20, 30, True, True),
+    (-10, 20, True, True),
+    (10, 20, True, False),
+    (10, 20, False, True),
+    (10, 20, False, False),
+])
+def test_reset_slider_limits(qtbot, signals, minimum, maximum, write_access, connected):
+    pydm_slider = PyDMSlider()
+    qtbot.addWidget(pydm_slider)
+
+    pydm_slider.userDefinedLimits = True
+    pydm_slider.userMinimum = minimum
+    pydm_slider.userMaximum = maximum
+
+    signals.write_access_signal[bool].connect(pydm_slider.writeAccessChanged)
+    signals.write_access_signal[bool].emit(write_access)
+
+    signals.connection_state_signal[bool].connect(pydm_slider.connectionStateChanged)
+    signals.connection_state_signal[bool].emit(connected)
+
+    pydm_slider.reset_slider_limits()
+
+    if minimum is None or maximum is None:
+        assert pydm_slider._needs_limit_info is True
+    else:
+        assert pydm_slider._needs_limit_info is False
+        assert pydm_slider.userMinimum == minimum
+        assert pydm_slider.userMaximum == maximum
+        assert pydm_slider._slider.minimum() == 0
+        assert pydm_slider._slider.maximum() == pydm_slider.num_steps - 1
+        assert pydm_slider._slider.singleStep() == 1
+        assert pydm_slider._slider.pageStep() == 10
+        assert np.array_equal(pydm_slider._slider_position_to_value_map,
+                              np.linspace(pydm_slider.minimum, pydm_slider.maximum, num=pydm_slider._num_steps))
+        assert pydm_slider.isEnabled() == (pydm_slider._write_access and pydm_slider._connected and not \
+            pydm_slider._needs_limit_info)
+
+
+@pytest.mark.parametrize("new_value, minimum, maximum", [
+    (10, -10, 20),
+    (-10, -10, 20),
+    (20, -10, 20),
+    (-200, -10, 20),
+    (200, -10, 20),
+    (0, 0, 0),
+    (10, 10, 10),
+])
+def test_set_slider_to_closest_value(qtbot, new_value, minimum, maximum):
+    """
+    Also test set_slider_to_closest_value().
+
+    Parameters
+    ----------
+    qtbot
+    new_value
+    expected_slider_value
+
+    Returns
+    -------
+
+    """
+    pydm_slider = PyDMSlider()
+    qtbot.addWidget(pydm_slider)
+
+    pydm_slider.userDefinedLimits = True
+    pydm_slider.userMinimum = minimum
+    pydm_slider.userMaximum = maximum
+
+    pydm_slider._slider.setValue(0)
+    assert pydm_slider._slider.value() == 0
+
+    expected_slider_value = np.argmin(abs(pydm_slider._slider_position_to_value_map - float(new_value)))
+    pydm_slider.set_slider_to_closest_value(new_value)
+
+    if new_value is None or pydm_slider._needs_limit_info:
+        assert pydm_slider._silder.value() == 0
+    else:
+        assert pydm_slider._mute_internal_slider_changes is False
+        assert pydm_slider._slider.value() == expected_slider_value
+
+
+@pytest.mark.parametrize("new_channel_value, is_slider_down", [
+    (15, False),
+    (15, True),
+])
+def test_value_changed(qtbot, signals, monkeypatch, new_channel_value, is_slider_down):
+    pydm_slider = PyDMSlider()
+    qtbot.addWidget(pydm_slider)
+
+    pydm_slider.userDefinedLimits = True
+    pydm_slider.userMinimum = 10
+    pydm_slider.userMaximum = 100
+
+    pydm_slider._slider.setValue(0)
+    assert pydm_slider._slider.value() == 0
+
+    monkeypatch.setattr(QSlider, "isSliderDown", lambda *args: is_slider_down)
+    signals.new_value_signal.connect(pydm_slider.channelValueChanged)
+    signals.new_value_signal.emit(new_channel_value)
+
+    assert pydm_slider.value_label.text() == pydm_slider.format_string.format(pydm_slider.value)
+    if not is_slider_down:
+        expected_slider_value = np.argmin(abs(pydm_slider._slider_position_to_value_map - float(new_channel_value)))
+        assert pydm_slider._slider.value() == expected_slider_value
+    else:
+        assert pydm_slider._slider.value() == 0
+
+
+@pytest.mark.parametrize("channel, alarm_sensitive_content, alarm_sensitive_border, new_alarm_severity", [
+    (None, False, False, PyDMWidget.NO_ALARM),
+    (None, False, True, PyDMWidget.NO_ALARM),
+    (None, True, False, PyDMWidget.NO_ALARM),
+    (None, True, True, PyDMWidget.NO_ALARM),
+
+    (None, False, False, PyDMWidget.ALARM_MAJOR),
+    (None, False, True, PyDMWidget.ALARM_MAJOR),
+    (None, True, False, PyDMWidget.ALARM_MAJOR),
+    (None, True, True, PyDMWidget.ALARM_MAJOR),
+
+    ("CA://MTEST", False, False, PyDMWidget.NO_ALARM),
+    ("CA://MTEST", False, True, PyDMWidget.NO_ALARM),
+    ("CA://MTEST", True, False, PyDMWidget.NO_ALARM),
+    ("CA://MTEST", True, True, PyDMWidget.NO_ALARM),
+
+    ("CA://MTEST", False, False, PyDMWidget.ALARM_MINOR),
+    ("CA://MTEST", False, True, PyDMWidget.ALARM_MINOR),
+    ("CA://MTEST", True, False, PyDMWidget.ALARM_MINOR),
+    ("CA://MTEST", True, True, PyDMWidget.ALARM_MINOR),
+
+    ("CA://MTEST", False, False, PyDMWidget.ALARM_MAJOR),
+    ("CA://MTEST", False, True, PyDMWidget.ALARM_MAJOR),
+    ("CA://MTEST", True, False, PyDMWidget.ALARM_MAJOR),
+    ("CA://MTEST", True, True, PyDMWidget.ALARM_MAJOR),
+
+    ("CA://MTEST", False, False, PyDMWidget.ALARM_DISCONNECTED),
+    ("CA://MTEST", False, True, PyDMWidget.ALARM_DISCONNECTED),
+    ("CA://MTEST", True, False, PyDMWidget.ALARM_DISCONNECTED),
+    ("CA://MTEST", True, True, PyDMWidget.ALARM_DISCONNECTED),
+])
+def test_alarm_severity_change(qtbot, signals, channel, alarm_sensitive_content, alarm_sensitive_border,
+                               new_alarm_severity):
+    """
+    Test the style of the widget changing according to alarm sensitivity settings and alarm severity changes.
+
+    Expectations:
+    Depending on the initial widget's settings on whether the widget should change its content area and borders when
+    there's an alarm event, the widget's style should reflect changes when there's an alarm event other than ALARM_NONE.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget test
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    channel : str
+        The data channel address
+    alarm_sensitive_content : bool
+        True if the content area of the widget will change its color when an alarm happens; False if not
+    alarm_sensitive_border : bool
+        True if the borders of the widget will change its color when an alarm happens; False if not
+    new_alarm_severity : PyDMWidget alarm type
+        The new alarm severity that may prompt the widget to change its content area and/or border colors.
+    """
+    pydm_slider = PyDMSlider()
+    qtbot.addWidget(pydm_slider)
+
+    pydm_slider._channel = channel
+    pydm_slider.alarmSensitiveContent = alarm_sensitive_content
+    pydm_slider.alarmSensitiveBorder = alarm_sensitive_border
+
+    current_style = pydm_slider._style
+    current_stylesheet = pydm_slider.value_label.styleSheet()
+
+    signals.new_severity_signal.connect(pydm_slider.alarmSeverityChanged)
+    signals.new_severity_signal.emit(new_alarm_severity)
+
+    PyDMWritableWidget.alarm_severity_changed(pydm_slider, new_alarm_severity)
+    if channel:
+        alarm_style = compose_stylesheet(style=pydm_slider._style, obj=pydm_slider.value_label)
+        assert pydm_slider.value_label.styleSheet() == alarm_style
+    else:
+        pydm_slider._style == current_style
+        pydm_slider.value_label.styleSheet() == current_stylesheet
+
+
+@pytest.mark.parametrize("which_limit, new_limit, user_defined_limits", [
+    ("UPPER", 10.5, True),
+    ("UPPER", 10.123, False),
+    ("LOWER", -10.5, True),
+    ("LOWER", -10.123, False),
+])
+def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit, user_defined_limits):
+    pydm_slider = PyDMSlider()
+    qtbot.addWidget(pydm_slider)
+
+    pydm_slider.userDefinedLimits = user_defined_limits
+
+    if which_limit == "UPPER":
+        signals.upper_ctrl_limit_signal[type(new_limit)].connect(pydm_slider.upperCtrlLimitChanged)
+        signals.upper_ctrl_limit_signal[type(new_limit)].emit(new_limit)
+
+        assert pydm_slider.get_ctrl_limits()[1] == new_limit
+    elif which_limit == "LOWER":
+        signals.lower_ctrl_limit_signal[type(new_limit)].connect(pydm_slider.lowerCtrlLimitChanged)
+        signals.lower_ctrl_limit_signal[type(new_limit)].emit(new_limit)
+
+        assert pydm_slider.get_ctrl_limits()[0] == new_limit
+
+
+@pytest.mark.parametrize("value, precision, unit, show_unit, expected_format_string", [
+    (123, 0, "s", True, "{:.0f} s"),
+    (123.456, 3, "mV", True, "{:.3f} mV"),
+])
+def test_update_format_string(qtbot, value, precision, unit, show_unit, expected_format_string):
+    """
+    Test the unit conversion by examining the resulted format string.
+
+    Expectations:
+
+    Provided with the value, precision, unit, and the show unit Boolean flag by the user, this function must provide
+    the correct format string to format the displayed value for the widget.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    value : int, float, bin, hex, numpy.array
+        The value to be converted
+    precision : int
+        The
+    unit : str
+        The unit of the new value
+    show_units : bool
+        True if the value unit is to be displayed. False otherwise
+    expected_format_string : str
+        The expected format string that will produce the correct displayed value after the conversion
+    """
+    pydm_slider = PyDMSlider()
+    qtbot.addWidget(pydm_slider)
+
+    pydm_slider.value = value
+    pydm_slider._unit = unit
+    pydm_slider._prec = precision
+    pydm_slider.showUnits = show_unit
+
+    pydm_slider.update_format_string()
+    assert pydm_slider.format_string == expected_format_string
 
 # --------------------
 # NEGATIVE TEST CASES

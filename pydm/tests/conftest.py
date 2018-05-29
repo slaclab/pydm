@@ -98,11 +98,13 @@ class ConnectionSignals(QObject):
     write_access_signal = pyqtSignal(bool)
     enum_strings_signal = pyqtSignal(tuple)
     internal_slider_moved = pyqtSignal(int)
+    internal_slider_clicked = pyqtSignal()
     send_value_signal = pyqtSignal([int], [float], [str], [bool], [np.ndarray])
     unit_signal = pyqtSignal(str)
     prec_signal = pyqtSignal(int)
     upper_ctrl_limit_signal = pyqtSignal([float])
     lower_ctrl_limit_signal = pyqtSignal([float])
+
 
     def __init__(self):
         super(ConnectionSignals, self).__init__()
