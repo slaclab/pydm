@@ -1,8 +1,11 @@
 import logging
 
-from pydm.PyQt.QtCore import QObject, pyqtSlot, pyqtSignal, pyqtProperty
+from collections import OrderedDict
+
+from pydm.PyQt.QtCore import (QObject, pyqtSlot, pyqtSignal, pyqtProperty,
+                              Q_ENUMS)
 from pydm.PyQt.QtGui import (QWidget, QPlainTextEdit, QComboBox, QLabel,
-                             QHBoxLayout, QVBoxLayout)
+                             QPushButton, QHBoxLayout, QVBoxLayout)
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +48,30 @@ class GuiHandler(QObject, logging.Handler):
         self.message.emit(self.format(record))
 
 
-class PyDMLogDisplay(QWidget):
+class LogLevels(object):
+    DEBUG = 10
+    INFO = 20
+    WARNING = 30
+    ERROR = 40
+    CRITICAL = 50
+
+    @staticmethod
+    def as_dict():
+        """
+        Returns an ordered dict of LogLevels ordered by value.
+
+        Returns
+        -------
+        OrderedDict
+        """
+        # First let's remove the internals
+        entries = [(k, v) for k, v in LogLevels.__dict__.items() if
+                   not k.startswith("__") and not callable(v) and not isinstance(v, staticmethod)]
+
+        return OrderedDict(sorted(entries, key=lambda x: x[1], reverse=False))
+
+
+class PyDMLogDisplay(QWidget, LogLevels):
     """
     Standard display for Log Output
 
@@ -65,17 +91,19 @@ class PyDMLogDisplay(QWidget):
         Initial level of log display
 
     """
+    Q_ENUMS(LogLevels)
+    LogLevels = LogLevels
     terminator = '\n'
-    levels = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
     default_format = '%(asctime)s %(message)s'
     default_level = logging.INFO
 
     def __init__(self, parent=None, logname=None, level=logging.NOTSET):
         QWidget.__init__(self, parent=parent)
         # Create Widgets
-        self.label = QLabel('Minimum displayed log level: ')
-        self.combo = QComboBox()
-        self.text = QPlainTextEdit()
+        self.label = QLabel('Minimum displayed log level: ', parent=self)
+        self.combo = QComboBox(parent=self)
+        self.text = QPlainTextEdit(parent=self)
+        self.clear_btn = QPushButton("Clear", parent=self)
         # Create layout
         layout = QVBoxLayout()
         level_control = QHBoxLayout()
@@ -83,10 +111,14 @@ class PyDMLogDisplay(QWidget):
         level_control.addWidget(self.combo)
         layout.addLayout(level_control)
         layout.addWidget(self.text)
+        layout.addWidget(self.clear_btn)
         self.setLayout(layout)
         # Allow QCombobox to control log level
-        self.combo.addItems(self.levels)
+        for log_level, value in LogLevels.as_dict().items():
+            self.combo.addItem(log_level, value)
         self.combo.currentIndexChanged[str].connect(self.set_level)
+        # Allow QPushButton to clear log text
+        self.clear_btn.clicked.connect(self.clear)
         # Create a handler with the default format
         self.handler = GuiHandler(level=level, parent=self)
         self.logformat = self.default_format
@@ -94,6 +126,19 @@ class PyDMLogDisplay(QWidget):
         # Create logger. Either as a root or given logname
         self.log = None
         self.logname = logname or ''
+        self.level = None
+        self.logLevel = LogLevels.DEBUG
+
+    @pyqtProperty(LogLevels)
+    def logLevel(self):
+        return self.level
+
+    @logLevel.setter
+    def logLevel(self, level):
+        if level != self.level:
+            self.level = level
+            idx = self.combo.findData(level)
+            self.combo.setCurrentIndex(idx)
 
     @pyqtProperty(str)
     def logname(self):
@@ -129,6 +174,11 @@ class PyDMLogDisplay(QWidget):
         # at the Qt level.
         for msg in message.split(self.terminator):
             self.text.appendPlainText(msg)
+
+    @pyqtSlot()
+    def clear(self):
+        """Clear the text area."""
+        self.text.clear()
 
     @pyqtSlot(str)
     def set_level(self, level):
