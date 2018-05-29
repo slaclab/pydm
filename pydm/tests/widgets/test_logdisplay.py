@@ -23,7 +23,7 @@ def test_write(qtbot, log):
     log.debug(debug_msg)
     assert debug_msg not in logd.text.toPlainText()
     # Change the level so debug does show up
-    logd.set_level('DEBUG')
+    logd.setLevel('DEBUG')
     assert logd.handler.level == logging.DEBUG
     assert logd.log.level <= logging.DEBUG
     log.debug(debug_msg)

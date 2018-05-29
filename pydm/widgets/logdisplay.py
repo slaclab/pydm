@@ -120,17 +120,17 @@ class PyDMLogDisplay(QWidget, LogLevels):
         # Allow QCombobox to control log level
         for log_level, value in LogLevels.as_dict().items():
             self.combo.addItem(log_level, value)
-        self.combo.currentIndexChanged[str].connect(self.set_level)
+        self.combo.currentIndexChanged[str].connect(self.setLevel)
         # Allow QPushButton to clear log text
         self.clear_btn.clicked.connect(self.clear)
         # Create a handler with the default format
         self.handler = GuiHandler(level=level, parent=self)
-        self.logformat = self.default_format
+        self.logFormat = self.default_format
         self.handler.message.connect(self.write)
         # Create logger. Either as a root or given logname
         self.log = None
         self.level = None
-        self.logname = logname or ''
+        self.logName = logname or ''
         self.logLevel = level
 
     @pyqtProperty(LogLevels)
@@ -145,12 +145,12 @@ class PyDMLogDisplay(QWidget, LogLevels):
             self.combo.setCurrentIndex(idx)
 
     @pyqtProperty(str)
-    def logname(self):
+    def logName(self):
         """Name of associated log"""
         return self.log.name
 
-    @logname.setter
-    def logname(self, name):
+    @logName.setter
+    def logName(self, name):
         # Disconnect prior log from handler
         if self.log:
             self.log.removeHandler(self.handler)
@@ -164,12 +164,12 @@ class PyDMLogDisplay(QWidget, LogLevels):
         self.log.addHandler(self.handler)
 
     @pyqtProperty(str)
-    def logformat(self):
+    def logFormat(self):
         """Format for log messages"""
         return self.handler.formatter._fmt
 
-    @logformat.setter
-    def logformat(self, fmt):
+    @logFormat.setter
+    def logFormat(self, fmt):
         self.handler.setFormatter(logging.Formatter(fmt))
 
     @pyqtSlot(str)
@@ -187,7 +187,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
         self.text.clear()
 
     @pyqtSlot(str)
-    def set_level(self, level):
+    def setLevel(self, level):
         """Set the level of the contained logger"""
         # Get the level from the incoming string specification
         try:
