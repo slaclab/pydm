@@ -12,6 +12,7 @@ def log():
 
 def test_write(qtbot, log):
     logd = PyDMLogDisplay(parent=None, logname=log.name, level=logging.INFO)
+    qtbot.addWidget(logd)
     logd.show()
     # Watch our error message show up in the log
     err_msg = 'This is a test of the emergency broadcast system'
@@ -24,6 +25,7 @@ def test_write(qtbot, log):
     # Change the level so debug does show up
     logd.set_level('DEBUG')
     assert logd.handler.level == logging.DEBUG
+    assert logd.log.level <= logging.DEBUG
     log.debug(debug_msg)
     assert debug_msg in logd.text.toPlainText()
     # Change the name and make sure we still see what we need

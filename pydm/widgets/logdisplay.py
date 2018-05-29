@@ -44,11 +44,15 @@ class GuiHandler(QObject, logging.Handler):
         self.setParent(parent)
 
     def emit(self, record):
-        """Emit formatted log messages when received"""
+        """Emit formatted log messages when received but only if level is set."""
+        # Avoid garbage to be presented when master log is running with DEBUG.
+        if self.level == logging.NOTSET:
+            return
         self.message.emit(self.format(record))
 
 
 class LogLevels(object):
+    NOTSET = 0
     DEBUG = 10
     INFO = 20
     WARNING = 30
@@ -125,9 +129,9 @@ class PyDMLogDisplay(QWidget, LogLevels):
         self.handler.message.connect(self.write)
         # Create logger. Either as a root or given logname
         self.log = None
-        self.logname = logname or ''
         self.level = None
-        self.logLevel = LogLevels.DEBUG
+        self.logname = logname or ''
+        self.logLevel = level
 
     @pyqtProperty(LogLevels)
     def logLevel(self):
@@ -153,7 +157,9 @@ class PyDMLogDisplay(QWidget, LogLevels):
         # Reattach handler to new handler
         self.log = logging.getLogger(name)
         # Ensure that the log matches level of handler
-        self.log.setLevel(self.handler.level)
+        # only if the handler level is less than the log.
+        if self.log.level < self.handler.level:
+            self.log.setLevel(self.handler.level)
         # Attach preconfigured handler
         self.log.addHandler(self.handler)
 
@@ -191,5 +197,6 @@ class PyDMLogDisplay(QWidget, LogLevels):
                              level.upper())
         else:
             # Set the existing handler and logger to this level
-            self.log.setLevel(level)
             self.handler.setLevel(level)
+            if self.log.level > self.handler.level or self.log.level == logging.NOTSET:
+                self.log.setLevel(self.handler.level)

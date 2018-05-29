@@ -39,8 +39,11 @@
     parent : QObject, optional
     </string>
      </property>
+     <property name="logLevel" stdset="0">
+      <enum>PyDMLogDisplay::INFO</enum>
+     </property>
      <property name="logname" stdset="0">
-      <string>main_window</string>
+      <string>root</string>
      </property>
     </widget>
    </item>
