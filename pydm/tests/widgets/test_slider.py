@@ -115,7 +115,6 @@ def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
     Test widget's change of its text value if its internal value has changed.
 
     Expectations:
-
     If the `_mute_internal_slider_changes` flag is True, the value will not be propagated to PyDM, and the widget's text
     will remain the same.
 
@@ -177,10 +176,6 @@ def test_properties_and_setters(qtbot, show_labels, tick_position):
         True if the labels (min and max values) will be shown; False otherwise
     tick_position : int
         The tick position for the slider component.
-
-    Returns
-    -------
-
     """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
@@ -270,8 +265,7 @@ def test_update_labels(qtbot, signals, minimum, maximum, current_value):
     Test the changes in the user minimum, user maximum, and the current value labels as the widget's slider component
     moves.
 
-    Expecations:
-
+    Expectations:
     The widget's min, max, and current values are reflected correctly on the correponsiding labels.
 
     Parameters
@@ -323,6 +317,27 @@ def test_update_labels(qtbot, signals, minimum, maximum, current_value):
     (10, 20, False, False),
 ])
 def test_reset_slider_limits(qtbot, signals, minimum, maximum, write_access, connected):
+    """
+    Test the updating of the limits when the silder is reset.
+
+    Expectations:
+    The minimum and maximum limits, as well as the slider numeric steps, are updated correctly.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget test
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    minimum : int
+        The user-defined minimum value for the slider
+    maximum : int
+        The user-defined maximum value for the slider
+    write_access : bool
+        True if the widget has write access to the data channel; False otherwise
+    connected : bool
+        True if the widget is connected to the data channel; False otherwise
+    """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
 
@@ -365,17 +380,20 @@ def test_reset_slider_limits(qtbot, signals, minimum, maximum, write_access, con
 ])
 def test_set_slider_to_closest_value(qtbot, new_value, minimum, maximum):
     """
-    Also test set_slider_to_closest_value().
+    Test the calculation of the slider's value. Also test set_slider_to_closest_value().
+
+    Expectations:
+    Given the user's min and max values, and a value to move the slider to, the new position for the slider must be
+    correctly calculated.
 
     Parameters
     ----------
-    qtbot
-    new_value
-    expected_slider_value
-
-    Returns
-    -------
-
+    qtbot : fixture
+        Window for widget testing
+    new_value : int
+        The new value for the widget
+    expected_slider_value : int
+        The new calculcated widget value
     """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
@@ -402,6 +420,27 @@ def test_set_slider_to_closest_value(qtbot, new_value, minimum, maximum):
     (15, True),
 ])
 def test_value_changed(qtbot, signals, monkeypatch, new_channel_value, is_slider_down):
+    """
+    Test the updating of the widget's slider component value when the channel value has changed.
+
+    Expectations:
+    The widget's text component will display the correct new value, and the widget's slider component will reflect
+    the right movement as calculated.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    monkeypatch : fixture
+        To override the default behavior of isSliderDown while simulating whether the widget's slider is being held down
+        by the user or not
+    new_channel_value : int
+        The new value coming from the channel
+    is_slider_down : bool
+        True if the slider is to be simulated as being held down by the user; False otherwise.
+    """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
 
@@ -508,6 +547,25 @@ def test_alarm_severity_change(qtbot, signals, channel, alarm_sensitive_content,
     ("LOWER", -10.123, False),
 ])
 def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit, user_defined_limits):
+    """
+    Test the widget's handling of the upper and lower limit changes.
+
+    Expectations:
+    The correct limit change will be updated correctly.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    which_limit : str
+        Indicator whether this limit to be updated an Upper or Lower limit.
+    new_limit : float
+        The new value of the limit
+    user_defined_limits : bool
+        True if the limit is to be defined by the user; False if by the channel.
+    """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
 
@@ -564,6 +622,7 @@ def test_update_format_string(qtbot, value, precision, unit, show_unit, expected
     pydm_slider.update_format_string()
     assert pydm_slider.format_string == expected_format_string
 
+
 # --------------------
 # NEGATIVE TEST CASES
 # --------------------
@@ -574,6 +633,22 @@ def test_update_format_string(qtbot, value, precision, unit, show_unit, expected
     None,
 ])
 def test_setup_widgets_for_orientation_neg(qtbot, caplog, new_orientation):
+    """
+    Test the widget's handling of invalid orientation values.
+
+    Expectations:
+    An invalid orientation code will cause an error to be logged, and a message informing the user about the invalid
+    orientation.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    caplog : fixture
+        To capture the log messages
+    new_orientation : int
+        The invalid orientation value
+    """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
 
