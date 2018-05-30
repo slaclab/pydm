@@ -48,7 +48,7 @@ install:
   - activate test-environment
 
 test_script:
-  - python run_tests.py
+  - python run_tests.py --show-cov
 
 after_test:
   - codecov

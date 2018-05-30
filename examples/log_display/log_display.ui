@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>417</width>
+    <height>337</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="PyDMLogDisplay" name="PyDMLogDisplay">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>
+    Standard display for Log Output
+
+    This widget handles instantating a ``GuiHandler`` and displaying log
+    messages to a ``QPlainTextEdit``. The level of the log can be changed from
+    inside the widget itself, allowing users to select from any of the
+    ``.levels`` specified by the widget.
+
+    Parameters
+    ----------
+    logname : str
+        Name of log to display in widget
+
+    level : logging.Level
+        Initial level of log display
+
+    parent : QObject, optional
+    </string>
+     </property>
+     <property name="logLevel" stdset="0">
+      <enum>PyDMLogDisplay::INFO</enum>
+     </property>
+     <property name="logname" stdset="0">
+      <string>root</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMLogDisplay</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.logdisplay</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

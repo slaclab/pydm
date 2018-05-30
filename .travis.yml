@@ -49,7 +49,7 @@ before_script:
   - sleep 1
 
 script:
-  - python run_tests.py
+  - python run_tests.py --show-cov
   #Build docs
   - set -e
   - |
