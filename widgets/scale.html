@@ -1,0 +1,637 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>PyDMScaleIndicator &mdash; PyDM v1.1.0+192.g37557ec documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PyDMSymbol" href="symbol.html" />
+    <link rel="prev" title="PyDMRelatedDisplayButton" href="related_display_button.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.1.0+192.g37557ec
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/first_display.html">Building Your First Display with Qt Designer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/scripted_displays.html">Making Python-based Displays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/macros.html">Macro Substitution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Widgets</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#display-widgets">Display Widgets</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="byte.html">PyDMByteIndicator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="image.html">PyDMImageView</a></li>
+<li class="toctree-l3"><a class="reference internal" href="label.html">PyDMLabel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="log.html">PyDMLogDisplay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="related_display_button.html">PyDMRelatedDisplayButton</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PyDMScaleIndicator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="symbol.html">PyDMSymbol</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#input-widgets">Input Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#plot-widgets">Plot Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#container-widgets">Container Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#drawing-widgets">Drawing Widgets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/development.html">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyDM</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Widgets</a> &raquo;</li>
+        
+      <li>PyDMScaleIndicator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/widgets/scale.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pydmscaleindicator">
+<h1>PyDMScaleIndicator<a class="headerlink" href="#pydmscaleindicator" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator">
+<em class="property">class </em><code class="descclassname">pydm.widgets.scale.</code><code class="descname">PyDMScaleIndicator</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator" title="Permalink to this definition">¶</a></dt>
+<dd><p>A bar-shaped indicator for scalar value with support for Channels and
+more from PyDM.
+Configurable features include indicator type (bar/pointer), scale tick
+marks and orientation (horizontal/vertical).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Scale</li>
+<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.alarm_severity_changed">
+<code class="descname">alarm_severity_changed</code><span class="sig-paren">(</span><em>new_alarm_severity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.alarm_severity_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.alarm_severity_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel alarm severity is changed.
+This callback is not processed if the widget has no channel
+associated with it.
+This callback handles the composition of the stylesheet to be
+applied and the call
+to update to redraw the widget with the needed changes for the
+new state.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_alarm_severity</strong> (<em>int</em>) – The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
+and 3 = INVALID</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.backgroundColor">
+<code class="descname">backgroundColor</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.backgroundColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>The color of the scale background.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QColor</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.backgroundSizeRate">
+<code class="descname">backgroundSizeRate</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.backgroundSizeRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rate of background height size (from top to bottom).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.barIndicator">
+<code class="descname">barIndicator</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.barIndicator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the scale indicator should be a bar instead of a pointer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.flipScale">
+<code class="descname">flipScale</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.flipScale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the scale should be flipped.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.indicatorColor">
+<code class="descname">indicatorColor</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.indicatorColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>The color of the scale indicator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QColor</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.invertedAppearance">
+<code class="descname">invertedAppearance</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.invertedAppearance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the scale appearence should be inverted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.lowerCtrlLimitChanged">
+<code class="descname">lowerCtrlLimitChanged</code><span class="sig-paren">(</span><em>new_limit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.lowerCtrlLimitChanged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.lowerCtrlLimitChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the lower control limit value of the Channel
+This slot sends the new limit value to the
+<code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_limit</strong> (<em>float</em>) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.numDivisions">
+<code class="descname">numDivisions</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.numDivisions" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number in which the scale is divided.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.orientation">
+<code class="descname">orientation</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>The scale orientation (Horizontal or Vertical)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Qt.Horizontal or Qt.Vertical</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.originAtZero">
+<code class="descname">originAtZero</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.originAtZero" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the scale indicator should start at zero value.
+Applies only for bar indicator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.scaleHeight">
+<code class="descname">scaleHeight</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.scaleHeight" title="Permalink to this definition">¶</a></dt>
+<dd><p>The scale height, fixed so it do not wiggle when value label resizes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.setup_widgets_for_orientation">
+<code class="descname">setup_widgets_for_orientation</code><span class="sig-paren">(</span><em>new_orientation</em>, <em>flipped</em>, <em>inverted</em>, <em>value_position</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.setup_widgets_for_orientation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.setup_widgets_for_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reconstruct the widget given the orientation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>new_orientation</strong> (<em>int</em>) – Qt.Horizontal or Qt.Vertical</li>
+<li><strong>flipped</strong> (<em>bool</em>) – Indicates if scale tick marks are flipped to the other side</li>
+<li><strong>inverted</strong> (<em>bool</em>) – Indicates if scale appearance is inverted</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.showLimits">
+<code class="descname">showLimits</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.showLimits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the high and low limits should be displayed on the scale.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.showTicks">
+<code class="descname">showTicks</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.showTicks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the tick marks should be displayed on the scale.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.showValue">
+<code class="descname">showValue</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.showValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the current value should be displayed on the scale.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.tickColor">
+<code class="descname">tickColor</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.tickColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>The color of the scale tick marks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QColor</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.tickSizeRate">
+<code class="descname">tickSizeRate</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.tickSizeRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rate of tick marks height size (from bottom to top).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.update_labels">
+<code class="descname">update_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.update_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.update_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the limits and value labels with the correct values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.upperCtrlLimitChanged">
+<code class="descname">upperCtrlLimitChanged</code><span class="sig-paren">(</span><em>new_limit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.upperCtrlLimitChanged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.upperCtrlLimitChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the upper control limit value of the Channel
+This slot sends the new limit value to the
+<code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_limit</strong> (<em>float</em>) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.valuePosition">
+<code class="descname">valuePosition</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.valuePosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>The position of the value label (Top, Bottom, Left or Right).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Qt.TopEdge, Qt.BottomEdge, Qt.LeftEdge or Qt.RightEdge</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.scale.PyDMScaleIndicator.value_changed">
+<code class="descname">value_changed</code><span class="sig-paren">(</span><em>new_value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.value_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel value is changed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_val</strong> (<em>int</em><em> or </em><em>float</em>) – The new value from the channel.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="symbol.html" class="btn btn-neutral float-right" title="PyDMSymbol" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="related_display_button.html" class="btn btn-neutral" title="PyDMRelatedDisplayButton" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'v1.1.0+192.g37557ec',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

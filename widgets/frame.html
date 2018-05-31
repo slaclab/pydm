@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMWaveformTable &mdash; PyDM v1.1.0+192.g37557ec documentation</title>
+  <title>PyDMFrame &mdash; PyDM v1.1.0+192.g37557ec documentation</title>
   
 
   
@@ -29,8 +29,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="PyDMScatterPlot" href="scatterplot.html" />
-    <link rel="prev" title="PyDMSpinbox" href="spinbox.html" /> 
+    <link rel="next" title="PyDMTabWidget" href="tab_widget.html" />
+    <link rel="prev" title="PyDMEmbeddedDisplay" href="embedded_display.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -97,19 +97,14 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Widgets</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="index.html#display-widgets">Display Widgets</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html#input-widgets">Input Widgets</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="checkbox.html">PyDMCheckbox</a></li>
-<li class="toctree-l3"><a class="reference internal" href="enum_combo_box.html">PyDMEnumComboBox</a></li>
-<li class="toctree-l3"><a class="reference internal" href="line_edit.html">PyDMLineEdit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pushbutton.html">PyDMPushButton</a></li>
-<li class="toctree-l3"><a class="reference internal" href="shell_command.html">PyDMShellCommand</a></li>
-<li class="toctree-l3"><a class="reference internal" href="slider.html">PyDMSlider</a></li>
-<li class="toctree-l3"><a class="reference internal" href="spinbox.html">PyDMSpinbox</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">PyDMWaveformTable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#input-widgets">Input Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#plot-widgets">Plot Widgets</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#container-widgets">Container Widgets</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="embedded_display.html">PyDMEmbeddedDisplay</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PyDMFrame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tab_widget.html">PyDMTabWidget</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#plot-widgets">Plot Widgets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#container-widgets">Container Widgets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#drawing-widgets">Drawing Widgets</a></li>
 </ul>
 </li>
@@ -174,13 +169,13 @@
         
           <li><a href="index.html">Widgets</a> &raquo;</li>
         
-      <li>PyDMWaveformTable</li>
+      <li>PyDMFrame</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/widgets/waveformtable.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/widgets/frame.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -193,15 +188,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pydmwaveformtable">
-<h1>PyDMWaveformTable<a class="headerlink" href="#pydmwaveformtable" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pydmframe">
+<h1>PyDMFrame<a class="headerlink" href="#pydmframe" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="pydm.widgets.waveformtable.PyDMWaveformTable">
-<em class="property">class </em><code class="descclassname">pydm.widgets.waveformtable.</code><code class="descname">PyDMWaveformTable</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable" title="Permalink to this definition">¶</a></dt>
-<dd><p>A QTableWidget with support for Channels and more from PyDM.</p>
-<p>Values of the array are displayed in the selected number of columns.
-The number of rows is determined by the size of the waveform.
-It is possible to define the labels of each row and column.</p>
+<dt id="pydm.widgets.frame.PyDMFrame">
+<em class="property">class </em><code class="descclassname">pydm.widgets.frame.</code><code class="descname">PyDMFrame</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/frame.html#PyDMFrame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.frame.PyDMFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>QFrame with support for alarms
+This class inherits from QFrame and PyDMWidget.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -215,76 +208,46 @@ It is possible to define the labels of each row and column.</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="pydm.widgets.waveformtable.PyDMWaveformTable.check_enable_state">
-<code class="descname">check_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.check_enable_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.check_enable_state" title="Permalink to this definition">¶</a></dt>
-<dd><p>For PyDMWaveformTable, we want to make the individual cells
-editable when we have write access.</p>
+<dt id="pydm.widgets.frame.PyDMFrame.alarm_severity_changed">
+<code class="descname">alarm_severity_changed</code><span class="sig-paren">(</span><em>new_alarm_severity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/frame.html#PyDMFrame.alarm_severity_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.frame.PyDMFrame.alarm_severity_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel alarm severity is changed.
+This callback is not processed if the widget has no channel
+associated with it.
+This callback handles the composition of the stylesheet to be
+applied and the call
+to update to redraw the widget with the needed changes for the
+new state.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_alarm_severity</strong> (<em>int</em>) – The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
+and 3 = INVALID</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.frame.PyDMFrame.check_enable_state">
+<code class="descname">check_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/frame.html#PyDMFrame.check_enable_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.frame.PyDMFrame.check_enable_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether or not the widget should be disable.
+This method also disables the widget and add a Tool Tip
+with the reason why it is disabled.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pydm.widgets.waveformtable.PyDMWaveformTable.columnHeaderLabels">
-<code class="descname">columnHeaderLabels</code><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.columnHeaderLabels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the list of labels for the columns of the Table.</p>
+<dt id="pydm.widgets.frame.PyDMFrame.disableOnDisconnect">
+<code class="descname">disableOnDisconnect</code><a class="headerlink" href="#pydm.widgets.frame.PyDMFrame.disableOnDisconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the PyDMFrame should be disabled in case the
+channel is disconnected.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>disable</strong> – The configured value</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of strings</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydm.widgets.waveformtable.PyDMWaveformTable.eventFilter">
-<code class="descname">eventFilter</code><span class="sig-paren">(</span><em>self</em>, <em>QObject</em>, <em>QEvent</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.eventFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.eventFilter" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydm.widgets.waveformtable.PyDMWaveformTable.rowHeaderLabels">
-<code class="descname">rowHeaderLabels</code><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.rowHeaderLabels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the list of labels for the rows of the Table.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of strings</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydm.widgets.waveformtable.PyDMWaveformTable.send_waveform">
-<code class="descname">send_waveform</code><span class="sig-paren">(</span><em>row</em>, <em>column</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.send_waveform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.send_waveform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update Channel value when cell value is changed.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>row</strong> (<em>int</em>) – Row of the changed cell.</li>
-<li><strong>column</strong> (<em>int</em>) – Column of the changed cell.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydm.widgets.waveformtable.PyDMWaveformTable.value_changed">
-<code class="descname">value_changed</code><span class="sig-paren">(</span><em>new_waveform</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.value_changed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Callback invoked when the Channel value is changed.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_waveform</strong> (<em>np.ndarray</em>) – The new waveform value from the channel.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>
@@ -302,10 +265,10 @@ editable when we have write access.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="scatterplot.html" class="btn btn-neutral float-right" title="PyDMScatterPlot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tab_widget.html" class="btn btn-neutral float-right" title="PyDMTabWidget" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="spinbox.html" class="btn btn-neutral" title="PyDMSpinbox" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="embedded_display.html" class="btn btn-neutral" title="PyDMEmbeddedDisplay" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

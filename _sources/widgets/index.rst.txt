@@ -3,25 +3,55 @@ Widgets
 ============================
 PyDM comes with a set of widgets useful for operating a control system.
 
-.. toctree::
-    :maxdepth: 1
 
-    byte.rst
-    checkbox.rst
-    drawing.rst
-    embedded_display.rst
-    enum_combo_box.rst
-    image.rst
-    label.rst
-    line_edit.rst
-    pushbutton.rst
-    related_display_button.rst
-    scatterplot.rst
-    shell_command.rst
-    slider.rst
-    spinbox.rst
-    symbol.rst
-    tab_widget.rst
-    timeplot.rst
-    waveformplot.rst
-    waveformtable.rst
+Display Widgets
+---------------
+.. toctree::
+   :maxdepth: 1
+
+   byte.rst
+   image.rst
+   label.rst
+   log.rst
+   related_display_button.rst
+   scale.rst
+   symbol.rst
+
+Input Widgets
+-------------
+.. toctree::
+   :maxdepth: 1
+
+   checkbox.rst
+   enum_combo_box.rst
+   line_edit.rst
+   pushbutton.rst
+   shell_command.rst
+   slider.rst
+   spinbox.rst
+   waveformtable.rst
+
+Plot Widgets
+------------
+.. toctree::
+   :maxdepth: 1
+
+   scatterplot.rst
+   timeplot.rst
+   waveformplot.rst
+
+Container Widgets
+-----------------
+.. toctree::
+   :maxdepth: 1
+
+   embedded_display.rst
+   frame.rst
+   tab_widget.rst
+
+Drawing Widgets
+---------------
+.. toctree::
+   :maxdepth: 1
+
+   drawing.rst

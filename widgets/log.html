@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Widgets &mdash; PyDM v1.1.0+192.g37557ec documentation</title>
+  <title>PyDMLogDisplay &mdash; PyDM v1.1.0+192.g37557ec documentation</title>
   
 
   
@@ -29,8 +29,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="PyDMByteIndicator" href="byte.html" />
-    <link rel="prev" title="Macro Substitution" href="../tutorials/macros.html" /> 
+    <link rel="next" title="PyDMRelatedDisplayButton" href="related_display_button.html" />
+    <link rel="prev" title="PyDMLabel" href="label.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -95,44 +95,21 @@
 </ul>
 <p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Widgets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#display-widgets">Display Widgets</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Widgets</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#display-widgets">Display Widgets</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="byte.html">PyDMByteIndicator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="image.html">PyDMImageView</a></li>
 <li class="toctree-l3"><a class="reference internal" href="label.html">PyDMLabel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="log.html">PyDMLogDisplay</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PyDMLogDisplay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="related_display_button.html">PyDMRelatedDisplayButton</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scale.html">PyDMScaleIndicator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="symbol.html">PyDMSymbol</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#input-widgets">Input Widgets</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="checkbox.html">PyDMCheckbox</a></li>
-<li class="toctree-l3"><a class="reference internal" href="enum_combo_box.html">PyDMEnumComboBox</a></li>
-<li class="toctree-l3"><a class="reference internal" href="line_edit.html">PyDMLineEdit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pushbutton.html">PyDMPushButton</a></li>
-<li class="toctree-l3"><a class="reference internal" href="shell_command.html">PyDMShellCommand</a></li>
-<li class="toctree-l3"><a class="reference internal" href="slider.html">PyDMSlider</a></li>
-<li class="toctree-l3"><a class="reference internal" href="spinbox.html">PyDMSpinbox</a></li>
-<li class="toctree-l3"><a class="reference internal" href="waveformtable.html">PyDMWaveformTable</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#plot-widgets">Plot Widgets</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scatterplot.html">PyDMScatterPlot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="timeplot.html">PyDMTimePlot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="waveformplot.html">PyDMWaveformPlot</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#container-widgets">Container Widgets</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="embedded_display.html">PyDMEmbeddedDisplay</a></li>
-<li class="toctree-l3"><a class="reference internal" href="frame.html">PyDMFrame</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tab_widget.html">PyDMTabWidget</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#drawing-widgets">Drawing Widgets</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="drawing.html">PyDMDrawing Widgets</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#input-widgets">Input Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#plot-widgets">Plot Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#container-widgets">Container Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#drawing-widgets">Drawing Widgets</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../add_data_plugins.html">Including Data Plugins</a></li>
@@ -194,13 +171,15 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Widgets</li>
+          <li><a href="index.html">Widgets</a> &raquo;</li>
+        
+      <li>PyDMLogDisplay</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/widgets/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/widgets/log.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -213,66 +192,61 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="widgets">
-<h1>Widgets<a class="headerlink" href="#widgets" title="Permalink to this headline">¶</a></h1>
-<p>PyDM comes with a set of widgets useful for operating a control system.</p>
-<div class="section" id="display-widgets">
-<h2>Display Widgets<a class="headerlink" href="#display-widgets" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="byte.html">PyDMByteIndicator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="image.html">PyDMImageView</a></li>
-<li class="toctree-l1"><a class="reference internal" href="label.html">PyDMLabel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="log.html">PyDMLogDisplay</a></li>
-<li class="toctree-l1"><a class="reference internal" href="related_display_button.html">PyDMRelatedDisplayButton</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scale.html">PyDMScaleIndicator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="symbol.html">PyDMSymbol</a></li>
+  <div class="section" id="pydmlogdisplay">
+<h1>PyDMLogDisplay<a class="headerlink" href="#pydmlogdisplay" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay">
+<em class="property">class </em><code class="descclassname">pydm.widgets.logdisplay.</code><code class="descname">PyDMLogDisplay</code><span class="sig-paren">(</span><em>parent=None</em>, <em>logname=None</em>, <em>level=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard display for Log Output</p>
+<p>This widget handles instantating a <code class="docutils literal notranslate"><span class="pre">GuiHandler</span></code> and displaying log
+messages to a <code class="docutils literal notranslate"><span class="pre">QPlainTextEdit</span></code>. The level of the log can be changed from
+inside the widget itself, allowing users to select from any of the
+<code class="docutils literal notranslate"><span class="pre">.levels</span></code> specified by the widget.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> (<em>QObject</em><em>, </em><em>optional</em>) – </li>
+<li><strong>logname</strong> (<em>str</em>) – Name of log to display in widget</li>
+<li><strong>level</strong> (<em>logging.Level</em>) – Initial level of log display</li>
 </ul>
-</div>
-</div>
-<div class="section" id="input-widgets">
-<h2>Input Widgets<a class="headerlink" href="#input-widgets" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="checkbox.html">PyDMCheckbox</a></li>
-<li class="toctree-l1"><a class="reference internal" href="enum_combo_box.html">PyDMEnumComboBox</a></li>
-<li class="toctree-l1"><a class="reference internal" href="line_edit.html">PyDMLineEdit</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pushbutton.html">PyDMPushButton</a></li>
-<li class="toctree-l1"><a class="reference internal" href="shell_command.html">PyDMShellCommand</a></li>
-<li class="toctree-l1"><a class="reference internal" href="slider.html">PyDMSlider</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spinbox.html">PyDMSpinbox</a></li>
-<li class="toctree-l1"><a class="reference internal" href="waveformtable.html">PyDMWaveformTable</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="plot-widgets">
-<h2>Plot Widgets<a class="headerlink" href="#plot-widgets" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="scatterplot.html">PyDMScatterPlot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="timeplot.html">PyDMTimePlot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="waveformplot.html">PyDMWaveformPlot</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="container-widgets">
-<h2>Container Widgets<a class="headerlink" href="#container-widgets" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="embedded_display.html">PyDMEmbeddedDisplay</a></li>
-<li class="toctree-l1"><a class="reference internal" href="frame.html">PyDMFrame</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tab_widget.html">PyDMTabWidget</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="drawing-widgets">
-<h2>Drawing Widgets<a class="headerlink" href="#drawing-widgets" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="drawing.html">PyDMDrawing Widgets</a></li>
-</ul>
-</div>
-</div>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear the text area.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.logFormat">
+<code class="descname">logFormat</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.logFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format for log messages</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.logName">
+<code class="descname">logName</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.logName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of associated log</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setLevel">
+<code class="descname">setLevel</code><span class="sig-paren">(</span><em>level</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.setLevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the level of the contained logger</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a message to the log display</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -283,10 +257,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="byte.html" class="btn btn-neutral float-right" title="PyDMByteIndicator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="related_display_button.html" class="btn btn-neutral float-right" title="PyDMRelatedDisplayButton" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../tutorials/macros.html" class="btn btn-neutral" title="Macro Substitution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="label.html" class="btn btn-neutral" title="PyDMLabel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
