@@ -245,7 +245,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         """
         PyDMWritableWidget.alarm_severity_changed(self, new_alarm_severity)
         if hasattr(self, "value_label"):
-            if self._channel is not None:
+            if self._channel:
                 style = compose_stylesheet(style=self._style, obj=self.value_label)
                 self.value_label.setStyleSheet(style)
                 self.update()
