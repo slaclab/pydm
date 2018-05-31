@@ -61,13 +61,13 @@ PyDMDrawingRectanglePlugin = qtplugin_factory(PyDMDrawingRectangle, group=Widget
 PyDMDrawingTrianglePlugin = qtplugin_factory(PyDMDrawingTriangle, group=WidgetCategory.DRAWING)
 
 # Embedded Display plugin
-PyDMEmbeddedDisplayPlugin = qtplugin_factory(PyDMEmbeddedDisplay, group=WidgetCategory.DISPLAY)
+PyDMEmbeddedDisplayPlugin = qtplugin_factory(PyDMEmbeddedDisplay, group=WidgetCategory.CONTAINER)
 
 # Enum Combobox plugin
 PyDMEnumComboBoxPlugin = qtplugin_factory(PyDMEnumComboBox, group=WidgetCategory.INPUT)
 
 # Frame plugin
-PyDMFramePlugin = qtplugin_factory(PyDMFrame, group=WidgetCategory.DISPLAY, is_container=True)
+PyDMFramePlugin = qtplugin_factory(PyDMFrame, group=WidgetCategory.CONTAINER, is_container=True)
 
 # Image plugin
 PyDMImageViewPlugin = qtplugin_factory(PyDMImageView, group=WidgetCategory.DISPLAY)

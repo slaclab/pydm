@@ -21,6 +21,7 @@ from ..PyQt import QtGui, QtDesigner
 #       for the almost dead and agonizing Python 2.7
 #       <pitchforks> Death to Python 2.7! </ pitchforks>
 class WidgetCategory(object):
+    CONTAINER = "PyDM Container Widgets"
     DISPLAY = "PyDM Display Widgets"
     INPUT = "PyDM Input Widgets"
     PLOT = "PyDM Plot Widgets"
