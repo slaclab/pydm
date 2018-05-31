@@ -105,7 +105,7 @@ PyDMScaleIndicatorPlugin = qtplugin_factory(PyDMScaleIndicator, group=WidgetCate
 PyDMSymbolPlugin = qtplugin_factory(PyDMSymbol, group=WidgetCategory.DISPLAY)
 
 # Waveform Table plugin
-PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable, group=WidgetCategory.DISPLAY)
+PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable, group=WidgetCategory.INPUT)
 
 # Tab Widget plugin
 PyDMTabWidgetPlugin = TabWidgetPlugin()

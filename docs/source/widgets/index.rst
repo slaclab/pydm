@@ -16,7 +16,6 @@ Display Widgets
    related_display_button.rst
    scale.rst
    symbol.rst
-   waveformtable.rst
 
 Input Widgets
 -------------
@@ -30,6 +29,7 @@ Input Widgets
    shell_command.rst
    slider.rst
    spinbox.rst
+   waveformtable.rst
 
 Plot Widgets
 ------------
