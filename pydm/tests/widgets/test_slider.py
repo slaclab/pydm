@@ -474,6 +474,16 @@ def test_value_changed(qtbot, signals, monkeypatch, new_channel_value, is_slider
     (None, True, False, PyDMWidget.ALARM_MAJOR),
     (None, True, True, PyDMWidget.ALARM_MAJOR),
 
+    ("", False, False, PyDMWidget.NO_ALARM),
+    ("", False, True, PyDMWidget.NO_ALARM),
+    ("", True, False, PyDMWidget.NO_ALARM),
+    ("", True, True, PyDMWidget.NO_ALARM),
+
+    ("", False, False, PyDMWidget.ALARM_MAJOR),
+    ("", False, True, PyDMWidget.ALARM_MAJOR),
+    ("", True, False, PyDMWidget.ALARM_MAJOR),
+    ("", True, True, PyDMWidget.ALARM_MAJOR),
+
     ("CA://MTEST", False, False, PyDMWidget.NO_ALARM),
     ("CA://MTEST", False, True, PyDMWidget.NO_ALARM),
     ("CA://MTEST", True, False, PyDMWidget.NO_ALARM),
