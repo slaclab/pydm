@@ -107,16 +107,16 @@ def test_actions_triggered(qtbot, signals):
 
 
 @pytest.mark.parametrize("new_value, mute_change", [
-    (15, False),
-    (15, True),
+    (100.50, False),
+    (-100, True),
 ])
 def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
     """
     Test widget's change of its text value if its internal value has changed.
 
     Expectations:
-    If the `_mute_internal_slider_changes` flag is True, the value will not be propagated to PyDM, and the widget's text
-    will remain the same.
+    If the `_mute_internal_slider_changes` flag is True, the value will not be propagated to PyDM, and the
+    send_value_signal will not emit the new value (avoiding the infinite loop).
 
     Parameters
     ----------
@@ -127,7 +127,7 @@ def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
     new_value : int
         The new value from changing the slider widget.
     mute_change : bool
-        True if the new slider value is not to be propagated into changing the widget's text component; False otherwise.
+        True if the new slider value is not to be propagated; False otherwise.
     """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
@@ -136,21 +136,23 @@ def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
     pydm_slider.userMinimum = 10
     pydm_slider.userMaximum = 100
 
-    pydm_slider._slider.setValue(0)
-    assert pydm_slider._slider.value() == 0
-    pydm_slider.value_label.setText("0")
-
+    pydm_slider.value = 123
     pydm_slider._mute_internal_slider_changes = mute_change
-    pydm_slider.value = new_value
 
-    signals.send_value_signal[int].connect(pydm_slider.internal_slider_value_changed)
-    pydm_slider.send_value_signal[float].connect(pydm_slider.channelValueChanged)
-    signals.send_value_signal[int].emit(new_value)
+    # If the slider emits the new value, the fixture's receiveValue should get it. This should happen if the slider's
+    # internal changes are not muted, and should NOT if it IS muted
+    pydm_slider.send_value_signal[float].connect(signals.receiveValue)
+
+    signals.new_value_signal[int].connect(pydm_slider.internal_slider_value_changed)
+    signals.new_value_signal[int].emit(new_value)
 
     if not mute_change:
-        assert pydm_slider.value_label.text() == str(new_value)
+        # The internal_slider_value_changed_slot emitted the send_value_signal
+        assert signals.value == pydm_slider.value
     else:
-        assert pydm_slider.value_label.text() == "0"
+        # The internal_slider_value_changed_slot did NOT emit the send_value_signal. The signals fixture's value remains
+        # unchanged
+        assert signals.value is None
 
 
 @pytest.mark.parametrize("show_labels, tick_position", [
