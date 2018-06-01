@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.slider &mdash; PyDM v1.1.0+198.g5374162 documentation</title>
+  <title>pydm.widgets.slider &mdash; PyDM v1.1.0+199.gcb2511c documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+198.g5374162
+                v1.1.0+199.gcb2511c
               </div>
             
           
@@ -171,7 +171,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.slider</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QSlider</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QWidget</span>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QSlider</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QWidget</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">pyqtSignal</span><span class="p">,</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">compose_stylesheet</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -276,6 +279,10 @@
 <span class="sd">        new_orientation : int</span>
 <span class="sd">            Qt.Horizontal or Qt.Vertical</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_orientation</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Invalid orientation &#39;</span><span class="si">{0}</span><span class="s2">&#39;. The existing layout will not change.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_orientation</span><span class="p">))</span>
+            <span class="k">return</span>
+
         <span class="n">layout</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">new_orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">:</span>
             <span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
@@ -301,6 +308,7 @@
             <span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">label_layout</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setOrientation</span><span class="p">(</span><span class="n">new_orientation</span><span class="p">)</span>
             <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Trick to remove the existing layout by re-parenting it in an empty widget.</span>
             <span class="n">QWidget</span><span class="p">()</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">())</span>
@@ -310,18 +318,15 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the limits and value labels with the correct values.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">low_lim_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">low_lim_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">))</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">high_lim_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">high_lim_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">))</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">))</span></div>
+        <span class="k">def</span> <span class="nf">set_label</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">label_widget</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">label_widget</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">label_widget</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+        <span class="n">set_label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">low_lim_label</span><span class="p">)</span>
+        <span class="n">set_label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">high_lim_label</span><span class="p">)</span>
+        <span class="n">set_label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMSlider.reset_slider_limits"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.reset_slider_limits">[docs]</a>    <span class="k">def</span> <span class="nf">reset_slider_limits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -413,7 +418,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="n">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value_label&quot;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">:</span>
                 <span class="n">style</span> <span class="o">=</span> <span class="n">compose_stylesheet</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">style</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
@@ -630,7 +635,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        new_min : float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_user_minimum</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">new_min</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_minimum</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">new_min</span><span class="p">)</span> <span class="k">if</span> <span class="n">new_min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">userDefinedLimits</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reset_slider_limits</span><span class="p">()</span>
 
@@ -654,7 +659,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        new_max : float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_user_maximum</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">new_max</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_maximum</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">new_max</span><span class="p">)</span> <span class="k">if</span> <span class="n">new_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">userDefinedLimits</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reset_slider_limits</span><span class="p">()</span>
 
@@ -740,7 +745,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+198.g5374162',
+            VERSION:'v1.1.0+199.gcb2511c',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
