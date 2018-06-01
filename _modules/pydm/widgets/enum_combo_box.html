@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.1.0+192.g37557ec documentation</title>
+  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.1.0+198.g5374162 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+192.g37557ec
+                v1.1.0+198.g5374162
               </div>
             
           
@@ -171,7 +171,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.enum_combo_box</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QComboBox</span>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QComboBox</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">Qt</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
 <span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="k">import</span> <span class="n">is_pydm_app</span>
@@ -216,12 +219,25 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        new_enum_strings : tuple</span>
+<span class="sd">        enums : tuple</span>
 <span class="sd">            The new list of values</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">enums</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Invalid enum value &#39;</span><span class="si">{0}</span><span class="s2">&#39;. The value is expected to be a valid list of string values.&quot;</span>
+                         <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">enums</span><span class="p">))</span>
+            <span class="k">return</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">enum</span> <span class="ow">in</span> <span class="n">enums</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">enum</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">e_str</span> <span class="ow">in</span> <span class="n">enums</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">e_str</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Invalid enum type &#39;</span><span class="si">{0}</span><span class="s2">&#39;. The expected type is &#39;string&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e_str</span><span class="p">)))</span>
+                <span class="k">return</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">e_str</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">&quot;Invalid enum type &#39;</span><span class="si">{0}</span><span class="s2">&#39;. The expected type is &#39;string&#39;. Exception: </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e_str</span><span class="p">),</span> <span class="n">error</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_has_enums</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span></div>
 
@@ -320,7 +336,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+192.g37557ec',
+            VERSION:'v1.1.0+198.g5374162',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
