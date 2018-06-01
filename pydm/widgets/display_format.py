@@ -25,6 +25,11 @@ def parse_value_for_display(value, precision, display_format_type=DisplayFormat.
     elif display_format_type == DisplayFormat.String:
         if isinstance(value, np.ndarray):
             try:
+                # Stop at the first zero (EPICS convention)
+                # Assume the ndarray is one-dimensional
+                zeros = np.where(value == 0)[0]
+                if zeros.size > 0:
+                    value = value[:zeros[0]]
                 r = value.tobytes().decode(string_encoding)
             except:
                 logger.error("Could not decode {0} using {1} at widget named '{2}'.".format(
