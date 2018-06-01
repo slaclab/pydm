@@ -335,7 +335,12 @@ class PyDMMainWindow(QMainWindow):
                 self.handle_open_file_error(filename, e)
 
     def load_tool(self, checked):
-        filename = QFileDialog.getOpenFileName(self, 'Load tool...', os.path.dirname(self.current_file()), 'PyDM External Tool Files (*_tool.py)')
+        try:
+            curr_dir = os.path.dirname(self.current_file())
+        except IndexError:
+            logger.error("The display manager does not have a display loaded. Suggesting current work directory.")
+            curr_dir = os.getcwd()
+        filename = QFileDialog.getOpenFileName(self, 'Load tool...', curr_dir, 'PyDM External Tool Files (*_tool.py)')
         filename = filename[0] if isinstance(filename, (list, tuple)) else filename
 
         if filename:
