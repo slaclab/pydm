@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.display_format &mdash; PyDM v1.1.0+201.g933ac96 documentation</title>
+  <title>pydm.widgets.display_format &mdash; PyDM v1.1.0+205.g8cc4ee6 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+201.g933ac96
+                v1.1.0+205.g8cc4ee6
               </div>
             
           
@@ -198,6 +198,11 @@
     <span class="k">elif</span> <span class="n">display_format_type</span> <span class="o">==</span> <span class="n">DisplayFormat</span><span class="o">.</span><span class="n">String</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Stop at the first zero (EPICS convention)</span>
+                <span class="c1"># Assume the ndarray is one-dimensional</span>
+                <span class="n">zeros</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">zeros</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[:</span><span class="n">zeros</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
                 <span class="n">r</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">string_encoding</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not decode </span><span class="si">{0}</span><span class="s2"> using </span><span class="si">{1}</span><span class="s2"> at widget named &#39;</span><span class="si">{2}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -269,7 +274,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.1.0+201.g933ac96',
+            VERSION:'v1.1.0+205.g8cc4ee6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
