@@ -36,7 +36,7 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
     def value_changed(self, new_waveform):
         """
         Callback invoked when the Channel value is changed.
-
+o
         Parameters
         ----------
         new_waveform : np.ndarray
@@ -74,7 +74,7 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
             return
         item = self.item(row, column)
         new_val = self.subtype(item.text())
-        ind = row*self.columnCount() + column
+        ind = row * self.columnCount() + column
         self.waveform[ind] = new_val
         self.send_value_signal[np.ndarray].emit(self.waveform)
 
