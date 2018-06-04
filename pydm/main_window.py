@@ -111,6 +111,8 @@ class PyDMMainWindow(QMainWindow):
 
     def open_file(self, ui_file, macros=None, command_line_args=None):
         filename = self.join_to_current_file_path(ui_file)
+        if not os.path.exists(filename):
+            raise IOError("File {} not found".format(filename))
         self.open_abs_file(filename, macros, command_line_args)
 
     def open_abs_file(self, filename, macros=None, command_line_args=None):
@@ -138,6 +140,8 @@ class PyDMMainWindow(QMainWindow):
 
     def new_window(self, ui_file, macros=None, command_line_args=None):
         filename = self.join_to_current_file_path(ui_file)
+        if not os.path.exists(filename):
+            raise IOError("File {} not found".format(filename))
         self.new_abs_window(filename, macros, command_line_args)
 
     def new_abs_window(self, filename, macros=None, command_line_args=None):
