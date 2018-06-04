@@ -287,18 +287,39 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             return
         self._image_width = int(new_width)
 
+    @staticmethod
+    def process_image(image):
+        """
+        Boilerplate method to be used by applications in order to add calculations and also modify the image before
+        it is displayed at the widget.
+
+        Parameters
+        ----------
+        image : np.ndarray
+            The Image Data as a 2D numpy array
+
+        Returns
+        -------
+        np.ndarray
+            The Image Data as a 2D numpy array after processing.
+        """
+        return image
+
     def redrawImage(self):
         """
         Set the image data into the ImageItem, if needed.
 
         If necessary, reshape the image to 2D first.
         """
+        self.redraw_timer.stop()
         if not self.needs_redraw:
+            self.redraw_timer.start()
             return
         image_dimensions = len(self.image_waveform.shape)
         if image_dimensions == 1:
             if self.imageWidth < 1:
                 # We don't have a width for this image yet, so we can't draw it
+                self.redraw_timer.start()
                 return
             if self.readingOrder == ReadingOrder.Clike:
                 img = self.image_waveform.reshape((-1, self.imageWidth),
@@ -310,6 +331,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             img = self.image_waveform
 
         if len(img) <= 0:
+            self.redraw_timer.start()
             return
         if self._normalize_data:
             mini = self.image_waveform.min()
@@ -317,12 +339,14 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         else:
             mini = self.cm_min
             maxi = self.cm_max
+        img = self.process_image(img)
         self.getImageItem().setLevels([mini, maxi])
         self.getImageItem().setImage(
             img,
             autoLevels=False,
             autoDownsample=True)
         self.needs_redraw = False
+        self.redraw_timer.start()
 
     @pyqtProperty(int)
     def imageWidth(self):
@@ -504,4 +528,4 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         redraw_rate : int
         """
         self._redraw_rate = redraw_rate
-        self.redraw_timer.setInterval(int((1.0/self._redraw_rate)*1000))
+        self.redraw_timer.setInterval(int((1.0 / self._redraw_rate) * 1000))

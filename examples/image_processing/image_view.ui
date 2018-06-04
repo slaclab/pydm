@@ -22,11 +22,14 @@
      <property name="whatsThis">
       <string/>
      </property>
+     <property name="readingOrder" stdset="0">
+      <enum>PyDMImageView::Clike</enum>
+     </property>
      <property name="imageChannel" stdset="0">
-      <string/>
+      <string>ca://MTEST:TwoSpotImage</string>
      </property>
      <property name="widthChannel" stdset="0">
-      <string/>
+      <string>ca://MTEST:ImageWidth</string>
      </property>
     </widget>
    </item>
