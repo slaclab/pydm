@@ -116,9 +116,9 @@ class PyDMMainWindow(QMainWindow):
                 raise IOError("File {} not found".format(filename))
             self.open_abs_file(filename, macros, command_line_args)
         except (IOError, OSError, ValueError, ImportError) as e:
-            logger.error("Cannot open file: %s. Reason: %s.", filename, str(e))
-            self.statusBar().showMessage(
-                "Cannot open file: '{0}'. Reason: '{1}'.".format(filename, e), 5000)
+            error_msg = "Cannot open file: '{0}'. Reason: '{1}'.".format(filename, e)
+            logger.error(error_msg)
+            self.statusBar().showMessage(error_msg, 5000)
 
     def open_abs_file(self, filename, macros=None, command_line_args=None):
         if command_line_args is None:
@@ -150,9 +150,9 @@ class PyDMMainWindow(QMainWindow):
                 raise IOError("File {} not found".format(filename))
             self.new_abs_window(filename, macros, command_line_args)
         except (IOError, OSError, ValueError, ImportError) as e:
-            logger.error("Cannot open file: %s. Reason: %s.", filename, str(e))
-            self.statusBar().showMessage(
-                "Cannot open file: '{0}'. Reason: '{1}'.".format(filename, e), 5000)
+            error_msg = "Cannot open file: '{0}'. Reason: '{1}'.".format(filename, e)
+            logger.error(error_msg)
+            self.statusBar().showMessage(error_msg, 5000)
 
     def new_abs_window(self, filename, macros=None, command_line_args=None):
         merged_macros = self.merge_with_current_macros(macros)

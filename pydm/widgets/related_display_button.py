@@ -194,7 +194,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             file on the same window. PyDMRelatedDisplayButton.NEW_WINDOW
             or 1 will result on a new process.
         """
-        if self.displayFilename is None:
+        # Check for None and ""
+        if not self.displayFilename:
             return
         macros = None
         if self._macro_string is not None:
