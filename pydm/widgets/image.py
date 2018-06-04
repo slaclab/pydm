@@ -1,14 +1,18 @@
 from ..PyQt.QtGui import QActionGroup
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, QTimer, Q_ENUMS
+from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Q_ENUMS, QThread
 from pyqtgraph import ImageView
 from pyqtgraph import ColorMap
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
 import numpy as np
+import threading
+import logging
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
 from .base import PyDMWidget
 import pyqtgraph
 pyqtgraph.setConfigOption('imageAxisOrder', 'row-major')
+
+logger = logging.getLogger(__name__)
 
 
 class ReadingOrder(object):
@@ -16,6 +20,53 @@ class ReadingOrder(object):
 
     Fortranlike = 0
     Clike = 1
+
+
+class ImageUpdateThread(QThread):
+    updateSignal = pyqtSignal(list)
+
+    def __init__(self, image_view):
+        QThread.__init__(self)
+        self.image_view = image_view
+
+    def run(self):
+        img = self.image_view.image_waveform
+        needs_redraw = self.image_view.needs_redraw
+        image_dimensions = len(img.shape)
+        width = self.image_view.imageWidth
+        reading_order = self.image_view.readingOrder
+
+        self.image_view.lock.acquire()
+        if not self.image_view.needs_redraw:
+            self.image_view.lock.release()
+            return
+        if image_dimensions == 1:
+            if width < 1:
+                # We don't have a width for this image yet, so we can't draw it
+                self.image_view.lock.release()
+                return
+            if self.image_view.readingOrder == ReadingOrder.Clike:
+                img = self.image_view.image_waveform.reshape((-1, self.image_view.imageWidth),
+                                                  order='C')
+            else:
+                img = self.image_view.image_waveform.reshape((self.image_view.imageWidth, -1),
+                                                  order='F')
+        else:
+            img = self.image_view.image_waveform
+
+        if len(img) <= 0:
+            self.image_view.lock.release()
+            return
+        img = self.image_view.process_image(img)
+        if self.image_view._normalize_data:
+            mini = img.min()
+            maxi = img.max()
+        else:
+            mini = self.image_view.cm_min
+            maxi = self.image_view.cm_max
+        self.updateSignal.emit([mini, maxi, img])
+        self.image_view.needs_redraw = False
+        self.image_view.lock.release()
 
 
 class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
@@ -51,12 +102,15 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """Initialize widget."""
         ImageView.__init__(self, parent)
         PyDMWidget.__init__(self)
+        self.lock = threading.Lock()
+        self.thread = None
         self.axes = dict({'t': None, "x": 0, "y": 1, "c": None})
         self._imagechannel = image_channel
         self._widthchannel = width_channel
         self.image_waveform = np.zeros(0)
         self._image_width = 0
         self._normalize_data = False
+        self._auto_downsample = True
 
         # Hide some itens of the widget.
         self.ui.histogram.hide()
@@ -287,11 +341,11 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             return
         self._image_width = int(new_width)
 
-    @staticmethod
-    def process_image(image):
+    def process_image(self, image):
         """
-        Boilerplate method to be used by applications in order to add calculations and also modify the image before
-        it is displayed at the widget.
+        Boilerplate method to be used by applications in order to
+        add calculations and also modify the image before it is
+        displayed at the widget.
 
         Parameters
         ----------
@@ -311,42 +365,48 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
 
         If necessary, reshape the image to 2D first.
         """
-        self.redraw_timer.stop()
-        if not self.needs_redraw:
-            self.redraw_timer.start()
+        if self.lock.locked():
+            logger.warning("Image processing has taken longer than the refresh rate.")
             return
-        image_dimensions = len(self.image_waveform.shape)
-        if image_dimensions == 1:
-            if self.imageWidth < 1:
-                # We don't have a width for this image yet, so we can't draw it
-                self.redraw_timer.start()
-                return
-            if self.readingOrder == ReadingOrder.Clike:
-                img = self.image_waveform.reshape((-1, self.imageWidth),
-                                                  order='C')
-            else:
-                img = self.image_waveform.reshape((self.imageWidth, -1),
-                                                  order='F')
-        else:
-            img = self.image_waveform
+        self.thread = ImageUpdateThread(self)
+        self.thread.updateSignal.connect(self.updateDisplay)
+        self.thread.start()
 
-        if len(img) <= 0:
-            self.redraw_timer.start()
-            return
-        if self._normalize_data:
-            mini = self.image_waveform.min()
-            maxi = self.image_waveform.max()
-        else:
-            mini = self.cm_min
-            maxi = self.cm_max
-        img = self.process_image(img)
+    @pyqtSlot(list)
+    def updateDisplay(self, data):
+        mini, maxi = data[0], data[1]
+        img = data[2]
         self.getImageItem().setLevels([mini, maxi])
         self.getImageItem().setImage(
             img,
             autoLevels=False,
-            autoDownsample=True)
-        self.needs_redraw = False
-        self.redraw_timer.start()
+            autoDownsample=self.autoDownsample)
+
+
+    @pyqtProperty(bool)
+    def autoDownsample(self):
+        """
+        Return if we should or not apply the
+        autoDownsample option to PyQtGraph.
+
+        Return
+        ------
+        bool
+        """
+        return self._auto_downsample
+
+    @autoDownsample.setter
+    def autoDownsample(self, new_value):
+        """
+        Whether we should or not apply the
+        autoDownsample option to PyQtGraph.
+
+        Parameters
+        ----------
+        new_value: bool
+        """
+        if new_value != self._auto_downsample:
+            self._auto_downsample = new_value
 
     @pyqtProperty(int)
     def imageWidth(self):
@@ -395,9 +455,8 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         ----------
         new_norm: bool
         """
-        if self._normalize_data == new_norm:
-            return
-        self._normalize_data = new_norm
+        if self._normalize_data != new_norm:
+            self._normalize_data = new_norm
 
     @pyqtProperty(ReadingOrder)
     def readingOrder(self):
