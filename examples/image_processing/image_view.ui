@@ -31,6 +31,9 @@
      <property name="widthChannel" stdset="0">
       <string>ca://MTEST:ImageWidth</string>
      </property>
+     <property name="maxRedrawRate" stdset="0">
+      <number>10</number>
+     </property>
     </widget>
    </item>
    <item>
