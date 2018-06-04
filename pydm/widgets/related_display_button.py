@@ -7,8 +7,6 @@ from functools import partial
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
 
-logger = logging.getLogger(__name__)
-
 
 class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
     """
@@ -201,14 +199,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         macros = None
         if self._macro_string is not None:
             macros = json.loads(str(self._macro_string))
-        try:
-            if target == self.EXISTING_WINDOW:
-                self.window().go(self.displayFilename, macros=macros)
-            if target == self.NEW_WINDOW:
-                self.window().new_window(self.displayFilename, macros=macros)
-        except (IOError, OSError, ValueError, ImportError) as e:
-           logger.error("Cannot open file: %s. Reason: %s.", self.displayFilename, str(e))
-           self.window().statusBar().showMessage("Cannot open file: '{0}'. Reason: '{1}'.".format(self.displayFilename, e), 5000)
+
+        if target == self.EXISTING_WINDOW:
+            self.window().go(self.displayFilename, macros=macros)
+        if target == self.NEW_WINDOW:
+            self.window().new_window(self.displayFilename, macros=macros)
 
     def context_menu(self):
         try:
