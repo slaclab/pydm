@@ -1,6 +1,8 @@
 from ..PyQt.QtGui import QPushButton, QCursor, QMenu, QAction, QIcon
 from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt, QSize, QPoint
+import os
 import json
+import logging
 from functools import partial
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
@@ -192,18 +194,17 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             file on the same window. PyDMRelatedDisplayButton.NEW_WINDOW
             or 1 will result on a new process.
         """
-        if self.displayFilename is None:
+        # Check for None and ""
+        if not self.displayFilename:
             return
         macros = None
         if self._macro_string is not None:
             macros = json.loads(str(self._macro_string))
-        try:
-            if target == self.EXISTING_WINDOW:
-                self.window().go(self.displayFilename, macros=macros)
-            if target == self.NEW_WINDOW:
-                self.window().new_window(self.displayFilename, macros=macros)
-        except (IOError, OSError, ValueError, ImportError) as e:
-            self.window().statusBar().showMessage("Cannot open file: '{0}'. Reason: '{1}'.".format(self.displayFilename, e), 5000)
+
+        if target == self.EXISTING_WINDOW:
+            self.window().go(self.displayFilename, macros=macros)
+        if target == self.NEW_WINDOW:
+            self.window().new_window(self.displayFilename, macros=macros)
 
     def context_menu(self):
         try:
