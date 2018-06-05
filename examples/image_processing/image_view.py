@@ -1,8 +1,4 @@
-from pydm.PyQt.QtCore import QObject, pyqtSlot, pyqtSignal
-from pydm.widgets.channel import PyDMChannel
-from pydm.widgets import PyDMImageView
 from pydm import Display
-import numpy as np
 import threading
 from os import path
 from skimage.feature import blob_doh
