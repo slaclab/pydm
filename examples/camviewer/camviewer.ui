@@ -44,6 +44,9 @@
          <property name="whatsThis">
           <string>Displays an image from a PV.</string>
          </property>
+         <property name="maxRedrawRate" stdset="0">
+          <number>30</number>
+         </property>
         </widget>
        </item>
       </layout>
