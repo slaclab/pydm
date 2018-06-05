@@ -35,38 +35,34 @@ class ImageUpdateThread(QThread):
         image_dimensions = len(img.shape)
         width = self.image_view.imageWidth
         reading_order = self.image_view.readingOrder
+        normalize_data = self.image_view._normalize_data
+        cm_min = self.image_view.cm_min
+        cm_max = self.image_view.cm_max
 
-        self.image_view.lock.acquire()
-        if not self.image_view.needs_redraw:
-            self.image_view.lock.release()
-            return
-        if image_dimensions == 1:
-            if width < 1:
-                # We don't have a width for this image yet, so we can't draw it
-                self.image_view.lock.release()
+        with self.image_view.lock:
+            if not needs_redraw:
                 return
-            if self.image_view.readingOrder == ReadingOrder.Clike:
-                img = self.image_view.image_waveform.reshape((-1, self.image_view.imageWidth),
-                                                  order='C')
-            else:
-                img = self.image_view.image_waveform.reshape((self.image_view.imageWidth, -1),
-                                                  order='F')
-        else:
-            img = self.image_view.image_waveform
+            if image_dimensions == 1:
+                if width < 1:
+                    # We don't have a width for this image yet, so we can't draw it
+                    self.image_view.lock.release()
+                    return
+                if reading_order == ReadingOrder.Clike:
+                    img = img.reshape((-1, width), order='C')
+                else:
+                    img = img.reshape((width, -1), order='F')
 
-        if len(img) <= 0:
-            self.image_view.lock.release()
-            return
-        img = self.image_view.process_image(img)
-        if self.image_view._normalize_data:
-            mini = img.min()
-            maxi = img.max()
-        else:
-            mini = self.image_view.cm_min
-            maxi = self.image_view.cm_max
-        self.updateSignal.emit([mini, maxi, img])
-        self.image_view.needs_redraw = False
-        self.image_view.lock.release()
+            if len(img) <= 0:
+                return
+            img = self.image_view.process_image(img)
+            if normalize_data:
+                mini = img.min()
+                maxi = img.max()
+            else:
+                mini = cm_min
+                maxi = cm_max
+            self.updateSignal.emit([mini, maxi, img])
+            self.image_view.needs_redraw = False
 
 
 class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
@@ -79,6 +75,9 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
     The :attr:`normalizeData` property defines if the colors of the images are
     relative to the :attr:`colorMapMin` and :attr:`colorMapMax` property or to
     the minimum and maximum values of the image.
+
+    Use the :attr:`newImageSignal` to hook up to a signal that is emitted when a new
+    image is rendered in the widget.
 
     Parameters
     ----------
@@ -145,6 +144,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self.redraw_timer.timeout.connect(self.redrawImage)
         self._redraw_rate = 30
         self.maxRedrawRate = self._redraw_rate
+        self.newImageSignal = self.getImageItem().sigImageChanged
 
     def widget_ctx_menu(self):
         """
@@ -346,6 +346,9 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         Boilerplate method to be used by applications in order to
         add calculations and also modify the image before it is
         displayed at the widget.
+
+        .. warning::
+           This code runs in a separated QThread so it **MUST** not try to write to QWidgets.
 
         Parameters
         ----------
