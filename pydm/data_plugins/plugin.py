@@ -91,25 +91,46 @@ class PyDMConnection(QObject):
                 pass
 
         if channel.severity_slot is not None:
-            self.new_severity_signal.disconnect(channel.severity_slot)
+            try:
+                self.new_severity_signal.disconnect(channel.severity_slot)
+            except (KeyError, TypeError):
+                pass
 
         if channel.write_access_slot is not None:
-            self.write_access_signal.disconnect(channel.write_access_slot)
+            try:
+                self.write_access_signal.disconnect(channel.write_access_slot)
+            except (KeyError, TypeError):
+                pass
 
         if channel.enum_strings_slot is not None:
-            self.enum_strings_signal.disconnect(channel.enum_strings_slot)
+            try:
+                self.enum_strings_signal.disconnect(channel.enum_strings_slot)
+            except (KeyError, TypeError):
+                pass
 
         if channel.unit_slot is not None:
-            self.unit_signal.disconnect(channel.unit_slot)
+            try:
+                self.unit_signal.disconnect(channel.unit_slot)
+            except (KeyError, TypeError):
+                pass
 
         if channel.upper_ctrl_limit_slot is not None:
-            self.upper_ctrl_limit_signal.disconnect(channel.upper_ctrl_limit_slot)
+            try:
+                self.upper_ctrl_limit_signal.disconnect(channel.upper_ctrl_limit_slot)
+            except (KeyError, TypeError):
+                pass
 
         if channel.lower_ctrl_limit_slot is not None:
-            self.lower_ctrl_limit_signal.disconnect(channel.lower_ctrl_limit_slot)
+            try:
+                self.lower_ctrl_limit_signal.disconnect(channel.lower_ctrl_limit_slot)
+            except (KeyError, TypeError):
+                pass
 
         if channel.prec_slot is not None:
-            self.prec_signal.disconnect(channel.prec_slot)
+            try:
+                self.prec_signal.disconnect(channel.prec_slot)
+            except (KeyError, TypeError):
+                pass
 
         self.listener_count = self.listener_count - 1
         if self.listener_count < 1:
