@@ -23,19 +23,18 @@ class ImageViewer(Display):
         return path.join(path.dirname(path.realpath(__file__)), self.ui_filename())
 
     def draw_markers(self, *args, **kwargs):
-        self.markers_lock.acquire()
-        for m in self.markers:
-            if m in self.ui.imageView.getView().addedItems:
-                self.ui.imageView.getView().removeItem(m)
+        with self.markers_lock:
+            for m in self.markers:
+                if m in self.ui.imageView.getView().addedItems:
+                    self.ui.imageView.getView().removeItem(m)
 
-        for blob in self.blobs:
-            x, y, size = blob
-            m = ImageMarker((y, x), size=size, pen=mkPen((100, 100, 255), width=3))
-            self.markers.append(m)
-            self.ui.imageView.getView().addItem(m)
+            for blob in self.blobs:
+                x, y, size = blob
+                m = ImageMarker((y, x), size=size, pen=mkPen((100, 100, 255), width=3))
+                self.markers.append(m)
+                self.ui.imageView.getView().addItem(m)
 
-        self.ui.numBlobsLabel.setText(str(len(self.blobs)))
-        self.markers_lock.release()
+            self.ui.numBlobsLabel.setText(str(len(self.blobs)))
 
     def process_image(self, new_image):
         # Find blobs in the image with scikit-image

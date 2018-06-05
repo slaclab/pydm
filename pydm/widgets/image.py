@@ -39,30 +39,31 @@ class ImageUpdateThread(QThread):
         cm_min = self.image_view.cm_min
         cm_max = self.image_view.cm_max
 
-        with self.image_view.lock:
-            if not needs_redraw:
+        if not needs_redraw:
+            return
+        if image_dimensions == 1:
+            if width < 1:
+                # We don't have a width for this image yet, so we can't draw it
                 return
-            if image_dimensions == 1:
-                if width < 1:
-                    # We don't have a width for this image yet, so we can't draw it
-                    self.image_view.lock.release()
-                    return
+            try:
                 if reading_order == ReadingOrder.Clike:
                     img = img.reshape((-1, width), order='C')
                 else:
                     img = img.reshape((width, -1), order='F')
+            except ValueError:
+                logger.error("Invalid width for image during reshape: %d", width)
 
-            if len(img) <= 0:
-                return
-            img = self.image_view.process_image(img)
-            if normalize_data:
-                mini = img.min()
-                maxi = img.max()
-            else:
-                mini = cm_min
-                maxi = cm_max
-            self.updateSignal.emit([mini, maxi, img])
-            self.image_view.needs_redraw = False
+        if len(img) <= 0:
+            return
+        img = self.image_view.process_image(img)
+        if normalize_data:
+            mini = img.min()
+            maxi = img.max()
+        else:
+            mini = cm_min
+            maxi = cm_max
+        self.updateSignal.emit([mini, maxi, img])
+        self.image_view.needs_redraw = False
 
 
 class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
@@ -101,7 +102,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """Initialize widget."""
         ImageView.__init__(self, parent)
         PyDMWidget.__init__(self)
-        self.lock = threading.Lock()
         self.thread = None
         self.axes = dict({'t': None, "x": 0, "y": 1, "c": None})
         self._imagechannel = image_channel
@@ -348,7 +348,8 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         displayed at the widget.
 
         .. warning::
-           This code runs in a separated QThread so it **MUST** not try to write to QWidgets.
+           This code runs in a separated QThread so it **MUST** not try to write
+           to QWidgets.
 
         Parameters
         ----------
@@ -368,15 +369,16 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
 
         If necessary, reshape the image to 2D first.
         """
-        if self.lock.locked():
-            logger.warning("Image processing has taken longer than the refresh rate.")
+        if self.thread is not None and not self.thread.isFinished():
+            logger.warning(
+                "Image processing has taken longer than the refresh rate.")
             return
         self.thread = ImageUpdateThread(self)
-        self.thread.updateSignal.connect(self.updateDisplay)
+        self.thread.updateSignal.connect(self.__updateDisplay)
         self.thread.start()
 
     @pyqtSlot(list)
-    def updateDisplay(self, data):
+    def __updateDisplay(self, data):
         mini, maxi = data[0], data[1]
         img = data[2]
         self.getImageItem().setLevels([mini, maxi])
@@ -384,7 +386,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             img,
             autoLevels=False,
             autoDownsample=self.autoDownsample)
-
 
     @pyqtProperty(bool)
     def autoDownsample(self):
