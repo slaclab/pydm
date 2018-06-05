@@ -3,7 +3,7 @@ import logging
 from collections import OrderedDict
 
 from pydm.PyQt.QtCore import (QObject, pyqtSlot, pyqtSignal, pyqtProperty,
-                              Q_ENUMS)
+                              Q_ENUMS, QSize)
 from pydm.PyQt.QtGui import (QWidget, QPlainTextEdit, QComboBox, QLabel,
                              QPushButton, QHBoxLayout, QVBoxLayout)
 
@@ -133,6 +133,9 @@ class PyDMLogDisplay(QWidget, LogLevels):
         self.level = None
         self.logName = logname or ''
         self.logLevel = level
+
+    def sizeHint(self):
+        return QSize(400, 300)
 
     @pyqtProperty(LogLevels)
     def logLevel(self):
