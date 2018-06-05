@@ -107,6 +107,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
         self.label = QLabel('Minimum displayed log level: ', parent=self)
         self.combo = QComboBox(parent=self)
         self.text = QPlainTextEdit(parent=self)
+        self.text.setReadOnly(True)
         self.clear_btn = QPushButton("Clear", parent=self)
         # Create layout
         layout = QVBoxLayout()
