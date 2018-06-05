@@ -40,10 +40,13 @@ class ImageUpdateThread(QThread):
         cm_max = self.image_view.cm_max
 
         if not needs_redraw:
+            logging.debug("ImageUpdateThread - needs redraw is False. Aborting.")
             return
         if image_dimensions == 1:
             if width < 1:
                 # We don't have a width for this image yet, so we can't draw it
+                logging.debug(
+                    "ImageUpdateThread - no width available. Aborting.")
                 return
             try:
                 if reading_order == ReadingOrder.Clike:
@@ -55,6 +58,7 @@ class ImageUpdateThread(QThread):
 
         if len(img) <= 0:
             return
+        logging.debug("ImageUpdateThread - Will Process Image")
         img = self.image_view.process_image(img)
         if normalize_data:
             mini = img.min()
@@ -62,7 +66,9 @@ class ImageUpdateThread(QThread):
         else:
             mini = cm_min
             maxi = cm_max
+        logging.debug("ImageUpdateThread - Emit Update Signal")
         self.updateSignal.emit([mini, maxi, img])
+        logging.debug("ImageUpdateThread - Set Needs Redraw -> False")
         self.image_view.needs_redraw = False
 
 
@@ -324,6 +330,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """
         if new_image is None or new_image.size == 0:
             return
+        logging.debug("ImageView Received New Image - Needs Redraw -> True")
         self.image_waveform = new_image
         self.needs_redraw = True
 
@@ -375,10 +382,12 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             return
         self.thread = ImageUpdateThread(self)
         self.thread.updateSignal.connect(self.__updateDisplay)
+        logging.debug("ImageView RedrawImage Thread Launched")
         self.thread.start()
 
     @pyqtSlot(list)
     def __updateDisplay(self, data):
+        logging.debug("ImageView Update Display with new image")
         mini, maxi = data[0], data[1]
         img = data[2]
         self.getImageItem().setLevels([mini, maxi])
