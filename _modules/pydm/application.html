@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.1.0+221.ga0d3252 documentation</title>
+  <title>pydm.application &mdash; PyDM v1.1.0+223.gedf4483 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                v1.1.0+221.ga0d3252
+                v1.1.0+223.gedf4483
               </div>
             
           
@@ -704,6 +704,9 @@
     <span class="c1"># Not sure if showing the tooltip should be the job of the app,</span>
     <span class="c1"># may want to revisit this.</span>
     <span class="k">def</span> <span class="nf">show_address_tooltip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">channels</span><span class="p">()):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Object </span><span class="si">%r</span><span class="s2"> has no PyDM Channels&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+            <span class="k">return</span>
         <span class="n">addr</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">channels</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">address</span>
         <span class="n">QToolTip</span><span class="o">.</span><span class="n">showText</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">globalPos</span><span class="p">(),</span> <span class="n">addr</span><span class="p">)</span>
         <span class="c1"># If the address has a protocol, and it is the default protocol, strip it out before putting it on the clipboard.</span>
@@ -935,7 +938,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v1.1.0+221.ga0d3252',
+            VERSION:'v1.1.0+223.gedf4483',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
