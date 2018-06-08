@@ -31,7 +31,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         self.layout.addWidget(self.err_label)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.err_label.hide()
-        if not isinstance(self.app, PyDMApplication):
+        if not PyDMEmbeddedDisplay._is_pydm_app(self):
             self.setFrameShape(QFrame.Box)
         else:
             self.setFrameShape(QFrame.NoFrame)
@@ -73,7 +73,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         ----------
         new_macros : str
         """
-        self._macros = str(new_macros)
+        self._macros = str(new_macros) if new_macros is not None else None
 
     @pyqtProperty(str)
     def filename(self):
@@ -97,22 +97,22 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         ----------
         filename : str
         """
-        filename = str(filename)
+        filename = str(filename) if filename is not None else None
         if filename != self._filename:
             self._filename = filename
             # If we aren't in a PyDMApplication (usually that means we are in Qt Designer),
             # don't try to load the file, just show text with the filename.
-            if not isinstance(self.app, PyDMApplication):
+            if not PyDMEmbeddedDisplay._is_pydm_app(self):
                 self.err_label.setText(self._filename)
                 self.err_label.show()
                 return
             try:
                 self.embedded_widget = self.open_file()
             except ValueError as e:
-                self.err_label.setText("Could not parse macro string.\nError: {}".format(e))
+                self.err_label.setText("Could not parse macro string.\nError: {0}".format(e))
                 self.err_label.show()
             except IOError as e:
-                self.err_label.setText("Could not open {filename}.\nError: {err}".format(filename=self._filename, err=e))
+                self.err_label.setText("Could not open '{0}'.\nError: {1}".format(self._filename, e))
                 self.err_label.show()
 
     def parsed_macros(self):
@@ -123,10 +123,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         --------
         dict
         """
-        if self.macros is not None and len(self.macros) > 0:
-            return json.loads(self.macros)
-        else:
-            return {}
+        return json.loads(self.macros) if self.macros else {}
+
 
     def open_file(self):
         """
@@ -237,3 +235,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         if self.disconnectWhenHidden:
             self.disconnect()
+
+    @staticmethod
+    def _is_pydm_app(pdym_emb_disp):
+        return isinstance(pdym_emb_disp.app, PyDMApplication)
