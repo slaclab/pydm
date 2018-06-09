@@ -1,7 +1,12 @@
 from ..PyQt.QtGui import QWidget, QTabWidget, QColor, QPen, QGridLayout, QLabel, QFontMetrics, QPainter, QBrush, QStyleOption, QStyle
 from ..PyQt.QtCore import pyqtProperty, Qt, QSize, QPoint
+
 import numpy as np
 from .base import PyDMWidget
+
+import logging
+logger = logging.getLogger(__name__)
+
 
 class PyDMBitIndicator(QWidget):
     """
@@ -502,5 +507,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         try:
             int(new_val)
             self.update_indicators()
-        except:
-            pass
+        except Exception as error:
+            logger.error("There is a problem while converting the new value and updating the indicators. Error: {0}"
+                         .format(error))
+
