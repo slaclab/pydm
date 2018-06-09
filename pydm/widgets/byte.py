@@ -64,6 +64,11 @@ class PyDMBitIndicator(QWidget):
         return QSize(fm.height(), fm.height())
 
 class PyDMByteIndicator(QWidget, PyDMWidget):
+    ON_COLOR = QColor(0, 255, 0)
+    OFF_COLOR = QColor(100, 100, 100)
+    DISCONNECTED_COLOR = QColor(255, 255, 255)
+    INVALID_COLOR = QColor(255, 0, 255)
+
     """
     Widget for graphical representation of bits from an integer number
     with support for Channels and more from PyDM
@@ -81,10 +86,10 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.value = 0
         self.setLayout(QGridLayout(self))
 
-        self._on_color = QColor(0, 255, 0)
-        self._off_color = QColor(100, 100, 100)
-        self._disconnected_color = QColor(255, 255, 255)
-        self._invalid_color = QColor(255, 0, 255)
+        self._on_color = PyDMByteIndicator.ON_COLOR
+        self._off_color = PyDMByteIndicator.OFF_COLOR
+        self._disconnected_color = PyDMByteIndicator.DISCONNECTED_COLOR
+        self._invalid_color = PyDMByteIndicator.INVALID_COLOR
 
         self._pen_style = Qt.SolidLine
         self._line_pen = QPen(self._pen_style)
@@ -423,13 +428,13 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         for indicator in self._indicators:
             indicator.deleteLater()
         self._indicators = [PyDMBitIndicator(self) for i in range(0, self._num_bits)]
-        old_labels = self.labels
+        old_labels = self._labels
         new_labels = ["Bit {}".format(i) for i in range(0, self._num_bits)]
         for i, old_label in enumerate(old_labels):
             if i >= self._num_bits:
                 break
             new_labels[i] = old_label
-        self.labels = new_labels
+        self._labels = new_labels
 
     @pyqtProperty(int)
     def shift(self):
