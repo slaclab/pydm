@@ -468,7 +468,10 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         -------
         list
         """
-        return [str(l.text()) for l in self._labels]
+        label_strings = []
+        for label in self._labels:
+            label_strings.append(label.text())
+        return label_strings
 
     @labels.setter
     def labels(self, new_labels):
@@ -481,7 +484,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         for label in self._labels:
             label.deleteLater()
-        self._labels = [QLabel(text, parent=self) for text in new_labels]
+        self._labels = [QLabel(text) for text in new_labels]
         # Have to reset showLabels to hide or show all the new labels we just made.
         self.showLabels = self._show_labels
         self.rebuild_layout()

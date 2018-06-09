@@ -136,6 +136,8 @@ def test_properties_and_setters(qtbot):
     pydm_byteindicator = PyDMByteIndicator()
     qtbot.addWidget(pydm_byteindicator)
 
+    pydm_byteindicator._labels = [QLabel("Bit 0"), QLabel("Bit 1"), QLabel("Bit 2"), QLabel("Bit 3")]
+
     # onColor
     assert pydm_byteindicator.onColor == PyDMByteIndicator.ON_COLOR
     new_on_color = QColor(1, 1, 1)
@@ -152,6 +154,81 @@ def test_properties_and_setters(qtbot):
     assert pydm_byteindicator.orientation == Qt.Vertical
     pydm_byteindicator.orientation = Qt.Horizontal
     assert pydm_byteindicator.orientation == Qt.Horizontal
+
+    # showLabels
+    assert pydm_byteindicator.showLabels
+    pydm_byteindicator.showLabels = False
+    assert pydm_byteindicator.showLabels is False
+    for label in pydm_byteindicator._labels:
+        assert not label.isVisible()
+
+    # bigEndian
+    assert pydm_byteindicator.bigEndian is False
+    assert pydm_byteindicator.layout().originCorner() == Qt.Corner(Qt.TopLeftCorner)
+    pydm_byteindicator.bigEndian = True
+    assert pydm_byteindicator.layout().originCorner() == Qt.Corner(Qt.BottomLeftCorner)
+
+    # circles
+    pydm_byteindicator._connected = True
+    pydm_byteindicator.value = 16
+    pydm_byteindicator.numBits = 4
+
+    assert pydm_byteindicator.circles is False
+    pydm_byteindicator.update_indicators()
+    for indicator in pydm_byteindicator._indicators:
+        assert indicator.circle == False
+
+    pydm_byteindicator.circles = True
+    for indicator in pydm_byteindicator._indicators:
+        assert indicator.circle == True
+
+    # labelPosition
+    assert pydm_byteindicator.labelPosition == QTabWidget.East
+    pydm_byteindicator.labelPosition = QTabWidget.North
+    assert pydm_byteindicator.labelPosition == QTabWidget.North
+
+    # shift
+    assert pydm_byteindicator.shift == 0
+    pydm_byteindicator.shift = 4
+    assert pydm_byteindicator.shift == 4
+
+
+def test_numBits(qtbot):
+    pydm_byteindicator = PyDMByteIndicator()
+    qtbot.addWidget(pydm_byteindicator)
+
+    pydm_byteindicator._connected = True
+    pydm_byteindicator._labels = [QLabel("Bit 0"), QLabel("Bit 1"), QLabel("Bit 2"), QLabel("Bit 3")]
+    pydm_byteindicator.value = 8
+    pydm_byteindicator.numBits = 4
+
+    assert pydm_byteindicator.numBits == 4
+    pydm_byteindicator.update_indicators()
+
+    old_labels = pydm_byteindicator._labels
+
+    pydm_byteindicator.numBits = 6
+    new_labels = ["Bit {}".format(i) for i in range(0, pydm_byteindicator._num_bits)]
+    for i, old_label in enumerate(old_labels):
+        if i >= pydm_byteindicator._num_bits:
+            break
+        new_labels[i] = old_label
+
+    assert pydm_byteindicator._labels == new_labels
+
+
+def test_labels(qtbot):
+    pydm_byteindicator = PyDMByteIndicator()
+    qtbot.addWidget(pydm_byteindicator)
+
+    pydm_byteindicator._labels = [QLabel("Bit 0"), QLabel("Bit 1")]
+    current_labels = pydm_byteindicator.labels
+    assert len(current_labels) == 2
+
+    pydm_byteindicator.labels = ["Bit 0", "Bit 1", "Bit 2", "Bit 3"]
+    current_labels = pydm_byteindicator.labels
+    assert len(current_labels) == 4
+    assert pydm_byteindicator.showLabels
 
 
 def test_connection_changed(qtbot, signals):
@@ -180,8 +257,13 @@ def test_connection_changed(qtbot, signals):
 @pytest.mark.parametrize("orientation, label_position", [
     (Qt.Vertical, QTabWidget.East),
     (Qt.Vertical, QTabWidget.West),
+    (Qt.Vertical, QTabWidget.North),
+    (Qt.Vertical, QTabWidget.South),
+
     (Qt.Horizontal, QTabWidget.North),
-    (Qt.Horizontal, QTabWidget.South)
+    (Qt.Horizontal, QTabWidget.South),
+    (Qt.Horizontal, QTabWidget.East),
+    (Qt.Horizontal, QTabWidget.West)
 ])
 def test_rebuild_and_clear_layout(qtbot, orientation, label_position):
     pydm_byteindicator = PyDMByteIndicator()
@@ -191,6 +273,7 @@ def test_rebuild_and_clear_layout(qtbot, orientation, label_position):
     pydm_byteindicator._orientation = orientation
     pydm_byteindicator._label_position = label_position
     pydm_byteindicator._labels = [QLabel("Bit 0"), QLabel("Bit 1"), QLabel("Bit 2"), QLabel("Bit 3")]
+
     pydm_byteindicator._connected = True
     pydm_byteindicator.value = 8
     pydm_byteindicator.numBits = 4
