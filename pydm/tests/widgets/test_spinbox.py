@@ -3,7 +3,7 @@
 
 import pytest
 
-from ...PyQt.QtGui import QApplication, QKeyEvent, QDoubleSpinBox
+from ...PyQt.QtGui import QApplication, QKeyEvent
 from ...PyQt.QtCore import pyqtProperty, QEvent, Qt
 
 from ...widgets.spinbox import PyDMSpinbox

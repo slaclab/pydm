@@ -1,8 +1,6 @@
 from ..PyQt.QtGui import QPushButton, QCursor, QMenu, QAction, QIcon
 from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt, QSize, QPoint
-import os
 import json
-import logging
 from functools import partial
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
@@ -45,6 +43,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         self.open_in_new_window_action = QAction("Open in New Window", self)
         self.open_in_new_window_action.triggered.connect(partial(self.open_display, self.NEW_WINDOW))
         self._show_icon = True
+        self._target = None
 
     @pyqtProperty(bool)
     def showIcon(self):
@@ -91,7 +90,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         -------
         str
         """
-        return str(self._display_filename)
+        return None if not self._display_filename else str(self._display_filename)
 
     @displayFilename.setter
     def displayFilename(self, value):
@@ -103,9 +102,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         value : str
         """
         if self._display_filename != value:
-            self._display_filename = str(value)
+            self._display_filename = str(value) if value else None
             if self._display_filename is None or len(self._display_filename) < 1:
                 self.setEnabled(False)
+            else:
+                self.setEnabled(True)
 
     @pyqtProperty(str)
     def macros(self):
@@ -197,13 +198,17 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         # Check for None and ""
         if not self.displayFilename:
             return
+
+        # Save the target status for testing purposes
+        self._target = target
         macros = None
+
         if self._macro_string is not None:
             macros = json.loads(str(self._macro_string))
 
-        if target == self.EXISTING_WINDOW:
+        if self._target == self.EXISTING_WINDOW:
             self.window().go(self.displayFilename, macros=macros)
-        if target == self.NEW_WINDOW:
+        elif self._target == self.NEW_WINDOW:
             self.window().new_window(self.displayFilename, macros=macros)
 
     def context_menu(self):
