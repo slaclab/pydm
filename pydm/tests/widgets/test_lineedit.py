@@ -374,6 +374,7 @@ def find_action_from_menu(menu, action_name):
     -------
     True if the action name is found in the menu; False otherwise
     """
+    status = False
     for action in menu.actions():
         if action.menu():
             # The action will always contain a menu, so the status will be created

@@ -117,7 +117,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self._normalize_data = False
         self._auto_downsample = True
 
-        # Hide some itens of the widget.
+        # Hide some items of the widget.
         self.ui.histogram.hide()
         self.getImageItem().sigImageChanged.disconnect(
             self.ui.histogram.imageChanged)
@@ -272,7 +272,9 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         new_cmap : PyDMColorMap
         """
         self._colormap = new_cmap
-        self._cm_colors = self.color_maps[new_cmap]
+        if new_cmap:
+            self._cm_colors = self.color_maps[new_cmap]
+
         self.setColorMap()
         for action in self.cm_group.actions():
             if self.cmap_for_action[action] == self._colormap:
@@ -496,6 +498,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
 
     def keyPressEvent(self, ev):
         """Handle keypress events."""
+        logger.debug("Key event '{0}' received.".format(ev))
         return
 
     @pyqtProperty(str)
