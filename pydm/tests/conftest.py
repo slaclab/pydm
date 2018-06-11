@@ -102,6 +102,8 @@ class ConnectionSignals(QObject):
     prec_signal = pyqtSignal(int)
     upper_ctrl_limit_signal = pyqtSignal([float])
     lower_ctrl_limit_signal = pyqtSignal([float])
+
+    # Used for testing of the Waveformtable
     waveform_signal = pyqtSignal([int, int])
 
     def __init__(self):
