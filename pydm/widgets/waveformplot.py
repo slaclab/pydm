@@ -237,7 +237,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         -------
         tuple
         """
-        if self.y_waveform is None:
+        if self.y_waveform is None or self.y_waveform.shape[0] == 0:
             raise NoDataError("Curve has no Y data, cannot determine limits.")
         if self.x_waveform is None:
             yspan = (float(np.amax(self.y_waveform)) -

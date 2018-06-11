@@ -43,7 +43,8 @@ def main():
     parser.add_argument(
         '--log_level',
         help='Configure level of log display',
-        default=logging.INFO
+        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
+        default='INFO'
         )
     parser.add_argument(
         '-m', '--macro',
@@ -58,6 +59,7 @@ def main():
              ' (which is a QApplication subclass).',
         nargs=argparse.REMAINDER
         )
+
     pydm_args = parser.parse_args()
     macros = None
     if pydm_args.macro is not None:
@@ -66,10 +68,14 @@ def main():
         except ValueError:
             raise ValueError("Could not parse macro argument as JSON.")
 
-    logging.basicConfig(
-        level=pydm_args.log_level,
-        format='[%(asctime)s] - %(message)s'
-        )
+    logger = logging.getLogger('')
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter('[%(asctime)s] [%(levelname)-8s] - %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    if pydm_args.log_level:
+        logger.setLevel(pydm_args.log_level)
+        handler.setLevel(pydm_args.log_level)
 
     app = PyDMApplication(
         ui_file=pydm_args.displayfile,

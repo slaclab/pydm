@@ -7,7 +7,7 @@ class TabWidgetPlugin(PyDMDesignerPlugin):
     TabClass = PyDMTabWidget
     def __init__(self):
         super(TabWidgetPlugin, self).__init__(self.TabClass,
-                                             group=WidgetCategory.DISPLAY)
+                                             group=WidgetCategory.CONTAINER)
 
     def domXml(self):
         """
@@ -32,4 +32,4 @@ class TabWidgetPlugin(PyDMDesignerPlugin):
                 " </attribute>\n"
                 "</widget>\n"
                 "</widget>"
-               ).format(self.name(), self.toolTip(), self.whatsThis()) 
+               ).format(self.name(), self.toolTip(), self.whatsThis())

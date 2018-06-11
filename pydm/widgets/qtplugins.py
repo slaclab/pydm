@@ -14,6 +14,7 @@ from .frame import PyDMFrame
 from .image import PyDMImageView
 from .label import PyDMLabel
 from .line_edit import PyDMLineEdit
+from .logdisplay import PyDMLogDisplay
 from .pushbutton import PyDMPushButton
 from .related_display_button import PyDMRelatedDisplayButton
 from .shell_command import PyDMShellCommand
@@ -60,13 +61,13 @@ PyDMDrawingRectanglePlugin = qtplugin_factory(PyDMDrawingRectangle, group=Widget
 PyDMDrawingTrianglePlugin = qtplugin_factory(PyDMDrawingTriangle, group=WidgetCategory.DRAWING)
 
 # Embedded Display plugin
-PyDMEmbeddedDisplayPlugin = qtplugin_factory(PyDMEmbeddedDisplay, group=WidgetCategory.DISPLAY)
+PyDMEmbeddedDisplayPlugin = qtplugin_factory(PyDMEmbeddedDisplay, group=WidgetCategory.CONTAINER)
 
 # Enum Combobox plugin
 PyDMEnumComboBoxPlugin = qtplugin_factory(PyDMEnumComboBox, group=WidgetCategory.INPUT)
 
 # Frame plugin
-PyDMFramePlugin = qtplugin_factory(PyDMFrame, group=WidgetCategory.DISPLAY, is_container=True)
+PyDMFramePlugin = qtplugin_factory(PyDMFrame, group=WidgetCategory.CONTAINER, is_container=True)
 
 # Image plugin
 PyDMImageViewPlugin = qtplugin_factory(PyDMImageView, group=WidgetCategory.DISPLAY)
@@ -76,6 +77,9 @@ PyDMLabelPlugin = qtplugin_factory(PyDMLabel, group=WidgetCategory.DISPLAY)
 
 # Line Edit plugin
 PyDMLineEditPlugin = qtplugin_factory(PyDMLineEdit, group=WidgetCategory.INPUT)
+
+# Log Viewer
+PyDMLogDisplayPlugin = qtplugin_factory(PyDMLogDisplay, group=WidgetCategory.DISPLAY)
 
 # Push Button plugin
 PyDMPushButtonPlugin = qtplugin_factory(PyDMPushButton, group=WidgetCategory.INPUT)
@@ -101,7 +105,7 @@ PyDMScaleIndicatorPlugin = qtplugin_factory(PyDMScaleIndicator, group=WidgetCate
 PyDMSymbolPlugin = qtplugin_factory(PyDMSymbol, group=WidgetCategory.DISPLAY)
 
 # Waveform Table plugin
-PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable, group=WidgetCategory.DISPLAY)
+PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable, group=WidgetCategory.INPUT)
 
 # Tab Widget plugin
 PyDMTabWidgetPlugin = TabWidgetPlugin()

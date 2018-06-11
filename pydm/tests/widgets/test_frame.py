@@ -163,7 +163,7 @@ def test_alarm_severity_change(qtbot, signals, channel, alarm_sensitive_content,
     ("", False, False, False),
     (None, False, False, False),
 ])
-def test_check_enable_state(qtbot, monkeypatch, channel_address, connected, write_access, is_app_read_only):
+def test_check_enable_state(qtbot, signals, monkeypatch, channel_address, connected, write_access, is_app_read_only):
     """
     Test the tooltip generated depending on the channel address validation, connection, write access, and whether the
     app is read-only.
@@ -179,6 +179,8 @@ def test_check_enable_state(qtbot, monkeypatch, channel_address, connected, writ
     ----------
     qtbot : fixture
         Window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
     monkeypatch : fixture
         To override the default behavior of PyDMApplication.is_read_only()
     channel_address : str
@@ -193,12 +195,16 @@ def test_check_enable_state(qtbot, monkeypatch, channel_address, connected, writ
     pydm_frame = PyDMFrame()
     qtbot.addWidget(pydm_frame)
 
+    pydm_frame.channel = channel_address
+
     if not pydm_frame._disable_on_disconnect:
         assert pydm_frame.isEnabled()
     else:
-        pydm_frame.channel = channel_address
-        pydm_frame._connected = connected
-        pydm_frame._write_access = write_access
+        signals.write_access_signal[bool].connect(pydm_frame.writeAccessChanged)
+        signals.write_access_signal[bool].emit(write_access)
+
+        signals.connection_state_signal[bool].connect(pydm_frame.connectionStateChanged)
+        signals.connection_state_signal[bool].emit(connected)
 
         monkeypatch.setattr(PyDMApplication, 'is_read_only', lambda *args: is_app_read_only)
 

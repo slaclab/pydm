@@ -13,6 +13,7 @@ from pydm.widgets.display_format import  DisplayFormat, parse_value_for_display
 
 @pytest.mark.parametrize("value, precision, display_format, widget, expected", [
     (np.array([65, 66], dtype=np.uint8), 1, DisplayFormat.String, QWidget, "AB"),
+    (np.array([65, 66, 0, 199], dtype=np.uint8), 1, DisplayFormat.String, QWidget, "AB"),
     ("abc", 0, DisplayFormat.Default, QWidget, "abc"),
     (123, 0, DisplayFormat.Default, QWidget, 123),
     (123.45, 0, DisplayFormat.Default, QWidget, 123.45),

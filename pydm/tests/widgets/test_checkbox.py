@@ -100,8 +100,6 @@ def test_send_value(qtbot, signals, is_checked):
     qtbot.addWidget(pydm_checkbox)
 
     pydm_checkbox.send_value_signal[int].connect(signals.receiveValue)
-    pydm_checkbox.send_value_signal[int].connect(pydm_checkbox.channelValueChanged)
-
     pydm_checkbox.send_value(is_checked)
 
     assert signals.value == 1 if is_checked else signals.value == 0

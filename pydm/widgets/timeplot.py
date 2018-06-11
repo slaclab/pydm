@@ -164,6 +164,7 @@ class PyDMTimePlot(BasePlot):
                                       color=color,
                                       **plot_opts)
         new_curve.setUpdatesAsynchronously(self.updatesAsynchronously)
+        new_curve.setBufferSize(self._bufferSize)
         self.update_timer.timeout.connect(new_curve.asyncUpdate)
         self.addCurve(new_curve, curve_color=color)
         self.redraw_timer.start()

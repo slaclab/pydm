@@ -78,7 +78,7 @@ class PyDMApplication(QApplication):
         create a PyDMMainWindow in the initialization (Default is True).
     """
     # Instantiate our plugins.
-    plugins = {plugin.protocol: plugin() for plugin in data_plugins.plugin_modules}
+    plugins = data_plugins.plugin_modules
     tools = dict()
 
     # HACK. To be replaced with some stylesheet stuff eventually.
@@ -531,6 +531,9 @@ class PyDMApplication(QApplication):
     # Not sure if showing the tooltip should be the job of the app,
     # may want to revisit this.
     def show_address_tooltip(self, obj, event):
+        if not len(obj.channels()):
+            logger.warning("Object %r has no PyDM Channels", obj)
+            return
         addr = obj.channels()[0].address
         QToolTip.showText(event.globalPos(), addr)
         # If the address has a protocol, and it is the default protocol, strip it out before putting it on the clipboard.

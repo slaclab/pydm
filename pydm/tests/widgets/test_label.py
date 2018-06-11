@@ -8,7 +8,7 @@ import logging
 from ...utilities import is_pydm_app
 from ...widgets.label import PyDMLabel
 from ...widgets.base import PyDMWidget
-from pydm.widgets.display_format import parse_value_for_display, DisplayFormat
+from ...widgets.display_format import parse_value_for_display, DisplayFormat
 
 
 # --------------------
@@ -104,11 +104,11 @@ def test_value_changed(qtbot, signals, value, display_format):
     assert pydm_label.displayFormat == display_format
 
 
-@pytest.mark.parametrize("value, selected_index, expected", [
+@pytest.mark.parametrize("values, selected_index, expected", [
     (("ON", "OFF"), 0, "ON"),
     (("ON", "OFF"), 1, "OFF"),
 ])
-def test_enum_strings_changed(qtbot, signals, value, selected_index, expected):
+def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     """
     Test the widget's handling of enum strings, which are choices presented to the user, and the widget's ability to
     update the selected enum string when the user provides a choice index.
@@ -122,7 +122,7 @@ def test_enum_strings_changed(qtbot, signals, value, selected_index, expected):
         pytest-qt window for widget testing
     signals : fixture
         The signals fixture, which provides access signals to be bound to the appropriate slots
-    value : tuple
+    values : tuple
         A set of enum strings for the user to choose from
     selected_index : int
         The index from the enum string tuple chosen by the user
@@ -132,12 +132,12 @@ def test_enum_strings_changed(qtbot, signals, value, selected_index, expected):
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
 
+    signals.enum_strings_signal.connect(pydm_label.enumStringsChanged)
+    signals.enum_strings_signal.emit(values)
+    pydm_label.displayFormat = DisplayFormat.String
+
     signals.new_value_signal[type(selected_index)].connect(pydm_label.channelValueChanged)
     signals.new_value_signal[type(selected_index)].emit(selected_index)
-
-    signals.enum_strings_signal.connect(pydm_label.enumStringsChanged)
-    signals.enum_strings_signal.emit(value)
-    pydm_label.displayFormat = DisplayFormat.String
 
     assert pydm_label.value == selected_index
     assert pydm_label.text() == expected

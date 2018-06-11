@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 from ..PyQt.QtGui import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
 from ..PyQt.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty
 from .base import PyDMWritableWidget, compose_stylesheet
@@ -103,6 +106,10 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         new_orientation : int
             Qt.Horizontal or Qt.Vertical
         """
+        if new_orientation not in (Qt.Horizontal, Qt.Vertical):
+            logger.error("Invalid orientation '{0}'. The existing layout will not change.".format(new_orientation))
+            return
+
         layout = None
         if new_orientation == Qt.Horizontal:
             layout = QVBoxLayout()
@@ -128,6 +135,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
             layout.addLayout(label_layout)
             self._slider.setOrientation(new_orientation)
             layout.addWidget(self._slider)
+
         if self.layout() is not None:
             # Trick to remove the existing layout by re-parenting it in an empty widget.
             QWidget().setLayout(self.layout())
@@ -137,18 +145,15 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         """
         Update the limits and value labels with the correct values.
         """
-        if self.minimum is None:
-            self.low_lim_label.setText("")
-        else:
-            self.low_lim_label.setText(self.format_string.format(self.minimum))
-        if self.maximum is None:
-            self.high_lim_label.setText("")
-        else:
-            self.high_lim_label.setText(self.format_string.format(self.maximum))
-        if self.value is None:
-            self.value_label.setText("")
-        else:
-            self.value_label.setText(self.format_string.format(self.value))
+        def set_label(value, label_widget):
+            if value is None:
+                label_widget.setText("")
+            else:
+                label_widget.setText(self.format_string.format(value))
+
+        set_label(self.minimum, self.low_lim_label)
+        set_label(self.maximum, self.high_lim_label)
+        set_label(self.value, self.value_label)
 
     def reset_slider_limits(self):
         """
@@ -240,7 +245,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         """
         PyDMWritableWidget.alarm_severity_changed(self, new_alarm_severity)
         if hasattr(self, "value_label"):
-            if self._channels is not None:
+            if self._channel:
                 style = compose_stylesheet(style=self._style, obj=self.value_label)
                 self.value_label.setStyleSheet(style)
                 self.update()
@@ -457,7 +462,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         ----------
         new_min : float
         """
-        self._user_minimum = float(new_min)
+        self._user_minimum = float(new_min) if new_min is not None else None
         if self.userDefinedLimits:
             self.reset_slider_limits()
 
@@ -481,7 +486,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         ----------
         new_max : float
         """
-        self._user_maximum = float(new_max)
+        self._user_maximum = float(new_max) if new_max is not None else None
         if self.userDefinedLimits:
             self.reset_slider_limits()
 

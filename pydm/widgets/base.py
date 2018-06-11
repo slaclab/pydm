@@ -699,6 +699,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         if self._channel != value:
             self._channel = str(value)
+            self._channels = None
 
     def update_format_string(self):
         """

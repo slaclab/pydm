@@ -97,15 +97,16 @@ class ConnectionSignals(QObject):
     new_severity_signal = pyqtSignal(int)
     write_access_signal = pyqtSignal(bool)
     enum_strings_signal = pyqtSignal(tuple)
+    internal_slider_moved = pyqtSignal(int)
+    internal_slider_clicked = pyqtSignal()
     send_value_signal = pyqtSignal([int], [float], [str], [bool], [np.ndarray])
     unit_signal = pyqtSignal(str)
     prec_signal = pyqtSignal(int)
     upper_ctrl_limit_signal = pyqtSignal([float])
     lower_ctrl_limit_signal = pyqtSignal([float])
-
     # Used for testing of the Waveformtable
     waveform_signal = pyqtSignal([int, int])
-
+    
     def __init__(self):
         super(ConnectionSignals, self).__init__()
         self._value = None
