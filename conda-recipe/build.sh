@@ -1,5 +1,5 @@
 # Install the package
-$PYTHON setup.py install
+$PYTHON setup.py install --single-version-externally-managed --record=record.txt
 
 # Create auxiliary dirs
 mkdir -p $PREFIX/etc/conda/activate.d
