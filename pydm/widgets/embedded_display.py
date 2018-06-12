@@ -3,8 +3,8 @@ from ..PyQt.QtCore import Qt, QSize
 from ..PyQt.QtCore import pyqtProperty
 import json
 import os.path
-from ..application import PyDMApplication
 from .base import PyDMPrimitiveWidget
+from ..utilities import is_pydm_app
 
 class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     """
@@ -31,7 +31,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         self.layout.addWidget(self.err_label)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.err_label.hide()
-        if not isinstance(self.app, PyDMApplication):
+        if not is_pydm_app():
             self.setFrameShape(QFrame.Box)
         else:
             self.setFrameShape(QFrame.NoFrame)
@@ -102,7 +102,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             self._filename = filename
             # If we aren't in a PyDMApplication (usually that means we are in Qt Designer),
             # don't try to load the file, just show text with the filename.
-            if not isinstance(self.app, PyDMApplication):
+            if not is_pydm_app():
                 self.err_label.setText(self._filename)
                 self.err_label.show()
                 return
@@ -137,9 +137,11 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         display : QWidget
         """
         if os.path.isabs(self.filename):
-            return self.app.open_file(self.filename, macros=self.parsed_macros())
+            return self.app.open_file(self.filename, macros=self.parsed_macros(),
+                                      establish_connection=False)
         else:
-            return self.app.open_relative(self.filename, self, macros=self.parsed_macros())
+            return self.app.open_relative(self.filename, self, macros=self.parsed_macros(),
+                                          establish_connection=False)
 
     @property
     def embedded_widget(self):
@@ -161,6 +163,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         ----------
         new_widget : QWidget
         """
+        should_reconnect = False
         if new_widget is self._embedded_widget:
             return
         if self._embedded_widget is not None:
@@ -168,12 +171,14 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             self.app.close_widget_connections(self._embedded_widget)
             self._embedded_widget.deleteLater()
             self._embedded_widget = None
+            should_reconnect = True
         self._embedded_widget = new_widget
         self._embedded_widget.setParent(self)
         self.layout.addWidget(self._embedded_widget)
         self.err_label.hide()
         self._embedded_widget.show()
-        self.app.establish_widget_connections(self._embedded_widget)
+        if should_reconnect:
+            self.app.establish_widget_connections(self._embedded_widget)
         self._is_connected = True
 
     def connect(self):

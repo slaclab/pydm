@@ -147,10 +147,6 @@ class PyDMApplication(QApplication):
         """
         Execute the QApplication.
         """
-        # Connect to top-level widgets that were not loaded from file
-        # These are usually testing/debug widgets
-        if not self.had_file:
-            self.make_connections()
         return super(PyDMApplication, self).exec_()
 
     def is_read_only(self):
@@ -166,14 +162,6 @@ class PyDMApplication(QApplication):
             total_time = sum(self.perf.cpu_times())
             usage = [total_percent * ((t.system_time + t.user_time) / total_time) for t in self.perf.threads()]
         print("Total: {tot}, Per Thread: {percpu}".format(tot=total_percent, percpu=usage))
-
-    def make_connections(self):
-        """
-        Establish initial connections to all PyDM channels found while traversing
-        the widget tree.
-        """
-        for widget in self.topLevelWidgets():
-            self.establish_widget_connections(widget)
 
     def new_pydm_process(self, ui_file, macros=None, command_line_args=None):
         """
@@ -383,7 +371,8 @@ class PyDMApplication(QApplication):
             kwargs['macros'] = macros
         return cls(**kwargs)
 
-    def open_file(self, ui_file, macros=None, command_line_args=None):
+    def open_file(self, ui_file, macros=None, command_line_args=None,
+                  establish_connection=True):
         """
         Open a .ui or .py file, and return a widget from the loaded file.
         This method is the entry point for all opening of new displays,
@@ -402,6 +391,9 @@ class PyDMApplication(QApplication):
             Typically, this argument is used by related display buttons
             to pass in extra arguments.  It is probably rare that code you
             write needs to use this argument.
+        establish_connection : bool, optional
+            Whether or not we should call ``establish_widget_connections for this
+            new widget. Default is True.
 
         Returns
         -------
@@ -427,7 +419,8 @@ class PyDMApplication(QApplication):
             self.directory_stack.pop()
             self.macro_stack.pop()
             raise ValueError("Invalid file type: {}".format(extension))
-        self.establish_widget_connections(widget)
+        if establish_connection:
+            self.establish_widget_connections(widget)
         self.directory_stack.pop()
         self.macro_stack.pop()
         return widget
@@ -459,13 +452,16 @@ class PyDMApplication(QApplication):
         full_path = os.path.join(dirname, str(ui_file))
         return full_path
 
-    def open_relative(self, ui_file, widget, macros=None, command_line_args=[]):
+    def open_relative(self, ui_file, widget, macros=None, command_line_args=[],
+                      establish_connection=True):
         """
         open_relative opens a ui file with a relative path.  This is
         really only used by embedded displays.
         """
         full_path = self.get_path(ui_file)
-        return self.open_file(full_path, macros=macros, command_line_args=command_line_args)
+        return self.open_file(full_path, macros=macros,
+                              command_line_args=command_line_args,
+                              establish_connection=establish_connection)
 
     def plugin_for_channel(self, channel):
         """
