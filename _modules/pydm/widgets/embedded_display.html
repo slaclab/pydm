@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.embedded_display &mdash; PyDM v1.2.0+2.g61028ba documentation</title>
+  <title>pydm.widgets.embedded_display &mdash; PyDM v1.2.0+4.g2e33844 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.2.0+2.g61028ba
+                v1.2.0+4.g2e33844
               </div>
             
           
@@ -175,8 +175,8 @@
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtProperty</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
-<span class="kn">from</span> <span class="nn">..application</span> <span class="k">import</span> <span class="n">PyDMApplication</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMPrimitiveWidget</span>
+<span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">is_pydm_app</span>
 
 <div class="viewcode-block" id="PyDMEmbeddedDisplay"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay">[docs]</a><span class="k">class</span> <span class="nc">PyDMEmbeddedDisplay</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -203,7 +203,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">,</span> <span class="n">PyDMApplication</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_pydm_app</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">Box</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">NoFrame</span><span class="p">)</span>
@@ -274,7 +274,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">filename</span>
             <span class="c1"># If we aren&#39;t in a PyDMApplication (usually that means we are in Qt Designer),</span>
             <span class="c1"># don&#39;t try to load the file, just show text with the filename.</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">,</span> <span class="n">PyDMApplication</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_pydm_app</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
                 <span class="k">return</span>
@@ -309,9 +309,11 @@
 <span class="sd">        display : QWidget</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parsed_macros</span><span class="p">())</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parsed_macros</span><span class="p">(),</span>
+                                      <span class="n">establish_connection</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">open_relative</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parsed_macros</span><span class="p">())</span></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">open_relative</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parsed_macros</span><span class="p">(),</span>
+                                          <span class="n">establish_connection</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">embedded_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -333,6 +335,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        new_widget : QWidget</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">should_reconnect</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">new_widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -340,12 +343,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">close_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">should_reconnect</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span> <span class="o">=</span> <span class="n">new_widget</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">establish_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">should_reconnect</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">establish_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_connected</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="PyDMEmbeddedDisplay.connect"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -443,7 +448,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.2.0+2.g61028ba',
+            VERSION:'v1.2.0+4.g2e33844',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
