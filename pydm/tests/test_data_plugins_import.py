@@ -1,17 +1,23 @@
 import os
+import pytest
 
+import pydm.data_plugins
 from pydm.data_plugins import (add_plugin, PyDMPlugin, plugin_modules,
-                               load_plugins_from_path)
+                               load_plugins_from_path, plugin_for_address)
 
-
-def test_data_plugin_add(qapp):
+@pytest.fixture(scope='module')
+def test_plugin():
     # Create test PyDMPlugin with mock protocol
     test_plug = PyDMPlugin
     test_plug.protocol = 'tst'
-    # Check that adding this after import will be reflected in PyDMApp
     add_plugin(test_plug)
-    assert isinstance(plugin_modules['tst'], test_plug)
-    assert isinstance(qapp.plugins['tst'], test_plug)
+    return test_plug
+
+
+def test_data_plugin_add(qapp, test_plugin):
+    # Check that adding this after import will be reflected in PyDMApp
+    assert isinstance(plugin_modules['tst'], test_plugin)
+    assert isinstance(qapp.plugins['tst'], test_plugin)
 
 
 def test_plugin_directory_loading(qapp):
