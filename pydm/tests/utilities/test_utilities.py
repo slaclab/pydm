@@ -1,6 +1,8 @@
+import os
 import platform
+import tempfile
 
-from ...utilities import is_pydm_app, path_info, which
+from ...utilities import is_pydm_app, path_info, which, find_display_in_path
 from ...PyQt import QtGui
 
 
@@ -23,6 +25,22 @@ def test_path_info():
     assert (file_name == 'ls')
     assert (args == [])
 
+
+def test_find_display_in_path():
+    temp, file_path = tempfile.mkstemp(suffix=".ui", prefix="display_")
+    print("temp.name: ", file_path)
+    direc, fname, _ = path_info(file_path)
+
+    # Try to find the file as is... is should not find it.
+    assert(find_display_in_path(fname) is None)
+
+    # Try to find the file passing the path
+    assert(find_display_in_path(fname, mode=None, path=direc) == file_path)
+
+    # Try to find the file passing the path but relative name
+    rel_name = ".{}{}".format(os.sep, fname)
+    expected = "{}{}{}".format(direc, os.sep, rel_name)
+    assert (find_display_in_path(rel_name, mode=None, path=direc) == expected)
 
 def test_which():
     if platform.system() == 'Windows':
