@@ -67,7 +67,7 @@ def find_display_in_path(file, mode=None, path=None):
     Look for a display file in a given path.
     This is basically a wrapper on top of the ``which``
     command defined below so we don't need to keep redefining
-    the PYDM_DISPLAYS_PATH variable.
+    the ``PYDM_DISPLAYS_PATH`` variable.
 
     Parameters
     ----------
@@ -85,7 +85,7 @@ def find_display_in_path(file, mode=None, path=None):
         Returns the full path to the file or None in case it was not found.
     """
     if path is None:
-        path = os.getenv("PYDM_DISPLAYS_PATH")
+        path = os.getenv("PYDM_DISPLAYS_PATH", None)
     if mode is None:
         mode = os.F_OK | os.R_OK
 
