@@ -33,6 +33,19 @@ def test_plugin_directory_loading(qapp):
     os.remove(os.path.join(cur_dir, 'plugin_foo.py'))
 
 
+def test_plugin_for_address(test_plugin):
+    # Get by protocol
+    assert isinstance(plugin_for_address('tst://tst:this'),
+                      test_plugin)
+    # Unspecified protocol
+    with pytest.raises(ValueError):
+        plugin_for_address('tst:this')
+    # Default protocol
+    pydm.data_plugins.DEFAULT_PROTOCOL = 'tst'
+    assert isinstance(plugin_for_address('tst:this'),
+                      test_plugin)
+
+
 fake_file = """\
 from pydm.data_plugins import PyDMPlugin
 
