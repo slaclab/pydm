@@ -346,8 +346,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         new_width : int
             The new image width
         """
-        if new_width is None:
-            return
         self._image_width = int(new_width)
 
     def process_image(self, image):

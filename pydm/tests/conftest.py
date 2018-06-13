@@ -92,7 +92,7 @@ class ConnectionSignals(QObject):
     """
     An assortment of signals, to which a unit test can choose from and bind an appropriate slot
     """
-    new_value_signal = pyqtSignal([float], [int], [str], [np.ndarray])
+    new_value_signal = pyqtSignal([int], [float], [str], [np.ndarray])
     connection_state_signal = pyqtSignal(bool)
     new_severity_signal = pyqtSignal(int)
     write_access_signal = pyqtSignal(bool)

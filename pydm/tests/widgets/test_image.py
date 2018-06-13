@@ -4,25 +4,27 @@
 
 import pytest
 
-from ...PyQt.QtGui import QActionGroup, QKeyEvent
-from ...PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Q_ENUMS, QThread, QEvent, Qt
-from pyqtgraph import ImageView
+from ...PyQt.QtGui import QKeyEvent
+from ...PyQt.QtCore import pyqtProperty, QTimer, QThread, QEvent, Qt
 from pyqtgraph import ColorMap
-from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
 import numpy as np
-import threading
 import logging
 logger = logging.getLogger(__name__)
 
-from ...widgets.image import ReadingOrder, ImageUpdateThread, PyDMImageView
+from ...widgets.image import ReadingOrder, PyDMImageView
 from ...widgets.channel import PyDMChannel
-from ...widgets.colormaps import cmaps, cmap_names, PyDMColorMap
-from ...widgets.base import PyDMWidget
-import pyqtgraph
+from ...widgets.colormaps import cmaps, PyDMColorMap
 from .test_lineedit import find_action_from_menu
 
 
 def test_readingorder_construct():
+    """
+    Test the construction of ReadingOrder.
+
+    Expectations:
+    Default values are assigned for the reading order types.
+    """
+
     reading_order = ReadingOrder()
 
     assert reading_order.Fortranlike == 0
@@ -30,6 +32,17 @@ def test_readingorder_construct():
 
 
 def test_pydmimageview_construct(qtbot):
+    """
+    Test the construction of the Image View widget.
+
+    Expectations:
+    Defaut values and context menu actions are as expected.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
     pydm_image_view = PyDMImageView(image_channel="image_channel", width_channel="width_channel")
     qtbot.addWidget(pydm_image_view)
 
@@ -62,14 +75,17 @@ def test_pydmimageview_construct(qtbot):
 
 def test_widget_ctx_menu(qtbot):
     """
-    Also test _changeColorMap()
+    Test the widget's context menu, and also test _changeColorMap().
+
+    Expectations:
+    1. The context menu contains all the actions from the color map (cmap).
+    2. For each color action, execute _changeColorMap (as the triggered signal of the context menu would to this
+       method), and confirm that the color map has been updated according to this action execution.
+
     Parameters
     ----------
-    qtbot
-
-    Returns
-    -------
-
+    qtbot : fixture
+        Window for widget testing
     """
     pydm_image_view = PyDMImageView()
     qtbot.addWidget(pydm_image_view)
@@ -82,21 +98,23 @@ def test_widget_ctx_menu(qtbot):
 
 
 @pytest.mark.parametrize("new_cm_min, new_cm_max", [
-    (5, 5),
-    (5, 7),
-    (5, 20),
+    (5.0, 5.4),
+    (5.3, 7.1),
+    (5.0, 20.5),
     (9, 15),
     (100, 10)
 ])
 def test_set_color_limits(qtbot, new_cm_min, new_cm_max):
     """
-    Also testing colorMapMin and colorMapMax properties and setters.
+    Test the widget's properties and setters for the minimum and maximum color values. This also means testing the
+    colorMapMin and colorMapMax properties and setters implicitly.
 
     Parameters
     ----------
-    qtbot
-    new_cm_min
-    new_cm_max
+    qtbot : fixture
+        Window for widget testing
+    new_cm_min : int, float
+    new_cm_max : int, float
 
     Returns
     -------
@@ -122,8 +140,8 @@ def test_set_color_limits(qtbot, new_cm_min, new_cm_max):
 
     if new_cm_min >= new_cm_max:
         # Nothing will be changed
-        pydm_image_view.colorMapMin == 0
-        pydm_image_view.colorMapMax == 10
+        assert pydm_image_view.colorMapMin == 5
+        assert pydm_image_view.colorMapMax == 5
     else:
         assert pydm_image_view.colorMapMin == new_cm_min
         assert pydm_image_view.colorMapMax == new_cm_max
@@ -137,17 +155,20 @@ def test_set_color_limits(qtbot, new_cm_min, new_cm_max):
 ])
 def test_colormap_property_and_setter(qtbot, new_cmap, cm_colors):
     """
-    Also testing setColorMap()
+    Test the image's colorMap property and setter, and Also testing setColorMap().
+
+    Expectations:
+    Test assessing and updating the color map while also making sure the currently selected color map is checked in the
+    context menu.
 
     Parameters
     ----------
-    qtbot
-    new_cmap
-    cm_colors
-
-    Returns
-    -------
-
+    qtbot : fixture
+        Window for widget testing
+    new_cmap : dict
+        The new color map to update
+    cm_colors : PyDMColorMap
+        The selected PyDMColor Map out of the color map collection.
     """
     pydm_image_view = PyDMImageView()
     qtbot.addWidget(pydm_image_view)
@@ -178,6 +199,26 @@ def test_colormap_property_and_setter(qtbot, new_cmap, cm_colors):
     False
 ])
 def test_image_connection_state_changed(qtbot, signals, monkeypatch, caplog, connected):
+    """
+    Test the widget's handling of the Image Channel connection state change.
+
+    Expectations:
+    1. If the connection is established, the redraw timer will start
+    2. If the connection is not established, the redraw timer will stop
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    signals : fixture
+        To emit the simulated connection state to the to widget's connection state signal
+    monkeypatch : fixture
+        To simulate the start or stop of the redraw timer by writing into a log
+    caplog : fixture
+        To capture the log events written by the simulated redraw timer
+    connected : bool
+        True if the Image Channel connection is established; False otherwise
+    """
     pydm_image_view = PyDMImageView()
     qtbot.addWidget(pydm_image_view)
 
@@ -205,6 +246,22 @@ def test_image_connection_state_changed(qtbot, signals, monkeypatch, caplog, con
     np.zeros(0)
 ])
 def test_image_value_changed(qtbot, signals, new_image):
+    """
+    Test the widget's handling of an image data update.
+
+    Expectations:
+    1. The widget will obtain the new image data as an array if there is data, or None if there's no data
+    2. If there is new image data, the "needs_redraw" flag will be set to True; False otherwise.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    signals : fixture
+        To emit the simulated connection to the to widget's new image value signal
+    new_image : np.ndarray
+        The array containing the new image data
+    """
     pydm_image_view = PyDMImageView()
     qtbot.addWidget(pydm_image_view)
 
@@ -219,27 +276,44 @@ def test_image_value_changed(qtbot, signals, new_image):
         assert pydm_image_view.needs_redraw
 
 
-@pytest.mark.parametrize("new_width", [
-    100,
-    None,
-])
-def test_image_width_change(qtbot, signals, new_width):
+def test_image_width_change(qtbot, signals):
+    """
+    Test the widget's property and setter of the image width.
+
+    Expectations:
+    The property will return the up-to-date value, and will set the new value correctly.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    signals : fixture
+        To emit the connection state to the to widget's new image width signal
+    """
     pydm_image_view = PyDMImageView()
     qtbot.addWidget(pydm_image_view)
 
     pydm_image_view._image_width = 10
 
     value_signal = signals.new_value_signal
-    value_signal[int].connect(pydm_image_view.image_width_changed)
-    value_signal[int].emit(new_width)
+    value_signal.connect(pydm_image_view.image_width_changed)
+    value_signal.emit(100)
 
-    if new_width is None:
-        assert pydm_image_view._image_width == 0
-    else:
-        assert pydm_image_view._image_width == new_width
+    assert pydm_image_view._image_width == 100
 
 
 def test_process_image(qtbot):
+    """
+    To test the widget's process image entry.
+
+    Expectations:
+    The image data provided will be returned as-is as this is a boilerplate method.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
     pydm_image_view = PyDMImageView()
     qtbot.addWidget(pydm_image_view)
 
@@ -248,11 +322,26 @@ def test_process_image(qtbot):
 
 
 @pytest.mark.parametrize("image_width, width_channel", [
-    (1, "width_channel"),
-    (2, None),
-    (1, "")
+    ("1", "width_channel"),
+    ("2", None),
+    ("1", "")
 ])
 def test_image_width_and_width_channel(qtbot, image_width, width_channel):
+    """
+    Test the widget's image width and width channel property and setter.
+
+    Expectations:
+    The image width and width channel are strings, and they must be able to be accepted as int and str, respectively.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    image_width : str
+        The new image width
+    width_channel : str
+        The new width channel
+    """
     pydm_image_view = PyDMImageView()
     qtbot.addWidget(pydm_image_view)
 
@@ -274,6 +363,36 @@ def test_image_width_and_width_channel(qtbot, image_width, width_channel):
     (QThread(), 100, True, ReadingOrder.Fortranlike, True)
 ])
 def test_redraw_image(qtbot, signals, caplog, thread, image_width, needs_redraw, reading_order, normalize_data):
+    """
+    The the widget's image redraw, by spawning a new update thread.
+
+    Expectations:
+    1. If the needs_redraw flag is set, the RedrawImage thread will be launched, and the ImageView will be updated with
+       new image. This action is taken if there is no other RedrawImage thread. Otherwise, this means a misfire in the
+       refresh timer, and an error will be returned, stating that the image processing is still taking place longer
+       than the refresh rate.
+    2. If the needs_redraw flag is not set, the RedrawImage thread will not be run, and an error message will be
+       returned.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    signals : fixture
+        To emit the connection state to the to widget's new image width signal
+    caplog : fixture
+        To capture error or event messages returned by the image redraw thread
+    thread : ImageUpdateThread
+        The thread to start updating an image with the new image waveform, reading order, and dimensions
+    image_width : int
+        The new width of the the image
+    needs_redraw : bool
+        True if the image needs to be redrawn; False if not
+    reading_order : ReadingOrder
+        Whether the image data can be read in Fortran or C order
+    normalize_data : bool
+        True if the colors are relative to data maximum and minimum; False if not\
+    """
     pydm_image_view = PyDMImageView()
     qtbot.addWidget(pydm_image_view)
 
@@ -299,7 +418,8 @@ def test_redraw_image(qtbot, signals, caplog, thread, image_width, needs_redraw,
 
     if needs_redraw:
         if not thread:
-            assert "ImageView RedrawImage Thread Launched" in caplog.text
+            assert any(i in caplog.text for i in ("ImageView RedrawImage Thread Launched",
+                                                  "ImageView Update Display with new image"))
         else:
             assert "Image processing has taken longer than the refresh rate" in caplog.text
     else:
@@ -307,6 +427,18 @@ def test_redraw_image(qtbot, signals, caplog, thread, image_width, needs_redraw,
 
 
 def test_properties_and_setters(qtbot):
+    """
+    Test the widget's basic properties and setters.
+
+    Expectations:
+    The properties will provide their up-to-date values, and the setters will set up the new values appropriately.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+
+    """
     pydm_image_view = PyDMImageView()
     qtbot.addWidget(pydm_image_view)
 
@@ -338,6 +470,19 @@ def test_properties_and_setters(qtbot):
 
 
 def test_key_press_event(qtbot, caplog):
+    """
+    Test the widget's handling of the keyPress event.
+
+    Expectations:
+    The keyPress event will trigger a log record of the same event.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    caplog : fixture
+        To capture the keyPress log event
+    """
     pydm_image_view = PyDMImageView()
     qtbot.addWidget(pydm_image_view)
 
@@ -349,6 +494,17 @@ def test_key_press_event(qtbot, caplog):
 
 
 def test_channels(qtbot):
+    """
+    To test the channel list provided by the widgets.
+
+    Expectations:
+    If the widget does not have a list of channels, it will return a list of preset channels.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
     pydm_image_view = PyDMImageView()
     qtbot.addWidget(pydm_image_view)
 
@@ -388,7 +544,6 @@ def test_channels_for_tools(qtbot):
     assert all(x == y for x, y in zip(pydm_image_view.channels(), pydm_image_view.channels_for_tools()))
     for channel in pydm_image_view.channels():
         assert channel.address == pydm_image_view.imageChannel
-
 
 
 
