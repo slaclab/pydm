@@ -4,6 +4,7 @@ environment variable and subfolders that follows the *_plugin.py and have
 classes that inherits from the pydm.data_plugins.PyDMPlugin class.
 """
 import os
+import re
 import sys
 import inspect
 import logging
@@ -13,6 +14,36 @@ from .plugin import PyDMPlugin
 
 logger = logging.getLogger(__name__)
 plugin_modules = {}
+
+
+DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
+if DEFAULT_PROTOCOL is not None:
+    DEFAULT_PROTOCOL = DEFAULT_PROTOCOL.replace('://', '')
+    logger.info("Using default PyDM protocol %s",
+                DEFAULT_PROTOCOL)
+
+
+def plugin_for_address(address):
+    """
+    Find the correct PyDMPlugin for a channel
+    """
+    # Check for a configured protocol
+    match = re.match('.*://', address)
+    if match:
+        protocol = match.group(0)[:-3]
+    # Use default protocol
+    elif DEFAULT_PROTOCOL is not None:
+        logger.debug("Using default protocol %s for %s",
+                     DEFAULT_PROTOCOL, address)
+        # If no protocol was specified, and the default protocol
+        # environment variable is specified, try to use that instead.
+        protocol = DEFAULT_PROTOCOL
+    # Bad address
+    else:
+        raise ValueError("Channel {} did not specify a valid protocol"
+                         "".format(address))
+    # Provide proper protocol
+    return plugin_modules[str(protocol)]
 
 
 def add_plugin(plugin):
