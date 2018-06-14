@@ -66,7 +66,12 @@ def main():
         try:
             macros = json.loads(pydm_args.macro)
         except ValueError:
-            raise ValueError("Could not parse macro argument as JSON.")
+            if pydm_args.macro.find("=") < 0:
+                raise ValueError("Could not parse macro argument as JSON.")
+            macros = {}
+            for pair in pydm_args.macro.split(","):
+                key, value = pair.strip().split("=")
+                macros[key] = value
 
     logger = logging.getLogger('')
     handler = logging.StreamHandler()
