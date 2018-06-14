@@ -1,3 +1,42 @@
+import logging
+from weakref import finalize
+
+from pydm.data_plugins import plugin_for_address
+
+logger = logging.getLogger(__name__)
+
+
+class Registry(object):
+    """
+    Register of Channel objects
+    """
+    def add_connection(self, channel):
+        """
+        Connect a PyDMChannel to the proper PyDMPlugin
+        """
+        logger.debug("Connecting %r", channel.address)
+        # Connect to proper PyDMPlugin
+        try:
+            plugin = plugin_for_address(channel.address)
+            plugin.add_connection(channel)
+        except Exception:
+            logger.exception("Unable to make proper connection "
+                             "for %r", channel)
+        else:
+            finalize(channel, self.remove_connection, channel)
+
+    def remove_connection(self, channel):
+        """
+        Disconnect a PyDMChannel
+        """
+        try:
+            plugin = plugin_for_address(channel.address)
+            plugin.remove_connection(channel)
+        except Exception as exc:
+            logger.exception("Unable to remove connection "
+                             "for %r", channel)
+
+
 class PyDMChannel(object):
     """
     Object to hold signals and slots for a PyDM Widget interface to an
