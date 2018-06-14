@@ -29,6 +29,7 @@ def plugin_for_address(address):
     """
     # Check for a configured protocol
     match = re.match('.*://', address)
+    protocol = None
     if match:
         protocol = match.group(0)[:-3]
     # Use default protocol
@@ -38,12 +39,20 @@ def plugin_for_address(address):
         # If no protocol was specified, and the default protocol
         # environment variable is specified, try to use that instead.
         protocol = DEFAULT_PROTOCOL
-    # Bad address
-    else:
-        raise ValueError("Channel {} did not specify a valid protocol"
-                         "".format(address))
-    # Provide proper protocol
-    return plugin_modules[str(protocol)]
+    # Load proper plugin module
+    if protocol:
+        try:
+            # Provide proper protocol
+            return plugin_modules[str(protocol)]
+        except KeyError as exc:
+            logger.exception("Could not find protocol for %r", address)
+    # Catch all in case of improper plugin specification
+    logger.error("Channel {addr} did not specify a valid protocol ",
+                 "and no default protocol is defined. This channel "
+                 "will receive no data. To specify a default protocol, "
+                 "set the PYDM_DEFAULT_PROTOCOL environment variable."
+                 "".format(addr=address))
+    return None
 
 
 def add_plugin(plugin):

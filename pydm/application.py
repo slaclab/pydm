@@ -33,10 +33,6 @@ from . import data_plugins
 from .widgets.rules import RulesDispatcher
 
 logger = logging.getLogger(__name__)
-DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
-if DEFAULT_PROTOCOL is not None:
-    # Get rid of the "://" part if it exists
-    DEFAULT_PROTOCOL = DEFAULT_PROTOCOL.split("://")[0]
 
 
 class PyDMApplication(QApplication):
@@ -493,29 +489,11 @@ class PyDMApplication(QApplication):
         -------
         PyDMPlugin
         """
+        warnings.warn("'PyDMApplication.plugin_for_channel' is deprecated, "
+                      "use 'pydm.data_plugins.plugin_for_address' instead.")
         if channel.address is None or channel.address == "":
             return None
-        protocol = None
-        match = re.match('.*://', channel.address)
-        if match:
-            protocol = match.group(0)[:-3]
-        elif DEFAULT_PROTOCOL is not None:
-            # If no protocol was specified, and the default protocol environment variable is specified, try to use that instead.
-            protocol = DEFAULT_PROTOCOL
-        if protocol:
-            try:
-                plugin_to_use = self.plugins[str(protocol)]
-                return plugin_to_use
-            except KeyError:
-                print("Couldn't find plugin for protocol: {0}".format(match.group(0)[:-3]))
-        #If you get this far, we didn't successfuly figure out what plugin to use for this channel.
-        logger.warning(
-            "Channel {addr} did not specify a valid protocol and no default "
-            "protocol is defined.  This channel will receive no data. To "
-            "specify a default protocol, set the PYDM_DEFAULT_PROTOCOL "
-            "environment variable.".format(addr=channel.address)
-        )
-        return None
+        return data_plugins.plugin_for_address(channel.address)
 
     def add_connection(self, channel):
         """
