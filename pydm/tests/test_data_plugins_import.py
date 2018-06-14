@@ -2,17 +2,8 @@ import os
 import pytest
 
 import pydm.data_plugins
-from pydm.data_plugins import (add_plugin, PyDMPlugin, plugin_modules,
-                               load_plugins_from_path, plugin_for_address)
-
-@pytest.fixture(scope='module')
-def test_plugin():
-    # Create test PyDMPlugin with mock protocol
-    test_plug = PyDMPlugin
-    test_plug.protocol = 'tst'
-    add_plugin(test_plug)
-    return test_plug
-
+from pydm.data_plugins import (plugin_modules, load_plugins_from_path,
+                               plugin_for_address)
 
 def test_data_plugin_add(qapp, test_plugin):
     # Check that adding this after import will be reflected in PyDMApp
