@@ -6,35 +6,43 @@ from pydm.data_plugins import plugin_for_address
 logger = logging.getLogger(__name__)
 
 
-class Registry(object):
+class ChannelRegistry(object):
     """
     Register of Channel objects
     """
+    def __init__(self):
+        self.connections = list()
+
+    @property
+    def size(self):
+        """Number of connections in registry"""
+        return len(self.connections)
+
     def add_connection(self, channel):
         """
         Connect a PyDMChannel to the proper PyDMPlugin
         """
-        logger.debug("Connecting %r", channel.address)
-        # Connect to proper PyDMPlugin
-        try:
-            plugin = plugin_for_address(channel.address)
-            plugin.add_connection(channel)
-        except Exception:
-            logger.exception("Unable to make proper connection "
-                             "for %r", channel)
-        else:
-            finalize(channel, self.remove_connection, channel)
+        # Connect channel
+        channel.connect()
+        # Add to internal store
+        self.connections.append(channel)
 
     def remove_connection(self, channel):
         """
         Disconnect a PyDMChannel
         """
+        # Disconnect channel
+        channel.disconnect()
+        # Be loud if the channel was not in this registry
         try:
-            plugin = plugin_for_address(channel.address)
-            plugin.remove_connection(channel)
-        except Exception as exc:
-            logger.exception("Unable to remove connection "
-                             "for %r", channel)
+            self.connections.remove(channel)
+        except ValueError:
+            logger.error("%r was never added to the Channel Registry")
+
+    def clear(self):
+        """Disconnect all PyDMChannels in Registry"""
+        for channel in self.connections:
+            self.remove_connection(channel)
 
 
 class PyDMChannel(object):
@@ -120,6 +128,32 @@ class PyDMChannel(object):
         self.lower_ctrl_limit_slot = lower_ctrl_limit_slot
 
         self.value_signal = value_signal
+
+    def connect(self):
+        """
+        Connect a PyDMChannel to the proper PyDMPlugin
+        """
+        logger.debug("Connecting %r", self.address)
+        # Connect to proper PyDMPlugin
+        try:
+            plugin = plugin_for_address(self.address)
+            plugin.add_connection(self)
+        except Exception:
+            logger.exception("Unable to make proper connection "
+                             "for %r", self)
+        else:
+            finalize(self, self.disconnect)
+
+    def disconnect(self):
+        """
+        Disconnect a PyDMChannel
+        """
+        try:
+            plugin = plugin_for_address(self.address)
+            plugin.remove_connection(self)
+        except Exception as exc:
+            logger.exception("Unable to remove connection "
+                             "for %r", self)
 
     def __eq__(self, other):
         if isinstance(self, other.__class__):
