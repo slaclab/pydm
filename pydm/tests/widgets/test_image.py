@@ -298,7 +298,9 @@ def test_image_width_change(qtbot, signals):
     value_signal = signals.new_value_signal
     value_signal.connect(pydm_image_view.image_width_changed)
     value_signal.emit(100)
+    assert pydm_image_view._image_width == 100
 
+    pydm_image_view.image_width_changed(None)
     assert pydm_image_view._image_width == 100
 
 
