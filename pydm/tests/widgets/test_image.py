@@ -187,7 +187,7 @@ def test_colormap_property_and_setter(qtbot, new_cmap, cm_colors):
                 assert not action.isChecked()
     else:
         if not pydm_image_view._cm_colors.any():
-            assert pydm_image_view.colorMap == None
+            assert pydm_image_view.colorMap == PyDMColorMap.Inferno
         else:
             pos = np.linspace(0.0, 1.0, num=len(pydm_image_view._cm_colors))
             cmap = ColorMap(pos, pydm_image_view._cm_colors)

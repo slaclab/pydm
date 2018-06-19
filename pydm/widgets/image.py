@@ -271,8 +271,8 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         -------
         new_cmap : PyDMColorMap
         """
-        self._colormap = new_cmap
-        if new_cmap:
+        if new_cmap is not None:
+            self._colormap = new_cmap
             self._cm_colors = self.color_maps[new_cmap]
 
         self.setColorMap()
@@ -346,6 +346,10 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         new_width : int
             The new image width
         """
+        # Keep the None check if the code in invoked from the command line
+        if new_width is None:
+            return
+
         self._image_width = int(new_width)
 
     def process_image(self, image):
