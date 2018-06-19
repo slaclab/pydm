@@ -1,9 +1,11 @@
-"""
-Module to define a parent qtdesigner plugin class.
+"""Module to define a parent qtdesigner plugin class.
 
 Please continue to name your qtdesigner plugin modules using the convention
 modulename.py          <--- defines the widget
 modulename_qtplugin.py <--- imports this module + the widget
+
+However, a majority of the builtin plugins are defined in qtplugins.py
+adjacent to this module.
 
 NOTE: PyDMDesignerPlugin is a valid plugin, so designer will try to pick it up
       and instantiate it if you import it into another module's namespace. You
@@ -14,6 +16,7 @@ If you do not heed this warning, you will get a one-line traceback:
 TypeError: __init__() takes exactly 3 arguments (1 given)
 for each PyDMDesignerPlugin that Qt Designer tries to use. This will not
 affect any of your widgets, but it will be annoying.
+
 """
 from ..PyQt import QtGui, QtDesigner
 
@@ -156,4 +159,3 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         Include the class module for the generated qt code
         """
         return self.cls.__module__
-
