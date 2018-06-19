@@ -9,7 +9,7 @@ if QT_LIB is None:
         if lib in sys.modules:
             QT_LIB = lib
             break
-            
+
 if QT_LIB is None:
     for lib in lib_order:
         try:
@@ -18,8 +18,9 @@ if QT_LIB is None:
             break
         except ImportError:
             pass
-            
+
 if QT_LIB is None:
-    raise Exception("PyDM requires either PyQt5 and it could not be imported.")
+    raise Exception("PyDM requires PyQt5 and it could not be imported.")
 if QT_LIB == 'PyQt4':
-    raise Exception("PyDM no longer supports PyQt4. Please update to PyQt5 and try again.")
+    raise Exception("PyDM no longer supports PyQt4. "
+                    "Please update to PyQt5 and try again.")
