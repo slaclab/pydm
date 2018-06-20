@@ -216,14 +216,13 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         # If this label is inside a PyDMApplication (not Designer) start it in '
         # the disconnected state.
+        self.setContextMenuPolicy(Qt.DefaultContextMenu)
+        self.contextMenuEvent = self.open_context_menu
+        self.channel = init_channel
         if is_pydm_app():
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
-
-        self.setContextMenuPolicy(Qt.DefaultContextMenu)
-        self.contextMenuEvent = self.open_context_menu
-        self.channel = init_channel
 
     def widget_ctx_menu(self):
         """
