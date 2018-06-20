@@ -73,8 +73,11 @@ def test_pydmwidget_construct(qtbot, init_channel):
 
     assert pydm_label.app is None if not is_pydm_app else not None
     assert pydm_label._connected is not is_pydm_app
-    assert pydm_label._channel == init_channel
-    assert pydm_label._channels is None
+    assert pydm_label._color == test_local_connection_status_color_map[False]
+    if init_channel is None:
+        assert pydm_label.channels() is None
+    else:
+        assert len(pydm_label.channels()) == 1
     assert pydm_label._show_units is False
     assert pydm_label._alarm_sensitive_content is False
     assert pydm_label.alarmSensitiveBorder is True
@@ -369,7 +372,7 @@ def test_channels_for_tools(qtbot):
     qtbot : fixture
         Window for widget testing
     """
-    pydm_label = PyDMLabel()
+    pydm_label = PyDMLabel(init_channel='tst://This')
     qtbot.addWidget(pydm_label)
 
     assert all(x == y for x, y in
@@ -389,16 +392,14 @@ def test_pydmwidget_channel_change(qtbot):
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
     assert pydm_label._channel is None
-    assert pydm_label._channels is None
+    assert pydm_label.channels() is None
 
     pydm_label.channel = 'foo://bar'
     assert pydm_label._channel == 'foo://bar'
-    assert pydm_label._channels is None
     assert pydm_label.channels()[0].address == 'foo://bar'
 
     pydm_label.channel = 'abc://def'
     assert pydm_label._channel == 'abc://def'
-    assert pydm_label._channels is None
     assert pydm_label.channels()[0].address == 'abc://def'
 
 
@@ -420,8 +421,8 @@ def test_pydmwidget_channels(qtbot):
     qtbot.addWidget(pydm_label)
 
     assert pydm_label._channel is None
-    assert pydm_label._channels is None
-
+    assert pydm_label.channels() is None
+    pydm_label.channel = 'test://this'
     pydm_channels = pydm_label.channels()[0]
 
     default_pydm_channels = PyDMChannel(address=pydm_label.channel,
@@ -436,13 +437,6 @@ def test_pydmwidget_channels(qtbot):
                                         value_signal=None,
                                         write_access_slot=None)
     assert pydm_channels == default_pydm_channels
-
-    new_channel = PyDMChannel(address=pydm_label.channel,
-                              connection_slot=pydm_label.connectionStateChanged,
-                              upper_ctrl_limit_slot=None,
-                              lower_ctrl_limit_slot=None)
-    pydm_label._channels = [new_channel]
-    assert pydm_label.channels()[0] == new_channel
 
 
 def test_pydmwritablewidget_channels(qtbot):
@@ -464,8 +458,9 @@ def test_pydmwritablewidget_channels(qtbot):
     qtbot.addWidget(pydm_lineedit)
 
     assert pydm_lineedit._channel is None
-    assert pydm_lineedit._channels is None
+    assert pydm_lineedit.channels() is None
 
+    pydm_lineedit.channel = 'tst://this'
     pydm_channels = pydm_lineedit.channels()[0]
 
     default_pydm_channels = PyDMChannel(address=pydm_lineedit.channel,
@@ -480,13 +475,6 @@ def test_pydmwritablewidget_channels(qtbot):
                                         value_signal=pydm_lineedit.send_value_signal,
                                         write_access_slot=pydm_lineedit.writeAccessChanged)
     assert pydm_channels == default_pydm_channels
-
-    new_channel = PyDMChannel(address=pydm_lineedit.channel,
-                              connection_slot=pydm_lineedit.connectionStateChanged,
-                              upper_ctrl_limit_slot=None,
-                              lower_ctrl_limit_slot=None)
-    pydm_lineedit._channels = [new_channel]
-    assert pydm_lineedit.channels()[0] == new_channel
 
 
 @pytest.mark.parametrize(

@@ -35,7 +35,7 @@ def test_construct(qtbot):
         pydm_channel.write_access_slot is None and \
         pydm_channel.value_signal is None
 
-    pydm_label = PyDMLabel()
+    pydm_label = PyDMLabel(init_channel='tst://this')
     qtbot.addWidget(pydm_label)
 
     pydm_label_channels = pydm_label.channels()[0]
@@ -52,7 +52,7 @@ def test_construct(qtbot):
                                               write_access_slot=None)
     assert pydm_label_channels == default_pydm_label_channels
 
-    pydm_lineedit = PyDMLineEdit()
+    pydm_lineedit = PyDMLineEdit(init_channel='tst://this2')
     qtbot.addWidget(pydm_lineedit)
 
     # Test equal and not equal comparisons
