@@ -3,11 +3,12 @@ import functools
 import json
 import numpy as np
 from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect
-from qtpy.QtGui import QColor, QCursor
+from qtpy.QtGui import QColor, QClipboard, QCursor
 from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
 from ..utilities import is_pydm_app
 from .rules import RulesDispatcher
+from ..data_plugins import DEFAULT_PROTOCOL
 
 try:
     from json.decoder import JSONDecodeError
@@ -362,6 +363,39 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if new_enum_strings != self.enum_strings:
             self.enum_strings = new_enum_strings
             self.value_changed(self.value)
+
+    def eventFilter(self, obj, event):
+        """
+        EventFilter to redirect "middle click" to :meth:`.show_address_tooltip`
+        """
+        # Override the eventFilter to capture all middle mouse button events,
+        # and show a tooltip if needed.
+        if event.type() == QEvent.MouseButtonPress:
+            if event.button() == Qt.MiddleButton:
+                self.show_address_tooltip(obj, event)
+                return True
+        return False
+
+    def show_address_tooltip(self, event):
+        """
+        Show the PyDMTooltip and copy address to clipboard
+
+        This is intended to replicate the behavior of the "middle click" from
+        EDM. If the QWidget does not have a valid PyDMChannel nothing will be
+        displayed
+        """
+        if not len(self._channels):
+            logger.warning("Object %r has no PyDM Channels", obj)
+            return
+        addr = self.channels()[0].address
+        QToolTip.showText(event.globalPos(), addr)
+        # If the address has a protocol, and it is the default protocol, strip
+        # it out before putting it on the clipboard.
+        m = re.match('(.+?):/{2,3}(.+?)$', addr)
+        if m is not None and DEFAULT_PROTOCOL is not None and m.group(1) == DEFAULT_PROTOCOL:
+            QApplication.clipboard().setText(m.group(2), mode=QClipboard.Selection)
+        else:
+            QApplication.clipboard().setText(addr, mode=QClipboard.Selection)
 
     def unit_changed(self, new_unit):
         """
@@ -938,7 +972,8 @@ class PyDMWritableWidget(PyDMWidget):
             if event.type() == QEvent.Enter and not status:
                 QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
 
-        return False
+        return super().eventFilter(obj, event)
+
 
     def write_access_changed(self, new_write_access):
         """
