@@ -1,10 +1,8 @@
 # Unit Tests for the Channel widget class
 from ...widgets.label import PyDMLabel
 from ...widgets.line_edit import PyDMLineEdit
-from ...widgets.channel import PyDMChannel, Registry
+from ...widgets.channel import PyDMChannel
 from pydm.data_plugins import plugin_for_address
-
-
 class A():
     pass
 
@@ -67,15 +65,14 @@ def test_construct(qtbot):
     assert equal_result is False and not_equal_result is True
 
 
-def test_pydm_connection(test_plugin, monkeypatch):
+def test_pydm_connection(test_plugin):
     # Plugin, Channel and Registry
     chan = PyDMChannel('tst://Tst:this')
-    cr = Registry()
     plugin = plugin_for_address(chan.address)
     plugin_no = len(plugin.connections)
     # Make a connection
-    cr.add_connection(chan)
+    chan.connect()
     assert len(plugin.connections) == plugin_no + 1
-    # Remove a connection
-    cr.remove_connection(chan)
+    # Remove connections
+    chan.disconnect()
     assert len(plugin.connections) == plugin_no
