@@ -190,8 +190,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         self.app = QApplication.instance()
         self._connected = True
-        self._channel = init_channel
-        self._channels = None
+        self._color = self.local_connection_status_color_map[False]
+        self._channel = None
+        self._channels = list()
         self._show_units = False
         self._alarm_sensitive_content = False
         self._alarm_sensitive_border = True
@@ -221,6 +222,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.contextMenuEvent = self.open_context_menu
+        self.channel = init_channel
 
     def widget_ctx_menu(self):
         """
@@ -756,13 +758,35 @@ class PyDMWidget(PyDMPrimitiveWidget):
         value : str
             Channel address
         """
-        if value:
-            if self._channel != value:
-                self._channel = str(value)
-                self._channels = None
-        else:
-            self._channel = None
-            self._channels = None
+        if self._channel != value:
+            # Remove old connections
+            for channel in self._channels:
+                if channel.address == self._channel:
+                    channel.disconnect()
+                    self._channels.remove(channel)
+            # Load new channel
+            self._channel = str(value)
+            channel = PyDMChannel(address=self._channel,
+                          connection_slot=self.connectionStateChanged,
+                          value_slot=self.channelValueChanged,
+                          severity_slot=self.alarmSeverityChanged,
+                          enum_strings_slot=self.enumStringsChanged,
+                          unit_slot=self.unitChanged,
+                          prec_slot=self.precisionChanged,
+                          upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
+                          lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
+                          value_signal=None,
+                          write_access_slot=None)
+            # Load writeable channels if our widget requires them. These should
+            # not exist on the base PyDMWidget but prevents us from duplicating
+            # the method below to only make two more connections
+            if hasattr(self, 'writeAccessChanged'):
+                channel.write_access_slot = self.writeAccessChanged
+            if hasattr(self, 'send_value_signal'):
+                channel.value_signal = self.send_value_signal
+            # Connect write channels if we have them
+            channel.connect()
+            self._channels.append(channel)
 
     def update_format_string(self):
         """
@@ -824,23 +848,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
         channels : list
             List of PyDMChannel objects
         """
-        if self._channels is not None:
+        if len(self._channels):
             return self._channels
-
-        self._channels = [
-            PyDMChannel(address=self.channel,
-                        connection_slot=self.connectionStateChanged,
-                        value_slot=self.channelValueChanged,
-                        severity_slot=self.alarmSeverityChanged,
-                        enum_strings_slot=self.enumStringsChanged,
-                        unit_slot=self.unitChanged,
-                        prec_slot=self.precisionChanged,
-                        upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
-                        lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
-                        value_signal=None,
-                        write_access_slot=None)
-        ]
-        return self._channels
+        else:
+            return None
 
     def channels_for_tools(self):
         """
@@ -855,6 +866,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
         list
         """
         return self.channels()
+
+
+    def qcolor_for_alarm(self, alarm, alarm_type=ALARM_CONTENT):
+        return QColor(self.alarm_style_sheet_map[alarm_type][alarm]["color"])
 
 
 class PyDMWritableWidget(PyDMWidget):
@@ -973,30 +988,3 @@ class PyDMWritableWidget(PyDMWidget):
                 tooltip += "Access denied by Channel Access Security."
         self.setToolTip(tooltip)
         self.setEnabled(status)
-
-    def channels(self):
-        """
-        Returns the channels being used for this Widget.
-
-        Returns
-        -------
-        list
-            List of PyDMChannel objects
-        """
-        if self._channels is not None:
-            return self._channels
-
-        self._channels = [
-            PyDMChannel(address=self.channel,
-                        connection_slot=self.connectionStateChanged,
-                        value_slot=self.channelValueChanged,
-                        severity_slot=self.alarmSeverityChanged,
-                        enum_strings_slot=self.enumStringsChanged,
-                        unit_slot=self.unitChanged,
-                        prec_slot=self.precisionChanged,
-                        upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
-                        lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
-                        value_signal=self.send_value_signal,
-                        write_access_slot=self.writeAccessChanged)
-        ]
-        return self._channels
