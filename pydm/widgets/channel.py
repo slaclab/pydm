@@ -155,3 +155,6 @@ class PyDMChannel(object):
 
     def __hash__(self):
         return id(self)
+
+    def __repr__(self):
+        return '<PyDMChannel ({:})>'.format(self.address)
