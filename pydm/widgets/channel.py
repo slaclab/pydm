@@ -6,45 +6,6 @@ from pydm.data_plugins import plugin_for_address
 logger = logging.getLogger(__name__)
 
 
-class ChannelRegistry(object):
-    """
-    Register of Channel objects
-    """
-    def __init__(self):
-        self.connections = list()
-
-    @property
-    def size(self):
-        """Number of connections in registry"""
-        return len(self.connections)
-
-    def add_connection(self, channel):
-        """
-        Connect a PyDMChannel to the proper PyDMPlugin
-        """
-        # Connect channel
-        channel.connect()
-        # Add to internal store
-        self.connections.append(channel)
-
-    def remove_connection(self, channel):
-        """
-        Disconnect a PyDMChannel
-        """
-        # Disconnect channel
-        channel.disconnect()
-        # Be loud if the channel was not in this registry
-        try:
-            self.connections.remove(channel)
-        except ValueError:
-            logger.error("%r was never added to the Channel Registry")
-
-    def clear(self):
-        """Disconnect all PyDMChannels in Registry"""
-        for channel in self.connections:
-            self.remove_connection(channel)
-
-
 class PyDMChannel(object):
     """
     Object to hold signals and slots for a PyDM Widget interface to an
