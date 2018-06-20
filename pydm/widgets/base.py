@@ -392,9 +392,14 @@ class PyDMWidget(PyDMPrimitiveWidget):
         # it out before putting it on the clipboard.
         m = re.match('(.+?):/{2,3}(.+?)$', addr)
         if m is not None and DEFAULT_PROTOCOL is not None and m.group(1) == DEFAULT_PROTOCOL:
-            QApplication.clipboard().setText(m.group(2), mode=QClipboard.Selection)
+            copy_text = m.group(2)
         else:
-            QApplication.clipboard().setText(addr, mode=QClipboard.Selection)
+            copy_text = addr
+
+        clipboard = QApplication.clipboard()
+        clipboard.setText(copy_text)
+        event = QEvent(QEvent.Clipboard)
+        self.sendEvent(clipboard, event)
 
     def unit_changed(self, new_unit):
         """
