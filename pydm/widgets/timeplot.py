@@ -33,6 +33,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
     To maintain backward compatibility, the default drawing mode is in the classic, "plot_by_timestamps" mode, for both
     TimePlotCurveItem and TimePlotCurve.
     """
+    _channels = ('channel',)
     def __init__(self, channel_address=None, plot_by_timestamps=True, **kws):
         """
         Parameters

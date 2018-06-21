@@ -47,6 +47,7 @@ class WaveformCurveItem(BasePlotCurveItem):
     **kargs: optional
         PlotDataItem keyword arguments, such as symbol and symbolSize.
     """
+    _channels = ('x_channel', 'y_channel')
 
     def __init__(self, y_addr=None, x_addr=None, redraw_mode=None, **kws):
         y_addr = "" if y_addr is None else y_addr
