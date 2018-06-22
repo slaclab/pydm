@@ -976,7 +976,7 @@ class PyDMWritableWidget(PyDMWidget):
             if event.type() == QEvent.Enter and not status:
                 QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
 
-        return super().eventFilter(obj, event)
+        return PyDMWidget.eventFilter(self, obj, event)
 
 
     def write_access_changed(self, new_write_access):
