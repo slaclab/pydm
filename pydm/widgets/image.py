@@ -513,7 +513,10 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         str
             Channel address
         """
-        return str(self._imagechannel.address)
+        if self._imagechannel:
+            return str(self._imagechannel.address)
+        else:
+            return ''
 
     @imageChannel.setter
     def imageChannel(self, value):
@@ -547,7 +550,10 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         str
             Channel address
         """
-        return str(self._widthchannel.address)
+        if self._widthchannel:
+            return str(self._widthchannel.address)
+        else:
+            return ''
 
     @widthChannel.setter
     def widthChannel(self, value):
