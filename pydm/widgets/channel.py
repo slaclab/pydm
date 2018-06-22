@@ -1,5 +1,4 @@
 import logging
-from weakref import finalize
 
 from pydm.data_plugins import plugin_for_address
 
@@ -102,8 +101,6 @@ class PyDMChannel(object):
         except Exception:
             logger.exception("Unable to make proper connection "
                              "for %r", self)
-        else:
-            finalize(self, self.disconnect)
 
     def disconnect(self):
         """
