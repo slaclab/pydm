@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Macro Substitution &mdash; PyDM v1.2.0+8.gaf39031 documentation</title>
+  <title>Macro Substitution &mdash; PyDM v1.2.0+14.gb5c2621 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.2.0+8.gaf39031
+                v1.2.0+14.gb5c2621
               </div>
             
           
@@ -189,14 +189,22 @@
 </div>
 <div class="section" id="replacing-macro-variables-at-launch-time">
 <h2>Replacing Macro Variables at Launch Time<a class="headerlink" href="#replacing-macro-variables-at-launch-time" title="Permalink to this headline">¶</a></h2>
-<p>When launching a .ui file which contains macro variables, specify values for each variable using the ‘-m’ flag on the command line:</p>
+<p>When launching a .ui file which contains macro variables, specify values for each variable using the ‘-m’ flag on the command line.
+Use either JSON or plain syntax, such as one of these examples:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">pydm</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">m</span> <span class="s1">&#39;{&quot;variable&quot;: &quot;value&quot;}&#39;</span> <span class="n">my_file</span><span class="o">.</span><span class="n">ui</span>
+<span class="n">python</span> <span class="n">pydm</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">m</span> <span class="n">variable</span><span class="o">=</span><span class="n">value</span><span class="p">,</span><span class="n">variable2</span><span class="o">=</span><span class="n">value2</span> <span class="n">my_file</span><span class="o">.</span><span class="n">ui</span>
+<span class="n">python</span> <span class="n">pydm</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">m</span> <span class="s2">&quot;variable = value, variable2=value2&quot;</span> <span class="n">my_file</span><span class="o">.</span><span class="n">ui</span>
 </pre></div>
 </div>
+<dl class="docutils">
+<dt>Note that if you use the JSON syntax, you can define a macro variable with a numeric value by leaving the quotes off, i.e.::</dt>
+<dd>python pydm.py -m ‘{“number”: 5}’ my_file.ui</dd>
+</dl>
+<p>If you use the plain syntax, all values will be interpreted as strings.</p>
 </div>
 <div class="section" id="macros-in-python-based-displays">
 <h2>Macros in Python-based Displays<a class="headerlink" href="#macros-in-python-based-displays" title="Permalink to this headline">¶</a></h2>
-<p>If you open a python file and specify macros (via the command line, related display button, or embedded display widget), the macros will be passed as a dictionary to the Display class initializer, where they can be accessed and used to generate the display.  In addition, if the Display class specifies a .ui file to generate its user interface, macro substitution will occur inside the .ui file.</p>
+<p>If you open a python file and specify macros (via the command line, related display button, or embedded display widget), the macros will be passed as a dictionary to the Display class initializer, where they can be accessed and used to generate the display.  In addition, if the Display class specifies a .ui file to generate its user interface, macro substitution will occur inside the .ui file.  When handling macro variables in your Display class, a good practice is to assume all variables will be string values, and convert to numeric values as necessary.</p>
 </div>
 <div class="section" id="macro-behavior-at-run-time">
 <h2>Macro Behavior at Run Time<a class="headerlink" href="#macro-behavior-at-run-time" title="Permalink to this headline">¶</a></h2>
@@ -246,7 +254,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v1.2.0+8.gaf39031',
+            VERSION:'v1.2.0+14.gb5c2621',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
