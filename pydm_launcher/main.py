@@ -51,7 +51,12 @@ def main():
         help='Specify macro replacements to use, in JSON object format.' +
              '    Reminder: JSON requires double quotes for strings, ' +
              'so you should wrap this whole argument in single quotes.' +
-             '  Example: -m \'{"sector": "LI25", "facility": "LCLS"}\''
+             '  Example: -m \'{"sector": "LI25", "facility": "LCLS"}\'' +
+             '--or-- specify macro replacements as KEY=value pairs ' +
+             ' using a comma as delimiter  If you want to uses spaces ' +
+             ' after the delimiters or around the = signs, ' +
+             ' wrap the entire set with quotes ' +
+             '  Example: -m "sector = LI25, facility=LCLS"'
         )
     parser.add_argument(
         'display_args',
@@ -66,7 +71,12 @@ def main():
         try:
             macros = json.loads(pydm_args.macro)
         except ValueError:
-            raise ValueError("Could not parse macro argument as JSON.")
+            if pydm_args.macro.find("=") < 0:
+                raise ValueError("Could not parse macro argument as JSON.")
+            macros = {}
+            for pair in pydm_args.macro.split(","):
+                key, value = pair.strip().split("=")
+                macros[key.strip()] = value.strip()
 
     logger = logging.getLogger('')
     handler = logging.StreamHandler()

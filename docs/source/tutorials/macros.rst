@@ -13,13 +13,20 @@ Anywhere in a .ui file, you can insert a macro of the following form: ${variable
 
 Replacing Macro Variables at Launch Time
 ----------------------------------------
-When launching a .ui file which contains macro variables, specify values for each variable using the '-m' flag on the command line::
+When launching a .ui file which contains macro variables, specify values for each variable using the '-m' flag on the command line.
+Use either JSON or plain syntax, such as one of these examples::
 
   python pydm.py -m '{"variable": "value"}' my_file.ui
+  python pydm.py -m variable=value,variable2=value2 my_file.ui
+  python pydm.py -m "variable = value, variable2=value2" my_file.ui
+  
+Note that if you use the JSON syntax, you can define a macro variable with a numeric value by leaving the quotes off, i.e.::
+  python pydm.py -m '{"number": 5}' my_file.ui
+If you use the plain syntax, all values will be interpreted as strings.
 
 Macros in Python-based Displays
 -------------------------------
-If you open a python file and specify macros (via the command line, related display button, or embedded display widget), the macros will be passed as a dictionary to the Display class initializer, where they can be accessed and used to generate the display.  In addition, if the Display class specifies a .ui file to generate its user interface, macro substitution will occur inside the .ui file.
+If you open a python file and specify macros (via the command line, related display button, or embedded display widget), the macros will be passed as a dictionary to the Display class initializer, where they can be accessed and used to generate the display.  In addition, if the Display class specifies a .ui file to generate its user interface, macro substitution will occur inside the .ui file.  When handling macro variables in your Display class, a good practice is to assume all variables will be string values, and convert to numeric values as necessary.
 
 Macro Behavior at Run Time
 --------------------------
