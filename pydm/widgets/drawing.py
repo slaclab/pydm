@@ -97,14 +97,6 @@ class PyDMDrawing(QWidget, PyDMWidget):
         self.style().drawPrimitive(QStyle.PE_Widget, opt, self._painter, self)
         self._painter.setRenderHint(QPainter.Antialiasing)
 
-        color = self._default_color
-        if self._alarm_sensitive_content and self._alarm_state != PyDMWidget.ALARM_NONE and self.channels() is not None:
-            alarm_color = self._style.get("color", None)
-            if alarm_color is not None:
-                color = QColor(alarm_color)
-
-        self._brush.setColor(color)
-
         self._painter.setBrush(self._brush)
         self._painter.setPen(self._pen)
 

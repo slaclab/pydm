@@ -160,14 +160,6 @@ def test_pydmdrawing_paintEvent(qtbot, signals, test_alarm_style_sheet_map,
 
     qtbot.waitUntil(wait_focus, timeout=5000)
 
-    alarm_color = test_alarm_style_sheet_map[PyDMWidget.ALARM_CONTENT][
-        pydm_drawing._alarm_state]
-
-    if alarm_sensitive_content:
-        assert pydm_drawing.brush.color() == QColor(alarm_color["color"])
-    else:
-        assert pydm_drawing.brush.color() == pydm_drawing._default_color
-
 
 @pytest.mark.parametrize("widget_width, widget_height, expected_results", [
     (4.0, 4.0, (2.0, 2.0)),
@@ -515,14 +507,6 @@ def test_pydmdrawingline_draw_item(qtbot, signals, test_alarm_style_sheet_map,
         return pydm_drawingline.hasFocus()
 
     qtbot.waitUntil(wait_focus, timeout=5000)
-
-    alarm_color = test_alarm_style_sheet_map[PyDMWidget.ALARM_CONTENT][
-        pydm_drawingline._alarm_state]
-
-    if alarm_sensitive_content:
-        assert pydm_drawingline.brush.color() == QColor(alarm_color["color"])
-    else:
-        assert pydm_drawingline.brush.color() == pydm_drawingline._default_color
 
 
 # # -----------------

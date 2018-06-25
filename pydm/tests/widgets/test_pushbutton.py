@@ -525,8 +525,6 @@ def test_push_button_alarms(qtbot, signals, test_alarm_style_sheet_map, alarm_se
         signals.new_severity_signal.emit(alarm_severity)
 
         assert pydm_pushbutton._alarm_state == alarm_severity
-        expected_style = dict(test_alarm_style_sheet_map[PyDMWidget.ALARM_CONTENT][alarm_severity])
-        assert pydm_pushbutton._style == expected_style
 
 
 # --------------------
