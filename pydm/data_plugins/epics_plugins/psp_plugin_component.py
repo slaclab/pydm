@@ -83,7 +83,7 @@ def generic_mon_cb(source, signal):
     return cb
 
 
-def setup_pv(pvname, con_cb=None, mon_cb=None, signal=None, mon_cb_once=False):
+def setup_pv(pvname, con_cb=None, mon_cb=None, rwaccess_cb=None, signal=None, mon_cb_once=False):
     """
     Initialize an EPICS PV using psp with proper callbacks.
 
@@ -95,6 +95,8 @@ def setup_pv(pvname, con_cb=None, mon_cb=None, signal=None, mon_cb_once=False):
     :param mon_cb: Monitor callback. If left as None and provided with signal,
                    emit our value from signal as the callback.
     :type mon_cb:  function(errors=None)
+    :param rwaccess_cb: Read/write access state callback.
+    :type rwaccess_cb: function(access_state)
     :param signal: Signal to emit our value on as the default callback when
                    con_cb or mon_cb are left as None. Check the base
                    :class:`PyDMConnection` class for available signals.
@@ -112,6 +114,8 @@ def setup_pv(pvname, con_cb=None, mon_cb=None, signal=None, mon_cb_once=False):
 
     pv.add_connection_callback(con_cb or generic_con_cb(pv))
     pv.add_monitor_callback(mon_cb or default_mon_cb, once=mon_cb_once)
+    if rwaccess_cb:
+        pv.add_rwaccess_callback(rwaccess_cb)
     pv.connect(None)
     return pv
 
@@ -135,9 +139,10 @@ class Connection(PyDMConnection):
         """
         super(Connection, self).__init__(channel, pv, protocol, parent)
         self.python_type = None
-        self.pv = setup_pv(pv, self.connected_cb, self.monitor_cb)
+        self.pv = setup_pv(pv, con_cb=self.connected_cb, mon_cb=self.monitor_cb, rwaccess_cb=self.rwaccess_cb)
         self.enums = None
-        self.rwacc = None
+        self.read_access = False
+        self.write_access = False
         self.sevr = None
         self.ctrl_llim = None
         self.ctrl_hlim = None
@@ -186,6 +191,15 @@ class Connection(PyDMConnection):
         if e is None:
             self.send_new_value(self.pv.value)
 
+    def rwaccess_cb(self, read_access, write_access):
+        """
+        Callback to run when the access state of our pv changes.
+        
+        :param read_access: Whether or not the PV is readable.
+        :param write_access: Whether or not the PV is writeable.
+        """
+        self.send_access_state(read_access, write_access)
+
     def throttle_cb(self):
         """
         Callback to run when the throttle timer times out.
@@ -209,19 +223,7 @@ class Connection(PyDMConnection):
         """
         if self.python_type is None:
             return
-        try:
-            rwacc = self.pv.rwaccess()
-        except:
-            rwacc = None
-        if rwacc is not None:
-            # Two bit binary number, 11 = read and write, 01 = read-only
-            # presumably this could be other numbers, but in practice it is
-            # either 3 for read and write or 1 for just read.
-            # Only send the write access state if it has changed, don't send it every time the PV updates.
-            if rwacc != self.rwacc:
-                self.rwacc = rwacc
-                self.write_access_signal.emit(rwacc == 3)
-
+        
         if self.enums is None:
             try:
                 self.update_enums()
@@ -273,6 +275,14 @@ class Connection(PyDMConnection):
         :type conn:  bool
         """
         self.connection_state_signal.emit(conn)
+
+    def send_access_state(self, read_access, write_access):
+        self.read_access = read_access
+        self.write_access = write_access
+        if is_pydm_app() and self.app.is_read_only():
+            self.write_access_signal.emit(False)
+            return
+        self.write_access_signal.emit(write_access)
 
     def update_enums(self):
         """
