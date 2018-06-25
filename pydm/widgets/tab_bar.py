@@ -11,11 +11,13 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         super(PyDMTabBar, self).__init__(parent=parent)
         self.tab_channels = {}
         self._channels = None
-        self.alarm_icons = (IconFont().icon('circle', color=self.qcolor_for_alarm(self.ALARM_NONE, alarm_type=self.ALARM_INDICATOR)), 
-                        IconFont().icon('circle', color=self.qcolor_for_alarm(self.ALARM_MINOR, alarm_type=self.ALARM_INDICATOR)),
-                        IconFont().icon('exclamation-circle', color=self.qcolor_for_alarm(self.ALARM_MAJOR, alarm_type=self.ALARM_INDICATOR)),
-                        IconFont().icon('question-circle', color=self.qcolor_for_alarm(self.ALARM_INVALID, alarm_type=self.ALARM_INDICATOR)),
-                        IconFont().icon('times-circle', color=self.qcolor_for_alarm(self.ALARM_DISCONNECTED, alarm_type=self.ALARM_INDICATOR)))
+        self.alarm_icons = (
+            IconFont().icon('circle'),
+            IconFont().icon('circle'),
+            IconFont().icon('exclamation-circle'),
+            IconFont().icon('question-circle'),
+            IconFont().icon('times-circle')
+        )
     
     @pyqtProperty(str)
     def currentTabAlarmChannel(self):
@@ -73,7 +75,7 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         if channel in ("", "None", None):
             self.setTabIcon(index, QIcon())
         else:
-            self.setTabIcon(index, self.alarm_icons[4]) 
+            self.setTabIcon(index, self.alarm_icons[self.ALARM_DISCONNECTED])
     
     def tabInserted(self, index):
         if index not in self.tab_channels:

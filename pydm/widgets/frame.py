@@ -1,6 +1,6 @@
 from ..PyQt.QtGui import QFrame
 from ..PyQt.QtCore import pyqtProperty
-from .base import PyDMWidget, compose_stylesheet
+from .base import PyDMWidget
 
 
 class PyDMFrame(QFrame, PyDMWidget):
@@ -68,26 +68,7 @@ class PyDMFrame(QFrame, PyDMWidget):
         """
         if self._channel is None:
             return
-        # Cleanup the old alarm stylesheet used
-        alarm_style = compose_stylesheet(style=self._style, obj=self)
-        original_style = str(self.styleSheet()).replace(alarm_style, "")
-
-        self._alarm_state = new_alarm_severity
-
-        # Must update the alarm flags here as the alarm sensitive content and alarm sensitive border flags
-        # can be toggled after the widget's construction
-        self._alarm_flags = (self.ALARM_CONTENT * self._alarm_sensitive_content) | \
-                            (self.ALARM_BORDER * self._alarm_sensitive_border)
-
-        self._style = dict(self.alarm_style_sheet_map[self._alarm_flags][new_alarm_severity])
-        if "color" in self._style:
-            if self._alarm_state != PyDMWidget.ALARM_NONE:
-                # The style doesn't take the color attribute, but replace it with the background-color one
-                self._style["background-color"] = self._style["color"]
-            del self._style["color"]
-        style = compose_stylesheet(style=self._style, obj=self)
-        self.setStyleSheet(original_style + style)
-        self.update()
+        super(PyDMFrame, self).alarm_severity_changed(new_alarm_severity)
 
     def check_enable_state(self):
         """

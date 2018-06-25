@@ -289,15 +289,11 @@ def test_label_alarms(qtbot, signals, test_alarm_style_sheet_map, alarm_severity
 
     pydm_label.alarmSensitiveContent = alarm_sensitive_content
     pydm_label.alarmSensitiveBorder = alarm_sensitive_border
-    alarm_flags = (PyDMWidget.ALARM_CONTENT * alarm_sensitive_content) | \
-                  (PyDMWidget.ALARM_BORDER * alarm_sensitive_border)
 
     signals.new_severity_signal.connect(pydm_label.alarmSeverityChanged)
     signals.new_severity_signal.emit(alarm_severity)
 
     assert pydm_label._alarm_state == alarm_severity
-    expected_style = dict(test_alarm_style_sheet_map[alarm_flags][alarm_severity])
-    assert pydm_label._style == expected_style
 
 
 TOOLTIP_TEXT = "Testing with Alarm State Changes, Channel Provided."
@@ -351,8 +347,6 @@ def test_channel_connection_changes_with_alarm(qtbot, signals, test_alarm_style_
 
     pydm_label.alarmSensitiveContent = alarm_sensitive_content
     pydm_label.alarmSensitiveBorder = alarm_sensitive_border
-    alarm_flags = (PyDMWidget.ALARM_CONTENT * alarm_sensitive_content) | \
-                  (PyDMWidget.ALARM_BORDER * alarm_sensitive_border)
 
     pydm_label.setToolTip(tooltip)
 
@@ -368,8 +362,6 @@ def test_channel_connection_changes_with_alarm(qtbot, signals, test_alarm_style_
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
     assert pydm_label._alarm_state == alarm_severity
-    expected_style = dict(test_alarm_style_sheet_map[alarm_flags][alarm_severity])
-    assert pydm_label._style == expected_style
     assert pydm_label._connected == True
     assert pydm_label.toolTip() == tooltip
     assert pydm_label.isEnabled() == True
@@ -381,8 +373,6 @@ def test_channel_connection_changes_with_alarm(qtbot, signals, test_alarm_style_
     signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
     signals.connection_state_signal.emit(False)
     assert pydm_label._alarm_state == alarm_severity
-    expected_style = dict(test_alarm_style_sheet_map[alarm_flags][alarm_severity])
-    assert pydm_label._style == expected_style
     assert pydm_label._connected == False
     assert all(i in pydm_label.toolTip() for i in (tooltip, "PV is disconnected."))
     assert pydm_label.isEnabled() == False
@@ -394,8 +384,6 @@ def test_channel_connection_changes_with_alarm(qtbot, signals, test_alarm_style_
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
     # TODO Set alarm_severity back to NONE
     assert pydm_label._alarm_state == alarm_severity
-    expected_style = dict(test_alarm_style_sheet_map[alarm_flags][alarm_severity])
-    assert pydm_label._style == expected_style
     assert pydm_label._connected == True
     assert pydm_label.toolTip() == tooltip
     assert pydm_label.isEnabled() == True
@@ -449,8 +437,6 @@ def test_connection_changes_with_alarm_and_no_channel(qtbot, signals, test_alarm
 
     pydm_label.alarmSensitiveContent = alarm_sensitive_content
     pydm_label.alarmSensitiveBorder = alarm_sensitive_border
-    alarm_flags = (PyDMWidget.ALARM_CONTENT * alarm_sensitive_content) | \
-                  (PyDMWidget.ALARM_BORDER * alarm_sensitive_border)
     pydm_label.setToolTip(tooltip)
 
     # Do not the channel, but set the alarm severity to normal (NONE)
@@ -465,8 +451,6 @@ def test_connection_changes_with_alarm_and_no_channel(qtbot, signals, test_alarm
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
     assert pydm_label._alarm_state == alarm_severity
-    expected_style = dict(test_alarm_style_sheet_map[alarm_flags][alarm_severity])
-    assert pydm_label._style == expected_style
     assert pydm_label._connected == True
     assert pydm_label.toolTip() == tooltip
     assert pydm_label.isEnabled() == True
@@ -478,8 +462,7 @@ def test_connection_changes_with_alarm_and_no_channel(qtbot, signals, test_alarm
     signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
     signals.connection_state_signal.emit(False)
     assert pydm_label._alarm_state == alarm_severity
-    expected_style = dict(test_alarm_style_sheet_map[alarm_flags][alarm_severity])
-    assert pydm_label._style == expected_style
+
     assert pydm_label._connected == False
     assert pydm_label.toolTip() == tooltip
     assert pydm_label.isEnabled() == True
@@ -490,8 +473,6 @@ def test_connection_changes_with_alarm_and_no_channel(qtbot, signals, test_alarm
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
     assert pydm_label._alarm_state == alarm_severity
-    expected_style = dict(test_alarm_style_sheet_map[alarm_flags][alarm_severity])
-    assert pydm_label._style == expected_style
     assert pydm_label._connected == True
     assert pydm_label.toolTip() == tooltip
     assert pydm_label.isEnabled() == True
