@@ -23,7 +23,7 @@ class Connection(PyDMConnection):
     def __init__(self, channel, pv, protocol=None, parent=None):
         super(Connection, self).__init__(channel, pv, protocol, parent)
         self.app = QApplication.instance()
-        self.pv = epics.PV(pv, connection_callback=self.send_connection_state, form='ctrl', auto_monitor=True, access_callback=self.send_access_state)
+        self.pv = epics.PV(pv, connection_callback=self.send_connection_state, form='ctrl', auto_monitor=epics.dbr.DBE_VALUE|epics.dbr.DBE_ALARM, access_callback=self.send_access_state)
         self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
         self.add_listener(channel)
 
