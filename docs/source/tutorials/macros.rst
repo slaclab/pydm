@@ -13,9 +13,12 @@ Anywhere in a .ui file, you can insert a macro of the following form: ${variable
 
 Replacing Macro Variables at Launch Time
 ----------------------------------------
-When launching a .ui file which contains macro variables, specify values for each variable using the '-m' flag on the command line::
+When launching a .ui file which contains macro variables, specify values for each variable using the '-m' flag on the command line.
+Use either JSON or plain syntax, such as one of these examples::
 
   python pydm.py -m '{"variable": "value"}' my_file.ui
+  python pydm.py -m variable=value,variable2=value2 my_file.ui
+  python pydm.py -m "variable = value, variable2=value2" my_file.ui
 
 Macros in Python-based Displays
 -------------------------------
