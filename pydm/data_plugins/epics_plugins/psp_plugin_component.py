@@ -234,42 +234,91 @@ class Connection(PyDMConnection):
             except KeyError:
                 self.pv.get_enum_strings(-1.0)
 
-        if self.pv.severity != self.sevr:
+        if self.pv.severity is not None and self.pv.severity != self.sevr:
             self.sevr = self.pv.severity
             self.new_severity_signal.emit(self.sevr)
 
-        if self.prec is None:
-            try:
-                self.prec = self.pv.data['precision']
+        try:
+            prec = self.pv.data['precision']
+            if self.prec != prec:
+                self.prec = prec
                 self.prec_signal.emit(int(self.prec))
-            except KeyError:
-                pass
+        except KeyError:
+            pass
 
-        if self.units is None:
-            try:
-                self.units = self.pv.data['units']
+        try:
+            units = self.pv.data['units']
+            if self.units != units:
+                self.units = units
                 self.unit_signal.emit(self.units.decode(encoding='ascii'))
-            except KeyError:
-                pass
+        except KeyError:
+            pass
 
-        if self.ctrl_llim is None:
-            try:
-                self.ctrl_llim = self.pv.data['ctrl_llim']
+        try:
+            ctrl_llim = self.pv.data['ctrl_llim']
+            if self.ctrl_llim != ctrl_llim:
+                self.ctrl_llim = ctrl_llim
                 self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
-            except KeyError:
-                pass
-
-        if self.ctrl_hlim is None:
-            try:
-                self.ctrl_hlim = self.pv.data['ctrl_hlim']
+        except KeyError:
+            pass
+        
+        try:
+            ctrl_hlim = self.pv.data['ctrl_hlim']
+            if self.ctrl_hlim != ctrl_hlim:
+                self.ctrl_hlim = ctrl_hlim
                 self.upper_ctrl_limit_signal.emit(self.ctrl_hlim)
-            except KeyError:
-                pass
+        except KeyError:
+            pass
 
         if self.count > 1:
             self.new_value_signal[np.ndarray].emit(value)
         else:
             self.new_value_signal[self.python_type].emit(self.python_type(value))
+
+    def send_ctrl_vars(self):
+        if self.enums is None:
+            try:
+                self.update_enums()
+            except KeyError:
+                self.pv.get_enum_strings(-1.0)
+        else:
+            self.enum_strings_signal.emit(self.enums)
+
+        if self.pv.severity != self.sevr:
+            self.sevr = self.pv.severity
+        self.new_severity_signal.emit(self.sevr)
+
+        if self.prec is None:
+            try:
+                self.prec = self.pv.data['precision']
+            except KeyError:
+                pass
+        if self.prec:
+            self.prec_signal.emit(int(self.prec))
+            
+        if self.units is None:
+            try:
+                self.units = self.pv.data['units']
+            except KeyError:
+                pass
+        if self.units:
+            self.unit_signal.emit(self.units.decode(encoding='ascii'))
+
+        if self.ctrl_llim is None:
+            try:
+                self.ctrl_llim = self.pv.data['ctrl_llim']
+            except KeyError:
+                pass
+        if self.ctrl_llim:
+            self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
+            
+        if self.ctrl_hlim is None:
+            try:
+                self.ctrl_hlim = self.pv.data['ctrl_hlim']
+            except KeyError:
+                pass
+        if self.ctrl_hlim:
+            self.upper_ctrl_limit_signal.emit(self.ctrl_hlim)
 
     def send_connection_state(self, conn=None):
         """
@@ -382,6 +431,7 @@ class Connection(PyDMConnection):
             self.send_connection_state(conn=True)
             self.monitor_cb()
             self.update_enums()
+            self.send_ctrl_vars()
         if channel.value_signal is not None:
             try:
                 channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
