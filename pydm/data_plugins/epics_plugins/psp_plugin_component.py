@@ -140,17 +140,22 @@ class Connection(PyDMConnection):
         """
         super(Connection, self).__init__(channel, pv, protocol, parent)
         self.python_type = None
-        self.pv = setup_pv(pv, con_cb=self.connected_cb, mon_cb=self.monitor_cb, rwaccess_cb=self.rwaccess_cb)
+        self.pv = setup_pv(pv,
+                           con_cb=self.connected_cb,
+                           mon_cb=self.monitor_cb,
+                           rwaccess_cb=self.rwaccess_cb)
         self.enums = None
         self.sevr = None
         self.ctrl_llim = None
         self.ctrl_hlim = None
         self.units = None
         self.prec = None
+        self.count = None
+        self.epics_type = None
 
         # Auxilliary info to help with throttling
         self.scan_pv = setup_pv(pv + ".SCAN", mon_cb=self.scan_pv_cb,
-            mon_cb_once=True)
+                                mon_cb_once=True)
         self.throttle = QTimer(self)
         self.throttle.timeout.connect(self.throttle_cb)
 
@@ -179,7 +184,7 @@ class Connection(PyDMConnection):
             self.python_type = type_map.get(self.epics_type)
             if self.python_type is None:
                 raise Exception("Unsupported EPICS type {0} for pv {1}".format(
-                                self.epics_type, self.pv.name))
+                    self.epics_type, self.pv.name))
 
     def monitor_cb(self, e=None):
         """
@@ -193,7 +198,7 @@ class Connection(PyDMConnection):
     def rwaccess_cb(self, read_access, write_access):
         """
         Callback to run when the access state of our pv changes.
-        
+
         :param read_access: Whether or not the PV is readable.
         :param write_access: Whether or not the PV is writeable.
         """
@@ -222,7 +227,7 @@ class Connection(PyDMConnection):
         """
         if self.python_type is None:
             return
-        
+
         if self.enums is None:
             try:
                 self.update_enums()
@@ -371,7 +376,8 @@ class Connection(PyDMConnection):
         """
         super(Connection, self).add_listener(channel)
         # If we are adding a listener to an already existing PV, we need to
-        # manually send the signals indicating that the PV is connected, what the latest value is, etc.
+        # manually send the signals indicating that the PV is connected, what
+        # the latest value is, etc.
         if self.pv.isconnected and self.pv.isinitialized:
             self.send_connection_state(conn=True)
             self.monitor_cb()
