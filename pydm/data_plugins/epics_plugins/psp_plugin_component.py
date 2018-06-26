@@ -7,6 +7,7 @@ import pyca
 from psp.Pv import Pv
 from pydm.PyQt.QtCore import pyqtSlot, Qt, QTimer
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
+from pydm.utilities import is_pydm_app
 
 # Map how we will interpret EPICS types in python.
 type_map = dict(
@@ -83,7 +84,7 @@ def generic_mon_cb(source, signal):
     return cb
 
 
-def setup_pv(pvname, con_cb=None, mon_cb=None, signal=None, mon_cb_once=False):
+def setup_pv(pvname, con_cb=None, mon_cb=None, rwaccess_cb=None, signal=None, mon_cb_once=False):
     """
     Initialize an EPICS PV using psp with proper callbacks.
 
@@ -95,6 +96,8 @@ def setup_pv(pvname, con_cb=None, mon_cb=None, signal=None, mon_cb_once=False):
     :param mon_cb: Monitor callback. If left as None and provided with signal,
                    emit our value from signal as the callback.
     :type mon_cb:  function(errors=None)
+    :param rwaccess_cb: Read/write access state callback.
+    :type rwaccess_cb: function(access_state)
     :param signal: Signal to emit our value on as the default callback when
                    con_cb or mon_cb are left as None. Check the base
                    :class:`PyDMConnection` class for available signals.
@@ -112,6 +115,8 @@ def setup_pv(pvname, con_cb=None, mon_cb=None, signal=None, mon_cb_once=False):
 
     pv.add_connection_callback(con_cb or generic_con_cb(pv))
     pv.add_monitor_callback(mon_cb or default_mon_cb, once=mon_cb_once)
+    if rwaccess_cb:
+        pv.add_rwaccess_callback(rwaccess_cb)
     pv.connect(None)
     return pv
 
@@ -135,18 +140,22 @@ class Connection(PyDMConnection):
         """
         super(Connection, self).__init__(channel, pv, protocol, parent)
         self.python_type = None
-        self.pv = setup_pv(pv, self.connected_cb, self.monitor_cb)
+        self.pv = setup_pv(pv,
+                           con_cb=self.connected_cb,
+                           mon_cb=self.monitor_cb,
+                           rwaccess_cb=self.rwaccess_cb)
         self.enums = None
-        self.rwacc = None
         self.sevr = None
         self.ctrl_llim = None
         self.ctrl_hlim = None
         self.units = None
         self.prec = None
+        self.count = None
+        self.epics_type = None
 
         # Auxilliary info to help with throttling
         self.scan_pv = setup_pv(pv + ".SCAN", mon_cb=self.scan_pv_cb,
-            mon_cb_once=True)
+                                mon_cb_once=True)
         self.throttle = QTimer(self)
         self.throttle.timeout.connect(self.throttle_cb)
 
@@ -175,7 +184,7 @@ class Connection(PyDMConnection):
             self.python_type = type_map.get(self.epics_type)
             if self.python_type is None:
                 raise Exception("Unsupported EPICS type {0} for pv {1}".format(
-                                self.epics_type, self.pv.name))
+                    self.epics_type, self.pv.name))
 
     def monitor_cb(self, e=None):
         """
@@ -185,6 +194,15 @@ class Connection(PyDMConnection):
         """
         if e is None:
             self.send_new_value(self.pv.value)
+
+    def rwaccess_cb(self, read_access, write_access):
+        """
+        Callback to run when the access state of our pv changes.
+
+        :param read_access: Whether or not the PV is readable.
+        :param write_access: Whether or not the PV is writeable.
+        """
+        self.send_access_state(read_access, write_access)
 
     def throttle_cb(self):
         """
@@ -209,18 +227,6 @@ class Connection(PyDMConnection):
         """
         if self.python_type is None:
             return
-        try:
-            rwacc = self.pv.rwaccess()
-        except:
-            rwacc = None
-        if rwacc is not None:
-            # Two bit binary number, 11 = read and write, 01 = read-only
-            # presumably this could be other numbers, but in practice it is
-            # either 3 for read and write or 1 for just read.
-            # Only send the write access state if it has changed, don't send it every time the PV updates.
-            if rwacc != self.rwacc:
-                self.rwacc = rwacc
-                self.write_access_signal.emit(rwacc == 3)
 
         if self.enums is None:
             try:
@@ -228,42 +234,91 @@ class Connection(PyDMConnection):
             except KeyError:
                 self.pv.get_enum_strings(-1.0)
 
-        if self.pv.severity != self.sevr:
+        if self.pv.severity is not None and self.pv.severity != self.sevr:
             self.sevr = self.pv.severity
             self.new_severity_signal.emit(self.sevr)
 
-        if self.prec is None:
-            try:
-                self.prec = self.pv.data['precision']
+        try:
+            prec = self.pv.data['precision']
+            if self.prec != prec:
+                self.prec = prec
                 self.prec_signal.emit(int(self.prec))
-            except KeyError:
-                pass
+        except KeyError:
+            pass
 
-        if self.units is None:
-            try:
-                self.units = self.pv.data['units']
+        try:
+            units = self.pv.data['units']
+            if self.units != units:
+                self.units = units
                 self.unit_signal.emit(self.units.decode(encoding='ascii'))
-            except KeyError:
-                pass
+        except KeyError:
+            pass
 
-        if self.ctrl_llim is None:
-            try:
-                self.ctrl_llim = self.pv.data['ctrl_llim']
+        try:
+            ctrl_llim = self.pv.data['ctrl_llim']
+            if self.ctrl_llim != ctrl_llim:
+                self.ctrl_llim = ctrl_llim
                 self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
-            except KeyError:
-                pass
-
-        if self.ctrl_hlim is None:
-            try:
-                self.ctrl_hlim = self.pv.data['ctrl_hlim']
+        except KeyError:
+            pass
+        
+        try:
+            ctrl_hlim = self.pv.data['ctrl_hlim']
+            if self.ctrl_hlim != ctrl_hlim:
+                self.ctrl_hlim = ctrl_hlim
                 self.upper_ctrl_limit_signal.emit(self.ctrl_hlim)
-            except KeyError:
-                pass
+        except KeyError:
+            pass
 
         if self.count > 1:
             self.new_value_signal[np.ndarray].emit(value)
         else:
             self.new_value_signal[self.python_type].emit(self.python_type(value))
+
+    def send_ctrl_vars(self):
+        if self.enums is None:
+            try:
+                self.update_enums()
+            except KeyError:
+                self.pv.get_enum_strings(-1.0)
+        else:
+            self.enum_strings_signal.emit(self.enums)
+
+        if self.pv.severity != self.sevr:
+            self.sevr = self.pv.severity
+        self.new_severity_signal.emit(self.sevr)
+
+        if self.prec is None:
+            try:
+                self.prec = self.pv.data['precision']
+            except KeyError:
+                pass
+        if self.prec:
+            self.prec_signal.emit(int(self.prec))
+            
+        if self.units is None:
+            try:
+                self.units = self.pv.data['units']
+            except KeyError:
+                pass
+        if self.units:
+            self.unit_signal.emit(self.units.decode(encoding='ascii'))
+
+        if self.ctrl_llim is None:
+            try:
+                self.ctrl_llim = self.pv.data['ctrl_llim']
+            except KeyError:
+                pass
+        if self.ctrl_llim:
+            self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
+            
+        if self.ctrl_hlim is None:
+            try:
+                self.ctrl_hlim = self.pv.data['ctrl_hlim']
+            except KeyError:
+                pass
+        if self.ctrl_hlim:
+            self.upper_ctrl_limit_signal.emit(self.ctrl_hlim)
 
     def send_connection_state(self, conn=None):
         """
@@ -273,6 +328,12 @@ class Connection(PyDMConnection):
         :type conn:  bool
         """
         self.connection_state_signal.emit(conn)
+
+    def send_access_state(self, read_access, write_access):
+        if is_pydm_app() and self.app.is_read_only():
+            self.write_access_signal.emit(False)
+            return
+        self.write_access_signal.emit(write_access)
 
     def update_enums(self):
         """
@@ -364,11 +425,13 @@ class Connection(PyDMConnection):
         """
         super(Connection, self).add_listener(channel)
         # If we are adding a listener to an already existing PV, we need to
-        # manually send the signals indicating that the PV is connected, what the latest value is, etc.
+        # manually send the signals indicating that the PV is connected, what
+        # the latest value is, etc.
         if self.pv.isconnected and self.pv.isinitialized:
             self.send_connection_state(conn=True)
             self.monitor_cb()
             self.update_enums()
+            self.send_ctrl_vars()
         if channel.value_signal is not None:
             try:
                 channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)

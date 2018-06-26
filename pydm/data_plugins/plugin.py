@@ -1,6 +1,6 @@
 from numpy import ndarray
 from ..PyQt.QtCore import pyqtSignal, QObject, Qt
-
+from ..PyQt.QtGui import QApplication
 
 class PyDMConnection(QObject):
     new_value_signal = pyqtSignal([float], [int], [str], [ndarray])
@@ -20,6 +20,7 @@ class PyDMConnection(QObject):
         self.connected = False
         self.value = None
         self.listener_count = 0
+        self.app = QApplication.instance()
 
     def add_listener(self, channel):
         self.listener_count = self.listener_count + 1
