@@ -142,8 +142,6 @@ class Connection(PyDMConnection):
         self.python_type = None
         self.pv = setup_pv(pv, con_cb=self.connected_cb, mon_cb=self.monitor_cb, rwaccess_cb=self.rwaccess_cb)
         self.enums = None
-        self.read_access = False
-        self.write_access = False
         self.sevr = None
         self.ctrl_llim = None
         self.ctrl_hlim = None
@@ -278,8 +276,6 @@ class Connection(PyDMConnection):
         self.connection_state_signal.emit(conn)
 
     def send_access_state(self, read_access, write_access):
-        self.read_access = read_access
-        self.write_access = write_access
         if is_pydm_app() and self.app.is_read_only():
             self.write_access_signal.emit(False)
             return
