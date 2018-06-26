@@ -7,6 +7,7 @@ import pyca
 from psp.Pv import Pv
 from pydm.PyQt.QtCore import pyqtSlot, Qt, QTimer
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
+from pydm.utilities import is_pydm_app
 
 # Map how we will interpret EPICS types in python.
 type_map = dict(
