@@ -1,4 +1,5 @@
 from .qtplugin_base import qtplugin_factory, WidgetCategory
+from .qtplugin_extensions import RulesTaskMenuExtension
 from .baseplot_qtplugin import qtplugin_plot_factory
 from .tab_bar_qtplugin import TabWidgetPlugin
 from .byte import PyDMByteIndicator
@@ -31,6 +32,8 @@ from .waveformplot_curve_editor import WaveformPlotCurveEditorDialog
 from .scatterplot import PyDMScatterPlot
 from .scatterplot_curve_editor import ScatterPlotCurveEditorDialog
 from .tab_bar import PyDMTabWidget
+
+BASE_EXTENSIONS = [RulesTaskMenuExtension]
 
 # Time Plot plugin
 PyDMTimePlotPlugin = qtplugin_plot_factory(
@@ -75,7 +78,8 @@ PyDMFramePlugin = qtplugin_factory(PyDMFrame, group=WidgetCategory.CONTAINER, is
 PyDMImageViewPlugin = qtplugin_factory(PyDMImageView, group=WidgetCategory.DISPLAY)
 
 # Label plugin
-PyDMLabelPlugin = qtplugin_factory(PyDMLabel, group=WidgetCategory.DISPLAY)
+PyDMLabelPlugin = qtplugin_factory(PyDMLabel, group=WidgetCategory.DISPLAY,
+                                   extensions=BASE_EXTENSIONS)
 
 # Line Edit plugin
 PyDMLineEditPlugin = qtplugin_factory(PyDMLineEdit, group=WidgetCategory.INPUT)

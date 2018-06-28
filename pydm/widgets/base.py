@@ -1,9 +1,19 @@
+import logging
 import functools
+import json
 import numpy as np
 from ..PyQt.QtGui import QApplication, QColor, QCursor, QMenu
 from ..PyQt.QtCore import Qt, QEvent, pyqtSignal, pyqtSlot, pyqtProperty
 from .channel import PyDMChannel
 from ..utilities import is_pydm_app
+from .rules import RulesEngine
+
+try:
+    from json.decoder import JSONDecodeError
+except ImportError:
+    JSONDecodeError = ValueError
+
+logger = logging.getLogger(__name__)
 
 
 def compose_stylesheet(style, base_class=None, obj=None):
@@ -170,6 +180,14 @@ class PyDMWidget(PyDMPrimitiveWidget):
         }
     }
 
+    DEFAULT_RULE_PROPERTY = "Visible"
+    RULE_PROPERTIES = {
+        'Enable': ['setEnabled', bool],
+        'Visible': ['setVisible', bool],
+        'Position - X': ['setX', int],
+        'Position - Y': ['setY', int]
+    }
+
     def __init__(self, init_channel=None):
         super(PyDMWidget, self).__init__()
         self.app = QApplication.instance()
@@ -193,6 +211,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
 
+        self._rules = None
+        self._rules_objs = []
+
         self.enum_strings = None
         self.format_string = "{}"
 
@@ -200,7 +221,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.channeltype = None
         self.subtype = None
 
-        # If this label is inside a PyDMApplication (not Designer) start it in the disconnected state.
+        # If this label is inside a PyDMApplication (not Designer) start it in '
+        # the disconnected state.
         if is_pydm_app():
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
@@ -497,6 +519,115 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         """
         self.update()
+
+    @pyqtSlot(dict)
+    def setRule(self, payload):
+        """
+        Callback called when a rule has a new value for a property.
+
+        Parameters
+        ----------
+        payload : dict
+            Dictionary containing the rule name, the property to be set and the
+            new value.
+
+        Returns
+        -------
+        None
+        """
+        name = payload.get('name', '')
+        prop = payload.get('property', '')
+        value = payload.get('value', None)
+
+        if prop not in PyDMWidget.RULE_PROPERTIES:
+            logger.error('Error at Rule: %s. %s is not part of this widget properties.',
+                         name, prop)
+            return
+
+        method_name, data_type = PyDMWidget.RULE_PROPERTIES[prop]
+        method = getattr(self, method_name)
+        method(value)
+
+    @pyqtProperty(str)
+    def rules(self):
+        """
+        JSON-formatted list of dictionaries, with rules for the widget.
+
+        Returns
+        -------
+        str
+        """
+        return self._rules
+
+    @rules.setter
+    def rules(self, new_rules):
+        """
+        JSON-formatted list of dictionaries, with rules for the widget.
+
+        Parameters
+        ----------
+        new_rules : str
+
+        Returns
+        -------
+        None
+        """
+        if new_rules != self._rules:
+            self._rules = new_rules
+
+            # Let's clean up the current actions
+            # and terminate all the action threads
+            # that are there...
+            if len(self._rules_objs) != 0:
+                for ao in self._rules_objs:
+                    ao.requestInterruption()
+                    ao.quit()
+                    ao.wait()
+                self._rules_objs = []
+            try:
+                rules_list = json.loads(self._rules)
+            except JSONDecodeError:
+                logger.error('Invalid format for Rules')
+                return
+
+            for ro in rules_list:
+                self._rules_objs.append(RulesEngine(ro))
+                self._rules_objs[-1].rule_signal.connect(self.setRule)
+                self._rules_objs[-1].start()
+
+    def setX(self, new_x):
+        """
+        Set the X position of the Widget on the screen.
+
+        Parameters
+        ----------
+        new_x : int
+            The new X position
+
+        Returns
+        -------
+        None
+        """
+        point = self.pos()
+        point.setX(new_x)
+        self.move(point)
+
+    def setY(self, new_y):
+        """
+        Set the Y position of the Widget on the screen.
+
+        Parameters
+        ----------
+        new_y : int
+            The new Y position
+
+        Returns
+        -------
+        None
+        """
+        point = self.pos()
+        point.setY(new_y)
+        self.move(point)
 
     @pyqtProperty(bool)
     def alarmSensitiveContent(self):

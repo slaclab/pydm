@@ -19,6 +19,7 @@ affect any of your widgets, but it will be annoying.
 
 """
 from ..PyQt import QtGui, QtDesigner
+from .qtplugin_extensions import PyDMExtensionFactory
 
 # TODO: Change to Enum once we drop support
 #       for the almost dead and agonizing Python 2.7
@@ -30,7 +31,9 @@ class WidgetCategory(object):
     PLOT = "PyDM Plot Widgets"
     DRAWING = "PyDM Drawing Widgets"
 
-def qtplugin_factory(cls, is_container=False, group='PyDM Widgets'):
+
+def qtplugin_factory(cls, is_container=False, group='PyDM Widgets',
+                     extensions=None):
     """
     Helper function to create a generic PyDMDesignerPlugin class.
 
@@ -40,15 +43,17 @@ def qtplugin_factory(cls, is_container=False, group='PyDM Widgets'):
     class Plugin(PyDMDesignerPlugin):
         __doc__ = "PyDMDesigner Plugin for {}".format(cls.__name__)
         def __init__(self):
-            super(Plugin, self).__init__(cls, is_container, group)
+            super(Plugin, self).__init__(cls, is_container, group, extensions)
     return Plugin
+
 
 class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
     """
     Parent class to standardize how pydm plugins are accessed in qt designer.
     All functions have default returns that can be overriden as necessary.
     """
-    def __init__(self, cls, is_container=False, group='PyDM Widgets'):
+    def __init__(self, cls, is_container=False, group='PyDM Widgets',
+                 extensions=None):
         """
         Set up the plugin using the class info in cls
 
@@ -60,6 +65,9 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         self.is_container = is_container
         self.cls = cls
         self.group = group
+        self.extensions = extensions
+        self.managers = []
+        print("Plugin Constructor: Extensions = ", self.extensions)
 
     def initialize(self, core):
         """
@@ -72,6 +80,23 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         """
         if self.initialized:
             return
+        print("Will create the extensions")
+        if self.extensions is not None and len(self.extensions) > 0:
+            print("Will create the manager")
+            manager = core.extensionManager()
+            if manager:
+                self.managers.append(manager)
+                for ex in self.extensions:
+                    print("Will create the extension factory for: ", ex)
+                    factory = PyDMExtensionFactory(parent=self.managers[-1],
+                                                   extension_class=ex)
+                    self.managers[-1].registerExtensions(
+                        factory,
+                        'org.qt-project.Qt.Designer.TaskMenu')  # Qt5
+                    self.managers[-1].registerExtensions(
+                        factory,
+                        'com.trolltech.Qt.Designer.TaskMenu')  # Qt4
+        print("Done create the extension.")
         self.initialized = True
 
     def isInitialized(self):

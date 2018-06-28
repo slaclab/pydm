@@ -1,7 +1,8 @@
 # Unit Tests for the base widget classes
 
 import pytest
-
+import logging
+import json
 
 from ...PyQt.QtCore import Qt
 from ...PyQt.QtGui import QColor
@@ -18,15 +19,22 @@ from ...widgets.channel import PyDMChannel
 # POSITIVE TEST CASES
 # --------------------
 
-@pytest.mark.parametrize("base_class, obj_class_name, obj_name, expected_style", [
-    ("PyDMWritableWidget", PyDMPushButton, None, "PyDMWritableWidget {color: #EB0000; }"),
-    ("PyDMWidget", PyDMLabel, None, "PyDMWidget {color: #EB0000; }"),
-    ("PyDMWritableWidget", None, None, "PyDMWritableWidget {color: #EB0000; }"),
-    (None, PyDMPushButton, None, "PyDMPushButton {color: #EB0000; }"),
-    (None, PyDMPushButton, "PushButton", "PyDMPushButton#PushButton {color: #EB0000; }"),
-    (None, None, "PushButton", " {color: #EB0000; }"),
-])
-def test_compose_stylesheet(monkeypatch, test_alarm_style_sheet_map, base_class, obj_class_name, obj_name,
+@pytest.mark.parametrize("base_class, obj_class_name, obj_name, expected_style",
+                         [
+                             ("PyDMWritableWidget", PyDMPushButton, None,
+                              "PyDMWritableWidget {color: #EB0000; }"),
+                             ("PyDMWidget", PyDMLabel, None,
+                              "PyDMWidget {color: #EB0000; }"),
+                             ("PyDMWritableWidget", None, None,
+                              "PyDMWritableWidget {color: #EB0000; }"),
+                             (None, PyDMPushButton, None,
+                              "PyDMPushButton {color: #EB0000; }"),
+                             (None, PyDMPushButton, "PushButton",
+                              "PyDMPushButton#PushButton {color: #EB0000; }"),
+                             (None, None, "PushButton", " {color: #EB0000; }"),
+                         ])
+def test_compose_stylesheet(qtbot, monkeypatch, test_alarm_style_sheet_map, base_class,
+                            obj_class_name, obj_name,
                             expected_style):
     """
     Test the style generated for the widget based on an alarm event.
@@ -37,6 +45,8 @@ def test_compose_stylesheet(monkeypatch, test_alarm_style_sheet_map, base_class,
 
     Parameters
     ----------
+    qtbot: fixture
+        Window for widget testing
     monkeypatch : fixture
         To temporarily override the behavior of a class
     test_alarm_style_sheet_map : fixture
@@ -53,12 +63,15 @@ def test_compose_stylesheet(monkeypatch, test_alarm_style_sheet_map, base_class,
     obj = None
     if obj_class_name:
         obj = obj_class_name()
+        qtbot.addWidget(obj)
 
     if obj_name:
         # Pretend that the push button can have an object name to test the object name concatenation to the style string
-        monkeypatch.setattr(PyDMPushButton, "objectName", lambda *args: obj_name)
+        monkeypatch.setattr(PyDMPushButton, "objectName",
+                            lambda *args: obj_name)
 
-    style = dict(test_alarm_style_sheet_map[PyDMWidget.ALARM_CONTENT][PyDMWidget.ALARM_MAJOR])
+    style = dict(test_alarm_style_sheet_map[PyDMWidget.ALARM_CONTENT][
+                     PyDMWidget.ALARM_MAJOR])
     style_name = compose_stylesheet(style, base_class=base_class, obj=obj)
     assert style_name == expected_style
 
@@ -86,9 +99,10 @@ def test_is_channel_valid(channel_address, expected):
 
 
 test_local_connection_status_color_map = {
-        False: QColor(0, 0, 0),
-        True: QColor(0, 0, 0,)
+    False: QColor(0, 0, 0),
+    True: QColor(0, 0, 0, )
 }
+
 
 @pytest.mark.parametrize("init_channel", [
     "CA://MA_TEST",
@@ -123,10 +137,13 @@ def test_pydm_widget_construct(qtbot, test_alarm_style_sheet_map, init_channel):
     assert pydm_label._show_units is False
     assert pydm_label._alarm_sensitive_content is False
     assert pydm_label.alarmSensitiveBorder is True
-    assert pydm_label._alarm_flags == (PyDMWidget.ALARM_CONTENT * pydm_label._alarm_sensitive_content) | (
-            PyDMWidget.ALARM_BORDER * pydm_label._alarm_sensitive_border)
+    assert pydm_label._alarm_flags == (
+                PyDMWidget.ALARM_CONTENT * pydm_label._alarm_sensitive_content) | (
+                   PyDMWidget.ALARM_BORDER * pydm_label._alarm_sensitive_border)
     assert pydm_label._alarm_state == PyDMWidget.ALARM_DISCONNECTED
-    assert pydm_label._style == test_alarm_style_sheet_map[pydm_label._alarm_flags][pydm_label._alarm_state]
+    assert pydm_label._style == \
+           test_alarm_style_sheet_map[pydm_label._alarm_flags][
+               pydm_label._alarm_state]
 
     if is_pydm_app and is_channel_valid(init_channel):
         assert pydm_label._tooltip == ""
@@ -149,6 +166,7 @@ def test_pydm_widget_construct(qtbot, test_alarm_style_sheet_map, init_channel):
 
     assert pydm_label.contextMenuPolicy() == Qt.DefaultContextMenu
     assert pydm_label.contextMenuEvent
+    assert pydm_label.rules is None
 
 
 @pytest.mark.parametrize("init_channel", [
@@ -247,7 +265,8 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
     qtbot : fixture
         pytest-qt window for widget test
     signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
+        The signals fixture, which provides access signals to be bound to the
+        appropriate slots
     which_limit : str
         "UPPER" if the new value is intended for the upper limit, "LOWER" for the lower limit
     new_limit : float
@@ -257,12 +276,14 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
     qtbot.addWidget(pydm_label)
 
     if which_limit == "UPPER":
-        signals.upper_ctrl_limit_signal[type(new_limit)].connect(pydm_label.upperCtrlLimitChanged)
+        signals.upper_ctrl_limit_signal[type(new_limit)].connect(
+            pydm_label.upperCtrlLimitChanged)
         signals.upper_ctrl_limit_signal[type(new_limit)].emit(new_limit)
 
         assert pydm_label.get_ctrl_limits()[1] == new_limit
     elif which_limit == "LOWER":
-        signals.lower_ctrl_limit_signal[type(new_limit)].connect(pydm_label.lowerCtrlLimitChanged)
+        signals.lower_ctrl_limit_signal[type(new_limit)].connect(
+            pydm_label.lowerCtrlLimitChanged)
         signals.lower_ctrl_limit_signal[type(new_limit)].emit(new_limit)
 
         assert pydm_label.get_ctrl_limits()[0] == new_limit
@@ -350,7 +371,8 @@ def test_channels_for_tools(qtbot):
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
 
-    assert all(x == y for x, y in zip(pydm_label.channels(), pydm_label.channels_for_tools()))
+    assert all(x == y for x, y in
+               zip(pydm_label.channels(), pydm_label.channels_for_tools()))
 
 
 def test_pydmwidget_channel_change(qtbot):
@@ -466,19 +488,21 @@ def test_pydmwritablewidget_channels(qtbot):
     assert pydm_lineedit.channels()[0] == new_channel
 
 
-@pytest.mark.parametrize("channel_address, connected, write_access, is_app_read_only", [
-    ("CA://MA_TEST", True, True, True),
-    ("CA://MA_TEST", True, False, True),
-    ("CA://MA_TEST", True, True, False),
-    ("CA://MA_TEST", True, False, False),
-    ("CA://MA_TEST", False, True, True),
-    ("CA://MA_TEST", False, False, True),
-    ("CA://MA_TEST", False, True, False),
-    ("CA://MA_TEST", False, False, False),
-    ("", False, False, False),
-    (None, False, False, False),
-])
-def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address, connected, write_access,
+@pytest.mark.parametrize(
+    "channel_address, connected, write_access, is_app_read_only", [
+        ("CA://MA_TEST", True, True, True),
+        ("CA://MA_TEST", True, False, True),
+        ("CA://MA_TEST", True, True, False),
+        ("CA://MA_TEST", True, False, False),
+        ("CA://MA_TEST", False, True, True),
+        ("CA://MA_TEST", False, False, True),
+        ("CA://MA_TEST", False, True, False),
+        ("CA://MA_TEST", False, False, False),
+        ("", False, False, False),
+        (None, False, False, False),
+    ])
+def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address,
+                                         connected, write_access,
                                          is_app_read_only):
     """
     Test the tooltip generated depending on the channel address validation, connection, write access, and whether the
@@ -513,7 +537,8 @@ def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address, co
     pydm_lineedit._connected = connected
     pydm_lineedit._write_access = write_access
 
-    monkeypatch.setattr(PyDMApplication, 'is_read_only', lambda *args: is_app_read_only)
+    monkeypatch.setattr(PyDMApplication, 'is_read_only',
+                        lambda *args: is_app_read_only)
 
     original_tooltip = "Original Tooltip"
     pydm_lineedit.setToolTip(original_tooltip)
@@ -538,7 +563,8 @@ def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address, co
     (PyDMWidget.ALARM_CONTENT, PyDMWidget.ALARM_MINOR, {"color": "#EBEB00"}),
     (PyDMWidget.ALARM_CONTENT, PyDMWidget.ALARM_MAJOR, {"color": "#EB0000"}),
     (PyDMWidget.ALARM_CONTENT, PyDMWidget.ALARM_INVALID, {"color": "#EB00EB"}),
-    (PyDMWidget.ALARM_CONTENT, PyDMWidget.ALARM_DISCONNECTED, {"color": "#EBEBEB"}),
+    (PyDMWidget.ALARM_CONTENT, PyDMWidget.ALARM_DISCONNECTED,
+     {"color": "#EBEBEB"}),
 
     (PyDMWidget.ALARM_CONTENT | PyDMWidget.ALARM_BORDER, PyDMWidget.ALARM_NONE,
      {"color": "black", "border": "2px solid transparent"}),
@@ -546,9 +572,11 @@ def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address, co
      {"color": "#EBEB00", "border": "2px solid #EBEB00"}),
     (PyDMWidget.ALARM_CONTENT | PyDMWidget.ALARM_BORDER, PyDMWidget.ALARM_MAJOR,
      {"color": "#EB0000", "border": "2px solid #EB0000"}),
-    (PyDMWidget.ALARM_CONTENT | PyDMWidget.ALARM_BORDER, PyDMWidget.ALARM_INVALID,
+    (PyDMWidget.ALARM_CONTENT | PyDMWidget.ALARM_BORDER,
+     PyDMWidget.ALARM_INVALID,
      {"color": "#EB00EB", "border": "2px solid #EB00EB"}),
-    (PyDMWidget.ALARM_CONTENT | PyDMWidget.ALARM_BORDER, PyDMWidget.ALARM_DISCONNECTED,
+    (PyDMWidget.ALARM_CONTENT | PyDMWidget.ALARM_BORDER,
+     PyDMWidget.ALARM_DISCONNECTED,
      {"color": "#EBEBEB", "border": "2px solid #EBEBEB"}),
 ])
 def test_qcolor_for_alarm(qtbot, alarm_type, alarm, expected_qcolor):
@@ -574,3 +602,101 @@ def test_qcolor_for_alarm(qtbot, alarm_type, alarm, expected_qcolor):
 
     qcolor = pydm_label.qcolor_for_alarm(alarm, alarm_type)
     assert qcolor == QColor(expected_qcolor["color"])
+
+
+def test_pydmwidget_setx_sety(qtbot):
+    """
+    Test the setX and setY method.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+
+    Returns
+    -------
+    None
+    """
+    pydm_label = PyDMLabel()
+    qtbot.addWidget(pydm_label)
+
+    pydm_label.setX(456)
+    pydm_label.setY(123)
+    pos = pydm_label.pos()
+    assert pos.x() == 456
+    assert pos.y() == 123
+
+
+def test_pydmwidget_rules(qtbot, caplog):
+    """
+    Test the rules mechanism.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    caplog : fixture
+        To capture the log messages
+    """
+    pydm_label = PyDMLabel()
+    qtbot.addWidget(pydm_label)
+
+    assert pydm_label._rules_objs == []
+
+    pydm_label.rules = "foo"
+    for record in caplog.records:
+        assert record.levelno == logging.ERROR
+    assert "Invalid format for Rules" in caplog.text
+
+    rules = [{'name': 'Rule #1', 'property': 'Enable',
+              'expression': 'ch[0] > 1',
+              'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+
+    rules_json = json.dumps(rules)
+    pydm_label.rules = rules_json
+    assert pydm_label.rules == rules_json
+    assert len(pydm_label._rules_objs) == 1
+
+    for ro in pydm_label._rules_objs:
+        assert ro.isRunning()
+
+    rules[0]['name'] = 'Rule #2'
+    rules_json = json.dumps(rules)
+    pydm_label.rules = rules_json
+
+
+def test_pydmwidget_setrule(qtbot, caplog):
+    """
+    Test the rules mechanism.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    caplog : fixture
+        To capture the log messages
+    """
+    widget = PyDMLineEdit()
+    qtbot.addWidget(widget)
+    widget.show()
+
+    payload = {
+        'name': 'Test Rule 1',
+        'property': 'Invalid Property',
+        'value': 'foo'
+    }
+
+    widget.setRule(payload)
+    for record in caplog.records:
+        assert record.levelno == logging.ERROR
+    assert "is not part of this widget properties" in caplog.text
+
+    payload = {
+        'name': 'Test Rule 1',
+        'property': 'Visible',
+        'value': False
+    }
+
+    assert widget.isVisible()
+    widget.setRule(payload)
+    assert not widget.isVisible()
