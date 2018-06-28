@@ -526,7 +526,7 @@ class PyDMDrawingImage(PyDMDrawing):
             if not abs_path.endswith(".gif"):
                 pixmap = QPixmap(abs_path)
             else:
-                self._movie = QMovie(abs_path)
+                self._movie = QMovie(abs_path, parent=self)
                 self._movie.setCacheMode(QMovie.CacheAll)
                 self._movie.frameChanged.connect(self.movie_frame_changed)
                 self._movie.finished.connect(self.movie_finished)
