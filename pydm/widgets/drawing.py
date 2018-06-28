@@ -529,7 +529,8 @@ class PyDMDrawingImage(PyDMDrawing):
                 self._movie = QMovie(abs_path, parent=self)
                 self._movie.setCacheMode(QMovie.CacheAll)
                 self._movie.frameChanged.connect(self.movie_frame_changed)
-                self._movie.finished.connect(self.movie_finished)
+                if self._movie.frameCount() > 1:
+                    self._movie.finished.connect(self.movie_finished)
                 self._movie.start()
 
         # Return a blank image if we don't have a valid path
