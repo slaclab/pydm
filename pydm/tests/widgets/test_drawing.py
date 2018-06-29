@@ -124,8 +124,7 @@ def test_pydmdrawing_sizeHint(qtbot):
     True,
     False,
 ])
-def test_pydmdrawing_paintEvent(qtbot, signals, test_alarm_style_sheet_map,
-                                alarm_sensitive_content):
+def test_pydmdrawing_paintEvent(qtbot, signals, alarm_sensitive_content):
     """
     Test the paintEvent handling of the widget. This test method will also execute PyDMDrawing alarm_severity_changed
     and draw_item().
@@ -139,8 +138,6 @@ def test_pydmdrawing_paintEvent(qtbot, signals, test_alarm_style_sheet_map,
         Window for widget testing
     signals : fixture
         The signals fixture, which provides access signals to be bound to the appropriate slots
-    test_alarm_style_sheet_map : fixture
-        The widget's style map, e.g. color, for different alarm severity levels
     alarm_sensitive_content : bool
         True if the widget will be redraw with a different color if an alarm is triggered; False otherwise
     """
@@ -472,8 +469,7 @@ def test_pydmdrawing_properties_and_setters(qtbot):
     True,
     False,
 ])
-def test_pydmdrawingline_draw_item(qtbot, signals, test_alarm_style_sheet_map,
-                                   alarm_sensitive_content):
+def test_pydmdrawingline_draw_item(qtbot, signals, alarm_sensitive_content):
     """
     Test PyDMDrawingLine base class drawing handling.
 
@@ -487,8 +483,6 @@ def test_pydmdrawingline_draw_item(qtbot, signals, test_alarm_style_sheet_map,
     signals : fixture
         To emit the alarm severity change signal in order to make an appearance change for the widget, thus triggering
         a redraw
-    test_alarm_style_sheet_map : fixture
-        The widget's style map, e.g. color, for different alarm severity levels
     alarm_sensitive_content : bool
         True if the widget will be redraw with a different color if an alarm is triggered; False otherwise
     """
