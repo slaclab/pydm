@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.drawing &mdash; PyDM v1.2.0+22.g03f6d99 documentation</title>
+  <title>pydm.widgets.drawing &mdash; PyDM v1.2.0+26.g2a5cf44 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.2.0+22.g03f6d99
+                v1.2.0+26.g2a5cf44
               </div>
             
           
@@ -174,7 +174,8 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span> <span class="n">QPolygon</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="p">(</span><span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span>
+                          <span class="n">QPolygon</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span><span class="p">,</span> <span class="n">QMovie</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">pyqtSlot</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtDesigner</span> <span class="k">import</span> <span class="n">QDesignerFormWindowInterface</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
@@ -616,6 +617,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">null_color</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">KeepAspectRatio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># Make sure we don&#39;t set a non-existant file</span>
         <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
@@ -668,6 +670,7 @@
 <span class="sd">            The filename to be used</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Expand user (~ or ~user) and environment variables.</span>
+        <span class="n">pixmap</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">new_file</span>
         <span class="n">abs_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expandvars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">))</span>
         <span class="n">is_app</span> <span class="o">=</span> <span class="n">is_pydm_app</span><span class="p">()</span>
@@ -688,7 +691,20 @@
                                  <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">)</span>
         <span class="c1"># Check that the path exists</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">abs_path</span><span class="p">):</span>
-            <span class="n">pixmap</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">abs_path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">abs_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.gif&quot;</span><span class="p">):</span>
+                <span class="n">pixmap</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">abs_path</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span> <span class="o">=</span> <span class="n">QMovie</span><span class="p">(</span><span class="n">abs_path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span><span class="o">.</span><span class="n">setCacheMode</span><span class="p">(</span><span class="n">QMovie</span><span class="o">.</span><span class="n">CacheAll</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span><span class="o">.</span><span class="n">frameChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">movie_frame_changed</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span><span class="o">.</span><span class="n">frameCount</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">movie_finished</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
         <span class="c1"># Return a blank image if we don&#39;t have a valid path</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Warn the user loudly if their file does not exist, but avoid</span>
@@ -698,8 +714,9 @@
             <span class="n">pixmap</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sizeHint</span><span class="p">())</span>
             <span class="n">pixmap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">null_color</span><span class="p">)</span>
         <span class="c1"># Update the display</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span> <span class="o">=</span> <span class="n">pixmap</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">pixmap</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span> <span class="o">=</span> <span class="n">pixmap</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMDrawingImage.sizeHint"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.sizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">isEmpty</span><span class="p">():</span>
@@ -741,16 +758,50 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingImage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">force_no_pen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">_scaled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span><span class="p">,</span>
-                                      <span class="n">Qt</span><span class="o">.</span><span class="n">SmoothTransformation</span><span class="p">)</span>
-        <span class="c1"># Make sure the image is centered if smaller than the widget itself</span>
-        <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="n">_scaled</span><span class="o">.</span><span class="n">width</span><span class="p">():</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Centering image horizontally ...&quot;</span><span class="p">)</span>
-            <span class="n">x</span> <span class="o">+=</span> <span class="p">(</span><span class="n">w</span><span class="o">-</span><span class="n">_scaled</span><span class="o">.</span><span class="n">width</span><span class="p">())</span><span class="o">/</span><span class="mi">2</span>
-        <span class="k">if</span> <span class="n">h</span> <span class="o">&gt;</span> <span class="n">_scaled</span><span class="o">.</span><span class="n">height</span><span class="p">():</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Centering image vertically ...&quot;</span><span class="p">)</span>
-            <span class="n">y</span> <span class="o">+=</span> <span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="n">_scaled</span><span class="o">.</span><span class="n">height</span><span class="p">())</span><span class="o">/</span><span class="mi">2</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawPixmap</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">_scaled</span><span class="p">)</span></div></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span><span class="p">,</span> <span class="n">QMovie</span><span class="p">):</span>
+            <span class="n">_scaled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span><span class="p">,</span>
+                                          <span class="n">Qt</span><span class="o">.</span><span class="n">SmoothTransformation</span><span class="p">)</span>
+            <span class="c1"># Make sure the image is centered if smaller than the widget itself</span>
+            <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="n">_scaled</span><span class="o">.</span><span class="n">width</span><span class="p">():</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Centering image horizontally ...&quot;</span><span class="p">)</span>
+                <span class="n">x</span> <span class="o">+=</span> <span class="p">(</span><span class="n">w</span><span class="o">-</span><span class="n">_scaled</span><span class="o">.</span><span class="n">width</span><span class="p">())</span><span class="o">/</span><span class="mi">2</span>
+            <span class="k">if</span> <span class="n">h</span> <span class="o">&gt;</span> <span class="n">_scaled</span><span class="o">.</span><span class="n">height</span><span class="p">():</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Centering image vertically ...&quot;</span><span class="p">)</span>
+                <span class="n">y</span> <span class="o">+=</span> <span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="n">_scaled</span><span class="o">.</span><span class="n">height</span><span class="p">())</span><span class="o">/</span><span class="mi">2</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawPixmap</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">_scaled</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMDrawingImage.movie_frame_changed"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.movie_frame_changed">[docs]</a>    <span class="k">def</span> <span class="nf">movie_frame_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_no</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback executed when a new frame is available at the QMovie.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        frame_no : int</span>
+<span class="sd">            The new frame index</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">curr_pixmap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span><span class="o">.</span><span class="n">currentPixmap</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span> <span class="o">=</span> <span class="n">curr_pixmap</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyDMDrawingImage.movie_finished"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.movie_finished">[docs]</a>    <span class="k">def</span> <span class="nf">movie_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback executed when the movie is finished.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div></div>
 
 
 <div class="viewcode-block" id="PyDMDrawingRectangle"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingRectangle">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingRectangle</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
@@ -1033,7 +1084,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.2.0+22.g03f6d99',
+            VERSION:'v1.2.0+26.g2a5cf44',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

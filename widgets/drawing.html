@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMDrawing Widgets &mdash; PyDM v1.2.0+22.g03f6d99 documentation</title>
+  <title>PyDMDrawing Widgets &mdash; PyDM v1.2.0+26.g2a5cf44 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.2.0+22.g03f6d99
+                v1.2.0+26.g2a5cf44
               </div>
             
           
@@ -527,6 +527,40 @@ This can be an absolute or relative path to the display file.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydm.widgets.drawing.PyDMDrawingImage.movie_finished">
+<code class="descname">movie_finished</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingImage.movie_finished"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.movie_finished" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback executed when the movie is finished.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.drawing.PyDMDrawingImage.movie_frame_changed">
+<code class="descname">movie_frame_changed</code><span class="sig-paren">(</span><em>frame_no</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingImage.movie_frame_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.movie_frame_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback executed when a new frame is available at the QMovie.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>frame_no</strong> (<em>int</em>) – The new frame index</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawingImage.sizeHint">
 <code class="descname">sizeHint</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span> &#x2192; QSize<a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingImage.sizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.sizeHint" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -791,7 +825,7 @@ This class inherits from PyDMDrawing.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v1.2.0+22.g03f6d99',
+            VERSION:'v1.2.0+26.g2a5cf44',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
