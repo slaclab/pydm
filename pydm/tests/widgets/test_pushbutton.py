@@ -479,8 +479,7 @@ def test_password():
     (PyDMWidget.ALARM_DISCONNECTED, False, True),
     (PyDMWidget.ALARM_DISCONNECTED, False, False)
 ])
-def test_push_button_alarms(qtbot, signals, test_alarm_style_sheet_map, alarm_severity, alarm_sensitive_content,
-                            alarm_sensitive_border):
+def test_push_button_alarms(qtbot, signals, alarm_severity, alarm_sensitive_content, alarm_sensitive_border):
     """
     Test the widget's appearance changes according to changes in alarm severity.
 
@@ -495,9 +494,6 @@ def test_push_button_alarms(qtbot, signals, test_alarm_style_sheet_map, alarm_se
         pytest-qt window for widget testing
     signals : fixture
         The signals fixture, which provides access signals to be bound to the appropriate slots
-    test_alarm_style_sheet_map : dict
-        The alarm style sheet map fixture, which provides a style sheet inventory to compare against the widget's
-        changing style
     alarm_severity : int
         The severity of an alarm (NONE, MINOR, MAJOR, INVALID, or DISCONNECTED)
     alarm_sensitive_content : bool

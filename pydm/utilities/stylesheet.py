@@ -33,9 +33,9 @@ def apply_stylesheet(stylesheet_file_path, timer=None):
         # If there is no stylesheet path provided by a command parameter, check for the env variable
         stylesheet_file_path = os.getenv("PYDM_STYLESHEET", None)
 
-    style_data = GLOBAL_STYLESHEET
     if stylesheet_file_path:
-        # Fallback, as there's no global stylesheet path provided by either the command parameter or the env variable
+        # Load style data from the stylesheet file. Otherwise, the fallback is already in place, i.e. PyDM will be
+        # using the data from the global stylesheet
         style_data = _get_style_data(stylesheet_file_path)
     if timer:
         # For PyDM Launcher, the timer should be None. This code is to handle Qt Designer only
@@ -44,6 +44,8 @@ def apply_stylesheet(stylesheet_file_path, timer=None):
     else:
         # For running PyDM Launcher
         _set_style_data(style_data, None)
+
+    return style_data
 
 
 def _get_style_data(stylesheet_file_path):
@@ -59,20 +61,18 @@ def _get_style_data(stylesheet_file_path):
     -------
     The style data read from the stylesheet file : str
     """
-    style_data = None
+    style_data = GLOBAL_STYLESHEET
     if stylesheet_file_path is not None:
-        style_data = None
         try:
             with open(stylesheet_file_path, 'r') as stylesheet_file:
                 logger.info("Opening style file '{0}'...".format(stylesheet_file_path))
-                style_data = stylesheet_file.read().replace(os.linesep, '')
+                style_data = stylesheet_file.read()
         except Exception as ex:
             logger.error("Error reading the stylesheet file '{0}'. Exception: {1}".format(stylesheet_file_path,
                                                                                           str(ex)))
     return style_data
 
 
-QT_DESIGNER_FORM_ROOT_OBJECT_NAME = "formContainer"
 def _set_style_data(style_data, timer):
     """
     Apply the global stylesheet data to a .ui form.
@@ -89,15 +89,35 @@ def _set_style_data(style_data, timer):
     """
     app = QApplication.instance()
     if is_pydm_app():
-        app.setStyleSheet(style_data)
+        _set_stylesheet_for_app(app, style_data)
     else:
         for w in app.allWidgets():
             try:
                 name = w.objectName()
             except:
                 name = ''
-            if name == QT_DESIGNER_FORM_ROOT_OBJECT_NAME:
+            # Set the stylesheet to the root form object
+            if name == "formContainer":
                 # This will be loaded from the file set by users to define the global stylesheet for the facility in
                 # use
                 w.setStyleSheet(style_data)
+                # A timer is fully expected here. If a timer cannot be provided for whatever reason, we must re-evaluate
+                # the current Qt Designer stylesheet application methodology
                 timer.stop()
+
+
+def _set_stylesheet_for_app(app, style_data):
+    """
+    Apply the global stylesheet for an app.
+
+    This method is needed due to unit testing requirements.
+
+    Parameters
+    ----------
+    app : PyDMApplication
+        The PyDMApplication instance
+    style_data : str
+        The stylesheet data, either from a file or from the GLOBAL_STYLESHEET
+
+    """
+    app.setStyleSheet(style_data)
