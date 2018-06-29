@@ -172,8 +172,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         mouse_event : QMouseEvent
 
         """
-	if mouse_event.button() != Qt.LeftButton:
-		return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
+        if mouse_event.button() != Qt.LeftButton:
+            return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
         try:
             if mouse_event.modifiers() == Qt.ShiftModifier or self._open_in_new_window:
                 self.open_display(target=self.NEW_WINDOW)
