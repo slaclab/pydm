@@ -2,7 +2,8 @@ import math
 import os
 import logging
 
-from ..PyQt.QtGui import QApplication, QWidget, QColor, QPainter, QBrush, QPen, QPolygon, QPixmap, QStyle, QStyleOption
+from ..PyQt.QtGui import (QApplication, QWidget, QColor, QPainter, QBrush, QPen,
+                          QPolygon, QPixmap, QStyle, QStyleOption, QMovie)
 from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, QSize, pyqtSlot
 from ..PyQt.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
@@ -444,6 +445,7 @@ class PyDMDrawingImage(PyDMDrawing):
         self._pixmap = QPixmap(hint)
         self._pixmap.fill(self.null_color)
         self._aspect_ratio_mode = Qt.KeepAspectRatio
+        self._movie = None
         # Make sure we don't set a non-existant file
         if filename:
             self.filename = filename
@@ -496,6 +498,7 @@ class PyDMDrawingImage(PyDMDrawing):
             The filename to be used
         """
         # Expand user (~ or ~user) and environment variables.
+        pixmap = None
         self._file = new_file
         abs_path = os.path.expanduser(os.path.expandvars(self._file))
         is_app = is_pydm_app()
@@ -516,7 +519,20 @@ class PyDMDrawingImage(PyDMDrawing):
                                  self._file)
         # Check that the path exists
         if os.path.isfile(abs_path):
-            pixmap = QPixmap(abs_path)
+            if self._movie is not None:
+                self._movie.stop()
+                self._movie.deleteLater()
+                self._movie = None
+            if not abs_path.endswith(".gif"):
+                pixmap = QPixmap(abs_path)
+            else:
+                self._movie = QMovie(abs_path, parent=self)
+                self._movie.setCacheMode(QMovie.CacheAll)
+                self._movie.frameChanged.connect(self.movie_frame_changed)
+                if self._movie.frameCount() > 1:
+                    self._movie.finished.connect(self.movie_finished)
+                self._movie.start()
+
         # Return a blank image if we don't have a valid path
         else:
             # Warn the user loudly if their file does not exist, but avoid
@@ -526,8 +542,9 @@ class PyDMDrawingImage(PyDMDrawing):
             pixmap = QPixmap(self.sizeHint())
             pixmap.fill(self.null_color)
         # Update the display
-        self._pixmap = pixmap
-        self.update()
+        if pixmap is not None:
+            self._pixmap = pixmap
+            self.update()
 
     def sizeHint(self):
         if self._pixmap.size().isEmpty():
@@ -569,16 +586,50 @@ class PyDMDrawingImage(PyDMDrawing):
         """
         super(PyDMDrawingImage, self).draw_item()
         x, y, w, h = self.get_bounds(maxsize=True, force_no_pen=True)
-        _scaled = self._pixmap.scaled(w, h, self._aspect_ratio_mode,
-                                      Qt.SmoothTransformation)
-        # Make sure the image is centered if smaller than the widget itself
-        if w > _scaled.width():
-            logger.debug("Centering image horizontally ...")
-            x += (w-_scaled.width())/2
-        if h > _scaled.height():
-            logger.debug("Centering image vertically ...")
-            y += (h - _scaled.height())/2
-        self._painter.drawPixmap(x, y, _scaled)
+        if not isinstance(self._pixmap, QMovie):
+            _scaled = self._pixmap.scaled(w, h, self._aspect_ratio_mode,
+                                          Qt.SmoothTransformation)
+            # Make sure the image is centered if smaller than the widget itself
+            if w > _scaled.width():
+                logger.debug("Centering image horizontally ...")
+                x += (w-_scaled.width())/2
+            if h > _scaled.height():
+                logger.debug("Centering image vertically ...")
+                y += (h - _scaled.height())/2
+            self._painter.drawPixmap(x, y, _scaled)
+
+    def movie_frame_changed(self, frame_no):
+        """
+        Callback executed when a new frame is available at the QMovie.
+
+        Parameters
+        ----------
+        frame_no : int
+            The new frame index
+
+        Returns
+        -------
+        None
+
+        """
+        if self._movie is None:
+            return
+        curr_pixmap = self._movie.currentPixmap()
+        self._pixmap = curr_pixmap
+        self.update()
+
+    def movie_finished(self):
+        """
+        Callback executed when the movie is finished.
+
+        Returns
+        -------
+        None
+        """
+        if self._movie is None:
+            return
+
+        self._movie.start()
 
 
 class PyDMDrawingRectangle(PyDMDrawing):
