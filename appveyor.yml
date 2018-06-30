@@ -44,8 +44,9 @@ install:
   # Build the recipe and use it the local build for install
   - "conda build -q conda-recipe --python=%TRAVIS_PYTHON_VERSION% --output-folder bld-dir"
   - "conda config --add channels \"file:///C:/projects/pydm/bld-dir\""
-  - "conda create -q -n test-environment python=%TRAVIS_PYTHON_VERSION% pydm --file dev-requirements.txt"
+  - "conda create -q -n test-environment python=%TRAVIS_PYTHON_VERSION% pydm"
   - activate test-environment
+  - pip install -r dev-requirements.txt
 
 test_script:
   - python run_tests.py --show-cov
