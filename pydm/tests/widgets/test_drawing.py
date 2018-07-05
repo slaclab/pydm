@@ -138,7 +138,7 @@ def test_pydmdrawing_paintEvent(qtbot, signals, alarm_sensitive_content):
     signals : fixture
         The signals fixture, which provides access signals to be bound to the appropriate slots
     alarm_sensitive_content : bool
-        True if the widget will be redraw with a different color if an alarm is triggered; False otherwise
+        True if the widget will be redraw with a different color if an alarm is triggered; False otherwise.
     """
     pydm_drawing = PyDMDrawing()
     qtbot.addWidget(pydm_drawing)
