@@ -17,8 +17,7 @@ def test_produce_alarm_stylesheet():
     For each widget, all the style combinations for alarm sensitivities, i.e. border and content, will be generated
     into a file.
     """
-    tmp = tempfile.NamedTemporaryFile()
-    stylesheet_location = tmp.name
+    stylesheet_location = tempfile.mkstemp(prefix="pydm_test_generate_stylesheet_file")[1]
 
     produce_alarm_stylesheet(stylesheet_location,
                              ["PyDMWidget", "PyDMWritableWidget", "PyDMLabel", "PyDMLineEdit", "PyDMSlider",
@@ -27,7 +26,7 @@ def test_produce_alarm_stylesheet():
     source_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "test_data",
                                     "alarm_stylesheet.css")
     with open(source_file_path) as source:
-        with open(tmp.name) as dest:
+        with open(stylesheet_location) as dest:
             diffs = difflib.unified_diff(
                 source.readlines(),
                 dest.readlines(),
@@ -38,3 +37,5 @@ def test_produce_alarm_stylesheet():
             for line in diffs:
                 diff_lines.append(line)
             assert len(diff_lines) == 0
+
+    os.remove(stylesheet_location)

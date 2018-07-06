@@ -113,14 +113,14 @@ def test_get_style_data(file_path):
     """
     style_data = _get_style_data(file_path)
     if file_path:
-        tmp = tempfile.NamedTemporaryFile()
+        tmp_file_path = tempfile.mkstemp(prefix="pydm_test_styletest")[1]
 
         # Open the file for writing.
-        with open(tmp.name, 'w') as f:
+        with open(tmp_file_path, 'w') as f:
             f.write(style_data)
 
         with open(file_path) as source:
-            with open(tmp.name) as dest:
+            with open(tmp_file_path) as dest:
                 diffs = difflib.unified_diff(
                     source.readlines(),
                     dest.readlines(),
@@ -131,6 +131,7 @@ def test_get_style_data(file_path):
                 for line in diffs:
                     diff_lines.append(line)
                 assert len(diff_lines) == 0
+        os.remove(tmp_file_path)
     else:
         assert style_data == GLOBAL_STYLESHEET
 
