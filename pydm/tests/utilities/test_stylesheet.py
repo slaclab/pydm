@@ -82,10 +82,10 @@ def test_apply_stylesheet(monkeypatch, caplog, file_path, env_path, timer):
     style_data = apply_stylesheet(file_path, timer)
 
     if file_path:
-        assert file_path in caplog.text
+        assert file_path.replace('\\', '') in caplog.text.replace('\\', '')
     else:
         if env_path:
-            assert env_path in caplog.text
+            assert env_path.replace('\\', '') in caplog.text.replace('\\', '')
         else:
             assert style_data == GLOBAL_STYLESHEET
     if timer:
@@ -127,13 +127,18 @@ def test_get_style_data(file_path):
                     fromfile='source',
                     tofile='dest',
                 )
-                diff_lines = []
-                for line in diffs:
-                    diff_lines.append(line)
-                assert len(diff_lines) == 0
-                dest.close()
-            source.close()
-        os.remove(tmp_file_path)
+
+        diff_lines = []
+        for line in diffs:
+            diff_lines.append(line)
+        assert len(diff_lines) == 0
+
+        try:
+            os.remove(tmp_file_path)
+        except (PermissionError, WindowsError):
+            # Ignore the "[Error 32] The process cannot access the file because it is being used by another process"
+            # error on Windows, when the test is run as a non-Administrator in a Windows test session
+            pass
     else:
         assert style_data == GLOBAL_STYLESHEET
 

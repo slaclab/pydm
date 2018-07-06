@@ -25,6 +25,7 @@ def test_produce_alarm_stylesheet():
 
     source_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "test_data",
                                     "alarm_stylesheet.css")
+
     with open(source_file_path) as source:
         with open(stylesheet_location) as dest:
             diffs = difflib.unified_diff(
@@ -33,10 +34,15 @@ def test_produce_alarm_stylesheet():
                 fromfile='source',
                 tofile='dest',
             )
-            diff_lines = []
-            for line in diffs:
-                diff_lines.append(line)
-            assert len(diff_lines) == 0
-            dest.close()
-        source.close()
+
+    diff_lines = []
+    for line in diffs:
+        diff_lines.append(line)
+    assert len(diff_lines) == 0
+
+    try:
         os.remove(stylesheet_location)
+    except (PermissionError, WindowsError):
+        # Ignore the "[Error 32] The process cannot access the file because it is being used by another process"
+        # error on Windows, when the test is run as a non-Administrator in a Windows test session
+        pass
