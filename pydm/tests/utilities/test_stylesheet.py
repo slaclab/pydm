@@ -121,21 +121,12 @@ def test_get_style_data(file_path):
 
         with open(file_path) as source:
             with open(tmp_file_path) as dest:
-                diffs = difflib.unified_diff(
-                    source.readlines(),
-                    dest.readlines(),
-                    fromfile='source',
-                    tofile='dest',
-                )
-
-        diff_lines = []
-        for line in diffs:
-            diff_lines.append(line)
-        assert len(diff_lines) == 0
+                diffs =  set(source).difference(dest)
+        assert len(diffs) == 0
 
         try:
             os.remove(tmp_file_path)
-        except (PermissionError, WindowsError):
+        except:
             # Ignore the "[Error 32] The process cannot access the file because it is being used by another process"
             # error on Windows, when the test is run as a non-Administrator in a Windows test session
             pass
