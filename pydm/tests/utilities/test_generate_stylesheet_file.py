@@ -37,5 +37,6 @@ def test_produce_alarm_stylesheet():
             for line in diffs:
                 diff_lines.append(line)
             assert len(diff_lines) == 0
-
-    os.remove(stylesheet_location)
+            dest.close()
+        source.close()
+        os.remove(stylesheet_location)

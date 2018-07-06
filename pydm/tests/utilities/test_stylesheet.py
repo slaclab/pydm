@@ -131,6 +131,8 @@ def test_get_style_data(file_path):
                 for line in diffs:
                     diff_lines.append(line)
                 assert len(diff_lines) == 0
+                dest.close()
+            source.close()
         os.remove(tmp_file_path)
     else:
         assert style_data == GLOBAL_STYLESHEET
