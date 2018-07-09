@@ -206,6 +206,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         self.needs_new_y = False
         if self.x_channel is None or self.x_waveform is not None:
             self.update_waveforms_if_ready()
+            self.data_changed.emit()
 
     def redrawCurve(self):
         """
@@ -357,6 +358,7 @@ class PyDMWaveformPlot(BasePlot):
             plot_opts['lineWidth'] = lineWidth
         if redraw_mode is not None:
             plot_opts['redraw_mode'] = redraw_mode
+        self._needs_redraw = False
         curve = WaveformCurveItem(y_addr=y_channel,
                                   x_addr=x_channel,
                                   name=name,
@@ -364,6 +366,7 @@ class PyDMWaveformPlot(BasePlot):
                                   **plot_opts)
         self.channel_pairs[(y_channel, x_channel)] = curve
         self.addCurve(curve, curve_color=color)
+        curve.data_changed.connect(self.set_needs_redraw)
 
     def removeChannel(self, curve):
         """
@@ -388,6 +391,10 @@ class PyDMWaveformPlot(BasePlot):
         """
         curve = self._curves[index]
         self.removeChannel(curve)
+
+    @pyqtSlot()
+    def set_needs_redraw(self):
+        self._needs_redraw = True
 
     def updateAxes(self):
         """
@@ -421,9 +428,12 @@ class PyDMWaveformPlot(BasePlot):
         Request a redraw from each curve in the plot.
         Called by curves when they get new data.
         """
+        if not self._needs_redraw:
+            return
         self.updateAxes()
         for curve in self._curves:
             curve.redrawCurve()
+        self._needs_redraw = False
 
     def clearCurves(self):
         """
