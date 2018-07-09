@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.waveformplot &mdash; PyDM v1.2.0+31.g72f7ef6 documentation</title>
+  <title>pydm.widgets.waveformplot &mdash; PyDM v1.2.0+33.g4d8be0a documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.2.0+31.g72f7ef6
+                v1.2.0+33.g4d8be0a
               </div>
             
           
@@ -378,6 +378,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_y</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_channel</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_waveforms_if_ready</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">redrawCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -529,13 +530,15 @@
             <span class="n">plot_opts</span><span class="p">[</span><span class="s1">&#39;lineWidth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lineWidth</span>
         <span class="k">if</span> <span class="n">redraw_mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">plot_opts</span><span class="p">[</span><span class="s1">&#39;redraw_mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">redraw_mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_needs_redraw</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">curve</span> <span class="o">=</span> <span class="n">WaveformCurveItem</span><span class="p">(</span><span class="n">y_addr</span><span class="o">=</span><span class="n">y_channel</span><span class="p">,</span>
                                   <span class="n">x_addr</span><span class="o">=</span><span class="n">x_channel</span><span class="p">,</span>
                                   <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                                   <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
                                   <span class="o">**</span><span class="n">plot_opts</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel_pairs</span><span class="p">[(</span><span class="n">y_channel</span><span class="p">,</span> <span class="n">x_channel</span><span class="p">)]</span> <span class="o">=</span> <span class="n">curve</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addCurve</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">curve_color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addCurve</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">curve_color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+        <span class="n">curve</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_needs_redraw</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMWaveformPlot.removeChannel"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannel">[docs]</a>    <span class="k">def</span> <span class="nf">removeChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -560,6 +563,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">curve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">removeChannel</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span></div>
+
+    <span class="nd">@pyqtSlot</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">set_needs_redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_needs_redraw</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="PyDMWaveformPlot.updateAxes"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.updateAxes">[docs]</a>    <span class="k">def</span> <span class="nf">updateAxes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -593,9 +600,12 @@
 <span class="sd">        Request a redraw from each curve in the plot.</span>
 <span class="sd">        Called by curves when they get new data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_needs_redraw</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">updateAxes</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">:</span>
-            <span class="n">curve</span><span class="o">.</span><span class="n">redrawCurve</span><span class="p">()</span></div>
+            <span class="n">curve</span><span class="o">.</span><span class="n">redrawCurve</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_needs_redraw</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="PyDMWaveformPlot.clearCurves"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.clearCurves">[docs]</a>    <span class="k">def</span> <span class="nf">clearCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -720,7 +730,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.2.0+31.g72f7ef6',
+            VERSION:'v1.2.0+33.g4d8be0a',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
