@@ -3,6 +3,9 @@ import os
 import logging
 logger = logging.getLogger(__name__)
 
+from ..PyQt.QtCore import QTimer
+from ..utilities.stylesheet import apply_stylesheet
+
 from .qtplugin_base import qtplugin_factory, WidgetCategory
 from .qtplugin_extensions import (RulesExtension, WaveformCurveEditorExtension,
                                   TimeCurveEditorExtension,
@@ -172,10 +175,7 @@ PyDMTabWidgetPlugin = TabWidgetPlugin(extensions=BASE_EXTENSIONS)
 
 # Import stylesheet, if provided
 stylesheet_path = os.getenv("PYDM_STYLESHEET", None)
-if stylesheet_path:
-    from ..PyQt.QtCore import QTimer
-    from ..utilities.stylesheet import apply_stylesheet
 
-    timer = QTimer()
-    timer.setInterval(500)
-    apply_stylesheet(stylesheet_path, timer)
+timer = QTimer()
+timer.setInterval(500)
+apply_stylesheet(stylesheet_path, timer)
