@@ -3,6 +3,7 @@ import logging
 
 from ...widgets.rules import RulesEngine
 
+
 def test_rules_constructor(qapp):
     """
     Test the rules constructor.

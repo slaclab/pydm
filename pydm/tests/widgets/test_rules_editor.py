@@ -12,6 +12,16 @@ from ...widgets.rules_editor import RulesEditor
 
 
 def test_rules_editor(qtbot, monkeypatch):
+    """
+    Test the rules editor in general.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget test
+    monkeypatch : fixture
+        To override dialog behaviors
+    """
     # Create the base widget
     widget = PyDMLabel()
     qtbot.addWidget(widget)
@@ -137,6 +147,14 @@ def test_rules_editor(qtbot, monkeypatch):
 
 
 def test_rules_editor_data_valid(qtbot):
+    """
+    Test the rules form validation.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget test
+    """
     def validate(expected_status, expected_msg):
         status, msg = re.is_data_valid()
         assert status == expected_status
@@ -188,6 +206,16 @@ def test_rules_editor_data_valid(qtbot):
 
 
 def test_rules_editor_open_help(qtbot, monkeypatch):
+    """
+    Test the Open Help button
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget test
+    monkeypatch : fixture
+        To override dialog behaviors
+    """
     # Create the base widget
     widget = PyDMLabel()
     qtbot.addWidget(widget)
