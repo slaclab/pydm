@@ -392,7 +392,7 @@ class PyDMApplication(QApplication):
             to pass in extra arguments.  It is probably rare that code you
             write needs to use this argument.
         establish_connection : bool, optional
-            Whether or not we should call ``establish_widget_connections for this
+            Whether or not we should call `establish_widget_connections` for this
             new widget. Default is True.
 
         Returns
