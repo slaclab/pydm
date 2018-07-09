@@ -67,7 +67,6 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         self.group = group
         self.extensions = extensions
         self.managers = []
-        print("Plugin Constructor: Extensions = ", self.extensions)
 
     def initialize(self, core):
         """
@@ -80,14 +79,11 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         """
         if self.initialized:
             return
-        print("Will create the extensions")
         if self.extensions is not None and len(self.extensions) > 0:
-            print("Will create the manager")
             manager = core.extensionManager()
             if manager:
                 self.managers.append(manager)
                 for ex in self.extensions:
-                    print("Will create the extension factory for: ", ex)
                     factory = PyDMExtensionFactory(parent=self.managers[-1],
                                                    extension_class=ex)
                     self.managers[-1].registerExtensions(
@@ -96,7 +92,6 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
                     self.managers[-1].registerExtensions(
                         factory,
                         'com.trolltech.Qt.Designer.TaskMenu')  # Qt4
-        print("Done create the extension.")
         self.initialized = True
 
     def isInitialized(self):
