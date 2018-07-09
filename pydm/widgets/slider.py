@@ -3,7 +3,7 @@ logger = logging.getLogger(__name__)
 
 from ..PyQt.QtGui import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
 from ..PyQt.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty
-from .base import PyDMWritableWidget, compose_stylesheet
+from .base import PyDMWritableWidget
 import numpy as np
 
 class PyDMSlider(QFrame, PyDMWritableWidget):
@@ -227,28 +227,6 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         if not self._slider.isSliderDown():
             self.set_slider_to_closest_value(self.value)
 
-    def alarm_severity_changed(self, new_alarm_severity):
-        """
-        Callback invoked when the Channel alarm severity is changed.
-        This callback is not processed if the widget has no channel
-        associated with it.
-        This callback handles the composition of the stylesheet to be
-        applied and the call
-        to update to redraw the widget with the needed changes for the
-        new state.
-
-        Parameters
-        ----------
-        new_alarm_severity : int
-            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
-            and 3 = INVALID
-        """
-        PyDMWritableWidget.alarm_severity_changed(self, new_alarm_severity)
-        if hasattr(self, "value_label"):
-            if self._channel:
-                style = compose_stylesheet(style=self._style, obj=self.value_label)
-                self.value_label.setStyleSheet(style)
-                self.update()
 
     def ctrl_limit_changed(self, which, new_limit):
         """

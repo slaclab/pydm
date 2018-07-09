@@ -1,4 +1,4 @@
-from .base import PyDMWidget, compose_stylesheet
+from .base import PyDMWidget
 from ..PyQt.QtGui import QFrame, QVBoxLayout, QHBoxLayout, QPainter, QColor, QPolygon, QPen, QLabel, QSizePolicy, QWidget, QGridLayout
 from ..PyQt.QtCore import Qt, QPoint, pyqtProperty
 from ..PyQt.Qt import QWIDGETSIZE_MAX
@@ -654,27 +654,6 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
             self.lower_label.hide()
             self.upper_label.hide()
 
-    def alarm_severity_changed(self, new_alarm_severity):
-        """
-        Callback invoked when the Channel alarm severity is changed.
-        This callback is not processed if the widget has no channel
-        associated with it.
-        This callback handles the composition of the stylesheet to be
-        applied and the call
-        to update to redraw the widget with the needed changes for the
-        new state.
-
-        Parameters
-        ----------
-        new_alarm_severity : int
-            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
-            and 3 = INVALID
-        """
-        PyDMWidget.alarm_severity_changed(self, new_alarm_severity)
-        if self._channels is not None:
-            style = compose_stylesheet(style=self._style, obj=self.value_label)
-            self.value_label.setStyleSheet(style)
-            self.repaint()
 
     @pyqtProperty(bool)
     def showTicks(self):
