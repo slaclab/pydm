@@ -103,25 +103,6 @@ class PyDMDrawing(QWidget, PyDMWidget):
         self.draw_item()
         self._painter.end()
 
-    def alarm_severity_changed(self, new_alarm_severity):
-        """
-        Callback invoked when the Channel alarm severity is changed.
-        This callback is not processed if the widget has no channel
-        associated with it.
-        This callback handles the composition of the stylesheet to be
-        applied and the call
-        to update to redraw the widget with the needed changes for the
-        new state.
-
-        Parameters
-        ----------
-        new_alarm_severity : int
-            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
-            and 3 = INVALID
-        """
-        PyDMWidget.alarm_severity_changed(self, new_alarm_severity)
-        self.update()
-
     def draw_item(self):
         """
         The classes inheriting from PyDMDrawing must overwrite this method.
