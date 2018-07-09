@@ -50,26 +50,6 @@ class PyDMFrame(QFrame, PyDMWidget):
             self._disable_on_disconnect = new_val
             self.check_enable_state()
 
-    def alarm_severity_changed(self, new_alarm_severity):
-        """
-        Callback invoked when the Channel alarm severity is changed.
-        This callback is not processed if the widget has no channel
-        associated with it.
-        This callback handles the composition of the stylesheet to be
-        applied and the call
-        to update to redraw the widget with the needed changes for the
-        new state.
-
-        Parameters
-        ----------
-        new_alarm_severity : int
-            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
-            and 3 = INVALID
-        """
-        if self._channel is None:
-            return
-        super(PyDMFrame, self).alarm_severity_changed(new_alarm_severity)
-
     def check_enable_state(self):
         """
         Checks whether or not the widget should be disable.
