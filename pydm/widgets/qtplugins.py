@@ -3,6 +3,9 @@ import os
 import logging
 logger = logging.getLogger(__name__)
 
+from ..PyQt.QtCore import QTimer
+from ..utilities.stylesheet import apply_stylesheet
+
 from .qtplugin_base import qtplugin_factory, WidgetCategory
 from .baseplot_qtplugin import qtplugin_plot_factory
 from .tab_bar_qtplugin import TabWidgetPlugin
@@ -118,10 +121,7 @@ PyDMTabWidgetPlugin = TabWidgetPlugin()
 
 # Import stylesheet, if provided
 stylesheet_path = os.getenv("PYDM_STYLESHEET", None)
-if stylesheet_path:
-    from ..PyQt.QtCore import QTimer
-    from ..utilities.stylesheet import apply_stylesheet
 
-    timer = QTimer()
-    timer.setInterval(500)
-    apply_stylesheet(stylesheet_path, timer)
+timer = QTimer()
+timer.setInterval(500)
+apply_stylesheet(stylesheet_path, timer)
