@@ -269,7 +269,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         self.update_format_string()
 
-    @pyqtProperty(int)
+    @pyqtProperty(int, designable=False)
     def alarmSeverity(self):
         return self._alarm_state
 
