@@ -62,7 +62,7 @@ def path_info(path_str):
     return dir_name, file_name, args
 
 
-def find_display_in_path(file, mode=None, path=None):
+def find_display_in_path(file, mode=None, path=None, pathext=None):
     """
     Look for a display file in a given path.
     This is basically a wrapper on top of the ``which``
@@ -84,15 +84,17 @@ def find_display_in_path(file, mode=None, path=None):
     str
         Returns the full path to the file or None in case it was not found.
     """
+    if pathext is None and sys.platform == "win32":
+        pathext = ".ui"
     if path is None:
         path = os.getenv("PYDM_DISPLAYS_PATH", None)
     if mode is None:
         mode = os.F_OK | os.R_OK
 
-    return which(file, mode, path)
+    return which(file, mode, path, pathext=pathext)
 
 
-def which(cmd, mode=os.F_OK | os.X_OK, path=None):
+def which(cmd, mode=os.F_OK | os.X_OK, path=None, pathext=None):
     """Given a command, mode, and a PATH string, return the path which
     conforms to the given mode on the PATH, or None if there is no such
     file.
@@ -131,7 +133,9 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None):
             path.insert(0, os.curdir)
 
         # PATHEXT is necessary to check on Windows.
-        pathext = os.environ.get("PATHEXT", "").split(os.pathsep)
+        if pathext is None:
+            pathext = os.environ.get("PATHEXT", "")
+        pathext = pathext.split(os.pathsep)
         # See if the given file matches any of the expected path
         # extensions. This will allow us to short circuit when given
         # "python.exe". If it does match, only test that one, otherwise we
