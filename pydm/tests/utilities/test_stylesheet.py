@@ -122,6 +122,7 @@ def test_get_style_data(file_path):
         with open(file_path) as source:
             with open(tmp_file_path) as dest:
                 diffs =  set(source).difference(dest)
+
         assert len(diffs) == 0
 
         try:
@@ -131,7 +132,7 @@ def test_get_style_data(file_path):
             # error on Windows, when the test is run as a non-Administrator in a Windows test session
             pass
     else:
-        assert style_data == GLOBAL_STYLESHEET
+        assert style_data is not None and len(style_data) > 0
 
 
 @pytest.mark.parametrize("is_pydm_app", [
@@ -201,10 +202,20 @@ def test_set_style_data(qtbot, monkeypatch, caplog, is_pydm_app):
 # --------------------
 # NEGATIVE TEST CASES
 # --------------------
+@pytest.mark.parametrize("file_path", [
+    "foo",
+    None
+])
+def test_apply_stylesheet_neg(caplog, monkeypatch, file_path):
+    if not file_path:
+        monkeypatch.setattr(utilities.stylesheet, "GLOBAL_STYLESHEET", "wrong_default_filename")
 
-def test_apply_stylesheet_neg(caplog):
-    _get_style_data("foo")
+    _get_style_data(file_path)
 
     for record in caplog.records:
         assert record.levelno == logging.ERROR
-    assert "Error reading the stylesheet file 'foo'" in caplog.text
+
+    if file_path:
+        assert "Error reading the stylesheet file 'foo'" in caplog.text
+    else:
+        assert "Cannot find the default stylesheet file 'wrong_default_filename'" in caplog.text

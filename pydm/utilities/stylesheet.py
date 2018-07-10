@@ -11,10 +11,7 @@ from . import is_pydm_app
 
 # Fallback global stylesheet if there is no global stylesheet provided via env variable or command line parameter
 # TODO: Expand this global stylesheet
-GLOBAL_STYLESHEET = "QLabel {" \
-                    "   background-color: blue; }" \
-                    "PyDMLabel {" \
-                    "   background-color: orange; }"
+GLOBAL_STYLESHEET = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'default_stylesheet.css')
 
 
 def apply_stylesheet(stylesheet_file_path, timer=None):
@@ -33,10 +30,10 @@ def apply_stylesheet(stylesheet_file_path, timer=None):
         # If there is no stylesheet path provided by a command parameter, check for the env variable
         stylesheet_file_path = os.getenv("PYDM_STYLESHEET", None)
 
-    if stylesheet_file_path:
-        # Load style data from the stylesheet file. Otherwise, the fallback is already in place, i.e. PyDM will be
-        # using the data from the global stylesheet
-        style_data = _get_style_data(stylesheet_file_path)
+    # Load style data from the stylesheet file. Otherwise, the fallback is already in place, i.e. PyDM will be
+    # using the data from the global stylesheet
+    style_data = _get_style_data(stylesheet_file_path)
+
     if timer:
         # For PyDM Launcher, the timer should be None. This code is to handle Qt Designer only
         timer.timeout.connect(partial(_set_style_data, style_data, timer))
@@ -61,7 +58,7 @@ def _get_style_data(stylesheet_file_path):
     -------
     The style data read from the stylesheet file : str
     """
-    style_data = GLOBAL_STYLESHEET
+    style_data = None
     if stylesheet_file_path is not None:
         try:
             with open(stylesheet_file_path, 'r') as stylesheet_file:
@@ -70,6 +67,14 @@ def _get_style_data(stylesheet_file_path):
         except Exception as ex:
             logger.error("Error reading the stylesheet file '{0}'. Exception: {1}".format(stylesheet_file_path,
                                                                                           str(ex)))
+    else:
+        try:
+            with open(GLOBAL_STYLESHEET) as default_stylesheet:
+                logger.info("Opening the default stylesheet '{0}'...".format(GLOBAL_STYLESHEET))
+                style_data = default_stylesheet.read()
+        except Exception as ex:
+            logger.error("Cannot find the default stylesheet file '{0}'. Exception: {1}".format(GLOBAL_STYLESHEET,
+                                                                                                str(ex)))
     return style_data
 
 
