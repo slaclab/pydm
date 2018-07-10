@@ -650,7 +650,7 @@ def test_pydmwidget_rules(qtbot, caplog):
 
     rules = [{'name': 'Rule #1', 'property': 'Enable',
               'expression': 'ch[0] > 1',
-              'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+              'channels': [{'channel': 'foo://MTEST:Float', 'trigger': True}]}]
 
     rules_json = json.dumps(rules)
     pydm_label.rules = rules_json

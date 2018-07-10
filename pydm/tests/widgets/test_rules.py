@@ -24,7 +24,7 @@ def test_rules_constructor(qapp):
 
     rule_map = {'name': 'Rule #1', 'property': 'Enable',
               'expression': 'ch[0] > 1',
-              'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}
+              'channels': [{'channel': 'foo://MTEST:Float', 'trigger': True}]}
     r_eng = RulesEngine(rule_map)
 
     assert r_eng.should_calculate is False
@@ -34,7 +34,7 @@ def test_rules_constructor(qapp):
     assert r_eng.channels_value == [None]
 
     assert len(r_eng.channels) == 1
-    assert r_eng.channels[0].address == "ca://MTEST:Float"
+    assert r_eng.channels[0].address == "foo://MTEST:Float"
 
 
 def test_rules_full(qapp, signals, caplog):
@@ -53,7 +53,7 @@ def test_rules_full(qapp, signals, caplog):
     """
     rule_map = {'name': 'Rule #1', 'property': 'Enable',
                 'expression': 'ch[0] > 1',
-                'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}
+                'channels': [{'channel': 'foo://MTEST:Float', 'trigger': True}]}
     r_eng = RulesEngine(rule_map)
     r_eng.rule_signal.connect(signals.receiveValue)
 
