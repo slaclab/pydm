@@ -92,7 +92,11 @@ class PyDMPrimitiveWidget(object):
     All Widget classes from PyDMWidget will be True for
     isinstance(obj, PyDMPrimitiveWidget)
     """
-    pass
+    DEFAULT_RULE_PROPERTY = "Visible"
+    RULE_PROPERTIES = {
+        'Enable': ['setEnabled', bool],
+        'Visible': ['setVisible', bool],
+    }
 
 
 class PyDMWidget(PyDMPrimitiveWidget):
