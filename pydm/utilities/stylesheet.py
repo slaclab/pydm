@@ -11,7 +11,7 @@ from . import is_pydm_app
 
 # Fallback global stylesheet if there is no global stylesheet provided via env variable or command line parameter
 # TODO: Expand this global stylesheet
-GLOBAL_STYLESHEET = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'default_stylesheet.css')
+GLOBAL_STYLESHEET = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../default_stylesheet.qss')
 
 
 def apply_stylesheet(stylesheet_file_path, timer=None):
