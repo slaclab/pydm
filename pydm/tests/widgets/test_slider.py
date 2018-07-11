@@ -8,7 +8,7 @@ from ...PyQt.QtGui import QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy
 from ...PyQt.QtCore import Qt, pyqtSignal, pyqtProperty, QMargins
 
 from ...widgets.slider import PyDMSlider
-from ...widgets.base import PyDMWidget, PyDMWritableWidget, compose_stylesheet
+from ...widgets.base import PyDMWidget
 
 
 # --------------------
@@ -466,30 +466,30 @@ def test_value_changed(qtbot, signals, monkeypatch, new_channel_value, is_slider
 
 
 @pytest.mark.parametrize("channel, alarm_sensitive_content, alarm_sensitive_border, new_alarm_severity", [
-    (None, False, False, PyDMWidget.NO_ALARM),
-    (None, False, True, PyDMWidget.NO_ALARM),
-    (None, True, False, PyDMWidget.NO_ALARM),
-    (None, True, True, PyDMWidget.NO_ALARM),
+    (None, False, False, PyDMWidget.ALARM_NONE),
+    (None, False, True, PyDMWidget.ALARM_NONE),
+    (None, True, False, PyDMWidget.ALARM_NONE),
+    (None, True, True, PyDMWidget.ALARM_NONE),
 
     (None, False, False, PyDMWidget.ALARM_MAJOR),
     (None, False, True, PyDMWidget.ALARM_MAJOR),
     (None, True, False, PyDMWidget.ALARM_MAJOR),
     (None, True, True, PyDMWidget.ALARM_MAJOR),
 
-    ("", False, False, PyDMWidget.NO_ALARM),
-    ("", False, True, PyDMWidget.NO_ALARM),
-    ("", True, False, PyDMWidget.NO_ALARM),
-    ("", True, True, PyDMWidget.NO_ALARM),
+    ("", False, False, PyDMWidget.ALARM_NONE),
+    ("", False, True, PyDMWidget.ALARM_NONE),
+    ("", True, False, PyDMWidget.ALARM_NONE),
+    ("", True, True, PyDMWidget.ALARM_NONE),
 
     ("", False, False, PyDMWidget.ALARM_MAJOR),
     ("", False, True, PyDMWidget.ALARM_MAJOR),
     ("", True, False, PyDMWidget.ALARM_MAJOR),
     ("", True, True, PyDMWidget.ALARM_MAJOR),
 
-    ("CA://MTEST", False, False, PyDMWidget.NO_ALARM),
-    ("CA://MTEST", False, True, PyDMWidget.NO_ALARM),
-    ("CA://MTEST", True, False, PyDMWidget.NO_ALARM),
-    ("CA://MTEST", True, True, PyDMWidget.NO_ALARM),
+    ("CA://MTEST", False, False, PyDMWidget.ALARM_NONE),
+    ("CA://MTEST", False, True, PyDMWidget.ALARM_NONE),
+    ("CA://MTEST", True, False, PyDMWidget.ALARM_NONE),
+    ("CA://MTEST", True, True, PyDMWidget.ALARM_NONE),
 
     ("CA://MTEST", False, False, PyDMWidget.ALARM_MINOR),
     ("CA://MTEST", False, True, PyDMWidget.ALARM_MINOR),
@@ -537,19 +537,8 @@ def test_alarm_severity_change(qtbot, signals, channel, alarm_sensitive_content,
     pydm_slider.alarmSensitiveContent = alarm_sensitive_content
     pydm_slider.alarmSensitiveBorder = alarm_sensitive_border
 
-    current_style = pydm_slider._style
-    current_stylesheet = pydm_slider.value_label.styleSheet()
-
     signals.new_severity_signal.connect(pydm_slider.alarmSeverityChanged)
     signals.new_severity_signal.emit(new_alarm_severity)
-
-    PyDMWritableWidget.alarm_severity_changed(pydm_slider, new_alarm_severity)
-    if channel:
-        alarm_style = compose_stylesheet(style=pydm_slider._style, obj=pydm_slider.value_label)
-        assert pydm_slider.value_label.styleSheet() == alarm_style
-    else:
-        pydm_slider._style == current_style
-        pydm_slider.value_label.styleSheet() == current_stylesheet
 
 
 @pytest.mark.parametrize("which_limit, new_limit, user_defined_limits", [

@@ -10,12 +10,16 @@ class PyDMTabBar(QTabBar, PyDMWidget):
     def __init__(self, parent=None):
         super(PyDMTabBar, self).__init__(parent=parent)
         self.tab_channels = {}
+        self.tab_connection_status = {}
+        self.tab_alarm_severity = {}
         self._channels = None
-        self.alarm_icons = (IconFont().icon('circle', color=self.qcolor_for_alarm(self.ALARM_NONE, alarm_type=self.ALARM_INDICATOR)), 
-                        IconFont().icon('circle', color=self.qcolor_for_alarm(self.ALARM_MINOR, alarm_type=self.ALARM_INDICATOR)),
-                        IconFont().icon('exclamation-circle', color=self.qcolor_for_alarm(self.ALARM_MAJOR, alarm_type=self.ALARM_INDICATOR)),
-                        IconFont().icon('question-circle', color=self.qcolor_for_alarm(self.ALARM_INVALID, alarm_type=self.ALARM_INDICATOR)),
-                        IconFont().icon('times-circle', color=self.qcolor_for_alarm(self.ALARM_DISCONNECTED, alarm_type=self.ALARM_INDICATOR)))
+        self._no_alarm_icon_color = QColor(0,220,0)
+        self._minor_alarm_icon_color = QColor(220, 220, 0)
+        self._major_alarm_icon_color = QColor(255, 0, 0)
+        self._invalid_alarm_icon_color = QColor(220, 0, 220)
+        self._disconnected_alarm_icon_color = QColor(255,255,255)
+        self.alarm_icons = None
+        self.generate_alarm_icons()
     
     @pyqtProperty(str)
     def currentTabAlarmChannel(self):
@@ -53,9 +57,11 @@ class PyDMTabBar(QTabBar, PyDMWidget):
     def connection_changed_for_tab(self, index, conn):
         if not conn:
             self.setTabIcon(index, self.alarm_icons[self.ALARM_DISCONNECTED])
+        self.tab_connection_status[index] = conn
     
     def alarm_changed_for_tab(self, index, alarm_state):
         self.setTabIcon(index, self.alarm_icons[alarm_state])
+        self.tab_alarm_severity[index] = alarm_state
 
     def getAlarmChannels(self):
         """alarmChannels is a property used to store the configuration of this tab bar
@@ -73,13 +79,77 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         if channel in ("", "None", None):
             self.setTabIcon(index, QIcon())
         else:
-            self.setTabIcon(index, self.alarm_icons[4]) 
+            icon_index = self.ALARM_DISCONNECTED 
+            if self.tab_connection_status.get(index, False) and index in self.tab_alarm_severity:
+                icon_index = self.tab_alarm_severity[index]
+            self.setTabIcon(index, self.alarm_icons[icon_index])
     
     def tabInserted(self, index):
         if index not in self.tab_channels:
             self.tab_channels[index] = ""
         self.set_initial_icon_for_tab(index)
-        
+    
+    @pyqtProperty(QColor)
+    def noAlarmIconColor(self):
+        return self._no_alarm_icon_color
+    
+    @noAlarmIconColor.setter
+    def noAlarmIconColor(self, new_color):
+        if self._no_alarm_icon_color != new_color:
+            self._no_alarm_icon_color = new_color
+            self.generate_alarm_icons()
+    
+    @pyqtProperty(QColor)
+    def minorAlarmIconColor(self):
+        return self._minor_alarm_icon_color
+    
+    @minorAlarmIconColor.setter
+    def minorAlarmIconColor(self, new_color):
+        if self._minor_alarm_icon_color != new_color:
+            self._minor_alarm_icon_color = new_color
+            self.generate_alarm_icons()
+    
+    @pyqtProperty(QColor)
+    def majorAlarmIconColor(self):
+        return self._major_alarm_icon_color
+    
+    @majorAlarmIconColor.setter
+    def majorAlarmIconColor(self, new_color):
+        if self._major_alarm_icon_color != new_color:
+            self._major_alarm_icon_color = new_color
+            self.generate_alarm_icons()
+    
+    @pyqtProperty(QColor)
+    def invalidAlarmIconColor(self):
+        return self._invalid_alarm_icon_color
+    
+    @invalidAlarmIconColor.setter
+    def invalidAlarmIconColor(self, new_color):
+        if self._invalid_alarm_icon_color != new_color:
+            self._invalid_alarm_icon_color = new_color
+            self.generate_alarm_icons()
+    
+    @pyqtProperty(QColor)
+    def disconnectedAlarmIconColor(self):
+        return self._disconnected_alarm_icon_color
+    
+    @disconnectedAlarmIconColor.setter
+    def disconnectedAlarmIconColor(self, new_color):
+        if self._disconnected_alarm_icon_color != new_color:
+            self._disconnected_alarm_icon_color = new_color
+            self.generate_alarm_icons()
+    
+    def generate_alarm_icons(self):
+        self.alarm_icons = (
+            IconFont().icon('circle', color=self.noAlarmIconColor),
+            IconFont().icon('circle', color=self.minorAlarmIconColor),
+            IconFont().icon('exclamation-circle', color=self.majorAlarmIconColor),
+            IconFont().icon('question-circle', color=self.invalidAlarmIconColor),
+            IconFont().icon('times-circle', color=self.disconnectedAlarmIconColor)
+        )
+        for i in range(0, self.count()):
+            self.set_initial_icon_for_tab(i)
+    
 class PyDMTabWidget(QTabWidget):
     """PyDMTabWidget provides a tabbed container widget.  Each tab has an
     alarm channel property which can be used to show an alarm indicator on
@@ -134,6 +204,88 @@ class PyDMTabWidget(QTabWidget):
         a tab widget from a .ui file, and is probably not very useful for users.
         """
         self.tabBar().setAlarmChannels(new_alarm_channels)
+    
+    @pyqtProperty(QColor)
+    def noAlarmIconColor(self):
+        """
+        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_NONE severity level.
+        This property can be defined in a stylesheet by using 'qproperty-noAlarmIconColor'.
+        
+        Returns
+        -------
+        QColor
+        """
+        return self.tabBar().noAlarmIconColor
+    
+    @noAlarmIconColor.setter
+    def noAlarmIconColor(self, new_color):
+        if self.tabBar().noAlarmIconColor != new_color:
+            self.tabBar().noAlarmIconColor = new_color
+            self.tabBar().generate_alarm_icons()
+    
+    @pyqtProperty(QColor)
+    def minorAlarmIconColor(self):
+        """
+        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_MINOR severity level.
+        This property can be defined in a stylesheet by using 'qproperty-minorAlarmIconColor'.
+        
+        Returns
+        -------
+        QColor
+        """
+        return self.tabBar().minorAlarmIconColor
+    
+    @minorAlarmIconColor.setter
+    def minorAlarmIconColor(self, new_color):
+        self.tabBar().minorAlarmIconColor = new_color
+    
+    @pyqtProperty(QColor)
+    def majorAlarmIconColor(self):
+        """
+        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_MAJOR severity level.
+        This property can be defined in a stylesheet by using 'qproperty-majorAlarmIconColor'.
+        
+        Returns
+        -------
+        QColor
+        """
+        return self.tabBar().majorAlarmIconColor
+    
+    @majorAlarmIconColor.setter
+    def majorAlarmIconColor(self, new_color):
+        self.tabBar().majorAlarmIconColor = new_color
+    
+    @pyqtProperty(QColor)
+    def invalidAlarmIconColor(self):
+        """
+        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_INVALID severity level.
+        This property can be defined in a stylesheet by using 'qproperty-majorAlarmIconColor'.
+        
+        Returns
+        -------
+        QColor
+        """
+        return self.tabBar().invalidAlarmIconColor
+    
+    @invalidAlarmIconColor.setter
+    def invalidAlarmIconColor(self, new_color):
+        self.tabBar().invalidAlarmIconColor = new_color
+    
+    @pyqtProperty(QColor)
+    def disconnectedAlarmIconColor(self):
+        """
+        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_DISCONNECTED severity level.
+        This property can be defined in a stylesheet by using 'qproperty-disconnectedAlarmIconColor'.
+        
+        Returns
+        -------
+        QColor
+        """
+        return self.tabBar().disconnectedAlarmIconColor
+    
+    @disconnectedAlarmIconColor.setter
+    def disconnectedAlarmIconColor(self, new_color):
+        self.tabBar().disconnectedAlarmIconColor = new_color
         
     alarmChannels = pyqtProperty("QStringList", getAlarmChannels, setAlarmChannels, designable=False)
     

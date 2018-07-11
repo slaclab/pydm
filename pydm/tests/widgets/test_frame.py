@@ -4,7 +4,7 @@
 import pytest
 
 from ...utilities import is_pydm_app
-from ...widgets.base import is_channel_valid, compose_stylesheet
+from ...widgets.base import is_channel_valid
 from ...application import PyDMApplication
 from ...widgets.base import PyDMWidget
 from ...widgets.frame import PyDMFrame
@@ -66,20 +66,20 @@ def test_disable_on_disconnect(qtbot, init_value, new_value):
 
 
 @pytest.mark.parametrize("channel, alarm_sensitive_content, alarm_sensitive_border, new_alarm_severity", [
-    (None, False, False, PyDMWidget.NO_ALARM),
-    (None, False, True, PyDMWidget.NO_ALARM),
-    (None, True, False, PyDMWidget.NO_ALARM),
-    (None, True, True, PyDMWidget.NO_ALARM),
+    (None, False, False, PyDMWidget.ALARM_NONE),
+    (None, False, True, PyDMWidget.ALARM_NONE),
+    (None, True, False, PyDMWidget.ALARM_NONE),
+    (None, True, True, PyDMWidget.ALARM_NONE),
 
     (None, False, False, PyDMWidget.ALARM_MAJOR),
     (None, False, True, PyDMWidget.ALARM_MAJOR),
     (None, True, False, PyDMWidget.ALARM_MAJOR),
     (None, True, True, PyDMWidget.ALARM_MAJOR),
 
-    ("CA://MTEST", False, False, PyDMWidget.NO_ALARM),
-    ("CA://MTEST", False, True, PyDMWidget.NO_ALARM),
-    ("CA://MTEST", True, False, PyDMWidget.NO_ALARM),
-    ("CA://MTEST", True, True, PyDMWidget.NO_ALARM),
+    ("CA://MTEST", False, False, PyDMWidget.ALARM_NONE),
+    ("CA://MTEST", False, True, PyDMWidget.ALARM_NONE),
+    ("CA://MTEST", True, False, PyDMWidget.ALARM_NONE),
+    ("CA://MTEST", True, True, PyDMWidget.ALARM_NONE),
 
     ("CA://MTEST", False, False, PyDMWidget.ALARM_MINOR),
     ("CA://MTEST", False, True, PyDMWidget.ALARM_MINOR),
@@ -126,29 +126,6 @@ def test_alarm_severity_change(qtbot, signals, channel, alarm_sensitive_content,
     pydm_frame._channel = channel
     pydm_frame.alarmSensitiveContent = alarm_sensitive_content
     pydm_frame.alarmSensitiveBorder = alarm_sensitive_border
-
-    current_style = pydm_frame._style
-    current_stylesheet = pydm_frame.styleSheet()
-
-    signals.new_severity_signal.connect(pydm_frame.alarmSeverityChanged)
-    signals.new_severity_signal.emit(new_alarm_severity)
-
-    if channel:
-        alarm_style = compose_stylesheet(style=current_style, obj=pydm_frame)
-        original_style = str(current_stylesheet).replace(alarm_style, "")
-
-        # Repeat the same style processing rules as in the core code. If the core code changes, we'll see the failure
-        # in this test, and must update the expected style generation code here
-        new_style = dict(pydm_frame.alarm_style_sheet_map[pydm_frame._alarm_flags][new_alarm_severity])
-        if "color" in new_style:
-            if new_alarm_severity != PyDMWidget.ALARM_NONE:
-                new_style["background-color"] = new_style["color"]
-            del new_style["color"]
-
-        combo_style = original_style + compose_stylesheet(style=new_style, obj=pydm_frame)
-        assert pydm_frame.styleSheet() == combo_style
-    else:
-        pydm_frame._style == current_style
 
 
 @pytest.mark.parametrize("channel_address, connected, write_access, is_app_read_only", [

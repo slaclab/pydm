@@ -15,6 +15,13 @@ def main():
         default=None
         )
     parser.add_argument(
+        'stylesheet',
+        help='Provide the full path to the CSS stylesheet file, which must contain the appearances (styles) to be'
+             'applied to specific Qt/PyDM widget types.',
+        nargs='*',
+        default=None
+        )
+    parser.add_argument(
         '--perfmon',
         action='store_true',
         help='Enable performance monitoring,' +
@@ -62,7 +69,8 @@ def main():
         'display_args',
         help='Arguments to be passed to the PyDM client application' +
              ' (which is a QApplication subclass).',
-        nargs=argparse.REMAINDER
+        nargs=argparse.REMAINDER,
+        default=None
         )
 
     pydm_args = parser.parse_args()
@@ -95,7 +103,8 @@ def main():
         hide_menu_bar=pydm_args.hide_menu_bar,
         hide_status_bar=pydm_args.hide_status_bar,
         read_only=pydm_args.read_only,
-        macros=macros
+        macros=macros,
+        stylesheet_path=pydm_args.stylesheet[1] if pydm_args.stylesheet and len(pydm_args.stylesheet) == 2 else None
         )
 
     sys.exit(app.exec_())

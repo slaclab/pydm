@@ -9,14 +9,11 @@ import tempfile
 import logging
 
 from ..PyQt.QtCore import QObject, pyqtSignal, pyqtSlot
-from ..PyQt.QtGui import QColor
-
 from ..application import PyDMApplication
 from ..widgets.base import PyDMWidget
 
 
 pytest_plugins = 'pytester'
-
 
 logger = logging.getLogger(__name__)
 _, file_path = tempfile.mkstemp(suffix=".log")
@@ -33,61 +30,6 @@ appearances.
 In case of style assertion failures, check if the widget styles in the main PyDM code have changed, and whether those
 changes are as intended. If they are, update the reference style sheet below accordingly.
 """
-alarm_style_sheet_map = {
-    PyDMWidget.NO_ALARM: {
-        PyDMWidget.ALARM_NONE: {},
-        PyDMWidget.ALARM_MINOR: {},
-        PyDMWidget.ALARM_MAJOR: {},
-        PyDMWidget.ALARM_INVALID: {},
-        PyDMWidget.ALARM_DISCONNECTED: {}
-    },
-    PyDMWidget.ALARM_CONTENT: {
-        PyDMWidget.ALARM_NONE: {"color": "black"},
-        PyDMWidget.ALARM_MINOR: {"color": PyDMWidget.YELLOW_ALARM},
-        PyDMWidget.ALARM_MAJOR: {"color": PyDMWidget.RED_ALARM},
-        PyDMWidget.ALARM_INVALID: {"color": PyDMWidget.MAGENTA_ALARM},
-        PyDMWidget.ALARM_DISCONNECTED: {"color": PyDMWidget.WHITE_ALARM}
-    },
-    PyDMWidget.ALARM_INDICATOR: {
-        PyDMWidget.ALARM_NONE: {"color": PyDMWidget.GREEN_ALARM},
-        PyDMWidget.ALARM_MINOR: {"color": PyDMWidget.YELLOW_ALARM},
-        PyDMWidget.ALARM_MAJOR: {"color": PyDMWidget.RED_ALARM},
-        PyDMWidget.ALARM_INVALID: {"color": PyDMWidget.MAGENTA_ALARM},
-        PyDMWidget.ALARM_DISCONNECTED: {"color": PyDMWidget.WHITE_ALARM}
-    },
-    PyDMWidget.ALARM_BORDER: {
-        PyDMWidget.ALARM_NONE: {"border": "2px solid transparent"},
-        PyDMWidget.ALARM_MINOR: {"border": "2px solid " + PyDMWidget.YELLOW_ALARM},
-        PyDMWidget.ALARM_MAJOR: {"border": "2px solid " + PyDMWidget.RED_ALARM},
-        PyDMWidget.ALARM_INVALID: {"border": "2px solid " + PyDMWidget.MAGENTA_ALARM},
-        PyDMWidget.ALARM_DISCONNECTED: {"border": "2px solid " + PyDMWidget.WHITE_ALARM}
-    },
-    PyDMWidget.ALARM_CONTENT | PyDMWidget.ALARM_BORDER: {
-        PyDMWidget.ALARM_NONE: {"color": "black", "border": "2px solid transparent"},
-        PyDMWidget.ALARM_MINOR: {"color": PyDMWidget.YELLOW_ALARM, "border": "2px solid " + PyDMWidget.YELLOW_ALARM},
-        PyDMWidget.ALARM_MAJOR: {"color": PyDMWidget.RED_ALARM, "border": "2px solid " + PyDMWidget.RED_ALARM},
-        PyDMWidget.ALARM_INVALID: {
-            "color": PyDMWidget.MAGENTA_ALARM, "border": "2px solid " + PyDMWidget.MAGENTA_ALARM},
-        PyDMWidget.ALARM_DISCONNECTED: {
-            "color": PyDMWidget.WHITE_ALARM, "border": "2px solid " + PyDMWidget.WHITE_ALARM}
-    }
-}
-
-local_connection_status_color_map = {
-        False: QColor(0, 0, 0),
-        True: QColor(0, 0, 0,)
-    }
-
-@pytest.fixture(scope="session")
-def test_alarm_style_sheet_map():
-    return alarm_style_sheet_map
-
-
-@pytest.fixture(scope="session")
-def test_local_connection_status_color_map():
-    return local_connection_status_color_map
-
-
 class ConnectionSignals(QObject):
     """
     An assortment of signals, to which a unit test can choose from and bind an appropriate slot

@@ -15,53 +15,22 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="PyDMPushButton" name="PyDMPushButton">
+    <widget class="PyDMFrame" name="PyDMFrame_3">
      <property name="toolTip">
       <string/>
      </property>
      <property name="whatsThis">
       <string>
-    Basic PushButton to send a fixed value.
+    QFrame with support for alarms
+    This class inherits from QFrame and PyDMWidget.
 
-    The PyDMPushButton is meant to hold a specific value, and send that value
-    to a channel when it is clicked, much like the MessageButton does in EDM.
-    The PyDMPushButton works in two different modes of operation, first, a
-    fixed value can be given to the :attr:`.pressValue` attribute, whenever the
-    button is clicked a signal containing this value will be sent to the
-    connected channel. This is the default behavior of the button. However, if
-    the :attr:`.relativeChange` is set to True, the fixed value will be added
-    to the current value of the channel. This means that the button will
-    increment a channel by a fixed amount with every click, a consistent
-    relative move
-    
     Parameters
     ----------
-    pressValue : int, float, str
-        Value to be sent when the button is clicked
-    
-    channel : str
-        ID of channel to manipulate
-
-    parent : QObject, optional
-        Parent of PyDMPushButton
-
-    label : str, optional
-        String to place on button
-
-    icon : QIcon, optional
-        An Icon to display on the PyDMPushButton
-
-
-    relative : bool, optional
-        Choice to have the button peform a relative put, instead of always
-        setting to an absolute value
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
     </string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>Start Test IOC</string>
      </property>
      <property name="alarmSensitiveBorder" stdset="0">
       <bool>true</bool>
@@ -69,21 +38,26 @@
      <property name="channel" stdset="0">
       <string>ca://MTEST:Run</string>
      </property>
-     <property name="showConfirmDialog" stdset="0">
-      <bool>false</bool>
-     </property>
-     <property name="pressValue" stdset="0">
-      <string>1</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="PyDMPushButton" name="PyDMPushButton_2">
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="whatsThis">
-      <string>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item>
+       <widget class="PyDMPushButton" name="PyDMPushButton">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string>
     Basic PushButton to send a fixed value.
 
     The PyDMPushButton is meant to hold a specific value, and send that value
@@ -119,25 +93,137 @@
         Choice to have the button peform a relative put, instead of always
         setting to an absolute value
     </string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Start Test IOC</string>
+        </property>
+        <property name="alarmSensitiveBorder" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="channel" stdset="0">
+         <string>ca://MTEST:Run</string>
+        </property>
+        <property name="showConfirmDialog" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="pressValue" stdset="0">
+         <string>1</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMFrame" name="PyDMFrame_4">
+     <property name="toolTip">
+      <string/>
      </property>
-     <property name="text">
-      <string>Stop Test IOC</string>
+     <property name="whatsThis">
+      <string>
+    QFrame with support for alarms
+    This class inherits from QFrame and PyDMWidget.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
      </property>
-     <property name="flat">
+     <property name="alarmSensitiveContent" stdset="0">
       <bool>false</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
      </property>
      <property name="channel" stdset="0">
       <string>ca://MTEST:Run</string>
      </property>
-     <property name="showConfirmDialog" stdset="0">
-      <bool>true</bool>
-     </property>
-     <property name="confirmMessage" stdset="0">
-      <string>Are you sure you want to stop the IOC ?</string>
-     </property>
-     <property name="pressValue" stdset="0">
-      <string>0</string>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item>
+       <widget class="PyDMPushButton" name="PyDMPushButton_2">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string>
+    Basic PushButton to send a fixed value.
+
+    The PyDMPushButton is meant to hold a specific value, and send that value
+    to a channel when it is clicked, much like the MessageButton does in EDM.
+    The PyDMPushButton works in two different modes of operation, first, a
+    fixed value can be given to the :attr:`.pressValue` attribute, whenever the
+    button is clicked a signal containing this value will be sent to the
+    connected channel. This is the default behavior of the button. However, if
+    the :attr:`.relativeChange` is set to True, the fixed value will be added
+    to the current value of the channel. This means that the button will
+    increment a channel by a fixed amount with every click, a consistent
+    relative move
+    
+    Parameters
+    ----------
+    pressValue : int, float, str
+        Value to be sent when the button is clicked
+    
+    channel : str
+        ID of channel to manipulate
+
+    parent : QObject, optional
+        Parent of PyDMPushButton
+
+    label : str, optional
+        String to place on button
+
+    icon : QIcon, optional
+        An Icon to display on the PyDMPushButton
+
+
+    relative : bool, optional
+        Choice to have the button peform a relative put, instead of always
+        setting to an absolute value
+    </string>
+        </property>
+        <property name="text">
+         <string>Stop Test IOC</string>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+        <property name="alarmSensitiveBorder" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="channel" stdset="0">
+         <string>ca://MTEST:Run</string>
+        </property>
+        <property name="showConfirmDialog" stdset="0">
+         <bool>true</bool>
+        </property>
+        <property name="confirmMessage" stdset="0">
+         <string>Are you sure you want to stop the IOC ?</string>
+        </property>
+        <property name="pressValue" stdset="0">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -151,18 +237,61 @@
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>false</bool>
+     </property>
      <property name="channel" stdset="0">
       <string>ca://MTEST:Run</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="PyDMPushButton" name="PyDMPushButton_3">
+    <widget class="PyDMFrame" name="PyDMFrame_5">
      <property name="toolTip">
       <string/>
      </property>
      <property name="whatsThis">
       <string>
+    QFrame with support for alarms
+    This class inherits from QFrame and PyDMWidget.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Run</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item>
+       <widget class="PyDMPushButton" name="PyDMPushButton_3">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string>
     Basic PushButton to send a fixed value.
 
     The PyDMPushButton is meant to hold a specific value, and send that value
@@ -198,28 +327,34 @@
         Choice to have the button peform a relative put, instead of always
         setting to an absolute value
     </string>
-     </property>
-     <property name="text">
-      <string>I am password protected. Hint: password</string>
-     </property>
-     <property name="channel" stdset="0">
-      <string>ca://MTEST:Run</string>
-     </property>
-     <property name="passwordProtected" stdset="0">
-      <bool>true</bool>
-     </property>
-     <property name="password" stdset="0">
-      <string/>
-     </property>
-     <property name="protectedPassword" stdset="0">
-      <string notr="true">5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8</string>
-     </property>
-     <property name="showConfirmDialog" stdset="0">
-      <bool>true</bool>
-     </property>
-     <property name="pressValue" stdset="0">
-      <string>0</string>
-     </property>
+        </property>
+        <property name="text">
+         <string>I am password protected. Hint: password</string>
+        </property>
+        <property name="alarmSensitiveBorder" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="channel" stdset="0">
+         <string>ca://MTEST:Run</string>
+        </property>
+        <property name="passwordProtected" stdset="0">
+         <bool>true</bool>
+        </property>
+        <property name="password" stdset="0">
+         <string/>
+        </property>
+        <property name="protectedPassword" stdset="0">
+         <string notr="true">5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8</string>
+        </property>
+        <property name="showConfirmDialog" stdset="0">
+         <bool>true</bool>
+        </property>
+        <property name="pressValue" stdset="0">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -230,12 +365,49 @@
     </widget>
    </item>
    <item>
-    <widget class="PyDMPushButton" name="PyDMPushButton_4">
+    <widget class="PyDMFrame" name="PyDMFrame">
      <property name="toolTip">
       <string/>
      </property>
      <property name="whatsThis">
       <string>
+    QFrame with support for alarms
+    This class inherits from QFrame and PyDMWidget.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Float</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item>
+       <widget class="PyDMPushButton" name="PyDMPushButton_4">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string>
     Basic PushButton to send a fixed value.
 
     The PyDMPushButton is meant to hold a specific value, and send that value
@@ -270,28 +442,71 @@
         Choice to have the button perform a relative put, instead of always
         setting to an absolute value
     </string>
-     </property>
-     <property name="text">
-      <string>Add 0.1 to the value below...</string>
-     </property>
-     <property name="channel" stdset="0">
-      <string>ca://MTEST:Float</string>
-     </property>
-     <property name="pressValue" stdset="0">
-      <string>0.1</string>
-     </property>
-     <property name="relativeChange" stdset="0">
-      <bool>true</bool>
-     </property>
+        </property>
+        <property name="text">
+         <string>Add 0.1 to the value below...</string>
+        </property>
+        <property name="alarmSensitiveBorder" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="channel" stdset="0">
+         <string>ca://MTEST:Float</string>
+        </property>
+        <property name="pressValue" stdset="0">
+         <string>0.1</string>
+        </property>
+        <property name="relativeChange" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
-    <widget class="PyDMPushButton" name="PyDMPushButton_5">
+    <widget class="PyDMFrame" name="PyDMFrame_2">
      <property name="toolTip">
       <string/>
      </property>
      <property name="whatsThis">
       <string>
+    QFrame with support for alarms
+    This class inherits from QFrame and PyDMWidget.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Float</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item>
+       <widget class="PyDMPushButton" name="PyDMPushButton_5">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string>
     Basic PushButton to send a fixed value.
 
     The PyDMPushButton is meant to hold a specific value, and send that value
@@ -326,22 +541,28 @@
         Choice to have the button perform a relative put, instead of always
         setting to an absolute value
     </string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>Subtract 0.1 to the value below...</string>
-     </property>
-     <property name="channel" stdset="0">
-      <string>ca://MTEST:Float</string>
-     </property>
-     <property name="pressValue" stdset="0">
-      <string>-0.1</string>
-     </property>
-     <property name="relativeChange" stdset="0">
-      <bool>true</bool>
-     </property>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Subtract 0.1 to the value below...</string>
+        </property>
+        <property name="alarmSensitiveBorder" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="channel" stdset="0">
+         <string>ca://MTEST:Float</string>
+        </property>
+        <property name="pressValue" stdset="0">
+         <string>-0.1</string>
+        </property>
+        <property name="relativeChange" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -365,6 +586,9 @@
      <property name="alarmSensitiveContent" stdset="0">
       <bool>true</bool>
      </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>false</bool>
+     </property>
      <property name="channel" stdset="0">
       <string>ca://MTEST:Float</string>
      </property>
@@ -382,6 +606,12 @@
    <class>PyDMPushButton</class>
    <extends>QPushButton</extends>
    <header>pydm.widgets.pushbutton</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMFrame</class>
+   <extends>QFrame</extends>
+   <header>pydm.widgets.frame</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

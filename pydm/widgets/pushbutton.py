@@ -2,7 +2,7 @@ import hashlib
 
 from ..PyQt.QtGui import QPushButton, QMessageBox, QInputDialog, QLineEdit
 from ..PyQt.QtCore import pyqtSlot, pyqtProperty
-from .base import PyDMWritableWidget, compose_stylesheet
+from .base import PyDMWritableWidget
 
 import logging
 logger = logging.getLogger(__name__)
@@ -60,7 +60,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self._pressValue = pressValue
         self._relative = relative
-
+        self._alarm_sensitive_border = False
         self._show_confirm_dialog = False
         self._confirm_message = PyDMPushButton.DEFAULT_CONFIRM_MESSAGE
         self._password_protected = False
@@ -316,28 +316,6 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             msg.exec_()
             return False
         return True
-
-    def alarm_severity_changed(self, new_alarm_severity):
-        """
-        Callback invoked when the Channel alarm severity is changed.
-
-        This callback is not processed if the widget has no channel associated
-        with it. It handles the composition of the stylesheet to be applied and
-        the call to update to redraw the widget with the needed changes for the
-        new state.
-
-        Parameters
-        ----------
-        new_alarm_severity : int
-            New severity: 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR and 3 = INVALID
-        """
-        if self._alarm_sensitive_content:
-            self._alarm_state = new_alarm_severity
-            self._style = dict(self.alarm_style_sheet_map[self.ALARM_CONTENT][
-                                                        new_alarm_severity])
-            style = compose_stylesheet(style=self._style, obj=self)
-            self.setStyleSheet(style)
-            self.update()
 
     @pyqtSlot()
     def sendValue(self):
