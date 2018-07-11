@@ -68,8 +68,8 @@ class PyDMMainWindow(QMainWindow):
             self.toggle_status_bar(False)
         self.designer_path = None
         designer_bin = QLibraryInfo.location(QLibraryInfo.BinariesPath)
-
         if platform.system() == 'Darwin':
+            designer_bin = QLibraryInfo.location(QLibraryInfo.LibraryExecutablesPath)
             self.designer_path = os.path.join(designer_bin, 'Designer.app/Contents/MacOS/Designer')
         elif platform.system() == 'Linux':
             self.designer_path = os.path.join(designer_bin, 'designer')
