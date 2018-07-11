@@ -19,6 +19,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self.valueBeingSet = False
         self.setEnabled(False)
+        self._alarm_sensitive_border = False
         self._show_step_exponent = True
         self.step_exponent = 0
         self.setDecimals(0)
