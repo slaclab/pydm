@@ -25,7 +25,7 @@ from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard, QAc
 from .PyQt import uic
 from .main_window import PyDMMainWindow
 from .tools import ExternalTool
-from .utilities import macro, which, path_info
+from .utilities import macro, which, path_info, find_display_in_path
 from . import data_plugins
 
 logger = logging.getLogger(__name__)
@@ -459,6 +459,11 @@ class PyDMApplication(QApplication):
         really only used by embedded displays.
         """
         full_path = self.get_path(ui_file)
+
+        if not os.path.exists(full_path):
+            new_fname = find_display_in_path(ui_file)
+            if new_fname is not None and new_fname != "":
+                full_path = new_fname
         return self.open_file(full_path, macros=macros,
                               command_line_args=command_line_args,
                               establish_connection=establish_connection)

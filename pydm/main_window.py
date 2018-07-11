@@ -2,7 +2,7 @@ import os
 from os import path
 from .PyQt.QtGui import QApplication, QMainWindow, QFileDialog, QWidget, QAction
 from .PyQt.QtCore import Qt, QTimer, pyqtSlot, QSize, QLibraryInfo
-from .utilities import IconFont
+from .utilities import IconFont, find_display_in_path
 from .pydm_ui import Ui_MainWindow
 from .display_module import Display
 from .connection_inspector import ConnectionInspector
@@ -113,7 +113,10 @@ class PyDMMainWindow(QMainWindow):
         filename = self.join_to_current_file_path(ui_file)
         try:
             if not os.path.exists(filename):
-                raise IOError("File {} not found".format(filename))
+                new_fname = find_display_in_path(ui_file)
+                if new_fname is None or new_fname == "":
+                    raise IOError("File {} not found".format(filename))
+                filename = new_fname
             self.open_abs_file(filename, macros, command_line_args)
         except (IOError, OSError, ValueError, ImportError) as e:
             error_msg = "Cannot open file: '{0}'. Reason: '{1}'.".format(filename, e)
@@ -147,7 +150,9 @@ class PyDMMainWindow(QMainWindow):
         filename = self.join_to_current_file_path(ui_file)
         try:
             if not os.path.exists(filename):
-                raise IOError("File {} not found".format(filename))
+                new_fname = find_display_in_path(ui_file)
+                if new_fname is None or new_fname == "":
+                    raise IOError("File {} not found".format(filename))
             self.new_abs_window(filename, macros, command_line_args)
         except (IOError, OSError, ValueError, ImportError) as e:
             error_msg = "Cannot open file: '{0}'. Reason: '{1}'.".format(filename, e)

@@ -62,69 +62,100 @@ def path_info(path_str):
     return dir_name, file_name, args
 
 
-try:  # Forced testing
-    from shutil import which
-except ImportError:  # Forced testing
-    # Versions prior to Python 3.3 don't have shutil.which
+def find_display_in_path(file, mode=None, path=None, pathext=None):
+    """
+    Look for a display file in a given path.
+    This is basically a wrapper on top of the ``which``
+    command defined below so we don't need to keep redefining
+    the ``PYDM_DISPLAYS_PATH`` variable.
 
-    def which(cmd, mode=os.F_OK | os.X_OK, path=None):
-        """Given a command, mode, and a PATH string, return the path which
-        conforms to the given mode on the PATH, or None if there is no such
-        file.
-        `mode` defaults to os.F_OK | os.X_OK. `path` defaults to the result
-        of os.environ.get("PATH"), or can be overridden with a custom search
-        path.
-        Note: This function was backported from the Python 3 source code.
-        """
+    Parameters
+    ----------
+    file : str
+        The file name.
+    mode : int
+        The mode required for the file, defaults to os.F_OK | os.R_OK.
+        Which ensure that the file exists and we can read it.
+    path : str
+        The PATH string.
 
-        # Check that a given file can be accessed with the correct mode.
-        # Additionally check that `file` is not a directory, as on Windows
-        # directories pass the os.access check.
-        def _access_check(fn, mode):
-            return (os.path.exists(fn) and os.access(fn, mode) and
-                    not os.path.isdir(fn))
+    Returns
+    -------
+    str
+        Returns the full path to the file or None in case it was not found.
+    """
+    if pathext is None and sys.platform == "win32":
+        pathext = ".ui"
+    if path is None:
+        path = os.getenv("PYDM_DISPLAYS_PATH", None)
+    if mode is None:
+        mode = os.F_OK | os.R_OK
 
-        # If we're given a path with a directory part, look it up directly
-        # rather than referring to PATH directories. This includes checking
-        # relative to the current directory, e.g. ./script
-        if os.path.dirname(cmd):
-            if _access_check(cmd, mode):
-                return cmd
-            return None
+    return which(file, mode, path, pathext=pathext)
 
-        if path is None:
-            path = os.environ.get("PATH", os.defpath)
-        if not path:
-            return None
-        path = path.split(os.pathsep)
 
-        if sys.platform == "win32":
-            # The current directory takes precedence on Windows.
-            if os.curdir not in path:
-                path.insert(0, os.curdir)
+def which(cmd, mode=os.F_OK | os.X_OK, path=None, pathext=None):
+    """Given a command, mode, and a PATH string, return the path which
+    conforms to the given mode on the PATH, or None if there is no such
+    file.
+    `mode` defaults to os.F_OK | os.X_OK. `path` defaults to the result
+    of os.environ.get("PATH"), or can be overridden with a custom search
+    path.
+    Note: This function was backported from the Python 3 source code and modified
+    to deal with the case in which we WANT to look at the path even with a relative
+    path.
+    """
 
-            # PATHEXT is necessary to check on Windows.
-            pathext = os.environ.get("PATHEXT", "").split(os.pathsep)
-            # See if the given file matches any of the expected path
-            # extensions. This will allow us to short circuit when given
-            # "python.exe". If it does match, only test that one, otherwise we
-            # have to try others.
-            if any(cmd.lower().endswith(ext.lower()) for ext in pathext):
-                files = [cmd]
-            else:
-                files = [cmd + ext for ext in pathext]
-        else:
-            # On other platforms you don't have things like PATHEXT to tell you
-            # what file suffixes are executable, so just pass on cmd as-is.
-            files = [cmd]
+    # Check that a given file can be accessed with the correct mode.
+    # Additionally check that `file` is not a directory, as on Windows
+    # directories pass the os.access check.
+    def _access_check(fn, mode):
+        return (os.path.exists(fn) and os.access(fn, mode) and
+                not os.path.isdir(fn))
 
-        seen = set()
-        for dir_ in path:
-            normdir = os.path.normcase(dir_)
-            if normdir not in seen:
-                seen.add(normdir)
-                for thefile in files:
-                    name = os.path.join(dir_, thefile)
-                    if _access_check(name, mode):
-                        return name
+    # If we're given a path with a directory part, look it up directly
+    # rather than referring to PATH directories. This includes checking
+    # relative to the current directory, e.g. ./script
+    # if os.path.dirname(cmd):
+    #     if _access_check(cmd, mode):
+    #         return cmd
+    #     return None
+
+    if path is None:
+        path = os.environ.get("PATH", os.defpath)
+    if not path:
         return None
+    path = path.split(os.pathsep)
+
+    if sys.platform == "win32":
+        # The current directory takes precedence on Windows.
+        if os.curdir not in path:
+            path.insert(0, os.curdir)
+
+        # PATHEXT is necessary to check on Windows.
+        if pathext is None:
+            pathext = os.environ.get("PATHEXT", "")
+        pathext = pathext.split(os.pathsep)
+        # See if the given file matches any of the expected path
+        # extensions. This will allow us to short circuit when given
+        # "python.exe". If it does match, only test that one, otherwise we
+        # have to try others.
+        if any(cmd.lower().endswith(ext.lower()) for ext in pathext):
+            files = [cmd]
+        else:
+            files = [cmd + ext for ext in pathext]
+    else:
+        # On other platforms you don't have things like PATHEXT to tell you
+        # what file suffixes are executable, so just pass on cmd as-is.
+        files = [cmd]
+
+    seen = set()
+    for dir_ in path:
+        normdir = os.path.normcase(dir_)
+        if normdir not in seen:
+            seen.add(normdir)
+            for thefile in files:
+                name = os.path.join(dir_, thefile)
+                if _access_check(name, mode):
+                    return name
+    return None
