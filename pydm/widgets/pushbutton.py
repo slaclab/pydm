@@ -60,7 +60,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self._pressValue = pressValue
         self._relative = relative
-
+        self._alarm_sensitive_border = False
         self._show_confirm_dialog = False
         self._confirm_message = PyDMPushButton.DEFAULT_CONFIRM_MESSAGE
         self._password_protected = False
