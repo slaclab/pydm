@@ -152,4 +152,4 @@ class RulesEngine(QThread):
             payload = {'name': self.name, 'property': self.property, 'value': val}
             self.rule_signal.emit(payload)
         except Exception as e:
-            logger.error("Error while evaluating Rule. Exception was: %s", e)
+            logger.exception("Error while evaluating Rule.")
