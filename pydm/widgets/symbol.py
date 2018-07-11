@@ -1,9 +1,12 @@
 import json
+import logging
 from ..PyQt.QtGui import QApplication, QWidget, QPainter, QPixmap, QStyle, QStyleOption
 from ..PyQt.QtCore import pyqtProperty, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from ..PyQt.QtSvg import QSvgRenderer
 from ..utilities import is_pydm_app
 from .base import PyDMWidget
+
+logger = logging.getLogger(__name__)
 
 class PyDMSymbol(QWidget, PyDMWidget):
     """
@@ -69,7 +72,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
                 try:
                     file_path = self.app.get_path(filename)
                 except Exception as e:
-                    print(e)
+                    logger.exception(e)
                     file_path = filename
             else:
                 file_path = filename
@@ -95,7 +98,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
                 self._sizeHint = self._sizeHint.expandedTo(image.size())
                 continue
             # If we get this far, the file specified could not be loaded at all.
-            print("Could not load image: {}".format(filename))
+            logger.error("Could not load image: {}".format(filename))
             self._state_images[int(state)] = (filename, None)
 
     @pyqtProperty(Qt.AspectRatioMode)
