@@ -79,6 +79,7 @@ class PyDMMainWindow(QMainWindow):
         # Ensure that the file exists
         if not os.path.isfile(self.designer_path):
             self.designer_path = None
+            self.ui.actionEdit_in_Designer.setEnabled(False)
 
     def set_display_widget(self, new_widget):
         if new_widget == self._display_widget:
