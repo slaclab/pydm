@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utilities &mdash; PyDM v1.2.0+33.g4d8be0a documentation</title>
+  <title>Utilities &mdash; PyDM v1.2.0+37.g60b5060 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.2.0+33.g4d8be0a
+                v1.2.0+37.g60b5060
               </div>
             
           
@@ -187,6 +187,35 @@ of protocol in a string, handling macro substitution in files, etc.</p>
 <div class="section" id="module-pydm.utilities">
 <span id="general"></span><h2>General<a class="headerlink" href="#module-pydm.utilities" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
+<dt id="pydm.utilities.find_display_in_path">
+<code class="descclassname">pydm.utilities.</code><code class="descname">find_display_in_path</code><span class="sig-paren">(</span><em>file</em>, <em>mode=None</em>, <em>path=None</em>, <em>pathext=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#find_display_in_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.find_display_in_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look for a display file in a given path.
+This is basically a wrapper on top of the <code class="docutils literal notranslate"><span class="pre">which</span></code>
+command defined below so we don’t need to keep redefining
+the <code class="docutils literal notranslate"><span class="pre">PYDM_DISPLAYS_PATH</span></code> variable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>file</strong> (<em>str</em>) – The file name.</li>
+<li><strong>mode</strong> (<em>int</em>) – The mode required for the file, defaults to os.F_OK | os.R_OK.
+Which ensure that the file exists and we can read it.</li>
+<li><strong>path</strong> (<em>str</em>) – The PATH string.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Returns the full path to the file or None in case it was not found.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pydm.utilities.is_pydm_app">
 <code class="descclassname">pydm.utilities.</code><code class="descname">is_pydm_app</code><span class="sig-paren">(</span><em>app=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#is_pydm_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.is_pydm_app" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether or not <cite>QApplication.instance()</cite> is a PyDMApplication.</p>
@@ -220,6 +249,20 @@ of protocol in a string, handling macro substitution in files, etc.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydm.utilities.which">
+<code class="descclassname">pydm.utilities.</code><code class="descname">which</code><span class="sig-paren">(</span><em>cmd</em>, <em>mode=1</em>, <em>path=None</em>, <em>pathext=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#which"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.which" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a command, mode, and a PATH string, return the path which
+conforms to the given mode on the PATH, or None if there is no such
+file.
+<cite>mode</cite> defaults to os.F_OK | os.X_OK. <cite>path</cite> defaults to the result
+of os.environ.get(“PATH”), or can be overridden with a custom search
+path.
+Note: This function was backported from the Python 3 source code and modified
+to deal with the case in which we WANT to look at the path even with a relative
+path.</p>
 </dd></dl>
 
 <span class="target" id="module-pydm.utilities.remove_protocol"></span><dl class="function">
@@ -474,7 +517,7 @@ Default is False.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v1.2.0+33.g4d8be0a',
+            VERSION:'v1.2.0+37.g60b5060',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

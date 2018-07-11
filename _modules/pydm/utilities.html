@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.utilities &mdash; PyDM v1.2.0+33.g4d8be0a documentation</title>
+  <title>pydm.utilities &mdash; PyDM v1.2.0+37.g60b5060 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.2.0+33.g4d8be0a
+                v1.2.0+37.g60b5060
               </div>
             
           
@@ -234,72 +234,103 @@
     <span class="k">return</span> <span class="n">dir_name</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">args</span></div>
 
 
-<span class="k">try</span><span class="p">:</span>  <span class="c1"># Forced testing</span>
-    <span class="kn">from</span> <span class="nn">shutil</span> <span class="k">import</span> <span class="n">which</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Forced testing</span>
-    <span class="c1"># Versions prior to Python 3.3 don&#39;t have shutil.which</span>
+<div class="viewcode-block" id="find_display_in_path"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.find_display_in_path">[docs]</a><span class="k">def</span> <span class="nf">find_display_in_path</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pathext</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Look for a display file in a given path.</span>
+<span class="sd">    This is basically a wrapper on top of the ``which``</span>
+<span class="sd">    command defined below so we don&#39;t need to keep redefining</span>
+<span class="sd">    the ``PYDM_DISPLAYS_PATH`` variable.</span>
 
-    <span class="k">def</span> <span class="nf">which</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">F_OK</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">X_OK</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Given a command, mode, and a PATH string, return the path which</span>
-<span class="sd">        conforms to the given mode on the PATH, or None if there is no such</span>
-<span class="sd">        file.</span>
-<span class="sd">        `mode` defaults to os.F_OK | os.X_OK. `path` defaults to the result</span>
-<span class="sd">        of os.environ.get(&quot;PATH&quot;), or can be overridden with a custom search</span>
-<span class="sd">        path.</span>
-<span class="sd">        Note: This function was backported from the Python 3 source code.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file : str</span>
+<span class="sd">        The file name.</span>
+<span class="sd">    mode : int</span>
+<span class="sd">        The mode required for the file, defaults to os.F_OK | os.R_OK.</span>
+<span class="sd">        Which ensure that the file exists and we can read it.</span>
+<span class="sd">    path : str</span>
+<span class="sd">        The PATH string.</span>
 
-        <span class="c1"># Check that a given file can be accessed with the correct mode.</span>
-        <span class="c1"># Additionally check that `file` is not a directory, as on Windows</span>
-        <span class="c1"># directories pass the os.access check.</span>
-        <span class="k">def</span> <span class="nf">_access_check</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="ow">and</span>
-                    <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Returns the full path to the file or None in case it was not found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">pathext</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
+        <span class="n">pathext</span> <span class="o">=</span> <span class="s2">&quot;.ui&quot;</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYDM_DISPLAYS_PATH&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">F_OK</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">R_OK</span>
 
-        <span class="c1"># If we&#39;re given a path with a directory part, look it up directly</span>
-        <span class="c1"># rather than referring to PATH directories. This includes checking</span>
-        <span class="c1"># relative to the current directory, e.g. ./script</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">_access_check</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">cmd</span>
-            <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">which</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">pathext</span><span class="o">=</span><span class="n">pathext</span><span class="p">)</span></div>
 
-        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PATH&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">defpath</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
-            <span class="c1"># The current directory takes precedence on Windows.</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">curdir</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
-                <span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">curdir</span><span class="p">)</span>
+<div class="viewcode-block" id="which"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.which">[docs]</a><span class="k">def</span> <span class="nf">which</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">F_OK</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">X_OK</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pathext</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given a command, mode, and a PATH string, return the path which</span>
+<span class="sd">    conforms to the given mode on the PATH, or None if there is no such</span>
+<span class="sd">    file.</span>
+<span class="sd">    `mode` defaults to os.F_OK | os.X_OK. `path` defaults to the result</span>
+<span class="sd">    of os.environ.get(&quot;PATH&quot;), or can be overridden with a custom search</span>
+<span class="sd">    path.</span>
+<span class="sd">    Note: This function was backported from the Python 3 source code and modified</span>
+<span class="sd">    to deal with the case in which we WANT to look at the path even with a relative</span>
+<span class="sd">    path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-            <span class="c1"># PATHEXT is necessary to check on Windows.</span>
-            <span class="n">pathext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PATHEXT&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)</span>
-            <span class="c1"># See if the given file matches any of the expected path</span>
-            <span class="c1"># extensions. This will allow us to short circuit when given</span>
-            <span class="c1"># &quot;python.exe&quot;. If it does match, only test that one, otherwise we</span>
-            <span class="c1"># have to try others.</span>
-            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">cmd</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">pathext</span><span class="p">):</span>
-                <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmd</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmd</span> <span class="o">+</span> <span class="n">ext</span> <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">pathext</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># On other platforms you don&#39;t have things like PATHEXT to tell you</span>
-            <span class="c1"># what file suffixes are executable, so just pass on cmd as-is.</span>
-            <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmd</span><span class="p">]</span>
+    <span class="c1"># Check that a given file can be accessed with the correct mode.</span>
+    <span class="c1"># Additionally check that `file` is not a directory, as on Windows</span>
+    <span class="c1"># directories pass the os.access check.</span>
+    <span class="k">def</span> <span class="nf">_access_check</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span>
 
-        <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">dir_</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
-            <span class="n">normdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">dir_</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">normdir</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
-                <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">normdir</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">thefile</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-                    <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_</span><span class="p">,</span> <span class="n">thefile</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">_access_check</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
-                        <span class="k">return</span> <span class="n">name</span>
+    <span class="c1"># If we&#39;re given a path with a directory part, look it up directly</span>
+    <span class="c1"># rather than referring to PATH directories. This includes checking</span>
+    <span class="c1"># relative to the current directory, e.g. ./script</span>
+    <span class="c1"># if os.path.dirname(cmd):</span>
+    <span class="c1">#     if _access_check(cmd, mode):</span>
+    <span class="c1">#         return cmd</span>
+    <span class="c1">#     return None</span>
+
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PATH&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">defpath</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
+        <span class="c1"># The current directory takes precedence on Windows.</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">curdir</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">curdir</span><span class="p">)</span>
+
+        <span class="c1"># PATHEXT is necessary to check on Windows.</span>
+        <span class="k">if</span> <span class="n">pathext</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pathext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PATHEXT&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">pathext</span> <span class="o">=</span> <span class="n">pathext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)</span>
+        <span class="c1"># See if the given file matches any of the expected path</span>
+        <span class="c1"># extensions. This will allow us to short circuit when given</span>
+        <span class="c1"># &quot;python.exe&quot;. If it does match, only test that one, otherwise we</span>
+        <span class="c1"># have to try others.</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">cmd</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">pathext</span><span class="p">):</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmd</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmd</span> <span class="o">+</span> <span class="n">ext</span> <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">pathext</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># On other platforms you don&#39;t have things like PATHEXT to tell you</span>
+        <span class="c1"># what file suffixes are executable, so just pass on cmd as-is.</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmd</span><span class="p">]</span>
+
+    <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">dir_</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+        <span class="n">normdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">dir_</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">normdir</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+            <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">normdir</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">thefile</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_</span><span class="p">,</span> <span class="n">thefile</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">_access_check</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">name</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
 </pre></div>
 
            </div>
@@ -334,7 +365,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v1.2.0+33.g4d8be0a',
+            VERSION:'v1.2.0+37.g60b5060',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
