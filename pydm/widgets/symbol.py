@@ -72,7 +72,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
                 try:
                     file_path = self.app.get_path(filename)
                 except Exception as e:
-                    logger.exception(e)
+                    logger.exception("Couldn't get file with path %s", filename)
                     file_path = filename
             else:
                 file_path = filename
