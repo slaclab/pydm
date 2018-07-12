@@ -6,7 +6,7 @@ from ..PyQt.QtGui import QApplication, QColor, QCursor, QMenu
 from ..PyQt.QtCore import Qt, QEvent, pyqtSignal, pyqtSlot, pyqtProperty
 from .channel import PyDMChannel
 from ..utilities import is_pydm_app
-from .rules import RulesEngine
+from .rules import RulesDispatcher
 
 try:
     from json.decoder import JSONDecodeError
@@ -100,10 +100,9 @@ class PyDMPrimitiveWidget(object):
 
     def __init__(self):
         self._rules = None
-        self._rules_objs = []
 
     @pyqtSlot(dict)
-    def setRule(self, payload):
+    def rule_evaluated(self, payload):
         """
         Callback called when a rule has a new value for a property.
 
@@ -156,26 +155,12 @@ class PyDMPrimitiveWidget(object):
         """
         if new_rules != self._rules:
             self._rules = new_rules
-
-            # Let's clean up the current actions
-            # and terminate all the action threads
-            # that are there...
-            if len(self._rules_objs) != 0:
-                for ao in self._rules_objs:
-                    ao.requestInterruption()
-                    ao.quit()
-                    ao.wait()
-                self._rules_objs = []
             try:
                 rules_list = json.loads(self._rules)
+                RulesDispatcher().register(self, rules_list)
             except JSONDecodeError as ex:
                 logger.exception('Invalid format for Rules')
                 return
-
-            for ro in rules_list:
-                self._rules_objs.append(RulesEngine(ro))
-                self._rules_objs[-1].rule_signal.connect(self.setRule)
-                self._rules_objs[-1].start()
 
 
 class PyDMWidget(PyDMPrimitiveWidget):

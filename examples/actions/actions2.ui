@@ -108,7 +108,7 @@
     </string>
    </property>
    <property name="rules" stdset="0">
-    <string>[{&quot;name&quot;: &quot;New Rule&quot;, &quot;property&quot;: &quot;Position - Y&quot;, &quot;expression&quot;: &quot;int(420+50*ch[0])&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://MTEST:Float&quot;, &quot;trigger&quot;: true}]}]</string>
+    <string>[{&quot;name&quot;: &quot;Position - Y&quot;, &quot;property&quot;: &quot;Position - Y&quot;, &quot;expression&quot;: &quot;int(420+50*ch[0])&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://MTEST:Float&quot;, &quot;trigger&quot;: true}]}, {&quot;name&quot;: &quot;Visible &gt; 0.2&quot;, &quot;property&quot;: &quot;Visible&quot;, &quot;expression&quot;: &quot;np.abs(ch[0]) &gt; 0.2&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://MTEST:Float&quot;, &quot;trigger&quot;: true}]}]</string>
    </property>
    <property name="brush" stdset="0">
     <brush brushstyle="Dense3Pattern">

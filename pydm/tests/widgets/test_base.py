@@ -641,8 +641,6 @@ def test_pydmwidget_rules(qtbot, caplog):
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
 
-    assert pydm_label._rules_objs == []
-
     pydm_label.rules = "foo"
     for record in caplog.records:
         assert record.levelno == logging.ERROR
@@ -655,17 +653,13 @@ def test_pydmwidget_rules(qtbot, caplog):
     rules_json = json.dumps(rules)
     pydm_label.rules = rules_json
     assert pydm_label.rules == rules_json
-    assert len(pydm_label._rules_objs) == 1
-
-    for ro in pydm_label._rules_objs:
-        assert ro.isRunning()
 
     rules[0]['name'] = 'Rule #2'
     rules_json = json.dumps(rules)
     pydm_label.rules = rules_json
 
 
-def test_pydmwidget_setrule(qtbot, caplog):
+def test_pydmwidget_rule_evaluated(qtbot, caplog):
     """
     Test the rules mechanism.
 
@@ -686,7 +680,7 @@ def test_pydmwidget_setrule(qtbot, caplog):
         'value': 'foo'
     }
 
-    widget.setRule(payload)
+    widget.rule_evaluated(payload)
     for record in caplog.records:
         assert record.levelno == logging.ERROR
     assert "is not part of this widget properties" in caplog.text
@@ -698,5 +692,5 @@ def test_pydmwidget_setrule(qtbot, caplog):
     }
 
     assert widget.isVisible()
-    widget.setRule(payload)
+    widget.rule_evaluated(payload)
     assert not widget.isVisible()

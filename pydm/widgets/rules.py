@@ -1,7 +1,9 @@
 import logging
 import functools
 
-from ..PyQt.QtCore import QThread, pyqtSignal
+import collections
+
+from ..PyQt.QtCore import QObject, QThread, QMutex, pyqtSignal
 from ..PyQt.QtGui import QApplication
 
 from .channel import PyDMChannel
@@ -13,16 +15,79 @@ from math import *
 logger = logging.getLogger(__name__)
 
 
+class RulesDispatcher:
+    """
+    Singleton class responsible for handling all the interactions with the
+    RulesEngine and dispatch the payloads from the rules thread to the widget.
+    """
+    __instance = None
+
+    def __init__(self):
+        if self.__initialized:
+            return
+        self.rules_engine = RulesEngine()
+        self.rules_engine.rule_signal.connect(self.dispatch)
+        self.rules_engine.start()
+        self.__initialized = True
+
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            cls.__instance = object.__new__(RulesDispatcher)
+            cls.__instance.__initialized = False
+        return cls.__instance
+
+    def register(self, widget, rules):
+        """
+        Register widget rules with the RulesEngine thread.
+
+        Parameters
+        ----------
+        widget : QWidget
+            The widget that is associated with the rules.
+        rules : list
+            List of dictionaries containing the definition of the rules.
+
+        Returns
+        -------
+        bool
+            True if all the rules were successfully registered, False otherwise.
+        """
+        self.rules_engine.register(widget, rules)
+
+    def unregister(self, widget):
+        """
+        Unregister widget rules with the RulesEngine thread.
+
+        Parameters
+        ----------
+        widget : QWidget
+            The widget that is associated with the rules.
+
+        """
+        self.rules_engine.unregister(widget)
+
+    def dispatch(self, payload):
+        """
+        Callback invoked when the RulesEngine evaluate a rule and send new value
+        to the widget. This dispatcher is a bridge between the Thread and the
+        widgets.
+
+        Parameters
+        ----------
+        payload : dict
+            The payload data including the widget for method invoking.
+        """
+        try:
+            widget = payload.pop('widget')
+            widget.rule_evaluated(payload)
+        except Exception as ex:
+            logger.exception("Error at RulesDispatcher.")
+
+
 class RulesEngine(QThread):
     """
-    RulesEngine inherits from QThread and is responsible for monitoring the
-    channels associated with a rule, evaluate the expression when new values
-    arrive and emit the signal for the widget so it can be updated properly.
-
-    Parameters
-    ----------
-    rule_map : dict
-        The dictionary containing the rule information needed for the engine.
+    RulesEngine inherits from QThread and is responsible evaluating the rules
+    for all the widgets in the application.
 
     Signals
     -------
@@ -31,77 +96,79 @@ class RulesEngine(QThread):
     """
     rule_signal = pyqtSignal(dict)
 
-    def __init__(self, rule_map):
+    def __init__(self):
         QThread.__init__(self)
-        if rule_map is None or not isinstance(rule_map, dict):
-            raise ValueError("Invalid format for rule_map. Dictionary expected")
-        # Enables termination of the current thread
-        self.setTerminationEnabled(True)
-
         # Reference to App so we can establish the connection with the channel
         self.app = QApplication.instance()
+        self.map_lock = QMutex()
+        self.widget_map = dict()
 
-        # Flag to control whether or not we should evaluate the expression
-        self.should_calculate = False
+    def register(self, widget, rules):
+        if widget in self.widget_map:
+            self.unregister(widget)
 
-        # Definitions for this Action Thread
-        self.rule_map = rule_map
-        self.name = rule_map.get('name', None)
-        self.property = rule_map.get('property', None)
-        self.expression = rule_map.get('expression', None)
-        self.channels_list = rule_map.get('channels', [])
+        self.map_lock.lock()
+        self.widget_map[widget] = []
 
-        # Buffer for data coming from the channels
-        self.channels_connection = [False] * len(self.channels_list)
-        self.channels_value = [None] * len(self.channels_list)
+        for idx, rule in enumerate(rules):
+            channels_list = rule.get('channels', [])
 
-        self.channels = []
+            item = dict()
+            item['rule'] = rule
+            item['calculate'] = False
+            item['values'] = [None] * len(channels_list)
+            item['conn'] = [False] * len(channels_list)
+            item['channels'] = []
 
-        for idx, ch in enumerate(self.channels_list):
-            partial_connection = functools.partial(self.channel_conn_callback,
-                                                   idx, ch['channel'],
-                                                   ch['trigger'])
-            partial_value = functools.partial(self.channel_value_callback,
-                                              idx, ch['channel'], ch['trigger'])
-            c = PyDMChannel(ch['channel'],
-                            connection_slot=partial_connection,
-                            value_slot=partial_value)
-            if is_pydm_app():
-                self.app.add_connection(c)
-            self.channels.append(c)
+            for ch_idx, ch in enumerate(channels_list):
+                conn_cb = functools.partial(self.callback_conn, widget, idx,
+                                            ch_idx)
+                value_cb = functools.partial(self.callback_value, widget, idx,
+                                             ch_idx, ch['trigger'])
+                c = PyDMChannel(ch['channel'], connection_slot=conn_cb,
+                                value_slot=value_cb)
+                if is_pydm_app():
+                    self.app.add_connection(c)
+                item['channels'].append(c)
 
-    def channel_conn_callback(self, index, channel_name, trigger, value):
-        """
-        Callback executed when a channel connection status is changed.
+            self.widget_map[widget].append(item)
 
-        Parameters
-        ----------
-        index : int
-            The channel index on the list for this rule.
-        channel_name : str
-            The channel address.
-        trigger : bool
-            Whether or not this channel should trigger a calculation of the
-            expression
-        value : bool
-            Whether or not this channel is connected.
+        self.map_lock.unlock()
 
-        Returns
-        -------
-        None
-        """
-        self.channels_connection[index] = value
+    def unregister(self, widget):
+        self.map_lock.lock()
+        w_data = self.widget_map.pop(widget)
+        self.map_lock.unlock()
 
-    def channel_value_callback(self, index, channel_name, trigger, value):
+        for rule in w_data:
+            for ch in rule['channels']:
+                if is_pydm_app():
+                    self.app.remove_connection(ch)
+
+        del w_data
+
+    def run(self):
+        while not self.isInterruptionRequested():
+            self.map_lock.lock()
+            for widget in self.widget_map:
+                for rule in self.widget_map[widget]:
+                    if rule['calculate']:
+                        self.calculate_expression(widget, rule)
+            self.map_lock.unlock()
+            self.msleep(33) # 30Hz
+
+    def callback_value(self, widget, index, ch_index, trigger, value):
         """
         Callback executed when a channel receives a new value.
 
         Parameters
         ----------
+        widget : QWidget
+            The widget owner of the rule.
         index : int
+            The index of the rule being processed.
+        ch_index : int
             The channel index on the list for this rule.
-        channel_name : str
-            The channel address.
         trigger : bool
             Whether or not this channel should trigger a calculation of the
             expression
@@ -112,31 +179,37 @@ class RulesEngine(QThread):
         -------
         None
         """
-        self.channels_value[index] = value
+        self.widget_map[widget][index]['values'][ch_index] = value
         if trigger:
-            if not all(self.channels_connection):
+            if not all(self.widget_map[widget][index]['conn']):
                 logger.error(
                     "Rule %s: Not all channels are connected, skipping execution.",
-                    self.name)
+                    self.widget_map[widget][index]['rule']['name'])
                 return
-            self.should_calculate = True
+            self.widget_map[widget][index]['calculate'] = True
 
-    def run(self):
+    def callback_conn(self, widget, index, ch_index, value):
         """
-        Main loop of the RulesEngine which runs at 30Hz until a interruption is
-        requested and calculates the expression if a new value is available at
-        one of the trigger channels.
+        Callback executed when a channel connection status is changed.
+
+        Parameters
+        ----------
+        widget : QWidget
+            The widget owner of the rule.
+        index : int
+            The index of the rule being processed.
+        ch_index : int
+            The channel index on the list for this rule.
+        value : bool
+            Whether or not this channel is connected.
 
         Returns
         -------
         None
         """
-        while not self.isInterruptionRequested():
-            if self.should_calculate:
-                self.calculate_expression()
-            QThread.msleep(33)  # 30Hz
+        self.widget_map[widget][index]['conn'][ch_index] = value
 
-    def calculate_expression(self):
+    def calculate_expression(self, widget, rule):
         """
         Evaluate the expression defined by the rule and emit the `rule_signal`
         with the new value.
@@ -145,11 +218,16 @@ class RulesEngine(QThread):
         -------
         None
         """
-        self.should_calculate = False
-        ch = self.channels_value
+        ch = rule['values']
+        rule['calculate'] = False
         try:
-            val = eval(self.expression)
-            payload = {'name': self.name, 'property': self.property, 'value': val}
+            expression = rule['rule']['expression']
+            name = rule['rule']['name']
+            property = rule['rule']['property']
+
+            val = eval(expression)
+            payload = {'widget': widget, 'name': name, 'property': property,
+                       'value': val}
             self.rule_signal.emit(payload)
         except Exception as e:
             logger.exception("Error while evaluating Rule.")

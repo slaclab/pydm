@@ -1,91 +1,89 @@
-import pytest
 import logging
+import time
 
-from ...widgets.rules import RulesEngine
+from ...widgets.rules import RulesEngine, RulesDispatcher
+from ...widgets.label import PyDMLabel
 
 
-def test_rules_constructor(qapp):
+def test_rules_dispatcher(qapp, caplog):
     """
-    Test the rules constructor.
+    Test the dispatcher to ensure that it is a singleton.
 
     Parameters
     ----------
-    qapp : fixture
-        Reference to the QApplication
+    qapp
+
+    Returns
+    -------
+
     """
+    disp1 = RulesDispatcher()
+    disp2 = RulesDispatcher()
+    assert disp1 is disp2
 
-    with pytest.raises(ValueError):
-        rule_map = None
-        invalid = RulesEngine(rule_map)
+    assert disp1.rules_engine.isRunning()
 
-    with pytest.raises(ValueError):
-        rule_map = "foo"
-        invalid = RulesEngine(rule_map)
+    payload = {"foo": "bar"}
+    disp1.dispatch(payload)
 
-    rule_map = {'name': 'Rule #1', 'property': 'Enable',
-              'expression': 'ch[0] > 1',
-              'channels': [{'channel': 'foo://MTEST:Float', 'trigger': True}]}
-    r_eng = RulesEngine(rule_map)
-
-    assert r_eng.should_calculate is False
-    assert r_eng.rule_map == rule_map
-    assert r_eng.name == "Rule #1"
-    assert r_eng.channels_connection == [False]
-    assert r_eng.channels_value == [None]
-
-    assert len(r_eng.channels) == 1
-    assert r_eng.channels[0].address == "foo://MTEST:Float"
+    for record in caplog.records:
+        assert record.levelno == logging.ERROR
+    assert "Error at RulesDispatcher" in caplog.text
 
 
-def test_rules_full(qapp, signals, caplog):
+def test_rules_full(qtbot, caplog):
     """
     Test the rules mechanism.
 
     Parameters
     ----------
-    qapp : fixture
-        Reference to the QApplication
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the
-        appropriate slots
+    qtbot : fixture
+        Parent of all the widgets
     caplog : fixture
         To capture the log messages
     """
-    rule_map = {'name': 'Rule #1', 'property': 'Enable',
-                'expression': 'ch[0] > 1',
-                'channels': [{'channel': 'foo://MTEST:Float', 'trigger': True}]}
-    r_eng = RulesEngine(rule_map)
-    r_eng.rule_signal.connect(signals.receiveValue)
+    widget = PyDMLabel()
+    qtbot.addWidget(widget)
+    widget.show()
+    assert widget.isVisible()
 
-    assert signals.value is None
-    assert r_eng.should_calculate is False
-    assert len(r_eng.channels) == 1
-    assert r_eng.channels_connection == [False]
-    assert r_eng.channels_value == [None]
+    rules = [{'name': 'Rule #1', 'property': 'Visible',
+                'expression': 'ch[0] < 1',
+                'channels': [{'channel': 'foo://MTEST:Float', 'trigger': True}]}]
 
-    # Channel is not connected, will log an error.
-    r_eng.channel_value_callback(0, 'channel_name', trigger=True, value=1)
+    dispatcher = RulesDispatcher()
+    dispatcher.register(widget, rules)
 
+    re = dispatcher.rules_engine
+    assert widget in re.widget_map
+    assert len(re.widget_map[widget]) == 1
+    assert re.widget_map[widget][0]['rule'] == rules[0]
+
+    re.callback_value(widget, 0, 0, trigger=True, value=1)
     for record in caplog.records:
         assert record.levelno == logging.ERROR
     assert "Not all channels are connected" in caplog.text
 
-    # Force the connection state and resend the value
-    r_eng.channel_conn_callback(0, 'channel_name', trigger=True, value=True)
-    r_eng.channel_value_callback(0, 'channel_name', trigger=True, value=5)
-    assert r_eng.should_calculate is True
-    r_eng.calculate_expression()
-    assert r_eng.should_calculate is False
-    assert signals.value['value'] is True
+    re.callback_conn(widget, 0, 0, value=True)
+    re.callback_value(widget, 0, 0, trigger=True, value=5)
+    assert re.widget_map[widget][0]['calculate'] is True
+    blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
+    time.sleep(2)
+    assert re.widget_map[widget][0]['calculate'] is False
+    blocker.wait()
+    assert not widget.isVisible()
 
-    # Test for Invalid Expression
-    signals.reset()
-    r_eng.expression = 'foo'
-    r_eng.channel_value_callback(0, 'channel_name', trigger=True, value='a')
-    r_eng.calculate_expression()
+    caplog.clear()
+
+    rules[0]['expression'] = 'foo'
+    dispatcher.register(widget, rules)
+    assert len(re.widget_map[widget]) == 1
+    re.callback_conn(widget, 0, 0, value=True)
+    re.callback_value(widget, 0, 0, trigger=True, value='a')
+    time.sleep(2)
     for record in caplog.records:
         assert record.levelno == logging.ERROR
     assert "Error while evaluating Rule" in caplog.text
-    assert signals.value is None
 
-
+    dispatcher.unregister(widget)
+    assert widget not in re.widget_map
