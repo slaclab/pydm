@@ -15,7 +15,7 @@ from math import *
 logger = logging.getLogger(__name__)
 
 
-class RulesDispatcher:
+class RulesDispatcher(object):
     """
     Singleton class responsible for handling all the interactions with the
     RulesEngine and dispatch the payloads from the rules thread to the widget.
