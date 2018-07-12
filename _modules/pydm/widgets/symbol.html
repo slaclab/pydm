@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.symbol &mdash; PyDM v1.2.0+37.g60b5060 documentation</title>
+  <title>pydm.widgets.symbol &mdash; PyDM v1.2.0+41.gfd9a120 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.2.0+37.g60b5060
+                v1.2.0+41.gfd9a120
               </div>
             
           
@@ -170,11 +170,15 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.symbol</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">,</span> <span class="n">QRectF</span><span class="p">,</span> <span class="n">qInstallMessageHandler</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtSvg</span> <span class="k">import</span> <span class="n">QSvgRenderer</span>
-<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">is_pydm_app</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMSymbol"><a class="viewcode-back" href="../../../widgets/symbol.html#pydm.widgets.symbol.PyDMSymbol">[docs]</a><span class="k">class</span> <span class="nc">PyDMSymbol</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -191,6 +195,7 @@
         <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_images_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state_images</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Keyed on state values (ints), values are (filename, qpixmap or qsvgrenderer) tuples.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">KeepAspectRatio</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sizeHint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimumSizeHint</span><span class="p">()</span>
@@ -213,6 +218,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_images</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_images_string</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="nb">str</span><span class="p">(</span><span class="n">state</span><span class="p">):</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_images</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
 
     <span class="nd">@imageFiles</span><span class="o">.</span><span class="n">setter</span>
@@ -225,13 +232,21 @@
 <span class="sd">        ----------</span>
 <span class="sd">        new_files : str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">new_file_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">new_files</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_images_string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">new_files</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">new_file_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_images_string</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_images</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sizeHint</span> <span class="o">=</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span> <span class="ow">in</span> <span class="n">new_file_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t get file with path </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+                    <span class="n">file_path</span> <span class="o">=</span> <span class="n">filename</span>
+            <span class="k">else</span><span class="p">:</span>
                 <span class="n">file_path</span> <span class="o">=</span> <span class="n">filename</span>
             <span class="c1"># First, lets try SVG.  We have to try SVG first, otherwise</span>
             <span class="c1"># QPixmap will happily load the SVG and turn it into a raster image.</span>
@@ -255,7 +270,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_sizeHint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sizeHint</span><span class="o">.</span><span class="n">expandedTo</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
                 <span class="k">continue</span>
             <span class="c1"># If we get this far, the file specified could not be loaded at all.</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Could not load image: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not load image: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_images</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">state</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AspectRatioMode</span><span class="p">)</span>
@@ -406,7 +421,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.2.0+37.g60b5060',
+            VERSION:'v1.2.0+41.gfd9a120',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
