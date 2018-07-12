@@ -1,8 +1,12 @@
+import json
+import logging
 from ..PyQt.QtGui import QApplication, QWidget, QPainter, QPixmap, QStyle, QStyleOption
 from ..PyQt.QtCore import pyqtProperty, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from ..PyQt.QtSvg import QSvgRenderer
-import json
+from ..utilities import is_pydm_app
 from .base import PyDMWidget
+
+logger = logging.getLogger(__name__)
 
 class PyDMSymbol(QWidget, PyDMWidget):
     """
@@ -19,6 +23,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
         QWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
         self.app = QApplication.instance()
+        self._state_images_string = ""
         self._state_images = {}  # Keyed on state values (ints), values are (filename, qpixmap or qsvgrenderer) tuples.
         self._aspect_ratio_mode = Qt.KeepAspectRatio
         self._sizeHint = self.minimumSizeHint()
@@ -41,6 +46,8 @@ class PyDMSymbol(QWidget, PyDMWidget):
         -------
         str
         """
+        if not self._state_images:
+            return self._state_images_string
         return json.dumps({str(state): val[0] for (state, val) in self._state_images.items()})
 
     @imageFiles.setter
@@ -53,13 +60,21 @@ class PyDMSymbol(QWidget, PyDMWidget):
         ----------
         new_files : str
         """
-        new_file_dict = json.loads(str(new_files))
+        self._state_images_string = str(new_files)
+        try:
+            new_file_dict = json.loads(self._state_images_string)
+        except Exception:
+            self._state_images = {}
+            return
         self._sizeHint = QSize(0, 0)
         for (state, filename) in new_file_dict.items():
-            try:
-                file_path = self.app.get_path(filename)
-            except Exception as e:
-                print(e)
+            if is_pydm_app():
+                try:
+                    file_path = self.app.get_path(filename)
+                except Exception as e:
+                    logger.exception("Couldn't get file with path %s", filename)
+                    file_path = filename
+            else:
                 file_path = filename
             # First, lets try SVG.  We have to try SVG first, otherwise
             # QPixmap will happily load the SVG and turn it into a raster image.
@@ -83,7 +98,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
                 self._sizeHint = self._sizeHint.expandedTo(image.size())
                 continue
             # If we get this far, the file specified could not be loaded at all.
-            print("Could not load image: {}".format(filename))
+            logger.error("Could not load image: {}".format(filename))
             self._state_images[int(state)] = (filename, None)
 
     @pyqtProperty(Qt.AspectRatioMode)
