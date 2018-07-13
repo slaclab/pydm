@@ -21,6 +21,7 @@ affect any of your widgets, but it will be annoying.
 from ..PyQt import QtGui, QtDesigner
 from .qtplugin_extensions import PyDMExtensionFactory
 
+
 # TODO: Change to Enum once we drop support
 #       for the almost dead and agonizing Python 2.7
 #       <pitchforks> Death to Python 2.7! </ pitchforks>
@@ -40,10 +41,13 @@ def qtplugin_factory(cls, is_container=False, group='PyDM Widgets',
     :param cls: Widget class
     :type cls:  QWidget
     """
+
     class Plugin(PyDMDesignerPlugin):
         __doc__ = "PyDMDesigner Plugin for {}".format(cls.__name__)
+
         def __init__(self):
             super(Plugin, self).__init__(cls, is_container, group, extensions)
+
     return Plugin
 
 
@@ -52,6 +56,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
     Parent class to standardize how pydm plugins are accessed in qt designer.
     All functions have default returns that can be overriden as necessary.
     """
+
     def __init__(self, cls, is_container=False, group='PyDM Widgets',
                  extensions=None):
         """
@@ -83,8 +88,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         if self.extensions is not None and len(self.extensions) > 0:
             self.manager = core.extensionManager()
             if self.manager:
-                factory = PyDMExtensionFactory(parent=self.manager,
-                                               extensions=self.extensions)
+                factory = PyDMExtensionFactory(parent=self.manager)
                 self.manager.registerExtensions(
                     factory,
                     'org.qt-project.Qt.Designer.TaskMenu')  # Qt5
@@ -105,6 +109,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         """
         w = self.cls(parent=parent)
         try:
+            setattr(w, "extensions", self.extensions)
             w.init_for_designer()
         except (AttributeError, NameError):
             pass
@@ -160,15 +165,15 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         XML Description of the widget's properties.
         """
         return (
-                "<widget class=\"{0}\" name=\"{0}\">\n"
-                " <property name=\"toolTip\" >\n"
-                "  <string>{1}</string>\n"
-                " </property>\n"
-                " <property name=\"whatsThis\" >\n"
-                "  <string>{2}</string>\n"
-                " </property>\n"
-                "</widget>\n"
-               ).format(self.name(), self.toolTip(), self.whatsThis())
+            "<widget class=\"{0}\" name=\"{0}\">\n"
+            " <property name=\"toolTip\" >\n"
+            "  <string>{1}</string>\n"
+            " </property>\n"
+            " <property name=\"whatsThis\" >\n"
+            "  <string>{2}</string>\n"
+            " </property>\n"
+            "</widget>\n"
+        ).format(self.name(), self.toolTip(), self.whatsThis())
 
     def includeFile(self):
         """

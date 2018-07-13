@@ -28,25 +28,24 @@ from .symbol import PyDMSymbol
 from .waveformtable import PyDMWaveformTable
 from .scale import PyDMScaleIndicator
 from .timeplot import PyDMTimePlot
-from .timeplot_curve_editor import TimePlotCurveEditorDialog
 from .waveformplot import PyDMWaveformPlot
-from .waveformplot_curve_editor import WaveformPlotCurveEditorDialog
 from .scatterplot import PyDMScatterPlot
-from .scatterplot_curve_editor import ScatterPlotCurveEditorDialog
-from .tab_bar import PyDMTabWidget
 
 BASE_EXTENSIONS = [RulesExtension]
 
+# Label plugin
+PyDMLabelPlugin = qtplugin_factory(PyDMLabel, group=WidgetCategory.DISPLAY,
+                                   extensions=BASE_EXTENSIONS)
 # Time Plot plugin
 PyDMTimePlotPlugin = qtplugin_factory(PyDMTimePlot, group=WidgetCategory.PLOT,
-                                      extensions=[ScatterCurveEditorExtension,
+                                      extensions=[TimeCurveEditorExtension,
                                                   RulesExtension])
 
 # Waveform Plot plugin
 PyDMWaveformPlotPlugin = qtplugin_factory(PyDMWaveformPlot,
                                           group=WidgetCategory.PLOT,
                                           extensions=[
-                                              ScatterCurveEditorExtension,
+                                              WaveformCurveEditorExtension,
                                               RulesExtension])
 
 # Scatter Plot plugin
@@ -103,9 +102,7 @@ PyDMImageViewPlugin = qtplugin_factory(PyDMImageView,
                                        group=WidgetCategory.DISPLAY,
                                    extensions=BASE_EXTENSIONS)
 
-# Label plugin
-PyDMLabelPlugin = qtplugin_factory(PyDMLabel, group=WidgetCategory.DISPLAY,
-                                   extensions=BASE_EXTENSIONS)
+
 
 # Line Edit plugin
 PyDMLineEditPlugin = qtplugin_factory(PyDMLineEdit, group=WidgetCategory.INPUT,
@@ -154,4 +151,4 @@ PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable,
                                    extensions=BASE_EXTENSIONS)
 
 # Tab Widget plugin
-PyDMTabWidgetPlugin = TabWidgetPlugin()
+PyDMTabWidgetPlugin = TabWidgetPlugin(extensions=BASE_EXTENSIONS)

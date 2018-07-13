@@ -8,28 +8,29 @@ from ..widgets.waveformplot_curve_editor import WaveformPlotCurveEditorDialog
 from ..widgets.timeplot_curve_editor import TimePlotCurveEditorDialog
 from ..widgets.scatterplot_curve_editor import ScatterPlotCurveEditorDialog
 
+
 class PyDMExtensionFactory(QExtensionFactory):
-    def __init__(self, parent=None, extensions=None):
+    def __init__(self, parent=None):
         super(PyDMExtensionFactory, self).__init__(parent)
-        self.extensions = extensions
 
     def createExtension(self, obj, iid, parent):
         if isinstance(obj, PyDMPrimitiveWidget):
-            return PyDMTaskMenuExtension(obj, parent, self.extensions)
+            return PyDMTaskMenuExtension(obj, parent)
         return None
 
 
 class PyDMTaskMenuExtension(QPyDesignerTaskMenuExtension):
-    def __init__(self, widget, parent, extensions):
+    def __init__(self, widget, parent):
         super(PyDMTaskMenuExtension, self).__init__(parent)
+
         self.widget = widget
         self.__actions = None
         self.__extensions = []
+        extensions = getattr(widget, 'extensions', [])
 
-        if extensions is None: extensions = []
         for ex in extensions:
-            self.__extensions.append(ex(self.widget))
-
+            extension = ex(self.widget)
+            self.__extensions.append(extension)
 
     def taskActions(self):
         if self.__actions is None:
@@ -99,4 +100,3 @@ class TimeCurveEditorExtension(BasePlotExtension):
 class ScatterCurveEditorExtension(BasePlotExtension):
     def __init__(self, widget):
         super(ScatterCurveEditorExtension, self).__init__(widget, ScatterPlotCurveEditorDialog)
-
