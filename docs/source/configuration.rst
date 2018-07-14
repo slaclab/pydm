@@ -24,6 +24,9 @@ PYDM_ARCHIVER_URL        | This is the base URL for the Archiver Appliance Data 
 PYDM_EPICS_LIB           | Which library to use for Channel Access (ca://) data
                          | plugin. PyDM offers two options: PYCA and PYEPICS.
                          | **Default:** PYEPICS
+PYDM_DISPLAYS_PATH       | Path in which PyDM should look for ``.ui`` and ``.py`` files when
+                         | they are not found. **Note: This is not a recursive search.**
+                         | **Default:** None.
 PYDM_DATA_PLUGINS_PATH   | Path in which PyDM should look for Data Plugins to be loaded.
                          | **Default:** None.
 PYDM_TOOLS_PATH          | Path in which PyDM should look for External Tools to be loaded.
