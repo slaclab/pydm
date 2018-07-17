@@ -43,6 +43,7 @@ as well as a straightforward python framework to build complex applications.
    :caption: Developers Corner
 
    development/development.rst
+   widgets/widget_rules/customizing.rst
    development/resources.rst
 
 .. toctree::
