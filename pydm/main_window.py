@@ -66,19 +66,20 @@ class PyDMMainWindow(QMainWindow):
             self.ui.actionShow_Menu_Bar.activate(QAction.Trigger)
         if hide_status_bar:
             self.toggle_status_bar(False)
+        #Try to find the designer binary.
+        self.ui.actionEdit_in_Designer.setEnabled(False)
         self.designer_path = None
-        designer_bin = QLibraryInfo.location(QLibraryInfo.BinariesPath)
-
-        if platform.system() == 'Darwin':
-            self.designer_path = os.path.join(designer_bin, 'Designer.app/Contents/MacOS/Designer')
-        elif platform.system() == 'Linux':
-            self.designer_path = os.path.join(designer_bin, 'designer')
-        else:
-            self.designer_path = os.path.join(designer_bin, 'designer.exe')
-
-        # Ensure that the file exists
-        if not os.path.isfile(self.designer_path):
-            self.designer_path = None
+        possible_designer_bin_paths = (QLibraryInfo.location(QLibraryInfo.BinariesPath), QLibraryInfo.location(QLibraryInfo.LibraryExecutablesPath))
+        for bin_path in possible_designer_bin_paths:
+            if platform.system() == 'Darwin':
+                designer_path = os.path.join(bin_path, 'Designer.app/Contents/MacOS/Designer')
+            elif platform.system() == 'Linux':
+                designer_path = os.path.join(bin_path, 'designer')
+            else:
+                designer_path = os.path.join(bin_path, 'designer.exe')
+            if os.path.isfile(designer_path):
+                self.designer_path = designer_path
+                break
 
     def set_display_widget(self, new_widget):
         if new_widget == self._display_widget:
@@ -101,6 +102,7 @@ class PyDMMainWindow(QMainWindow):
             self.app.close_widget_connections(self._display_widget)
             self._display_widget.deleteLater()
             self._display_widget = None
+            self.ui.actionEdit_in_Designer.setEnabled(False)
 
     def join_to_current_file_path(self, ui_file):
         ui_file = str(ui_file)
@@ -145,6 +147,8 @@ class PyDMMainWindow(QMainWindow):
             editors.append("Text Editor")
         edit_in_text += ' and '.join(editors)
         self.ui.actionEdit_in_Designer.setText(edit_in_text)
+        if self.designer_path:
+            self.ui.actionEdit_in_Designer.setEnabled(True)
 
     def new_window(self, ui_file, macros=None, command_line_args=None):
         filename = self.join_to_current_file_path(ui_file)
