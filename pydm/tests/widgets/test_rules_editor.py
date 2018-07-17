@@ -1,3 +1,4 @@
+import os
 import pytest
 import logging
 import json
@@ -228,8 +229,9 @@ def test_rules_editor_open_help(qtbot, monkeypatch):
     re.lst_rules.setCurrentRow(0)
 
     url = re.open_help(open=False)
-
-    assert url == "https://slaclab.github.io/pydm/"
+    base_url = os.getenv("PYDM_DOCS_URL", "https://slaclab.github.io/pydm")
+    exp_url = base_url+"/widgets/widget_rules/index.html"
+    assert url == exp_url
 
     monkeypatch.setattr(webbrowser, 'open',
                         lambda *args, **kwargs: '')

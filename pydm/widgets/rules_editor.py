@@ -1,5 +1,6 @@
 import os
 import json
+import functools
 import webbrowser
 
 from ..PyQt import QtGui, QtCore, QtDesigner
@@ -194,7 +195,7 @@ class RulesEditor(QtGui.QDialog):
         self.btn_help.setDefault(False)
         self.btn_help.setText("Help")
         self.btn_help.setStyleSheet("background-color: rgb(176, 227, 255);")
-        self.btn_help.clicked.connect(self.open_help)
+        self.btn_help.clicked.connect(functools.partial(self.open_help, open=True))
         expr_help_layout.addWidget(self.btn_help)
         expression_layout.addRow(lbl_expression, expr_help_layout)
 
@@ -371,11 +372,16 @@ class RulesEditor(QtGui.QDialog):
         The documentation website prefix is given by the `PYDM_DOCS_URL`
         environmnet variable. If not defined it defaults to
         `https://slaclab.github.io/pydm`
+
+        Parameters
+        ----------
+        open : bool
+            Whether or not we should use the web browser to open the page.
         """
         docs_url = os.getenv("PYDM_DOCS_URL", None)
         if docs_url is None:
             docs_url = "https://slaclab.github.io/pydm"
-        expression_url = ""
+        expression_url = "widgets/widget_rules/index.html"
         help_url = "{}/{}".format(docs_url, expression_url)
         if open:
             webbrowser.open(help_url, new=2, autoraise=True)

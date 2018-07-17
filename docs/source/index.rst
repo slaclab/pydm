@@ -32,6 +32,7 @@ as well as a straightforward python framework to build complex applications.
    :caption: User & API Documentation
 
    widgets/index.rst
+   widgets/widget_rules/index.rst
    add_data_plugins.rst
    application.rst
    channel.rst
