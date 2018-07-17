@@ -62,7 +62,7 @@ class RulesExtension(PyDMExtension):
         self.edit_rules_action.triggered.connect(self.edit_rules)
 
     @QtCore.pyqtSlot()
-    def edit_rules(self):
+    def edit_rules(self, state):
         edit_rules_dialog = RulesEditor(self.widget, parent=self.widget)
         edit_rules_dialog.exec_()
 
@@ -79,7 +79,7 @@ class BasePlotExtension(PyDMExtension):
         self.edit_curves_action.triggered.connect(self.edit_curves)
 
     @QtCore.pyqtSlot()
-    def edit_curves(self):
+    def edit_curves(self, state):
         edit_curves_dialog = self.curve_editor_class(self.widget, parent=self.widget)
         edit_curves_dialog.exec_()
 
