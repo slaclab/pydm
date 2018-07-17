@@ -1,6 +1,8 @@
 import logging
 logger = logging.getLogger(__name__)
 
+import six
+
 from ..PyQt.QtGui import QComboBox
 from ..PyQt.QtCore import pyqtSlot, Qt
 from .base import PyDMWritableWidget
@@ -116,7 +118,26 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         """
         if new_val is not None:
             super(PyDMEnumComboBox, self).value_changed(new_val)
-            self.setCurrentIndex(new_val)
+            # Integers are straight forward
+            if isinstance(new_val, int):
+                idx = new_val
+            # String values are valid as well, but we need to look up the index
+            elif isinstance(new_val, six.text_type):
+                idx = self.findText(new_val)
+                # findText return -1 when we can not find the text inside the
+                # QComboBox
+                if idx == -1:
+                    logger.error("Can not change value to %r. "
+                                 "Not an option in PyDMComboBox",
+                                 new_val)
+                    return
+            # Handle bool, float, and ndarray
+            else:
+                logger.error("Invalid type for PyDMComboBox %s",
+                             type(new_val))
+                return
+            # Set the index
+            self.setCurrentIndex(idx)
 
     @pyqtSlot(int)
     def internal_combo_box_activated_int(self, index):
