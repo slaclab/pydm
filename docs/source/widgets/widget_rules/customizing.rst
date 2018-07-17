@@ -9,6 +9,7 @@ By default, ``PyDMPrimitiveWidget`` (base class for all the PyDM Widgets) define
 two constants:
 
 .. code-block:: python
+
     DEFAULT_RULE_PROPERTY = "Visible"
 
     RULE_PROPERTIES = {
