@@ -64,33 +64,42 @@ PyDMCheckboxPlugin = qtplugin_factory(PyDMCheckbox, group=WidgetCategory.INPUT)
 
 # Drawing plugins
 PyDMDrawingArcPlugin = qtplugin_factory(PyDMDrawingArc,
-                                        group=WidgetCategory.DRAWING)
+                                        group=WidgetCategory.DRAWING,
+                                        extensions=BASE_EXTENSIONS)
 PyDMDrawingChordPlugin = qtplugin_factory(PyDMDrawingChord,
-                                          group=WidgetCategory.DRAWING)
+                                          group=WidgetCategory.DRAWING,
+                                          extensions=BASE_EXTENSIONS)
 PyDMDrawingCirclePlugin = qtplugin_factory(PyDMDrawingCircle,
-                                           group=WidgetCategory.DRAWING)
+                                           group=WidgetCategory.DRAWING,
+                                           extensions=BASE_EXTENSIONS)
 PyDMDrawingEllipsePlugin = qtplugin_factory(PyDMDrawingEllipse,
-                                            group=WidgetCategory.DRAWING)
+                                            group=WidgetCategory.DRAWING,
+                                            extensions=BASE_EXTENSIONS)
 PyDMDrawingImagePlugin = qtplugin_factory(PyDMDrawingImage,
-                                          group=WidgetCategory.DRAWING)
+                                          group=WidgetCategory.DRAWING,
+                                          extensions=BASE_EXTENSIONS)
 PyDMDrawingLinePlugin = qtplugin_factory(PyDMDrawingLine,
-                                         group=WidgetCategory.DRAWING)
+                                         group=WidgetCategory.DRAWING,
+                                         extensions=BASE_EXTENSIONS)
 PyDMDrawingPiePlugin = qtplugin_factory(PyDMDrawingPie,
-                                        group=WidgetCategory.DRAWING)
+                                        group=WidgetCategory.DRAWING,
+                                        extensions=BASE_EXTENSIONS)
 PyDMDrawingRectanglePlugin = qtplugin_factory(PyDMDrawingRectangle,
-                                              group=WidgetCategory.DRAWING)
+                                              group=WidgetCategory.DRAWING,
+                                              extensions=BASE_EXTENSIONS)
 PyDMDrawingTrianglePlugin = qtplugin_factory(PyDMDrawingTriangle,
-                                             group=WidgetCategory.DRAWING)
+                                             group=WidgetCategory.DRAWING,
+                                             extensions=BASE_EXTENSIONS)
 
 # Embedded Display plugin
 PyDMEmbeddedDisplayPlugin = qtplugin_factory(PyDMEmbeddedDisplay,
                                              group=WidgetCategory.CONTAINER,
-                                   extensions=BASE_EXTENSIONS)
+                                             extensions=BASE_EXTENSIONS)
 
 # Enum Combobox plugin
 PyDMEnumComboBoxPlugin = qtplugin_factory(PyDMEnumComboBox,
                                           group=WidgetCategory.INPUT,
-                                   extensions=BASE_EXTENSIONS)
+                                          extensions=BASE_EXTENSIONS)
 
 # Frame plugin
 PyDMFramePlugin = qtplugin_factory(PyDMFrame, group=WidgetCategory.CONTAINER,
@@ -100,55 +109,53 @@ PyDMFramePlugin = qtplugin_factory(PyDMFrame, group=WidgetCategory.CONTAINER,
 # Image plugin
 PyDMImageViewPlugin = qtplugin_factory(PyDMImageView,
                                        group=WidgetCategory.DISPLAY,
-                                   extensions=BASE_EXTENSIONS)
-
-
+                                       extensions=BASE_EXTENSIONS)
 
 # Line Edit plugin
 PyDMLineEditPlugin = qtplugin_factory(PyDMLineEdit, group=WidgetCategory.INPUT,
-                                   extensions=BASE_EXTENSIONS)
+                                      extensions=BASE_EXTENSIONS)
 
 # Log Viewer
 PyDMLogDisplayPlugin = qtplugin_factory(PyDMLogDisplay,
                                         group=WidgetCategory.DISPLAY,
-                                   extensions=BASE_EXTENSIONS)
+                                        extensions=BASE_EXTENSIONS)
 
 # Push Button plugin
 PyDMPushButtonPlugin = qtplugin_factory(PyDMPushButton,
                                         group=WidgetCategory.INPUT,
-                                   extensions=BASE_EXTENSIONS)
+                                        extensions=BASE_EXTENSIONS)
 
 # Related Display Button plugin
 PyDMRelatedDisplayButtonPlugin = qtplugin_factory(PyDMRelatedDisplayButton,
                                                   group=WidgetCategory.DISPLAY,
-                                   extensions=BASE_EXTENSIONS)
+                                                  extensions=BASE_EXTENSIONS)
 
 # Shell Command plugin
 PyDMShellCommandPlugin = qtplugin_factory(PyDMShellCommand,
                                           group=WidgetCategory.INPUT,
-                                   extensions=BASE_EXTENSIONS)
+                                          extensions=BASE_EXTENSIONS)
 
 # Slider plugin
 PyDMSliderPlugin = qtplugin_factory(PyDMSlider, group=WidgetCategory.INPUT,
-                                   extensions=BASE_EXTENSIONS)
+                                    extensions=BASE_EXTENSIONS)
 
 # Spinbox plugin
 PyDMSpinboxplugin = qtplugin_factory(PyDMSpinbox, group=WidgetCategory.INPUT,
-                                   extensions=BASE_EXTENSIONS)
+                                     extensions=BASE_EXTENSIONS)
 
 # Scale Indicator plugin
 PyDMScaleIndicatorPlugin = qtplugin_factory(PyDMScaleIndicator,
                                             group=WidgetCategory.DISPLAY,
-                                   extensions=BASE_EXTENSIONS)
+                                            extensions=BASE_EXTENSIONS)
 
 # Symbol plugin
 PyDMSymbolPlugin = qtplugin_factory(PyDMSymbol, group=WidgetCategory.DISPLAY,
-                                   extensions=BASE_EXTENSIONS)
+                                    extensions=BASE_EXTENSIONS)
 
 # Waveform Table plugin
 PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable,
                                            group=WidgetCategory.INPUT,
-                                   extensions=BASE_EXTENSIONS)
+                                           extensions=BASE_EXTENSIONS)
 
 # Tab Widget plugin
 PyDMTabWidgetPlugin = TabWidgetPlugin(extensions=BASE_EXTENSIONS)
