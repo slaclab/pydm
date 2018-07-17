@@ -154,6 +154,8 @@ def test_check_enable_state(qtbot, signals, monkeypatch, connected, write_access
 @pytest.mark.parametrize("values, selected_index, expected", [
     (("RUN", "STOP"), 0, "RUN"),
     (("RUN", "STOP"), 1, "STOP"),
+    (("RUN", "STOP"), "RUN", "RUN"),
+    (("RUN", "STOP"), "STOP", "STOP"),
 ])
 def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     """
