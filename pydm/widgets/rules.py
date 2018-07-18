@@ -182,9 +182,7 @@ class RulesEngine(QThread):
         self.widget_map[widget][index]['values'][ch_index] = value
         if trigger:
             if not all(self.widget_map[widget][index]['conn']):
-                logger.error(
-                    "Rule %s: Not all channels are connected, skipping execution.",
-                    self.widget_map[widget][index]['rule']['name'])
+                self.warn_unconnected_channels(widget, index)
                 return
             self.widget_map[widget][index]['calculate'] = True
 
@@ -208,6 +206,13 @@ class RulesEngine(QThread):
         None
         """
         self.widget_map[widget][index]['conn'][ch_index] = value
+        if not value:
+            self.warn_unconnected_channels(widget, index)
+
+    def warn_unconnected_channels(self, widget, index):
+        logger.error(
+            "Rule '%s': Not all channels are connected, skipping execution.",
+            self.widget_map[widget][index]['rule']['name'])
 
     def calculate_expression(self, widget, rule):
         """
