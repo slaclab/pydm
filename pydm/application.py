@@ -482,18 +482,21 @@ class PyDMApplication(QApplication):
         """
         if channel.address is None or channel.address == "":
             return None
+        protocol = None
         match = re.match('.*://', channel.address)
         if match:
             protocol = match.group(0)[:-3]
         elif DEFAULT_PROTOCOL is not None:
             # If no protocol was specified, and the default protocol environment variable is specified, try to use that instead.
             protocol = DEFAULT_PROTOCOL
-        try:
-            plugin_to_use = self.plugins[str(protocol)]
-            return plugin_to_use
-        except KeyError:
-            print("Couldn't find plugin for protocol: {0}".format(match.group(0)[:-3]))
-        warnings.warn("Channel {addr} did not specify a valid protocol and no default protocol is defined.  This channel will receive no data.  To specify a default protocol, set the PYDM_DEFAULT_PROTOCOL environment variable.", RuntimeWarning, stacklevel=2)
+        if protocol:
+            try:
+                plugin_to_use = self.plugins[str(protocol)]
+                return plugin_to_use
+            except KeyError:
+                print("Couldn't find plugin for protocol: {0}".format(match.group(0)[:-3]))
+        #If you get this far, we didn't successfuly figure out what plugin to use for this channel.
+        warnings.warn("Channel {addr} did not specify a valid protocol and no default protocol is defined.  This channel will receive no data.  To specify a default protocol, set the PYDM_DEFAULT_PROTOCOL environment variable.".format(addr=channel.address), RuntimeWarning, stacklevel=2)
         return None
 
     def add_connection(self, channel):
