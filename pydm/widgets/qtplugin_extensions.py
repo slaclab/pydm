@@ -14,8 +14,17 @@ class PyDMExtensionFactory(QExtensionFactory):
         super(PyDMExtensionFactory, self).__init__(parent)
 
     def createExtension(self, obj, iid, parent):
-        if isinstance(obj, PyDMPrimitiveWidget):
+        if not isinstance(obj, PyDMPrimitiveWidget):
+            return None
+
+        # For now check the iid for TaskMenu...
+        if iid == "org.qt-project.Qt.Designer.TaskMenu":
             return PyDMTaskMenuExtension(obj, parent)
+        # In the future we can expand to the others such as Property and etc
+        # When the time comes...  we will need a new PyDMExtension and
+        # the equivalent for PyDMTaskMenuExtension classes for the
+        # property editor and an elif statement in here to instantiate it...
+
         return None
 
 
