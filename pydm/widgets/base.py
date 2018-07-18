@@ -129,7 +129,7 @@ class PyDMPrimitiveWidget(object):
         method = getattr(self, method_name)
         method(value)
 
-    @pyqtProperty(str)
+    @pyqtProperty(str, designable=False)
     def rules(self):
         """
         JSON-formatted list of dictionaries, with rules for the widget.
