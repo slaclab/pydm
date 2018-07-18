@@ -47,7 +47,8 @@ class RulesEditor(QtGui.QDialog):
         None
         """
         iconfont = IconFont()
-
+        
+        self.setWindowTitle("PyDM Widget Rules Editor")
         vlayout = QtGui.QVBoxLayout()
         vlayout.setContentsMargins(5, 5, 5, 5)
         vlayout.setSpacing(5)
@@ -62,8 +63,7 @@ class RulesEditor(QtGui.QDialog):
         # buttons to add and remove actions
         list_frame = QtGui.QFrame(parent=self)
         list_frame.setMinimumHeight(300)
-        list_frame.setMinimumWidth(200)
-        list_frame.setMaximumWidth(200)
+        list_frame.setMinimumWidth(240)
         list_frame.setLineWidth(1)
         list_frame.setFrameShadow(QtGui.QFrame.Raised)
         list_frame.setFrameShape(QtGui.QFrame.StyledPanel)
@@ -77,15 +77,13 @@ class RulesEditor(QtGui.QDialog):
         self.btn_add_rule = QtGui.QPushButton(parent=self)
         self.btn_add_rule.setAutoDefault(False)
         self.btn_add_rule.setDefault(False)
-        self.btn_add_rule.setIconSize(QtCore.QSize(16, 16))
-        self.btn_add_rule.setIcon(iconfont.icon("plus-circle"))
+        self.btn_add_rule.setText("Add Rule")
         self.btn_add_rule.clicked.connect(self.add_rule)
 
         self.btn_del_rule = QtGui.QPushButton(parent=self)
         self.btn_del_rule.setAutoDefault(False)
         self.btn_del_rule.setDefault(False)
-        self.btn_del_rule.setIconSize(QtCore.QSize(16, 16))
-        self.btn_del_rule.setIcon(iconfont.icon("minus-circle"))
+        self.btn_del_rule.setText("Remove Rule")
         self.btn_del_rule.clicked.connect(self.del_rule)
 
         lf_btn_layout.addWidget(self.btn_add_rule)
@@ -94,6 +92,7 @@ class RulesEditor(QtGui.QDialog):
         lf_layout.addLayout(lf_btn_layout)
 
         self.lst_rules = QtGui.QListWidget()
+        self.lst_rules.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding))
         self.lst_rules.itemSelectionChanged.connect(self.load_from_list)
         lf_layout.addWidget(self.lst_rules)
 
@@ -104,12 +103,10 @@ class RulesEditor(QtGui.QDialog):
         save_btn.setAutoDefault(False)
         save_btn.setDefault(False)
         save_btn.clicked.connect(self.saveChanges)
-        save_btn.setMaximumWidth(150)
         cancel_btn = QtGui.QPushButton("Cancel", parent=self)
         cancel_btn.setAutoDefault(False)
         cancel_btn.setDefault(False)
         cancel_btn.clicked.connect(self.cancelChanges)
-        cancel_btn.setMaximumWidth(150)
         buttons_layout.addStretch()
         buttons_layout.addWidget(cancel_btn)
         buttons_layout.addWidget(save_btn)
@@ -130,9 +127,9 @@ class RulesEditor(QtGui.QDialog):
         hlayout.addWidget(self.frm_edit)
 
         edit_name_layout = QtGui.QFormLayout()
+        edit_name_layout.setFieldGrowthPolicy(QtGui.QFormLayout.ExpandingFieldsGrow)
         lbl_name = QtGui.QLabel("Rule Name:")
         self.txt_name = QtGui.QLineEdit()
-        self.txt_name.setMaximumWidth(200)
         self.txt_name.editingFinished.connect(self.name_changed)
         edit_name_layout.addRow(lbl_name, self.txt_name)
         lbl_property = QtGui.QLabel("Property:")
@@ -168,7 +165,7 @@ class RulesEditor(QtGui.QDialog):
         self.tbl_channels.setShowGrid(True)
         self.tbl_channels.setCornerButtonEnabled(False)
         self.tbl_channels.model().dataChanged.connect(self.tbl_channels_changed)
-        headers = ["Channel", "Trigger ?"]
+        headers = ["Channel", "Trigger?"]
         self.tbl_channels.setColumnCount(len(headers))
         self.tbl_channels.setHorizontalHeaderLabels(headers)
         header = self.tbl_channels.horizontalHeader()
@@ -178,6 +175,7 @@ class RulesEditor(QtGui.QDialog):
         frm_edit_layout.addWidget(self.tbl_channels)
 
         expression_layout = QtGui.QFormLayout()
+        expression_layout.setFieldGrowthPolicy(QtGui.QFormLayout.ExpandingFieldsGrow)
         lbl_expected = QtGui.QLabel("Expected Type:")
         self.lbl_expected_type = QtGui.QLabel(parent=self)
         # self.lbl_expected_type.setText("")
@@ -340,6 +338,7 @@ class RulesEditor(QtGui.QDialog):
         self.tbl_channels.setItem(row, 0, QtGui.QTableWidgetItem(""))
         checkBoxItem = QtGui.QTableWidgetItem()
         checkBoxItem.setCheckState(state)
+        checkBoxItem.setFlags(QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable)
         self.tbl_channels.setItem(row, 1, checkBoxItem)
         vlabel = [str(i) for i in range(self.tbl_channels.rowCount())]
         self.tbl_channels.setVerticalHeaderLabels(vlabel)
@@ -467,6 +466,15 @@ class RulesEditor(QtGui.QDialog):
     @QtCore.pyqtSlot()
     def saveChanges(self):
         """Save the new rules at the widget `rules` property."""
+        # If the form is being edited, we make sure self.rules has all the
+        # latest values from the form before we try to validate.  This fixes
+        # a problem where the last form item change wouldn't get saved unless
+        # the user knew to hit 'enter' or leave the field to end editing before
+        # hitting save.
+        if self.frm_edit.isEnabled():
+            self.expression_changed()
+            self.name_changed()
+            self.tbl_channels_changed()    
         status, message = self.is_data_valid()
         if status:
             data = json.dumps(self.rules)
