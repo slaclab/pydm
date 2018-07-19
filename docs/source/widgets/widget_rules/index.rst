@@ -39,8 +39,8 @@ Adding New Rule
 ***************
 
 With the ``Rules Editor`` screen open, users are able to create new rules by
-clicking on the **\+** sign on the top left side or delete a rule by clicking on
-the **\-** sign.
+clicking on the **Add Rule** button on the top left side or delete a rule by
+clicking on the **Remove Rule** sign.
 
 - **Rule Name**
    It is very  important to give a meaningful name to a rule in order to troubleshoot
