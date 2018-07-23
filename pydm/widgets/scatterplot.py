@@ -207,8 +207,8 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         Called by the curve's parent plot whenever the curve needs to be
         re-drawn with new data.
         """
-        self.setData(x=self.data_buffer[1, -self.points_accumulated:],
-                     y=self.data_buffer[0, -self.points_accumulated:])
+        self.setData(x=self.data_buffer[1, -self.points_accumulated:].astype(np.float),
+                     y=self.data_buffer[0, -self.points_accumulated:].astype(np.float))
         self.needs_new_x = True
         self.needs_new_y = True
 
@@ -225,8 +225,8 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
             raise NoDataError("Curve has no data, cannot determine limits.")
         x_data = self.data_buffer[0, -self.points_accumulated:]
         y_data = self.data_buffer[1, -self.points_accumulated:]
-        return ((np.amin(x_data), np.amax(x_data)),
-                (np.amin(y_data), np.amax(y_data)))
+        return ((float(np.amin(x_data)), float(np.amax(x_data))),
+                (float(np.amin(y_data)), float(np.amax(y_data))))
 
 
 class PyDMScatterPlot(BasePlot):

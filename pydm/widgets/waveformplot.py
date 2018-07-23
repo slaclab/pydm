@@ -219,13 +219,14 @@ class WaveformCurveItem(BasePlotCurveItem):
         if self.y_waveform is None:
             return
         if self.x_waveform is None:
-            self.setData(y=self.y_waveform)
+            self.setData(y=self.y_waveform.astype(np.float))
             return
         if self.x_waveform.shape[0] > self.y_waveform.shape[0]:
             self.x_waveform = self.x_waveform[:self.y_waveform.shape[0]]
         elif self.x_waveform.shape[0] < self.y_waveform.shape[0]:
             self.y_waveform = self.y_waveform[:self.x_waveform.shape[0]]
-        self.setData(x=self.x_waveform, y=self.y_waveform)
+        self.setData(x=self.x_waveform.astype(np.float),
+                     y=self.y_waveform.astype(np.float))
         self.needs_new_x = True
         self.needs_new_y = True
 
@@ -247,8 +248,8 @@ class WaveformCurveItem(BasePlotCurveItem):
                     (float(np.amin(self.y_waveform) - yspan),
                      float(np.amax(self.y_waveform) + yspan)))
         else:
-            return ((np.amin(self.x_waveform), np.amax(self.x_waveform)),
-                    (np.amin(self.y_waveform), np.amax(self.y_waveform)))
+            return ((float(np.amin(self.x_waveform)), float(np.amax(self.x_waveform))),
+                    (float(np.amin(self.y_waveform)), float(np.amax(self.y_waveform))))
 
 
 class PyDMWaveformPlot(BasePlot):
