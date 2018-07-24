@@ -5,14 +5,19 @@ import os
 from functools import partial
 
 import logging
+
 logger = logging.getLogger(__name__)
 from . import is_pydm_app
 
-
-# Fallback global stylesheet if there is no global stylesheet provided via env variable or command line parameter
-# TODO: Expand this global stylesheet
-GLOBAL_STYLESHEET = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../default_stylesheet.qss')
-
+# Fallback global stylesheet if there is no global stylesheet provided via env
+# variable or command line parameter
+GLOBAL_STYLESHEET = os.path.realpath(
+    os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        '..',
+        'default_stylesheet.qss'
+    )
+)
 
 def apply_stylesheet(stylesheet_file_path, timer=None):
     """
@@ -62,19 +67,25 @@ def _get_style_data(stylesheet_file_path):
     if stylesheet_file_path is not None:
         try:
             with open(stylesheet_file_path, 'r') as stylesheet_file:
-                logger.info("Opening style file '{0}'...".format(stylesheet_file_path))
+                logger.info(
+                    "Opening style file '{0}'...".format(stylesheet_file_path))
                 style_data = stylesheet_file.read()
         except Exception as ex:
-            logger.error("Error reading the stylesheet file '{0}'. Exception: {1}".format(stylesheet_file_path,
-                                                                                          str(ex)))
+            logger.error(
+                "Error reading the stylesheet file '{0}'. Exception: {1}".format(
+                    stylesheet_file_path,
+                    str(ex)))
     else:
         try:
             with open(GLOBAL_STYLESHEET) as default_stylesheet:
-                logger.info("Opening the default stylesheet '{0}'...".format(GLOBAL_STYLESHEET))
+                logger.info("Opening the default stylesheet '{0}'...".format(
+                    GLOBAL_STYLESHEET))
                 style_data = default_stylesheet.read()
         except Exception as ex:
-            logger.error("Cannot find the default stylesheet file '{0}'. Exception: {1}".format(GLOBAL_STYLESHEET,
-                                                                                                str(ex)))
+            logger.error(
+                "Cannot find the default stylesheet file '{0}'. Exception: {1}".format(
+                    GLOBAL_STYLESHEET,
+                    str(ex)))
     return style_data
 
 
