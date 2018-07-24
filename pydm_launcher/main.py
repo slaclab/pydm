@@ -36,6 +36,11 @@ def main():
         help='Start PyDM with the status bar hidden.'
         )
     parser.add_argument(
+        '--fullscreen',
+        action='store_true',
+        help='Start PyDM in full screen mode.'
+        )
+    parser.add_argument(
         '--read-only',
         action='store_true',
         help='Start PyDM in a Read-Only mode.'
@@ -104,6 +109,7 @@ def main():
         hide_nav_bar=pydm_args.hide_nav_bar,
         hide_menu_bar=pydm_args.hide_menu_bar,
         hide_status_bar=pydm_args.hide_status_bar,
+        fullscreen=pydm_args.fullscreen,
         read_only=pydm_args.read_only,
         macros=macros,
         stylesheet_path=pydm_args.stylesheet
