@@ -76,7 +76,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._show_units = False
         self._alarm_sensitive_content = False
         self._alarm_sensitive_border = True
-        self._alarm_state = self.ALARM_DISCONNECTED
+        self._alarm_state = self.ALARM_NONE
         self._tooltip = None
 
         self._precision_from_pv = True
@@ -165,6 +165,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.check_enable_state()
         if not connected:
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
+        else:
+            self.alarmSeverityChanged(self.ALARM_NONE)
 
     def value_changed(self, new_val):
         """
@@ -215,7 +217,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
             and 3 = INVALID
         """
         # 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID
-        self._alarm_state = new_alarm_severity
+        if not self._channel:
+            self._alarm_state = PyDMWidget.ALARM_NONE
+        else:
+            self._alarm_state = new_alarm_severity
         self.style().unpolish(self)
         self.style().polish(self)
         self.update()
@@ -426,12 +431,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
             alarm severity changes.
         """
         self._alarm_sensitive_content = checked
-        if is_pydm_app():
-            self.alarm_severity_changed(self._alarm_state)
-        else:
-            self.style().unpolish(self)
-            self.style().polish(self)
-            self.update()
+        self.alarm_severity_changed(self._alarm_state)
+        self.style().unpolish(self)
+        self.style().polish(self)
+        self.update()
 
     @pyqtProperty(bool)
     def alarmSensitiveBorder(self):
@@ -459,12 +462,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
             alarm severity changes.
         """
         self._alarm_sensitive_border = checked
-        if is_pydm_app():
-            self.alarm_severity_changed(self._alarm_state)
-        else:
-            self.style().unpolish(self)
-            self.style().polish(self)
-            self.update()
+        self.alarm_severity_changed(self._alarm_state)
+        self.style().unpolish(self)
+        self.style().polish(self)
+        self.update()
 
     @pyqtProperty(bool)
     def precisionFromPV(self):

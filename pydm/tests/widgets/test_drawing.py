@@ -94,7 +94,6 @@ def test_pydmdrawing_construct(qtbot):
     assert pydm_drawing.alarmSensitiveBorder is False
     assert pydm_drawing._rotation == 0.0
     assert pydm_drawing._brush.style() == Qt.SolidPattern
-    assert pydm_drawing._default_color
     assert pydm_drawing._painter
     assert pydm_drawing._pen.style() == pydm_drawing._pen_style == Qt.NoPen
     assert pydm_drawing._pen_width == 0

@@ -77,7 +77,10 @@ def test_pydmwidget_construct(qtbot, init_channel):
     assert pydm_label._show_units is False
     assert pydm_label._alarm_sensitive_content is False
     assert pydm_label.alarmSensitiveBorder is True
-    assert pydm_label._alarm_state == PyDMWidget.ALARM_DISCONNECTED
+    if init_channel:
+        assert pydm_label._alarm_state == PyDMWidget.ALARM_DISCONNECTED
+    else:
+        assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
 
     if is_pydm_app and is_channel_valid(init_channel):
         assert pydm_label._tooltip == ""
@@ -210,7 +213,7 @@ def test_pydmwidget_alarm_severity_changed(qtbot):
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
 
-    assert pydm_label.alarmSeverity == PyDMWidget.ALARM_DISCONNECTED
+    assert pydm_label.alarmSeverity == PyDMWidget.ALARM_NONE
     pydm_label.alarmSeverity = PyDMWidget.ALARM_MAJOR
     assert pydm_label.alarmSeverity == PyDMWidget.ALARM_MAJOR
 

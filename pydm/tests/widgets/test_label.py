@@ -280,7 +280,7 @@ def test_label_alarms(qtbot, signals, alarm_severity, alarm_sensitive_content, a
     alarm_sensitive_border : bool
         True if the widget's border will change color and thickness accordingly to the alarm's severity; False if not
     """
-    pydm_label = PyDMLabel()
+    pydm_label = PyDMLabel(init_channel="CA://FOOO")
     qtbot.addWidget(pydm_label)
 
     pydm_label.alarmSensitiveContent = alarm_sensitive_content
@@ -304,7 +304,7 @@ TOOLTIP_TEXT = "Testing with Alarm State Changes, Channel Provided."
     (False, True, ""),
     (False, False, ""),
 ])
-def test_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensitive_content, alarm_sensitive_border,
+def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensitive_content, alarm_sensitive_border,
                                                tooltip):
     """
     Test the widget's appearance and tooltip changes if a data channel is provided, and the is disconnected,
@@ -363,7 +363,6 @@ def test_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensitive_c
     # tooltip
     alarm_severity = PyDMWidget.ALARM_DISCONNECTED
 
-    signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
     signals.connection_state_signal.emit(False)
     assert pydm_label._alarm_state == alarm_severity
     assert pydm_label._connected == False
@@ -371,12 +370,11 @@ def test_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensitive_c
     assert pydm_label.isEnabled() == False
 
     # Finally, reconnect the alarm, and check for the same attributes
-    signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
     signals.connection_state_signal.emit(True)
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
     # TODO Set alarm_severity back to NONE
-    assert pydm_label._alarm_state == alarm_severity
+    assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
     assert pydm_label._connected == True
     assert pydm_label.toolTip() == tooltip
     assert pydm_label.isEnabled() == True
@@ -393,7 +391,7 @@ def test_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensitive_c
     (False, True, ""),
     (False, False, ""),
 ])
-def test_connection_changes_with_alarm_and_no_channel(qtbot, signals, alarm_sensitive_content, alarm_sensitive_border,
+def test_label_connection_changes_with_alarm_and_no_channel(qtbot, signals, alarm_sensitive_content, alarm_sensitive_border,
                                                       tooltip):
     """
     Test the widget's appearance and tooltip changes if a data channel is not provided, and the connection is not
@@ -431,38 +429,38 @@ def test_connection_changes_with_alarm_and_no_channel(qtbot, signals, alarm_sens
 
     # Do not the channel, but set the alarm severity to normal (NONE)
     pydm_label.channel = None
-    alarm_severity = PyDMWidget.ALARM_NONE
     signals.new_severity_signal.connect(pydm_label.alarmSeverityChanged)
-    signals.new_severity_signal.emit(alarm_severity)
+    signals.new_severity_signal.emit(PyDMWidget.ALARM_NONE)
 
     # Set the connection as enabled (True)
     signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
+
+    blocker = qtbot.waitSignal(signals.connection_state_signal, timeout=1000)
     signals.connection_state_signal.emit(True)
+    blocker.wait()
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
-    assert pydm_label._alarm_state == alarm_severity
+    assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
     assert pydm_label._connected == True
     assert pydm_label.toolTip() == tooltip
     assert pydm_label.isEnabled() == True
 
     # Next, disconnect the alarm, and check for the alarm severity, style, connection state, enabling state, and
     # tooltip
-    alarm_severity = PyDMWidget.ALARM_DISCONNECTED
-
-    signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
     signals.connection_state_signal.emit(False)
-    assert pydm_label._alarm_state == alarm_severity
+    blocker.wait()
+    assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
 
     assert pydm_label._connected == False
     assert pydm_label.toolTip() == tooltip
     assert pydm_label.isEnabled() == True
 
     # Finally, reconnect the alarm, and check for the same attributes
-    signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
     signals.connection_state_signal.emit(True)
+    blocker.wait()
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
-    assert pydm_label._alarm_state == alarm_severity
+    assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
     assert pydm_label._connected == True
     assert pydm_label.toolTip() == tooltip
     assert pydm_label.isEnabled() == True

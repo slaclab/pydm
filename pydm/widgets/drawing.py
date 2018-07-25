@@ -48,6 +48,7 @@ def qt_to_deg(deg):
     # Angles for Qt are in units of 1/16 of a degree
     return deg / 16.0
 
+
 class PyDMDrawing(QWidget, PyDMWidget):
     """
     Base class to be used for all PyDM Drawing Widgets.
@@ -63,12 +64,14 @@ class PyDMDrawing(QWidget, PyDMWidget):
     def __init__(self, parent=None, init_channel=None):
         self._rotation = 0.0
         self._brush = QBrush(Qt.SolidPattern)
-        self._default_color = QColor()
+        self._original_brush = None
         self._painter = QPainter()
         self._pen = QPen(Qt.NoPen)
         self._pen_style = Qt.NoPen
         self._pen_width = 0
         self._pen_color = QColor(0, 0, 0)
+        self._original_pen_style = self._pen_style
+        self._original_pen_color = self._pen_color
         QWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
         self.alarmSensitiveBorder = False
@@ -258,8 +261,9 @@ class PyDMDrawing(QWidget, PyDMWidget):
         new_brush : QBrush
         """
         if new_brush != self._brush:
+            if self._alarm_state == PyDMWidget.ALARM_NONE:
+                self._original_brush = new_brush
             self._brush = new_brush
-            self._default_color = new_brush.color()
             self.update()
 
     @pyqtProperty(Qt.PenStyle)
@@ -284,6 +288,8 @@ class PyDMDrawing(QWidget, PyDMWidget):
         new_style : int
             Index at Qt.PenStyle enum
         """
+        if self._alarm_state == PyDMWidget.ALARM_NONE:
+            self._original_pen_style = new_style
         if new_style != self._pen_style:
             self._pen_style = new_style
             self._pen.setStyle(new_style)
@@ -309,6 +315,9 @@ class PyDMDrawing(QWidget, PyDMWidget):
         ----------
         new_color : QColor
         """
+        if self._alarm_state == PyDMWidget.ALARM_NONE:
+            self._original_pen_color = new_color
+
         if new_color != self._pen_color:
             self._pen_color = new_color
             self._pen.setColor(new_color)
@@ -367,6 +376,15 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._rotation = new_angle
             self.update()
 
+    def alarm_severity_changed(self, new_alarm_severity):
+        PyDMWidget.alarm_severity_changed(self, new_alarm_severity)
+        if new_alarm_severity == PyDMWidget.ALARM_NONE:
+            if self._original_brush is not None:
+                self.brush = self._original_brush
+            if self._original_pen_color is not None:
+                self.penColor = self._original_pen_color
+            if self._original_pen_style is not None:
+                self.penStyle = self._original_pen_style
 
 class PyDMDrawingLine(PyDMDrawing):
     """

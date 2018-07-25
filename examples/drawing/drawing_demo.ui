@@ -111,6 +111,9 @@
    <property name="penWidth" stdset="0">
     <double>5.000000000000000</double>
    </property>
+   <property name="rotation" stdset="0">
+    <double>0.000000000000000</double>
+   </property>
   </widget>
   <widget class="PyDMDrawingTriangle" name="PyDMDrawingTriangle">
    <property name="geometry">
@@ -452,6 +455,26 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>PyDMDrawingArc</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingChord</class>
+   <extends>PyDMDrawingArc</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingCircle</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingEllipse</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
    <class>PyDMDrawingImage</class>
    <extends>QWidget</extends>
    <header>pydm.widgets.drawing</header>
@@ -462,6 +485,11 @@
    <header>pydm.widgets.drawing</header>
   </customwidget>
   <customwidget>
+   <class>PyDMDrawingPie</class>
+   <extends>PyDMDrawingArc</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
    <class>PyDMDrawingRectangle</class>
    <extends>QWidget</extends>
    <header>pydm.widgets.drawing</header>
@@ -469,31 +497,6 @@
   <customwidget>
    <class>PyDMDrawingTriangle</class>
    <extends>QWidget</extends>
-   <header>pydm.widgets.drawing</header>
-  </customwidget>
-  <customwidget>
-   <class>PyDMDrawingEllipse</class>
-   <extends>QWidget</extends>
-   <header>pydm.widgets.drawing</header>
-  </customwidget>
-  <customwidget>
-   <class>PyDMDrawingCircle</class>
-   <extends>QWidget</extends>
-   <header>pydm.widgets.drawing</header>
-  </customwidget>
-  <customwidget>
-   <class>PyDMDrawingArc</class>
-   <extends>QWidget</extends>
-   <header>pydm.widgets.drawing</header>
-  </customwidget>
-  <customwidget>
-   <class>PyDMDrawingPie</class>
-   <extends>PyDMDrawingArc</extends>
-   <header>pydm.widgets.drawing</header>
-  </customwidget>
-  <customwidget>
-   <class>PyDMDrawingChord</class>
-   <extends>PyDMDrawingArc</extends>
    <header>pydm.widgets.drawing</header>
   </customwidget>
  </customwidgets>

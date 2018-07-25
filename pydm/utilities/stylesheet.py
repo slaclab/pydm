@@ -40,7 +40,8 @@ def apply_stylesheet(stylesheet_file_path, timer=None):
     style_data = _get_style_data(stylesheet_file_path)
 
     if timer:
-        # For PyDM Launcher, the timer should be None. This code is to handle Qt Designer only
+        # For PyDM Launcher, the timer should be None. This code is to handle Qt
+        # Designer only
         timer.timeout.connect(partial(_set_style_data, style_data, timer))
         timer.start()
     else:
@@ -64,24 +65,29 @@ def _get_style_data(stylesheet_file_path):
     The style data read from the stylesheet file : str
     """
     style_data = None
+    load_default = True
     if stylesheet_file_path is not None:
         try:
             with open(stylesheet_file_path, 'r') as stylesheet_file:
                 logger.info(
                     "Opening style file '{0}'...".format(stylesheet_file_path))
                 style_data = stylesheet_file.read()
+                load_default = False
         except Exception as ex:
+            style_data = None
             logger.error(
                 "Error reading the stylesheet file '{0}'. Exception: {1}".format(
                     stylesheet_file_path,
                     str(ex)))
-    else:
+
+    if load_default:
         try:
             with open(GLOBAL_STYLESHEET) as default_stylesheet:
                 logger.info("Opening the default stylesheet '{0}'...".format(
                     GLOBAL_STYLESHEET))
                 style_data = default_stylesheet.read()
         except Exception as ex:
+            style_data = None
             logger.error(
                 "Cannot find the default stylesheet file '{0}'. Exception: {1}".format(
                     GLOBAL_STYLESHEET,
