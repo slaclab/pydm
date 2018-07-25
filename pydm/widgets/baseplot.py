@@ -65,6 +65,8 @@ class BasePlotCurveItem(PlotDataItem):
         self.setSymbolBrush(None)
         if color is not None:
             self.color = color
+        if kws.get("name", None):
+            self.opts["name"] = kws["name"]
 
     @property
     def color_string(self):
@@ -78,7 +80,7 @@ class BasePlotCurveItem(PlotDataItem):
         str
         """
         return str(utilities.colors.svg_color_from_hex(self.color.name(),
-                                                       hex_on_fail=True))
+                                                        hex_on_fail=True))
 
     @color_string.setter
     def color_string(self, new_color_string):
