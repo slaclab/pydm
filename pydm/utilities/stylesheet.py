@@ -123,9 +123,6 @@ def _set_style_data(style_data, timer):
                 # This will be loaded from the file set by users to define the global stylesheet for the facility in
                 # use
                 w.setStyleSheet(style_data)
-                # A timer is fully expected here. If a timer cannot be provided for whatever reason, we must re-evaluate
-                # the current Qt Designer stylesheet application methodology
-                timer.stop()
 
 
 def _set_stylesheet_for_app(app, style_data):
