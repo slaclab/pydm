@@ -14,7 +14,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     def __init__(self, channel_address=None, **kws):
         channel_address = "" if channel_address is None else channel_address
-        if 'name' not in kws or kws['name'] is None:
+        if 'name' not in kws or not kws['name']:
             name = remove_protocol(channel_address)
             kws['name'] = name
         self._bufferSize = 1200
@@ -169,6 +169,8 @@ class PyDMTimePlot(BasePlot):
         self.addCurve(new_curve, curve_color=color)
         self.redraw_timer.start()
 
+        return new_curve
+
     def removeYChannel(self, curve):
         self.update_timer.timeout.disconnect(curve.asyncUpdate)
         self.removeCurve(curve)
@@ -201,6 +203,11 @@ class PyDMTimePlot(BasePlot):
 
     def getCurves(self):
         return [json.dumps(curve.to_dict()) for curve in self._curves]
+
+    def findCurve(self, pv_name):
+        for curve in self._curves:
+            if curve.address == pv_name:
+                return curve
 
     def setCurves(self, new_list):
         try:
