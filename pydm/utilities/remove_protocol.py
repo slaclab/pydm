@@ -12,6 +12,8 @@ def remove_protocol(addr):
     str
     """
 
-    name = addr.split("://", 1)  # maxsplit = 1... removes only the first occurrence
-    name = ''.join(name[1:]) if len(name) > 1 else addr
+    name = addr
+    if name:
+        name = addr.split("://", 1)  # maxsplit = 1... removes only the first occurrence
+        name = ''.join(name[1:]) if len(name) > 1 else addr
     return name
