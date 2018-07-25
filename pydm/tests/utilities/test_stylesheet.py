@@ -186,17 +186,12 @@ def test_set_style_data(qtbot, monkeypatch, caplog, is_pydm_app):
             logger.info("Setting stylesheet for the widget...")
         monkeypatch.setattr(QWidget, "setStyleSheet", mock_widget_setStyleSheet)
 
-        def mock_timer_stop(*args):
-            logger.info("Stopping timer...")
-        monkeypatch.setattr(QTimer, "stop", mock_timer_stop)
-
     _set_style_data(style_data, timer)
 
     if is_pydm_app:
         assert "Setting stylesheet for the app..." in caplog.text
     else:
         assert "Setting stylesheet for the widget..." in caplog.text
-        assert "Stopping timer..." in caplog.text
 
 
 # --------------------
