@@ -17,7 +17,7 @@ ALARM_DISCONNECTED = 4
 
 /* Alarm severity == ALARM_NONE */
 *[alarmSensitiveBorder="true"][alarmSeverity="0"] {
-    border: 2px solid #00EB00;
+    border: 2px solid transparent;
 }
 
 /* Alarm severity == ALARM_MINOR */
@@ -44,26 +44,33 @@ ALARM_DISCONNECTED = 4
 PyDMDrawing[alarmSensitiveBorder="true"] {
     border: none;
     qproperty-penWidth: 2px;
-    qproperty-penStyle: SolidLine;
+
 }
 
 PyDMDrawing[alarmSensitiveBorder="true"][alarmSeverity="0"] {
-    qproperty-penColor: #00EB00;
+
 }
 
 PyDMDrawing[alarmSensitiveBorder="true"][alarmSeverity="1"] {
+    border: none;
     qproperty-penColor: #EBEB00;
+    qproperty-penStyle: SolidLine;
 }
 
 PyDMDrawing[alarmSensitiveBorder="true"][alarmSeverity="2"] {
+    border: none;
     qproperty-penColor: #FF0000;
+    qproperty-penStyle: SolidLine;
 }
 
 PyDMDrawing[alarmSensitiveBorder="true"][alarmSeverity="3"] {
+    border: none;
     qproperty-penColor: #EB00EB;
+    qproperty-penStyle: SolidLine;
 }
 
 PyDMDrawing[alarmSensitiveBorder="true"][alarmSeverity="4"] {
+    border: none;
     qproperty-penColor: #FFFFFF;
     qproperty-penStyle: DashLine;
 }
@@ -73,7 +80,7 @@ PyDMCheckbox[alarmSensitiveContent="true"][alarmSeverity="0"],
 PyDMSpinbox[alarmSensitiveContent="true"][alarmSeverity="0"],
 PyDMEnumComboBox[alarmSensitiveContent="true"][alarmSeverity="0"],
 PyDMPushButton[alarmSensitiveContent="true"][alarmSeverity="0"] {
-	background-color: #00EB00;
+
 }
 
 PyDMCheckbox[alarmSensitiveContent="true"][alarmSeverity="1"],
@@ -108,14 +115,14 @@ PyDMPushButton[alarmSensitiveContent="true"][alarmSeverity="4"] {
 color is very bright (like the yellow "MINOR" alarm) */
 PyDMLabel[alarmSensitiveContent="true"],
 PyDMLineEdit[alarmSensitiveContent="true"],
-PyDMSlider[alarmSensitiveContent="true"] > QLabel#valueLabel {
-	background-color: #444444;
+PyDMSlider[alarmSensitiveContent="true"]>QLabel#valueLabel {
+	/*background-color: #444444;*/
 }
 
 PyDMLabel[alarmSensitiveContent="true"][alarmSeverity="0"],
 PyDMLineEdit[alarmSensitiveContent="true"][alarmSeverity="0"],
 PyDMSlider[alarmSensitiveContent="true"][alarmSeverity="0"] > QLabel#valueLabel {
-	color: #00EB00;
+
 }
 
 PyDMLabel[alarmSensitiveContent="true"][alarmSeverity="1"],
@@ -171,7 +178,7 @@ PyDMFrame[alarmSensitiveContent="true"][alarmSeverity="4"] {
 /* For PyDMDrawing we have to use its 'brush' property */
 
 PyDMDrawing[alarmSensitiveContent="true"][alarmSeverity="0"] {
-    qproperty-brush: #00EB00;
+
 }
 
 PyDMDrawing[alarmSensitiveContent="true"][alarmSeverity="1"] {

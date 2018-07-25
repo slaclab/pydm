@@ -502,16 +502,17 @@ def test_push_button_alarms(qtbot, signals, alarm_severity, alarm_sensitive_cont
         Can be True or False; but will not be a part of the button's style. This parameter is only used to verify
         that the border will not affect the button's style
     """
-    pydm_pushbutton = PyDMPushButton()
+    pydm_pushbutton = PyDMPushButton(init_channel="CA://FOO")
     qtbot.addWidget(pydm_pushbutton)
 
     # PyDM PushButton doesn't take the sensitive border flag into its style. Still, try out different True/False flag
     # values to make sure this expectation will hold for all testing scenarios
     pydm_pushbutton.alarmSensitiveBorder = alarm_sensitive_border
 
-    assert pydm_pushbutton.alarmSensitiveContent == PyDMWidget.ALARM_NONE
     assert pydm_pushbutton._alarm_state == PyDMWidget.ALARM_DISCONNECTED
 
+    # TODO: Review this test... it does not make sense at all...
+    # We should probably remove it.
     if alarm_sensitive_content:
         # If we change the alarm sensitive content, alarm state and the widget's style will change, so check to ensure
         # those changes will happen
