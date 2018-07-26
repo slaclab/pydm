@@ -157,5 +157,5 @@ class Ui_MainWindow(object):
         self.actionShow_Connections.setText(_translate("MainWindow", "Show Connections..."))
         self.actionLoadTool.setText(_translate("MainWindow", "Load..."))
         self.actionEnter_Fullscreen.setText(_translate("MainWindow", "Enter Fullscreen..."))
-        self.actionEnter_Fullscreen.setShortcut(_translate("MainWindow", "Ctrl+F"))
+        self.actionEnter_Fullscreen.setShortcut(_translate("MainWindow", "F11"))
 

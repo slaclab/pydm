@@ -269,7 +269,7 @@
     <string>Enter Fullscreen...</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+F</string>
+    <string>F11</string>
    </property>
   </action>
  </widget>
