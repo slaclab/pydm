@@ -396,7 +396,7 @@ class PyDMMainWindow(QMainWindow):
         QTimer.singleShot(0, self.resizeForNewDisplayWidget)
 
     @pyqtSlot(bool)
-    def enter_fullscreen(self, checked):
+    def enter_fullscreen(self, checked=False):
         if self.isFullScreen():
             self.showNormal()
         else:

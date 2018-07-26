@@ -256,7 +256,7 @@ class PyDMApplication(QApplication):
 
         self.main_window = main_window
         if self.fullscreen:
-            main_window.enter_fullscreen(False)
+            main_window.enter_fullscreen()
         else:
             main_window.show()
 
