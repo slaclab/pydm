@@ -266,7 +266,7 @@
   </action>
   <action name="actionEnter_Fullscreen">
    <property name="text">
-    <string>Enter Fullscreen...</string>
+    <string>Enter Fullscreen</string>
    </property>
    <property name="shortcut">
     <string>F11</string>
