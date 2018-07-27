@@ -915,7 +915,7 @@ class PyDMDrawingPolygon(PyDMDrawing):
             self.update()
 
     def _calculate_drawing_points(self, x, y, w, h):
-        #(x + rcosθ, y + rsinθ)
+        #(x + r*cos(theta), y + r*sin(theta))
         r = min(w, h)/2.0
         deg_step = 360.0/self._num_points
 
