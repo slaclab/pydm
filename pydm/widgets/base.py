@@ -546,9 +546,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self._alarm_sensitive_content = checked
         self.alarm_severity_changed(self._alarm_state)
-        self.style().unpolish(self)
-        self.style().polish(self)
-        self.update()
 
     @pyqtProperty(bool)
     def alarmSensitiveBorder(self):
@@ -577,9 +574,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self._alarm_sensitive_border = checked
         self.alarm_severity_changed(self._alarm_state)
-        self.style().unpolish(self)
-        self.style().polish(self)
-        self.update()
 
     @pyqtProperty(bool)
     def precisionFromPV(self):
