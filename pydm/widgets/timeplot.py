@@ -204,11 +204,6 @@ class PyDMTimePlot(BasePlot):
     def getCurves(self):
         return [json.dumps(curve.to_dict()) for curve in self._curves]
 
-    def findCurve(self, pv_name):
-        for curve in self._curves:
-            if curve.address == pv_name:
-                return curve
-
     def setCurves(self, new_list):
         try:
             new_list = [json.loads(str(i)) for i in new_list]
@@ -228,6 +223,26 @@ class PyDMTimePlot(BasePlot):
                              symbolSize=d.get('symbolSize'))
 
     curves = pyqtProperty("QStringList", getCurves, setCurves)
+
+    def findCurve(self, pv_name):
+        for curve in self._curves:
+            if curve.address == pv_name:
+                return curve
+
+    def refreshCurve(self, curve):
+        """
+        Remove a curve currently being plotted on the timeplot, then redraw that curve, which could have been updated
+        with a new symbol, line style, line width, etc.
+
+        :param curve:
+        :return:
+        """
+        curve = self.findCurve(curve.channel)
+        if curve:
+            self.chart.removeYChannel(curve)
+            self.addYChannel(y_channel=curve.address, color=curve.color, name=curve.address,
+                             lineStyle=curve.lineStyle, lineWidth=curve.lineWidth, symbol=curve.symbol,
+                             symbolSize=curve.symbolSize)
 
     def getBufferSize(self):
         return int(self._bufferSize)
