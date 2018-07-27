@@ -204,11 +204,6 @@ class PyDMTimePlot(BasePlot):
     def getCurves(self):
         return [json.dumps(curve.to_dict()) for curve in self._curves]
 
-    def findCurve(self, pv_name):
-        for curve in self._curves:
-            if curve.address == pv_name:
-                return curve
-
     def setCurves(self, new_list):
         try:
             new_list = [json.loads(str(i)) for i in new_list]
