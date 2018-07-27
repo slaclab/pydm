@@ -6,7 +6,8 @@ from .byte import PyDMByteIndicator
 from .checkbox import PyDMCheckbox
 from .drawing import (PyDMDrawingLine, PyDMDrawingRectangle, PyDMDrawingTriangle,
                       PyDMDrawingEllipse, PyDMDrawingCircle, PyDMDrawingArc,
-                      PyDMDrawingPie, PyDMDrawingChord, PyDMDrawingImage)
+                      PyDMDrawingPie, PyDMDrawingChord, PyDMDrawingImage,
+                      PyDMDrawingPolygon)
 
 from .embedded_display import PyDMEmbeddedDisplay
 from .enum_combo_box import PyDMEnumComboBox
@@ -57,6 +58,7 @@ PyDMDrawingEllipsePlugin = qtplugin_factory(PyDMDrawingEllipse, group=WidgetCate
 PyDMDrawingImagePlugin = qtplugin_factory(PyDMDrawingImage, group=WidgetCategory.DRAWING)
 PyDMDrawingLinePlugin = qtplugin_factory(PyDMDrawingLine, group=WidgetCategory.DRAWING)
 PyDMDrawingPiePlugin = qtplugin_factory(PyDMDrawingPie, group=WidgetCategory.DRAWING)
+PyDMDrawingPolygonPlugin = qtplugin_factory(PyDMDrawingPolygon, group=WidgetCategory.DRAWING)
 PyDMDrawingRectanglePlugin = qtplugin_factory(PyDMDrawingRectangle, group=WidgetCategory.DRAWING)
 PyDMDrawingTrianglePlugin = qtplugin_factory(PyDMDrawingTriangle, group=WidgetCategory.DRAWING)
 
