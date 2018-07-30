@@ -14,7 +14,8 @@ from ...widgets.drawing import (deg_to_qt, qt_to_deg, PyDMDrawing,
                                 PyDMDrawingRectangle, PyDMDrawingTriangle,
                                 PyDMDrawingEllipse,
                                 PyDMDrawingCircle, PyDMDrawingArc,
-                                PyDMDrawingPie, PyDMDrawingChord)
+                                PyDMDrawingPie, PyDMDrawingChord,
+                                PyDMDrawingPolygon)
 
 from ...utilities import is_pydm_app
 
@@ -1112,6 +1113,55 @@ def test_pydmdrawingchord_draw_item(qtbot, monkeypatch, width, height,
 
     pydm_drawingchord.draw_item()
 
+# # ---------------------
+# # PyDMDrawingPolygon
+# # ---------------------
+@pytest.mark.parametrize("x, y, width, height, num_points, expected_points", [
+    (0, 0, 100, 100, 3, [(50.0, 0),(-25, 43.3012),(-25, -43.3012)]),
+    (0, 0, 100, 100, 4, [(50.0, 0), (0, 50.0), (-50.0, 0), (0, -50.0)])
+])
+def test_pydmdrawingpolygon_calculate_drawing_points(qtbot, x, y, width,
+                                                      height, num_points,
+                                                      expected_points):
+    """
+    Test the calculations of the point coordinates of a PyDMDrawingTriangle widget.
+
+    Expectations:
+    The calculations match with the expected values.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    x : int, float
+        The x-coordinate
+    y: int, float
+        The y-coordinate
+    width : int, float
+        The base measurement
+    height : int, float
+        The height measurement
+    num_points : int
+        The number of points in the polygon
+    expected_points : tuple
+        The collection of the x and y coordinate sets
+    """
+    drawing = PyDMDrawingPolygon()
+    qtbot.addWidget(drawing)
+
+    drawing.numberOfPoints = num_points
+
+    assert drawing.numberOfPoints == num_points
+
+    calculated_points = drawing._calculate_drawing_points(x, y,
+                                                          width,
+                                                          height)
+
+    for idx, p in enumerate(calculated_points):
+        assert p.x() == pytest.approx(expected_points[idx][0], 0.1)
+        assert p.y() == pytest.approx(expected_points[idx][1], 0.1)
+
+    drawing.draw_item()
 
 # --------------------
 # NEGATIVE TEST CASES

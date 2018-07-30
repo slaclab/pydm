@@ -15,7 +15,8 @@ def test_import_drawing_plugins():
     # Drawing plugins
     from ..widgets.drawing import (PyDMDrawingLine, PyDMDrawingRectangle, PyDMDrawingTriangle,
                                   PyDMDrawingEllipse, PyDMDrawingCircle, PyDMDrawingArc,
-                                  PyDMDrawingPie, PyDMDrawingChord, PyDMDrawingImage)
+                                  PyDMDrawingPie, PyDMDrawingChord, PyDMDrawingImage,
+                                  PyDMDrawingPolygon)
 
     PyDMDrawingImagePlugin = qtplugin_factory(PyDMDrawingImage)
     PyDMDrawingLinePlugin = qtplugin_factory(PyDMDrawingLine)
@@ -26,6 +27,7 @@ def test_import_drawing_plugins():
     PyDMDrawingArcPlugin = qtplugin_factory(PyDMDrawingArc)
     PyDMDrawingPiePlugin = qtplugin_factory(PyDMDrawingPie)
     PyDMDrawingChordPlugin = qtplugin_factory(PyDMDrawingChord)
+    PyDMDrawingChordPlugin = qtplugin_factory(PyDMDrawingPolygon)
 
 def test_import_embedded_display_plugin():
     # Embedded Display plugin

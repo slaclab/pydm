@@ -3,8 +3,9 @@ import os
 import logging
 
 from ..PyQt.QtGui import (QApplication, QWidget, QColor, QPainter, QBrush, QPen,
-                          QPolygon, QPixmap, QStyle, QStyleOption, QMovie)
-from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, QSize, pyqtSlot
+                          QPolygon, QPolygonF, QPixmap, QStyle, QStyleOption,
+                          QMovie)
+from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, QPointF, QSize, pyqtSlot
 from ..PyQt.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
 from ..utilities import is_pydm_app
@@ -878,3 +879,61 @@ class PyDMDrawingChord(PyDMDrawingArc):
         x, y, w, h = self.get_bounds(maxsize=maxsize)
         self._painter.drawChord(x, y, w, h, self._start_angle, self._span_angle)
 
+
+class PyDMDrawingPolygon(PyDMDrawing):
+    """
+    A widget with a polygon drawn in it.
+    This class inherits from PyDMDrawing.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    """
+    def __init__(self, parent=None, init_channel=None):
+        super(PyDMDrawingPolygon, self).__init__(parent, init_channel)
+        self._num_points = 3
+
+    @pyqtProperty(int)
+    def numberOfPoints(self):
+        """
+        PyQT Property for the number of points
+
+        Returns
+        -------
+        int
+            Number of Points
+        """
+        return self._num_points
+
+    @numberOfPoints.setter
+    def numberOfPoints(self, points):
+        if points >= 3 and points != self._num_points:
+            self._num_points = points
+            self.update()
+
+    def _calculate_drawing_points(self, x, y, w, h):
+        #(x + r*cos(theta), y + r*sin(theta))
+        r = min(w, h)/2.0
+        deg_step = 360.0/self._num_points
+
+        points = []
+        for i in range(self._num_points):
+            xp = r * math.cos(math.radians(deg_step * i))
+            yp = r * math.sin(math.radians(deg_step * i))
+            points.append(QPointF(xp, yp))
+
+        return points
+
+    def draw_item(self):
+        """
+        Draws the Polygon after setting up the canvas with a call to
+        ```PyDMDrawing.draw_item```.
+        """
+        super(PyDMDrawingPolygon, self).draw_item()
+        maxsize = not self.is_square()
+        x, y, w, h = self.get_bounds(maxsize=not self.is_square())
+        poly = self._calculate_drawing_points(x, y, w, h)
+        self._painter.drawPolygon(QPolygonF(poly))
