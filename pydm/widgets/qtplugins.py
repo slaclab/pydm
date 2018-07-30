@@ -91,6 +91,10 @@ PyDMDrawingTrianglePlugin = qtplugin_factory(PyDMDrawingTriangle,
                                              group=WidgetCategory.DRAWING,
                                              extensions=BASE_EXTENSIONS)
 
+PyDMDrawingPolygonPlugin = qtplugin_factory(PyDMDrawingPolygon,
+                                             group=WidgetCategory.DRAWING,
+                                             extensions=BASE_EXTENSIONS)
+
 # Embedded Display plugin
 PyDMEmbeddedDisplayPlugin = qtplugin_factory(PyDMEmbeddedDisplay,
                                              group=WidgetCategory.CONTAINER,
