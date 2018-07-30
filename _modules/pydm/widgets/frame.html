@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.frame &mdash; PyDM v1.3.0+42.g1e605a5 documentation</title>
+  <title>pydm.widgets.frame &mdash; PyDM v1.3.0+75.gbe426de documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.3.0+42.g1e605a5
+                v1.3.0+75.gbe426de
               </div>
             
           
@@ -178,7 +178,7 @@
   <h1>Source code for pydm.widgets.frame</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QFrame</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtProperty</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">compose_stylesheet</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
 
 
 <div class="viewcode-block" id="PyDMFrame"><a class="viewcode-back" href="../../../widgets/frame.html#pydm.widgets.frame.PyDMFrame">[docs]</a><span class="k">class</span> <span class="nc">PyDMFrame</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
@@ -228,45 +228,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_disable_on_disconnect</span> <span class="o">=</span> <span class="n">new_val</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span>
 
-<div class="viewcode-block" id="PyDMFrame.alarm_severity_changed"><a class="viewcode-back" href="../../../widgets/frame.html#pydm.widgets.frame.PyDMFrame.alarm_severity_changed">[docs]</a>    <span class="k">def</span> <span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Callback invoked when the Channel alarm severity is changed.</span>
-<span class="sd">        This callback is not processed if the widget has no channel</span>
-<span class="sd">        associated with it.</span>
-<span class="sd">        This callback handles the composition of the stylesheet to be</span>
-<span class="sd">        applied and the call</span>
-<span class="sd">        to update to redraw the widget with the needed changes for the</span>
-<span class="sd">        new state.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        new_alarm_severity : int</span>
-<span class="sd">            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR</span>
-<span class="sd">            and 3 = INVALID</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span>
-        <span class="c1"># Cleanup the old alarm stylesheet used</span>
-        <span class="n">alarm_style</span> <span class="o">=</span> <span class="n">compose_stylesheet</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">original_style</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">styleSheet</span><span class="p">())</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">alarm_style</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">=</span> <span class="n">new_alarm_severity</span>
-
-        <span class="c1"># Must update the alarm flags here as the alarm sensitive content and alarm sensitive border flags</span>
-        <span class="c1"># can be toggled after the widget&#39;s construction</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_flags</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ALARM_CONTENT</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_sensitive_content</span><span class="p">)</span> <span class="o">|</span> \
-                            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ALARM_BORDER</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_sensitive_border</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_style</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alarm_style_sheet_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_alarm_flags</span><span class="p">][</span><span class="n">new_alarm_severity</span><span class="p">])</span>
-        <span class="k">if</span> <span class="s2">&quot;color&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">!=</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">ALARM_NONE</span><span class="p">:</span>
-                <span class="c1"># The style doesn&#39;t take the color attribute, but replace it with the background-color one</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">[</span><span class="s2">&quot;background-color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">[</span><span class="s2">&quot;color&quot;</span><span class="p">]</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">[</span><span class="s2">&quot;color&quot;</span><span class="p">]</span>
-        <span class="n">style</span> <span class="o">=</span> <span class="n">compose_stylesheet</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">original_style</span> <span class="o">+</span> <span class="n">style</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
-
 <div class="viewcode-block" id="PyDMFrame.check_enable_state"><a class="viewcode-back" href="../../../widgets/frame.html#pydm.widgets.frame.PyDMFrame.check_enable_state">[docs]</a>    <span class="k">def</span> <span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks whether or not the widget should be disable.</span>
@@ -311,7 +272,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.3.0+42.g1e605a5',
+            VERSION:'v1.3.0+75.gbe426de',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

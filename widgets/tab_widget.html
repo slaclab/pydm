@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMTabWidget &mdash; PyDM v1.3.0+42.g1e605a5 documentation</title>
+  <title>PyDMTabWidget &mdash; PyDM v1.3.0+75.gbe426de documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.3.0+42.g1e605a5
+                v1.3.0+75.gbe426de
               </div>
             
           
@@ -297,6 +297,23 @@ information.</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pydm.widgets.tab_bar.PyDMTabWidget.disconnectedAlarmIconColor">
+<code class="descname">disconnectedAlarmIconColor</code><a class="headerlink" href="#pydm.widgets.tab_bar.PyDMTabWidget.disconnectedAlarmIconColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_DISCONNECTED severity level.
+This property can be defined in a stylesheet by using ‘qproperty-disconnectedAlarmIconColor’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QColor</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydm.widgets.tab_bar.PyDMTabWidget.getAlarmChannels">
 <code class="descname">getAlarmChannels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/tab_bar.html#PyDMTabWidget.getAlarmChannels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.tab_bar.PyDMTabWidget.getAlarmChannels" title="Permalink to this definition">¶</a></dt>
@@ -304,6 +321,74 @@ information.</p>
 when it has been created in Qt Designer.  This property isn’t directly editable
 by users, they will go through the currentTabAlarmChannel property to edit this
 information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.tab_bar.PyDMTabWidget.invalidAlarmIconColor">
+<code class="descname">invalidAlarmIconColor</code><a class="headerlink" href="#pydm.widgets.tab_bar.PyDMTabWidget.invalidAlarmIconColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_INVALID severity level.
+This property can be defined in a stylesheet by using ‘qproperty-majorAlarmIconColor’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QColor</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.tab_bar.PyDMTabWidget.majorAlarmIconColor">
+<code class="descname">majorAlarmIconColor</code><a class="headerlink" href="#pydm.widgets.tab_bar.PyDMTabWidget.majorAlarmIconColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_MAJOR severity level.
+This property can be defined in a stylesheet by using ‘qproperty-majorAlarmIconColor’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QColor</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.tab_bar.PyDMTabWidget.minorAlarmIconColor">
+<code class="descname">minorAlarmIconColor</code><a class="headerlink" href="#pydm.widgets.tab_bar.PyDMTabWidget.minorAlarmIconColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_MINOR severity level.
+This property can be defined in a stylesheet by using ‘qproperty-minorAlarmIconColor’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QColor</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.tab_bar.PyDMTabWidget.noAlarmIconColor">
+<code class="descname">noAlarmIconColor</code><a class="headerlink" href="#pydm.widgets.tab_bar.PyDMTabWidget.noAlarmIconColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_NONE severity level.
+This property can be defined in a stylesheet by using ‘qproperty-noAlarmIconColor’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QColor</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -360,7 +445,7 @@ a tab widget from a .ui file, and is probably not very useful for users.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v1.3.0+42.g1e605a5',
+            VERSION:'v1.3.0+75.gbe426de',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

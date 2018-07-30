@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.3.0+42.g1e605a5 documentation</title>
+  <title>pydm.application &mdash; PyDM v1.3.0+75.gbe426de documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.3.0+42.g1e605a5
+                v1.3.0+75.gbe426de
               </div>
             
           
@@ -203,8 +203,11 @@
 <span class="kn">from</span> <span class="nn">.PyQt</span> <span class="k">import</span> <span class="n">uic</span>
 <span class="kn">from</span> <span class="nn">.main_window</span> <span class="k">import</span> <span class="n">PyDMMainWindow</span>
 <span class="kn">from</span> <span class="nn">.tools</span> <span class="k">import</span> <span class="n">ExternalTool</span>
+
 <span class="kn">from</span> <span class="nn">.utilities</span> <span class="k">import</span> <span class="n">macro</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">path_info</span><span class="p">,</span> <span class="n">find_display_in_path</span>
+<span class="kn">from</span> <span class="nn">.utilities.stylesheet</span> <span class="k">import</span> <span class="n">apply_stylesheet</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">data_plugins</span>
+
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">DEFAULT_PROTOCOL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYDM_DEFAULT_PROTOCOL&quot;</span><span class="p">)</span>
@@ -276,7 +279,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="p">[],</span> <span class="n">display_args</span><span class="o">=</span><span class="p">[],</span>
                  <span class="n">perfmon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_nav_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_menu_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">hide_status_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">use_main_window</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                 <span class="n">use_main_window</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stylesheet_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMApplication</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">command_line_args</span><span class="p">)</span>
         <span class="c1"># Enable High DPI display, if available.</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Qt</span><span class="p">,</span> <span class="s1">&#39;AA_UseHighDpiPixmaps&#39;</span><span class="p">):</span>
@@ -298,8 +301,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">hide_menu_bar</span> <span class="o">=</span> <span class="n">hide_menu_bar</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span> <span class="o">=</span> <span class="n">hide_status_bar</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__read_only</span> <span class="o">=</span> <span class="n">read_only</span>
+
         <span class="c1"># Open a window if required.</span>
         <span class="k">if</span> <span class="n">ui_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">apply_stylesheet</span><span class="p">(</span><span class="n">stylesheet_path</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">make_main_window</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">make_window</span><span class="p">(</span><span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">use_main_window</span><span class="p">:</span>
@@ -947,7 +952,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v1.3.0+42.g1e605a5',
+            VERSION:'v1.3.0+75.gbe426de',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

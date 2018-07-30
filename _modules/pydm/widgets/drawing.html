@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.drawing &mdash; PyDM v1.3.0+42.g1e605a5 documentation</title>
+  <title>pydm.widgets.drawing &mdash; PyDM v1.3.0+75.gbe426de documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.3.0+42.g1e605a5
+                v1.3.0+75.gbe426de
               </div>
             
           
@@ -227,6 +227,7 @@
     <span class="c1"># Angles for Qt are in units of 1/16 of a degree</span>
     <span class="k">return</span> <span class="n">deg</span> <span class="o">/</span> <span class="mf">16.0</span>
 
+
 <div class="viewcode-block" id="PyDMDrawing"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawing</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base class to be used for all PyDM Drawing Widgets.</span>
@@ -240,17 +241,19 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
-        <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">alarmSensitiveBorder</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span> <span class="o">=</span> <span class="n">QBrush</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">SolidPattern</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_default_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_original_brush</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span> <span class="o">=</span> <span class="n">QPainter</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span> <span class="o">=</span> <span class="n">QPen</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">NoPen</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pen_style</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">NoPen</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pen_width</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pen_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_original_pen_style</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen_style</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_original_pen_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen_color</span>
+        <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alarmSensitiveBorder</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="PyDMDrawing.sizeHint"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.sizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></div>
@@ -275,38 +278,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">drawPrimitive</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">PE_Widget</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span>
 
-        <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_color</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_sensitive_content</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">!=</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">ALARM_NONE</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">alarm_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">alarm_color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="n">alarm_color</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">setBrush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_brush</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span></div>
-
-<div class="viewcode-block" id="PyDMDrawing.alarm_severity_changed"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.alarm_severity_changed">[docs]</a>    <span class="k">def</span> <span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Callback invoked when the Channel alarm severity is changed.</span>
-<span class="sd">        This callback is not processed if the widget has no channel</span>
-<span class="sd">        associated with it.</span>
-<span class="sd">        This callback handles the composition of the stylesheet to be</span>
-<span class="sd">        applied and the call</span>
-<span class="sd">        to update to redraw the widget with the needed changes for the</span>
-<span class="sd">        new state.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        new_alarm_severity : int</span>
-<span class="sd">            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR</span>
-<span class="sd">            and 3 = INVALID</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMDrawing.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -464,8 +440,9 @@
 <span class="sd">        new_brush : QBrush</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_brush</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">==</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">ALARM_NONE</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_original_brush</span> <span class="o">=</span> <span class="n">new_brush</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span> <span class="o">=</span> <span class="n">new_brush</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_default_color</span> <span class="o">=</span> <span class="n">new_brush</span><span class="o">.</span><span class="n">color</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">PenStyle</span><span class="p">)</span>
@@ -490,6 +467,8 @@
 <span class="sd">        new_style : int</span>
 <span class="sd">            Index at Qt.PenStyle enum</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">==</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">ALARM_NONE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_original_pen_style</span> <span class="o">=</span> <span class="n">new_style</span>
         <span class="k">if</span> <span class="n">new_style</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen_style</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_pen_style</span> <span class="o">=</span> <span class="n">new_style</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setStyle</span><span class="p">(</span><span class="n">new_style</span><span class="p">)</span>
@@ -515,6 +494,9 @@
 <span class="sd">        ----------</span>
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">==</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">ALARM_NONE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_original_pen_color</span> <span class="o">=</span> <span class="n">new_color</span>
+
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen_color</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_pen_color</span> <span class="o">=</span> <span class="n">new_color</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">new_color</span><span class="p">)</span>
@@ -571,8 +553,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_angle</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span> <span class="o">=</span> <span class="n">new_angle</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
+<div class="viewcode-block" id="PyDMDrawing.alarm_severity_changed"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.alarm_severity_changed">[docs]</a>    <span class="k">def</span> <span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">):</span>
+        <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_alarm_severity</span> <span class="o">==</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">ALARM_NONE</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_original_brush</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">brush</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_original_brush</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_original_pen_color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">penColor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_original_pen_color</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_original_pen_style</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">penStyle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_original_pen_style</span></div></div>
 
 <div class="viewcode-block" id="PyDMDrawingLine"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingLine">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingLine</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1149,7 +1140,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.3.0+42.g1e605a5',
+            VERSION:'v1.3.0+75.gbe426de',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
