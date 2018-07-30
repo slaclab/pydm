@@ -1,6 +1,6 @@
 import sys
 import argparse
-from pydm import PyDMApplication
+import pydm
 import json
 import logging
 
@@ -46,6 +46,8 @@ def main():
         choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
         default='INFO'
         )
+    parser.add_argument('--version', action='version',
+                    version='PyDM {version}'.format(version=pydm.__version__))
     parser.add_argument(
         '-m', '--macro',
         help='Specify macro replacements to use, in JSON object format.' +
@@ -87,7 +89,7 @@ def main():
         logger.setLevel(pydm_args.log_level)
         handler.setLevel(pydm_args.log_level)
 
-    app = PyDMApplication(
+    app = pydm.PyDMApplication(
         ui_file=pydm_args.displayfile,
         command_line_args=pydm_args.display_args,
         perfmon=pydm_args.perfmon,
