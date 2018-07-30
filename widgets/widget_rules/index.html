@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Widget Rules &mdash; PyDM v1.3.0+42.g1e605a5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Including Data Plugins" href="../../add_data_plugins.html" />
+    <link rel="prev" title="PyDMDrawing Widgets" href="../drawing.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.3.0+42.g1e605a5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/first_display.html">Building Your First Display with Qt Designer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/scripted_displays.html">Making Python-based Displays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/macros.html">Macro Substitution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Widgets</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Widget Rules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creating-rules">Creating Rules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#opening-the-editor">Opening the Editor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-new-rule">Adding New Rule</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyDM</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Widget Rules</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/widgets/widget_rules/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="widget-rules">
+<h1>Widget Rules<a class="headerlink" href="#widget-rules" title="Permalink to this headline">¶</a></h1>
+<p>Every PyDM Widget has a property named <code class="docutils literal notranslate"><span class="pre">rules</span></code> which is a String that holds a
+JSON-formatted list of dictionaries describing the rules associated with that
+widget.</p>
+<p>The widget rules are intended to modify a widget property based on the evaluation
+of an expression that can use value of one or more channels in it.</p>
+<div class="section" id="creating-rules">
+<h2>Creating Rules<a class="headerlink" href="#creating-rules" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="opening-the-editor">
+<h3>Opening the Editor<a class="headerlink" href="#opening-the-editor" title="Permalink to this headline">¶</a></h3>
+<p>With the designer screen open, add a PyDM Widget to the screen and right-click
+on it to show the Task Menu and select the <code class="docutils literal notranslate"><span class="pre">Edit</span> <span class="pre">Rules...</span></code> option.</p>
+<p>Here is a step-by-step video on how to open the <code class="docutils literal notranslate"><span class="pre">Rules</span> <span class="pre">Editor</span></code>.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/open_editor.gif"><img alt="Rules Editor" src="../../_images/open_editor.gif" style="width: 609.0px; height: 349.0px;" /></a>
+</div>
+<p>Here is a screenshot of the <code class="docutils literal notranslate"><span class="pre">Rules</span> <span class="pre">Editor</span></code> screen in detail.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/rules_editor.png"><img alt="Rules Editor" src="../../_images/rules_editor.png" style="width: 745.0px; height: 499.0px;" /></a>
+</div>
+</div>
+<div class="section" id="adding-new-rule">
+<h3>Adding New Rule<a class="headerlink" href="#adding-new-rule" title="Permalink to this headline">¶</a></h3>
+<p>With the <code class="docutils literal notranslate"><span class="pre">Rules</span> <span class="pre">Editor</span></code> screen open, users are able to create new rules by
+clicking on the <strong>Add Rule</strong> button on the top left side or delete a rule by
+clicking on the <strong>Remove Rule</strong> sign.</p>
+<ul>
+<li><dl class="first docutils">
+<dt><strong>Rule Name</strong></dt>
+<dd><p class="first last">It is very  important to give a meaningful name to a rule in order to troubleshoot
+it as well as make it clear for others what this rule does.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>Property</strong></dt>
+<dd><p class="first">The property combo box will display all possible options to be configured at this
+widget using the rules mechanism. Most of the widgets will allow users to tweak
+the following properties:</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt><strong>Visible</strong>:</dt>
+<dd>If the result of the expression is <strong>True</strong> the widget will be visible, otherwise it will be hidden.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>Enable</strong>:</dt>
+<dd>If the result of the expression is <strong>True</strong> the widget will be enabled, otherwise it will be disabled.</dd>
+</dl>
+</li>
+</ul>
+<p class="last">Once a property is selected, it is time to add at least one channel to be used
+as trigger and value for the expression.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>Channels</strong></dt>
+<dd><p class="first">To do so, click at the <strong>+ Add Channel</strong> button on top of the table and fill in
+the channel address.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Trigger</span></code> option defines if the expression will be evaluated or not when
+this channel’s value is changed. At least one channel must be marked as <code class="docutils literal notranslate"><span class="pre">Trigger</span></code>.</p>
+<p class="last">With the channel(s) added it is time to create the expression.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<ul id="expression">
+<li><dl class="first docutils">
+<dt><strong>Expression</strong></dt>
+<dd><p class="first">When the user selects a property, the <code class="docutils literal notranslate"><span class="pre">Expected</span> <span class="pre">Type</span></code> label is updated with
+the expected data type for the given property.</p>
+<p>It is the user responsibility to cast the data properly and ensure that the
+proper data type or equivalent is the result of the evaluation.</p>
+<p>In order to get data from the <code class="docutils literal notranslate"><span class="pre">channels</span></code> configured before, one must use the
+special function <code class="docutils literal notranslate"><span class="pre">ch[...]</span></code> and specify the <code class="docutils literal notranslate"><span class="pre">channel</span> <span class="pre">index</span></code> according to the
+table, <strong>starting from 0</strong>. E.g. <code class="docutils literal notranslate"><span class="pre">ch[0]</span></code> will fetch the value from the first
+channel, <code class="docutils literal notranslate"><span class="pre">ch[2]</span></code> will fetch the value of the third channel and not the second.</p>
+<p>To make the expression mechanism more flexible, users can make usage of the
+following libraries:</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt><strong>Numpy</strong>: <a class="reference external" href="http://www.numpy.org/">http://www.numpy.org/</a></dt>
+<dd>In order to use the Numpy library functions you will need to use the <strong>np.</strong>
+prefix. E.g:
+For Numpy Absolute (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.absolute.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.absolute.html</a>)
+you should use: <code class="docutils literal notranslate"><span class="pre">np.absolute(...)</span></code>.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>Math</strong>: <a class="reference external" href="https://docs.python.org/3.6/library/math.html">https://docs.python.org/3.6/library/math.html</a></dt>
+<dd>The math module from Python is imported in full so different than the Numpy
+case, all the functions are already imported and can be used directly without
+the need to explicitly use the module name.</dd>
+</dl>
+</li>
+</ul>
+<div class="last admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For now, PyDM only provide support for Numpy and Math, in case other libraries
+or modules are required for the expression namespace please open an Issue so
+we can add it.</p>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../add_data_plugins.html" class="btn btn-neutral float-right" title="Including Data Plugins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../drawing.html" class="btn btn-neutral" title="PyDMDrawing Widgets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'v1.3.0+42.g1e605a5',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

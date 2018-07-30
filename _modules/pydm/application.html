@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.3.0+11.g314a21a documentation</title>
+  <title>pydm.application &mdash; PyDM v1.3.0+42.g1e605a5 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.3.0+11.g314a21a
+                v1.3.0+42.g1e605a5
               </div>
             
           
@@ -84,6 +84,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 </ul>
+<p class="caption"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration</a></li>
+</ul>
 <p class="caption"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/first_display.html">Building Your First Display with Qt Designer</a></li>
@@ -93,6 +97,7 @@
 <p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/widget_rules/index.html">Widget Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../add_data_plugins.html">Including Data Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../channel.html">Channel</a></li>
@@ -100,7 +105,8 @@
 </ul>
 <p class="caption"><span class="caption-text">Developers Corner</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../development/development.html">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../development/resources.html">Recommended Resources</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Links</span></p>
@@ -564,7 +570,7 @@
 <span class="sd">            to pass in extra arguments.  It is probably rare that code you</span>
 <span class="sd">            write needs to use this argument.</span>
 <span class="sd">        establish_connection : bool, optional</span>
-<span class="sd">            Whether or not we should call ``establish_widget_connections for this</span>
+<span class="sd">            Whether or not we should call `establish_widget_connections` for this</span>
 <span class="sd">            new widget. Default is True.</span>
 
 <span class="sd">        Returns</span>
@@ -654,18 +660,21 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">channel</span><span class="o">.</span><span class="n">address</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">channel</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">protocol</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;.*://&#39;</span><span class="p">,</span> <span class="n">channel</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
             <span class="n">protocol</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">DEFAULT_PROTOCOL</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># If no protocol was specified, and the default protocol environment variable is specified, try to use that instead.</span>
             <span class="n">protocol</span> <span class="o">=</span> <span class="n">DEFAULT_PROTOCOL</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">plugin_to_use</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugins</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">protocol</span><span class="p">)]</span>
-            <span class="k">return</span> <span class="n">plugin_to_use</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t find plugin for protocol: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]))</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Channel </span><span class="si">{addr}</span><span class="s2"> did not specify a valid protocol and no default protocol is defined.  This channel will receive no data.  To specify a default protocol, set the PYDM_DEFAULT_PROTOCOL environment variable.&quot;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">protocol</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">plugin_to_use</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugins</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">protocol</span><span class="p">)]</span>
+                <span class="k">return</span> <span class="n">plugin_to_use</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t find plugin for protocol: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]))</span>
+        <span class="c1">#If you get this far, we didn&#39;t successfuly figure out what plugin to use for this channel.</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Channel </span><span class="si">{addr}</span><span class="s2"> did not specify a valid protocol and no default protocol is defined.  This channel will receive no data.  To specify a default protocol, set the PYDM_DEFAULT_PROTOCOL environment variable.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addr</span><span class="o">=</span><span class="n">channel</span><span class="o">.</span><span class="n">address</span><span class="p">),</span> <span class="ne">RuntimeWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.add_connection"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.add_connection">[docs]</a>    <span class="k">def</span> <span class="nf">add_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
@@ -938,7 +947,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v1.3.0+11.g314a21a',
+            VERSION:'v1.3.0+42.g1e605a5',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

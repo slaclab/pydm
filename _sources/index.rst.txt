@@ -14,6 +14,13 @@ as well as a straightforward python framework to build complex applications.
 
 .. toctree::
    :maxdepth: 1
+   :caption: Configuration
+
+   configuration.rst
+
+
+.. toctree::
+   :maxdepth: 1
    :caption: Tutorials
 
    tutorials/first_display.rst
@@ -25,6 +32,7 @@ as well as a straightforward python framework to build complex applications.
    :caption: User & API Documentation
 
    widgets/index.rst
+   widgets/widget_rules/index.rst
    add_data_plugins.rst
    application.rst
    channel.rst
@@ -35,6 +43,7 @@ as well as a straightforward python framework to build complex applications.
    :caption: Developers Corner
 
    development/development.rst
+   widgets/widget_rules/customizing.rst
    development/resources.rst
 
 .. toctree::

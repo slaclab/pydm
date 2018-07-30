@@ -1,6 +1,6 @@
-===========
-Development
-===========
+======================
+Development Guidelines
+======================
 It is recommended that PyDM is updated and maintained in the
 following way. This workflow was not invented here at SLAC, 
 there are many helpful tutorials online like `this

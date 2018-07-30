@@ -1,0 +1,330 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Configuration &mdash; PyDM v1.3.0+42.g1e605a5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Building Your First Display with Qt Designer" href="tutorials/first_display.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.3.0+42.g1e605a5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Configuration</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/first_display.html">Building Your First Display with Qt Designer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/scripted_displays.html">Making Python-based Displays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/macros.html">Macro Substitution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyDM</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Configuration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/configuration.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>In order to make PyDM a flexible tool a couple of Environment Variables are used
+for configuration and customization.</p>
+<p>The following table describe the environment variable as well as its usage and
+default values.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Variable</th>
+<th class="head">What is it used for?</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>PYDM_DEFAULT_PROTOCOL</td>
+<td><div class="first last line-block">
+<div class="line">The default protocol to be used when specifing channels.</div>
+<div class="line">This option eliminates the need for users to specify the protocol</div>
+<div class="line">for a given Data Plugin. E.g.: <cite>ca</cite>.</div>
+<div class="line"><strong>Default:</strong> None</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td>PYDM_DOCS_URL</td>
+<td><div class="first last line-block">
+<div class="line">This variable point to the base URL for the documentation.</div>
+<div class="line"><strong>Default:</strong> <a class="reference external" href="https://slaclab.github.io/pydm">https://slaclab.github.io/pydm</a></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td>PYDM_ARCHIVER_URL</td>
+<td><div class="first last line-block">
+<div class="line">This is the base URL for the Archiver Appliance Data Plugin it is</div>
+<div class="line">concatenated with <code class="docutils literal notranslate"><span class="pre">/retrieval/data/getData</span></code> to generate the</div>
+<div class="line">retrieval URL.</div>
+<div class="line"><strong>Default:</strong> <a class="reference external" href="http://lcls-archapp.slac.stanford.edu">http://lcls-archapp.slac.stanford.edu</a></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td>PYDM_EPICS_LIB</td>
+<td><div class="first last line-block">
+<div class="line">Which library to use for Channel Access (ca://) data</div>
+<div class="line">plugin. PyDM offers two options: PYCA and PYEPICS.</div>
+<div class="line"><strong>Default:</strong> PYEPICS</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td>PYDM_DISPLAYS_PATH</td>
+<td><div class="first last line-block">
+<div class="line">Path in which PyDM should look for <code class="docutils literal notranslate"><span class="pre">.ui</span></code> and <code class="docutils literal notranslate"><span class="pre">.py</span></code> files when</div>
+<div class="line">they are not found. <strong>Note: This is not a recursive search.</strong></div>
+<div class="line"><strong>Default:</strong> None.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td>PYDM_DATA_PLUGINS_PATH</td>
+<td><div class="first last line-block">
+<div class="line">Path in which PyDM should look for Data Plugins to be loaded.</div>
+<div class="line"><strong>Default:</strong> None.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td>PYDM_TOOLS_PATH</td>
+<td><div class="first last line-block">
+<div class="line">Path in which PyDM should look for External Tools to be loaded.</div>
+<div class="line"><strong>Default:</strong> None.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td>PYDM_STRING_ENCODING</td>
+<td><div class="first last line-block">
+<div class="line">The string encoding to be used when converting arrays to strings.</div>
+<div class="line"><strong>Default:</strong> utf-8</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tutorials/first_display.html" class="btn btn-neutral float-right" title="Building Your First Display with Qt Designer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'v1.3.0+42.g1e605a5',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
