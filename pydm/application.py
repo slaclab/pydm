@@ -79,6 +79,8 @@ class PyDMApplication(QApplication):
     use_main_window : bool, optional
         If ui_file is note given, this parameter controls whether or not to
         create a PyDMMainWindow in the initialization (Default is True).
+    fullscreen : bool, optional
+        Whether or not to launch PyDM in a full screen mode.
     """
     # Instantiate our plugins.
     plugins = data_plugins.plugin_modules
@@ -101,7 +103,7 @@ class PyDMApplication(QApplication):
     def __init__(self, ui_file=None, command_line_args=[], display_args=[],
                  perfmon=False, hide_nav_bar=False, hide_menu_bar=False,
                  hide_status_bar=False, read_only=False, macros=None,
-                 use_main_window=True, stylesheet_path=None):
+                 use_main_window=True, stylesheet_path=None, fullscreen=False):
         super(PyDMApplication, self).__init__(command_line_args)
         # Enable High DPI display, if available.
         if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
@@ -122,6 +124,7 @@ class PyDMApplication(QApplication):
         self.hide_nav_bar = hide_nav_bar
         self.hide_menu_bar = hide_menu_bar
         self.hide_status_bar = hide_status_bar
+        self.fullscreen = fullscreen
         self.__read_only = read_only
 
         # Open a window if required.
@@ -208,6 +211,8 @@ class PyDMApplication(QApplication):
             args.extend(["--hide-menu-bar"])
         if self.hide_status_bar:
             args.extend(["--hide-status-bar"])
+        if self.fullscreen:
+            args.extend(["--fullscreen"])
         if macros is not None:
             args.extend(["-m", json.dumps(macros)])
         args.append(filepath)
@@ -250,7 +255,11 @@ class PyDMApplication(QApplication):
                                      hide_status_bar=self.hide_status_bar)
 
         self.main_window = main_window
-        main_window.show()
+        if self.fullscreen:
+            main_window.enter_fullscreen()
+        else:
+            main_window.show()
+
         self.load_external_tools()
         # If we are launching a new window, we don't want it to sit right on top of an existing window.
         if len(self.windows) > 1:

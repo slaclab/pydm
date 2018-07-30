@@ -46,6 +46,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionReload_Display.triggered.connect(self.reload_display)
         self.ui.actionIncrease_Font_Size.triggered.connect(self.increase_font_size)
         self.ui.actionDecrease_Font_Size.triggered.connect(self.decrease_font_size)
+        self.ui.actionEnter_Fullscreen.triggered.connect(self.enter_fullscreen)
         self.ui.actionShow_File_Path_in_Title_Bar.triggered.connect(self.toggle_file_path_in_title_bar)
         self.ui.actionShow_Navigation_Bar.triggered.connect(self.toggle_nav_bar)
         self.ui.actionShow_Menu_Bar.triggered.connect(self.toggle_menu_bar)
@@ -393,6 +394,13 @@ class PyDMMainWindow(QMainWindow):
         current_font.setPointSizeF(current_font.pointSizeF() / 1.1)
         QApplication.instance().setFont(current_font)
         QTimer.singleShot(0, self.resizeForNewDisplayWidget)
+
+    @pyqtSlot(bool)
+    def enter_fullscreen(self, checked=False):
+        if self.isFullScreen():
+            self.showNormal()
+        else:
+            self.showFullScreen()
 
     @pyqtSlot(bool)
     def show_connections(self, checked):

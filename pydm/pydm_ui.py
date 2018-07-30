@@ -8,9 +8,7 @@
 
 from .PyQt import QtCore, QtGui
 
-
 class Ui_MainWindow(object):
-
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(677, 465)
@@ -18,6 +16,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setSizeConstraint(QtGui.QLayout.SetMaximumSize)
+        self.verticalLayout.setSpacing(6)
         self.verticalLayout.setObjectName("verticalLayout")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
@@ -92,12 +91,15 @@ class Ui_MainWindow(object):
         self.actionShow_Connections.setObjectName("actionShow_Connections")
         self.actionLoadTool = QtGui.QAction(MainWindow)
         self.actionLoadTool.setObjectName("actionLoadTool")
+        self.actionEnter_Fullscreen = QtGui.QAction(MainWindow)
+        self.actionEnter_Fullscreen.setObjectName("actionEnter_Fullscreen")
         self.menuFile.addAction(self.actionOpen_File)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionEdit_in_Designer)
         self.menuFile.addAction(self.actionReload_Display)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionAbout_PyDM)
+        self.menuView.addAction(self.actionEnter_Fullscreen)
         self.menuView.addAction(self.actionIncrease_Font_Size)
         self.menuView.addAction(self.actionDecrease_Font_Size)
         self.menuView.addSeparator()
@@ -154,4 +156,6 @@ class Ui_MainWindow(object):
         self.actionShow_Status_Bar.setText(_translate("MainWindow", "Show Status Bar"))
         self.actionShow_Connections.setText(_translate("MainWindow", "Show Connections..."))
         self.actionLoadTool.setText(_translate("MainWindow", "Load..."))
+        self.actionEnter_Fullscreen.setText(_translate("MainWindow", "Enter Fullscreen"))
+        self.actionEnter_Fullscreen.setShortcut(_translate("MainWindow", "F11"))
 
