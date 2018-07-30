@@ -99,8 +99,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
     @pyqtSlot()
     def redrawCurve(self):
         if self.connected:
-            self.setData(y=self.data_buffer[1, -self.points_accumulated:],
-                         x=self.data_buffer[0, -self.points_accumulated:])
+            self.setData(y=self.data_buffer[1, -self.points_accumulated:].astype(np.float),
+                         x=self.data_buffer[0, -self.points_accumulated:].astype(np.float))
 
     def setUpdatesAsynchronously(self, value):
         if value is True:
