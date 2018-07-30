@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>375</width>
+    <height>620</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="PyDMTimePlot" name="PyDMTimePlot">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>30</y>
+     <width>291</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="rules" stdset="0">
+    <string>[{&quot;name&quot;: &quot;New Rule&quot;, &quot;property&quot;: &quot;Visible&quot;, &quot;expression&quot;: &quot;np.abs(ch[0]) &gt; 1&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://MTEST:Float&quot;, &quot;trigger&quot;: true}]}]</string>
+   </property>
+  </widget>
+  <widget class="PyDMLineEdit" name="PyDMLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>220</y>
+     <width>125</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="rules" stdset="0">
+    <string>[{&quot;name&quot;: &quot;New Rule&quot;, &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;np.abs(ch[0]) &gt; 1&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://MTEST:Float&quot;, &quot;trigger&quot;: true}]}]</string>
+   </property>
+   <property name="channel" stdset="0">
+    <string>ca://MTEST:Float</string>
+   </property>
+  </widget>
+  <widget class="PyDMSlider" name="PyDMSlider">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>310</y>
+     <width>361</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string>
+    A QSlider with support for Channels and more from PyDM.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
+   </property>
+   <property name="channel" stdset="0">
+    <string>ca://MTEST:Float</string>
+   </property>
+  </widget>
+  <widget class="PyDMDrawingCircle" name="PyDMDrawingCircle">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>420</y>
+     <width>41</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string>
+    A widget with a circle drawn in it.
+    This class inherits from PyDMDrawing.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
+   </property>
+   <property name="rules" stdset="0">
+    <string>[{&quot;name&quot;: &quot;Position - Y&quot;, &quot;property&quot;: &quot;Position - Y&quot;, &quot;expression&quot;: &quot;int(420+50*ch[0])&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://MTEST:Float&quot;, &quot;trigger&quot;: true}]}, {&quot;name&quot;: &quot;Visible &gt; 0.2&quot;, &quot;property&quot;: &quot;Visible&quot;, &quot;expression&quot;: &quot;np.abs(ch[0]) &gt; 0.2&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://MTEST:Float&quot;, &quot;trigger&quot;: true}]}]</string>
+   </property>
+   <property name="brush" stdset="0">
+    <brush brushstyle="Dense3Pattern">
+     <color alpha="255">
+      <red>16</red>
+      <green>128</green>
+      <blue>1</blue>
+     </color>
+    </brush>
+   </property>
+   <property name="penStyle" stdset="0">
+    <enum>Qt::SolidLine</enum>
+   </property>
+   <property name="penColor" stdset="0">
+    <color>
+     <red>16</red>
+     <green>128</green>
+     <blue>1</blue>
+    </color>
+   </property>
+   <property name="penWidth" stdset="0">
+    <double>2.000000000000000</double>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMTimePlot</class>
+   <extends>QGraphicsView</extends>
+   <header>pydm.widgets.timeplot</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingCircle</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>pydm.widgets.line_edit</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMSlider</class>
+   <extends>QFrame</extends>
+   <header>pydm.widgets.slider</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

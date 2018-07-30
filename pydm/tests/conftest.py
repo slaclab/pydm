@@ -110,6 +110,9 @@ class ConnectionSignals(QObject):
         super(ConnectionSignals, self).__init__()
         self._value = None
 
+    def reset(self):
+        self._value = None
+
     @property
     def value(self):
         """

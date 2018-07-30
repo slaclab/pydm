@@ -20,8 +20,10 @@ Use either JSON or plain syntax, such as one of these examples::
   python pydm.py -m variable=value,variable2=value2 my_file.ui
   python pydm.py -m "variable = value, variable2=value2" my_file.ui
   
-Note that if you use the JSON syntax, you can define a macro variable with a numeric value by leaving the quotes off, i.e.::
+Note that if you use the JSON syntax, you can define a macro variable with a numeric value by leaving the quotes off, i.e. ::
+
   python pydm.py -m '{"number": 5}' my_file.ui
+
 If you use the plain syntax, all values will be interpreted as strings.
 
 Macros in Python-based Displays

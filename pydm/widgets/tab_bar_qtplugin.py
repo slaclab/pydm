@@ -5,9 +5,10 @@ class TabWidgetPlugin(PyDMDesignerPlugin):
     """TabWidgetPlugin needs a custom plugin so that it can
     populate itself with an initial tab."""
     TabClass = PyDMTabWidget
-    def __init__(self):
+    def __init__(self, extensions=None):
         super(TabWidgetPlugin, self).__init__(self.TabClass,
-                                             group=WidgetCategory.CONTAINER)
+                                             group=WidgetCategory.CONTAINER,
+                                              extensions=extensions)
 
     def domXml(self):
         """

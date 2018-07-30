@@ -1,5 +1,4 @@
 from ..widgets.qtplugin_base import qtplugin_factory
-from ..widgets.baseplot_qtplugin import qtplugin_plot_factory
 
 def test_import_byte_plugin():
     # Byte plugin
@@ -104,7 +103,7 @@ def test_import_timeplot_plugin():
     from ..widgets.timeplot import PyDMTimePlot
     from ..widgets.timeplot_curve_editor import TimePlotCurveEditorDialog
     # Time Plot plugin
-    PyDMTimePlotPlugin = qtplugin_plot_factory(
+    PyDMTimePlotPlugin = qtplugin_factory(
                                 PyDMTimePlot, TimePlotCurveEditorDialog)
 
 def test_import_waveformplot_plugin():
@@ -112,14 +111,14 @@ def test_import_waveformplot_plugin():
     from ..widgets.waveformplot import PyDMWaveformPlot
     from ..widgets.waveformplot_curve_editor import WaveformPlotCurveEditorDialog
     # Waveform Plot plugin
-    PyDMWaveformPlotPlugin = qtplugin_plot_factory(
+    PyDMWaveformPlotPlugin = qtplugin_factory(
                                 PyDMWaveformPlot, WaveformPlotCurveEditorDialog)
 
 def test_import_scatterplot_plugin():
     from ..widgets.scatterplot import PyDMScatterPlot
     from ..widgets.scatterplot_curve_editor import ScatterPlotCurveEditorDialog
     # Scatter Plot plugin
-    PyDMScatterPlotPlugin = qtplugin_plot_factory(
+    PyDMScatterPlotPlugin = qtplugin_factory(
                                 PyDMScatterPlot, ScatterPlotCurveEditorDialog)
                                 
 def test_import_tab_widget_plugin():
