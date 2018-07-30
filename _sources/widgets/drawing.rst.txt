@@ -31,4 +31,6 @@ PyDMDrawing Widgets
    
 .. autoclass:: pydm.widgets.drawing.PyDMDrawingChord
    :members:
-   
+
+.. autoclass:: pydm.widgets.drawing.PyDMDrawingPolygon
+   :members:

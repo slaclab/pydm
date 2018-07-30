@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.drawing &mdash; PyDM v1.3.0+6.gc0e8f48 documentation</title>
+  <title>pydm.widgets.drawing &mdash; PyDM v1.3.0+9.g7208b28 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.3.0+6.gc0e8f48
+                v1.3.0+9.g7208b28
               </div>
             
           
@@ -175,8 +175,9 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="p">(</span><span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span>
-                          <span class="n">QPolygon</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span><span class="p">,</span> <span class="n">QMovie</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">pyqtSlot</span>
+                          <span class="n">QPolygon</span><span class="p">,</span> <span class="n">QPolygonF</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span><span class="p">,</span>
+                          <span class="n">QMovie</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QPointF</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">pyqtSlot</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtDesigner</span> <span class="k">import</span> <span class="n">QDesignerFormWindowInterface</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
 <span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">is_pydm_app</span>
@@ -1050,6 +1051,64 @@
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">maxsize</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawChord</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_angle</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_span_angle</span><span class="p">)</span></div></div>
 
+
+<div class="viewcode-block" id="PyDMDrawingPolygon"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPolygon">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingPolygon</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A widget with a polygon drawn in it.</span>
+<span class="sd">    This class inherits from PyDMDrawing.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parent : QWidget</span>
+<span class="sd">        The parent widget for the Label</span>
+<span class="sd">    init_channel : str, optional</span>
+<span class="sd">        The channel to be used by the widget.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingPolygon</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">numberOfPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        PyQT Property for the number of points</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            Number of Points</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span>
+
+    <span class="nd">@numberOfPoints</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">numberOfPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">points</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span> <span class="o">=</span> <span class="n">points</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_drawing_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="c1">#(x + r*cos(theta), y + r*sin(theta))</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span>
+        <span class="n">deg_step</span> <span class="o">=</span> <span class="mf">360.0</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span>
+
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span><span class="p">):</span>
+            <span class="n">xp</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">deg_step</span> <span class="o">*</span> <span class="n">i</span><span class="p">))</span>
+            <span class="n">yp</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">deg_step</span> <span class="o">*</span> <span class="n">i</span><span class="p">))</span>
+            <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">QPointF</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">points</span>
+
+<div class="viewcode-block" id="PyDMDrawingPolygon.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPolygon.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draws the Polygon after setting up the canvas with a call to</span>
+<span class="sd">        ```PyDMDrawing.draw_item```.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingPolygon</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_item</span><span class="p">()</span>
+        <span class="n">maxsize</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_square</span><span class="p">()</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_square</span><span class="p">())</span>
+        <span class="n">poly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_drawing_points</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawPolygon</span><span class="p">(</span><span class="n">QPolygonF</span><span class="p">(</span><span class="n">poly</span><span class="p">))</span></div></div>
 </pre></div>
 
            </div>
@@ -1084,7 +1143,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.3.0+6.gc0e8f48',
+            VERSION:'v1.3.0+9.g7208b28',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
