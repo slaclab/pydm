@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Application &mdash; PyDM v1.3.0+75.gbe426de documentation</title>
+  <title>Application &mdash; PyDM v1.3.0+80.g425dfb7 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.3.0+75.gbe426de
+                v1.3.0+80.g425dfb7
               </div>
             
           
@@ -183,7 +183,7 @@
 <h1>Application<a class="headerlink" href="#application" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pydm.PyDMApplication">
-<em class="property">class </em><code class="descclassname">pydm.</code><code class="descname">PyDMApplication</code><span class="sig-paren">(</span><em>ui_file=None</em>, <em>command_line_args=[]</em>, <em>display_args=[]</em>, <em>perfmon=False</em>, <em>hide_nav_bar=False</em>, <em>hide_menu_bar=False</em>, <em>hide_status_bar=False</em>, <em>read_only=False</em>, <em>macros=None</em>, <em>use_main_window=True</em>, <em>stylesheet_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydm.</code><code class="descname">PyDMApplication</code><span class="sig-paren">(</span><em>ui_file=None</em>, <em>command_line_args=[]</em>, <em>display_args=[]</em>, <em>perfmon=False</em>, <em>hide_nav_bar=False</em>, <em>hide_menu_bar=False</em>, <em>hide_status_bar=False</em>, <em>read_only=False</em>, <em>macros=None</em>, <em>use_main_window=True</em>, <em>stylesheet_path=None</em>, <em>fullscreen=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyDMApplication handles loading PyDM display files, opening
 new windows, and most importantly, establishing and managing
 connections to channels via data plugins.</p>
@@ -215,6 +215,7 @@ when the main window is first displayed.</li>
 being loaded.</li>
 <li><strong>use_main_window</strong> (<em>bool</em><em>, </em><em>optional</em>) – If ui_file is note given, this parameter controls whether or not to
 create a PyDMMainWindow in the initialization (Default is True).</li>
+<li><strong>fullscreen</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to launch PyDM in a full screen mode.</li>
 </ul>
 </td>
 </tr>
@@ -629,7 +630,7 @@ really only used by embedded displays.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v1.3.0+75.gbe426de',
+            VERSION:'v1.3.0+80.g425dfb7',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

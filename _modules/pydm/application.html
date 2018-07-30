@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.3.0+75.gbe426de documentation</title>
+  <title>pydm.application &mdash; PyDM v1.3.0+80.g425dfb7 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.3.0+75.gbe426de
+                v1.3.0+80.g425dfb7
               </div>
             
           
@@ -257,6 +257,8 @@
 <span class="sd">    use_main_window : bool, optional</span>
 <span class="sd">        If ui_file is note given, this parameter controls whether or not to</span>
 <span class="sd">        create a PyDMMainWindow in the initialization (Default is True).</span>
+<span class="sd">    fullscreen : bool, optional</span>
+<span class="sd">        Whether or not to launch PyDM in a full screen mode.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Instantiate our plugins.</span>
     <span class="n">plugins</span> <span class="o">=</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">plugin_modules</span>
@@ -279,7 +281,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="p">[],</span> <span class="n">display_args</span><span class="o">=</span><span class="p">[],</span>
                  <span class="n">perfmon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_nav_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_menu_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">hide_status_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">use_main_window</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stylesheet_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">use_main_window</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stylesheet_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fullscreen</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMApplication</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">command_line_args</span><span class="p">)</span>
         <span class="c1"># Enable High DPI display, if available.</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Qt</span><span class="p">,</span> <span class="s1">&#39;AA_UseHighDpiPixmaps&#39;</span><span class="p">):</span>
@@ -300,6 +302,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">hide_nav_bar</span> <span class="o">=</span> <span class="n">hide_nav_bar</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hide_menu_bar</span> <span class="o">=</span> <span class="n">hide_menu_bar</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span> <span class="o">=</span> <span class="n">hide_status_bar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fullscreen</span> <span class="o">=</span> <span class="n">fullscreen</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__read_only</span> <span class="o">=</span> <span class="n">read_only</span>
 
         <span class="c1"># Open a window if required.</span>
@@ -386,6 +389,8 @@
             <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--hide-menu-bar&quot;</span><span class="p">])</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span><span class="p">:</span>
             <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--hide-status-bar&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fullscreen</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--fullscreen&quot;</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">macros</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">macros</span><span class="p">)])</span>
         <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
@@ -428,7 +433,11 @@
                                      <span class="n">hide_status_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span> <span class="o">=</span> <span class="n">main_window</span>
-        <span class="n">main_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fullscreen</span><span class="p">:</span>
+            <span class="n">main_window</span><span class="o">.</span><span class="n">enter_fullscreen</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">main_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">load_external_tools</span><span class="p">()</span>
         <span class="c1"># If we are launching a new window, we don&#39;t want it to sit right on top of an existing window.</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">windows</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -952,7 +961,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v1.3.0+75.gbe426de',
+            VERSION:'v1.3.0+80.g425dfb7',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
