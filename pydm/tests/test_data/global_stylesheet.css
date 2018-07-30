@@ -1,0 +1,20 @@
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="0"]{}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="0"][alarmSensitiveContent="true"]{color: black}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="0"][alarmSensitiveBorder="true"]{border: 2px solid transparent}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="0"][alarmSensitiveBorder="true"][alarmSensitiveContent="true"]{color: black; border: 2px solid transparent}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="1"]{}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="1"][alarmSensitiveContent="true"]{color: #EBEB00}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="1"][alarmSensitiveBorder="true"]{border: 2px solid #EBEB00}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="1"][alarmSensitiveBorder="true"][alarmSensitiveContent="true"]{color: #EBEB00; border: 2px solid #EBEB00}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="2"]{}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="2"][alarmSensitiveContent="true"]{color: #EB0000}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="2"][alarmSensitiveBorder="true"]{border: 2px solid #EB0000}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="2"][alarmSensitiveBorder="true"][alarmSensitiveContent="true"]{color: #EB0000; border: 2px solid #EB0000}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="3"]{}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="3"][alarmSensitiveContent="true"]{color: #EB00EB}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="3"][alarmSensitiveBorder="true"]{border: 2px solid #EB00EB}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="3"][alarmSensitiveBorder="true"][alarmSensitiveContent="true"]{color: #EB00EB; border: 2px solid #EB00EB}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="4"]{}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="4"][alarmSensitiveContent="true"]{color: #EBEBEB}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="4"][alarmSensitiveBorder="true"]{border: 2px solid #EBEBEB}
+PyDMWidget, PyDMWritableWidget, PyDMLabel, PyDMLineEdit, PyDMSlider, PyDMCheckbox[alarmSeverity="4"][alarmSensitiveBorder="true"][alarmSensitiveContent="true"]{color: #EBEBEB; border: 2px solid #EBEBEB}

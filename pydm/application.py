@@ -25,8 +25,11 @@ from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard, QAc
 from .PyQt import uic
 from .main_window import PyDMMainWindow
 from .tools import ExternalTool
+
 from .utilities import macro, which, path_info, find_display_in_path
+from .utilities.stylesheet import apply_stylesheet
 from . import data_plugins
+
 
 logger = logging.getLogger(__name__)
 DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
@@ -98,7 +101,7 @@ class PyDMApplication(QApplication):
     def __init__(self, ui_file=None, command_line_args=[], display_args=[],
                  perfmon=False, hide_nav_bar=False, hide_menu_bar=False,
                  hide_status_bar=False, read_only=False, macros=None,
-                 use_main_window=True):
+                 use_main_window=True, stylesheet_path=None):
         super(PyDMApplication, self).__init__(command_line_args)
         # Enable High DPI display, if available.
         if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
@@ -120,8 +123,10 @@ class PyDMApplication(QApplication):
         self.hide_menu_bar = hide_menu_bar
         self.hide_status_bar = hide_status_bar
         self.__read_only = read_only
+
         # Open a window if required.
         if ui_file is not None:
+            apply_stylesheet(stylesheet_path)
             self.make_main_window()
             self.make_window(ui_file, macros, command_line_args)
         elif use_main_window:

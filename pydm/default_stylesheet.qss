@@ -1,0 +1,208 @@
+/*
+GREEN_ALARM = "#00EB00"		
+YELLOW_ALARM = "#EBEB00"		
+RED_ALARM = "#FF0000"		
+MAGENTA_ALARM = "#EB00EB"		
+WHITE_ALARM = "#EBEBEB"
+*/
+/*
+ALARM_NONE = 0
+ALARM_MINOR = 1
+ALARM_MAJOR = 2
+ALARM_INVALID = 3
+ALARM_DISCONNECTED = 4
+*/
+
+/* =================== Alarm-sensitive borders ===================== */
+
+/* Alarm severity == ALARM_NONE */
+*[alarmSensitiveBorder="true"][alarmSeverity="0"] {
+    border: 2px solid transparent;
+}
+
+/* Alarm severity == ALARM_MINOR */
+*[alarmSensitiveBorder="true"][alarmSeverity="1"] {
+    border: 2px solid #EBEB00;
+}
+
+/* Alarm severity == ALARM_MAJOR */
+*[alarmSensitiveBorder="true"][alarmSeverity="2"] {
+    border: 2px solid #FF0000;
+}
+
+/* Alarm severity == ALARM_INVALID */
+*[alarmSensitiveBorder="true"][alarmSeverity="3"] {
+    border: 2px solid #EB00EB;
+}
+
+/* Alarm severity == ALARM_DISCONNECTED */
+*[alarmSensitiveBorder="true"][alarmSeverity="4"] {
+    border: 2px dashed #FFFFFF;
+}
+
+/* We have to call out the custom pen on PyDMDrawingWidget */
+PyDMDrawing[alarmSensitiveBorder="true"] {
+    border: none;
+    qproperty-penWidth: 2px;
+
+}
+
+PyDMDrawing[alarmSensitiveBorder="true"][alarmSeverity="0"] {
+
+}
+
+PyDMDrawing[alarmSensitiveBorder="true"][alarmSeverity="1"] {
+    border: none;
+    qproperty-penColor: #EBEB00;
+    qproperty-penStyle: SolidLine;
+}
+
+PyDMDrawing[alarmSensitiveBorder="true"][alarmSeverity="2"] {
+    border: none;
+    qproperty-penColor: #FF0000;
+    qproperty-penStyle: SolidLine;
+}
+
+PyDMDrawing[alarmSensitiveBorder="true"][alarmSeverity="3"] {
+    border: none;
+    qproperty-penColor: #EB00EB;
+    qproperty-penStyle: SolidLine;
+}
+
+PyDMDrawing[alarmSensitiveBorder="true"][alarmSeverity="4"] {
+    border: none;
+    qproperty-penColor: #FFFFFF;
+    qproperty-penStyle: DashLine;
+}
+
+/* =============== Alarm-sensitive content ================= */
+PyDMCheckbox[alarmSensitiveContent="true"][alarmSeverity="0"],
+PyDMSpinbox[alarmSensitiveContent="true"][alarmSeverity="0"],
+PyDMEnumComboBox[alarmSensitiveContent="true"][alarmSeverity="0"],
+PyDMPushButton[alarmSensitiveContent="true"][alarmSeverity="0"] {
+
+}
+
+PyDMCheckbox[alarmSensitiveContent="true"][alarmSeverity="1"],
+PyDMSpinbox[alarmSensitiveContent="true"][alarmSeverity="1"],
+PyDMEnumComboBox[alarmSensitiveContent="true"][alarmSeverity="1"],
+PyDMPushButton[alarmSensitiveContent="true"][alarmSeverity="1"] {
+	background-color: #EBEB00;
+}
+
+PyDMCheckbox[alarmSensitiveContent="true"][alarmSeverity="2"],
+PyDMSpinbox[alarmSensitiveContent="true"][alarmSeverity="2"],
+PyDMEnumComboBox[alarmSensitiveContent="true"][alarmSeverity="2"],
+PyDMPushButton[alarmSensitiveContent="true"][alarmSeverity="2"] {
+	background-color: #FF0000;
+}
+
+PyDMCheckbox[alarmSensitiveContent="true"][alarmSeverity="3"],
+PyDMSpinbox[alarmSensitiveContent="true"][alarmSeverity="3"],
+PyDMEnumComboBox[alarmSensitiveContent="true"][alarmSeverity="3"],
+PyDMPushButton[alarmSensitiveContent="true"][alarmSeverity="3"] {
+	background-color: #EB00EB;
+}
+
+PyDMCheckbox[alarmSensitiveContent="true"][alarmSeverity="4"],
+PyDMSpinbox[alarmSensitiveContent="true"][alarmSeverity="4"],
+PyDMEnumComboBox[alarmSensitiveContent="true"][alarmSeverity="4"],
+PyDMPushButton[alarmSensitiveContent="true"][alarmSeverity="4"] {
+	background-color: #FFFFFF;
+}
+
+/* For labels and line edits, we make sure the background is dark so that the text is readable even when the
+color is very bright (like the yellow "MINOR" alarm) */
+PyDMLabel[alarmSensitiveContent="true"],
+PyDMLineEdit[alarmSensitiveContent="true"],
+PyDMSlider[alarmSensitiveContent="true"]>QLabel#valueLabel {
+	/*background-color: #444444;*/
+}
+
+PyDMLabel[alarmSensitiveContent="true"][alarmSeverity="0"],
+PyDMLineEdit[alarmSensitiveContent="true"][alarmSeverity="0"],
+PyDMSlider[alarmSensitiveContent="true"][alarmSeverity="0"] > QLabel#valueLabel {
+
+}
+
+PyDMLabel[alarmSensitiveContent="true"][alarmSeverity="1"],
+PyDMLineEdit[alarmSensitiveContent="true"][alarmSeverity="1"],
+PyDMSlider[alarmSensitiveContent="true"][alarmSeverity="1"] > QLabel#valueLabel {
+	color: #EBEB00;
+}
+
+PyDMLabel[alarmSensitiveContent="true"][alarmSeverity="2"],
+PyDMLineEdit[alarmSensitiveContent="true"][alarmSeverity="2"],
+PyDMSlider[alarmSensitiveContent="true"][alarmSeverity="2"] > QLabel#valueLabel {
+	color: #FF0000;
+}
+
+PyDMLabel[alarmSensitiveContent="true"][alarmSeverity="3"],
+PyDMLineEdit[alarmSensitiveContent="true"][alarmSeverity="3"],
+PyDMSlider[alarmSensitiveContent="true"][alarmSeverity="3"] > QLabel#valueLabel {
+	color: #EB00EB;
+}
+
+PyDMLabel[alarmSensitiveContent="true"][alarmSeverity="4"],
+PyDMLineEdit[alarmSensitiveContent="true"][alarmSeverity="4"],
+PyDMSlider[alarmSensitiveContent="true"][alarmSeverity="4"] > QLabel#valueLabel {
+	color: #FFFFFF;
+}
+
+/* PyDMFrame is a little fancier because we can be assured it won't screw up the way its contained widget looks,
+so we can do some transparency and border radius stuff. */
+PyDMFrame {
+	border-radius: 6px;
+}
+
+PyDMFrame[alarmSensitiveContent="true"][alarmSeverity="0"] {
+	background-color: rgba(0,220,0,120);
+}
+
+PyDMFrame[alarmSensitiveContent="true"][alarmSeverity="1"] {
+	background-color: rgba(220,220,0,255);
+}
+
+PyDMFrame[alarmSensitiveContent="true"][alarmSeverity="2"] {
+	background-color: rgba(255,0,0,255);
+}
+
+PyDMFrame[alarmSensitiveContent="true"][alarmSeverity="3"] {
+	background-color: rgba(220,0,220,120);
+}
+
+PyDMFrame[alarmSensitiveContent="true"][alarmSeverity="4"] {
+	background-color: rgba(255,255,255,255);
+}
+
+/* For PyDMDrawing we have to use its 'brush' property */
+
+PyDMDrawing[alarmSensitiveContent="true"][alarmSeverity="0"] {
+
+}
+
+PyDMDrawing[alarmSensitiveContent="true"][alarmSeverity="1"] {
+    qproperty-brush: #EBEB00;
+}
+
+PyDMDrawing[alarmSensitiveContent="true"][alarmSeverity="2"] {
+    qproperty-brush: #FF0000;
+}
+
+PyDMDrawing[alarmSensitiveContent="true"][alarmSeverity="3"] {
+    qproperty-brush: #EB00EB;
+}
+
+PyDMDrawing[alarmSensitiveContent="true"][alarmSeverity="4"] {
+    qproperty-brush: #FFFFFF;
+}
+
+/* PyDMTabWidget alarm styling is a special case.  You just define
+   colors for five separate properties on the widget */
+PyDMTabWidget {
+    qproperty-noAlarmIconColor: #00EB00;
+    qproperty-minorAlarmIconColor: #EBEB00;
+    qproperty-majorAlarmIconColor: #FF0000;
+    qproperty-invalidAlarmIconColor: #EB00EB;
+    qproperty-disconnectedAlarmIconColor: #FFFFFF;
+}

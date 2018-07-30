@@ -3,8 +3,9 @@ logger = logging.getLogger(__name__)
 
 from ..PyQt.QtGui import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
 from ..PyQt.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty
-from .base import PyDMWritableWidget, compose_stylesheet
+from .base import PyDMWritableWidget
 import numpy as np
+
 
 class PyDMSlider(QFrame, PyDMWritableWidget):
     """
@@ -45,11 +46,14 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         # We'll add all these things to layouts when we call setup_widgets_for_orientation
         label_size_policy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
         self.low_lim_label = QLabel(self)
+        self.low_lim_label.setObjectName("lowLimLabel")
         self.low_lim_label.setSizePolicy(label_size_policy)
         self.low_lim_label.setAlignment(Qt.AlignLeft | Qt.AlignTrailing | Qt.AlignVCenter)
         self.value_label = QLabel(self)
+        self.value_label.setObjectName("valueLabel")
         self.value_label.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
         self.high_lim_label = QLabel(self)
+        self.high_lim_label.setObjectName("highLimLabel")
         self.high_lim_label.setSizePolicy(label_size_policy)
         self.high_lim_label.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
         self._slider = QSlider(parent=self)
@@ -212,6 +216,15 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         self._slider.setValue(self.find_closest_slider_position_to_value(val))
         self._mute_internal_slider_changes = False
 
+    def alarm_severity_changed(self, new_alarm_severity):
+        PyDMWritableWidget.alarm_severity_changed(self, new_alarm_severity)
+        try:
+            self.value_label.style().unpolish(self.value_label)
+            self.value_label.style().polish(self.value_label)
+            self.value_label.update()
+        except AttributeError: # In case self.value_label was not yet created
+            pass
+
     def value_changed(self, new_val):
         """
         Callback invoked when the Channel value is changed.
@@ -227,28 +240,6 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         if not self._slider.isSliderDown():
             self.set_slider_to_closest_value(self.value)
 
-    def alarm_severity_changed(self, new_alarm_severity):
-        """
-        Callback invoked when the Channel alarm severity is changed.
-        This callback is not processed if the widget has no channel
-        associated with it.
-        This callback handles the composition of the stylesheet to be
-        applied and the call
-        to update to redraw the widget with the needed changes for the
-        new state.
-
-        Parameters
-        ----------
-        new_alarm_severity : int
-            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
-            and 3 = INVALID
-        """
-        PyDMWritableWidget.alarm_severity_changed(self, new_alarm_severity)
-        if hasattr(self, "value_label"):
-            if self._channel:
-                style = compose_stylesheet(style=self._style, obj=self.value_label)
-                self.value_label.setStyleSheet(style)
-                self.update()
 
     def ctrl_limit_changed(self, which, new_limit):
         """
