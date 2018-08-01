@@ -5,7 +5,7 @@ This is used instead of pyepics for better performance.
 import numpy as np
 import pyca
 from psp.Pv import Pv
-from pydm.PyQt.QtCore import pyqtSlot, Qt, QTimer
+from pydm.PyQt.QtCore import Slot, Qt, QTimer
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from pydm.utilities import is_pydm_app
 
@@ -345,10 +345,10 @@ class Connection(PyDMConnection):
                 self.enums = tuple(b.decode(encoding='ascii') for b in self.pv.data["enum_set"])
             self.enum_strings_signal.emit(self.enums)
 
-    @pyqtSlot(int)
-    @pyqtSlot(float)
-    @pyqtSlot(str)
-    @pyqtSlot(np.ndarray)
+    @Slot(int)
+    @Slot(float)
+    @Slot(str)
+    @Slot(np.ndarray)
     def put_value(self, value):
         """
         Set our PV's value in EPICS.
@@ -364,7 +364,7 @@ class Connection(PyDMConnection):
         except pyca.caexc as e:
             print("pyca error: {}".format(e))
 
-    @pyqtSlot(np.ndarray)
+    @Slot(np.ndarray)
     def put_waveform(self, value):
         """
         Set a PV's waveform value in EPICS. This is a deprecated function kept
@@ -393,8 +393,8 @@ class Connection(PyDMConnection):
                 if throttle < 120:
                     self.set_throttle(throttle)
 
-    @pyqtSlot(int)
-    @pyqtSlot(float)
+    @Slot(int)
+    @Slot(float)
     def set_throttle(self, refresh_rate):
         """
         Throttle our update rate. This is useful when the data is large (e.g.

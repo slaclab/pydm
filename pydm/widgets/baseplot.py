@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QLabel, QApplication, QColor, QBrush
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Qt
+from ..PyQt.QtCore import pyqtSignal, Slot, pyqtProperty, QTimer, Qt
 from .. import utilities
 from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
 from pyqtgraph import PlotDataItem, mkPen
@@ -316,7 +316,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.plotItem.clear()
         self._curves = []
 
-    @pyqtSlot()
+    @Slot()
     def redrawPlot(self):
         pass
 

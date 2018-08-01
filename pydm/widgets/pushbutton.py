@@ -1,7 +1,7 @@
 import hashlib
 
 from ..PyQt.QtGui import QPushButton, QMessageBox, QInputDialog, QLineEdit
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty
+from ..PyQt.QtCore import Slot, pyqtProperty
 from .base import PyDMWritableWidget
 
 import logging
@@ -317,7 +317,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             return False
         return True
 
-    @pyqtSlot()
+    @Slot()
     def sendValue(self):
         """
         Send a new value to the channel.
@@ -356,9 +356,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             self.send_value_signal[self.channeltype].emit(send_value)
         return send_value
 
-    @pyqtSlot(int)
-    @pyqtSlot(float)
-    @pyqtSlot(str)
+    @Slot(int)
+    @Slot(float)
+    @Slot(str)
     def updatePressValue(self, value):
         """
         Update the pressValue of a function by passing a signal to the

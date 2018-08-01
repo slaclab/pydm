@@ -8,7 +8,7 @@ import numpy as np
 import tempfile
 import logging
 
-from ..PyQt.QtCore import QObject, pyqtSignal, pyqtSlot
+from ..PyQt.QtCore import QObject, pyqtSignal, Slot
 from ..application import PyDMApplication
 from ..widgets.base import PyDMWidget
 
@@ -66,10 +66,10 @@ class ConnectionSignals(QObject):
         """
         return self._value
 
-    @pyqtSlot(int)
-    @pyqtSlot(float)
-    @pyqtSlot(str)
-    @pyqtSlot(np.ndarray)
+    @Slot(int)
+    @Slot(float)
+    @Slot(str)
+    @Slot(np.ndarray)
     def receiveValue(self, val):
         """
         The slot to receive the value from a PyDM widget.

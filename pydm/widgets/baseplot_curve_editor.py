@@ -2,7 +2,7 @@ from ..PyQt.QtGui import (QDialog, QVBoxLayout, QHBoxLayout, QTableView,
                           QAbstractItemView, QSpacerItem, QSizePolicy,
                           QDialogButtonBox, QPushButton, QItemSelection,
                           QComboBox, QStyledItemDelegate, QColorDialog)
-from ..PyQt.QtCore import Qt, pyqtSlot, QModelIndex
+from ..PyQt.QtCore import Qt, Slot, QModelIndex
 from ..PyQt.QtDesigner import QDesignerFormWindowInterface
 from .baseplot import BasePlotCurveItem
 from .baseplot_table_model import BasePlotCurvesModel
@@ -74,20 +74,20 @@ class BasePlotCurveEditorDialog(QDialog):
         color_delegate = ColorColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(index, color_delegate)
 
-    @pyqtSlot()
+    @Slot()
     def addCurve(self):
         self.table_model.append()
 
-    @pyqtSlot()
+    @Slot()
     def removeSelectedCurve(self):
         self.table_model.removeAtIndex(self.table_view.currentIndex())
 
-    @pyqtSlot(QItemSelection, QItemSelection)
+    @Slot(QItemSelection, QItemSelection)
     def handleSelectionChange(self, selected, deselected):
         self.remove_button.setEnabled(
                             self.table_view.selectionModel().hasSelection())
 
-    @pyqtSlot(QModelIndex)
+    @Slot(QModelIndex)
     def handleDoubleClick(self, index):
         if self.table_model.needsColorDialog(index):
             # The table model returns a QBrush for BackgroundRole, not a QColor
@@ -97,7 +97,7 @@ class BasePlotCurveEditorDialog(QDialog):
             if color.isValid():
                 self.table_model.setData(index, color, role=Qt.EditRole)
 
-    @pyqtSlot()
+    @Slot()
     def saveChanges(self):
         formWindow = QDesignerFormWindowInterface.findFormWindow(self.plot)
         if formWindow:

@@ -2,7 +2,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from ..PyQt.QtGui import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
-from ..PyQt.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty
+from ..PyQt.QtCore import Qt, pyqtSignal, Slot, pyqtProperty
 from .base import PyDMWritableWidget
 import numpy as np
 
@@ -279,11 +279,11 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         """
         self.setEnabled(self._write_access and self._connected and not self._needs_limit_info)
 
-    @pyqtSlot(int)
+    @Slot(int)
     def internal_slider_action_triggered(self, action):
         self.actionTriggered.emit(action)
 
-    @pyqtSlot(int)
+    @Slot(int)
     def internal_slider_moved(self, val):
         """
         Method invoked when the slider is moved.
@@ -300,21 +300,21 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         self.value = self._slider_position_to_value_map[val]
         self.sliderMoved.emit(self.value)
 
-    @pyqtSlot()
+    @Slot()
     def internal_slider_pressed(self):
         """
         Method invoked when the slider is pressed
         """
         self.sliderPressed.emit()
 
-    @pyqtSlot()
+    @Slot()
     def internal_slider_released(self):
         """
         Method invoked when the slider is released
         """
         self.sliderReleased.emit()
 
-    @pyqtSlot(int)
+    @Slot(int)
     def internal_slider_value_changed(self, val):
         """
         Method invoked when a new value is selected on the slider.

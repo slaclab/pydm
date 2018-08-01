@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QColor
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, QTimer
+from ..PyQt.QtCore import Slot, pyqtProperty, QTimer
 from pyqtgraph import ViewBox, AxisItem
 import numpy as np
 import time
@@ -48,13 +48,13 @@ class TimePlotCurveItem(BasePlotCurveItem):
                                    connection_slot=self.connectionStateChanged,
                                    value_slot=self.receiveNewValue)
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def connectionStateChanged(self, connected):
         # Maybe change pen stroke?
         self.connected = connected
 
-    @pyqtSlot(float)
-    @pyqtSlot(int)
+    @Slot(float)
+    @Slot(int)
     def receiveNewValue(self, new_value):
         if self._update_mode == PyDMTimePlot.SynchronousMode:
             self.data_buffer = np.roll(self.data_buffer, -1)
@@ -65,7 +65,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         elif self._update_mode == PyDMTimePlot.AsynchronousMode:
             self.latest_value = new_value
 
-    @pyqtSlot()
+    @Slot()
     def asyncUpdate(self):
         if self._update_mode != PyDMTimePlot.AsynchronousMode:
             return
@@ -96,7 +96,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
             self._bufferSize = 1200
             self.initialize_buffer()
 
-    @pyqtSlot()
+    @Slot()
     def redrawCurve(self):
         if self.connected:
             self.setData(y=self.data_buffer[1, -self.points_accumulated:].astype(np.float),
@@ -179,7 +179,7 @@ class PyDMTimePlot(BasePlot):
         curve = self._curves[index]
         self.removeYChannel(curve)
 
-    @pyqtSlot()
+    @Slot()
     def redrawPlot(self):
         self.updateXAxis()
         for curve in self._curves:

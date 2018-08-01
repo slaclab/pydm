@@ -463,7 +463,7 @@ class RulesEditor(QtGui.QDialog):
 
         return True, ""
 
-    @QtCore.pyqtSlot()
+    @QtCore.Slot()
     def saveChanges(self):
         """Save the new rules at the widget `rules` property."""
         # If the form is being edited, we make sure self.rules has all the
@@ -487,7 +487,7 @@ class RulesEditor(QtGui.QDialog):
             QtGui.QMessageBox.critical(self, "Error Saving", message,
                                        QtGui.QMessageBox.Ok)
 
-    @QtCore.pyqtSlot()
+    @QtCore.Slot()
     def cancelChanges(self):
         """Abort the changes and close the dialog."""
         self.close()

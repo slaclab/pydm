@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QColor
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty
+from ..PyQt.QtCore import Slot, pyqtProperty
 import numpy as np
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
@@ -174,15 +174,15 @@ class WaveformCurveItem(BasePlotCurveItem):
                 self.x_waveform = self.latest_x
                 self.y_waveform = self.latest_y
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def xConnectionStateChanged(self, connected):
         pass
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def yConnectionStateChanged(self, connected):
         pass
 
-    @pyqtSlot(np.ndarray)
+    @Slot(np.ndarray)
     def receiveXWaveform(self, new_waveform):
         """
         Handler for new x waveform data.
@@ -195,7 +195,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         if self.latest_y is not None:
             self.update_waveforms_if_ready()
 
-    @pyqtSlot(np.ndarray)
+    @Slot(np.ndarray)
     def receiveYWaveform(self, new_waveform):
         """
         Handler for new y waveform data.
@@ -393,11 +393,11 @@ class PyDMWaveformPlot(BasePlot):
         curve = self._curves[index]
         self.removeChannel(curve)
 
-    @pyqtSlot()
+    @Slot()
     def set_needs_redraw(self):
         self._needs_redraw = True
 
-    @pyqtSlot()
+    @Slot()
     def redrawPlot(self):
         """
         Request a redraw from each curve in the plot.

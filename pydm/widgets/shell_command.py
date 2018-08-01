@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QPushButton, QCursor, QIcon
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, QSize
+from ..PyQt.QtCore import Slot, pyqtProperty, QSize
 import shlex, subprocess
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
@@ -120,7 +120,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         self.execute_command()
         super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
 
-    @pyqtSlot()
+    @Slot()
     def execute_command(self):
         """
         Execute the shell command given by ```command```.

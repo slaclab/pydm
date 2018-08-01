@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QTableWidget, QTableWidgetItem, QApplication, QCursor
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt, QEvent
+from ..PyQt.QtCore import Slot, pyqtProperty, Qt, QEvent
 import numpy as np
 from .base import PyDMWritableWidget
 
@@ -59,7 +59,7 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         self.setHorizontalHeaderLabels(self._columnHeaders)
         self._valueBeingSet = False
 
-    @pyqtSlot(int, int)
+    @Slot(int, int)
     def send_waveform(self, row, column):
         """Update Channel value when cell value is changed.
 

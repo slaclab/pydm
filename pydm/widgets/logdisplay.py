@@ -2,7 +2,7 @@ import logging
 
 from collections import OrderedDict
 
-from pydm.PyQt.QtCore import (QObject, pyqtSlot, pyqtSignal, pyqtProperty,
+from pydm.PyQt.QtCore import (QObject, Slot, pyqtSignal, pyqtProperty,
                               Q_ENUMS, QSize)
 from pydm.PyQt.QtGui import (QWidget, QPlainTextEdit, QComboBox, QLabel,
                              QPushButton, QHBoxLayout, QVBoxLayout)
@@ -176,7 +176,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
     def logFormat(self, fmt):
         self.handler.setFormatter(logging.Formatter(fmt))
 
-    @pyqtSlot(str)
+    @Slot(str)
     def write(self, message):
         """Write a message to the log display"""
         # We split the incoming message by new lines. In prior iterations of
@@ -185,12 +185,12 @@ class PyDMLogDisplay(QWidget, LogLevels):
         for msg in message.split(self.terminator):
             self.text.appendPlainText(msg)
 
-    @pyqtSlot()
+    @Slot()
     def clear(self):
         """Clear the text area."""
         self.text.clear()
 
-    @pyqtSlot(str)
+    @Slot(str)
     def setLevel(self, level):
         """Set the level of the contained logger"""
         # Get the level from the incoming string specification

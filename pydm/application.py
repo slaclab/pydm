@@ -20,7 +20,7 @@ import platform
 import collections
 from functools import partial
 from .display_module import Display
-from .PyQt.QtCore import Qt, QEvent, QTimer, pyqtSlot
+from .PyQt.QtCore import Qt, QEvent, QTimer, Slot
 from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard, QAction, QMenu
 from .PyQt import uic
 from .main_window import PyDMMainWindow
@@ -160,7 +160,7 @@ class PyDMApplication(QApplication):
     def is_read_only(self):
         return self.__read_only
 
-    @pyqtSlot()
+    @Slot()
     def get_CPU_usage(self):
         """
         Prints total CPU usage (in percent), as well as per-thread usage, to the terminal.

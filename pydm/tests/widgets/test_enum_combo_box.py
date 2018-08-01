@@ -3,7 +3,7 @@
 import pytest
 from logging import ERROR
 
-from ...PyQt.QtCore import pyqtSlot, Qt
+from ...PyQt.QtCore import Slot, Qt
 
 from ...widgets.enum_combo_box import PyDMEnumComboBox
 from ...application import PyDMApplication

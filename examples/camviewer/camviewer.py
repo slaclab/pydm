@@ -1,6 +1,6 @@
 # import epics
 # from pydm.PyQt import uic
-from pydm.PyQt.QtCore import pyqtSlot, pyqtSignal, QPointF, QRectF
+from pydm.PyQt.QtCore import Slot, pyqtSignal, QPointF, QRectF
 from pydm.PyQt.QtGui import QSizePolicy, QPen
 from os import path
 from pydm import Display
@@ -132,15 +132,15 @@ class CamViewer(Display):
         self.ui.setROIButton.clicked.connect(self.setROI)
         self.ui.resetROIButton.clicked.connect(self.resetROI)
 
-    @pyqtSlot()
+    @Slot()
     def zoomIn(self):
         self.ui.imageView.getView().scaleBy((0.5, 0.5))
 
-    @pyqtSlot()
+    @Slot()
     def zoomOut(self):
         self.ui.imageView.getView().scaleBy((2.0, 2.0))
 
-    @pyqtSlot()
+    @Slot()
     def zoomToActualSize(self):
         if len(self.image_data) == 0:
             return
@@ -151,7 +151,7 @@ class CamViewer(Display):
             self.marker_dict[d]['button'].setChecked(False)
             self.marker_dict[d]['marker'].setPos((0, 0))
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def enableMarker(self, checked):
         any_markers_visible = False
         for d in self.marker_dict:
@@ -171,7 +171,7 @@ class CamViewer(Display):
             self.xLineoutPlot.hide()
             self.yLineoutPlot.hide()
 
-    @pyqtSlot()
+    @Slot()
     def markerPositionLineEditChanged(self):
         for d in self.marker_dict:
             marker = self.marker_dict[d]['marker']
@@ -188,7 +188,7 @@ class CamViewer(Display):
             x_line_edit.setText(str(coords[0]))
             y_line_edit.setText(str(coords[1]))
 
-    @pyqtSlot(object)
+    @Slot(object)
     def markerMoved(self, marker):
         self.updateLineouts()
         for marker_index in self.marker_dict:
@@ -199,7 +199,7 @@ class CamViewer(Display):
             x_line_edit.setText(str(coords[0]))
             y_line_edit.setText(str(coords[1]))
 
-    @pyqtSlot(object, object)
+    @Slot(object, object)
     def updateLineoutRange(self, view, new_ranges):
         self.ui.xLineoutPlot.setRange(xRange=new_ranges[0], padding=0.0)
         self.ui.yLineoutPlot.setRange(yRange=new_ranges[1], padding=0.0)
@@ -214,16 +214,16 @@ class CamViewer(Display):
                 xcurve.setData(y=result[0], x=np.arange(len(result[0])))
                 ycurve.setData(y=np.arange(len(result[1])), x=result[1])
 
-    @pyqtSlot()
+    @Slot()
     def enableSingleShotMode(self):
         self._average_mode_enabled = False
         self._average_buffer = np.ndarray(0)
 
-    @pyqtSlot()
+    @Slot()
     def enableAverageMode(self):
         self._average_mode_enabled = True
 
-    @pyqtSlot(str)
+    @Slot(str)
     def cameraChanged(self, new_camera):
         new_camera = str(new_camera)
         if self.imageChannel == self.cameras[new_camera]["image"]:
@@ -277,21 +277,21 @@ class CamViewer(Display):
             self.ui.roiHLineEdit.clear()
             self.ui.roiHLineEdit.setEnabled(False)
 
-    @pyqtSlot()
+    @Slot()
     def setROI(self):
         self.roi_x_signal.emit(self.ui.roiXLineEdit.text())
         self.roi_y_signal.emit(self.ui.roiYLineEdit.text())
         self.roi_w_signal.emit(self.ui.roiWLineEdit.text())
         self.roi_h_signal.emit(self.ui.roiHLineEdit.text())
 
-    @pyqtSlot()
+    @Slot()
     def resetROI(self):
         self.roi_x_signal.emit(str(0))
         self.roi_y_signal.emit(str(0))
         self.roi_w_signal.emit(str(self.image_max_width))
         self.roi_h_signal.emit(str(self.image_max_height))
 
-    @pyqtSlot(str)
+    @Slot(str)
     def colorMapChanged(self, _):
         self.ui.imageView.colorMap = self.ui.colorMapComboBox.currentData()
 
@@ -304,7 +304,7 @@ class CamViewer(Display):
         self.setColorMapMax(max_int)
         self._color_map_limit_sliders_need_config = False
 
-    @pyqtSlot()
+    @Slot()
     def colorMapMinLineEditChanged(self):
         try:
             new_min = int(self.ui.colorMapMinLineEdit.text())
@@ -317,7 +317,7 @@ class CamViewer(Display):
             new_min = self.ui.colorMapMinSlider.maximum()
         self.ui.colorMapMinSlider.setValue(new_min)
 
-    @pyqtSlot(int)
+    @Slot(int)
     def setColorMapMin(self, new_min):
         if new_min > self.ui.colorMapMaxSlider.value():
             self.ui.colorMapMaxSlider.setValue(new_min)
@@ -325,7 +325,7 @@ class CamViewer(Display):
         self.ui.colorMapMinLineEdit.setText(str(new_min))
         self.ui.imageView.setColorMapLimits(new_min, self.ui.colorMapMaxSlider.value())
 
-    @pyqtSlot()
+    @Slot()
     def colorMapMaxLineEditChanged(self):
         try:
             new_max = int(self.ui.colorMapMaxLineEdit.text())
@@ -338,7 +338,7 @@ class CamViewer(Display):
             new_max = self.ui.colorMapMaxSlider.maximum()
         self.ui.colorMapMaxSlider.setValue(new_max)
 
-    @pyqtSlot(int)
+    @Slot(int)
     def setColorMapMax(self, new_max):
         if new_max < self.ui.colorMapMinSlider.value():
             self.ui.colorMapMinSlider.setValue(new_max)
@@ -363,11 +363,11 @@ class CamViewer(Display):
         else:
             return np.zeros(shape=(num_shots, size), dtype=type)
 
-    @pyqtSlot()
+    @Slot()
     def numAverageChanged(self):
         self._average_buffer = np.zeros(0)
 
-    @pyqtSlot(np.ndarray)
+    @Slot(np.ndarray)
     def receiveImageWaveform(self, new_waveform):
         if not self.image_width:
             return
@@ -438,46 +438,46 @@ class CamViewer(Display):
             marker = self.marker_dict[marker_index]['marker']
             marker.maxBounds = QRectF(0, 0, self.image_data.shape[0] + marker.size()[0] - 1, self.image_data.shape[1] + marker.size()[1] - 1)
 
-    @pyqtSlot(int)
+    @Slot(int)
     def receiveImageWidth(self, new_width):
         self.image_width = new_width
         self.ui.imageView.image_width_changed(self.image_width)
 
-    @pyqtSlot(int)
+    @Slot(int)
     def receiveMaxWidth(self, new_max_width):
         self.image_max_width = new_max_width
 
-    @pyqtSlot(int)
+    @Slot(int)
     def receiveMaxHeight(self, new_max_height):
         self.image_max_height = new_max_height
 
-    @pyqtSlot(int)
+    @Slot(int)
     def receiveRoiX(self, new_roi_x):
         self.ui.roiXLineEdit.setText(str(new_roi_x))
 
-    @pyqtSlot(int)
+    @Slot(int)
     def receiveRoiY(self, new_roi_y):
         self.ui.roiYLineEdit.setText(str(new_roi_y))
 
-    @pyqtSlot(int)
+    @Slot(int)
     def receiveRoiWidth(self, new_roi_w):
         self.ui.roiWLineEdit.setText(str(new_roi_w))
 
-    @pyqtSlot(int)
+    @Slot(int)
     def receiveRoiHeight(self, new_roi_h):
         self.ui.roiHLineEdit.setText(str(new_roi_h))
 
     # -2 to +2, -2 is LOLO, -1 is LOW, 0 is OK, etc.
-    @pyqtSlot(int)
+    @Slot(int)
     def alarmStatusChanged(self, new_alarm_state):
         pass
 
     # 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID
-    @pyqtSlot(int)
+    @Slot(int)
     def alarmSeverityChanged(self, new_alarm_severity):
         pass
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def roiWriteAccessChanged(self, can_write_roi):
         self.ui.setROIButton.setEnabled(can_write_roi)
         self.ui.resetROIButton.setEnabled(can_write_roi)
@@ -487,7 +487,7 @@ class CamViewer(Display):
         self.ui.roiHLineEdit.setReadOnly(not can_write_roi)
 
     # false = disconnected, true = connected
-    @pyqtSlot(bool)
+    @Slot(bool)
     def connectionStateChanged(self, connected):
         if connected:
             self.ui.imageView.redraw_timer.start()

@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QActionGroup
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Q_ENUMS, QThread
+from ..PyQt.QtCore import pyqtSignal, Slot, pyqtProperty, QTimer, Q_ENUMS, QThread
 from pyqtgraph import ImageView
 from pyqtgraph import ColorMap
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
@@ -195,7 +195,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         return self.cm_min
 
     @colorMapMin.setter
-    @pyqtSlot(float)
+    @Slot(float)
     def colorMapMin(self, new_min):
         """
         Set the minimum value for the colormap.
@@ -221,7 +221,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         return self.cm_max
 
     @colorMapMax.setter
-    @pyqtSlot(float)
+    @Slot(float)
     def colorMapMax(self, new_max):
         """
         Set the maximum value for the colormap.
@@ -298,7 +298,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         lut = cmap.getLookupTable(0.0, 1.0, alpha=False)
         self.getImageItem().setLookupTable(lut)
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def image_connection_state_changed(self, conn):
         """
         Callback invoked when the Image Channel connection state is changed.
@@ -313,7 +313,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         else:
             self.redraw_timer.stop()
 
-    @pyqtSlot(np.ndarray)
+    @Slot(np.ndarray)
     def image_value_changed(self, new_image):
         """
         Callback invoked when the Image Channel value is changed.
@@ -334,7 +334,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self.image_waveform = new_image
         self.needs_redraw = True
 
-    @pyqtSlot(int)
+    @Slot(int)
     def image_width_changed(self, new_width):
         """
         Callback invoked when the Image Width Channel value is changed.
@@ -385,7 +385,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         logging.debug("ImageView RedrawImage Thread Launched")
         self.thread.start()
 
-    @pyqtSlot(list)
+    @Slot(list)
     def __updateDisplay(self, data):
         logging.debug("ImageView Update Display with new image")
         mini, maxi = data[0], data[1]
@@ -459,7 +459,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         return self._normalize_data
 
     @normalizeData.setter
-    @pyqtSlot(bool)
+    @Slot(bool)
     def normalizeData(self, new_norm):
         """
         Define if the colors are relative to minimum and maximum of the data.

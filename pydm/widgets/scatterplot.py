@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QColor
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt
+from ..PyQt.QtCore import Slot, pyqtProperty, Qt
 import numpy as np
 import json
 import itertools
@@ -116,16 +116,16 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
                             connection_slot=self.yConnectionStateChanged,
                             value_slot=self.receiveYValue)
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def xConnectionStateChanged(self, connected):
         self.x_connected = connected
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def yConnectionStateChanged(self, connected):
         self.y_connected = connected
 
-    @pyqtSlot(int)
-    @pyqtSlot(float)
+    @Slot(int)
+    @Slot(float)
     def receiveXValue(self, new_x):
         """
         Handler for new x data.
@@ -136,8 +136,8 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         self.needs_new_x = False
         self.update_buffer()
 
-    @pyqtSlot(int)
-    @pyqtSlot(float)
+    @Slot(int)
+    @Slot(float)
     def receiveYValue(self, new_y):
         """
         Handler for new y data.
@@ -372,7 +372,7 @@ class PyDMScatterPlot(BasePlot):
         curve = self._curves[index]
         self.removeChannel(curve)
 
-    @pyqtSlot()
+    @Slot()
     def redrawPlot(self):
         """
         Request a redraw from each curve in the plot.

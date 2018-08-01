@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QPushButton, QCursor, QMenu, QAction, QIcon
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt, QSize, QPoint
+from ..PyQt.QtCore import Slot, pyqtProperty, Qt, QSize, QPoint
 import os
 import json
 import logging
@@ -185,7 +185,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         finally:
             super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
 
-    @pyqtSlot()
+    @Slot()
     def open_display(self, target=EXISTING_WINDOW):
         """
         Open the configured `filename` with the given `target`.
@@ -224,7 +224,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         menu.addAction(self.open_in_new_window_action)
         return menu
 
-    @pyqtSlot(QPoint)
+    @Slot(QPoint)
     def show_context_menu(self, pos):
         menu = self.context_menu()
         menu.exec_(self.mapToGlobal(pos))

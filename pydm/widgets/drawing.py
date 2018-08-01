@@ -5,7 +5,7 @@ import logging
 from ..PyQt.QtGui import (QApplication, QWidget, QColor, QPainter, QBrush, QPen,
                           QPolygon, QPolygonF, QPixmap, QStyle, QStyleOption,
                           QMovie)
-from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, QPointF, QSize, pyqtSlot
+from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, QPointF, QSize, Slot
 from ..PyQt.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
 from ..utilities import is_pydm_app
@@ -458,7 +458,7 @@ class PyDMDrawingImage(PyDMDrawing):
             p = p.parent()
         return None
     
-    @pyqtSlot(str)
+    @Slot(str)
     def designer_form_saved(self, filename):
         self.filename = self._file
         

@@ -1,7 +1,7 @@
 import os
 from os import path
 from .PyQt.QtGui import QApplication, QMainWindow, QFileDialog, QWidget, QAction
-from .PyQt.QtCore import Qt, QTimer, pyqtSlot, QSize, QLibraryInfo
+from .PyQt.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
 from .utilities import IconFont, find_display_in_path
 from .pydm_ui import Ui_MainWindow
 from .display_module import Display
@@ -271,15 +271,15 @@ class PyDMMainWindow(QMainWindow):
         self._showing_file_path_in_title_bar = checked
         self.update_window_title()
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def toggle_file_path_in_title_bar(self, checked):
         self.showing_file_path_in_title_bar = checked
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def toggle_nav_bar(self, checked):
         self.ui.navbar.setHidden(not checked)
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def toggle_menu_bar(self, checked=None):
         if checked is None:
             checked = not self.ui.menubar.isVisible()
@@ -295,7 +295,7 @@ class PyDMMainWindow(QMainWindow):
             self._saved_menu_height = self.ui.menubar.height()
             self.ui.menubar.setFixedHeight(0)
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def toggle_status_bar(self, checked):
         self.ui.statusbar.setHidden(not checked)
 
@@ -315,7 +315,7 @@ class PyDMMainWindow(QMainWindow):
                 ui_file = central_widget.ui_filepath()
             return ui_file, self.current_file()
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def edit_in_designer(self, checked):
 
         def open_editor_ui(fname):
@@ -338,7 +338,7 @@ class PyDMMainWindow(QMainWindow):
         if py_file is not None and py_file != "":
             open_editor_generic(fname=py_file)
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def open_file_action(self, checked):
         modifiers = QApplication.keyboardModifiers()
         try:
@@ -373,7 +373,7 @@ class PyDMMainWindow(QMainWindow):
             filename = str(filename)
             self.app.install_external_tool(filename)
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def reload_display(self, checked):
         try:
             curr_file = self.current_file()
@@ -383,33 +383,33 @@ class PyDMMainWindow(QMainWindow):
         self.statusBar().showMessage("Reloading '{0}'...".format(self.current_file()), 5000)
         self.go_abs(self.current_file())
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def increase_font_size(self, checked):
         current_font = QApplication.instance().font()
         current_font.setPointSizeF(current_font.pointSizeF() * 1.1)
         QApplication.instance().setFont(current_font)
         QTimer.singleShot(0, self.resizeForNewDisplayWidget)
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def decrease_font_size(self, checked):
         current_font = QApplication.instance().font()
         current_font.setPointSizeF(current_font.pointSizeF() / 1.1)
         QApplication.instance().setFont(current_font)
         QTimer.singleShot(0, self.resizeForNewDisplayWidget)
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def enter_fullscreen(self, checked=False):
         if self.isFullScreen():
             self.showNormal()
         else:
             self.showFullScreen()
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def show_connections(self, checked):
         c = ConnectionInspector(self.app.list_all_connections(), self)
         c.show()
     
-    @pyqtSlot(bool)
+    @Slot(bool)
     def show_about_window(self, checked):
         a = AboutWindow(self)
         a.show()

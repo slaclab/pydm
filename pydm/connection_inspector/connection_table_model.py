@@ -1,4 +1,4 @@
-from ..PyQt.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant, QTimer, pyqtSlot
+from ..PyQt.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant, QTimer, Slot
 from ..PyQt.QtGui import QBrush
 from operator import attrgetter
 
@@ -69,6 +69,6 @@ class ConnectionTableModel(QAbstractTableModel):
             return section
     # End QAbstractItemModel implementation.
 
-    @pyqtSlot()
+    @Slot()
     def update_values(self):
         self.dataChanged.emit(self.index(0,2), self.index(self.rowCount(),2))

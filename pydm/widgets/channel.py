@@ -34,26 +34,26 @@ class PyDMChannel:
         should usually be a user inputted field when a specific
         PyDM widget is initialized
 
-    connection_slot : pyqtSlot, optional
+    connection_slot : Slot, optional
         A function to be run when the connection state
         changes
 
-    value_slot : pyqtSlot, optional
+    value_slot : Slot, optional
         A function to be run when the value updates
 
-    severity_slot : pyqtSlot, optional
+    severity_slot : Slot, optional
         A function to be run when the severity changes
 
-    write_access_slot : pyqtSlot, optional
+    write_access_slot : Slot, optional
         A function to be run when the write access changes
 
-    enum_strings_slot : pyqtSlot, optional
+    enum_strings_slot : Slot, optional
         A function to be run when the enum_strings change
 
-    unit_slot : pyqtSlot, optional
+    unit_slot : Slot, optional
         A function to be run when the unit changes
 
-    prec_slot : pyqtSlot, optional
+    prec_slot : Slot, optional
         A function to be run when the precision value changes
 
     value_signal : pyqtSignal, optional
