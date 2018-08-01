@@ -30,7 +30,7 @@ class BasePlotCurveEditorDialog(QDialog):
         self.remove_button.clicked.connect(self.removeSelectedCurve)
         self.remove_button.setEnabled(False)
         self.table_view.selectionModel().selectionChanged.connect(
-                                                    self.handleSelectionChange)
+            self.handleSelectionChange)
         self.table_view.doubleClicked.connect(self.handleDoubleClick)
         self.resize(800, 300)
 
@@ -85,7 +85,7 @@ class BasePlotCurveEditorDialog(QDialog):
     @Slot(QItemSelection, QItemSelection)
     def handleSelectionChange(self, selected, deselected):
         self.remove_button.setEnabled(
-                            self.table_view.selectionModel().hasSelection())
+            self.table_view.selectionModel().hasSelection())
 
     @Slot(QModelIndex)
     def handleDoubleClick(self, index):
@@ -160,10 +160,10 @@ class RedrawModeColumnDelegate(QStyledItemDelegate):
     """RedrawModeColumnDelegate draws a QComboBox in the Redraw Mode column, so
     that users can pick the redraw mode from a list."""
     choices = OrderedDict([
-            ('X or Y updates', BasePlotCurveItem.REDRAW_ON_EITHER),
-            ('Y updates', BasePlotCurveItem.REDRAW_ON_Y),
-            ('X updates', BasePlotCurveItem.REDRAW_ON_X),
-            ('Both update', BasePlotCurveItem.REDRAW_ON_BOTH)])
+        ('X or Y updates', BasePlotCurveItem.REDRAW_ON_EITHER),
+        ('Y updates', BasePlotCurveItem.REDRAW_ON_Y),
+        ('X updates', BasePlotCurveItem.REDRAW_ON_X),
+        ('Both update', BasePlotCurveItem.REDRAW_ON_BOTH)])
     text_for_choices = {v: k for k, v in choices.items()}
 
     def displayText(self, value, locale):

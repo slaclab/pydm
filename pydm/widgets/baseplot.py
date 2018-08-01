@@ -568,19 +568,19 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         The maximum rate (in Hz) at which the plot will be redrawn.
         The plot will not be redrawn if there is not new data to draw.
-        
+
         Returns
         -------
         int
         """
         return self._redraw_rate
-    
+
     @maxRedrawRate.setter
     def maxRedrawRate(self, redraw_rate):
         """
         The maximum rate (in Hz) at which the plot will be redrawn.
         The plot will not be redrawn if there is not new data to draw.
-        
+
         Parameters
         -------
         redraw_rate : int

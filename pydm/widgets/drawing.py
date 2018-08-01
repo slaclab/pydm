@@ -31,6 +31,7 @@ def deg_to_qt(deg):
     # Angles for Qt are in units of 1/16 of a degree
     return deg * 16
 
+
 def qt_to_deg(deg):
     """
     Converts from QT degrees to degrees.
@@ -457,11 +458,11 @@ class PyDMDrawingImage(PyDMDrawing):
                 return p
             p = p.parent()
         return None
-    
+
     @Slot(str)
     def designer_form_saved(self, filename):
         self.filename = self._file
-        
+
     @Property(str)
     def filename(self):
         """

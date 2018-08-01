@@ -119,7 +119,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role != Qt.DisplayRole:
             return super(BasePlotCurvesModel, self).headerData(
-                                                section, orientation, role)
+                section, orientation, role)
         if orientation == Qt.Horizontal and section < self.columnCount():
             return str(self._column_names[section])
         elif orientation == Qt.Vertical and section < self.rowCount():

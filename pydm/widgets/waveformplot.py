@@ -472,29 +472,29 @@ class PyDMWaveformPlot(BasePlot):
     # properties there, because not all plot subclasses necessarily want them
     # to be user-configurable in Designer.
     autoRangeX = Property(bool, BasePlot.getAutoRangeX,
-                              BasePlot.setAutoRangeX, BasePlot.resetAutoRangeX,
-                              doc="""
-    Whether or not the X-axis automatically rescales to fit the data.
-    If true, the values in minXRange and maxXRange are ignored.""")
+                          BasePlot.setAutoRangeX, BasePlot.resetAutoRangeX,
+                          doc="""
+Whether or not the X-axis automatically rescales to fit the data.
+If true, the values in minXRange and maxXRange are ignored.""")
 
     minXRange = Property(float, BasePlot.getMinXRange,
-                             BasePlot.setMinXRange, doc="""
-    Minimum X-axis value visible on the plot.""")
+                         BasePlot.setMinXRange, doc="""
+Minimum X-axis value visible on the plot.""")
 
     maxXRange = Property(float, BasePlot.getMaxXRange,
-                             BasePlot.setMaxXRange, doc="""
-    Maximum X-axis value visible on the plot.""")
+                         BasePlot.setMaxXRange, doc="""
+Maximum X-axis value visible on the plot.""")
 
     autoRangeY = Property(bool, BasePlot.getAutoRangeY,
-                              BasePlot.setAutoRangeY, BasePlot.resetAutoRangeY,
-                              doc="""
-    Whether or not the Y-axis automatically rescales to fit the data.
-    If true, the values in minYRange and maxYRange are ignored.""")
+                          BasePlot.setAutoRangeY, BasePlot.resetAutoRangeY,
+                          doc="""
+Whether or not the Y-axis automatically rescales to fit the data.
+If true, the values in minYRange and maxYRange are ignored.""")
 
     minYRange = Property(float, BasePlot.getMinYRange,
-                             BasePlot.setMinYRange, doc="""
-    Minimum Y-axis value visible on the plot.""")
+                         BasePlot.setMinYRange, doc="""
+Minimum Y-axis value visible on the plot.""")
 
     maxYRange = Property(float, BasePlot.getMaxYRange,
-                             BasePlot.setMaxYRange, doc="""
-    Maximum Y-axis value visible on the plot.""")
+                         BasePlot.setMaxYRange, doc="""
+Maximum Y-axis value visible on the plot.""")

@@ -6,6 +6,7 @@ import os.path
 from .base import PyDMPrimitiveWidget
 from ..utilities import is_pydm_app
 
+
 class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     """
     A QFrame capable of rendering a PyDM Display

@@ -1,6 +1,7 @@
 from ..PyQt.QtGui import QCheckBox
 from .base import PyDMWritableWidget
 
+
 class PyDMCheckbox(QCheckBox, PyDMWritableWidget):
     """
     A QCheckbox with support for Channels and more from PyDM

@@ -47,7 +47,7 @@ class RulesEditor(QtGui.QDialog):
         None
         """
         iconfont = IconFont()
-        
+
         self.setWindowTitle("PyDM Widget Rules Editor")
         vlayout = QtGui.QVBoxLayout()
         vlayout.setContentsMargins(5, 5, 5, 5)
@@ -474,12 +474,11 @@ class RulesEditor(QtGui.QDialog):
         if self.frm_edit.isEnabled():
             self.expression_changed()
             self.name_changed()
-            self.tbl_channels_changed()    
+            self.tbl_channels_changed()
         status, message = self.is_data_valid()
         if status:
             data = json.dumps(self.rules)
-            formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(
-                self.widget)
+            formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self.widget)
             if formWindow:
                 formWindow.cursor().setProperty("rules", data)
             self.accept()

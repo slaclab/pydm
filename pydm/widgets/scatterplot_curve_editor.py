@@ -29,7 +29,7 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
         elif column_name == "Buffer Size":
             return curve.getBufferSize()
         return super(PyDMScatterPlotCurvesModel, self).get_data(
-                                                        column_name, curve)
+            column_name, curve)
 
     def set_data(self, column_name, curve, value):
         if column_name == "Y Channel":
@@ -42,7 +42,7 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
             curve.setBufferSize(int(value))
         else:
             return super(PyDMScatterPlotCurvesModel, self).set_data(
-                            column_name=column_name, curve=curve, value=value)
+                column_name=column_name, curve=curve, value=value)
         return True
 
     def append(self, y_address=None, x_address=None, name=None, color=None):

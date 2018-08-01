@@ -244,9 +244,9 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
                         self._scale, self._channel, self.channeltype))
 
         new_value = parse_value_for_display(value=new_value,  precision=self._prec,
-                                             display_format_type=self._display_format_type,
-                                             string_encoding=self._string_encoding,
-                                             widget=self)
+                                            display_format_type=self._display_format_type,
+                                            string_encoding=self._string_encoding,
+                                            widget=self)
 
         self._display = str(new_value)
 

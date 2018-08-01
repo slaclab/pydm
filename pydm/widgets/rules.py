@@ -150,7 +150,7 @@ class RulesEngine(QThread):
                     for rule in self.widget_map[widget]:
                         if rule['calculate']:
                             self.calculate_expression(widget, rule)
-            self.msleep(33) # 30Hz
+            self.msleep(33)  # 30Hz
 
     def callback_value(self, widget, index, ch_index, trigger, value):
         """

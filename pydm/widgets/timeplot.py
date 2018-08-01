@@ -238,7 +238,7 @@ class PyDMTimePlot(BasePlot):
                 curve.resetBufferSize()
 
     bufferSize = Property("int", getBufferSize,
-                              setBufferSize, resetBufferSize)
+                          setBufferSize, resetBufferSize)
 
     def getUpdatesAsynchronously(self):
         return self._update_mode == PyDMTimePlot.AsynchronousMode
@@ -260,9 +260,9 @@ class PyDMTimePlot(BasePlot):
             curve.resetUpdatesAsynchronously()
 
     updatesAsynchronously = Property("bool",
-                                         getUpdatesAsynchronously,
-                                         setUpdatesAsynchronously,
-                                         resetUpdatesAsynchronously)
+                                     getUpdatesAsynchronously,
+                                     setUpdatesAsynchronously,
+                                     resetUpdatesAsynchronously)
 
     def getTimeSpan(self):
         return float(self._time_span)
@@ -309,7 +309,7 @@ class PyDMTimePlot(BasePlot):
                                        self._update_interval))
 
     updateInterval = Property(float, getUpdateInterval,
-                                  setUpdateInterval, resetUpdateInterval)
+                              setUpdateInterval, resetUpdateInterval)
 
     def getAutoRangeX(self):
         return False
@@ -325,18 +325,18 @@ class PyDMTimePlot(BasePlot):
     # all defined in BasePlot, but we don't expose them as properties there, because not all plot
     # subclasses necessarily want them to be user-configurable in Designer.
     autoRangeY = Property(bool, BasePlot.getAutoRangeY,
-                              BasePlot.setAutoRangeY,
-                              BasePlot.resetAutoRangeY, doc="""
+                          BasePlot.setAutoRangeY,
+                          BasePlot.resetAutoRangeY, doc="""
     Whether or not the Y-axis automatically rescales to fit the data.
     If true, the values in minYRange and maxYRange are ignored.
     """)
 
     minYRange = Property(float, BasePlot.getMinYRange,
-                             BasePlot.setMinYRange, doc="""
+                         BasePlot.setMinYRange, doc="""
     Minimum Y-axis value visible on the plot.""")
 
     maxYRange = Property(float, BasePlot.getMaxYRange,
-                             BasePlot.setMaxYRange, doc="""
+                         BasePlot.setMaxYRange, doc="""
     Maximum Y-axis value visible on the plot.""")
 
 

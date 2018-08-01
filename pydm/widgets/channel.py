@@ -99,17 +99,17 @@ class PyDMChannel(object):
             if self.value_signal and other.value_signal:
                 value_signal_matched = self.value_signal.signal == other.value_signal.signal
 
-            return address_matched and \
-                   connection_slot_matched and \
-                   value_slot_matched and \
-                   severity_slot_matched and \
-                   enum_strings_slot_matched and \
-                   unit_slot_matched and \
-                   prec_slot_matched and \
-                   upper_ctrl_slot_matched and \
-                   lower_ctrl_slot_matched and \
-                   write_access_slot_matched and \
-                   value_signal_matched
+            return (address_matched and
+                    connection_slot_matched and
+                    value_slot_matched and
+                    severity_slot_matched and
+                    enum_strings_slot_matched and
+                    unit_slot_matched and
+                    prec_slot_matched and
+                    upper_ctrl_slot_matched and
+                    lower_ctrl_slot_matched and
+                    write_access_slot_matched and
+                    value_signal_matched)
 
         return NotImplemented
 

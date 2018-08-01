@@ -167,7 +167,7 @@ class PyDMTabWidget(QTabWidget):
     alarm channel property which can be used to show an alarm indicator on
     the tab.  The indicator is driven by the alarm severity of the specified
     channel, not the value.
-    
+
     Parameters
     ----------
     parent : QWidget
@@ -182,7 +182,7 @@ class PyDMTabWidget(QTabWidget):
     def currentTabAlarmChannel(self):
         """
         A channel to use for the current tab's alarm indicator.
-        
+
         Returns
         -------
         str
@@ -196,7 +196,7 @@ class PyDMTabWidget(QTabWidget):
     def channels(self):
         """
         A list of the channels used by the tab widget.
-        
+
         Returns
         -------
         list
@@ -222,7 +222,7 @@ class PyDMTabWidget(QTabWidget):
         """
         A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_NONE severity level.
         This property can be defined in a stylesheet by using 'qproperty-noAlarmIconColor'.
-        
+
         Returns
         -------
         QColor
@@ -240,7 +240,7 @@ class PyDMTabWidget(QTabWidget):
         """
         A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_MINOR severity level.
         This property can be defined in a stylesheet by using 'qproperty-minorAlarmIconColor'.
-        
+
         Returns
         -------
         QColor
@@ -256,7 +256,7 @@ class PyDMTabWidget(QTabWidget):
         """
         A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_MAJOR severity level.
         This property can be defined in a stylesheet by using 'qproperty-majorAlarmIconColor'.
-        
+
         Returns
         -------
         QColor
@@ -272,7 +272,7 @@ class PyDMTabWidget(QTabWidget):
         """
         A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_INVALID severity level.
         This property can be defined in a stylesheet by using 'qproperty-majorAlarmIconColor'.
-        
+
         Returns
         -------
         QColor
@@ -288,7 +288,7 @@ class PyDMTabWidget(QTabWidget):
         """
         A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_DISCONNECTED severity level.
         This property can be defined in a stylesheet by using 'qproperty-disconnectedAlarmIconColor'.
-        
+
         Returns
         -------
         QColor

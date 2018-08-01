@@ -240,7 +240,6 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         if not self._slider.isSliderDown():
             self.set_slider_to_closest_value(self.value)
 
-
     def ctrl_limit_changed(self, which, new_limit):
         """
         Callback invoked when the Channel receives new control limit

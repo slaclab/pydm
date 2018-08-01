@@ -3,6 +3,7 @@ from ..PyQt.QtCore import Property, Qt, QSize, QPoint
 import numpy as np
 from .base import PyDMWidget
 
+
 class PyDMBitIndicator(QWidget):
     """
     A QWidget which draws a colored circle or rectangle

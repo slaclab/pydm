@@ -798,7 +798,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         status = self._connected
         tooltip = self.restore_original_tooltip()
         if not status:
-            if tooltip != '': tooltip += '\n'
+            if tooltip != '':
+                tooltip += '\n'
             tooltip += "PV is disconnected."
 
         self.setToolTip(tooltip)
@@ -961,10 +962,12 @@ class PyDMWritableWidget(PyDMWidget):
         status = self._write_access and self._connected
         tooltip = self.restore_original_tooltip()
         if not self._connected:
-            if tooltip != '': tooltip += '\n'
+            if tooltip != '':
+                tooltip += '\n'
             tooltip += "PV is disconnected."
         elif not self._write_access:
-            if tooltip != '': tooltip += '\n'
+            if tooltip != '':
+                tooltip += '\n'
             if is_pydm_app() and self.app.is_read_only():
                 tooltip += "Running PyDM on Read-Only mode."
             else:
