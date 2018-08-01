@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QLabel, QApplication, QColor, QBrush
-from ..PyQt.QtCore import pyqtSignal, Slot, pyqtProperty, QTimer, Qt
+from ..PyQt.QtCore import Signal, Slot, pyqtProperty, QTimer, Qt
 from .. import utilities
 from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
 from pyqtgraph import PlotDataItem, mkPen
@@ -51,7 +51,7 @@ class BasePlotCurveItem(PlotDataItem):
                          ('Dot', Qt.DotLine),
                          ('DashDot', Qt.DashDotLine),
                          ('DashDotDot', Qt.DashDotDotLine)])
-    data_changed = pyqtSignal()
+    data_changed = Signal()
 
     def __init__(self, color=None, lineStyle=None, lineWidth=None, **kws):
         self._color = QColor('white')

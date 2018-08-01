@@ -3,7 +3,7 @@ import functools
 
 import collections
 
-from ..PyQt.QtCore import QObject, QThread, QMutex, pyqtSignal
+from ..PyQt.QtCore import QObject, QThread, QMutex, Signal
 from ..PyQt.QtGui import QApplication
 
 from .channel import PyDMChannel
@@ -94,7 +94,7 @@ class RulesEngine(QThread):
     rule_signal : dict
         Emitted when a new value for the property is calculated by the engine.
     """
-    rule_signal = pyqtSignal(dict)
+    rule_signal = Signal(dict)
 
     def __init__(self):
         QThread.__init__(self)

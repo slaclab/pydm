@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QActionGroup
-from ..PyQt.QtCore import pyqtSignal, Slot, pyqtProperty, QTimer, Q_ENUMS, QThread
+from ..PyQt.QtCore import Signal, Slot, pyqtProperty, QTimer, Q_ENUMS, QThread
 from pyqtgraph import ImageView
 from pyqtgraph import ColorMap
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
@@ -23,7 +23,7 @@ class ReadingOrder(object):
 
 
 class ImageUpdateThread(QThread):
-    updateSignal = pyqtSignal(list)
+    updateSignal = Signal(list)
 
     def __init__(self, image_view):
         QThread.__init__(self)

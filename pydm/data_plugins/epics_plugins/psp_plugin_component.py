@@ -70,7 +70,7 @@ def generic_mon_cb(source, signal):
     :type source:  Pv
     :param signal: Signal to send the value out on. Check the base
                    :class:`PyDMConnection` class for available signals.
-    :type signal:  pyqtSignal
+    :type signal:  Signal
     :rtype: function(errors=None)
     """
 
@@ -101,7 +101,7 @@ def setup_pv(pvname, con_cb=None, mon_cb=None, rwaccess_cb=None, signal=None, mo
     :param signal: Signal to emit our value on as the default callback when
                    con_cb or mon_cb are left as None. Check the base
                    :class:`PyDMConnection` class for available signals.
-    :type signal:  pyqtSignal
+    :type signal:  Signal
     :param mon_cb_once: True if we only want the monitor callback to run once.
     :type mon_cb_once: bool
     :rtype: Pv

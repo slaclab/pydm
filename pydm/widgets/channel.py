@@ -56,7 +56,7 @@ class PyDMChannel:
     prec_slot : Slot, optional
         A function to be run when the precision value changes
 
-    value_signal : pyqtSignal, optional
+    value_signal : Signal, optional
         Attach a signal here that emits a desired value to be sent
         through the plugin
 

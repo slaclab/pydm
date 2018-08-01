@@ -3,7 +3,7 @@ import functools
 import json
 import numpy as np
 from ..PyQt.QtGui import QApplication, QColor, QCursor, QMenu, QGraphicsOpacityEffect
-from ..PyQt.QtCore import Qt, QEvent, pyqtSignal, Slot, pyqtProperty
+from ..PyQt.QtCore import Qt, QEvent, Signal, Slot, pyqtProperty
 from .channel import PyDMChannel
 from ..utilities import is_pydm_app
 from .rules import RulesDispatcher
@@ -873,10 +873,10 @@ class PyDMWritableWidget(PyDMWidget):
         Emitted when the user changes the value
     """
 
-    __pyqtSignals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray])")
+    __Signals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray])")
 
     # Emitted when the user changes the value.
-    send_value_signal = pyqtSignal([int], [float], [str], [bool], [np.ndarray])
+    send_value_signal = Signal([int], [float], [str], [bool], [np.ndarray])
 
     def __init__(self, init_channel=None):
         self._write_access = False

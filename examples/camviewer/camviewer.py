@@ -1,6 +1,6 @@
 # import epics
 # from pydm.PyQt import uic
-from pydm.PyQt.QtCore import Slot, pyqtSignal, QPointF, QRectF
+from pydm.PyQt.QtCore import Slot, Signal, QPointF, QRectF
 from pydm.PyQt.QtGui import QSizePolicy, QPen
 from os import path
 from pydm import Display
@@ -14,10 +14,10 @@ import time
 
 class CamViewer(Display):
     # Emitted when the user changes the value.
-    roi_x_signal = pyqtSignal(str)
-    roi_y_signal = pyqtSignal(str)
-    roi_w_signal = pyqtSignal(str)
-    roi_h_signal = pyqtSignal(str)
+    roi_x_signal = Signal(str)
+    roi_y_signal = Signal(str)
+    roi_w_signal = Signal(str)
+    roi_h_signal = Signal(str)
 
     def __init__(self, parent=None, args=None):
         super(CamViewer, self).__init__(parent=parent, args=args)

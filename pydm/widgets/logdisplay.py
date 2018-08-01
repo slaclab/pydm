@@ -2,7 +2,7 @@ import logging
 
 from collections import OrderedDict
 
-from pydm.PyQt.QtCore import (QObject, Slot, pyqtSignal, pyqtProperty,
+from pydm.PyQt.QtCore import (QObject, Slot, Signal, pyqtProperty,
                               Q_ENUMS, QSize)
 from pydm.PyQt.QtGui import (QWidget, QPlainTextEdit, QComboBox, QLabel,
                              QPushButton, QHBoxLayout, QVBoxLayout)
@@ -16,7 +16,7 @@ class GuiHandler(QObject, logging.Handler):
 
     A composite of a QObject and a logging handler. This can be added to a
     ``logging.Logger`` object just like any standard ``logging.Handler`` and
-    will emit logging messages as pyqtSignals
+    will emit logging messages as Signals
 
     .. code:: python
 
@@ -25,7 +25,7 @@ class GuiHandler(QObject, logging.Handler):
         ui_handler = GuiHandler(level=logging.INFO)
         # Attach our handler to the log
         logger.addHandler(ui_handler)
-        # Publish log message via pyqtSignal
+        # Publish log message via Signal
         ui_handler.message.connect(mySlot)
 
     Parameters
@@ -35,7 +35,7 @@ class GuiHandler(QObject, logging.Handler):
 
     parent: QObject, optional
     """
-    message = pyqtSignal(str)
+    message = Signal(str)
 
     def __init__(self, level=logging.NOTSET, parent=None):
         logging.Handler.__init__(self, level=level)

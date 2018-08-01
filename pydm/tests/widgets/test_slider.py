@@ -5,7 +5,7 @@ from logging import ERROR
 import numpy as np
 
 from ...PyQt.QtGui import QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy
-from ...PyQt.QtCore import Qt, pyqtSignal, pyqtProperty, QMargins
+from ...PyQt.QtCore import Qt, Signal, pyqtProperty, QMargins
 
 from ...widgets.slider import PyDMSlider
 from ...widgets.base import PyDMWidget

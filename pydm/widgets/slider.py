@@ -2,7 +2,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from ..PyQt.QtGui import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
-from ..PyQt.QtCore import Qt, pyqtSignal, Slot, pyqtProperty
+from ..PyQt.QtCore import Qt, Signal, Slot, pyqtProperty
 from .base import PyDMWritableWidget
 import numpy as np
 
@@ -18,12 +18,12 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
     init_channel : str, optional
         The channel to be used by the widget.
     """
-    actionTriggered = pyqtSignal(int)
-    rangeChanged = pyqtSignal(float, float)
-    sliderMoved = pyqtSignal(float)
-    sliderPressed = pyqtSignal()
-    sliderReleased = pyqtSignal()
-    valueChanged = pyqtSignal(float)
+    actionTriggered = Signal(int)
+    rangeChanged = Signal(float, float)
+    sliderMoved = Signal(float)
+    sliderPressed = Signal()
+    sliderReleased = Signal()
+    valueChanged = Signal(float)
 
     def __init__(self, parent=None, init_channel=None):
         QFrame.__init__(self, parent)

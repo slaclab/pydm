@@ -1,17 +1,17 @@
 from numpy import ndarray
-from ..PyQt.QtCore import pyqtSignal, QObject, Qt
+from ..PyQt.QtCore import Signal, QObject, Qt
 from ..PyQt.QtGui import QApplication
 
 class PyDMConnection(QObject):
-    new_value_signal = pyqtSignal([float], [int], [str], [ndarray])
-    connection_state_signal = pyqtSignal(bool)
-    new_severity_signal = pyqtSignal(int)
-    write_access_signal = pyqtSignal(bool)
-    enum_strings_signal = pyqtSignal(tuple)
-    unit_signal = pyqtSignal(str)
-    prec_signal = pyqtSignal(int)
-    upper_ctrl_limit_signal = pyqtSignal([float], [int])
-    lower_ctrl_limit_signal = pyqtSignal([float], [int])
+    new_value_signal = Signal([float], [int], [str], [ndarray])
+    connection_state_signal = Signal(bool)
+    new_severity_signal = Signal(int)
+    write_access_signal = Signal(bool)
+    enum_strings_signal = Signal(tuple)
+    unit_signal = Signal(str)
+    prec_signal = Signal(int)
+    upper_ctrl_limit_signal = Signal([float], [int])
+    lower_ctrl_limit_signal = Signal([float], [int])
 
     def __init__(self, channel, address, protocol=None, parent=None):
         super(PyDMConnection, self).__init__(parent)

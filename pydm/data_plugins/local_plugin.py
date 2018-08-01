@@ -90,7 +90,7 @@ class LocalPlugin(PyDMPlugin):
                         channel.address string.
         :type address:  str
         :param signal: User signal to connect to the update slot.
-        :type signal:  pyqtSignal()
+        :type signal:  Signal()
         """
         try:
             connection = self.connections[address]
