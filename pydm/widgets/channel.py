@@ -1,4 +1,4 @@
-class PyDMChannel:
+class PyDMChannel(object):
     """
     Object to hold signals and slots for a PyDM Widget interface to an
     external plugin
