@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QColor
-from ..PyQt.QtCore import Slot, pyqtProperty, QTimer
+from ..PyQt.QtCore import Slot, Property, QTimer
 from pyqtgraph import ViewBox, AxisItem
 import numpy as np
 import time
@@ -220,7 +220,7 @@ class PyDMTimePlot(BasePlot):
                              symbol=d.get('symbol'),
                              symbolSize=d.get('symbolSize'))
 
-    curves = pyqtProperty("QStringList", getCurves, setCurves)
+    curves = Property("QStringList", getCurves, setCurves)
 
     def getBufferSize(self):
         return int(self._bufferSize)
@@ -237,7 +237,7 @@ class PyDMTimePlot(BasePlot):
             for curve in self._curves:
                 curve.resetBufferSize()
 
-    bufferSize = pyqtProperty("int", getBufferSize,
+    bufferSize = Property("int", getBufferSize,
                               setBufferSize, resetBufferSize)
 
     def getUpdatesAsynchronously(self):
@@ -259,7 +259,7 @@ class PyDMTimePlot(BasePlot):
         for curve in self._curves:
             curve.resetUpdatesAsynchronously()
 
-    updatesAsynchronously = pyqtProperty("bool",
+    updatesAsynchronously = Property("bool",
                                          getUpdatesAsynchronously,
                                          setUpdatesAsynchronously,
                                          resetUpdatesAsynchronously)
@@ -286,7 +286,7 @@ class PyDMTimePlot(BasePlot):
                                         self._update_interval))
             self.updateXAxis(update_immediately=True)
 
-    timeSpan = pyqtProperty(float, getTimeSpan, setTimeSpan, resetTimeSpan)
+    timeSpan = Property(float, getTimeSpan, setTimeSpan, resetTimeSpan)
 
     def getUpdateInterval(self):
         return float(self._update_interval) / 1000.0
@@ -308,7 +308,7 @@ class PyDMTimePlot(BasePlot):
                 self.setBufferSize(int((self._time_span * 1000.0) /
                                        self._update_interval))
 
-    updateInterval = pyqtProperty(float, getUpdateInterval,
+    updateInterval = Property(float, getUpdateInterval,
                                   setUpdateInterval, resetUpdateInterval)
 
     def getAutoRangeX(self):
@@ -324,18 +324,18 @@ class PyDMTimePlot(BasePlot):
     # The methods for autoRangeY, minYRange, and maxYRange are
     # all defined in BasePlot, but we don't expose them as properties there, because not all plot
     # subclasses necessarily want them to be user-configurable in Designer.
-    autoRangeY = pyqtProperty(bool, BasePlot.getAutoRangeY,
+    autoRangeY = Property(bool, BasePlot.getAutoRangeY,
                               BasePlot.setAutoRangeY,
                               BasePlot.resetAutoRangeY, doc="""
     Whether or not the Y-axis automatically rescales to fit the data.
     If true, the values in minYRange and maxYRange are ignored.
     """)
 
-    minYRange = pyqtProperty(float, BasePlot.getMinYRange,
+    minYRange = Property(float, BasePlot.getMinYRange,
                              BasePlot.setMinYRange, doc="""
     Minimum Y-axis value visible on the plot.""")
 
-    maxYRange = pyqtProperty(float, BasePlot.getMaxYRange,
+    maxYRange = Property(float, BasePlot.getMaxYRange,
                              BasePlot.setMaxYRange, doc="""
     Maximum Y-axis value visible on the plot.""")
 

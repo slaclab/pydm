@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QPushButton, QCursor, QIcon
-from ..PyQt.QtCore import Slot, pyqtProperty, QSize
+from ..PyQt.QtCore import Slot, Property, QSize
 import shlex, subprocess
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
@@ -28,7 +28,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         self.process = None
         self._show_icon = True
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def showIcon(self):
         """
         Whether or not we should show the selected Icon.
@@ -57,7 +57,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
                 self._icon = self.icon()
                 self.setIcon(QIcon())
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def allowMultipleExecutions(self):
         """
         Whether or not we should allow the same command
@@ -82,7 +82,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         if self._allow_multiple != value:
             self._allow_multiple = value
 
-    @pyqtProperty(str)
+    @Property(str)
     def command(self):
         """
         The Shell Command to be executed

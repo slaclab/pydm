@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QDoubleSpinBox, QApplication
-from ..PyQt.QtCore import pyqtProperty, QEvent, Qt
+from ..PyQt.QtCore import Property, QEvent, Qt
 from .base import PyDMWritableWidget
 
 
@@ -155,7 +155,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         super(PyDMSpinbox, self).precision_changed(new_precision)
         self.setDecimals(new_precision)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def showStepExponent(self):
         """
         Whether to show or not the step exponent

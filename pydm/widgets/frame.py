@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QFrame
-from ..PyQt.QtCore import pyqtProperty
+from ..PyQt.QtCore import Property
 from .base import PyDMWidget
 
 
@@ -22,7 +22,7 @@ class PyDMFrame(QFrame, PyDMWidget):
         self._disable_on_disconnect = False
         self.alarmSensitiveBorder = False
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def disableOnDisconnect(self):
         """
         Whether or not the PyDMFrame should be disabled in case the

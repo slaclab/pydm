@@ -1,6 +1,6 @@
 from .base import PyDMWidget
 from ..PyQt.QtGui import QLabel, QApplication
-from ..PyQt.QtCore import Qt, pyqtProperty, Q_ENUMS
+from ..PyQt.QtCore import Qt, Property, Q_ENUMS
 from .display_format import DisplayFormat, parse_value_for_display
 from pydm.utilities import is_pydm_app
 
@@ -31,7 +31,7 @@ class PyDMLabel(QLabel, PyDMWidget, DisplayFormat):
         if is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
 
-    @pyqtProperty(DisplayFormat)
+    @Property(DisplayFormat)
     def displayFormat(self):
         return self._display_format_type
 

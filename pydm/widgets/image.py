@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QActionGroup
-from ..PyQt.QtCore import Signal, Slot, pyqtProperty, QTimer, Q_ENUMS, QThread
+from ..PyQt.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QThread
 from pyqtgraph import ImageView
 from pyqtgraph import ColorMap
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
@@ -183,7 +183,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """
         self.colorMap = self.cmap_for_action[action]
 
-    @pyqtProperty(float)
+    @Property(float)
     def colorMapMin(self):
         """
         Minimum value for the colormap.
@@ -209,7 +209,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             if self.cm_min > self.cm_max:
                 self.cm_max = self.cm_min
 
-    @pyqtProperty(float)
+    @Property(float)
     def colorMapMax(self):
         """
         Maximum value for the colormap.
@@ -251,7 +251,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self.cm_max = mx
         self.cm_min = mn
 
-    @pyqtProperty(PyDMColorMap)
+    @Property(PyDMColorMap)
     def colorMap(self):
         """
         Return the color map used by the ImageView.
@@ -396,7 +396,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             autoLevels=False,
             autoDownsample=self.autoDownsample)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def autoDownsample(self):
         """
         Return if we should or not apply the
@@ -421,7 +421,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         if new_value != self._auto_downsample:
             self._auto_downsample = new_value
 
-    @pyqtProperty(int)
+    @Property(int)
     def imageWidth(self):
         """
         Return the width of the image.
@@ -447,7 +447,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
                 (self._widthchannel is None or self._widthchannel == '')):
             self._image_width = int(new_width)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def normalizeData(self):
         """
         Return True if the colors are relative to data maximum and minimum.
@@ -471,7 +471,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         if self._normalize_data != new_norm:
             self._normalize_data = new_norm
 
-    @pyqtProperty(ReadingOrder)
+    @Property(ReadingOrder)
     def readingOrder(self):
         """
         Return the reading order of the :attr:`imageChannel` array.
@@ -498,7 +498,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """Handle keypress events."""
         return
 
-    @pyqtProperty(str)
+    @Property(str)
     def imageChannel(self):
         """
         The channel address in use for the image data .
@@ -523,7 +523,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         if self._imagechannel != value:
             self._imagechannel = str(value)
 
-    @pyqtProperty(str)
+    @Property(str)
     def widthChannel(self):
         """
         The channel address in use for the image width .
@@ -575,7 +575,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """Return channels for tools."""
         return [c for c in self.channels() if c.address == self.imageChannel]
 
-    @pyqtProperty(int)
+    @Property(int)
     def maxRedrawRate(self):
         """
         The maximum rate (in Hz) at which the plot will be redrawn.

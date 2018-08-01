@@ -1,6 +1,6 @@
 from ..PyQt.QtGui import QFrame, QApplication, QLabel, QVBoxLayout
 from ..PyQt.QtCore import Qt, QSize
-from ..PyQt.QtCore import pyqtProperty
+from ..PyQt.QtCore import Property
 import json
 import os.path
 from .base import PyDMPrimitiveWidget
@@ -46,7 +46,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         return QSize(100, 100)  # This is totally arbitrary, I just want *some* visible nonzero size
 
-    @pyqtProperty(str)
+    @Property(str)
     def macros(self):
         """
         JSON-formatted string containing macro variables to pass to the embedded file.
@@ -75,7 +75,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         self._macros = str(new_macros)
 
-    @pyqtProperty(str)
+    @Property(str)
     def filename(self):
         """
         Filename of the display to embed.
@@ -199,7 +199,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             return
         self.app.close_widget_connections(self.embedded_widget)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def disconnectWhenHidden(self):
         """
         Disconnect from PVs when this widget is not visible.

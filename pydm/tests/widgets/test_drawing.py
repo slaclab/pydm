@@ -5,7 +5,7 @@ from logging import ERROR
 import pytest
 
 from ...PyQt.QtGui import QColor, QBrush, QPixmap
-from ...PyQt.QtCore import pyqtProperty, Qt, QPoint, QSize
+from ...PyQt.QtCore import Property, Qt, QPoint, QSize
 from ...PyQt.QtDesigner import QDesignerFormWindowInterface
 
 from ...widgets.base import PyDMWidget

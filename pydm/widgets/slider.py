@@ -2,7 +2,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from ..PyQt.QtGui import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
-from ..PyQt.QtCore import Qt, Signal, Slot, pyqtProperty
+from ..PyQt.QtCore import Qt, Signal, Slot, Property
 from .base import PyDMWritableWidget
 import numpy as np
 
@@ -76,7 +76,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         """
         self.value = 0.0
 
-    @pyqtProperty(Qt.Orientation)
+    @Property(Qt.Orientation)
     def orientation(self):
         """
         The slider orientation (Horizontal or Vertical)
@@ -332,7 +332,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         if not self._mute_internal_slider_changes:
             self.send_value_signal[float].emit(self.value)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def showLimitLabels(self):
         """
         Whether or not the high and low limits should be displayed on the slider.
@@ -360,7 +360,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
             self.low_lim_label.hide()
             self.high_lim_label.hide()
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def showValueLabel(self):
         """
         Whether or not the current value should be displayed on the slider.
@@ -386,7 +386,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         else:
             self.value_label.hide()
 
-    @pyqtProperty(QSlider.TickPosition)
+    @Property(QSlider.TickPosition)
     def tickPosition(self):
         """
         Where to draw tick marks for the slider.
@@ -408,7 +408,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         """
         self._slider.setTickPosition(position)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def userDefinedLimits(self):
         """
         Wether or not to use limits defined by the user and not from the
@@ -433,7 +433,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         self._user_defined_limits = user_defined_limits
         self.reset_slider_limits()
 
-    @pyqtProperty(float)
+    @Property(float)
     def userMinimum(self):
         """
         Lower user defined limit value
@@ -457,7 +457,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         if self.userDefinedLimits:
             self.reset_slider_limits()
 
-    @pyqtProperty(float)
+    @Property(float)
     def userMaximum(self):
         """
         Upper user defined limit value
@@ -507,7 +507,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
             return self._user_maximum
         return self._upper_ctrl_limit
 
-    @pyqtProperty(int)
+    @Property(int)
     def num_steps(self):
         """
         The number of steps on the slider

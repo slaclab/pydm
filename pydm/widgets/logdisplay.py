@@ -2,7 +2,7 @@ import logging
 
 from collections import OrderedDict
 
-from pydm.PyQt.QtCore import (QObject, Slot, Signal, pyqtProperty,
+from pydm.PyQt.QtCore import (QObject, Slot, Signal, Property,
                               Q_ENUMS, QSize)
 from pydm.PyQt.QtGui import (QWidget, QPlainTextEdit, QComboBox, QLabel,
                              QPushButton, QHBoxLayout, QVBoxLayout)
@@ -137,7 +137,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
     def sizeHint(self):
         return QSize(400, 300)
 
-    @pyqtProperty(LogLevels)
+    @Property(LogLevels)
     def logLevel(self):
         return self.level
 
@@ -148,7 +148,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
             idx = self.combo.findData(level)
             self.combo.setCurrentIndex(idx)
 
-    @pyqtProperty(str)
+    @Property(str)
     def logName(self):
         """Name of associated log"""
         return self.log.name
@@ -167,7 +167,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
         # Attach preconfigured handler
         self.log.addHandler(self.handler)
 
-    @pyqtProperty(str)
+    @Property(str)
     def logFormat(self):
         """Format for log messages"""
         return self.handler.formatter._fmt

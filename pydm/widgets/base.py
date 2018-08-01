@@ -3,7 +3,7 @@ import functools
 import json
 import numpy as np
 from ..PyQt.QtGui import QApplication, QColor, QCursor, QMenu, QGraphicsOpacityEffect
-from ..PyQt.QtCore import Qt, QEvent, Signal, Slot, pyqtProperty
+from ..PyQt.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
 from ..utilities import is_pydm_app
 from .rules import RulesDispatcher
@@ -126,7 +126,7 @@ class PyDMPrimitiveWidget(object):
         method = getattr(self, method_name)
         method(value)
 
-    @pyqtProperty(str, designable=False)
+    @Property(str, designable=False)
     def rules(self):
         """
         JSON-formatted list of dictionaries, with rules for the widget.
@@ -313,7 +313,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         self.update_format_string()
 
-    @pyqtProperty(int, designable=False)
+    @Property(int, designable=False)
     def alarmSeverity(self):
         return self._alarm_state
 
@@ -560,7 +560,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         point.setY(new_y)
         self.move(point)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def alarmSensitiveContent(self):
         """
         Whether or not the content color changes when alarm severity
@@ -589,7 +589,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_sensitive_content = checked
         self.alarm_severity_changed(self._alarm_state)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def alarmSensitiveBorder(self):
         """
         Whether or not the border color changes when alarm severity changes.
@@ -617,7 +617,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_sensitive_border = checked
         self.alarm_severity_changed(self._alarm_state)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def precisionFromPV(self):
         """
         A choice whether or not to use the precision given by channel.
@@ -666,7 +666,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if self._precision_from_pv != bool(value):
             self._precision_from_pv = value
 
-    @pyqtProperty(int)
+    @Property(int)
     def precision(self):
         """
         The precision to be used when formatting the output of the PV
@@ -697,7 +697,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self._prec = int(new_prec)
             self.update_format_string()
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def showUnits(self):
         """
         A choice whether or not to show the units given by the channel
@@ -733,7 +733,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self._show_units = show_units
             self.update_format_string()
 
-    @pyqtProperty(str)
+    @Property(str)
     def channel(self):
         """
         The channel address in use for this widget.

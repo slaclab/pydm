@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QLabel, QApplication, QColor, QBrush
-from ..PyQt.QtCore import Signal, Slot, pyqtProperty, QTimer, Qt
+from ..PyQt.QtCore import Signal, Slot, Property, QTimer, Qt
 from .. import utilities
 from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
 from pyqtgraph import PlotDataItem, mkPen
@@ -330,7 +330,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def resetShowXGrid(self):
         self.setShowXGrid(False)
 
-    showXGrid = pyqtProperty("bool", getShowXGrid, setShowXGrid, resetShowXGrid)
+    showXGrid = Property("bool", getShowXGrid, setShowXGrid, resetShowXGrid)
 
     def getShowYGrid(self):
         return self._show_y_grid
@@ -342,7 +342,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def resetShowYGrid(self):
         self.setShowYGrid(False)
 
-    showYGrid = pyqtProperty("bool", getShowYGrid, setShowYGrid, resetShowYGrid)
+    showYGrid = Property("bool", getShowYGrid, setShowYGrid, resetShowYGrid)
 
     def getBackgroundColor(self):
         return self.backgroundBrush().color()
@@ -351,7 +351,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if self.backgroundBrush().color() != color:
             self.setBackgroundBrush(QBrush(color))
 
-    backgroundColor = pyqtProperty(QColor, getBackgroundColor, setBackgroundColor)
+    backgroundColor = Property(QColor, getBackgroundColor, setBackgroundColor)
 
     def getAxisColor(self):
         return self.getAxis('bottom')._pen.color()
@@ -363,7 +363,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             self.getAxis('top').setPen(color)
             self.getAxis('right').setPen(color)
 
-    axisColor = pyqtProperty(QColor, getAxisColor, setAxisColor)
+    axisColor = Property(QColor, getAxisColor, setAxisColor)
 
     def getPlotTitle(self):
         if self._title is None:
@@ -380,7 +380,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._title = None
         self.setTitle(self._title)
 
-    title = pyqtProperty(str, getPlotTitle, setPlotTitle, resetPlotTitle)
+    title = Property(str, getPlotTitle, setPlotTitle, resetPlotTitle)
 
     def getShowLegend(self):
         return self._show_legend
@@ -399,7 +399,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def resetShowLegend(self):
         self.setShowLegend(False)
 
-    showLegend = pyqtProperty(bool, getShowLegend, setShowLegend, resetShowLegend)
+    showLegend = Property(bool, getShowLegend, setShowLegend, resetShowLegend)
 
     def getAutoRangeX(self):
         return self._auto_range_x
@@ -519,7 +519,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._max_y = new_max_y_range
         self.plotItem.setYRange(self._min_y, self._max_y, padding=0)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def mouseEnabledX(self):
         """
         Whether or not mouse interactions are enabled for the X-axis.
@@ -541,7 +541,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         self.plotItem.setMouseEnabled(x=x_enabled)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def mouseEnabledY(self):
         """
         Whether or not mouse interactions are enabled for the Y-axis.
@@ -563,7 +563,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         self.plotItem.setMouseEnabled(y=y_enabled)
 
-    @pyqtProperty(int)
+    @Property(int)
     def maxRedrawRate(self):
         """
         The maximum rate (in Hz) at which the plot will be redrawn.

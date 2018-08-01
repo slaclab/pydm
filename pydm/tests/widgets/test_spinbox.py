@@ -4,7 +4,7 @@
 import pytest
 
 from ...PyQt.QtGui import QApplication, QKeyEvent, QDoubleSpinBox
-from ...PyQt.QtCore import pyqtProperty, QEvent, Qt
+from ...PyQt.QtCore import Property, QEvent, Qt
 
 from ...widgets.spinbox import PyDMSpinbox
 from ...tests.widgets.test_lineedit import find_action_from_menu

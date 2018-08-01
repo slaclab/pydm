@@ -6,7 +6,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from ..PyQt.QtGui import QLineEdit, QMenu, QApplication
-from ..PyQt.QtCore import pyqtProperty, Q_ENUMS
+from ..PyQt.QtCore import Property, Q_ENUMS
 from .. import utilities
 from .base import PyDMWritableWidget
 from .display_format import DisplayFormat, parse_value_for_display
@@ -45,7 +45,7 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
         if utilities.is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
 
-    @pyqtProperty(DisplayFormat)
+    @Property(DisplayFormat)
     def displayFormat(self):
         return self._display_format_type
 

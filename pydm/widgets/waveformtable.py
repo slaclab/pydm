@@ -1,5 +1,5 @@
 from ..PyQt.QtGui import QTableWidget, QTableWidgetItem, QApplication, QCursor
-from ..PyQt.QtCore import Slot, pyqtProperty, Qt, QEvent
+from ..PyQt.QtCore import Slot, Property, Qt, QEvent
 import numpy as np
 from .base import PyDMWritableWidget
 
@@ -105,7 +105,7 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
             QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
         return False
 
-    @pyqtProperty("QStringList")
+    @Property("QStringList")
     def columnHeaderLabels(self):
         """
         Return the list of labels for the columns of the Table.
@@ -132,7 +132,7 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         self._columnHeaders = new_labels
         self.setHorizontalHeaderLabels(self._columnHeaders)
 
-    @pyqtProperty("QStringList")
+    @Property("QStringList")
     def rowHeaderLabels(self):
         """
         Return the list of labels for the rows of the Table.

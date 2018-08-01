@@ -1,7 +1,7 @@
 import hashlib
 
 from ..PyQt.QtGui import QPushButton, QMessageBox, QInputDialog, QLineEdit
-from ..PyQt.QtCore import Slot, pyqtProperty
+from ..PyQt.QtCore import Slot, Property
 from .base import PyDMWritableWidget
 
 import logging
@@ -68,7 +68,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         self._protected_password = ""
         self.clicked.connect(self.sendValue)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def passwordProtected(self):
         """
         Whether or not this button is password protected.
@@ -91,7 +91,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if self._password_protected != value:
             self._password_protected = value
 
-    @pyqtProperty(str)
+    @Property(str)
     def password(self):
         """
         Password to be encrypted using SHA256.
@@ -123,7 +123,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             # new one, and only updates if the new password is different
             self.protectedPassword = sha.hexdigest()
 
-    @pyqtProperty(str)
+    @Property(str)
     def protectedPassword(self):
         """
         The encrypted password.
@@ -139,7 +139,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if self._protected_password != value:
             self._protected_password = value
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def showConfirmDialog(self):
         """
         Wether or not to display a confirmation dialog.
@@ -162,7 +162,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if self._show_confirm_dialog != value:
             self._show_confirm_dialog = value
 
-    @pyqtProperty(str)
+    @Property(str)
     def confirmMessage(self):
         """
         Message to be displayed at the Confirmation dialog.
@@ -185,7 +185,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if self._confirm_message != value:
             self._confirm_message = value
 
-    @pyqtProperty(str)
+    @Property(str)
     def pressValue(self):
         """
         This property holds the value to send back through the channel.
@@ -216,7 +216,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if str(value) != self._pressValue:
             self._pressValue = str(value)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def relativeChange(self):
         """
         The mode of operation of the PyDMPushButton.
