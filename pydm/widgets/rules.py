@@ -10,7 +10,7 @@ from .channel import PyDMChannel
 from ..utilities import is_pydm_app
 
 import numpy as np
-from math import *
+import math
 
 logger = logging.getLogger(__name__)
 
@@ -179,7 +179,8 @@ class RulesEngine(QThread):
             if not all(self.widget_map[widget][index]['conn']):
                 self.warn_unconnected_channels(widget, index)
                 return
-            self.widget_map[widget][index]['calculate'] = True
+            with QMutexLocker(self.map_lock):
+                self.widget_map[widget][index]['calculate'] = True
 
     def callback_conn(self, widget, index, ch_index, value):
         """
@@ -212,19 +213,28 @@ class RulesEngine(QThread):
         Evaluate the expression defined by the rule and emit the `rule_signal`
         with the new value.
 
+        .. warning
+
+            This method mutates the input rule in-place
+
         Returns
         -------
         None
         """
-        ch = rule['values']
         rule['calculate'] = False
+        eval_env = {'np': np,
+                    'ch': rule['values']}
+        eval_env.update({k: v
+                         for k, v in math.__dict__.items()
+                         if k[0] != '_'})
+
         try:
             expression = rule['rule']['expression']
             name = rule['rule']['name']
-            property = rule['rule']['property']
+            prop = rule['rule']['property']
 
-            val = eval(expression)
-            payload = {'widget': widget, 'name': name, 'property': property,
+            val = eval(expression, eval_env)
+            payload = {'widget': widget, 'name': name, 'property': prop,
                        'value': val}
             self.rule_signal.emit(payload)
         except Exception as e:
