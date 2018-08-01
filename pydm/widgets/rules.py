@@ -174,12 +174,12 @@ class RulesEngine(QThread):
         -------
         None
         """
-        self.widget_map[widget][index]['values'][ch_index] = value
-        if trigger:
-            if not all(self.widget_map[widget][index]['conn']):
-                self.warn_unconnected_channels(widget, index)
-                return
-            with QMutexLocker(self.map_lock):
+        with QMutexLocker(self.map_lock):
+            self.widget_map[widget][index]['values'][ch_index] = value
+            if trigger:
+                if not all(self.widget_map[widget][index]['conn']):
+                    self.warn_unconnected_channels(widget, index)
+                    return
                 self.widget_map[widget][index]['calculate'] = True
 
     def callback_conn(self, widget, index, ch_index, value):
