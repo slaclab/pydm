@@ -9,6 +9,7 @@ import sys
 from os import path
 import inspect
 
+
 class AboutWindow(QWidget):
     def __init__(self, parent=None):
         super(AboutWindow, self).__init__(parent, Qt.Window)
@@ -25,7 +26,7 @@ class AboutWindow(QWidget):
         self.populate_external_tools_list()
         self.populate_plugin_list()
         self.populate_contributor_list()
-                                                                                           
+
     def populate_external_tools_list(self):
         col_labels = ["Name", "Group", "Author", "File"]
         self.ui.externalToolsTableWidget.setColumnCount(len(col_labels))
@@ -33,7 +34,7 @@ class AboutWindow(QWidget):
         self.ui.externalToolsTableWidget.horizontalHeader().setStretchLastSection(True)
         self.ui.externalToolsTableWidget.verticalHeader().setVisible(False)
         self.add_tools_to_list(self.app.tools)
-    
+
     def add_tools_to_list(self, tools):
         for (name, tool) in tools.items():
             if isinstance(tool, dict):
@@ -50,7 +51,7 @@ class AboutWindow(QWidget):
                 self.ui.externalToolsTableWidget.setItem(new_row, 1, group_item)
                 self.ui.externalToolsTableWidget.setItem(new_row, 2, author_item)
                 self.ui.externalToolsTableWidget.setItem(new_row, 3, file_item)
-    
+
     def populate_plugin_list(self):
         col_labels = ["Protocol", "File"]
         self.ui.dataPluginsTableWidget.setColumnCount(len(col_labels))
@@ -64,7 +65,7 @@ class AboutWindow(QWidget):
             self.ui.dataPluginsTableWidget.insertRow(new_row)
             self.ui.dataPluginsTableWidget.setItem(new_row, 0, protocol_item)
             self.ui.dataPluginsTableWidget.setItem(new_row, 1, file_item)
-    
+
     def populate_contributor_list(self):
         contrib_file = path.join(path.dirname(path.realpath(__file__)), "contributors.txt")
         with open(contrib_file) as f:

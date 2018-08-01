@@ -1,6 +1,7 @@
 numpy>=1.11.0
-scipy>=0.12.0
 pyepics>=3.2.7
-requests>=1.1.0
 pyqtgraph>=0.10.0
+qtpy
+requests>=1.1.0
+scipy>=0.12.0
 six

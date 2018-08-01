@@ -1,7 +1,7 @@
 from .base import PyDMWidget
 from ..PyQt.QtGui import QFrame, QVBoxLayout, QHBoxLayout, QPainter, QColor, QPolygon, QPen, QLabel, QSizePolicy, QWidget, QGridLayout
 from ..PyQt.QtCore import Qt, QPoint, Property
-from ..PyQt.Qt import QWIDGETSIZE_MAX
+from ..PyQt.QtWidgets import QWIDGETSIZE_MAX
 from .channel import PyDMChannel
 import sys
 
