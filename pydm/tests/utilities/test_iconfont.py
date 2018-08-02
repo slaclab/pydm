@@ -1,6 +1,6 @@
 import pytest
 from ...utilities import iconfont
-from ...PyQt import QtGui, QtCore
+from qtpy import QtGui, QtCore
 
 
 def test_icon_font_constructor(qtbot):

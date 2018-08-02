@@ -2,11 +2,12 @@ import math
 import os
 import logging
 
-from ..PyQt.QtGui import (QApplication, QWidget, QColor, QPainter, QBrush, QPen,
-                          QPolygon, QPolygonF, QPixmap, QStyle, QStyleOption,
-                          QMovie)
-from ..PyQt.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot
-from ..PyQt.QtDesigner import QDesignerFormWindowInterface
+from qtpy.QtWidgets import (QApplication, QWidget,
+                            QStyle, QStyleOption)
+from qtpy.QtGui import (QColor, QPainter, QBrush, QPen, QPolygon, QPolygonF, QPixmap,
+                            QMovie)
+from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot
+from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
 from ..utilities import is_pydm_app
 

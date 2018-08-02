@@ -1,6 +1,7 @@
 from numpy import ndarray
-from ..PyQt.QtCore import Signal, QObject, Qt
-from ..PyQt.QtGui import QApplication
+from qtpy.QtCore import Signal, QObject, Qt
+from qtpy.QtWidgets import QApplication
+
 
 class PyDMConnection(QObject):
     new_value_signal = Signal([float], [int], [str], [ndarray])

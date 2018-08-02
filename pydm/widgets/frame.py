@@ -1,5 +1,5 @@
-from ..PyQt.QtGui import QFrame
-from ..PyQt.QtCore import Property
+from qtpy.QtWidgets import QFrame
+from qtpy.QtCore import Property
 from .base import PyDMWidget
 
 

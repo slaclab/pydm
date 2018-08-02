@@ -4,8 +4,8 @@ import pytest
 from logging import ERROR
 import numpy as np
 
-from ...PyQt.QtGui import QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy
-from ...PyQt.QtCore import Qt, Signal, Property, QMargins
+from qtpy.QtWidgets import QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy
+from qtpy.QtCore import Qt, Signal, Property, QMargins
 
 from ...widgets.slider import PyDMSlider
 from ...widgets.base import PyDMWidget

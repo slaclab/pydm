@@ -5,8 +5,8 @@ import numpy as np
 import logging
 logger = logging.getLogger(__name__)
 
-from ..PyQt.QtGui import QLineEdit, QMenu, QApplication
-from ..PyQt.QtCore import Property, Q_ENUMS
+from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
+from qtpy.QtCore import Property, Q_ENUMS
 from .. import utilities
 from .base import PyDMWritableWidget
 from .display_format import DisplayFormat, parse_value_for_display

@@ -20,9 +20,10 @@ import platform
 import collections
 from functools import partial
 from .display_module import Display
-from .PyQt.QtCore import Qt, QEvent, QTimer, Slot
-from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard, QAction, QMenu
-from .PyQt import uic
+from qtpy.QtCore import Qt, QEvent, QTimer, Slot
+from qtpy.QtWidgets import QApplication, QWidget, QToolTip, QAction, QMenu
+from qtpy.QtGui import QClipboard, QColor
+from qtpy import uic
 from .main_window import PyDMMainWindow
 from .tools import ExternalTool
 

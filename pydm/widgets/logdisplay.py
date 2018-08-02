@@ -2,10 +2,10 @@ import logging
 
 from collections import OrderedDict
 
-from pydm.PyQt.QtCore import (QObject, Slot, Signal, Property,
-                              Q_ENUMS, QSize)
-from pydm.PyQt.QtGui import (QWidget, QPlainTextEdit, QComboBox, QLabel,
-                             QPushButton, QHBoxLayout, QVBoxLayout)
+from qtpy.QtCore import (QObject, Slot, Signal, Property,
+                         Q_ENUMS, QSize)
+from qtpy.QtWidgets import (QWidget, QPlainTextEdit, QComboBox, QLabel,
+                            QPushButton, QHBoxLayout, QVBoxLayout)
 
 logger = logging.getLogger(__name__)
 

@@ -1,8 +1,9 @@
 import json
 import logging
-from ..PyQt.QtGui import QApplication, QWidget, QPainter, QPixmap, QStyle, QStyleOption
-from ..PyQt.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
-from ..PyQt.QtSvg import QSvgRenderer
+from qtpy.QtWidgets import QApplication, QWidget, QStyle, QStyleOption
+from qtpy.QtGui import QPainter, QPixmap
+from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
+from qtpy.QtSvg import QSvgRenderer
 from ..utilities import is_pydm_app
 from .base import PyDMWidget
 

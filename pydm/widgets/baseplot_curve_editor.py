@@ -1,9 +1,9 @@
-from ..PyQt.QtGui import (QDialog, QVBoxLayout, QHBoxLayout, QTableView,
-                          QAbstractItemView, QSpacerItem, QSizePolicy,
-                          QDialogButtonBox, QPushButton, QItemSelection,
-                          QComboBox, QStyledItemDelegate, QColorDialog)
-from ..PyQt.QtCore import Qt, Slot, QModelIndex
-from ..PyQt.QtDesigner import QDesignerFormWindowInterface
+from qtpy.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QTableView,
+                            QAbstractItemView, QSpacerItem, QSizePolicy,
+                            QDialogButtonBox, QPushButton,
+                            QComboBox, QStyledItemDelegate, QColorDialog)
+from qtpy.QtCore import Qt, Slot, QModelIndex, QItemSelection
+from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .baseplot import BasePlotCurveItem
 from .baseplot_table_model import BasePlotCurvesModel
 from collections import OrderedDict

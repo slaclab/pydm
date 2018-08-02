@@ -5,7 +5,7 @@ This is used instead of pyepics for better performance.
 import numpy as np
 import pyca
 from psp.Pv import Pv
-from pydm.PyQt.QtCore import Slot, Qt, QTimer
+from qtpy.QtCore import Slot, Qt, QTimer
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from pydm.utilities import is_pydm_app
 

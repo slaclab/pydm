@@ -1,5 +1,5 @@
-from ..PyQt.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
-from ..PyQt import QtGui, QtCore
+from qtpy.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
+from qtpy import QtGui, QtCore
 
 from ..widgets.base import PyDMPrimitiveWidget
 

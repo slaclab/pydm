@@ -1,5 +1,5 @@
-from ..PyQt.QtGui import QDoubleSpinBox, QApplication
-from ..PyQt.QtCore import Property, QEvent, Qt
+from qtpy.QtWidgets import QDoubleSpinBox, QApplication
+from qtpy.QtCore import Property, QEvent, Qt
 from .base import PyDMWritableWidget
 
 

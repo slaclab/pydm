@@ -7,8 +7,9 @@ import numpy as np
 
 import logging
 
-from ...PyQt.QtCore import QSize
-from ...PyQt.QtGui import QColor, QInputDialog, QMessageBox
+from qtpy.QtCore import QSize
+from qtpy.QtGui import QColor
+from qtpy.QtWidgets import QInputDialog, QMessageBox
 from ...widgets.base import PyDMWidget
 from ...widgets.pushbutton import PyDMPushButton
 from ...utilities.iconfont import IconFont

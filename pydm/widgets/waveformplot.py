@@ -1,5 +1,5 @@
-from ..PyQt.QtGui import QColor
-from ..PyQt.QtCore import Slot, Property
+from qtpy.QtGui import QColor
+from qtpy.QtCore import Slot, Property
 import numpy as np
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel

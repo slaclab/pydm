@@ -1,5 +1,6 @@
-from ..PyQt.QtGui import QLabel, QApplication, QColor, QBrush
-from ..PyQt.QtCore import Signal, Slot, Property, QTimer, Qt
+from qtpy.QtGui import QColor, QBrush
+from qtpy.QtWidgets import QLabel, QApplication
+from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt
 from .. import utilities
 from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
 from pyqtgraph import PlotDataItem, mkPen

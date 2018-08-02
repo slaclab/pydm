@@ -3,8 +3,9 @@
 
 import pytest
 
-from ...PyQt.QtGui import QApplication, QKeyEvent, QDoubleSpinBox
-from ...PyQt.QtCore import Property, QEvent, Qt
+from qtpy.QtWidgets import QApplication, QDoubleSpinBox
+from qtpy.QtGui import QKeyEvent
+from qtpy.QtCore import Property, QEvent, Qt
 
 from ...widgets.spinbox import PyDMSpinbox
 from ...tests.widgets.test_lineedit import find_action_from_menu
@@ -316,4 +317,3 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
         signals.lower_ctrl_limit_signal[type(new_limit)].emit(new_limit)
 
         assert pydm_spinbox.get_ctrl_limits()[0] == new_limit
-

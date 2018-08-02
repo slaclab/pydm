@@ -6,7 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from ..PyQt import QtCore, QtGui
+from qtpy import QtCore, QtGui
 
 class Ui_Form(object):
     def setupUi(self, Form):

@@ -1,7 +1,7 @@
 # import epics
-# from pydm.PyQt import uic
-from pydm.PyQt.QtCore import Slot, Signal, QPointF, QRectF
-from pydm.PyQt.QtGui import QSizePolicy, QPen
+# from qtpy import uic
+from qtpy.QtCore import Slot, Signal, QPointF, QRectF
+from qtpy.QtGui import QSizePolicy, QPen
 from os import path
 from pydm import Display
 from pydm.widgets.channel import PyDMChannel

@@ -1,6 +1,6 @@
-from ..PyQt import uic
-from ..PyQt.QtGui import QWidget, QApplication, QTableWidgetItem
-from ..PyQt.QtCore import Qt, PYQT_VERSION_STR, QT_VERSION_STR
+from qtpy import uic
+from qtpy.QtWidgets import QWidget, QApplication, QTableWidgetItem
+from qtpy.QtCore import Qt, PYQT_VERSION_STR, qVersion
 from .about_ui import Ui_Form
 from numpy import __version__ as numpyver
 from pyqtgraph import __version__ as pyqtgraphver
@@ -22,7 +22,7 @@ class AboutWindow(QWidget):
                                                                                            numpyver=numpyver,
                                                                                            pyqtgraphver=pyqtgraphver,
                                                                                            pyqtver=PYQT_VERSION_STR,
-                                                                                           qtver=QT_VERSION_STR))
+                                                                                           qtver=qVersion()))
         self.populate_external_tools_list()
         self.populate_plugin_list()
         self.populate_contributor_list()

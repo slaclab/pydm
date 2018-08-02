@@ -2,9 +2,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 import six
-
-from ..PyQt.QtGui import QComboBox
-from ..PyQt.QtCore import Slot, Qt
+from qtpy.QtWidgets import QComboBox
+from qtpy.QtCore import Slot, Qt
 from .base import PyDMWritableWidget
 from pydm.utilities import is_pydm_app
 

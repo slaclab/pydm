@@ -5,8 +5,9 @@ import json
 import logging
 logger = logging.getLogger(__name__)
 
-from ...PyQt.QtCore import Qt
-from ...PyQt.QtGui import QColor, QMenu, QMouseEvent
+from qtpy.QtCore import Qt
+from qtpy.QtWidgets import QMenu
+from qtpy.QtGui import QColor, QMouseEvent
 from ...utilities import is_pydm_app
 from ...application import PyDMApplication
 from ...widgets.base import is_channel_valid, PyDMWidget
@@ -184,7 +185,7 @@ def test_open_context_menu(qtbot, monkeypatch, caplog):
     pydm_label.open_context_menu(mouse_event)
     assert "Context Menu displayed." in caplog.text
 
- 
+
 @pytest.mark.parametrize("init_channel", [
     "CA://MA_TEST",
     "",

@@ -1,5 +1,5 @@
-from ..PyQt.QtGui import QColor
-from ..PyQt.QtCore import Slot, Property, Qt
+from qtpy.QtGui import QColor
+from qtpy.QtCore import Slot, Property, Qt
 import numpy as np
 import json
 import itertools

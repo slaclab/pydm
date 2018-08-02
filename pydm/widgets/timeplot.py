@@ -1,5 +1,5 @@
-from ..PyQt.QtGui import QColor
-from ..PyQt.QtCore import Slot, Property, QTimer
+from qtpy.QtGui import QColor
+from qtpy.QtCore import Slot, Property, QTimer
 from pyqtgraph import ViewBox, AxisItem
 import numpy as np
 import time

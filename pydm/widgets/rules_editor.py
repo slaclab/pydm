@@ -3,11 +3,11 @@ import json
 import functools
 import webbrowser
 
-from ..PyQt import QtGui, QtCore, QtDesigner
+from qtpy import QtWidgets, QtCore, QtDesigner
 from ..utilities.iconfont import IconFont
 
 
-class RulesEditor(QtGui.QDialog):
+class RulesEditor(QtWidgets.QDialog):
     """
     QDialog for user-friendly editing of the Rules in a widget inside the Qt
     Designer.
@@ -49,38 +49,38 @@ class RulesEditor(QtGui.QDialog):
         iconfont = IconFont()
 
         self.setWindowTitle("PyDM Widget Rules Editor")
-        vlayout = QtGui.QVBoxLayout()
+        vlayout = QtWidgets.QVBoxLayout()
         vlayout.setContentsMargins(5, 5, 5, 5)
         vlayout.setSpacing(5)
         self.setLayout(vlayout)
 
-        hlayout = QtGui.QHBoxLayout()
+        hlayout = QtWidgets.QHBoxLayout()
         hlayout.setContentsMargins(0, 0, 0, 0)
         hlayout.setSpacing(5)
         vlayout.addLayout(hlayout)
 
         # Creating the widgets for the String List and
         # buttons to add and remove actions
-        list_frame = QtGui.QFrame(parent=self)
+        list_frame = QtWidgets.QFrame(parent=self)
         list_frame.setMinimumHeight(300)
         list_frame.setMinimumWidth(240)
         list_frame.setLineWidth(1)
-        list_frame.setFrameShadow(QtGui.QFrame.Raised)
-        list_frame.setFrameShape(QtGui.QFrame.StyledPanel)
-        lf_layout = QtGui.QVBoxLayout()
+        list_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        list_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        lf_layout = QtWidgets.QVBoxLayout()
         list_frame.setLayout(lf_layout)
 
-        lf_btn_layout = QtGui.QHBoxLayout()
+        lf_btn_layout = QtWidgets.QHBoxLayout()
         lf_btn_layout.setContentsMargins(0, 0, 0, 0)
         lf_btn_layout.setSpacing(5)
 
-        self.btn_add_rule = QtGui.QPushButton(parent=self)
+        self.btn_add_rule = QtWidgets.QPushButton(parent=self)
         self.btn_add_rule.setAutoDefault(False)
         self.btn_add_rule.setDefault(False)
         self.btn_add_rule.setText("Add Rule")
         self.btn_add_rule.clicked.connect(self.add_rule)
 
-        self.btn_del_rule = QtGui.QPushButton(parent=self)
+        self.btn_del_rule = QtWidgets.QPushButton(parent=self)
         self.btn_del_rule.setAutoDefault(False)
         self.btn_del_rule.setDefault(False)
         self.btn_del_rule.setText("Remove Rule")
@@ -91,19 +91,19 @@ class RulesEditor(QtGui.QDialog):
 
         lf_layout.addLayout(lf_btn_layout)
 
-        self.lst_rules = QtGui.QListWidget()
-        self.lst_rules.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding))
+        self.lst_rules = QtWidgets.QListWidget()
+        self.lst_rules.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding))
         self.lst_rules.itemSelectionChanged.connect(self.load_from_list)
         lf_layout.addWidget(self.lst_rules)
 
         hlayout.addWidget(list_frame)
 
-        buttons_layout = QtGui.QHBoxLayout()
-        save_btn = QtGui.QPushButton("Save", parent=self)
+        buttons_layout = QtWidgets.QHBoxLayout()
+        save_btn = QtWidgets.QPushButton("Save", parent=self)
         save_btn.setAutoDefault(False)
         save_btn.setDefault(False)
         save_btn.clicked.connect(self.saveChanges)
-        cancel_btn = QtGui.QPushButton("Cancel", parent=self)
+        cancel_btn = QtWidgets.QPushButton("Cancel", parent=self)
         cancel_btn.setAutoDefault(False)
         cancel_btn.setDefault(False)
         cancel_btn.clicked.connect(self.cancelChanges)
@@ -115,40 +115,40 @@ class RulesEditor(QtGui.QDialog):
 
         # Creating the widgets that we will use to compose the
         # rule parameters
-        self.frm_edit = QtGui.QFrame()
+        self.frm_edit = QtWidgets.QFrame()
         self.frm_edit.setEnabled(False)
         self.frm_edit.setLineWidth(1)
-        self.frm_edit.setFrameShadow(QtGui.QFrame.Raised)
-        self.frm_edit.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.frm_edit.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frm_edit.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        frm_edit_layout = QtGui.QVBoxLayout()
+        frm_edit_layout = QtWidgets.QVBoxLayout()
         self.frm_edit.setLayout(frm_edit_layout)
 
         hlayout.addWidget(self.frm_edit)
 
-        edit_name_layout = QtGui.QFormLayout()
-        edit_name_layout.setFieldGrowthPolicy(QtGui.QFormLayout.ExpandingFieldsGrow)
-        lbl_name = QtGui.QLabel("Rule Name:")
-        self.txt_name = QtGui.QLineEdit()
+        edit_name_layout = QtWidgets.QFormLayout()
+        edit_name_layout.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
+        lbl_name = QtWidgets.QLabel("Rule Name:")
+        self.txt_name = QtWidgets.QLineEdit()
         self.txt_name.editingFinished.connect(self.name_changed)
         edit_name_layout.addRow(lbl_name, self.txt_name)
-        lbl_property = QtGui.QLabel("Property:")
-        self.cmb_property = QtGui.QComboBox()
+        lbl_property = QtWidgets.QLabel("Property:")
+        self.cmb_property = QtWidgets.QComboBox()
         for name, prop in self.available_properties.items():
             self.cmb_property.addItem(name, prop)
         edit_name_layout.addRow(lbl_property, self.cmb_property)
 
         frm_edit_layout.addLayout(edit_name_layout)
 
-        btn_add_remove_layout = QtGui.QHBoxLayout()
-        self.btn_add_channel = QtGui.QPushButton()
+        btn_add_remove_layout = QtWidgets.QHBoxLayout()
+        self.btn_add_channel = QtWidgets.QPushButton()
         self.btn_add_channel.setAutoDefault(False)
         self.btn_add_channel.setDefault(False)
         self.btn_add_channel.setText("Add Channel")
         self.btn_add_channel.setIconSize(QtCore.QSize(16, 16))
         self.btn_add_channel.setIcon(iconfont.icon("plus-circle"))
         self.btn_add_channel.clicked.connect(self.add_channel)
-        self.btn_del_channel = QtGui.QPushButton()
+        self.btn_del_channel = QtWidgets.QPushButton()
         self.btn_del_channel.setAutoDefault(False)
         self.btn_del_channel.setDefault(False)
         self.btn_del_channel.setText("Remove Channel")
@@ -160,7 +160,7 @@ class RulesEditor(QtGui.QDialog):
 
         frm_edit_layout.addLayout(btn_add_remove_layout)
 
-        self.tbl_channels = QtGui.QTableWidget()
+        self.tbl_channels = QtWidgets.QTableWidget()
         self.tbl_channels.setMinimumWidth(350)
         self.tbl_channels.setShowGrid(True)
         self.tbl_channels.setCornerButtonEnabled(False)
@@ -169,26 +169,26 @@ class RulesEditor(QtGui.QDialog):
         self.tbl_channels.setColumnCount(len(headers))
         self.tbl_channels.setHorizontalHeaderLabels(headers)
         header = self.tbl_channels.horizontalHeader()
-        header.setResizeMode(0, QtGui.QHeaderView.Stretch)
-        header.setResizeMode(1, QtGui.QHeaderView.ResizeToContents)
+        header.setResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.setResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
 
         frm_edit_layout.addWidget(self.tbl_channels)
 
-        expression_layout = QtGui.QFormLayout()
-        expression_layout.setFieldGrowthPolicy(QtGui.QFormLayout.ExpandingFieldsGrow)
-        lbl_expected = QtGui.QLabel("Expected Type:")
-        self.lbl_expected_type = QtGui.QLabel(parent=self)
+        expression_layout = QtWidgets.QFormLayout()
+        expression_layout.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
+        lbl_expected = QtWidgets.QLabel("Expected Type:")
+        self.lbl_expected_type = QtWidgets.QLabel(parent=self)
         # self.lbl_expected_type.setText("")
         self.lbl_expected_type.setStyleSheet(
             "color: rgb(0, 128, 255); font-weight: bold;")
         expression_layout.addRow(lbl_expected, self.lbl_expected_type)
 
-        lbl_expression = QtGui.QLabel("Expression:")
-        expr_help_layout = QtGui.QHBoxLayout()
-        self.txt_expression = QtGui.QLineEdit()
+        lbl_expression = QtWidgets.QLabel("Expression:")
+        expr_help_layout = QtWidgets.QHBoxLayout()
+        self.txt_expression = QtWidgets.QLineEdit()
         self.txt_expression.editingFinished.connect(self.expression_changed)
         expr_help_layout.addWidget(self.txt_expression)
-        self.btn_help = QtGui.QPushButton()
+        self.btn_help = QtWidgets.QPushButton()
         self.btn_help.setAutoDefault(False)
         self.btn_help.setDefault(False)
         self.btn_help.setText("Help")
@@ -244,8 +244,8 @@ class RulesEditor(QtGui.QDialog):
             ch_name = ch.get('channel', '')
             ch_tr = ch.get('trigger', False)
             self.tbl_channels.setItem(row, 0,
-                                      QtGui.QTableWidgetItem(str(ch_name)))
-            checkBoxItem = QtGui.QTableWidgetItem()
+                                      QtWidgets.QTableWidgetItem(str(ch_name)))
+            checkBoxItem = QtWidgets.QTableWidgetItem()
             if ch_tr:
                 checkBoxItem.setCheckState(QtCore.Qt.Checked)
             else:
@@ -263,7 +263,7 @@ class RulesEditor(QtGui.QDialog):
                 "channels": []
                 }
         self.rules.append(data)
-        self.lst_rule_item = QtGui.QListWidgetItem()
+        self.lst_rule_item = QtWidgets.QListWidgetItem()
         self.lst_rule_item.setText(default_name)
         self.lst_rules.addItem(self.lst_rule_item)
         self.lst_rules.setCurrentItem(self.lst_rule_item)
@@ -312,12 +312,12 @@ class RulesEditor(QtGui.QDialog):
 
         confirm_message = "Are you sure you want to delete Rule: {}?".format(
             name)
-        reply = QtGui.QMessageBox().question(self, 'Message',
+        reply = QtWidgets.QMessageBox().question(self, 'Message',
                                              confirm_message,
-                                             QtGui.QMessageBox.Yes,
-                                             QtGui.QMessageBox.No)
+                                             QtWidgets.QMessageBox.Yes,
+                                             QtWidgets.QMessageBox.No)
 
-        if reply == QtGui.QMessageBox.Yes:
+        if reply == QtWidgets.QMessageBox.Yes:
             self.lst_rules.takeItem(idx)
             self.lst_rules.clearSelection()
             self.rules.pop(idx)
@@ -335,8 +335,8 @@ class RulesEditor(QtGui.QDialog):
 
         self.tbl_channels.insertRow(self.tbl_channels.rowCount())
         row = self.tbl_channels.rowCount() - 1
-        self.tbl_channels.setItem(row, 0, QtGui.QTableWidgetItem(""))
-        checkBoxItem = QtGui.QTableWidgetItem()
+        self.tbl_channels.setItem(row, 0, QtWidgets.QTableWidgetItem(""))
+        checkBoxItem = QtWidgets.QTableWidgetItem()
         checkBoxItem.setCheckState(state)
         checkBoxItem.setFlags(QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable)
         self.tbl_channels.setItem(row, 1, checkBoxItem)
@@ -353,12 +353,12 @@ class RulesEditor(QtGui.QDialog):
 
         c = "channel" if len(items) == 1 else "channels"
         confirm_message = "Delete the selected {}?".format(c)
-        reply = QtGui.QMessageBox().question(self, 'Message',
+        reply = QtWidgets.QMessageBox().question(self, 'Message',
                                              confirm_message,
-                                             QtGui.QMessageBox.Yes,
-                                             QtGui.QMessageBox.No)
+                                             QtWidgets.QMessageBox.Yes,
+                                             QtWidgets.QMessageBox.No)
 
-        if reply == QtGui.QMessageBox.Yes:
+        if reply == QtWidgets.QMessageBox.Yes:
             for itm in reversed(items):
                 row = itm.row()
                 self.tbl_channels.removeRow(row)
@@ -483,8 +483,8 @@ class RulesEditor(QtGui.QDialog):
                 formWindow.cursor().setProperty("rules", data)
             self.accept()
         else:
-            QtGui.QMessageBox.critical(self, "Error Saving", message,
-                                       QtGui.QMessageBox.Ok)
+            QtWidgets.QMessageBox.critical(self, "Error Saving", message,
+                                       QtWidgets.QMessageBox.Ok)
 
     @QtCore.Slot()
     def cancelChanges(self):

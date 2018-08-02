@@ -1,4 +1,4 @@
-from pydm.PyQt import QtGui
+from qtpy import QtGui
 from pyqtgraph import Point, ROI
 
 

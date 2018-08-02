@@ -4,8 +4,8 @@ channels. This handles the polling tasks to update the gui.
 """
 import inspect
 import numpy as np
-from pydm.PyQt.QtGui import QWidget
-from pydm.PyQt.QtCore import Slot, Qt, QCoreApplication, QTimer
+from qtpy.QtGui import QWidget
+from qtpy.QtCore import Slot, Qt, QCoreApplication, QTimer
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
 

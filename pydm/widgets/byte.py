@@ -1,5 +1,6 @@
-from ..PyQt.QtGui import QWidget, QTabWidget, QColor, QPen, QGridLayout, QLabel, QFontMetrics, QPainter, QBrush, QStyleOption, QStyle
-from ..PyQt.QtCore import Property, Qt, QSize, QPoint
+from qtpy.QtWidgets import QWidget, QTabWidget, QGridLayout, QLabel, QStyle, QStyleOption
+from qtpy.QtGui import QColor, QPen, QFontMetrics, QPainter, QBrush
+from qtpy.QtCore import Property, Qt, QSize, QPoint
 import numpy as np
 from .base import PyDMWidget
 
@@ -63,6 +64,7 @@ class PyDMBitIndicator(QWidget):
     def minimumSizeHint(self):
         fm = QFontMetrics(self.font())
         return QSize(fm.height(), fm.height())
+
 
 class PyDMByteIndicator(QWidget, PyDMWidget):
     """

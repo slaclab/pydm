@@ -1,5 +1,6 @@
-from ..PyQt.QtGui import QTableWidget, QTableWidgetItem, QApplication, QCursor
-from ..PyQt.QtCore import Slot, Property, Qt, QEvent
+from qtpy.QtWidgets import QTableWidget, QTableWidgetItem, QApplication
+from qtpy.QtGui import QCursor
+from qtpy.QtCore import Slot, Property, Qt, QEvent
 import numpy as np
 from .base import PyDMWritableWidget
 

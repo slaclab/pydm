@@ -3,8 +3,8 @@ import functools
 
 import collections
 
-from ..PyQt.QtCore import QObject, QThread, QMutex, Signal, QMutexLocker
-from ..PyQt.QtGui import QApplication
+from qtpy.QtCore import QObject, QThread, QMutex, Signal, QMutexLocker
+from qtpy.QtWidgets import QApplication
 
 from .channel import PyDMChannel
 from ..utilities import is_pydm_app

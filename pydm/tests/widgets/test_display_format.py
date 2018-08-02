@@ -2,7 +2,7 @@ import pytest
 import numpy as np
 import logging
 
-from pydm.PyQt.QtGui import QWidget
+from qtpy.QtWidgets import QWidget
 
 from pydm.widgets.display_format import  DisplayFormat, parse_value_for_display
 

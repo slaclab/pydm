@@ -1,5 +1,6 @@
-from ..PyQt.QtGui import QPushButton, QCursor, QMenu, QAction, QIcon
-from ..PyQt.QtCore import Slot, Property, Qt, QSize, QPoint
+from qtpy.QtWidgets import QPushButton, QMenu, QAction
+from qtpy.QtGui import QCursor, QIcon
+from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
 import os
 import json
 import logging

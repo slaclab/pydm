@@ -1,6 +1,6 @@
-from ..PyQt.QtGui import QFrame, QApplication, QLabel, QVBoxLayout
-from ..PyQt.QtCore import Qt, QSize
-from ..PyQt.QtCore import Property
+from qtpy.QtWidgets import QFrame, QApplication, QLabel, QVBoxLayout
+from qtpy.QtCore import Qt, QSize
+from qtpy.QtCore import Property
 import json
 import os.path
 from .base import PyDMPrimitiveWidget

@@ -4,9 +4,9 @@ import os
 from logging import ERROR
 import pytest
 
-from ...PyQt.QtGui import QColor, QBrush, QPixmap
-from ...PyQt.QtCore import Property, Qt, QPoint, QSize
-from ...PyQt.QtDesigner import QDesignerFormWindowInterface
+from qtpy.QtGui import QColor, QBrush, QPixmap
+from qtpy.QtCore import Property, Qt, QPoint, QSize
+from qtpy.QtDesigner import QDesignerFormWindowInterface
 
 from ...widgets.base import PyDMWidget
 from ...widgets.drawing import (deg_to_qt, qt_to_deg, PyDMDrawing,

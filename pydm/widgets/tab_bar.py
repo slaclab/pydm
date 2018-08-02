@@ -1,8 +1,9 @@
-from pydm.PyQt.QtGui import (QTabBar, QTabWidget, QIcon, QBrush, QColor,
-                             QVBoxLayout, QWidget, QLabel)
+from qtpy.QtWidgets import (QTabBar, QTabWidget,
+                            QVBoxLayout, QWidget, QLabel)
+from qtpy.QtGui import QIcon, QBrush, QColor
 from .base import PyDMWidget
 from .channel import PyDMChannel
-from pydm.PyQt.QtCore import Property, Q_ENUMS, Qt, QVariant
+from qtpy.QtCore import Property, Q_ENUMS, Qt, QVariant
 from functools import partial
 from ..utilities.iconfont import IconFont
 

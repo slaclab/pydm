@@ -1,7 +1,7 @@
 import os
 from os import path
-from .PyQt.QtGui import QApplication, QMainWindow, QFileDialog, QWidget, QAction
-from .PyQt.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
+from qtpy.QtWidgets import QApplication, QMainWindow, QFileDialog, QWidget, QAction
+from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
 from .utilities import IconFont, find_display_in_path
 from .pydm_ui import Ui_MainWindow
 from .display_module import Display
@@ -408,7 +408,7 @@ class PyDMMainWindow(QMainWindow):
     def show_connections(self, checked):
         c = ConnectionInspector(self.app.list_all_connections(), self)
         c.show()
-    
+
     @Slot(bool)
     def show_about_window(self, checked):
         a = AboutWindow(self)

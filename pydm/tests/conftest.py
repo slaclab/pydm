@@ -8,7 +8,7 @@ import numpy as np
 import tempfile
 import logging
 
-from ..PyQt.QtCore import QObject, Signal, Slot
+from qtpy.QtCore import QObject, Signal, Slot
 from ..application import PyDMApplication
 from ..widgets.base import PyDMWidget
 

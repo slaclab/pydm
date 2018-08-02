@@ -2,8 +2,9 @@ import logging
 import functools
 import json
 import numpy as np
-from ..PyQt.QtGui import QApplication, QColor, QCursor, QMenu, QGraphicsOpacityEffect
-from ..PyQt.QtCore import Qt, QEvent, Signal, Slot, Property
+from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect
+from qtpy.QtGui import QColor, QCursor
+from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
 from ..utilities import is_pydm_app
 from .rules import RulesDispatcher

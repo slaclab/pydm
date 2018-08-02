@@ -1,7 +1,7 @@
 import hashlib
 
-from ..PyQt.QtGui import QPushButton, QMessageBox, QInputDialog, QLineEdit
-from ..PyQt.QtCore import Slot, Property
+from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit
+from qtpy.QtCore import Slot, Property
 from .base import PyDMWritableWidget
 
 import logging

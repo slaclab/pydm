@@ -1,4 +1,4 @@
-from ..PyQt.QtCore import QModelIndex, QVariant
+from qtpy.QtCore import QModelIndex, QVariant
 from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import (BasePlotCurveEditorDialog,
                                     RedrawModeColumnDelegate)

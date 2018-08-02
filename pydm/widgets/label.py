@@ -1,6 +1,6 @@
 from .base import PyDMWidget
-from ..PyQt.QtGui import QLabel, QApplication
-from ..PyQt.QtCore import Qt, Property, Q_ENUMS
+from qtpy.QtWidgets import QLabel, QApplication
+from qtpy.QtCore import Qt, Property, Q_ENUMS
 from .display_format import DisplayFormat, parse_value_for_display
 from pydm.utilities import is_pydm_app
 

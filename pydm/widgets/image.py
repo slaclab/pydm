@@ -1,5 +1,5 @@
-from ..PyQt.QtGui import QActionGroup
-from ..PyQt.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QThread
+from qtpy.QtWidgets import QActionGroup
+from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QThread
 from pyqtgraph import ImageView
 from pyqtgraph import ColorMap
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu

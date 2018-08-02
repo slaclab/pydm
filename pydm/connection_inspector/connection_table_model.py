@@ -1,5 +1,5 @@
-from ..PyQt.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant, QTimer, Slot
-from ..PyQt.QtGui import QBrush
+from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant, QTimer, Slot
+from qtpy.QtGui import QBrush
 from operator import attrgetter
 
 class ConnectionTableModel(QAbstractTableModel):

@@ -1,5 +1,6 @@
-from ..PyQt.QtGui import QPushButton, QCursor, QIcon
-from ..PyQt.QtCore import Slot, Property, QSize
+from qtpy.QtWidgets import QPushButton
+from qtpy.QtGui import QCursor, QIcon
+from qtpy.QtCore import Slot, Property, QSize
 import shlex
 import subprocess
 from .base import PyDMPrimitiveWidget

@@ -1,8 +1,8 @@
 import logging
 logger = logging.getLogger(__name__)
 
-from ..PyQt.QtGui import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
-from ..PyQt.QtCore import Qt, Signal, Slot, Property
+from qtpy.QtWidgets import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
+from qtpy.QtCore import Qt, Signal, Slot, Property
 from .base import PyDMWritableWidget
 import numpy as np
 
