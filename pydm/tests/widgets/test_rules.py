@@ -49,7 +49,7 @@ def test_rules_full(qtbot, caplog):
 
     rules = [{'name': 'Rule #1', 'property': 'Visible',
                 'expression': 'ch[0] < 1',
-                'channels': [{'channel': 'foo://MTEST:Float', 'trigger': True}]}]
+                'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
 
     dispatcher = RulesDispatcher()
     dispatcher.register(widget, rules)

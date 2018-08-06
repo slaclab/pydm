@@ -37,7 +37,10 @@ def test_construct(qtbot, init_channel):
     pydm_lineedit = PyDMLineEdit(init_channel=init_channel)
     qtbot.addWidget(pydm_lineedit)
 
-    assert pydm_lineedit.channel == str(init_channel)
+    if init_channel:
+        assert pydm_lineedit.channel == str(init_channel)
+    else:
+        assert pydm_lineedit.channel is None
     assert pydm_lineedit._display is None
     assert pydm_lineedit._scale == 1
     assert pydm_lineedit._prec == 0

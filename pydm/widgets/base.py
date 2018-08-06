@@ -145,6 +145,13 @@ class PyDMWidget(PyDMPrimitiveWidget):
     ALARM_INVALID = 3
     ALARM_DISCONNECTED = 4
 
+    RULE_PROPERTIES = {
+        'Enable': ['setEnabled', bool],
+        'Visible': ['setVisible', bool],
+        'Position - X': ['setX', int],
+        'Position - Y': ['setY', int]
+    }
+
     def __init__(self, init_channel=None):
         super(PyDMWidget, self).__init__()
         self.app = QApplication.instance()
@@ -701,7 +708,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         channel : str
             Channel address
         """
-        return str(self._channel)
+        if self._channel:
+            return str(self._channel)
+        return None
 
     @channel.setter
     def channel(self, value):
@@ -713,8 +722,12 @@ class PyDMWidget(PyDMPrimitiveWidget):
         value : str
             Channel address
         """
-        if self._channel != value:
-            self._channel = str(value)
+        if value:
+            if self._channel != value:
+                self._channel = str(value)
+                self._channels = None
+        else:
+            self._channel = None
             self._channels = None
 
     def update_format_string(self):

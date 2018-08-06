@@ -510,7 +510,12 @@ class PyDMApplication(QApplication):
             except KeyError:
                 print("Couldn't find plugin for protocol: {0}".format(match.group(0)[:-3]))
         #If you get this far, we didn't successfuly figure out what plugin to use for this channel.
-        warnings.warn("Channel {addr} did not specify a valid protocol and no default protocol is defined.  This channel will receive no data.  To specify a default protocol, set the PYDM_DEFAULT_PROTOCOL environment variable.".format(addr=channel.address), RuntimeWarning, stacklevel=2)
+        logger.warning(
+            "Channel {addr} did not specify a valid protocol and no default "
+            "protocol is defined.  This channel will receive no data. To "
+            "specify a default protocol, set the PYDM_DEFAULT_PROTOCOL "
+            "environment variable.".format(addr=channel.address)
+        )
         return None
 
     def add_connection(self, channel):

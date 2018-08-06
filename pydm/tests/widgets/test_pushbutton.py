@@ -93,7 +93,7 @@ def test_construct(qtbot, label, press_value, relative, init_channel, icon_font_
     if init_channel:
         assert pydm_pushbutton.channel == init_channel
     else:
-        assert pydm_pushbutton.channel == "None" if init_channel is None else pydm_pushbutton.channel == ""
+        assert pydm_pushbutton.channel is None
 
     if icon:
         size = QSize(30, 30)
