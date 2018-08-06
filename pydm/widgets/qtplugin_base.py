@@ -20,6 +20,7 @@ affect any of your widgets, but it will be annoying.
 """
 from ..PyQt import QtGui, QtDesigner
 from .qtplugin_extensions import PyDMExtensionFactory
+from ..qtdesigner import DesignerHooks
 
 
 # TODO: Change to Enum once we drop support
@@ -84,6 +85,9 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         """
         if self.initialized:
             return
+
+        designer_hooks = DesignerHooks()
+        designer_hooks.form_editor = core
 
         if self.extensions is not None and len(self.extensions) > 0:
             self.manager = core.extensionManager()

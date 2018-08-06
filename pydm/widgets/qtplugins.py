@@ -1,10 +1,5 @@
-import os
-
 import logging
 logger = logging.getLogger(__name__)
-
-from ..PyQt.QtCore import QTimer
-from ..utilities.stylesheet import apply_stylesheet
 
 from .qtplugin_base import qtplugin_factory, WidgetCategory
 from .qtplugin_extensions import (RulesExtension, WaveformCurveEditorExtension,
@@ -172,10 +167,3 @@ PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable,
 
 # Tab Widget plugin
 PyDMTabWidgetPlugin = TabWidgetPlugin(extensions=BASE_EXTENSIONS)
-
-# Import stylesheet, if provided
-stylesheet_path = os.getenv("PYDM_STYLESHEET", None)
-
-timer = QTimer()
-timer.setInterval(500)
-apply_stylesheet(stylesheet_path, timer)
