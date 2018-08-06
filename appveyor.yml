@@ -29,6 +29,7 @@ init:
   - ps: if ($Env:PLATFORM -eq "x64") { $Env:MINICONDA = "${Env:MINICONDA}-x64" }
   - ps: Write-Host $Env:PYTHON_VERSION
   - ps: Write-Host $Env:MINICONDA
+  - ps: Write-Host $Env:REPEATER
   - ps: Write-Host $Env:GITHUB_REPO_NAME
   - ps: Write-Host $Env:PLATFORM
   - ps: Write-Host $Env:APPVEYOR_REPO_TAG
@@ -52,7 +53,7 @@ install:
   - pip install -r dev-requirements.txt
 
 test_script:
-  - "start /B %REPEATER%"
+  - ps: $MyProcess = Start-Process $Env:REPEATER -PassThru
   - python run_tests.py --show-cov
 
 after_test:
@@ -96,3 +97,5 @@ on_success:
         Write-Host "Building for Pull Request... No package will be uploaded.";
       };
 
+on_finish:
+  - ps: Stop-Process -Id $MyProcess.Id
