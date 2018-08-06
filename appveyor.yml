@@ -52,7 +52,7 @@ install:
   - pip install -r dev-requirements.txt
 
 test_script:
-  - "start %REPEATER%"
+  - "start /B %REPEATER%"
   - python run_tests.py --show-cov
 
 after_test:
