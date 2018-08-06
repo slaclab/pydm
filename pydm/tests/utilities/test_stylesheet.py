@@ -49,7 +49,8 @@ def test_stylesheet_apply(qtbot):
     assert not app.styleSheet()
 
     # Restore the variable
-    os.environ["PYDM_STYLESHEET"] = env_backup
+    if env_backup:
+        os.environ["PYDM_STYLESHEET"] = env_backup
     stylesheet.GLOBAL_STYLESHEET = backup_global
 
 
@@ -134,7 +135,8 @@ def test_stylesheet_get_style_data(caplog):
         assert "Cannot find the default stylesheet" in caplog.text
 
     # Restore the variable
-    os.environ["PYDM_STYLESHEET"] = env_backup
+    if env_backup:
+        os.environ["PYDM_STYLESHEET"] = env_backup
     stylesheet.GLOBAL_STYLESHEET = backup_global
 
 
