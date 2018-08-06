@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.3.0+96.g8933610 documentation</title>
+  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.3.0+100.g1a9d2f3 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.3.0+96.g8933610
+                v1.3.0+100.g1a9d2f3
               </div>
             
           
@@ -179,6 +179,8 @@
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
+<span class="kn">import</span> <span class="nn">six</span>
+
 <span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QComboBox</span>
 <span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">Qt</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
@@ -294,7 +296,26 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span></div>
+            <span class="c1"># Integers are straight forward</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_val</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">new_val</span>
+            <span class="c1"># String values are valid as well, but we need to look up the index</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_val</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">):</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
+                <span class="c1"># findText return -1 when we can not find the text inside the</span>
+                <span class="c1"># QComboBox</span>
+                <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Can not change value to </span><span class="si">%r</span><span class="s2">. &quot;</span>
+                                 <span class="s2">&quot;Not an option in PyDMComboBox&quot;</span><span class="p">,</span>
+                                 <span class="n">new_val</span><span class="p">)</span>
+                    <span class="k">return</span>
+            <span class="c1"># Handle bool, float, and ndarray</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Invalid type for PyDMComboBox </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                             <span class="nb">type</span><span class="p">(</span><span class="n">new_val</span><span class="p">))</span>
+                <span class="k">return</span>
+            <span class="c1"># Set the index</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.internal_combo_box_activated_int"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.internal_combo_box_activated_int">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">internal_combo_box_activated_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
@@ -341,7 +362,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.3.0+96.g8933610',
+            VERSION:'v1.3.0+100.g1a9d2f3',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
