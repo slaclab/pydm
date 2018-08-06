@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.3.0+86.g13c0fd6 documentation</title>
+  <title>pydm.application &mdash; PyDM v1.3.0+96.g8933610 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.3.0+86.g13c0fd6
+                v1.3.0+96.g8933610
               </div>
             
           
@@ -688,7 +688,12 @@
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t find plugin for protocol: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]))</span>
         <span class="c1">#If you get this far, we didn&#39;t successfuly figure out what plugin to use for this channel.</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Channel </span><span class="si">{addr}</span><span class="s2"> did not specify a valid protocol and no default protocol is defined.  This channel will receive no data.  To specify a default protocol, set the PYDM_DEFAULT_PROTOCOL environment variable.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addr</span><span class="o">=</span><span class="n">channel</span><span class="o">.</span><span class="n">address</span><span class="p">),</span> <span class="ne">RuntimeWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">&quot;Channel </span><span class="si">{addr}</span><span class="s2"> did not specify a valid protocol and no default &quot;</span>
+            <span class="s2">&quot;protocol is defined.  This channel will receive no data. To &quot;</span>
+            <span class="s2">&quot;specify a default protocol, set the PYDM_DEFAULT_PROTOCOL &quot;</span>
+            <span class="s2">&quot;environment variable.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addr</span><span class="o">=</span><span class="n">channel</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.add_connection"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.add_connection">[docs]</a>    <span class="k">def</span> <span class="nf">add_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
@@ -961,7 +966,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v1.3.0+86.g13c0fd6',
+            VERSION:'v1.3.0+96.g8933610',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
