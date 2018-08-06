@@ -16,17 +16,14 @@ environment:
   matrix:
     - PYTHON_VERSION: 2.7
       MINICONDA: C:\Miniconda
-      REPEATER: C:\Miniconda\envs\test-environment\Lib\site-packages\epics\clibs\win64\caRepeater.exe
     - PYTHON_VERSION: 3.5
       MINICONDA: C:\Miniconda35
-      REPEATER: C:\Miniconda35\envs\test-environment\Lib\site-packages\epics\clibs\win64\caRepeater.exe
     - PYTHON_VERSION: 3.6
       MINICONDA: C:\Miniconda36
-      REPEATER: C:\Miniconda36\envs\test-environment\Lib\site-packages\epics\clibs\win64\caRepeater.exe
-
 
 init:
   - ps: if ($Env:PLATFORM -eq "x64") { $Env:MINICONDA = "${Env:MINICONDA}-x64" }
+  - ps: $Env:REPEATER = "${Env:MINICONDA}\envs\test-environment\Lib\site-packages\epics\clibs\win64\caRepeater.exe"
   - ps: Write-Host $Env:PYTHON_VERSION
   - ps: Write-Host $Env:MINICONDA
   - ps: Write-Host $Env:REPEATER
