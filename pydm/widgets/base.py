@@ -2,7 +2,7 @@ import logging
 import functools
 import json
 import numpy as np
-from ..PyQt.QtGui import QApplication, QColor, QCursor, QMenu
+from ..PyQt.QtGui import QApplication, QColor, QCursor, QMenu, QGraphicsOpacityEffect
 from ..PyQt.QtCore import Qt, QEvent, pyqtSignal, pyqtSlot, pyqtProperty
 from .channel import PyDMChannel
 from ..utilities import is_pydm_app
@@ -59,10 +59,43 @@ class PyDMPrimitiveWidget(object):
     RULE_PROPERTIES = {
         'Enable': ['setEnabled', bool],
         'Visible': ['setVisible', bool],
+        'Opacity': ['set_opacity', float]
     }
 
     def __init__(self):
         self._rules = None
+        self._opacity = 1.0
+
+    def opacity(self):
+        """
+        Float value between 0 and 1 representing the opacity of the widget
+        where 0 means transparent.
+
+        Returns
+        -------
+        opacity : float
+        """
+        return self._opacity
+
+    def set_opacity(self, val):
+        """
+        Float value between 0 and 1 representing the opacity of the widget
+        where 0 means transparent.
+
+        Parameters
+        ----------
+        val : float
+            The new value for the opacity
+        """
+        op = QGraphicsOpacityEffect(self)
+        if val > 1:
+            val = 1
+        elif val < 0:
+            val = 0
+        op.setOpacity(val)  # 0 to 1 will cause the fade effect to kick in
+        self.setGraphicsEffect(op)
+        self.setAutoFillBackground(True)
+
 
     @pyqtSlot(dict)
     def rule_evaluated(self, payload):
@@ -145,15 +178,16 @@ class PyDMWidget(PyDMPrimitiveWidget):
     ALARM_INVALID = 3
     ALARM_DISCONNECTED = 4
 
-    RULE_PROPERTIES = {
-        'Enable': ['setEnabled', bool],
-        'Visible': ['setVisible', bool],
-        'Position - X': ['setX', int],
-        'Position - Y': ['setY', int]
-    }
-
     def __init__(self, init_channel=None):
         super(PyDMWidget, self).__init__()
+
+        if not all([prop in PyDMPrimitiveWidget.RULE_PROPERTIES for prop in
+                    ['Position - X', 'Position - Y']]):
+            PyDMWidget.RULE_PROPERTIES = PyDMPrimitiveWidget.RULE_PROPERTIES.copy()
+            PyDMWidget.RULE_PROPERTIES.update(
+                {'Position - X': ['setX', int],
+                 'Position - Y': ['setY', int]})
+
         self.app = QApplication.instance()
         self._connected = True
         self._channel = init_channel
