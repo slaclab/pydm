@@ -11,11 +11,10 @@ def test_rules_dispatcher(qapp, caplog):
 
     Parameters
     ----------
-    qapp
-
-    Returns
-    -------
-
+    qapp : QApplication
+        Reference to the QApplication
+    caplog : fixture
+        To capture the log messages
     """
     disp1 = RulesDispatcher()
     disp2 = RulesDispatcher()
@@ -29,6 +28,30 @@ def test_rules_dispatcher(qapp, caplog):
     for record in caplog.records:
         assert record.levelno == logging.ERROR
     assert "Error at RulesDispatcher" in caplog.text
+
+
+def test_unregister(qtbot):
+    """
+    Test the dispatcher for registering and unregistering of widgets.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Parent of all the widgets
+    """
+    widget = PyDMLabel()
+    qtbot.addWidget(widget)
+
+    rules = [{'name': 'Rule #1', 'property': 'Visible',
+              'expression': 'ch[0] < 1',
+              'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+
+    dispatcher = RulesDispatcher()
+    dispatcher.register(widget, rules)
+    assert widget in dispatcher.rules_engine.widget_map
+
+    dispatcher.unregister(widget)
+    assert widget not in dispatcher.rules_engine.widget_map
 
 
 def test_rules_full(qtbot, caplog):

@@ -133,8 +133,63 @@
     <double>2.000000000000000</double>
    </property>
   </widget>
+  <widget class="PyDMFrame" name="PyDMFrame">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>490</y>
+     <width>98</width>
+     <height>38</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string>
+    QFrame with support for alarms
+    This class inherits from QFrame and PyDMWidget.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgba(255, 255, 000, 158);</string>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="PyDMLabel" name="PyDMLabel">
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
+       <string/>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="rules" stdset="0">
+       <string>[{&quot;name&quot;: &quot;Background Color Rule&quot;, &quot;property&quot;: &quot;StyleSheet&quot;, &quot;expression&quot;: &quot;\&quot;background-color: orange;\&quot; if ch[0] &gt; 1 else \&quot;background-color: lightblue\&quot; if ch[0] &lt; 1 and ch[0] &gt; -1 else \&quot;background-color: brown\&quot;&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://MTEST:Float&quot;, &quot;trigger&quot;: true}]}]</string>
+      </property>
+      <property name="channel" stdset="0">
+       <string>ca://MTEST:Float</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>PyDMLabel</class>
+   <extends>QLabel</extends>
+   <header>pydm.widgets.label</header>
+  </customwidget>
   <customwidget>
    <class>PyDMTimePlot</class>
    <extends>QGraphicsView</extends>
@@ -144,6 +199,12 @@
    <class>PyDMDrawingCircle</class>
    <extends>QWidget</extends>
    <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMFrame</class>
+   <extends>QFrame</extends>
+   <header>pydm.widgets.frame</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>PyDMLineEdit</class>
