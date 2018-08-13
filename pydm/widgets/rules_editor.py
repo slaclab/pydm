@@ -318,9 +318,9 @@ class RulesEditor(QtGui.QDialog):
                                              QtGui.QMessageBox.No)
 
         if reply == QtGui.QMessageBox.Yes:
-            self.rules.pop(idx)
             self.lst_rules.takeItem(idx)
             self.lst_rules.clearSelection()
+            self.rules.pop(idx)
             self.clear_form()
 
     def add_channel(self):
