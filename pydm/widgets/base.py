@@ -92,6 +92,7 @@ class PyDMPrimitiveWidget(object):
             val = 1
         elif val < 0:
             val = 0
+        self._opacity = val
         op.setOpacity(val)  # 0 to 1 will cause the fade effect to kick in
         self.setGraphicsEffect(op)
         self.setAutoFillBackground(True)
