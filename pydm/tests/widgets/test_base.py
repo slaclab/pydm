@@ -105,6 +105,8 @@ def test_pydmwidget_construct(qtbot, init_channel):
     assert pydm_label.contextMenuEvent
     assert pydm_label.rules is None
 
+    assert pydm_label.opacity() == 1.0
+
 
 @pytest.mark.parametrize("init_channel", [
     "CA://MA_TEST",
@@ -645,3 +647,23 @@ def test_pydmwidget_rule_evaluated(qtbot, caplog):
     assert widget.isVisible()
     widget.rule_evaluated(payload)
     assert not widget.isVisible()
+
+
+def test_pydmwidget_opacity(qtbot):
+    """
+    Test the opacity property.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
+    widget = PyDMLabel()
+    qtbot.addWidget(widget)
+    assert widget.opacity() == 1.0
+    widget.set_opacity(0.1)
+    assert widget.opacity() == 0.1
+    widget.set_opacity(2.0)
+    assert widget.opacity() == 1
+    widget.set_opacity(-1)
+    assert widget.opacity() == 0
