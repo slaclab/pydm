@@ -71,7 +71,7 @@ class RulesExtension(PyDMExtension):
         self.edit_rules_action.triggered.connect(self.edit_rules)
 
     def edit_rules(self, state):
-        edit_rules_dialog = RulesEditor(self.widget, parent=self.widget)
+        edit_rules_dialog = RulesEditor(self.widget, parent=None)
         edit_rules_dialog.exec_()
 
     def actions(self):
