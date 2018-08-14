@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.3.0+100.g1a9d2f3 documentation</title>
+  <title>pydm.application &mdash; PyDM v1.4.0+8.g692c9d5 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.3.0+100.g1a9d2f3
+                v1.4.0+8.g692c9d5
               </div>
             
           
@@ -207,7 +207,7 @@
 <span class="kn">from</span> <span class="nn">.utilities</span> <span class="k">import</span> <span class="n">macro</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">path_info</span><span class="p">,</span> <span class="n">find_display_in_path</span>
 <span class="kn">from</span> <span class="nn">.utilities.stylesheet</span> <span class="k">import</span> <span class="n">apply_stylesheet</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">data_plugins</span>
-
+<span class="kn">from</span> <span class="nn">.widgets.rules</span> <span class="k">import</span> <span class="n">RulesDispatcher</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">DEFAULT_PROTOCOL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYDM_DEFAULT_PROTOCOL&quot;</span><span class="p">)</span>
@@ -769,6 +769,25 @@
             <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
                 <span class="k">pass</span></div>
 
+<div class="viewcode-block" id="PyDMApplication.unregister_widget_rules"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.unregister_widget_rules">[docs]</a>    <span class="k">def</span> <span class="nf">unregister_widget_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given a widget to start from, traverse the tree of child widgets,</span>
+<span class="sd">        and try to unregister rules to any widgets.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        widget : QWidget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">[</span><span class="n">widget</span><span class="p">]</span>
+        <span class="n">widgets</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">child_widget</span> <span class="ow">in</span> <span class="n">widgets</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child_widget</span><span class="p">,</span> <span class="s1">&#39;rules&#39;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">child_widget</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
+                        <span class="n">RulesDispatcher</span><span class="p">()</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">child_widget</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span></div>
+
 <div class="viewcode-block" id="PyDMApplication.close_widget_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.close_widget_connections">[docs]</a>    <span class="k">def</span> <span class="nf">close_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Given a widget to start from, traverse the tree of child widgets,</span>
@@ -966,7 +985,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v1.3.0+100.g1a9d2f3',
+            VERSION:'v1.4.0+8.g692c9d5',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
