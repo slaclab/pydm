@@ -8,6 +8,7 @@ from .base import PyDMWidget
 
 logger = logging.getLogger(__name__)
 
+
 class PyDMSymbol(QWidget, PyDMWidget):
     """
     PyDMSymbol will render an image (symbol) for each value of a channel.
@@ -22,7 +23,12 @@ class PyDMSymbol(QWidget, PyDMWidget):
     def __init__(self, parent=None, init_channel=None):
         QWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
+        if 'Index' not in PyDMSymbol.RULE_PROPERTIES:
+            PyDMSymbol.RULE_PROPERTIES = PyDMWidget.RULE_PROPERTIES.copy()
+            PyDMSymbol.RULE_PROPERTIES.update(
+                {'Index': ['set_current_key', object]})
         self.app = QApplication.instance()
+        self._current_key = 0
         self._state_images_string = ""
         self._state_images = {}  # Keyed on state values (ints), values are (filename, qpixmap or qsvgrenderer) tuples.
         self._aspect_ratio_mode = Qt.KeepAspectRatio
@@ -35,6 +41,22 @@ class PyDMSymbol(QWidget, PyDMWidget):
         when using the widget with the Qt Designer
         """
         self.value = 0
+        self._current_key = 0
+
+    def set_current_key(self, current_key):
+        """
+        Change the image being displayed for the one given by `current_key`.
+
+        Parameters
+        ----------
+        current_key : object
+            The current_key parameter can be of any type as long as it matches
+            the type used as key for the imageFiles dictionary.
+
+        """
+        if self._current_key != current_key:
+            self._current_key = current_key
+            self.update()
 
     @pyqtProperty(str)
     def imageFiles(self):
@@ -149,6 +171,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
             The new value from the channel.
         """
         super(PyDMSymbol, self).value_changed(new_val)
+        self._current_key = new_val
         self.update()
 
     def sizeHint(self):
@@ -189,7 +212,10 @@ class PyDMSymbol(QWidget, PyDMWidget):
         opt.initFrom(self)
         self.style().drawPrimitive(QStyle.PE_Widget, opt, self._painter, self)
         # self._painter.setRenderHint(QPainter.Antialiasing)
-        image_to_draw = self._state_images.get(self.value, (None, None))[1]
+        if self._current_key is None:
+            self._painter.end()
+            return
+        image_to_draw = self._state_images.get(self._current_key, (None, None))[1]
         if image_to_draw is None:
             self._painter.end()
             return

@@ -29,7 +29,7 @@ from .tools import ExternalTool
 from .utilities import macro, which, path_info, find_display_in_path
 from .utilities.stylesheet import apply_stylesheet
 from . import data_plugins
-
+from .widgets.rules import RulesDispatcher
 
 logger = logging.getLogger(__name__)
 DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
@@ -589,6 +589,25 @@ class PyDMApplication(QApplication):
                     # which we use to display a tooltip with the address of the widget's first channel.
                     child_widget.installEventFilter(self)
             except NameError:
+                pass
+
+    def unregister_widget_rules(self, widget):
+        """
+        Given a widget to start from, traverse the tree of child widgets,
+        and try to unregister rules to any widgets.
+
+        Parameters
+        ----------
+        widget : QWidget
+        """
+        widgets = [widget]
+        widgets.extend(widget.findChildren(QWidget))
+        for child_widget in widgets:
+            try:
+                if hasattr(child_widget, 'rules'):
+                    if child_widget.rules:
+                        RulesDispatcher().unregister(child_widget)
+            except:
                 pass
 
     def close_widget_connections(self, widget):

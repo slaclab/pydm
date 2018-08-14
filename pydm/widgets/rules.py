@@ -104,10 +104,12 @@ class RulesEngine(QThread):
         self.widget_map = dict()
 
     def register(self, widget, rules):
-        if widget in self.widget_map:
-            self.unregister(widget)
-
         self.map_lock.lock()
+
+        if widget in self.widget_map:
+            self.unregister(widget, already_locked=True)
+
+
         self.widget_map[widget] = []
 
         for idx, rule in enumerate(rules):
@@ -135,17 +137,21 @@ class RulesEngine(QThread):
 
         self.map_lock.unlock()
 
-    def unregister(self, widget):
-        self.map_lock.lock()
-        w_data = self.widget_map.pop(widget)
-        self.map_lock.unlock()
+    def unregister(self, widget, already_locked=False):
+        if not already_locked:
+            self.map_lock.lock()
+        try:
+            w_data = self.widget_map.pop(widget)
+            for rule in w_data:
+                for ch in rule['channels']:
+                    if is_pydm_app():
+                        self.app.remove_connection(ch)
+            del w_data
+        except:
+            pass
 
-        for rule in w_data:
-            for ch in rule['channels']:
-                if is_pydm_app():
-                    self.app.remove_connection(ch)
-
-        del w_data
+        if not already_locked:
+            self.map_lock.unlock()
 
     def run(self):
         while not self.isInterruptionRequested():
@@ -206,7 +212,6 @@ class RulesEngine(QThread):
         None
         """
         self.widget_map[widget][index]['conn'][ch_index] = value
-        
 
     def warn_unconnected_channels(self, widget, index):
         logger.error(

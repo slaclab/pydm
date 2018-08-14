@@ -100,6 +100,7 @@ class PyDMMainWindow(QMainWindow):
     def clear_display_widget(self):
         if self._display_widget is not None:
             self.setCentralWidget(QWidget())
+            self.app.unregister_widget_rules(self._display_widget)
             self.app.close_widget_connections(self._display_widget)
             self._display_widget.deleteLater()
             self._display_widget = None
