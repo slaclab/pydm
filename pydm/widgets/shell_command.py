@@ -4,6 +4,7 @@ import shlex, subprocess
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
 
+import sys
 import logging
 logger = logging.getLogger(__name__)
 
@@ -131,7 +132,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
             return
 
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
-            args = shlex.split(self._command)
+            args = shlex.split(self._command, posix='win' not in sys.platform)
             try:
                 self.process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             except Exception as exc:
