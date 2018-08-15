@@ -159,6 +159,7 @@ class PyDMMainWindow(QMainWindow):
                 new_fname = find_display_in_path(ui_file)
                 if new_fname is None or new_fname == "":
                     raise IOError("File {} not found".format(filename))
+                filename = new_fname
             self.new_abs_window(filename, macros, command_line_args)
         except (IOError, OSError, ValueError, ImportError) as e:
             error_msg = "Cannot open file: '{0}'. Reason: '{1}'.".format(filename, e)

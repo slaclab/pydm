@@ -191,9 +191,9 @@ class PyDMApplication(QApplication):
             to pass in extra arguments.  It is probably rare that code you
             write needs to use this argument.
         """
-        path_and_args = shlex.split(str(ui_file))
-        filepath = path_and_args[0]
-        filepath_args = path_and_args[1:]
+        base_dir, fname, args = path_info(str(ui_file))
+        filepath = os.path.join(base_dir, fname)
+        filepath_args = args
         pydm_display_app_path = which("pydm")
 
         if pydm_display_app_path is None:
@@ -218,6 +218,8 @@ class PyDMApplication(QApplication):
         args.append(filepath)
         args.extend(self.display_args)
         args.extend(filepath_args)
+        if command_line_args is not None:
+            args.extend(command_line_args)
         subprocess.Popen(args, shell=False)
 
     def new_window(self, ui_file, macros=None, command_line_args=None):
