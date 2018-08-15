@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.4.0+10.g7c384cf documentation</title>
+  <title>pydm.application &mdash; PyDM v1.4.0+14.g4f4097d documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.4.0+10.g7c384cf
+                v1.4.0+14.g4f4097d
               </div>
             
           
@@ -369,9 +369,9 @@
 <span class="sd">            to pass in extra arguments.  It is probably rare that code you</span>
 <span class="sd">            write needs to use this argument.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">path_and_args</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ui_file</span><span class="p">))</span>
-        <span class="n">filepath</span> <span class="o">=</span> <span class="n">path_and_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">filepath_args</span> <span class="o">=</span> <span class="n">path_and_args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">base_dir</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">path_info</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ui_file</span><span class="p">))</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+        <span class="n">filepath_args</span> <span class="o">=</span> <span class="n">args</span>
         <span class="n">pydm_display_app_path</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="s2">&quot;pydm&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">pydm_display_app_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -396,6 +396,8 @@
         <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display_args</span><span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">filepath_args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">command_line_args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">command_line_args</span><span class="p">)</span>
         <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.new_window"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.new_window">[docs]</a>    <span class="k">def</span> <span class="nf">new_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -740,9 +742,14 @@
         <span class="c1"># If the address has a protocol, and it is the default protocol, strip it out before putting it on the clipboard.</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;(.+?):/{2,3}(.+?)$&#39;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">DEFAULT_PROTOCOL</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">DEFAULT_PROTOCOL</span><span class="p">:</span>
-            <span class="n">QApplication</span><span class="o">.</span><span class="n">clipboard</span><span class="p">()</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="n">QClipboard</span><span class="o">.</span><span class="n">Selection</span><span class="p">)</span>
+            <span class="n">copy_text</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">QApplication</span><span class="o">.</span><span class="n">clipboard</span><span class="p">()</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">QClipboard</span><span class="o">.</span><span class="n">Selection</span><span class="p">)</span>
+            <span class="n">copy_text</span> <span class="o">=</span> <span class="n">addr</span>
+
+        <span class="n">clipboard</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">clipboard</span><span class="p">()</span>
+        <span class="n">clipboard</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">copy_text</span><span class="p">)</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">QEvent</span><span class="p">(</span><span class="n">QEvent</span><span class="o">.</span><span class="n">Clipboard</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sendEvent</span><span class="p">(</span><span class="n">clipboard</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMApplication.establish_widget_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.establish_widget_connections">[docs]</a>    <span class="k">def</span> <span class="nf">establish_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -985,7 +992,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v1.4.0+10.g7c384cf',
+            VERSION:'v1.4.0+14.g4f4097d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
