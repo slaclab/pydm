@@ -397,32 +397,6 @@ class PyDMWaveformPlot(BasePlot):
     def set_needs_redraw(self):
         self._needs_redraw = True
 
-    def updateAxes(self):
-        """
-        Update the X and Y axes for the plot to fit all data in
-        all curves for the plot.
-        """
-        plot_xmin = None
-        plot_xmax = None
-        plot_ymin = None
-        plot_ymax = None
-        for curve in self._curves:
-            try:
-                ((curve_xmin, curve_xmax),
-                 (curve_ymin, curve_ymax)) = curve.limits()
-            except NoDataError:
-                continue
-            if plot_xmin is None or curve_xmin < plot_xmin:
-                plot_xmin = curve_xmin
-            if plot_xmax is None or curve_xmax > plot_xmax:
-                plot_xmax = curve_xmax
-            if plot_ymin is None or curve_ymin < plot_ymin:
-                plot_ymin = curve_ymin
-            if plot_ymax is None or curve_ymax > plot_ymax:
-                plot_ymax = curve_ymax
-        self.plotItem.setLimits(xMin=plot_xmin, xMax=plot_xmax,
-                                yMin=plot_ymin, yMax=plot_ymax)
-
     @pyqtSlot()
     def redrawPlot(self):
         """
@@ -431,7 +405,6 @@ class PyDMWaveformPlot(BasePlot):
         """
         if not self._needs_redraw:
             return
-        self.updateAxes()
         for curve in self._curves:
             curve.redrawCurve()
         self._needs_redraw = False
