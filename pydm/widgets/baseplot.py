@@ -253,6 +253,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.setAutoRangeX(True)
         self._auto_range_y = None
         self.setAutoRangeY(True)
+        self._min_x = 0.0
+        self._max_x = 1.0
+        self._min_y = 0.0
+        self._max_y = 1.0
         self._show_x_grid = None
         self.setShowXGrid(False)
         self._show_y_grid = None
@@ -402,7 +406,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     def setAutoRangeX(self, value):
         self._auto_range_x = value
-        self.plotItem.enableAutoRange(ViewBox.XAxis, enable=self._auto_range_x)
+        if self._auto_range_x:
+            self.plotItem.enableAutoRange(ViewBox.XAxis, enable=self._auto_range_x)
 
     def resetAutoRangeX(self):
         self.setAutoRangeX(True)
@@ -412,7 +417,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     def setAutoRangeY(self, value):
         self._auto_range_y = value
-        self.plotItem.enableAutoRange(ViewBox.YAxis, enable=self._auto_range_y)
+        if self._auto_range_y:
+            self.plotItem.enableAutoRange(ViewBox.YAxis, enable=self._auto_range_y)
 
     def resetAutoRangeY(self):
         self.setAutoRangeY(True)
@@ -435,9 +441,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         -------
         new_min_x_range : float
         """
-        viewRange = self.plotItem.viewRange()
-        viewRange[0][0] = new_min_x_range
-        self.plotItem.setXRange(viewRange[0][0], viewRange[0][1], padding=0)
+        if self._auto_range_x:
+            return
+        self._min_x = new_min_x_range
+        self.plotItem.setXRange(self._min_x, self._max_x, padding=0)
 
     def getMaxXRange(self):
         """
@@ -457,9 +464,11 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         -------
         new_max_x_range : float
         """
-        viewRange = self.plotItem.viewRange()
-        viewRange[0][1] = new_max_x_range
-        self.plotItem.setXRange(viewRange[0][0], viewRange[0][1], padding=0)
+        if self._auto_range_x:
+            return
+
+        self._max_x = new_max_x_range
+        self.plotItem.setXRange(self._min_x, self._max_x, padding=0)
 
     def getMinYRange(self):
         """
@@ -479,9 +488,12 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         -------
         new_min_y_range : float
         """
-        viewRange = self.plotItem.viewRange()
-        viewRange[1][0] = new_min_y_range
-        self.plotItem.setYRange(viewRange[1][0], viewRange[1][1], padding=0)
+        if self._auto_range_y:
+            return
+
+        self._min_y = new_min_y_range
+        self.plotItem.setYRange(self._min_y, self._max_y, padding=0)
+
 
     def getMaxYRange(self):
         """
@@ -501,9 +513,11 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         -------
         new_max_y_range : float
         """
-        viewRange = self.plotItem.viewRange()
-        viewRange[1][1] = new_max_y_range
-        self.plotItem.setYRange(viewRange[1][0], viewRange[1][1], padding=0)
+        if self._auto_range_y:
+            return
+
+        self._max_y = new_max_y_range
+        self.plotItem.setYRange(self._min_y, self._max_y, padding=0)
 
     @pyqtProperty(bool)
     def mouseEnabledX(self):
