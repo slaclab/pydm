@@ -181,6 +181,22 @@ class PyDMTimePlot(BasePlot):
         curve = self._curves[index]
         self.removeYChannel(curve)
 
+    def addCurveNameToLegend(self, curve):
+        """
+        Use this if you don't want to display a curve name in the legend as the curve is only meant to be hidden,
+        but not completely removed from the timeplot.
+        """
+        self._legend.addItem(curve, curve.name())
+
+    def removeCurveNameFromLegend(self, curve):
+        """
+        Use this if you don't want to display a curve name in the legend as the curve is only meant to be hidden,
+        but not completely removed from the timeplot.
+        """
+        for item in self._legend.items:
+            if item[1].text == curve.name():
+                self._legend.items.remove(item)
+
     @pyqtSlot()
     def redrawPlot(self):
         self.updateXAxis()
