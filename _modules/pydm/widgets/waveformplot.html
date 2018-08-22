@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.waveformplot &mdash; PyDM v1.4.1 documentation</title>
+  <title>pydm.widgets.waveformplot &mdash; PyDM v1.4.1+2.ge26aad5 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.4.1
+                v1.4.1+2.ge26aad5
               </div>
             
           
@@ -575,32 +575,6 @@
     <span class="k">def</span> <span class="nf">set_needs_redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_needs_redraw</span> <span class="o">=</span> <span class="kc">True</span>
 
-<div class="viewcode-block" id="PyDMWaveformPlot.updateAxes"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.updateAxes">[docs]</a>    <span class="k">def</span> <span class="nf">updateAxes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Update the X and Y axes for the plot to fit all data in</span>
-<span class="sd">        all curves for the plot.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">plot_xmin</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">plot_xmax</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">plot_ymin</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">plot_ymax</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="p">((</span><span class="n">curve_xmin</span><span class="p">,</span> <span class="n">curve_xmax</span><span class="p">),</span>
-                 <span class="p">(</span><span class="n">curve_ymin</span><span class="p">,</span> <span class="n">curve_ymax</span><span class="p">))</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.</span><span class="n">limits</span><span class="p">()</span>
-            <span class="k">except</span> <span class="n">NoDataError</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="k">if</span> <span class="n">plot_xmin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">curve_xmin</span> <span class="o">&lt;</span> <span class="n">plot_xmin</span><span class="p">:</span>
-                <span class="n">plot_xmin</span> <span class="o">=</span> <span class="n">curve_xmin</span>
-            <span class="k">if</span> <span class="n">plot_xmax</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">curve_xmax</span> <span class="o">&gt;</span> <span class="n">plot_xmax</span><span class="p">:</span>
-                <span class="n">plot_xmax</span> <span class="o">=</span> <span class="n">curve_xmax</span>
-            <span class="k">if</span> <span class="n">plot_ymin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">curve_ymin</span> <span class="o">&lt;</span> <span class="n">plot_ymin</span><span class="p">:</span>
-                <span class="n">plot_ymin</span> <span class="o">=</span> <span class="n">curve_ymin</span>
-            <span class="k">if</span> <span class="n">plot_ymax</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">curve_ymax</span> <span class="o">&gt;</span> <span class="n">plot_ymax</span><span class="p">:</span>
-                <span class="n">plot_ymax</span> <span class="o">=</span> <span class="n">curve_ymax</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setLimits</span><span class="p">(</span><span class="n">xMin</span><span class="o">=</span><span class="n">plot_xmin</span><span class="p">,</span> <span class="n">xMax</span><span class="o">=</span><span class="n">plot_xmax</span><span class="p">,</span>
-                                <span class="n">yMin</span><span class="o">=</span><span class="n">plot_ymin</span><span class="p">,</span> <span class="n">yMax</span><span class="o">=</span><span class="n">plot_ymax</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="PyDMWaveformPlot.redrawPlot"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.redrawPlot">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">redrawPlot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -609,7 +583,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_needs_redraw</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">updateAxes</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">:</span>
             <span class="n">curve</span><span class="o">.</span><span class="n">redrawCurve</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_needs_redraw</span> <span class="o">=</span> <span class="kc">False</span></div>
@@ -737,7 +710,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.4.1',
+            VERSION:'v1.4.1+2.ge26aad5',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
