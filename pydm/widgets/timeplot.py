@@ -14,7 +14,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     def __init__(self, channel_address=None, **kws):
         channel_address = "" if channel_address is None else channel_address
-        if 'name' not in kws or kws['name'] is None:
+        if 'name' not in kws or not kws['name']:
             name = remove_protocol(channel_address)
             kws['name'] = name
         self._bufferSize = 1200
@@ -171,6 +171,8 @@ class PyDMTimePlot(BasePlot):
         new_curve.data_changed.connect(self.set_needs_redraw)
         self.redraw_timer.start()
 
+        return new_curve
+
     def removeYChannel(self, curve):
         self.update_timer.timeout.disconnect(curve.asyncUpdate)
         self.removeCurve(curve)
@@ -230,6 +232,34 @@ class PyDMTimePlot(BasePlot):
                              symbolSize=d.get('symbolSize'))
 
     curves = Property("QStringList", getCurves, setCurves)
+
+    def findCurve(self, pv_name):
+        for curve in self._curves:
+            if curve.address == pv_name:
+                return curve
+
+    def refreshCurve(self, curve):
+        """
+        Remove a curve currently being plotted on the timeplot, then redraw that curve, which could have been updated
+        with a new symbol, line style, line width, etc.
+        :param curve:
+        :return:
+        """
+        curve = self.findCurve(curve.channel)
+        if curve:
+            self.removeYChannel(curve)
+            self.addYChannel(y_channel=curve.address, color=curve.color, name=curve.address,
+                             lineStyle=curve.lineStyle, lineWidth=curve.lineWidth, symbol=curve.symbol,
+                             symbolSize=curve.symbolSize)
+
+    def addLegendItem(self, item, pv_name, force_show_legend=False):
+        self._legend.addItem(item, pv_name)
+        self.setShowLegend(force_show_legend)
+
+    def removeLegendItem(self, pv_name):
+        self._legend.removeItem(pv_name)
+        if len(self._legend.items) == 0:
+            self.setShowLegend(False)
 
     def getBufferSize(self):
         return int(self._bufferSize)

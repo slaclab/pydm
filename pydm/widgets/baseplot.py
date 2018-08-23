@@ -66,6 +66,8 @@ class BasePlotCurveItem(PlotDataItem):
         self.setSymbolBrush(None)
         if color is not None:
             self.color = color
+        if kws.get("name", None):
+            self.opts["name"] = kws["name"]
 
     @property
     def color_string(self):
@@ -264,7 +266,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.setShowYGrid(False)
         self.redraw_timer = QTimer(self)
         self.redraw_timer.timeout.connect(self.redrawPlot)
-        self._redraw_rate = 30 #Redraw at 30 Hz by default.
+        self._redraw_rate = 30 # Redraw at 30 Hz by default.
         self.maxRedrawRate = self._redraw_rate
         self._curves = []
         self._title = None
@@ -324,9 +326,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def getShowXGrid(self):
         return self._show_x_grid
 
-    def setShowXGrid(self, value):
+    def setShowXGrid(self, value, alpha=None):
         self._show_x_grid = value
-        self.showGrid(x=self._show_x_grid)
+        self.showGrid(x=self._show_x_grid, alpha=alpha)
 
     def resetShowXGrid(self):
         self.setShowXGrid(False)
@@ -336,9 +338,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def getShowYGrid(self):
         return self._show_y_grid
 
-    def setShowYGrid(self, value):
+    def setShowYGrid(self, value, alpha=None):
         self._show_y_grid = value
-        self.showGrid(y=self._show_y_grid)
+        self.showGrid(y=self._show_y_grid, alpha=alpha)
 
     def resetShowYGrid(self):
         self.setShowYGrid(False)
