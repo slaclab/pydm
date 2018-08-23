@@ -14,7 +14,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     def __init__(self, channel_address=None, **kws):
         channel_address = "" if channel_address is None else channel_address
-        if 'name' not in kws or kws['name'] is None:
+        if 'name' not in kws or not kws['name']:
             name = remove_protocol(channel_address)
             kws['name'] = name
         self._bufferSize = 1200
@@ -169,6 +169,8 @@ class PyDMTimePlot(BasePlot):
         self.addCurve(new_curve, curve_color=color)
         self.redraw_timer.start()
 
+        return new_curve
+
     def removeYChannel(self, curve):
         self.update_timer.timeout.disconnect(curve.asyncUpdate)
         self.removeCurve(curve)
@@ -178,6 +180,22 @@ class PyDMTimePlot(BasePlot):
     def removeYChannelAtIndex(self, index):
         curve = self._curves[index]
         self.removeYChannel(curve)
+
+    def addCurveNameToLegend(self, curve):
+        """
+        Use this if you don't want to display a curve name in the legend as the curve is only meant to be hidden,
+        but not completely removed from the timeplot.
+        """
+        self._legend.addItem(curve, curve.name())
+
+    def removeCurveNameFromLegend(self, curve):
+        """
+        Use this if you don't want to display a curve name in the legend as the curve is only meant to be hidden,
+        but not completely removed from the timeplot.
+        """
+        for item in self._legend.items:
+            if item[1].text == curve.name():
+                self._legend.items.remove(item)
 
     @pyqtSlot()
     def redrawPlot(self):
@@ -221,6 +239,26 @@ class PyDMTimePlot(BasePlot):
                              symbolSize=d.get('symbolSize'))
 
     curves = pyqtProperty("QStringList", getCurves, setCurves)
+
+    def findCurve(self, pv_name):
+        for curve in self._curves:
+            if curve.address == pv_name:
+                return curve
+
+    def refreshCurve(self, curve):
+        """
+        Remove a curve currently being plotted on the timeplot, then redraw that curve, which could have been updated
+        with a new symbol, line style, line width, etc.
+
+        :param curve:
+        :return:
+        """
+        curve = self.findCurve(curve.channel)
+        if curve:
+            self.chart.removeYChannel(curve)
+            self.addYChannel(y_channel=curve.address, color=curve.color, name=curve.address,
+                             lineStyle=curve.lineStyle, lineWidth=curve.lineWidth, symbol=curve.symbol,
+                             symbolSize=curve.symbolSize)
 
     def getBufferSize(self):
         return int(self._bufferSize)

@@ -65,6 +65,8 @@ class BasePlotCurveItem(PlotDataItem):
         self.setSymbolBrush(None)
         if color is not None:
             self.color = color
+        if kws.get("name", None):
+            self.opts["name"] = kws["name"]
 
     @property
     def color_string(self):
@@ -78,7 +80,7 @@ class BasePlotCurveItem(PlotDataItem):
         str
         """
         return str(utilities.colors.svg_color_from_hex(self.color.name(),
-                                                       hex_on_fail=True))
+                                                        hex_on_fail=True))
 
     @color_string.setter
     def color_string(self, new_color_string):
@@ -268,6 +270,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._curves = []
         self._title = None
         self._show_legend = False
+
         self._legend = self.addLegend()
         self._legend.hide()
 
@@ -279,11 +282,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._curves.append(plot_item)
         self.addItem(plot_item)
         self.redraw_timer.start()
-        # self._legend.addItem(plot_item, plot_item.curve_name)
 
     def removeCurve(self, plot_item):
         self.removeItem(plot_item)
-        # self._legend.removeItem(plot_item.name())
+        self._legend.removeItem(plot_item.name())
         self._curves.remove(plot_item)
         if len(self._curves) < 1:
             self.redraw_timer.stop()
@@ -300,7 +302,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def setCurveAtIndex(self, index, new_curve):
         old_curve = self._curves[index]
         self._curves[index] = new_curve
-        # self._legend.addItem(new_curve, new_curve.name())
+        self._legend.addItem(new_curve, new_curve.name())
         self.removeCurve(old_curve)
 
     def curveAtIndex(self, index):
@@ -391,6 +393,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             if self._legend is None:
                 self._legend = self.addLegend()
             else:
+                for item in self._legend.items:
+                    if item[0].isHidden():
+                        item.hide()
                 self._legend.show()
         else:
             if self._legend is not None:
