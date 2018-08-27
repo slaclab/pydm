@@ -204,7 +204,7 @@ class WaveformCurveItem(BasePlotCurveItem):
             return
         self.latest_y = new_waveform
         self.needs_new_y = False
-        if self.x_channel is None or self.x_waveform is not None:
+        if self.x_channel is None or self.latest_x is not None:
             self.update_waveforms_if_ready()
             self.data_changed.emit()
 
