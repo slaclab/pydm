@@ -192,18 +192,18 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         Update the inner bit indicators accordingly with the new value.
         """
-        bits = np.unpackbits(np.array(self.value, dtype=np.uint8))
-        bits = np.roll(bits[::-1], -self._shift)
-        for i in range(0, self._num_bits):
-            w = self._indicators[i]
+        value = int(self.value) >> self._shift
+        if value < 0:
+            value = 0
+
+        bits = [(value >> i) & 1
+                for i in range(self._num_bits)]
+        for bit, indicator in zip(bits, self._indicators):
             if self._connected:
-                if bits[i] == 1:
-                    c = self._on_color
-                else:
-                    c = self._off_color
+                c = self._on_color if bit else self._off_color
             else:
                 c = self._disconnected_color
-            w.setColor(c)
+            indicator.setColor(c)
 
     @pyqtProperty(QColor)
     def onColor(self):
