@@ -6,6 +6,7 @@ import logging
 from functools import partial
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
+from ..utilities.macro import find_base_macros
 
 
 class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
@@ -22,8 +23,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         The file to be opened
     """
     # Constants for determining where to open the display.
-    EXISTING_WINDOW = 0;
-    NEW_WINDOW = 1;
+    EXISTING_WINDOW = 0
+    NEW_WINDOW = 1
 
     def __init__(self, parent=None, filename=None):
         QPushButton.__init__(self, parent)
@@ -203,10 +204,15 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         if self._macro_string is not None:
             macros = json.loads(str(self._macro_string))
 
+        base_macros = find_base_macros(self)
+        merged_macros = base_macros.copy()
+        merged_macros.update(macros)
+
         if target == self.EXISTING_WINDOW:
-            self.window().go(self.displayFilename, macros=macros)
+            self.window().go(self.displayFilename, macros=merged_macros)
         if target == self.NEW_WINDOW:
-            self.window().new_window(self.displayFilename, macros=macros)
+            self.window().new_window(self.displayFilename,
+                                     macros=merged_macros)
 
     def context_menu(self):
         try:
