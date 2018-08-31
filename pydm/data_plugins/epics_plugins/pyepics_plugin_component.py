@@ -47,19 +47,20 @@ class Connection(PyDMConnection):
         if value is not None:
             if isinstance(value, np.ndarray):
                 self.new_value_signal[np.ndarray].emit(value)
-            else:
-                if ftype in int_types:
-                    try:
-                        self.new_value_signal[int].emit(int(value))
-                    except ValueError:  # This happens when a string is empty
-                        # HACK since looks like for PyEpics a 1 element array
-                        # is in fact a scalar. =( I will try to address this
-                        # with Matt Newville
-                        self.new_value_signal[str].emit(char_value)
-                elif ftype in float_types:
-                    self.new_value_signal[float].emit(float(value))
-                else:
+            elif isinstance(value, (list, tuple)):
+                self.new_value_signal[list].emit(value)
+            elif ftype in int_types:
+                try:
+                    self.new_value_signal[int].emit(int(value))
+                except ValueError:  # This happens when a string is empty
+                    # HACK since looks like for PyEpics a 1 element array
+                    # is in fact a scalar. =( I will try to address this
+                    # with Matt Newville
                     self.new_value_signal[str].emit(char_value)
+            elif ftype in float_types:
+                self.new_value_signal[float].emit(float(value))
+            else:
+                self.new_value_signal[str].emit(char_value)
 
     def update_ctrl_vars(self, units=None, enum_strs=None, severity=None, upper_ctrl_limit=None, lower_ctrl_limit=None, precision=None, *args, **kws):
         if severity is not None and self._severity != severity:
@@ -112,6 +113,7 @@ class Connection(PyDMConnection):
     @pyqtSlot(int)
     @pyqtSlot(float)
     @pyqtSlot(str)
+    @pyqtSlot(list)
     @pyqtSlot(np.ndarray)
     def put_value(self, new_val):
         if is_pydm_app() and self.app.is_read_only():
@@ -151,6 +153,10 @@ class Connection(PyDMConnection):
                 channel.value_signal[np.ndarray].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
+            try:
+                channel.value_signal[list].connect(self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
 
     def remove_listener(self, channel):
         if channel.value_signal is not None:
@@ -168,6 +174,10 @@ class Connection(PyDMConnection):
                 pass
             try:
                 channel.value_signal[np.ndarray].disconnect(self.put_value)
+            except (KeyError, TypeError):
+                pass
+            try:
+                channel.value_signal[list].disconnect(self.put_value)
             except (KeyError, TypeError):
                 pass
 
