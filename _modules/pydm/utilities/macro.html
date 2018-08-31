@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.utilities.macro &mdash; PyDM v1.4.1+2.ge26aad5 documentation</title>
+  <title>pydm.utilities.macro &mdash; PyDM v1.4.2+3.gb6dd133 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.4.1+2.ge26aad5
+                v1.4.2+3.gb6dd133
               </div>
             
           
@@ -178,8 +178,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.utilities.macro</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">six</span>
 <span class="kn">from</span> <span class="nn">string</span> <span class="k">import</span> <span class="n">Template</span>
 
 
@@ -195,15 +195,13 @@
 <span class="sd">        Dictionary containing macro name as key and value as what will be substituted.</span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    temp_filename : str</span>
-<span class="sd">        The path to the new generated file with the proper substitutions.</span>
+<span class="sd">    file : io.StringIO</span>
+<span class="sd">        File-like object with the proper substitutions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">temporary_fd</span><span class="p">,</span> <span class="n">temp_filename</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">()</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">orig_file</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">fdopen</span><span class="p">(</span><span class="n">temporary_fd</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">temporary_file</span><span class="p">:</span>
-            <span class="n">t</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">orig_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-            <span class="n">temporary_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">safe_substitute</span><span class="p">(</span><span class="n">macros</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">temp_filename</span></div>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">orig_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="n">expanded_text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">safe_substitute</span><span class="p">(</span><span class="n">macros</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">(</span><span class="n">expanded_text</span><span class="p">))</span></div>
 </pre></div>
 
            </div>
@@ -238,7 +236,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.4.1+2.ge26aad5',
+            VERSION:'v1.4.2+3.gb6dd133',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
