@@ -30,7 +30,6 @@ def test_substitute_in_file(text, macros, expected):
     # close the file descriptor
     os.close(fd)
 
-    new_file = substitute_in_file(name, macros)
-    with open(new_file, 'r') as nf:
-        nt = nf.read()
-        assert (nt == expected)
+    nf = substitute_in_file(name, macros)
+    nt = nf.read()
+    assert (nt == expected)
