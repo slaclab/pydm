@@ -239,7 +239,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         Generates the custom context menu, and populates it with any external
         tools that have been loaded.  PyDMWidget subclasses should override
         this method (after calling superclass implementation) to add the menu.
-        
+
         Returns
         -------
         QMenu
@@ -912,8 +912,8 @@ class PyDMWritableWidget(PyDMWidget):
             True to stop the event from being handled further; otherwise
             return false.
         """
-
-        if is_channel_valid(self._channel):
+        channel = getattr(self, 'channel', None)
+        if is_channel_valid(channel):
             status = self._write_access and self._connected
 
             if event.type() == QEvent.Leave:
