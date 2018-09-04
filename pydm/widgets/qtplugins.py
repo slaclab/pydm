@@ -61,10 +61,12 @@ PyDMScatterPlotPlugin = qtplugin_factory(PyDMScatterPlot,
 
 # Byte plugin
 PyDMByteIndicatorPlugin = qtplugin_factory(PyDMByteIndicator,
-                                           group=WidgetCategory.DISPLAY)
+                                           group=WidgetCategory.DISPLAY,
+                                           extensions=BASE_EXTENSIONS)
 
 # Checkbox plugin
-PyDMCheckboxPlugin = qtplugin_factory(PyDMCheckbox, group=WidgetCategory.INPUT)
+PyDMCheckboxPlugin = qtplugin_factory(PyDMCheckbox, group=WidgetCategory.INPUT,
+                                      extensions=BASE_EXTENSIONS)
 
 # Drawing plugins
 PyDMDrawingArcPlugin = qtplugin_factory(PyDMDrawingArc,
@@ -96,8 +98,8 @@ PyDMDrawingTrianglePlugin = qtplugin_factory(PyDMDrawingTriangle,
                                              extensions=BASE_EXTENSIONS)
 
 PyDMDrawingPolygonPlugin = qtplugin_factory(PyDMDrawingPolygon,
-                                             group=WidgetCategory.DRAWING,
-                                             extensions=BASE_EXTENSIONS)
+                                            group=WidgetCategory.DRAWING,
+                                            extensions=BASE_EXTENSIONS)
 
 # Embedded Display plugin
 PyDMEmbeddedDisplayPlugin = qtplugin_factory(PyDMEmbeddedDisplay,

@@ -35,11 +35,12 @@ class PyDMTaskMenuExtension(QPyDesignerTaskMenuExtension):
         self.widget = widget
         self.__actions = None
         self.__extensions = []
-        extensions = getattr(widget, 'extensions', [])
+        extensions = getattr(widget, 'extensions', None)
 
-        for ex in extensions:
-            extension = ex(self.widget)
-            self.__extensions.append(extension)
+        if extensions is not None:
+            for ex in extensions:
+                extension = ex(self.widget)
+                self.__extensions.append(extension)
 
     def taskActions(self):
         if self.__actions is None:
@@ -52,7 +53,8 @@ class PyDMTaskMenuExtension(QPyDesignerTaskMenuExtension):
     def preferredEditAction(self):
         if self.__actions is None:
             self.taskActions()
-        return self.__actions[0]
+        if self.__actions:
+            return self.__actions[0]
 
 
 class PyDMExtension(object):
