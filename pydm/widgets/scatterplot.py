@@ -1,9 +1,9 @@
-from qtpy.QtGui import QColor
-from qtpy.QtCore import Slot, Property, Qt
-import numpy as np
 import json
 import itertools
 from collections import OrderedDict
+import numpy as np
+from qtpy.QtGui import QColor
+from qtpy.QtCore import Slot, Property, Qt
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol
@@ -33,6 +33,8 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         self.points_accumulated = 0
         self.latest_x_value = None
         self.latest_y_value = None
+        self.needs_new_x = True
+        self.needs_new_y = True
         if 'symbol' not in kws.keys():
             kws['symbol'] = 'o'
         if 'lineStyle' not in kws.keys():
