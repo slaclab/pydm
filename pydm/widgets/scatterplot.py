@@ -8,7 +8,6 @@ from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol
 
-
 class ScatterPlotCurveItem(BasePlotCurveItem):
 
     def __init__(self, y_addr, x_addr, redraw_mode=None, **kws):
@@ -183,6 +182,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         self.data_buffer[1, -1] = self.latest_y_value
         if self.points_accumulated < self._bufferSize:
             self.points_accumulated = self.points_accumulated + 1
+        self.data_changed.emit()
 
     def initialize_buffer(self):
         self.points_accumulated = 0
@@ -338,6 +338,7 @@ class PyDMScatterPlot(BasePlot):
             plot_opts['lineWidth'] = lineWidth
         if redraw_mode is not None:
             plot_opts['redraw_mode'] = redraw_mode
+        self._needs_redraw = False
         curve = ScatterPlotCurveItem(y_addr=y_channel,
                                      x_addr=x_channel,
                                      name=name,
@@ -347,6 +348,7 @@ class PyDMScatterPlot(BasePlot):
             curve.setBufferSize(buffer_size)
         self.channel_pairs[(x_channel, y_channel)] = curve
         self.addCurve(curve, curve_color=color)
+        curve.data_changed.connect(self.set_needs_redraw)
 
     def removeChannel(self, curve):
         """
@@ -373,13 +375,20 @@ class PyDMScatterPlot(BasePlot):
         self.removeChannel(curve)
 
     @Slot()
+    def set_needs_redraw(self):
+        self._needs_redraw = True
+
+    @Slot()
     def redrawPlot(self):
         """
         Request a redraw from each curve in the plot.
         Called by curves when they get new data.
         """
+        if not self._needs_redraw:
+            return
         for curve in self._curves:
             curve.redrawCurve()
+        self._needs_redraw = False
 
     def clearCurves(self):
         """
