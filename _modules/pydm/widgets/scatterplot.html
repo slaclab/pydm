@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.scatterplot &mdash; PyDM v1.4.2+8.gd2a8cff documentation</title>
+  <title>pydm.widgets.scatterplot &mdash; PyDM v1.4.2+10.g8988476 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.4.2+8.gd2a8cff
+                v1.4.2+10.g8988476
               </div>
             
           
@@ -385,8 +385,8 @@
 <span class="sd">        Called by the curve&#39;s parent plot whenever the curve needs to be</span>
 <span class="sd">        re-drawn with new data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">),</span>
-                     <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">),</span>
+                     <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_x</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_y</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -458,7 +458,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">channel_pairs</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="n">init_channel_pairs</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">init_x_channels</span><span class="p">,</span> <span class="n">init_y_channels</span><span class="p">)</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">x_chan</span><span class="p">,</span> <span class="n">y_chan</span><span class="p">)</span> <span class="ow">in</span> <span class="n">init_channel_pairs</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">addChannel</span><span class="p">(</span><span class="n">y_chan</span><span class="p">,</span> <span class="n">x_channel</span><span class="o">=</span><span class="n">x_chan</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">addChannel</span><span class="p">(</span><span class="n">y_channel</span><span class="o">=</span><span class="n">y_chan</span><span class="p">,</span> <span class="n">x_channel</span><span class="o">=</span><span class="n">x_chan</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">initialize_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># If we are in Qt Designer, don&#39;t update the plot continuously.</span>
@@ -523,7 +523,7 @@
                                      <span class="o">**</span><span class="n">plot_opts</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">buffer_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">curve</span><span class="o">.</span><span class="n">setBufferSize</span><span class="p">(</span><span class="n">buffer_size</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">channel_pairs</span><span class="p">[(</span><span class="n">y_channel</span><span class="p">,</span> <span class="n">x_channel</span><span class="p">)]</span> <span class="o">=</span> <span class="n">curve</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel_pairs</span><span class="p">[(</span><span class="n">x_channel</span><span class="p">,</span> <span class="n">y_channel</span><span class="p">)]</span> <span class="o">=</span> <span class="n">curve</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">addCurve</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">curve_color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMScatterPlot.removeChannel"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.PyDMScatterPlot.removeChannel">[docs]</a>    <span class="k">def</span> <span class="nf">removeChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
@@ -593,7 +593,7 @@
             <span class="n">color</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">color</span><span class="p">:</span>
                 <span class="n">color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">addChannel</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;y_channel&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;x_channel&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">addChannel</span><span class="p">(</span><span class="n">y_channel</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;y_channel&#39;</span><span class="p">],</span> <span class="n">x_channel</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;x_channel&#39;</span><span class="p">],</span>
                             <span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
                             <span class="n">lineStyle</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lineStyle&#39;</span><span class="p">),</span>
                             <span class="n">lineWidth</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lineWidth&#39;</span><span class="p">),</span>
@@ -682,7 +682,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.4.2+8.gd2a8cff',
+            VERSION:'v1.4.2+10.g8988476',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
