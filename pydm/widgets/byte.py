@@ -13,10 +13,10 @@ class PyDMBitIndicator(QWidget):
         The parent widget for the Label
 
     """
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, circle=False):
         super(PyDMBitIndicator, self).__init__(parent)
         self.setAutoFillBackground(True)
-        self.circle = False
+        self.circle = circle
         self._painter = QPainter()
         self._brush = QBrush(Qt.SolidPattern)
         self._pen = QPen(Qt.SolidLine)
@@ -192,18 +192,18 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         Update the inner bit indicators accordingly with the new value.
         """
-        bits = np.unpackbits(np.array(self.value, dtype=np.uint8))
-        bits = np.roll(bits[::-1], -self._shift)
-        for i in range(0, self._num_bits):
-            w = self._indicators[i]
+        value = int(self.value) >> self._shift
+        if value < 0:
+            value = 0
+
+        bits = [(value >> i) & 1
+                for i in range(self._num_bits)]
+        for bit, indicator in zip(bits, self._indicators):
             if self._connected:
-                if bits[i] == 1:
-                    c = self._on_color
-                else:
-                    c = self._off_color
+                c = self._on_color if bit else self._off_color
             else:
                 c = self._disconnected_color
-            w.setColor(c)
+            indicator.setColor(c)
 
     @pyqtProperty(QColor)
     def onColor(self):
@@ -373,7 +373,6 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             indicator.circle = self._circles
         self.update_indicators()
 
-
     @pyqtProperty(QTabWidget.TabPosition)
     def labelPosition(self):
         """
@@ -422,7 +421,8 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self._num_bits = new_num_bits
         for indicator in self._indicators:
             indicator.deleteLater()
-        self._indicators = [PyDMBitIndicator(self) for i in range(0, self._num_bits)]
+        self._indicators = [PyDMBitIndicator(parent=self, circle=self.circles)
+                            for i in range(0, self._num_bits)]
         old_labels = self.labels
         new_labels = ["Bit {}".format(i) for i in range(0, self._num_bits)]
         for i, old_label in enumerate(old_labels):
