@@ -281,6 +281,7 @@ class PyDMScatterPlot(BasePlot):
         init_channel_pairs = zip(init_x_channels, init_y_channels)
         for (x_chan, y_chan) in init_channel_pairs:
             self.addChannel(y_channel=y_chan, x_channel=x_chan)
+        self._needs_redraw = True
 
     def initialize_for_designer(self):
         # If we are in Qt Designer, don't update the plot continuously.
@@ -338,7 +339,6 @@ class PyDMScatterPlot(BasePlot):
             plot_opts['lineWidth'] = lineWidth
         if redraw_mode is not None:
             plot_opts['redraw_mode'] = redraw_mode
-        self._needs_redraw = False
         curve = ScatterPlotCurveItem(y_addr=y_channel,
                                      x_addr=x_channel,
                                      name=name,
