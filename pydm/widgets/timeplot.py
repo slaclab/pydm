@@ -1,10 +1,10 @@
-from qtpy.QtGui import QColor
-from qtpy.QtCore import Slot, Property, QTimer
-from pyqtgraph import ViewBox, AxisItem
-import numpy as np
 import time
 import json
 from collections import OrderedDict
+from pyqtgraph import ViewBox, AxisItem
+import numpy as np
+from qtpy.QtGui import QColor
+from qtpy.QtCore import Slot, Property, QTimer
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from .. utilities import remove_protocol
@@ -127,11 +127,9 @@ class PyDMTimePlot(BasePlot):
         self._bottom_axis = TimeAxisItem('bottom')
         self._left_axis = AxisItem('left')
         super(PyDMTimePlot, self).__init__(
-                                    parent=parent,
-                                    background=background,
-                                    axisItems={'bottom': self._bottom_axis,
-                                               'left': self._left_axis}
-                                    )
+            parent=parent,
+            background=background,
+            axisItems={'bottom': self._bottom_axis, 'left': self._left_axis})
         self.plotItem.disableAutoRange(ViewBox.XAxis)
         self.getViewBox().setMouseEnabled(x=False)
         self._bufferSize = 1200
@@ -294,7 +292,7 @@ class PyDMTimePlot(BasePlot):
             if self.getUpdatesAsynchronously():
                 for curve in self._curves:
                     curve.setBufferSize(int((self._time_span * 1000.0) /
-                                        self._update_interval))
+                                            self._update_interval))
             self.updateXAxis(update_immediately=True)
 
     timeSpan = Property(float, getTimeSpan, setTimeSpan, resetTimeSpan)
