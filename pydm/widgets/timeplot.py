@@ -62,6 +62,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
             self.data_buffer[1, self._bufferSize - 1] = new_value
             if self.points_accumulated < self._bufferSize:
                 self.points_accumulated = self.points_accumulated + 1
+            self.data_changed.emit()
         elif self._update_mode == PyDMTimePlot.AsynchronousMode:
             self.latest_value = new_value
 
@@ -74,6 +75,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.data_buffer[1, self._bufferSize - 1] = self.latest_value
         if self.points_accumulated < self._bufferSize:
             self.points_accumulated = self.points_accumulated + 1
+        self.data_changed.emit()
 
     def initialize_buffer(self):
         self.points_accumulated = 0
@@ -138,6 +140,7 @@ class PyDMTimePlot(BasePlot):
         self._update_interval = 100
         self.update_timer.setInterval(self._update_interval)
         self._update_mode = PyDMTimePlot.SynchronousMode
+        self._needs_redraw = True
         for channel in init_y_channels:
             self.addYChannel(channel)
 
@@ -167,6 +170,7 @@ class PyDMTimePlot(BasePlot):
         new_curve.setBufferSize(self._bufferSize)
         self.update_timer.timeout.connect(new_curve.asyncUpdate)
         self.addCurve(new_curve, curve_color=color)
+        new_curve.data_changed.connect(self.set_needs_redraw)
         self.redraw_timer.start()
 
     def removeYChannel(self, curve):
@@ -180,10 +184,17 @@ class PyDMTimePlot(BasePlot):
         self.removeYChannel(curve)
 
     @Slot()
+    def set_needs_redraw(self):
+        self._needs_redraw = True
+
+    @Slot()
     def redrawPlot(self):
+        if not self._needs_redraw:
+            return
         self.updateXAxis()
         for curve in self._curves:
             curve.redrawCurve()
+        self._needs_redraw = False
 
     def updateXAxis(self, update_immediately=False):
         if len(self._curves) == 0:
