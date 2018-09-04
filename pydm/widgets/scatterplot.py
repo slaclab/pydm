@@ -207,8 +207,8 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         Called by the curve's parent plot whenever the curve needs to be
         re-drawn with new data.
         """
-        self.setData(x=self.data_buffer[1, -self.points_accumulated:].astype(np.float),
-                     y=self.data_buffer[0, -self.points_accumulated:].astype(np.float))
+        self.setData(x=self.data_buffer[0, -self.points_accumulated:].astype(np.float),
+                     y=self.data_buffer[1, -self.points_accumulated:].astype(np.float))
         self.needs_new_x = True
         self.needs_new_y = True
 
@@ -280,7 +280,7 @@ class PyDMScatterPlot(BasePlot):
         self.channel_pairs = OrderedDict()
         init_channel_pairs = zip(init_x_channels, init_y_channels)
         for (x_chan, y_chan) in init_channel_pairs:
-            self.addChannel(y_chan, x_channel=x_chan)
+            self.addChannel(y_channel=y_chan, x_channel=x_chan)
 
     def initialize_for_designer(self):
         # If we are in Qt Designer, don't update the plot continuously.
@@ -345,7 +345,7 @@ class PyDMScatterPlot(BasePlot):
                                      **plot_opts)
         if buffer_size is not None:
             curve.setBufferSize(buffer_size)
-        self.channel_pairs[(y_channel, x_channel)] = curve
+        self.channel_pairs[(x_channel, y_channel)] = curve
         self.addCurve(curve, curve_color=color)
 
     def removeChannel(self, curve):
@@ -415,7 +415,7 @@ class PyDMScatterPlot(BasePlot):
             color = d.get('color')
             if color:
                 color = QColor(color)
-            self.addChannel(d['y_channel'], d['x_channel'],
+            self.addChannel(y_channel=d['y_channel'], x_channel=d['x_channel'],
                             name=d.get('name'), color=color,
                             lineStyle=d.get('lineStyle'),
                             lineWidth=d.get('lineWidth'),
