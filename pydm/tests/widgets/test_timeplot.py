@@ -1,4 +1,5 @@
 import pytest
+from pyqtgraph import AxisItem
 from ...widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem
 
 import logging
@@ -206,6 +207,6 @@ def test_pydmtimeplot_construct(qtbot):
     pydm_timeplot = PyDMTimePlot()
     qtbot.addWidget(pydm_timeplot)
 
-    assert isinstance(pydm_timeplot._bottom_axis, TimeAxisItem)
+    assert isinstance(pydm_timeplot._bottom_axis, AxisItem)
     assert pydm_timeplot._bottom_axis.orientation == "bottom"
     assert pydm_timeplot._left_axis.orientation == "left"
