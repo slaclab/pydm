@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.utilities.macro &mdash; PyDM v1.4.2+6.ga9b9e0c documentation</title>
+  <title>pydm.utilities.macro &mdash; PyDM v1.4.2+8.gd2a8cff documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.4.2+6.ga9b9e0c
+                v1.4.2+8.gd2a8cff
               </div>
             
           
@@ -202,6 +202,18 @@
         <span class="n">text</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">orig_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
     <span class="n">expanded_text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">safe_substitute</span><span class="p">(</span><span class="n">macros</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">(</span><span class="n">expanded_text</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="find_base_macros"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.macro.find_base_macros">[docs]</a><span class="k">def</span> <span class="nf">find_base_macros</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Find and return the first set of defined base_macros from this widget or</span>
+<span class="sd">    its ancestors.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">while</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="s1">&#39;base_macros&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">widget</span><span class="o">.</span><span class="n">base_macros</span>
+        <span class="n">widget</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">{}</span></div>
 </pre></div>
 
            </div>
@@ -236,7 +248,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.4.2+6.ga9b9e0c',
+            VERSION:'v1.4.2+8.gd2a8cff',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

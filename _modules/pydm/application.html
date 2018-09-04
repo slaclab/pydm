@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.4.2+6.ga9b9e0c documentation</title>
+  <title>pydm.application &mdash; PyDM v1.4.2+8.gd2a8cff documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.4.2+6.ga9b9e0c
+                v1.4.2+8.gd2a8cff
               </div>
             
           
@@ -613,6 +613,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">directory_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">macro_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid file type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extension</span><span class="p">))</span>
+        <span class="c1"># Add on the macros to the widget after initialization. This is</span>
+        <span class="c1"># done for both ui files and python files.</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">base_macros</span> <span class="o">=</span> <span class="n">merged_macros</span>
         <span class="k">if</span> <span class="n">establish_connection</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">establish_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">directory_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
@@ -992,7 +995,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v1.4.2+6.ga9b9e0c',
+            VERSION:'v1.4.2+8.gd2a8cff',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
