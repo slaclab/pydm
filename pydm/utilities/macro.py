@@ -22,3 +22,15 @@ def substitute_in_file(file_path, macros):
         text = Template(orig_file.read())
     expanded_text = text.safe_substitute(macros)
     return io.StringIO(six.text_type(expanded_text))
+
+
+def find_base_macros(widget):
+    '''
+    Find and return the first set of defined base_macros from this widget or
+    its ancestors.
+    '''
+    while widget is not None:
+        if hasattr(widget, 'base_macros'):
+            return widget.base_macros
+        widget = widget.parent()
+    return {}

@@ -435,6 +435,9 @@ class PyDMApplication(QApplication):
             self.directory_stack.pop()
             self.macro_stack.pop()
             raise ValueError("Invalid file type: {}".format(extension))
+        # Add on the macros to the widget after initialization. This is
+        # done for both ui files and python files.
+        widget.base_macros = merged_macros
         if establish_connection:
             self.establish_widget_connections(widget)
         self.directory_stack.pop()
