@@ -201,7 +201,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         # Check for None and ""
         if not self.displayFilename:
             return
-        macros = None
+        macros = {}
         if self._macro_string is not None:
             macros = json.loads(str(self._macro_string))
 
