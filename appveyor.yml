@@ -38,14 +38,17 @@ init:
 install:
   - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%"
   - conda config --set always_yes yes
-  - conda install conda-build anaconda-client
-  - conda update -q conda conda-build
+  - conda config --add channels anaconda
   # Add the channels needed for install
-  - conda config --append channels conda-forge
+  - conda config --add channels conda-forge
+  - conda update -q conda -c anaconda
+  - conda info
+  # Pinned conda-build to 3.13 as 3.14 was resulting in a TypeError.
+  - conda install conda-build==3.13 anaconda-client -c anaconda
   # Build the recipe and use it the local build for install
-  - "conda build -q conda-recipe --python=%TRAVIS_PYTHON_VERSION% --output-folder bld-dir"
+  - "conda build -q conda-recipe --python=%PYTHON_VERSION% --output-folder bld-dir"
   - "conda config --add channels \"file:///C:/projects/pydm/bld-dir\""
-  - "conda create -q -n test-environment python=%TRAVIS_PYTHON_VERSION% pydm"
+  - "conda create -q -n test-environment python=%PYTHON_VERSION% pydm"
   - activate test-environment
   - pip install -r dev-requirements.txt
 
