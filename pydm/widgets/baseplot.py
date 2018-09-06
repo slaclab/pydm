@@ -368,6 +368,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     axisColor = Property(QColor, getAxisColor, setAxisColor)
 
+    def getBottomAxisLabel(self):
+        return self.getAxis('bottom').labelText
+
     def getPlotTitle(self):
         if self._title is None:
             return ""
