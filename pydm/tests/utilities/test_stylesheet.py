@@ -3,7 +3,7 @@ import logging
 
 
 from ...utilities import stylesheet
-from qtpy.QtGui import QApplication
+from qtpy.QtWidgets import QApplication
 
 # The path to the stylesheet used in these unit tests
 test_stylesheet_path = os.path.join(
