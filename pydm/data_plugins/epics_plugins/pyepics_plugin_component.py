@@ -3,7 +3,7 @@ import logging
 import numpy as np
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from qtpy.QtCore import Slot, Qt
-from qtpy.QtGui import QApplication
+from qtpy.QtWidgets import QApplication
 from pydm.utilities import is_pydm_app
 
 logger = logging.getLogger(__name__)
