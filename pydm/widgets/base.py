@@ -1,3 +1,5 @@
+import collections
+import time
 import logging
 import functools
 import json
@@ -178,6 +180,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
     ALARM_INVALID = 3
     ALARM_DISCONNECTED = 4
 
+    # TODO: per-widget, app-wide max as well?
+    MAX_HISTORY = 100
+
     def __init__(self, init_channel=None):
         super(PyDMWidget, self).__init__()
 
@@ -197,6 +202,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_sensitive_border = True
         self._alarm_state = self.ALARM_NONE
         self._tooltip = None
+        self._history_plot = None
 
         self._precision_from_pv = True
         self._prec = 0
@@ -209,6 +215,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.format_string = "{}"
 
         self.value = None
+        self.value_history = collections.deque([], self.MAX_HISTORY)
         self.channeltype = None
         self.subtype = None
 
@@ -218,9 +225,42 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
+            self.installEventFilter(self)
 
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.contextMenuEvent = self.open_context_menu
+
+    def eventFilter(self, obj, event):
+        """
+        Filters events on this object.
+
+        Params
+        ------
+        object : QObject
+            The object that is being handled.
+        event : QEvent
+            The event that is happening.
+
+        Returns
+        -------
+        bool
+            True to stop the event from being handled further; otherwise
+            return false.
+        """
+        channel = getattr(self, 'channel', None)
+        if is_channel_valid(channel):
+            if event.type() == QEvent.ToolTip:
+                modifiers = QApplication.keyboardModifiers()
+                if modifiers != Qt.ShiftModifier:
+                    return False
+
+                from .timeplot import PyDMHistoryFrame
+                if isinstance(self.window(), PyDMHistoryFrame):
+                    # avoid history-inception
+                    return False
+                self.open_history_plot(position=event.pos())
+                return True
+        return False
 
     def widget_ctx_menu(self):
         """
@@ -263,6 +303,27 @@ class PyDMWidget(PyDMPrimitiveWidget):
         menu = self.generate_context_menu()
         action = menu.exec_(self.mapToGlobal(ev.pos()))
         del menu
+
+    def open_history_plot(self, position=None):
+        if self._history_plot is None:
+            from .timeplot import PyDMHistoryFrame
+            self._history_plot = PyDMHistoryFrame(
+                value_history=self.value_history, parent=self)
+            self._history_plot.setWindowTitle(
+                'Plot of {}'.format(self._channel))
+            self.app.establish_widget_connections(self._history_plot)
+
+        plot = self._history_plot
+        geom = plot.frameGeometry()
+        geom.moveTopLeft(self.mapToGlobal(position))
+
+        plot.setGeometry(geom)
+        plot.setWindowFlags(Qt.Popup | Qt.WindowStaysOnTopHint)
+        # plot.setWindowState(plot.windowState() & ~Qt.WindowMinimized |
+        #                     Qt.WindowActive)
+        plot.setVisible(True)
+        plot.show()
+        plot.activateWindow()
 
     def init_for_designer(self):
         """
@@ -311,6 +372,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
                 pass
 
         self.update_format_string()
+        # TODO: pydm should be keeping track of timestamps as well?
+        self.value_history.append((time.time(), new_val))
 
     @Property(int, designable=False)
     def alarmSeverity(self):
@@ -882,10 +945,6 @@ class PyDMWritableWidget(PyDMWidget):
         self._write_access = False
         super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
         self.app = QApplication.instance()
-        # We should  install the Event Filter only if we are running
-        # and not at the Designer
-        if is_pydm_app():
-            self.installEventFilter(self)
 
     def init_for_designer(self):
         """
@@ -912,6 +971,10 @@ class PyDMWritableWidget(PyDMWidget):
             True to stop the event from being handled further; otherwise
             return false.
         """
+        filtered = super(PyDMWritableWidget, self).eventFilter(obj, event)
+        if filtered:
+            return filtered
+
         channel = getattr(self, 'channel', None)
         if is_channel_valid(channel):
             status = self._write_access and self._connected

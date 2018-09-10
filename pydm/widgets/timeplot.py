@@ -1,13 +1,17 @@
 import time
 import json
+import datetime
+import collections
 from collections import OrderedDict
 from pyqtgraph import ViewBox, AxisItem
 import numpy as np
-from qtpy.QtGui import QColor
-from qtpy.QtCore import Slot, Property, QTimer
+from qtpy.QtGui import (QColor, QFrame, QVBoxLayout, QApplication, QLabel,
+                        QPushButton, QTableWidget, QTableWidgetItem, QCursor)
+from qtpy.QtCore import (Slot, Property, QTimer, Qt)
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
-from .. utilities import remove_protocol
+from ..utilities import remove_protocol
+from .base import PyDMWidget
 
 
 class TimePlotCurveItem(BasePlotCurveItem):
@@ -187,8 +191,9 @@ class PyDMTimePlot(BasePlot):
 
     @Slot()
     def redrawPlot(self):
-        if not self._needs_redraw:
+        if not self._needs_redraw or not self.isVisible():
             return
+
         self.updateXAxis()
         for curve in self._curves:
             curve.redrawCurve()
@@ -356,3 +361,210 @@ class TimeAxisItem(AxisItem):
         for val in values:
             strings.append(time.strftime("%H:%M:%S", time.localtime(val)))
         return strings
+
+
+class HistoryPlotCurveItem(TimePlotCurveItem):
+    def __init__(self, channel_address=None, **kws):
+        super(HistoryPlotCurveItem, self).__init__(
+            channel_address=channel_address, **kws
+        )
+
+
+class PyDMHistoryPlot(PyDMTimePlot):
+    def __init__(self, pydm_widget, value_history, parent=None,
+                 background='default'):
+        super(PyDMHistoryPlot, self).__init__(
+            parent=parent,
+            init_y_channels=[pydm_widget.channel],
+            background=background,
+        )
+        self.value_history = value_history
+        self._copy_history()
+
+    def _copy_history(self):
+        if not self._curves:
+            return
+
+        curve = self._curves[0]
+
+        num_points = min(curve._bufferSize, len(self.value_history))
+        slc = slice(-num_points, None)
+        points = tuple(self.value_history)[slc]
+        curve.data_buffer[0, slc] = [ts for ts, datapoint in points]
+        curve.data_buffer[1, slc] = [datapoint for ts, datapoint in points]
+        curve.points_accumulated = num_points
+
+
+class PyDMHistoryTable(QTableWidget, PyDMWidget):
+    """
+    A QTableWidget with support for Channels and more from PyDM.
+
+    Values of the array are displayed in the selected number of columns.
+    The number of rows is determined by the size of the waveform.
+    It is possible to define the labels of each row and column.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    """
+
+    def __init__(self, max_items=5, value_history=None, parent=None,
+                 init_channel=None):
+        QTableWidget.__init__(self, parent)
+        PyDMWidget.__init__(self, init_channel=init_channel)
+        self._columnHeaders = ["Timestamp", "Value"]
+        self._rowHeaders = []
+        self._itemsFlags = (Qt.ItemIsSelectable |
+                            Qt.ItemIsEnabled)
+        self.setColumnCount(2)
+        self.setSizeAdjustPolicy(self.AdjustToContents)
+
+        if value_history is None:
+            value_history = []
+        else:
+            value_history = list(value_history)
+
+        self.value_history = collections.deque(value_history, max_items)
+
+    def value_changed(self, new_value):
+        """
+        Callback invoked when the Channel value is changed.
+
+        Parameters
+        ----------
+        new_value : np.ndarray
+            The new waveform value from the channel.
+        """
+        ts = time.time()
+        self.value_history.append((ts, new_value))
+        super(PyDMHistoryTable, self).value_changed(new_value)
+
+        if not self.isVisible():
+            return
+
+        self.setRowCount(len(self.value_history))
+        for row, (ts, value) in enumerate(reversed(self.value_history)):
+            value_cell = QTableWidgetItem(str(value))
+            value_cell.setFlags(self._itemsFlags)
+            ts = str(datetime.datetime.fromtimestamp(ts))
+            self.setItem(row, 0, QTableWidgetItem(ts))
+            self.setItem(row, 1, value_cell)
+
+        self.setVerticalHeaderLabels(self._rowHeaders)
+        self.setHorizontalHeaderLabels(self._columnHeaders)
+        self.resizeColumnsToContents()
+
+    @pyqtProperty("QStringList")
+    def columnHeaderLabels(self):
+        """
+        Return the list of labels for the columns of the Table.
+
+        Returns
+        -------
+        list of strings
+        """
+        return self._columnHeaders
+
+    @columnHeaderLabels.setter
+    def columnHeaderLabels(self, new_labels):
+        """
+        Set the list of labels for the columns of the Table.
+
+        If new_labels is empty the column numbers will be used.
+
+        Parameters
+        ----------
+        new_labels : list of strings
+        """
+        if new_labels:
+            new_labels += (self.columnCount() - len(new_labels)) * [""]
+        self._columnHeaders = new_labels
+        self.setHorizontalHeaderLabels(self._columnHeaders)
+        self.setColumnCount(len(self._columnHeaders))
+
+    @pyqtProperty("QStringList")
+    def rowHeaderLabels(self):
+        """
+        Return the list of labels for the rows of the Table.
+
+        Returns
+        -------
+        list of strings
+        """
+        return self._rowHeaders
+
+    @rowHeaderLabels.setter
+    def rowHeaderLabels(self, new_labels):
+        """
+        Set the list of labels for the rows of the Table.
+
+        If new_labels is empty the row numbers will be used.
+
+        Parameters
+        ----------
+        new_labels : list of strings
+        """
+        if new_labels:
+            new_labels += (self.rowCount() - len(new_labels)) * [""]
+        self._rowHeaders = new_labels
+        self.setVerticalHeaderLabels(self._rowHeaders)
+
+
+class PyDMHistoryFrame(QFrame):
+    def __init__(self, value_history, parent=None, background='default'):
+        super(PyDMHistoryFrame, self).__init__(parent=None)
+        self.setMinimumWidth(200)
+        self.setMinimumHeight(200)
+
+        self.value_history = value_history
+        self.pop_out_button = QPushButton('Expand')
+        self.pop_out_button.pressed.connect(self.pop_out)
+        self.popped_out = False
+
+        self.layout = QVBoxLayout()
+        self.title_widget = QLabel(parent.channel)
+        self.title_widget.setAlignment(Qt.AlignCenter)
+        self.plot_widget = PyDMTimePlot(parent=None,
+                                        init_y_channels=[parent.channel],
+                                        background=background)
+        self.table_widget = PyDMHistoryTable(init_channel=parent.channel,
+                                             parent=None,
+                                             value_history=value_history)
+        self.layout.addWidget(self.pop_out_button)
+        self.layout.addWidget(self.title_widget)
+        self.layout.addWidget(self.plot_widget)
+        self.layout.addWidget(self.table_widget)
+        self.setLayout(self.layout)
+        self.setWindowFlags(Qt.Popup | Qt.WindowStaysOnTopHint)
+
+    def showEvent(self, event):
+        self.pop_out_button.setVisible(not self.popped_out)
+
+    def hideEvent(self, event):
+        self.pop_out_button.setVisible(True)
+        self.popped_out = False
+
+    def pop_out(self):
+        self.setWindowFlags(Qt.Dialog)
+        self.setVisible(True)
+        self.show()
+        self.activateWindow()
+
+        self.popped_out = True
+        self.pop_out_button.setVisible(False)
+
+    def _copy_history(self):
+        if not self.plot_widget._curves:
+            return
+
+        curve = self.plot_widget._curves[0]
+
+        num_points = min(curve._bufferSize, len(self.value_history))
+        slc = slice(-num_points, None)
+        points = tuple(self.value_history)[slc]
+        curve.data_buffer[0, slc] = [ts for ts, datapoint in points]
+        curve.data_buffer[1, slc] = [datapoint for ts, datapoint in points]
+        curve.points_accumulated = num_points
