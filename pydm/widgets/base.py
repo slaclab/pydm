@@ -158,8 +158,6 @@ class PyDMPrimitiveWidget(object):
                 RulesDispatcher().register(self, rules_list)
             except JSONDecodeError as ex:
                 logger.exception('Invalid format for Rules')
-                return
-
 
 class PyDMWidget(PyDMPrimitiveWidget):
     """
