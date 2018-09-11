@@ -564,7 +564,7 @@ class PyDMDrawingImage(PyDMDrawing):
         PyQT Property for aspect ratio mode to be used when rendering
         the image
 
-        Returns
+        Parameters
         -------
         new_mode : int
             Index at Qt.AspectRatioMode enum

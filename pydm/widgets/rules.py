@@ -49,8 +49,7 @@ class RulesDispatcher(object):
 
         Returns
         -------
-        bool
-            True if all the rules were successfully registered, False otherwise.
+        None
         """
         self.rules_engine.register(widget, rules)
 
