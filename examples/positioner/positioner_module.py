@@ -3,7 +3,7 @@ import cams
 import time
 from qtpy import uic
 from qtpy.QtCore import QObject, Slot, Signal
-from qtpy.QtGui import QWidget
+from qtpy.QtWidgets import QWidget
 from os import path
 from pydm import Display
 

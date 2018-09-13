@@ -1,5 +1,5 @@
 from qtpy.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
-from qtpy import QtGui, QtCore
+from qtpy import QtWidgets, QtCore
 
 from ..widgets.base import PyDMPrimitiveWidget
 
@@ -69,7 +69,7 @@ class RulesExtension(PyDMExtension):
     def __init__(self, widget):
         super(RulesExtension, self).__init__(widget)
         self.widget = widget
-        self.edit_rules_action = QtGui.QAction("Edit Rules...", self.widget)
+        self.edit_rules_action = QtWidgets.QAction("Edit Rules...", self.widget)
         self.edit_rules_action.triggered.connect(self.edit_rules)
 
     def edit_rules(self, state):
@@ -85,7 +85,7 @@ class BasePlotExtension(PyDMExtension):
         super(BasePlotExtension, self).__init__(widget)
         self.widget = widget
         self.curve_editor_class = curve_editor_class
-        self.edit_curves_action = QtGui.QAction("Edit Curves...", self.widget)
+        self.edit_curves_action = QtWidgets.QAction("Edit Curves...", self.widget)
         self.edit_curves_action.triggered.connect(self.edit_curves)
 
     def edit_curves(self, state):
