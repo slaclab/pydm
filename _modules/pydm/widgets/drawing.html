@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.drawing &mdash; PyDM v1.4.2+20.gbf4af93 documentation</title>
+  <title>pydm.widgets.drawing &mdash; PyDM v1.4.2+39.g2bded76 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.4.2+20.gbf4af93
+                v1.4.2+39.g2bded76
               </div>
             
           
@@ -180,11 +180,12 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="p">(</span><span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span>
-                          <span class="n">QPolygon</span><span class="p">,</span> <span class="n">QPolygonF</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span><span class="p">,</span>
-                          <span class="n">QMovie</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QPointF</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">pyqtSlot</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtDesigner</span> <span class="k">import</span> <span class="n">QDesignerFormWindowInterface</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="p">(</span><span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span>
+                            <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="k">import</span> <span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span> <span class="n">QPolygon</span><span class="p">,</span> <span class="n">QPolygonF</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span>
+                            <span class="n">QMovie</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QPointF</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Slot</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtDesigner</span> <span class="k">import</span> <span class="n">QDesignerFormWindowInterface</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
 <span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">is_pydm_app</span>
 
@@ -208,6 +209,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Angles for Qt are in units of 1/16 of a degree</span>
     <span class="k">return</span> <span class="n">deg</span> <span class="o">*</span> <span class="mi">16</span>
+
 
 <span class="k">def</span> <span class="nf">qt_to_deg</span><span class="p">(</span><span class="n">deg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -417,7 +419,7 @@
             <span class="n">h</span> <span class="o">=</span> <span class="n">w0</span> <span class="o">*</span> <span class="n">c</span>
         <span class="k">return</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span></div>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="n">QBrush</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="n">QBrush</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">brush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the brush object to be used when coloring the</span>
@@ -445,7 +447,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span> <span class="o">=</span> <span class="n">new_brush</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">PenStyle</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">PenStyle</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">penStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the pen style to be used when drawing the border</span>
@@ -474,7 +476,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setStyle</span><span class="p">(</span><span class="n">new_style</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">penColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the pen color to be used when drawing the border</span>
@@ -502,7 +504,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">new_color</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">penWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the pen width to be used when drawing the border</span>
@@ -529,7 +531,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setWidth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pen_width</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the counter-clockwise rotation in degrees</span>
@@ -635,12 +637,12 @@
                 <span class="k">return</span> <span class="n">p</span>
             <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">None</span>
-    
-    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">designer_form_saved</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span>
-        
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The filename of the image to be displayed.</span>
@@ -721,7 +723,7 @@
             <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingImage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">sizeHint</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span><span class="o">.</span><span class="n">size</span><span class="p">()</span></div>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AspectRatioMode</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AspectRatioMode</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">aspectRatioMode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for aspect ratio mode to be used when rendering</span>
@@ -934,7 +936,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_angle</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_span_angle</span> <span class="o">=</span> <span class="n">deg_to_qt</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">startAngle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the start angle in degrees</span>
@@ -960,7 +962,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_start_angle</span> <span class="o">=</span> <span class="n">deg_to_qt</span><span class="p">(</span><span class="n">new_angle</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">spanAngle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the span angle in degrees</span>
@@ -1065,7 +1067,7 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingPolygon</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span> <span class="o">=</span> <span class="mi">3</span>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">numberOfPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the number of points</span>
@@ -1140,7 +1142,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.4.2+20.gbf4af93',
+            VERSION:'v1.4.2+39.g2bded76',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -1151,6 +1153,7 @@
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

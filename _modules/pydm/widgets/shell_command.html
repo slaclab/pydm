@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.shell_command &mdash; PyDM v1.4.2+20.gbf4af93 documentation</title>
+  <title>pydm.widgets.shell_command &mdash; PyDM v1.4.2+39.g2bded76 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.4.2+20.gbf4af93
+                v1.4.2+39.g2bded76
               </div>
             
           
@@ -176,9 +176,11 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.shell_command</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QCursor</span><span class="p">,</span> <span class="n">QIcon</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span> <span class="n">QSize</span>
-<span class="kn">import</span> <span class="nn">shlex</span><span class="o">,</span> <span class="nn">subprocess</span>
+<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QPushButton</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="k">import</span> <span class="n">QCursor</span><span class="p">,</span> <span class="n">QIcon</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QSize</span>
+<span class="kn">import</span> <span class="nn">shlex</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMPrimitiveWidget</span>
 <span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">IconFont</span>
 
@@ -206,7 +208,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_icon</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">showIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not we should show the selected Icon.</span>
@@ -235,7 +237,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_icon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">icon</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">())</span>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">allowMultipleExecutions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not we should allow the same command</span>
@@ -260,7 +262,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow_multiple</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_allow_multiple</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The Shell Command to be executed</span>
@@ -298,7 +300,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">()</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMShellCommand</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">mouseReleaseEvent</span><span class="p">(</span><span class="n">mouse_event</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMShellCommand.execute_command"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.execute_command">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">()</span>
+<div class="viewcode-block" id="PyDMShellCommand.execute_command"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.execute_command">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Execute the shell command given by ```command```.</span>
@@ -351,7 +353,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.4.2+20.gbf4af93',
+            VERSION:'v1.4.2+39.g2bded76',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -362,6 +364,7 @@
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

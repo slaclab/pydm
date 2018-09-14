@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.logdisplay &mdash; PyDM v1.4.2+20.gbf4af93 documentation</title>
+  <title>pydm.widgets.logdisplay &mdash; PyDM v1.4.2+39.g2bded76 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.4.2+20.gbf4af93
+                v1.4.2+39.g2bded76
               </div>
             
           
@@ -180,10 +180,10 @@
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
 
-<span class="kn">from</span> <span class="nn">pydm.PyQt.QtCore</span> <span class="k">import</span> <span class="p">(</span><span class="n">QObject</span><span class="p">,</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtSignal</span><span class="p">,</span> <span class="n">pyqtProperty</span><span class="p">,</span>
-                              <span class="n">Q_ENUMS</span><span class="p">,</span> <span class="n">QSize</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">pydm.PyQt.QtGui</span> <span class="k">import</span> <span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">QPlainTextEdit</span><span class="p">,</span> <span class="n">QComboBox</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span>
-                             <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="p">(</span><span class="n">QObject</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span>
+                         <span class="n">Q_ENUMS</span><span class="p">,</span> <span class="n">QSize</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">QPlainTextEdit</span><span class="p">,</span> <span class="n">QComboBox</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span>
+                            <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">)</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -194,7 +194,7 @@
 
 <span class="sd">    A composite of a QObject and a logging handler. This can be added to a</span>
 <span class="sd">    ``logging.Logger`` object just like any standard ``logging.Handler`` and</span>
-<span class="sd">    will emit logging messages as pyqtSignals</span>
+<span class="sd">    will emit logging messages as Signals</span>
 
 <span class="sd">    .. code:: python</span>
 
@@ -203,7 +203,7 @@
 <span class="sd">        ui_handler = GuiHandler(level=logging.INFO)</span>
 <span class="sd">        # Attach our handler to the log</span>
 <span class="sd">        logger.addHandler(ui_handler)</span>
-<span class="sd">        # Publish log message via pyqtSignal</span>
+<span class="sd">        # Publish log message via Signal</span>
 <span class="sd">        ui_handler.message.connect(mySlot)</span>
 
 <span class="sd">    Parameters</span>
@@ -213,7 +213,7 @@
 
 <span class="sd">    parent: QObject, optional</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">message</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">NOTSET</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">)</span>
@@ -315,7 +315,7 @@
 <div class="viewcode-block" id="PyDMLogDisplay.sizeHint"><a class="viewcode-back" href="../../../widgets/log.html#pydm.widgets.logdisplay.PyDMLogDisplay.sizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span></div>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="n">LogLevels</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="n">LogLevels</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">logLevel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span>
 
@@ -326,7 +326,7 @@
             <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo</span><span class="o">.</span><span class="n">findData</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">combo</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">logName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Name of associated log&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">name</span>
@@ -345,7 +345,7 @@
         <span class="c1"># Attach preconfigured handler</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="p">)</span>
 
-    <span class="nd">@pyqtProperty</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">logFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Format for log messages&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">_fmt</span>
@@ -354,7 +354,7 @@
     <span class="k">def</span> <span class="nf">logFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fmt</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="n">fmt</span><span class="p">))</span>
 
-<div class="viewcode-block" id="PyDMLogDisplay.write"><a class="viewcode-back" href="../../../widgets/log.html#pydm.widgets.logdisplay.PyDMLogDisplay.write">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<div class="viewcode-block" id="PyDMLogDisplay.write"><a class="viewcode-back" href="../../../widgets/log.html#pydm.widgets.logdisplay.PyDMLogDisplay.write">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write a message to the log display&quot;&quot;&quot;</span>
         <span class="c1"># We split the incoming message by new lines. In prior iterations of</span>
@@ -363,12 +363,12 @@
         <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">terminator</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">appendPlainText</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMLogDisplay.clear"><a class="viewcode-back" href="../../../widgets/log.html#pydm.widgets.logdisplay.PyDMLogDisplay.clear">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">()</span>
+<div class="viewcode-block" id="PyDMLogDisplay.clear"><a class="viewcode-back" href="../../../widgets/log.html#pydm.widgets.logdisplay.PyDMLogDisplay.clear">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clear the text area.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyDMLogDisplay.setLevel"><a class="viewcode-back" href="../../../widgets/log.html#pydm.widgets.logdisplay.PyDMLogDisplay.setLevel">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<div class="viewcode-block" id="PyDMLogDisplay.setLevel"><a class="viewcode-back" href="../../../widgets/log.html#pydm.widgets.logdisplay.PyDMLogDisplay.setLevel">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">setLevel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the level of the contained logger&quot;&quot;&quot;</span>
         <span class="c1"># Get the level from the incoming string specification</span>
@@ -416,7 +416,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.4.2+20.gbf4af93',
+            VERSION:'v1.4.2+39.g2bded76',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -427,6 +427,7 @@
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

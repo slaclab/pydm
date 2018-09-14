@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.waveformplot &mdash; PyDM v1.4.2+20.gbf4af93 documentation</title>
+  <title>pydm.widgets.waveformplot &mdash; PyDM v1.4.2+39.g2bded76 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.4.2+20.gbf4af93
+                v1.4.2+39.g2bded76
               </div>
             
           
@@ -176,8 +176,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.waveformplot</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">..PyQt.QtGui</span> <span class="k">import</span> <span class="n">QColor</span>
-<span class="kn">from</span> <span class="nn">..PyQt.QtCore</span> <span class="k">import</span> <span class="n">pyqtSlot</span><span class="p">,</span> <span class="n">pyqtProperty</span>
+<span></span><span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="k">import</span> <span class="n">QColor</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">.baseplot</span> <span class="k">import</span> <span class="n">BasePlot</span><span class="p">,</span> <span class="n">NoDataError</span><span class="p">,</span> <span class="n">BasePlotCurveItem</span>
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="k">import</span> <span class="n">PyDMChannel</span>
@@ -352,15 +352,15 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_x</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_y</span>
 
-    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">xConnectionStateChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
         <span class="k">pass</span>
 
-    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">yConnectionStateChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
         <span class="k">pass</span>
 
-    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+    <span class="nd">@Slot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">receiveXWaveform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handler for new x waveform data.</span>
@@ -373,7 +373,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_waveforms_if_ready</span><span class="p">()</span>
 
-    <span class="nd">@pyqtSlot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+    <span class="nd">@Slot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">receiveYWaveform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handler for new y waveform data.</span>
@@ -571,11 +571,11 @@
         <span class="n">curve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">removeChannel</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span></div>
 
-    <span class="nd">@pyqtSlot</span><span class="p">()</span>
+    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">set_needs_redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_needs_redraw</span> <span class="o">=</span> <span class="kc">True</span>
 
-<div class="viewcode-block" id="PyDMWaveformPlot.redrawPlot"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.redrawPlot">[docs]</a>    <span class="nd">@pyqtSlot</span><span class="p">()</span>
+<div class="viewcode-block" id="PyDMWaveformPlot.redrawPlot"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.redrawPlot">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">redrawPlot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Request a redraw from each curve in the plot.</span>
@@ -629,7 +629,7 @@
                             <span class="n">symbolSize</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbolSize&#39;</span><span class="p">),</span>
                             <span class="n">redraw_mode</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;redraw_mode&#39;</span><span class="p">))</span></div>
 
-    <span class="n">curves</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getCurves</span><span class="p">,</span> <span class="n">setCurves</span><span class="p">)</span>
+    <span class="n">curves</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getCurves</span><span class="p">,</span> <span class="n">setCurves</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMWaveformPlot.channels"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.channels">[docs]</a>    <span class="k">def</span> <span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -649,33 +649,33 @@
     <span class="c1"># and maxYRange are all defined in BasePlot, but we don&#39;t expose them as</span>
     <span class="c1"># properties there, because not all plot subclasses necessarily want them</span>
     <span class="c1"># to be user-configurable in Designer.</span>
-    <span class="n">autoRangeX</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getAutoRangeX</span><span class="p">,</span>
-                              <span class="n">BasePlot</span><span class="o">.</span><span class="n">setAutoRangeX</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">resetAutoRangeX</span><span class="p">,</span>
-                              <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    Whether or not the X-axis automatically rescales to fit the data.</span>
-<span class="s2">    If true, the values in minXRange and maxXRange are ignored.&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">autoRangeX</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getAutoRangeX</span><span class="p">,</span>
+                          <span class="n">BasePlot</span><span class="o">.</span><span class="n">setAutoRangeX</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">resetAutoRangeX</span><span class="p">,</span>
+                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Whether or not the X-axis automatically rescales to fit the data.</span>
+<span class="s2">If true, the values in minXRange and maxXRange are ignored.&quot;&quot;&quot;</span><span class="p">)</span>
 
-    <span class="n">minXRange</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMinXRange</span><span class="p">,</span>
-                             <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMinXRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    Minimum X-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">minXRange</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMinXRange</span><span class="p">,</span>
+                         <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMinXRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Minimum X-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">)</span>
 
-    <span class="n">maxXRange</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMaxXRange</span><span class="p">,</span>
-                             <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMaxXRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    Maximum X-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">maxXRange</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMaxXRange</span><span class="p">,</span>
+                         <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMaxXRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Maximum X-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">)</span>
 
-    <span class="n">autoRangeY</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getAutoRangeY</span><span class="p">,</span>
-                              <span class="n">BasePlot</span><span class="o">.</span><span class="n">setAutoRangeY</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">resetAutoRangeY</span><span class="p">,</span>
-                              <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    Whether or not the Y-axis automatically rescales to fit the data.</span>
-<span class="s2">    If true, the values in minYRange and maxYRange are ignored.&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">autoRangeY</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getAutoRangeY</span><span class="p">,</span>
+                          <span class="n">BasePlot</span><span class="o">.</span><span class="n">setAutoRangeY</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">resetAutoRangeY</span><span class="p">,</span>
+                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Whether or not the Y-axis automatically rescales to fit the data.</span>
+<span class="s2">If true, the values in minYRange and maxYRange are ignored.&quot;&quot;&quot;</span><span class="p">)</span>
 
-    <span class="n">minYRange</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMinYRange</span><span class="p">,</span>
-                             <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMinYRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    Minimum Y-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">minYRange</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMinYRange</span><span class="p">,</span>
+                         <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMinYRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Minimum Y-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">)</span>
 
-    <span class="n">maxYRange</span> <span class="o">=</span> <span class="n">pyqtProperty</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMaxYRange</span><span class="p">,</span>
-                             <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMaxYRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    Maximum Y-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">)</span></div>
+    <span class="n">maxYRange</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMaxYRange</span><span class="p">,</span>
+                         <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMaxYRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Maximum Y-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -710,7 +710,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v1.4.2+20.gbf4af93',
+            VERSION:'v1.4.2+39.g2bded76',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -721,6 +721,7 @@
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

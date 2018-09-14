@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>channel &mdash; PyDM v1.4.2+20.gbf4af93 documentation</title>
+  <title>channel &mdash; PyDM v1.4.2+39.g2bded76 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.4.2+20.gbf4af93
+                v1.4.2+39.g2bded76
               </div>
             
           
@@ -176,7 +176,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for channel</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="PyDMChannel"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel">[docs]</a><span></span><span class="k">class</span> <span class="nc">PyDMChannel</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMChannel"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel">[docs]</a><span></span><span class="k">class</span> <span class="nc">PyDMChannel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Object to hold signals and slots for a PyDM Widget interface to an</span>
 <span class="sd">    external plugin</span>
@@ -212,29 +212,29 @@
 <span class="sd">        should usually be a user inputted field when a specific</span>
 <span class="sd">        PyDM widget is initialized</span>
 
-<span class="sd">    connection_slot : pyqtSlot, optional</span>
+<span class="sd">    connection_slot : Slot, optional</span>
 <span class="sd">        A function to be run when the connection state</span>
 <span class="sd">        changes</span>
 
-<span class="sd">    value_slot : pyqtSlot, optional</span>
+<span class="sd">    value_slot : Slot, optional</span>
 <span class="sd">        A function to be run when the value updates</span>
 
-<span class="sd">    severity_slot : pyqtSlot, optional</span>
+<span class="sd">    severity_slot : Slot, optional</span>
 <span class="sd">        A function to be run when the severity changes</span>
 
-<span class="sd">    write_access_slot : pyqtSlot, optional</span>
+<span class="sd">    write_access_slot : Slot, optional</span>
 <span class="sd">        A function to be run when the write access changes</span>
 
-<span class="sd">    enum_strings_slot : pyqtSlot, optional</span>
+<span class="sd">    enum_strings_slot : Slot, optional</span>
 <span class="sd">        A function to be run when the enum_strings change</span>
 
-<span class="sd">    unit_slot : pyqtSlot, optional</span>
+<span class="sd">    unit_slot : Slot, optional</span>
 <span class="sd">        A function to be run when the unit changes</span>
 
-<span class="sd">    prec_slot : pyqtSlot, optional</span>
+<span class="sd">    prec_slot : Slot, optional</span>
 <span class="sd">        A function to be run when the precision value changes</span>
 
-<span class="sd">    value_signal : pyqtSignal, optional</span>
+<span class="sd">    value_signal : Signal, optional</span>
 <span class="sd">        Attach a signal here that emits a desired value to be sent</span>
 <span class="sd">        through the plugin</span>
 
@@ -277,17 +277,17 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">value_signal</span><span class="p">:</span>
                 <span class="n">value_signal_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span><span class="o">.</span><span class="n">signal</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value_signal</span><span class="o">.</span><span class="n">signal</span>
 
-            <span class="k">return</span> <span class="n">address_matched</span> <span class="ow">and</span> \
-                   <span class="n">connection_slot_matched</span> <span class="ow">and</span> \
-                   <span class="n">value_slot_matched</span> <span class="ow">and</span> \
-                   <span class="n">severity_slot_matched</span> <span class="ow">and</span> \
-                   <span class="n">enum_strings_slot_matched</span> <span class="ow">and</span> \
-                   <span class="n">unit_slot_matched</span> <span class="ow">and</span> \
-                   <span class="n">prec_slot_matched</span> <span class="ow">and</span> \
-                   <span class="n">upper_ctrl_slot_matched</span> <span class="ow">and</span> \
-                   <span class="n">lower_ctrl_slot_matched</span> <span class="ow">and</span> \
-                   <span class="n">write_access_slot_matched</span> <span class="ow">and</span> \
-                   <span class="n">value_signal_matched</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">address_matched</span> <span class="ow">and</span>
+                    <span class="n">connection_slot_matched</span> <span class="ow">and</span>
+                    <span class="n">value_slot_matched</span> <span class="ow">and</span>
+                    <span class="n">severity_slot_matched</span> <span class="ow">and</span>
+                    <span class="n">enum_strings_slot_matched</span> <span class="ow">and</span>
+                    <span class="n">unit_slot_matched</span> <span class="ow">and</span>
+                    <span class="n">prec_slot_matched</span> <span class="ow">and</span>
+                    <span class="n">upper_ctrl_slot_matched</span> <span class="ow">and</span>
+                    <span class="n">lower_ctrl_slot_matched</span> <span class="ow">and</span>
+                    <span class="n">write_access_slot_matched</span> <span class="ow">and</span>
+                    <span class="n">value_signal_matched</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">NotImplemented</span>
 
@@ -330,7 +330,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v1.4.2+20.gbf4af93',
+            VERSION:'v1.4.2+39.g2bded76',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -341,6 +341,7 @@
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
