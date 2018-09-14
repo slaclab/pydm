@@ -17,6 +17,7 @@ import warnings
 import platform
 import collections
 from functools import partial
+from . import config
 from .display_module import Display
 from qtpy.QtCore import Qt, QEvent, QTimer, Slot
 from qtpy.QtWidgets import QApplication, QWidget, QToolTip, QAction, QMenu

@@ -9,6 +9,7 @@ from .channel import PyDMChannel
 from .. import data_plugins
 from ..utilities import is_pydm_app, remove_protocol
 from .rules import RulesDispatcher
+from .. import config
 
 try:
     from json.decoder import JSONDecodeError
@@ -235,7 +236,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.channeltype = None
         self.subtype = None
 
-        # If this label is inside a PyDMApplication (not Designer) start it in '
+        # If this label is inside a PyDMApplication (not Designer) start it in
         # the disconnected state.
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.contextMenuEvent = self.open_context_menu
