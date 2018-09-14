@@ -1,6 +1,6 @@
-from ..PyQt.QtGui import QColor
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, QTimer
-from pyqtgraph import ViewBox, LabelItem, AxisItem, InfiniteLine, SignalProxy
+from ..PyQt.QtGui import QColor, QMenu, QAction
+from ..PyQt.QtCore import Qt, pyqtSlot, pyqtProperty, QTimer
+from pyqtgraph import ViewBox, AxisItem, TextItem, InfiniteLine, SignalProxy, CurvePoint
 import numpy as np
 import time
 import datetime
@@ -20,17 +20,30 @@ DEFAULT_Y_MIN = 0
 
 
 class TimePlotCurveItem(BasePlotCurveItem):
-    def __init__(self, channel_address=None, **kws):
+    """
+    TimePlot now supports two mode:
+
+    1. The "classic" mode, in which the x-axis shows the timestamps, and move to the left
+    2. The new mode, in which the x-axis shows the negative time in seconds from the starting time, at which x = 0.
+
+    To maintain backward compatibility, the default drawing mode is in the classic, "plot_by_timestamps" mode, for both
+    TimePlotCurveItem and TimePlotCurve.
+    """
+    def __init__(self, channel_address=None, plot_by_timestamps=True, **kws):
         channel_address = "" if channel_address is None else channel_address
         if "name" not in kws or not kws["name"]:
             name = remove_protocol(channel_address)
             kws["name"] = name
-        if "plot_by_timestamps" in kws:
-            self.plot_by_timestamps = kws["plot_by_timestamps"]
+
+        self.plot_by_timestamps = plot_by_timestamps
 
         self.starting_epoch_time = time.time()
         self._bufferSize = MINIMUM_BUFFER_SIZE
         self._update_mode = PyDMTimePlot.SynchronousMode
+
+        self._min_y_value = None
+        self._max_y_value = None
+
         self.data_buffer = np.zeros((2, self._bufferSize), order='f', dtype=float)
         self.connected = False
         self.points_accumulated = 0
@@ -61,12 +74,12 @@ class TimePlotCurveItem(BasePlotCurveItem):
                                    value_slot=self.receiveNewValue)
 
     @property
-    def plotByTimeStamps(self):
-        return self.plot_by_timestamps
+    def minY(self):
+        return self._min_y_value
 
-    @plotByTimeStamps.setter
-    def plotByTimeStamps(self, new_value):
-        self.plot_by_timestamps = new_value
+    @property
+    def maxY(self):
+        return self._max_y_value
 
     @Slot(bool)
     def connectionStateChanged(self, connected):
@@ -76,6 +89,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
     @Slot(float)
     @Slot(int)
     def receiveNewValue(self, new_value):
+        self.update_min_max_y_values(new_value)
+
         if self._update_mode == PyDMTimePlot.SynchronousMode:
             self.data_buffer = np.roll(self.data_buffer, -1)
             self.data_buffer[0, self._bufferSize - 1] = time.time()
@@ -111,6 +126,14 @@ class TimePlotCurveItem(BasePlotCurveItem):
             if self.points_accumulated < self._bufferSize:
                 self.points_accumulated += 1
 
+    def update_min_max_y_values(self, new_value):
+        if self._min_y_value is None and self._max_y_value is None:
+            self._min_y_value = self._max_y_value = new_value
+        elif self._min_y_value > new_value:
+            self._min_y_value = new_value
+        elif self._max_y_value < new_value:
+            self._max_y_value = new_value
+
     def initialize_buffer(self):
         self.points_accumulated = 0
         # If you don't specify dtype=float, you don't have enough
@@ -145,8 +168,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
             if self.plot_by_timestamps:
                 self.setData(y=y, x=x)
             else:
-                self.setData(self.data_buffer[1, -self.points_accumulated:])
                 time_diff = self.starting_epoch_time - x[len(x) - 1]
+                self.setData(y=self.data_buffer[1, -self.points_accumulated:])
                 self.setPos(time_diff, 0)
 
     def setUpdatesAsynchronously(self, value):
@@ -168,6 +191,15 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
 
 class PyDMTimePlot(BasePlot):
+    """
+    TimePlot now supports two mode:
+
+    1. The "classic" mode, in which the x-axis shows the timestamps, and move to the left
+    2. The new mode, in which the x-axis shows the negative time in seconds from the starting time, at which x = 0.
+
+    To maintain backward compatibility, the default drawing mode is in the classic, "plot_by_timestamps" mode, for both
+    TimePlotCurveItem and TimePlotCurve.
+    """
     SynchronousMode = 1
     AsynchronousMode = 2
 
@@ -180,10 +212,8 @@ class PyDMTimePlot(BasePlot):
             self._bottom_axis = TimeAxisItem('bottom')
         else:
             self.starting_epoch_time = time.time()
-            current_date = datetime.datetime.now().strftime("%b %d, %Y")
-            current_time = datetime.datetime.now().strftime("%H:%M:%S")
-            self._bottom_axis = TimeIntervalAxisItem(start_time=current_time + ' (' + current_date + ')',
-                                                     position="bottom")
+            self._bottom_axis = AxisItem('bottom')
+
         self._left_axis = AxisItem("left")
         super(PyDMTimePlot, self).__init__(parent=parent,
                                            background=background,
@@ -194,19 +224,20 @@ class PyDMTimePlot(BasePlot):
             self.getViewBox().setMouseEnabled(x=False)
         else:
             self.plotItem.setRange(xRange=[DEFAULT_X_MIN, 0])
+            self.plotItem.setLimits(xMax=0)
 
         self._bufferSize = MINIMUM_BUFFER_SIZE
 
-        self.update_timer = QTimer(self)
         self._time_span = 5.0  # This is in seconds
         self._update_interval = 100
+
+        self.update_timer = QTimer(self)
         self.update_timer.setInterval(self._update_interval)
         self._update_mode = PyDMTimePlot.SynchronousMode
         self._needs_redraw = True
 
+        # Drawing the chart for a finite duration of time
         self.continuation_timer = QTimer(self)
-        self.plotItem.setLimits(xMax=0)
-
         self.continuation_timeout = None
 
         self.labels = {
@@ -226,9 +257,14 @@ class PyDMTimePlot(BasePlot):
         for channel in init_y_channels:
             self.addYChannel(channel)
 
+        # Drawing crosshair on the ViewBox
         self.vertical_crosshair_line = None
         self.horizontal_crosshair_line = None
         self.crosshair_movement_proxy = None
+
+        # Adding annotation
+        self.add_annot_mode = False
+        self.mouse_right_click_proxy = None
 
     def initialize_for_designer(self):
         # If we are in Qt Designer, don't update the plot continuously.
@@ -240,7 +276,6 @@ class PyDMTimePlot(BasePlot):
                     lineStyle=None, lineWidth=None, symbol=None,
                     symbolSize=None):
         plot_opts = dict()
-        plot_opts['plot_by_timestamps'] = self.plot_by_timestamps
         plot_opts['symbol'] = symbol
         if symbolSize is not None:
             plot_opts['symbolSize'] = symbolSize
@@ -248,10 +283,13 @@ class PyDMTimePlot(BasePlot):
             plot_opts['lineStyle'] = lineStyle
         if lineWidth is not None:
             plot_opts['lineWidth'] = lineWidth
+
         # Add curve
-        new_curve = TimePlotCurveItem(y_channel, name=name, color=color, **plot_opts)
+        new_curve = TimePlotCurveItem(y_channel, plot_by_timestamps=self.plot_by_timestamps, name=name, color=color,
+                                      **plot_opts)
         new_curve.setUpdatesAsynchronously(self.updatesAsynchronously)
         new_curve.setBufferSize(self._bufferSize)
+
         self.update_timer.timeout.connect(new_curve.asyncUpdate)
         self.addCurve(new_curve, curve_color=color)
         new_curve.data_changed.connect(self.set_needs_redraw)
@@ -292,7 +330,6 @@ class PyDMTimePlot(BasePlot):
             return
 
         if self.plot_by_timestamps:
-            maxrange = max([curve.max_x() for curve in self._curves])
             if self._update_mode == PyDMTimePlot.AsynchronousMode:
                 maxrange = time.time()
                 minrange = maxrange - self._time_span
@@ -348,6 +385,12 @@ class PyDMTimePlot(BasePlot):
                              lineStyle=curve.lineStyle, lineWidth=curve.lineWidth, symbol=curve.symbol,
                              symbolSize=curve.symbolSize)
 
+    def annotateCurve(self, curve, annotation):
+        curve_point = CurvePoint(curve)
+        self.plotItem.addItem(curve_point)
+        annotation.setParentItem(curve_point)
+        curve_point.setPos(1)
+
     def addLegendItem(self, item, pv_name, force_show_legend=False):
         self._legend.addItem(item, pv_name)
         self.setShowLegend(force_show_legend)
@@ -357,17 +400,36 @@ class PyDMTimePlot(BasePlot):
         if len(self._legend.items) == 0:
             self.setShowLegend(False)
 
+    def add_annotation(self):
+        pass
+        # self.add_annot_mode = True
+        # self.mouse_right_click_proxy = SignalProxy(self.plotItem.scene().sigMouseClicked, rateLimit=60,
+        #                                            slot=self.mouseClicked)
+
+    def mouseClicked(self, evt):
+        pass
+        # if self.add_annot_mode and evt[0].button() == Qt.LeftButton:
+        #     pos = evt[0]
+        #     print(pos.scenePos())
+        #     if self.sceneBoundingRect().contains(pos.scenePos()):
+        #         mouse_point = self.getViewBox().mapSceneToView(pos.scenePos())
+        #         annot = TextItem(html='<div style="text-align: center"><span style="color: #FFF;">This is the'
+        #                               '</span><br><span style="color: #FF0; font-size: 16pt;">PEAK</span></div>',
+        #                          anchor=(-0.3, 0.5), border='w', fill=(0, 0, 255, 100))
+        #         self.plotItem.addItem(annot)
+        #         annot.setPos(mouse_point.x(), mouse_point.y())
+        #
+        #     self.add_annot_mode = False
+        #     self.mouse_right_click_proxy.disconnect()
+
     def mouseMoved(self, evt):
         pos = evt[0]
         if self.sceneBoundingRect().contains(pos):
-            mousePoint = self.getViewBox().mapSceneToView(pos)
-            index = int(mousePoint.x())
-            values = list()
-            for curve in self._curves:
-                if index and index < curve.getBufferSize():
-                    self.timeplot_display.show_mouse_coordinates(mousePoint.x(), mousePoint.y())
-                    self.vertical_crosshair_line.setPos(mousePoint.x())
-                    self.horizontal_crosshair_line.setPos(mousePoint.y())
+            mouse_point = self.getViewBox().mapSceneToView(pos)
+
+            self.timeplot_display.show_mouse_coordinates(mouse_point.x(), mouse_point.y())
+            self.vertical_crosshair_line.setPos(mouse_point.x())
+            self.horizontal_crosshair_line.setPos(mouse_point.y())
 
     def enableCrosshair(self, is_enabled, vertical_angle=90, horizontal_angle=0, vertical_movable=False,
                         horizontal_movable=False):
@@ -380,7 +442,6 @@ class PyDMTimePlot(BasePlot):
 
             self.plotItem.addItem(self.vertical_crosshair_line)
             self.plotItem.addItem(self.horizontal_crosshair_line)
-
             self.crosshair_movement_proxy = SignalProxy(self.plotItem.scene().sigMouseMoved, rateLimit=60,
                                                         slot=self.mouseMoved)
         else:
@@ -538,23 +599,6 @@ class PyDMTimePlot(BasePlot):
     @showRightAxis.setter
     def showRightAxis(self, show):
         self._show_right_axis = show
-
-class TimeIntervalAxisItem(AxisItem):
-    def __init__(self, start_time, position, maxTickLength=-5):
-        super(TimeIntervalAxisItem, self).__init__(position, maxTickLength=maxTickLength)
-        self.start_time = start_time
-
-    # def tickStrings(self, values, scale, spacing):
-    #     strings = []
-    #
-    #     base_tick_marks = super(TimeIntervalAxisItem, self).tickStrings(values, scale, spacing)
-    #     for tick_marks in base_tick_marks:
-    #         if tick_marks == "0":
-    #             strings.append(self.start_time)
-    #         else:
-    #             strings.append(tick_marks)
-    #
-    #     return strings
 
 
 class TimeAxisItem(AxisItem):
