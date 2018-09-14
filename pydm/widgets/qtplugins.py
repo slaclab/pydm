@@ -33,7 +33,7 @@ from .scale import PyDMScaleIndicator
 from .timeplot import PyDMTimePlot
 from .waveformplot import PyDMWaveformPlot
 from .scatterplot import PyDMScatterPlot
-from .tab_bar import PyDMTabWidget
+
 
 BASE_EXTENSIONS = [RulesExtension]
 

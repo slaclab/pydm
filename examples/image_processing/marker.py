@@ -1,4 +1,4 @@
-from pydm.PyQt import QtCore, QtGui
+from qtpy import QtCore, QtGui
 from pyqtgraph import Point, ROI
 from pyqtgraph import functions as fn
 import numpy as np

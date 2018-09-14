@@ -2,8 +2,8 @@ import epics
 import logging
 import numpy as np
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
-from pydm.PyQt.QtCore import pyqtSlot, Qt
-from pydm.PyQt.QtGui import QApplication
+from qtpy.QtCore import Slot, Qt
+from qtpy.QtWidgets import QApplication
 from pydm.utilities import is_pydm_app
 
 logger = logging.getLogger(__name__)
@@ -109,10 +109,10 @@ class Connection(PyDMConnection):
                 self.reload_access_state()
                 self.pv.run_callbacks()
 
-    @pyqtSlot(int)
-    @pyqtSlot(float)
-    @pyqtSlot(str)
-    @pyqtSlot(np.ndarray)
+    @Slot(int)
+    @Slot(float)
+    @Slot(str)
+    @Slot(np.ndarray)
     def put_value(self, new_val):
         if is_pydm_app() and self.app.is_read_only():
             return

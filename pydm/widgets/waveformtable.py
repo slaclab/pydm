@@ -1,5 +1,6 @@
-from ..PyQt.QtGui import QTableWidget, QTableWidgetItem, QApplication, QCursor
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt, QEvent
+from qtpy.QtWidgets import QTableWidget, QTableWidgetItem, QApplication
+from qtpy.QtGui import QCursor
+from qtpy.QtCore import Slot, Property, Qt, QEvent
 import numpy as np
 from .base import PyDMWritableWidget
 
@@ -59,7 +60,7 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         self.setHorizontalHeaderLabels(self._columnHeaders)
         self._valueBeingSet = False
 
-    @pyqtSlot(int, int)
+    @Slot(int, int)
     def send_waveform(self, row, column):
         """Update Channel value when cell value is changed.
 
@@ -105,7 +106,7 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
             QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
         return False
 
-    @pyqtProperty("QStringList")
+    @Property("QStringList")
     def columnHeaderLabels(self):
         """
         Return the list of labels for the columns of the Table.
@@ -132,7 +133,7 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         self._columnHeaders = new_labels
         self.setHorizontalHeaderLabels(self._columnHeaders)
 
-    @pyqtProperty("QStringList")
+    @Property("QStringList")
     def rowHeaderLabels(self):
         """
         Return the list of labels for the rows of the Table.

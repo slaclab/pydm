@@ -20,9 +20,10 @@ import platform
 import collections
 from functools import partial
 from .display_module import Display
-from .PyQt.QtCore import Qt, QEvent, QTimer, pyqtSlot
-from .PyQt.QtGui import QApplication, QColor, QWidget, QToolTip, QClipboard, QAction, QMenu
-from .PyQt import uic
+from qtpy.QtCore import Qt, QEvent, QTimer, Slot
+from qtpy.QtWidgets import QApplication, QWidget, QToolTip, QAction, QMenu
+from qtpy.QtGui import QClipboard, QColor
+from qtpy import uic
 from .main_window import PyDMMainWindow
 from .tools import ExternalTool
 
@@ -160,7 +161,7 @@ class PyDMApplication(QApplication):
     def is_read_only(self):
         return self.__read_only
 
-    @pyqtSlot()
+    @Slot()
     def get_CPU_usage(self):
         """
         Prints total CPU usage (in percent), as well as per-thread usage, to the terminal.
@@ -320,14 +321,6 @@ class PyDMApplication(QApplication):
             f = uifile
         return uic.loadUi(f)
 
-    def __sanity_check_pyqt(self, cls):
-        for itm in dir(cls):
-            i = getattr(cls, itm)
-            if hasattr(i, "__file__"):
-                if any([True if v in i.__file__ else False for v in ["PyQt4", "PyQt5"]]):
-                    warnings.warn("Direct PyQt5/PyQt4 import detected. To ensure compatibility with PyQt4 and PyQt5 consider using: pydm.PyQt for your imports.", RuntimeWarning, stacklevel=0)
-                    return
-
     def load_py_file(self, pyfile, args=None, macros=None):
         """
         Load a .py file, performs some sanity checks to try and determine
@@ -358,7 +351,6 @@ class PyDMApplication(QApplication):
 
         # Now load the intelligence module.
         module = imp.load_source(temp_name, pyfile)
-        self.__sanity_check_pyqt(module)
         if hasattr(module, 'intelclass'):
             cls = module.intelclass
             if not issubclass(cls, Display):

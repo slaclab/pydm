@@ -6,8 +6,8 @@ is a little too big, complicated, and flexible for PyDM's needs.
 import os
 import sys
 import json
-from ..PyQt.QtGui import QFontDatabase, QIconEngine, QPixmap, QPainter, QColor, QFont, QIcon
-from ..PyQt.QtCore import Qt, QRect, QPoint, qRound
+from qtpy.QtGui import QFontDatabase, QIconEngine, QPixmap, QPainter, QColor, QFont, QIcon
+from qtpy.QtCore import Qt, QRect, QPoint, qRound
 
 if sys.version_info[0] == 3:
     unichr = chr

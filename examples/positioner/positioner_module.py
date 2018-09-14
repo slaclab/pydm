@@ -1,9 +1,9 @@
 import epics
 import cams
 import time
-from pydm.PyQt import uic
-from pydm.PyQt.QtCore import QObject, pyqtSlot, pyqtSignal
-from pydm.PyQt.QtGui import QWidget
+from qtpy import uic
+from qtpy.QtCore import QObject, Slot, Signal
+from qtpy.QtWidgets import QWidget
 from os import path
 from pydm import Display
 
@@ -24,7 +24,7 @@ class Positioner(Display):
     def display_manager_window(self):
         return self.window()
 
-    @pyqtSlot()
+    @Slot()
     def move_motors(self):
         if self.moving:
             return
@@ -44,7 +44,7 @@ class Positioner(Display):
         self.ui.pushButton.setEnabled(True)
         self.moving = False
     
-    @pyqtSlot(str)
+    @Slot(str)
     def desired_position_changed(self):
         x = self.ui.xPosTextEntry.text()
         y = self.ui.yPosTextEntry.text()

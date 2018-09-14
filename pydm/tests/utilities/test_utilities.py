@@ -3,7 +3,7 @@ import platform
 import tempfile
 
 from ...utilities import is_pydm_app, path_info, which, find_display_in_path
-from ...PyQt import QtGui
+from qtpy import QtWidgets
 
 
 def test_is_pydm_app(qapp):
@@ -11,7 +11,7 @@ def test_is_pydm_app(qapp):
 
 
 def test_negative_is_pydm_app():
-    assert not is_pydm_app(QtGui.QLabel())
+    assert not is_pydm_app(QtWidgets.QLabel())
 
 
 def test_path_info():

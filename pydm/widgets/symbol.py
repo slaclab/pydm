@@ -1,8 +1,9 @@
 import json
 import logging
-from ..PyQt.QtGui import QApplication, QWidget, QPainter, QPixmap, QStyle, QStyleOption
-from ..PyQt.QtCore import pyqtProperty, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
-from ..PyQt.QtSvg import QSvgRenderer
+from qtpy.QtWidgets import QApplication, QWidget, QStyle, QStyleOption
+from qtpy.QtGui import QPainter, QPixmap
+from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
+from qtpy.QtSvg import QSvgRenderer
 from ..utilities import is_pydm_app
 from .base import PyDMWidget
 
@@ -58,7 +59,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
             self._current_key = current_key
             self.update()
 
-    @pyqtProperty(str)
+    @Property(str)
     def imageFiles(self):
         """
         JSON-formatted dictionary keyed on states (integers), with filenames
@@ -123,7 +124,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
             logger.error("Could not load image: {}".format(filename))
             self._state_images[int(state)] = (filename, None)
 
-    @pyqtProperty(Qt.AspectRatioMode)
+    @Property(Qt.AspectRatioMode)
     def aspectRatioMode(self):
         """
         Which aspect ratio mode to use.

@@ -1,12 +1,15 @@
 import os
 import logging
 
+
 from ...utilities import stylesheet
-from ...PyQt.QtGui import QLabel, QApplication
+from qtpy.QtWidgets import QApplication
 
 # The path to the stylesheet used in these unit tests
-test_stylesheet_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "test_data",
-                                    "global_stylesheet.css")
+test_stylesheet_path = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)),
+    "..", "test_data", "global_stylesheet.css")
+
 
 def test_stylesheet_init():
     assert stylesheet.__style_data is None
@@ -138,5 +141,3 @@ def test_stylesheet_get_style_data(caplog):
     if env_backup:
         os.environ["PYDM_STYLESHEET"] = env_backup
     stylesheet.GLOBAL_STYLESHEET = backup_global
-
-

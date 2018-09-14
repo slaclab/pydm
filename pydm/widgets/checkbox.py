@@ -1,5 +1,6 @@
-from ..PyQt.QtGui import QCheckBox
+from qtpy.QtWidgets import QCheckBox
 from .base import PyDMWritableWidget
+
 
 class PyDMCheckbox(QCheckBox, PyDMWritableWidget):
     """

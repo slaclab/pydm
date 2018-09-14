@@ -2,9 +2,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 import six
-
-from ..PyQt.QtGui import QComboBox
-from ..PyQt.QtCore import pyqtSlot, Qt
+from qtpy.QtWidgets import QComboBox
+from qtpy.QtCore import Slot, Qt
 from .base import PyDMWritableWidget
 from pydm.utilities import is_pydm_app
 
@@ -139,7 +138,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
             # Set the index
             self.setCurrentIndex(idx)
 
-    @pyqtSlot(int)
+    @Slot(int)
     def internal_combo_box_activated_int(self, index):
         """
         PyQT Slot for when the user chooses an item in the combobox.

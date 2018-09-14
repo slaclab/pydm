@@ -1,5 +1,5 @@
-from ..PyQt.QtGui import QColor
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty, Qt
+from qtpy.QtGui import QColor
+from qtpy.QtCore import Slot, Property, Qt
 import numpy as np
 import json
 import itertools
@@ -82,9 +82,9 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
             self.x_channel = None
             return
         self.x_channel = PyDMChannel(
-                            address=new_address,
-                            connection_slot=self.xConnectionStateChanged,
-                            value_slot=self.receiveXValue)
+            address=new_address,
+            connection_slot=self.xConnectionStateChanged,
+            value_slot=self.receiveXValue)
 
     @property
     def y_address(self):
@@ -112,20 +112,20 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
             self.y_channel = None
             return
         self.y_channel = PyDMChannel(
-                            address=new_address,
-                            connection_slot=self.yConnectionStateChanged,
-                            value_slot=self.receiveYValue)
+            address=new_address,
+            connection_slot=self.yConnectionStateChanged,
+            value_slot=self.receiveYValue)
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def xConnectionStateChanged(self, connected):
         self.x_connected = connected
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def yConnectionStateChanged(self, connected):
         self.y_connected = connected
 
-    @pyqtSlot(int)
-    @pyqtSlot(float)
+    @Slot(int)
+    @Slot(float)
     def receiveXValue(self, new_x):
         """
         Handler for new x data.
@@ -136,8 +136,8 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         self.needs_new_x = False
         self.update_buffer()
 
-    @pyqtSlot(int)
-    @pyqtSlot(float)
+    @Slot(int)
+    @Slot(float)
     def receiveYValue(self, new_y):
         """
         Handler for new y data.
@@ -372,7 +372,7 @@ class PyDMScatterPlot(BasePlot):
         curve = self._curves[index]
         self.removeChannel(curve)
 
-    @pyqtSlot()
+    @Slot()
     def redrawPlot(self):
         """
         Request a redraw from each curve in the plot.
@@ -424,7 +424,7 @@ class PyDMScatterPlot(BasePlot):
                             redraw_mode=d.get('redraw_mode'),
                             buffer_size=d.get('buffer_size'))
 
-    curves = pyqtProperty("QStringList", getCurves, setCurves)
+    curves = Property("QStringList", getCurves, setCurves)
 
     def channels(self):
         """
@@ -443,30 +443,30 @@ class PyDMScatterPlot(BasePlot):
     # and maxYRange are all defined in BasePlot, but we don't expose them as
     # properties there, because not all plot subclasses necessarily want
     # them to be user-configurable in Designer.
-    autoRangeX = pyqtProperty(bool, BasePlot.getAutoRangeX,
-                              BasePlot.setAutoRangeX, BasePlot.resetAutoRangeX,
-                              doc="""
-    Whether or not the X-axis automatically rescales to fit the data.
-    If true, the values in minXRange and maxXRange are ignored.""")
+    autoRangeX = Property(bool, BasePlot.getAutoRangeX,
+                          BasePlot.setAutoRangeX, BasePlot.resetAutoRangeX,
+                          doc="""
+Whether or not the X-axis automatically rescales to fit the data.
+If true, the values in minXRange and maxXRange are ignored.""")
 
-    minXRange = pyqtProperty(float, BasePlot.getMinXRange,
-                             BasePlot.setMinXRange, doc="""
-    Minimum X-axis value visible on the plot.""")
+    minXRange = Property(float, BasePlot.getMinXRange,
+                         BasePlot.setMinXRange, doc="""
+Minimum X-axis value visible on the plot.""")
 
-    maxXRange = pyqtProperty(float, BasePlot.getMaxXRange,
-                             BasePlot.setMaxXRange, doc="""
-    Maximum X-axis value visible on the plot.""")
+    maxXRange = Property(float, BasePlot.getMaxXRange,
+                         BasePlot.setMaxXRange, doc="""
+Maximum X-axis value visible on the plot.""")
 
-    autoRangeY = pyqtProperty(bool, BasePlot.getAutoRangeY,
-                              BasePlot.setAutoRangeY, BasePlot.resetAutoRangeY,
-                              doc="""
-    Whether or not the Y-axis automatically rescales to fit the data.
-    If true, the values in minYRange and maxYRange are ignored.""")
+    autoRangeY = Property(bool, BasePlot.getAutoRangeY,
+                          BasePlot.setAutoRangeY, BasePlot.resetAutoRangeY,
+                          doc="""
+Whether or not the Y-axis automatically rescales to fit the data.
+If true, the values in minYRange and maxYRange are ignored.""")
 
-    minYRange = pyqtProperty(float, BasePlot.getMinYRange,
-                             BasePlot.setMinYRange, doc="""
-    Minimum Y-axis value visible on the plot.""")
+    minYRange = Property(float, BasePlot.getMinYRange,
+                         BasePlot.setMinYRange, doc="""
+Minimum Y-axis value visible on the plot.""")
 
-    maxYRange = pyqtProperty(float, BasePlot.getMaxYRange,
-                             BasePlot.setMaxYRange, doc="""
-    Maximum Y-axis value visible on the plot.""")
+    maxYRange = Property(float, BasePlot.getMaxYRange,
+                         BasePlot.setMaxYRange, doc="""
+Maximum Y-axis value visible on the plot.""")

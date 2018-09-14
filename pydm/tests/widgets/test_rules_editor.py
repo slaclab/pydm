@@ -5,8 +5,8 @@ import json
 import copy
 import webbrowser
 
-from ...PyQt import QtCore
-from ...PyQt.QtGui import QMessageBox, QTableWidgetSelectionRange
+from qtpy import QtCore
+from qtpy.QtWidgets import QMessageBox, QTableWidgetSelectionRange
 
 from ...widgets.label import PyDMLabel
 from ...widgets.rules_editor import RulesEditor

@@ -1,9 +1,9 @@
-from ..PyQt.QtGui import (QDialog, QVBoxLayout, QHBoxLayout, QTableView,
-                          QAbstractItemView, QSpacerItem, QSizePolicy,
-                          QDialogButtonBox, QPushButton, QItemSelection,
-                          QComboBox, QStyledItemDelegate, QColorDialog)
-from ..PyQt.QtCore import Qt, pyqtSlot, QModelIndex
-from ..PyQt.QtDesigner import QDesignerFormWindowInterface
+from qtpy.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QTableView,
+                            QAbstractItemView, QSpacerItem, QSizePolicy,
+                            QDialogButtonBox, QPushButton,
+                            QComboBox, QStyledItemDelegate, QColorDialog)
+from qtpy.QtCore import Qt, Slot, QModelIndex, QItemSelection
+from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .baseplot import BasePlotCurveItem
 from .baseplot_table_model import BasePlotCurvesModel
 from collections import OrderedDict
@@ -30,7 +30,7 @@ class BasePlotCurveEditorDialog(QDialog):
         self.remove_button.clicked.connect(self.removeSelectedCurve)
         self.remove_button.setEnabled(False)
         self.table_view.selectionModel().selectionChanged.connect(
-                                                    self.handleSelectionChange)
+            self.handleSelectionChange)
         self.table_view.doubleClicked.connect(self.handleDoubleClick)
         self.resize(800, 300)
 
@@ -74,20 +74,20 @@ class BasePlotCurveEditorDialog(QDialog):
         color_delegate = ColorColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(index, color_delegate)
 
-    @pyqtSlot()
+    @Slot()
     def addCurve(self):
         self.table_model.append()
 
-    @pyqtSlot()
+    @Slot()
     def removeSelectedCurve(self):
         self.table_model.removeAtIndex(self.table_view.currentIndex())
 
-    @pyqtSlot(QItemSelection, QItemSelection)
+    @Slot(QItemSelection, QItemSelection)
     def handleSelectionChange(self, selected, deselected):
         self.remove_button.setEnabled(
-                            self.table_view.selectionModel().hasSelection())
+            self.table_view.selectionModel().hasSelection())
 
-    @pyqtSlot(QModelIndex)
+    @Slot(QModelIndex)
     def handleDoubleClick(self, index):
         if self.table_model.needsColorDialog(index):
             # The table model returns a QBrush for BackgroundRole, not a QColor
@@ -97,7 +97,7 @@ class BasePlotCurveEditorDialog(QDialog):
             if color.isValid():
                 self.table_model.setData(index, color, role=Qt.EditRole)
 
-    @pyqtSlot()
+    @Slot()
     def saveChanges(self):
         formWindow = QDesignerFormWindowInterface.findFormWindow(self.plot)
         if formWindow:
@@ -160,10 +160,10 @@ class RedrawModeColumnDelegate(QStyledItemDelegate):
     """RedrawModeColumnDelegate draws a QComboBox in the Redraw Mode column, so
     that users can pick the redraw mode from a list."""
     choices = OrderedDict([
-            ('X or Y updates', BasePlotCurveItem.REDRAW_ON_EITHER),
-            ('Y updates', BasePlotCurveItem.REDRAW_ON_Y),
-            ('X updates', BasePlotCurveItem.REDRAW_ON_X),
-            ('Both update', BasePlotCurveItem.REDRAW_ON_BOTH)])
+        ('X or Y updates', BasePlotCurveItem.REDRAW_ON_EITHER),
+        ('Y updates', BasePlotCurveItem.REDRAW_ON_Y),
+        ('X updates', BasePlotCurveItem.REDRAW_ON_X),
+        ('Both update', BasePlotCurveItem.REDRAW_ON_BOTH)])
     text_for_choices = {v: k for k, v in choices.items()}
 
     def displayText(self, value, locale):

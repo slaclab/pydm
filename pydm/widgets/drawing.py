@@ -2,11 +2,12 @@ import math
 import os
 import logging
 
-from ..PyQt.QtGui import (QApplication, QWidget, QColor, QPainter, QBrush, QPen,
-                          QPolygon, QPolygonF, QPixmap, QStyle, QStyleOption,
-                          QMovie)
-from ..PyQt.QtCore import pyqtProperty, Qt, QPoint, QPointF, QSize, pyqtSlot
-from ..PyQt.QtDesigner import QDesignerFormWindowInterface
+from qtpy.QtWidgets import (QApplication, QWidget,
+                            QStyle, QStyleOption)
+from qtpy.QtGui import (QColor, QPainter, QBrush, QPen, QPolygon, QPolygonF, QPixmap,
+                            QMovie)
+from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot
+from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
 from ..utilities import is_pydm_app
 
@@ -30,6 +31,7 @@ def deg_to_qt(deg):
     """
     # Angles for Qt are in units of 1/16 of a degree
     return deg * 16
+
 
 def qt_to_deg(deg):
     """
@@ -239,7 +241,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
             h = w0 * c
         return w, h
 
-    @pyqtProperty(QBrush)
+    @Property(QBrush)
     def brush(self):
         """
         PyQT Property for the brush object to be used when coloring the
@@ -267,7 +269,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._brush = new_brush
             self.update()
 
-    @pyqtProperty(Qt.PenStyle)
+    @Property(Qt.PenStyle)
     def penStyle(self):
         """
         PyQT Property for the pen style to be used when drawing the border
@@ -296,7 +298,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._pen.setStyle(new_style)
             self.update()
 
-    @pyqtProperty(QColor)
+    @Property(QColor)
     def penColor(self):
         """
         PyQT Property for the pen color to be used when drawing the border
@@ -324,7 +326,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._pen.setColor(new_color)
             self.update()
 
-    @pyqtProperty(float)
+    @Property(float)
     def penWidth(self):
         """
         PyQT Property for the pen width to be used when drawing the border
@@ -351,7 +353,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._pen.setWidth(self._pen_width)
             self.update()
 
-    @pyqtProperty(float)
+    @Property(float)
     def rotation(self):
         """
         PyQT Property for the counter-clockwise rotation in degrees
@@ -457,12 +459,12 @@ class PyDMDrawingImage(PyDMDrawing):
                 return p
             p = p.parent()
         return None
-    
-    @pyqtSlot(str)
+
+    @Slot(str)
     def designer_form_saved(self, filename):
         self.filename = self._file
-        
-    @pyqtProperty(str)
+
+    @Property(str)
     def filename(self):
         """
         The filename of the image to be displayed.
@@ -543,7 +545,7 @@ class PyDMDrawingImage(PyDMDrawing):
             return super(PyDMDrawingImage, self).sizeHint()
         return self._pixmap.size()
 
-    @pyqtProperty(Qt.AspectRatioMode)
+    @Property(Qt.AspectRatioMode)
     def aspectRatioMode(self):
         """
         PyQT Property for aspect ratio mode to be used when rendering
@@ -756,7 +758,7 @@ class PyDMDrawingArc(PyDMDrawing):
         self._start_angle = 0
         self._span_angle = deg_to_qt(90)
 
-    @pyqtProperty(float)
+    @Property(float)
     def startAngle(self):
         """
         PyQT Property for the start angle in degrees
@@ -782,7 +784,7 @@ class PyDMDrawingArc(PyDMDrawing):
             self._start_angle = deg_to_qt(new_angle)
             self.update()
 
-    @pyqtProperty(float)
+    @Property(float)
     def spanAngle(self):
         """
         PyQT Property for the span angle in degrees
@@ -887,7 +889,7 @@ class PyDMDrawingPolygon(PyDMDrawing):
         super(PyDMDrawingPolygon, self).__init__(parent, init_channel)
         self._num_points = 3
 
-    @pyqtProperty(int)
+    @Property(int)
     def numberOfPoints(self):
         """
         PyQT Property for the number of points

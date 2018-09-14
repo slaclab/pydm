@@ -2,10 +2,10 @@ import logging
 
 from collections import OrderedDict
 
-from pydm.PyQt.QtCore import (QObject, pyqtSlot, pyqtSignal, pyqtProperty,
-                              Q_ENUMS, QSize)
-from pydm.PyQt.QtGui import (QWidget, QPlainTextEdit, QComboBox, QLabel,
-                             QPushButton, QHBoxLayout, QVBoxLayout)
+from qtpy.QtCore import (QObject, Slot, Signal, Property,
+                         Q_ENUMS, QSize)
+from qtpy.QtWidgets import (QWidget, QPlainTextEdit, QComboBox, QLabel,
+                            QPushButton, QHBoxLayout, QVBoxLayout)
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ class GuiHandler(QObject, logging.Handler):
 
     A composite of a QObject and a logging handler. This can be added to a
     ``logging.Logger`` object just like any standard ``logging.Handler`` and
-    will emit logging messages as pyqtSignals
+    will emit logging messages as Signals
 
     .. code:: python
 
@@ -25,7 +25,7 @@ class GuiHandler(QObject, logging.Handler):
         ui_handler = GuiHandler(level=logging.INFO)
         # Attach our handler to the log
         logger.addHandler(ui_handler)
-        # Publish log message via pyqtSignal
+        # Publish log message via Signal
         ui_handler.message.connect(mySlot)
 
     Parameters
@@ -35,7 +35,7 @@ class GuiHandler(QObject, logging.Handler):
 
     parent: QObject, optional
     """
-    message = pyqtSignal(str)
+    message = Signal(str)
 
     def __init__(self, level=logging.NOTSET, parent=None):
         logging.Handler.__init__(self, level=level)
@@ -137,7 +137,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
     def sizeHint(self):
         return QSize(400, 300)
 
-    @pyqtProperty(LogLevels)
+    @Property(LogLevels)
     def logLevel(self):
         return self.level
 
@@ -148,7 +148,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
             idx = self.combo.findData(level)
             self.combo.setCurrentIndex(idx)
 
-    @pyqtProperty(str)
+    @Property(str)
     def logName(self):
         """Name of associated log"""
         return self.log.name
@@ -167,7 +167,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
         # Attach preconfigured handler
         self.log.addHandler(self.handler)
 
-    @pyqtProperty(str)
+    @Property(str)
     def logFormat(self):
         """Format for log messages"""
         return self.handler.formatter._fmt
@@ -176,7 +176,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
     def logFormat(self, fmt):
         self.handler.setFormatter(logging.Formatter(fmt))
 
-    @pyqtSlot(str)
+    @Slot(str)
     def write(self, message):
         """Write a message to the log display"""
         # We split the incoming message by new lines. In prior iterations of
@@ -185,12 +185,12 @@ class PyDMLogDisplay(QWidget, LogLevels):
         for msg in message.split(self.terminator):
             self.text.appendPlainText(msg)
 
-    @pyqtSlot()
+    @Slot()
     def clear(self):
         """Clear the text area."""
         self.text.clear()
 
-    @pyqtSlot(str)
+    @Slot(str)
     def setLevel(self, level):
         """Set the level of the contained logger"""
         # Get the level from the incoming string specification

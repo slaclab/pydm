@@ -2,7 +2,7 @@
 import os
 import logging
 
-from ..PyQt.QtGui import QApplication
+from qtpy.QtWidgets import QApplication
 
 logger = logging.getLogger(__name__)
 

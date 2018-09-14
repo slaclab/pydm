@@ -26,7 +26,7 @@ def is_pydm_app(app=None):
         True if it is a PyDMApplication, False otherwise.
     """
     from ..application import PyDMApplication
-    from ..PyQt.QtGui import QApplication
+    from qtpy.QtWidgets import QApplication
     if app is None:
         app = QApplication.instance()
     if isinstance(app, PyDMApplication):

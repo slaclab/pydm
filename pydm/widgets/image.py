@@ -1,5 +1,5 @@
-from ..PyQt.QtGui import QActionGroup
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Q_ENUMS, QThread
+from qtpy.QtWidgets import QActionGroup
+from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QThread
 from pyqtgraph import ImageView
 from pyqtgraph import ColorMap
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
@@ -23,7 +23,7 @@ class ReadingOrder(object):
 
 
 class ImageUpdateThread(QThread):
-    updateSignal = pyqtSignal(list)
+    updateSignal = Signal(list)
 
     def __init__(self, image_view):
         QThread.__init__(self)
@@ -183,7 +183,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """
         self.colorMap = self.cmap_for_action[action]
 
-    @pyqtProperty(float)
+    @Property(float)
     def colorMapMin(self):
         """
         Minimum value for the colormap.
@@ -195,7 +195,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         return self.cm_min
 
     @colorMapMin.setter
-    @pyqtSlot(float)
+    @Slot(float)
     def colorMapMin(self, new_min):
         """
         Set the minimum value for the colormap.
@@ -209,7 +209,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             if self.cm_min > self.cm_max:
                 self.cm_max = self.cm_min
 
-    @pyqtProperty(float)
+    @Property(float)
     def colorMapMax(self):
         """
         Maximum value for the colormap.
@@ -221,7 +221,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         return self.cm_max
 
     @colorMapMax.setter
-    @pyqtSlot(float)
+    @Slot(float)
     def colorMapMax(self, new_max):
         """
         Set the maximum value for the colormap.
@@ -251,7 +251,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self.cm_max = mx
         self.cm_min = mn
 
-    @pyqtProperty(PyDMColorMap)
+    @Property(PyDMColorMap)
     def colorMap(self):
         """
         Return the color map used by the ImageView.
@@ -298,7 +298,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         lut = cmap.getLookupTable(0.0, 1.0, alpha=False)
         self.getImageItem().setLookupTable(lut)
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def image_connection_state_changed(self, conn):
         """
         Callback invoked when the Image Channel connection state is changed.
@@ -313,7 +313,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         else:
             self.redraw_timer.stop()
 
-    @pyqtSlot(np.ndarray)
+    @Slot(np.ndarray)
     def image_value_changed(self, new_image):
         """
         Callback invoked when the Image Channel value is changed.
@@ -334,7 +334,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self.image_waveform = new_image
         self.needs_redraw = True
 
-    @pyqtSlot(int)
+    @Slot(int)
     def image_width_changed(self, new_width):
         """
         Callback invoked when the Image Width Channel value is changed.
@@ -385,7 +385,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         logging.debug("ImageView RedrawImage Thread Launched")
         self.thread.start()
 
-    @pyqtSlot(list)
+    @Slot(list)
     def __updateDisplay(self, data):
         logging.debug("ImageView Update Display with new image")
         mini, maxi = data[0], data[1]
@@ -396,7 +396,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             autoLevels=False,
             autoDownsample=self.autoDownsample)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def autoDownsample(self):
         """
         Return if we should or not apply the
@@ -421,7 +421,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         if new_value != self._auto_downsample:
             self._auto_downsample = new_value
 
-    @pyqtProperty(int)
+    @Property(int)
     def imageWidth(self):
         """
         Return the width of the image.
@@ -447,7 +447,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
                 (self._widthchannel is None or self._widthchannel == '')):
             self._image_width = int(new_width)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def normalizeData(self):
         """
         Return True if the colors are relative to data maximum and minimum.
@@ -459,7 +459,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         return self._normalize_data
 
     @normalizeData.setter
-    @pyqtSlot(bool)
+    @Slot(bool)
     def normalizeData(self, new_norm):
         """
         Define if the colors are relative to minimum and maximum of the data.
@@ -471,7 +471,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         if self._normalize_data != new_norm:
             self._normalize_data = new_norm
 
-    @pyqtProperty(ReadingOrder)
+    @Property(ReadingOrder)
     def readingOrder(self):
         """
         Return the reading order of the :attr:`imageChannel` array.
@@ -498,7 +498,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """Handle keypress events."""
         return
 
-    @pyqtProperty(str)
+    @Property(str)
     def imageChannel(self):
         """
         The channel address in use for the image data .
@@ -523,7 +523,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         if self._imagechannel != value:
             self._imagechannel = str(value)
 
-    @pyqtProperty(str)
+    @Property(str)
     def widthChannel(self):
         """
         The channel address in use for the image width .
@@ -575,7 +575,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """Return channels for tools."""
         return [c for c in self.channels() if c.address == self.imageChannel]
 
-    @pyqtProperty(int)
+    @Property(int)
     def maxRedrawRate(self):
         """
         The maximum rate (in Hz) at which the plot will be redrawn.

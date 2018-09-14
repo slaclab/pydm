@@ -1,7 +1,8 @@
 from .base import PyDMWidget
-from ..PyQt.QtGui import QFrame, QVBoxLayout, QHBoxLayout, QPainter, QColor, QPolygon, QPen, QLabel, QSizePolicy, QWidget, QGridLayout
-from ..PyQt.QtCore import Qt, QPoint, pyqtProperty
-from ..PyQt.Qt import QWIDGETSIZE_MAX
+from qtpy.QtGui import QColor, QPolygon, QPen, QPainter
+from qtpy.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QWidget, QGridLayout
+from qtpy.QtCore import Qt, QPoint, Property
+from qtpy.QtWidgets import QWIDGETSIZE_MAX
 from .channel import PyDMChannel
 import sys
 
@@ -9,7 +10,7 @@ import sys
 class QScale(QFrame):
     """
     A bar-shaped indicator for scalar value.
-    Configurable features include indicator type (bar/pointer), scale tick 
+    Configurable features include indicator type (bar/pointer), scale tick
     marks and orientation (horizontal/vertical).
 
     Parameters
@@ -22,7 +23,7 @@ class QScale(QFrame):
         self._value = 1
         self._lower_limit = -5
         self._upper_limit = 5
-        self.position = None # unit: pixel
+        self.position = None  # unit: pixel
 
         self._bg_color = QColor('darkgray')
         self._bg_size_rate = 0.8    # from 0 to 1
@@ -36,7 +37,7 @@ class QScale(QFrame):
         self._tick_pen = QPen()
         self._tick_color = QColor('black')
         self._tick_width = 0
-        self._tick_size_rate = 0.1 # from 0 to 1
+        self._tick_size_rate = 0.1  # from 0 to 1
         self._painter = QPainter()
 
         self._painter_rotation = None
@@ -45,7 +46,7 @@ class QScale(QFrame):
         self._painter_scale_x = None
         self._flip_traslation_y = None
         self._flip_scale_y = None
-        
+
         self._widget_width = self.width()
         self._widget_height = self.height()
 
@@ -63,7 +64,7 @@ class QScale(QFrame):
         This method sets parameters for the widget transformations (needed to for
         orientation, flipping and appearance inversion).
         """
-        self.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX) # Unset fixed size
+        self.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)  # Unset fixed size
         if self._orientation == Qt.Horizontal:
             self._widget_width = self.width()
             self._widget_height = self.height()
@@ -80,14 +81,14 @@ class QScale(QFrame):
             self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
             self.setFixedWidth(self._scale_height)
 
-        if self._inverted_appearance == True:
+        if self._inverted_appearance:
             self._painter_translation_x = self._widget_width
             self._painter_scale_x = -1
         else:
             self._painter_translation_x = 0
             self._painter_scale_x = 1
 
-        if self._flip_scale == True:
+        if self._flip_scale:
             self._flip_traslation_y = self._widget_height
             self._flip_scale_y = -1
         else:
@@ -143,10 +144,10 @@ class QScale(QFrame):
         pointer_width = self._pointer_width_rate * self._widget_width
         pointer_height = self._bg_size_rate * self._widget_height
         points = [
-                QPoint(self.position, 0),
-                QPoint(self.position + 0.5*pointer_width, 0.5*pointer_height),
-                QPoint(self.position, pointer_height),
-                QPoint(self.position - 0.5*pointer_width, 0.5*pointer_height)
+            QPoint(self.position, 0),
+            QPoint(self.position + 0.5*pointer_width, 0.5*pointer_height),
+            QPoint(self.position, pointer_height),
+            QPoint(self.position - 0.5*pointer_width, 0.5*pointer_height)
         ]
         self._painter.drawPolygon(QPolygon(points))
 
@@ -154,7 +155,7 @@ class QScale(QFrame):
         """
         Draw the selected indicator for current value.
         """
-        if self._barIndicator == True:
+        if self._barIndicator:
             self.draw_bar()
         else:
             self.draw_pointer()
@@ -194,7 +195,7 @@ class QScale(QFrame):
         self.draw_background()
         self.draw_ticks()
         self.draw_indicator()
-        
+
         self._painter.end()
 
     def calculate_position_for_value(self, value):
@@ -206,7 +207,7 @@ class QScale(QFrame):
             proportion = -1 # Invalid
         else:
             proportion = (value - self._lower_limit) / (self._upper_limit - self._lower_limit)
-        
+
         position = int(proportion * self._widget_width)
         return position
 
@@ -214,7 +215,7 @@ class QScale(QFrame):
         """
         Set the position (pixel) in which the origin should be drawn.
         """
-        if self._origin_at_zero == True:
+        if self._origin_at_zero:
             self._origin_position = self.calculate_position_for_value(0)
         else:
             self._origin_position = 0
@@ -345,7 +346,7 @@ class QScale(QFrame):
         if isinstance(divisions, int) and divisions > 0 and self._num_divisions != divisions:
             self._num_divisions = divisions
             self.repaint()
-    
+
     def get_scale_height(self):
         return self._scale_height
 
@@ -362,11 +363,12 @@ class QScale(QFrame):
             self._origin_at_zero = checked
             self.repaint()
 
+
 class PyDMScaleIndicator(QFrame, PyDMWidget):
     """
     A bar-shaped indicator for scalar value with support for Channels and
     more from PyDM.
-    Configurable features include indicator type (bar/pointer), scale tick 
+    Configurable features include indicator type (bar/pointer), scale tick
     marks and orientation (horizontal/vertical).
 
     Parameters
@@ -446,7 +448,8 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.scale_indicator.set_lower_limit(new_limit)
         self.update_labels()
 
-    def setup_widgets_for_orientation(self, new_orientation, flipped, inverted, value_position):
+    def setup_widgets_for_orientation(self, new_orientation, flipped, inverted,
+                                      value_position):
         """
         Reconstruct the widget given the orientation.
 
@@ -463,15 +466,15 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.widget_layout = None
         if new_orientation == Qt.Horizontal:
             self.limits_layout = QHBoxLayout()
-            if inverted == False:
+            if not inverted:
                 self.limits_layout.addWidget(self.lower_label)
                 self.limits_layout.addWidget(self.upper_label)
             else:
                 self.limits_layout.addWidget(self.upper_label)
                 self.limits_layout.addWidget(self.lower_label)
-            
+
             self.widget_layout = QGridLayout()
-            if flipped == False:
+            if not flipped:
                 if value_position == Qt.LeftEdge:
                     self.widget_layout.addWidget(self.value_label, 0, 0)
                     self.widget_layout.addWidget(self.scale_indicator, 0, 1)
@@ -488,11 +491,11 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
                     self.widget_layout.addWidget(self.scale_indicator, 0, 0)
                     self.widget_layout.addItem(self.limits_layout, 1, 0)
                     self.widget_layout.addWidget(self.value_label, 2, 0)
-                
-                if inverted == False:
+
+                if not inverted:
                     self.lower_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
                     self.upper_label.setAlignment(Qt.AlignTop | Qt.AlignRight)
-                elif inverted == True:
+                elif inverted:
                     self.lower_label.setAlignment(Qt.AlignTop | Qt.AlignRight)
                     self.upper_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
             else:
@@ -512,11 +515,11 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
                     self.widget_layout.addItem(self.limits_layout, 0, 0)
                     self.widget_layout.addWidget(self.scale_indicator, 1, 0)
                     self.widget_layout.addWidget(self.value_label, 2, 0)
-                
-                if inverted == False:
+
+                if not inverted:
                     self.lower_label.setAlignment(Qt.AlignBottom | Qt.AlignLeft)
                     self.upper_label.setAlignment(Qt.AlignBottom | Qt.AlignRight)
-                elif inverted == True:
+                elif inverted:
                     self.lower_label.setAlignment(Qt.AlignBottom | Qt.AlignRight)
                     self.upper_label.setAlignment(Qt.AlignBottom | Qt.AlignLeft)
 
@@ -527,7 +530,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
                 add_value_between_limits = True
             else:
                 add_value_between_limits = False
-            if inverted == False:
+            if not inverted:
                 self.limits_layout.addWidget(self.upper_label)
                 if add_value_between_limits:
                     self.limits_layout.addWidget(self.value_label)
@@ -543,7 +546,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
                 self.upper_label.setAlignment(Qt.AlignHCenter | Qt.AlignBottom)
 
             self.widget_layout = QGridLayout()
-            if flipped == False:
+            if not flipped:
                 if value_position == Qt.LeftEdge:
                     self.widget_layout.addWidget(self.value_label, 0, 0)
                     self.widget_layout.addWidget(self.scale_indicator, 0, 1)
@@ -560,10 +563,10 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
                     self.widget_layout.addItem(self.limits_layout, 0, 1)
                     self.widget_layout.addWidget(self.value_label, 1, 0, 1, 2)
 
-                if inverted == False:
+                if not inverted:
                     self.lower_label.setAlignment(Qt.AlignLeft | Qt.AlignBottom)
                     self.upper_label.setAlignment(Qt.AlignLeft | Qt.AlignTop)
-                elif inverted == True:
+                elif inverted:
                     self.lower_label.setAlignment(Qt.AlignLeft | Qt.AlignTop)
                     self.upper_label.setAlignment(Qt.AlignLeft | Qt.AlignBottom)
             else:
@@ -583,10 +586,10 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
                     self.widget_layout.addWidget(self.scale_indicator, 0, 1)
                     self.widget_layout.addWidget(self.value_label, 1, 0, 1, 2)
 
-                if inverted == False:
+                if not inverted:
                     self.lower_label.setAlignment(Qt.AlignRight | Qt.AlignBottom)
                     self.upper_label.setAlignment(Qt.AlignRight | Qt.AlignTop)
-                elif inverted == True:
+                elif inverted:
                     self.lower_label.setAlignment(Qt.AlignRight | Qt.AlignTop)
                     self.upper_label.setAlignment(Qt.AlignRight | Qt.AlignBottom)
 
@@ -598,7 +601,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.widget_layout.setContentsMargins(1, 1, 1, 1)
         self.setLayout(self.widget_layout)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def showValue(self):
         """
         Whether or not the current value should be displayed on the scale.
@@ -625,7 +628,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         else:
             self.value_label.hide()
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def showLimits(self):
         """
         Whether or not the high and low limits should be displayed on the scale.
@@ -654,8 +657,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
             self.lower_label.hide()
             self.upper_label.hide()
 
-
-    @pyqtProperty(bool)
+    @Property(bool)
     def showTicks(self):
         """
         Whether or not the tick marks should be displayed on the scale.
@@ -677,7 +679,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         """
         self.scale_indicator.set_show_ticks(checked)
 
-    @pyqtProperty(Qt.Orientation)
+    @Property(Qt.Orientation)
     def orientation(self):
         """
         The scale orientation (Horizontal or Vertical)
@@ -702,7 +704,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.scale_indicator.set_orientation(orientation)
         self.setup_widgets_for_orientation(orientation, self.flipScale, self.invertedAppearance, self._value_position)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def flipScale(self):
         """
         Whether or not the scale should be flipped.
@@ -725,7 +727,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.scale_indicator.set_flip_scale(checked)
         self.setup_widgets_for_orientation(self.orientation, checked, self.invertedAppearance, self._value_position)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def invertedAppearance(self):
         """
         Whether or not the scale appearence should be inverted.
@@ -748,7 +750,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.scale_indicator.set_inverted_appearance(inverted)
         self.setup_widgets_for_orientation(self.orientation, self.flipScale, inverted, self._value_position)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def barIndicator(self):
         """
         Whether or not the scale indicator should be a bar instead of a pointer.
@@ -770,7 +772,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         """
         self.scale_indicator.set_bar_indicator(checked)
 
-    @pyqtProperty(QColor)
+    @Property(QColor)
     def backgroundColor(self):
         """
         The color of the scale background.
@@ -792,7 +794,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         """
         self.scale_indicator.set_background_color(color)
 
-    @pyqtProperty(QColor)
+    @Property(QColor)
     def indicatorColor(self):
         """
         The color of the scale indicator.
@@ -814,7 +816,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         """
         self.scale_indicator.set_indicator_color(color)
 
-    @pyqtProperty(QColor)
+    @Property(QColor)
     def tickColor(self):
         """
         The color of the scale tick marks.
@@ -836,7 +838,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         """
         self.scale_indicator.set_tick_color(color)
 
-    @pyqtProperty(float)
+    @Property(float)
     def backgroundSizeRate(self):
         """
         The rate of background height size (from top to bottom).
@@ -859,7 +861,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         """
         self.scale_indicator.set_background_size_rate(rate)
 
-    @pyqtProperty(float)
+    @Property(float)
     def tickSizeRate(self):
         """
         The rate of tick marks height size (from bottom to top).
@@ -882,7 +884,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         """
         self.scale_indicator.set_tick_size_rate(rate)
 
-    @pyqtProperty(int)
+    @Property(int)
     def numDivisions(self):
         """
         The number in which the scale is divided.
@@ -905,7 +907,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         """
         self.scale_indicator.set_num_divisions(divisions)
 
-    @pyqtProperty(int)
+    @Property(int)
     def scaleHeight(self):
         """
         The scale height, fixed so it do not wiggle when value label resizes.
@@ -928,7 +930,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         """
         self.scale_indicator.set_scale_height(value)
 
-    @pyqtProperty(Qt.Edge)
+    @Property(Qt.Edge)
     def valuePosition(self):
         """
         The position of the value label (Top, Bottom, Left or Right).
@@ -953,7 +955,7 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self._value_position = position
         self.setup_widgets_for_orientation(self.orientation, self.flipScale, self.invertedAppearance, position)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def originAtZero(self):
         """
         Whether or not the scale indicator should start at zero value.

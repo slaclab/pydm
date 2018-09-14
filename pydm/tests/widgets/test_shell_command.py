@@ -5,8 +5,8 @@ import pytest
 import platform
 from logging import ERROR
 
-from ...PyQt import QtCore
-from ...PyQt.QtCore import QSize
+from qtpy import QtCore
+from qtpy.QtCore import QSize
 
 from ...widgets.shell_command import PyDMShellCommand
 from ...utilities import IconFont

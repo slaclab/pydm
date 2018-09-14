@@ -1,5 +1,5 @@
 from pydm import Display
-from pydm.PyQt.QtGui import QLabel, QVBoxLayout, QHBoxLayout
+from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout
 
 class MyDisplay(Display):
     def __init__(self, parent=None, args=[]):

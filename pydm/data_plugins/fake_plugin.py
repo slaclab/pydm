@@ -1,5 +1,5 @@
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
-from pydm.PyQt.QtCore import QTimer
+from qtpy.QtCore import QTimer
 import random
 
 

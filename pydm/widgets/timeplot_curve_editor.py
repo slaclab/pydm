@@ -1,4 +1,4 @@
-from ..PyQt.QtCore import QModelIndex, QVariant
+from qtpy.QtCore import QModelIndex, QVariant
 from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import BasePlotCurveEditorDialog
 
@@ -22,7 +22,7 @@ class PyDMTimePlotCurvesModel(BasePlotCurvesModel):
             curve.address = str(value)
         else:
             return super(PyDMTimePlotCurvesModel, self).set_data(
-                            column_name=column_name, curve=curve, value=value)
+                column_name=column_name, curve=curve, value=value)
         return True
 
     def append(self, address=None, name=None, color=None):

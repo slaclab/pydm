@@ -18,7 +18,7 @@ for each PyDMDesignerPlugin that Qt Designer tries to use. This will not
 affect any of your widgets, but it will be annoying.
 
 """
-from ..PyQt import QtGui, QtDesigner
+from qtpy import QtGui, QtDesigner
 from .qtplugin_extensions import PyDMExtensionFactory
 from ..qtdesigner import DesignerHooks
 

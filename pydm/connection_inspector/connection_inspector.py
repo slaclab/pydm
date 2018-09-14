@@ -1,5 +1,5 @@
-from ..PyQt.QtGui import QWidget, QTableView, QAbstractItemView, QHBoxLayout, QVBoxLayout, QAbstractScrollArea, QPushButton, QFileDialog, QMessageBox, QLabel
-from ..PyQt.QtCore import Qt, QSize, pyqtSlot
+from qtpy.QtWidgets import QWidget, QTableView, QAbstractItemView, QHBoxLayout, QVBoxLayout, QAbstractScrollArea, QPushButton, QFileDialog, QMessageBox, QLabel
+from qtpy.QtCore import Qt, QSize, Slot
 from .connection_table_model import ConnectionTableModel
 
 class ConnectionInspector(QWidget):
@@ -17,8 +17,8 @@ class ConnectionInspector(QWidget):
         self.save_button.setText("Save list to file...")
         self.save_button.clicked.connect(self.save_list_to_file)
         button_layout.addWidget(self.save_button)
-    
-    @pyqtSlot()
+
+    @Slot()
     def save_list_to_file(self):
         filename, filters = QFileDialog.getSaveFileName(self, "Save connection list", "", "Text Files (*.txt)")
         try:
@@ -45,4 +45,3 @@ class ConnectionTableView(QTableView):
         self.setSortingEnabled(True)
         self.setModel(ConnectionTableModel(connections, self))
         self.resizeColumnsToContents()
-        

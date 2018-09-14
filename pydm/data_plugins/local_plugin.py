@@ -4,8 +4,8 @@ channels. This handles the polling tasks to update the gui.
 """
 import inspect
 import numpy as np
-from pydm.PyQt.QtGui import QWidget
-from pydm.PyQt.QtCore import pyqtSlot, Qt, QCoreApplication, QTimer
+from qtpy.QtWidgets import QWidget
+from qtpy.QtCore import Slot, Qt, QCoreApplication, QTimer
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
 
@@ -90,7 +90,7 @@ class LocalPlugin(PyDMPlugin):
                         channel.address string.
         :type address:  str
         :param signal: User signal to connect to the update slot.
-        :type signal:  pyqtSignal()
+        :type signal:  Signal()
         """
         try:
             connection = self.connections[address]
@@ -205,7 +205,7 @@ def connection_class_factory(obj, refresh=1.0):
             except AttributeError:
                 return attr
 
-        @pyqtSlot()
+        @Slot()
         def update(self):
             """
             Get a new value from the object and send it to all listeners.
@@ -254,10 +254,10 @@ def connection_class_factory(obj, refresh=1.0):
             except:
                 return False
 
-        @pyqtSlot(int)
-        @pyqtSlot(float)
-        @pyqtSlot(str)
-        @pyqtSlot(np.ndarray)
+        @Slot(int)
+        @Slot(float)
+        @Slot(str)
+        @Slot(np.ndarray)
         def put_value(self, value):
             """
             Set our object attribute's value. If the attribute is a function,
@@ -295,7 +295,7 @@ def connection_class_factory(obj, refresh=1.0):
             # If we set a value, update now.
             self.update()
 
-        @pyqtSlot(np.ndarray)
+        @Slot(np.ndarray)
         def put_waveform(self, value):
             """
             This is a deprecated function kept temporarily for compatibility

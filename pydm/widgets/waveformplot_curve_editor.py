@@ -1,4 +1,4 @@
-from ..PyQt.QtCore import QModelIndex, QVariant
+from qtpy.QtCore import QModelIndex, QVariant
 from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import (BasePlotCurveEditorDialog,
                                     RedrawModeColumnDelegate)
@@ -27,7 +27,7 @@ class PyDMWaveformPlotCurvesModel(BasePlotCurvesModel):
         elif column_name == "Redraw Mode":
             return curve.redraw_mode
         return super(PyDMWaveformPlotCurvesModel, self).get_data(
-                                                        column_name, curve)
+            column_name, curve)
 
     def set_data(self, column_name, curve, value):
         if column_name == "Y Channel":
@@ -38,7 +38,7 @@ class PyDMWaveformPlotCurvesModel(BasePlotCurvesModel):
             curve.redraw_mode = int(value)
         else:
             return super(PyDMWaveformPlotCurvesModel, self).set_data(
-                            column_name=column_name, curve=curve, value=value)
+                column_name=column_name, curve=curve, value=value)
         return True
 
     def append(self, y_address=None, x_address=None, name=None, color=None):

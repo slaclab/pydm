@@ -5,7 +5,7 @@ import pytest
 import numpy as np
 from logging import ERROR
 
-from ...PyQt.QtGui import QMenu
+from qtpy.QtWidgets import QMenu
 from ...widgets.line_edit import PyDMLineEdit
 from ...utilities import is_pydm_app, find_unit_options
 from ...widgets.display_format import DisplayFormat, parse_value_for_display

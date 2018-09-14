@@ -1,5 +1,5 @@
-from ..PyQt.QtGui import QColor
-from ..PyQt.QtCore import pyqtSlot, pyqtProperty
+from qtpy.QtGui import QColor
+from qtpy.QtCore import Slot, Property
 import numpy as np
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
@@ -174,15 +174,15 @@ class WaveformCurveItem(BasePlotCurveItem):
                 self.x_waveform = self.latest_x
                 self.y_waveform = self.latest_y
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def xConnectionStateChanged(self, connected):
         pass
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def yConnectionStateChanged(self, connected):
         pass
 
-    @pyqtSlot(np.ndarray)
+    @Slot(np.ndarray)
     def receiveXWaveform(self, new_waveform):
         """
         Handler for new x waveform data.
@@ -195,7 +195,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         if self.latest_y is not None:
             self.update_waveforms_if_ready()
 
-    @pyqtSlot(np.ndarray)
+    @Slot(np.ndarray)
     def receiveYWaveform(self, new_waveform):
         """
         Handler for new y waveform data.
@@ -393,11 +393,11 @@ class PyDMWaveformPlot(BasePlot):
         curve = self._curves[index]
         self.removeChannel(curve)
 
-    @pyqtSlot()
+    @Slot()
     def set_needs_redraw(self):
         self._needs_redraw = True
 
-    @pyqtSlot()
+    @Slot()
     def redrawPlot(self):
         """
         Request a redraw from each curve in the plot.
@@ -451,7 +451,7 @@ class PyDMWaveformPlot(BasePlot):
                             symbolSize=d.get('symbolSize'),
                             redraw_mode=d.get('redraw_mode'))
 
-    curves = pyqtProperty("QStringList", getCurves, setCurves)
+    curves = Property("QStringList", getCurves, setCurves)
 
     def channels(self):
         """
@@ -471,30 +471,30 @@ class PyDMWaveformPlot(BasePlot):
     # and maxYRange are all defined in BasePlot, but we don't expose them as
     # properties there, because not all plot subclasses necessarily want them
     # to be user-configurable in Designer.
-    autoRangeX = pyqtProperty(bool, BasePlot.getAutoRangeX,
-                              BasePlot.setAutoRangeX, BasePlot.resetAutoRangeX,
-                              doc="""
-    Whether or not the X-axis automatically rescales to fit the data.
-    If true, the values in minXRange and maxXRange are ignored.""")
+    autoRangeX = Property(bool, BasePlot.getAutoRangeX,
+                          BasePlot.setAutoRangeX, BasePlot.resetAutoRangeX,
+                          doc="""
+Whether or not the X-axis automatically rescales to fit the data.
+If true, the values in minXRange and maxXRange are ignored.""")
 
-    minXRange = pyqtProperty(float, BasePlot.getMinXRange,
-                             BasePlot.setMinXRange, doc="""
-    Minimum X-axis value visible on the plot.""")
+    minXRange = Property(float, BasePlot.getMinXRange,
+                         BasePlot.setMinXRange, doc="""
+Minimum X-axis value visible on the plot.""")
 
-    maxXRange = pyqtProperty(float, BasePlot.getMaxXRange,
-                             BasePlot.setMaxXRange, doc="""
-    Maximum X-axis value visible on the plot.""")
+    maxXRange = Property(float, BasePlot.getMaxXRange,
+                         BasePlot.setMaxXRange, doc="""
+Maximum X-axis value visible on the plot.""")
 
-    autoRangeY = pyqtProperty(bool, BasePlot.getAutoRangeY,
-                              BasePlot.setAutoRangeY, BasePlot.resetAutoRangeY,
-                              doc="""
-    Whether or not the Y-axis automatically rescales to fit the data.
-    If true, the values in minYRange and maxYRange are ignored.""")
+    autoRangeY = Property(bool, BasePlot.getAutoRangeY,
+                          BasePlot.setAutoRangeY, BasePlot.resetAutoRangeY,
+                          doc="""
+Whether or not the Y-axis automatically rescales to fit the data.
+If true, the values in minYRange and maxYRange are ignored.""")
 
-    minYRange = pyqtProperty(float, BasePlot.getMinYRange,
-                             BasePlot.setMinYRange, doc="""
-    Minimum Y-axis value visible on the plot.""")
+    minYRange = Property(float, BasePlot.getMinYRange,
+                         BasePlot.setMinYRange, doc="""
+Minimum Y-axis value visible on the plot.""")
 
-    maxYRange = pyqtProperty(float, BasePlot.getMaxYRange,
-                             BasePlot.setMaxYRange, doc="""
-    Maximum Y-axis value visible on the plot.""")
+    maxYRange = Property(float, BasePlot.getMaxYRange,
+                         BasePlot.setMaxYRange, doc="""
+Maximum Y-axis value visible on the plot.""")
