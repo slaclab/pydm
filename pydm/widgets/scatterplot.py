@@ -1,13 +1,12 @@
-from qtpy.QtGui import QColor
-from qtpy.QtCore import Slot, Property, Qt
-import numpy as np
 import json
 import itertools
 from collections import OrderedDict
+import numpy as np
+from qtpy.QtGui import QColor
+from qtpy.QtCore import Slot, Property, Qt
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol
-
 
 class ScatterPlotCurveItem(BasePlotCurveItem):
 
@@ -34,6 +33,8 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         self.points_accumulated = 0
         self.latest_x_value = None
         self.latest_y_value = None
+        self.needs_new_x = True
+        self.needs_new_y = True
         if 'symbol' not in kws.keys():
             kws['symbol'] = 'o'
         if 'lineStyle' not in kws.keys():
@@ -183,6 +184,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         self.data_buffer[1, -1] = self.latest_y_value
         if self.points_accumulated < self._bufferSize:
             self.points_accumulated = self.points_accumulated + 1
+        self.data_changed.emit()
 
     def initialize_buffer(self):
         self.points_accumulated = 0
@@ -281,6 +283,7 @@ class PyDMScatterPlot(BasePlot):
         init_channel_pairs = zip(init_x_channels, init_y_channels)
         for (x_chan, y_chan) in init_channel_pairs:
             self.addChannel(y_channel=y_chan, x_channel=x_chan)
+        self._needs_redraw = True
 
     def initialize_for_designer(self):
         # If we are in Qt Designer, don't update the plot continuously.
@@ -347,6 +350,7 @@ class PyDMScatterPlot(BasePlot):
             curve.setBufferSize(buffer_size)
         self.channel_pairs[(x_channel, y_channel)] = curve
         self.addCurve(curve, curve_color=color)
+        curve.data_changed.connect(self.set_needs_redraw)
 
     def removeChannel(self, curve):
         """
@@ -373,13 +377,20 @@ class PyDMScatterPlot(BasePlot):
         self.removeChannel(curve)
 
     @Slot()
+    def set_needs_redraw(self):
+        self._needs_redraw = True
+
+    @Slot()
     def redrawPlot(self):
         """
         Request a redraw from each curve in the plot.
         Called by curves when they get new data.
         """
+        if not self._needs_redraw:
+            return
         for curve in self._curves:
             curve.redrawCurve()
+        self._needs_redraw = False
 
     def clearCurves(self):
         """
