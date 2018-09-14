@@ -14,6 +14,9 @@ from ..utilities import remove_protocol
 from .base import PyDMWidget
 
 
+logger = logging.getLogger(__name__)
+
+
 class TimePlotCurveItem(BasePlotCurveItem):
 
     def __init__(self, channel_address=None, **kws):
@@ -131,9 +134,12 @@ class PyDMTimePlot(BasePlot):
         self._bottom_axis = TimeAxisItem('bottom')
         self._left_axis = AxisItem('left')
         super(PyDMTimePlot, self).__init__(
-            parent=parent,
-            background=background,
-            axisItems={'bottom': self._bottom_axis, 'left': self._left_axis})
+                                    parent=parent,
+                                    background=background,
+                                    axisItems={'bottom': self._bottom_axis,
+                                               'left': self._left_axis}
+                                    )
+        self.setAcceptDrops(True)
         self.plotItem.disableAutoRange(ViewBox.XAxis)
         self.getViewBox().setMouseEnabled(x=False)
         self._bufferSize = 1200
@@ -150,6 +156,44 @@ class PyDMTimePlot(BasePlot):
         # If we are in Qt Designer, don't update the plot continuously.
         # This function gets called by PyDMTimePlot's designer plugin.
         self.redraw_timer.setSingleShot(True)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasFormat('text/plain'):
+            event.accept()
+        else:
+            event.ignore()
+
+    def dragMoveEvent(self, event):
+        if event.mimeData().hasFormat('text/plain'):
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        '''
+        Handle drop events (result of a drag-and-drop operation)
+
+        Multiple addresses can be specified, delimited by LF (\n).
+        Note that the mime data is using text/plain and not URLs, due to the
+        fact that many pydm addresses are invalid URLs according to QUrl.
+        '''
+        addresses = str(event.mimeData().text()).split('\n')
+        for new_addr in addresses:
+            logger.debug('Address dropped: %s', new_addr)
+            if new_addr is None:
+                logger.warning('Empty address dropped')
+                continue
+
+            if not any(curve.address == new_addr for curve in self._curves):
+                logger.debug('Adding new channel: %s', new_addr)
+                curve = self.addYChannel(y_channel=new_addr)
+                if curve.channel is not None:
+                    self.app.add_connection(curve.channel)
+
+        logger.debug('%s Curve address list:', self)
+        for idx, curve in enumerate(self._curves):
+            logger.debug('%d) %s', idx, curve.address)
 
     # Adds a new curve to the current plot
     def addYChannel(self, y_channel=None, name=None, color=None,
@@ -174,6 +218,7 @@ class PyDMTimePlot(BasePlot):
         self.addCurve(new_curve, curve_color=color)
         new_curve.data_changed.connect(self.set_needs_redraw)
         self.redraw_timer.start()
+        return new_curve
 
     def removeYChannel(self, curve):
         self.update_timer.timeout.disconnect(curve.asyncUpdate)
@@ -363,38 +408,6 @@ class TimeAxisItem(AxisItem):
         return strings
 
 
-class HistoryPlotCurveItem(TimePlotCurveItem):
-    def __init__(self, channel_address=None, **kws):
-        super(HistoryPlotCurveItem, self).__init__(
-            channel_address=channel_address, **kws
-        )
-
-
-class PyDMHistoryPlot(PyDMTimePlot):
-    def __init__(self, pydm_widget, value_history, parent=None,
-                 background='default'):
-        super(PyDMHistoryPlot, self).__init__(
-            parent=parent,
-            init_y_channels=[pydm_widget.channel],
-            background=background,
-        )
-        self.value_history = value_history
-        self._copy_history()
-
-    def _copy_history(self):
-        if not self._curves:
-            return
-
-        curve = self._curves[0]
-
-        num_points = min(curve._bufferSize, len(self.value_history))
-        slc = slice(-num_points, None)
-        points = tuple(self.value_history)[slc]
-        curve.data_buffer[0, slc] = [ts for ts, datapoint in points]
-        curve.data_buffer[1, slc] = [datapoint for ts, datapoint in points]
-        curve.points_accumulated = num_points
-
-
 class PyDMHistoryTable(QTableWidget, PyDMWidget):
     """
     A QTableWidget with support for Channels and more from PyDM.
@@ -522,11 +535,12 @@ class PyDMHistoryFrame(QFrame):
         self.value_history = value_history
         self.pop_out_button = QPushButton('Expand')
         self.pop_out_button.pressed.connect(self.pop_out)
+        self.pop_out_button.setMaximumWidth(100)
         self.popped_out = False
 
         self.layout = QVBoxLayout()
-        self.title_widget = QLabel(parent.channel)
-        self.title_widget.setAlignment(Qt.AlignCenter)
+        # self.title_widget = QLabel(parent.channel)
+        # self.title_widget.setAlignment(Qt.AlignCenter)
         self.plot_widget = PyDMTimePlot(parent=None,
                                         init_y_channels=[parent.channel],
                                         background=background)
@@ -534,11 +548,12 @@ class PyDMHistoryFrame(QFrame):
                                              parent=None,
                                              value_history=value_history)
         self.layout.addWidget(self.pop_out_button)
-        self.layout.addWidget(self.title_widget)
+        # self.layout.addWidget(self.title_widget)
         self.layout.addWidget(self.plot_widget)
         self.layout.addWidget(self.table_widget)
         self.setLayout(self.layout)
         self.setWindowFlags(Qt.Popup | Qt.WindowStaysOnTopHint)
+        self._copy_history()
 
     def showEvent(self, event):
         self.pop_out_button.setVisible(not self.popped_out)

@@ -1,3 +1,4 @@
+import re
 import collections
 import time
 import logging
@@ -5,8 +6,8 @@ import functools
 import json
 import numpy as np
 from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect
-from qtpy.QtGui import QColor, QCursor
-from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
+from qtpy.QtGui import QCursor, QToolTip, QDrag
+from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property, QTimer, QMimeData
 from .channel import PyDMChannel
 from ..utilities import is_pydm_app
 from .rules import RulesDispatcher
@@ -204,6 +205,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_state = self.ALARM_NONE
         self._tooltip = None
         self._history_plot = None
+        self._mouse_event_times = {QEvent.MouseButtonPress: {},
+                                   QEvent.MouseButtonRelease: {}
+                                   }
 
         self._precision_from_pv = True
         self._prec = 0
@@ -228,40 +232,100 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self.check_enable_state()
             self.installEventFilter(self)
 
-        self.setContextMenuPolicy(Qt.DefaultContextMenu)
-        self.contextMenuEvent = self.open_context_menu
+        # self.setContextMenuPolicy(Qt.DefaultContextMenu)
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
 
     def eventFilter(self, obj, event):
-        """
-        Filters events on this object.
-
-        Params
-        ------
-        object : QObject
-            The object that is being handled.
-        event : QEvent
-            The event that is happening.
-
-        Returns
-        -------
-        bool
-            True to stop the event from being handled further; otherwise
-            return false.
-        """
+        # Override the eventFilter to capture all middle mouse button events,
+        # and show a tooltip if needed.
         channel = getattr(self, 'channel', None)
-        if is_channel_valid(channel):
-            if event.type() == QEvent.ToolTip:
-                modifiers = QApplication.keyboardModifiers()
-                if modifiers != Qt.ShiftModifier:
-                    return False
+        valid_channel = is_channel_valid(channel)
+        press_types = (QEvent.MouseButtonPress, QEvent.MouseButtonRelease)
+        if event.type() in press_types:
+            self._mouse_event_times[event.type()][event.button()] = time.time()
+        elif event.type() == QEvent.Leave:
+            for event_type in press_types:
+                time_d = self._mouse_event_times[event_type]
+                for button in time_d:
+                    time_d[button] = 0
 
-                from .timeplot import PyDMHistoryFrame
-                if isinstance(self.window(), PyDMHistoryFrame):
-                    # avoid history-inception
-                    return False
-                self.open_history_plot(position=event.pos())
+        if event.type() == QEvent.MouseButtonPress:
+            if event.button() == Qt.MiddleButton:
+                if valid_channel:
+                    self.show_address_tooltip(event)
+                else:
+                    logger.warning("Object %r has no PyDM Channels", self)
                 return True
+
+        if (event.type() in (QEvent.MouseButtonPress, QEvent.MouseButtonRelease) and
+                event.button() == Qt.RightButton):
+            press_d = self._mouse_event_times[QEvent.MouseButtonPress]
+            release_d = self._mouse_event_times[QEvent.MouseButtonRelease]
+
+            def check_right_mouse():
+                press_time = press_d.get(Qt.RightButton, 0)
+                release_time = release_d.get(Qt.RightButton, 0)
+
+                press_elapsed = release_time - press_time
+                if press_time == release_time == 0:
+                    # mouse focus left the widget
+                    pass
+                if press_elapsed < 0:
+                    # right mouse not released for timer duration
+                    self._start_channel_drag(event.pos() -
+                                             self.rect().topLeft())
+                elif press_elapsed <= 0.1:
+                    # short click - open context menu
+                    self.open_context_menu(event)
+                elif press_elapsed > 0.1:
+                    # long click - custom handling
+                    self.show_long_click_information(event)
+            if event.type() == QEvent.MouseButtonRelease:
+                check_right_mouse()
+                press_d[Qt.RightButton] = 0
+                release_d[Qt.RightButton] = 0
+            else:
+                QTimer.singleShot(500, check_right_mouse)
+            return True
+
         return False
+
+    def _start_channel_drag(self, position):
+        'Start a drag-and-drop action of the channel from a given position'
+        channel = getattr(self, 'channel', None)
+        mime_data = QMimeData()
+        mime_data.setText(str(channel))
+        drag = QDrag(self)
+        drag.setMimeData(mime_data)
+        drag.setHotSpot(position)
+        self._drag_action = drag.exec_(Qt.MoveAction)
+
+    def show_long_click_information(self, event):
+        'Long right-mouse button click'
+        from .timeplot import PyDMHistoryFrame
+        if isinstance(self.window(), PyDMHistoryFrame):
+            # avoid history-inception
+            return False
+        self.open_history_plot(position=event.pos())
+        return True
+
+    def show_address_tooltip(self, event):
+        'Show address in tooltip'
+        addr = self.channels()[0].address
+        QToolTip.showText(event.globalPos(), addr)
+        # If the address has a protocol, and it is the default protocol, strip
+        # it out before putting it on the clipboard.
+        m = re.match('(.+?):/{2,3}(.+?)$', addr)
+        if (m is not None and config.DEFAULT_PROTOCOL is not None and
+                m.group(1) == config.DEFAULT_PROTOCOL):
+            copy_text = m.group(2)
+        else:
+            copy_text = addr
+
+        clipboard = QApplication.clipboard()
+        clipboard.setText(copy_text)
+        event = QEvent(QEvent.Clipboard)
+        self.app.sendEvent(clipboard, event)
 
     def widget_ctx_menu(self):
         """
@@ -304,6 +368,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         menu = self.generate_context_menu()
         action = menu.exec_(self.mapToGlobal(ev.pos()))
         del menu
+
+    contextMenuEvent = open_context_menu
 
     def open_history_plot(self, position=None):
         if self._history_plot is None:
@@ -945,7 +1011,6 @@ class PyDMWritableWidget(PyDMWidget):
     def __init__(self, init_channel=None):
         self._write_access = False
         super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
-        self.app = QApplication.instance()
 
     def init_for_designer(self):
         """

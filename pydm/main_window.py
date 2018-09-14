@@ -85,6 +85,7 @@ class PyDMMainWindow(QMainWindow):
     def set_display_widget(self, new_widget):
         if new_widget == self._display_widget:
             return
+
         self.clear_display_widget()
         if not new_widget.layout():
             new_widget.setMinimumSize(new_widget.size())
