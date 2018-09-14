@@ -54,8 +54,8 @@ class PyDMBitIndicator(QWidget):
         """
         Property for the color to be used when drawing
 
-        Returns
-        -------
+        Parameters
+        ----------
         QColor
         """
         self._brush.setColor(color)
@@ -312,7 +312,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         Whether or not to show labels next to each bit indicator.
 
-        Returns
+        Parameters
         -------
         show : bool
             If True the widget will show a label next to the bit indicator
@@ -337,7 +337,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         Whether the most significant bit is at the start or end of the widget.
 
-        Returns
+        Parameters
         -------
         is_big_endian : bool
             If True, the Big Endian will be used, Little Endian otherwise
@@ -365,8 +365,8 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         Draw indicators as circles, rather than rectangles.
 
-        Returns
-        -------
+        Parameters
+        ----------
         draw_circles : bool
             If True, bits will be represented as circles
         """

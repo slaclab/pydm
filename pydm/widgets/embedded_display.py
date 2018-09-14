@@ -216,8 +216,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         Disconnect from PVs when this widget is not visible.
 
-        Returns
-        -------
+        Parameters
+        ----------
         disconnect_when_hidden : bool
         """
         self._disconnect_when_hidden = disconnect_when_hidden

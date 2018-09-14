@@ -84,9 +84,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
 
         Returns
         -------
-        format_string : str
-            The format string to be used including or not the precision
-            and unit
+        None
         """
         if self._show_units:
             units = " {}".format(self._unit)
