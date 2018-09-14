@@ -5,8 +5,8 @@ import logging
 import functools
 import json
 import numpy as np
-from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect
-from qtpy.QtGui import QCursor, QToolTip, QDrag
+from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect, QToolTip
+from qtpy.QtGui import QCursor, QDrag
 from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property, QTimer, QMimeData
 from .channel import PyDMChannel
 from ..utilities import is_pydm_app

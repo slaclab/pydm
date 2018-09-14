@@ -1,13 +1,15 @@
 import time
 import json
 import datetime
+import logging
 import collections
 from collections import OrderedDict
 from pyqtgraph import ViewBox, AxisItem
 import numpy as np
-from qtpy.QtGui import (QColor, QFrame, QVBoxLayout, QApplication, QLabel,
-                        QPushButton, QTableWidget, QTableWidgetItem, QCursor)
+from qtpy.QtGui import QColor
 from qtpy.QtCore import (Slot, Property, QTimer, Qt)
+from qtpy.QtWidgets import (QFrame, QVBoxLayout, QPushButton, QTableWidget,
+                            QTableWidgetItem)
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol
@@ -470,7 +472,7 @@ class PyDMHistoryTable(QTableWidget, PyDMWidget):
         self.setHorizontalHeaderLabels(self._columnHeaders)
         self.resizeColumnsToContents()
 
-    @pyqtProperty("QStringList")
+    @Property("QStringList")
     def columnHeaderLabels(self):
         """
         Return the list of labels for the columns of the Table.
@@ -498,7 +500,7 @@ class PyDMHistoryTable(QTableWidget, PyDMWidget):
         self.setHorizontalHeaderLabels(self._columnHeaders)
         self.setColumnCount(len(self._columnHeaders))
 
-    @pyqtProperty("QStringList")
+    @Property("QStringList")
     def rowHeaderLabels(self):
         """
         Return the list of labels for the rows of the Table.
