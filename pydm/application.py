@@ -19,6 +19,7 @@ import warnings
 import platform
 import collections
 from functools import partial
+from . import config
 from .display_module import Display
 from qtpy.QtCore import Qt, QEvent, QTimer, Slot
 from qtpy.QtWidgets import QApplication, QWidget, QToolTip, QAction, QMenu
@@ -33,10 +34,6 @@ from . import data_plugins
 from .widgets.rules import RulesDispatcher
 
 logger = logging.getLogger(__name__)
-DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
-if DEFAULT_PROTOCOL is not None:
-    # Get rid of the "://" part if it exists
-    DEFAULT_PROTOCOL = DEFAULT_PROTOCOL.split("://")[0]
 
 
 class PyDMApplication(QApplication):
@@ -497,9 +494,10 @@ class PyDMApplication(QApplication):
         match = re.match('.*://', channel.address)
         if match:
             protocol = match.group(0)[:-3]
-        elif DEFAULT_PROTOCOL is not None:
-            # If no protocol was specified, and the default protocol environment variable is specified, try to use that instead.
-            protocol = DEFAULT_PROTOCOL
+        elif config.DEFAULT_PROTOCOL is not None:
+            # If no protocol was specified, and the default protocol
+            # environment variable is specified, try to use that instead.
+            protocol = config.DEFAULT_PROTOCOL
         if protocol:
             try:
                 plugin_to_use = self.plugins[str(protocol)]

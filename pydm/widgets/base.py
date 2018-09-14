@@ -10,6 +10,7 @@ from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
 from ..utilities import is_pydm_app
 from .rules import RulesDispatcher
+from .. import config
 
 try:
     from json.decoder import JSONDecodeError
@@ -219,7 +220,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.channeltype = None
         self.subtype = None
 
-        # If this label is inside a PyDMApplication (not Designer) start it in '
+        # If this label is inside a PyDMApplication (not Designer) start it in
         # the disconnected state.
         if is_pydm_app():
             self._connected = False
