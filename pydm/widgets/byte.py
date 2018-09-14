@@ -55,7 +55,7 @@ class PyDMBitIndicator(QWidget):
         Property for the color to be used when drawing
 
         Parameters
-        -------
+        ----------
         QColor
         """
         self._brush.setColor(color)
@@ -366,7 +366,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         Draw indicators as circles, rather than rectangles.
 
         Parameters
-        -------
+        ----------
         draw_circles : bool
             If True, bits will be represented as circles
         """

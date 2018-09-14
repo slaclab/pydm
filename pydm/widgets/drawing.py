@@ -565,7 +565,7 @@ class PyDMDrawingImage(PyDMDrawing):
         the image
 
         Parameters
-        -------
+        ----------
         new_mode : int
             Index at Qt.AspectRatioMode enum
         """
