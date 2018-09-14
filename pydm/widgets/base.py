@@ -232,7 +232,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self.check_enable_state()
             self.installEventFilter(self)
 
-        # self.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.setContextMenuPolicy(Qt.CustomContextMenu)
 
     def eventFilter(self, obj, event):
@@ -270,14 +269,14 @@ class PyDMWidget(PyDMPrimitiveWidget):
                 if press_time == release_time == 0:
                     # mouse focus left the widget
                     pass
-                if press_elapsed < 0:
+                elif press_elapsed < 0:
                     # right mouse not released for timer duration
                     self._start_channel_drag(event.pos() -
                                              self.rect().topLeft())
                 elif press_elapsed <= 0.1:
                     # short click - open context menu
                     self.open_context_menu(event)
-                elif press_elapsed > 0.1:
+                else:
                     # long click - custom handling
                     self.show_long_click_information(event)
             if event.type() == QEvent.MouseButtonRelease:
@@ -306,7 +305,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if isinstance(self.window(), PyDMHistoryFrame):
             # avoid history-inception
             return False
-        self.open_history_plot(position=event.pos())
+        self.open_history_plot(position=self.mapToGlobal(event.pos()))
         return True
 
     def show_address_tooltip(self, event):
@@ -352,9 +351,20 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if menu is None:
             menu = QMenu(parent=self)
 
-        kwargs = {'channels': self.channels_for_tools(), 'sender': self}
-        if hasattr(self.app, 'assemble_tools_menu'):
-            self.app.assemble_tools_menu(menu, widget_only=True, **kwargs)
+        channels = self.channels_for_tools()
+        if channels:
+            menu.addSeparator()
+            action = menu.addAction('&History...')
+
+            def show_history(checked):
+                self.open_history_plot(pop_out=True)
+
+            action.triggered.connect(show_history)
+
+            if hasattr(self.app, 'assemble_tools_menu'):
+                self.app.assemble_tools_menu(menu, widget_only=True,
+                                             channels=self.channels_for_tools(),
+                                             sender=self)
         return menu
 
     def open_context_menu(self, ev):
@@ -369,9 +379,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         action = menu.exec_(self.mapToGlobal(ev.pos()))
         del menu
 
-    contextMenuEvent = open_context_menu
-
-    def open_history_plot(self, position=None):
+    def open_history_plot(self, position=None, pop_out=False):
+        if position is None:
+            position = QCursor.pos()
         if self._history_plot is None:
             from .timeplot import PyDMHistoryFrame
             self._history_plot = PyDMHistoryFrame(
@@ -382,7 +392,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         plot = self._history_plot
         geom = plot.frameGeometry()
-        geom.moveTopLeft(self.mapToGlobal(position))
+        geom.moveTopLeft(position)
 
         plot.setGeometry(geom)
         plot.setWindowFlags(Qt.Popup | Qt.WindowStaysOnTopHint)
@@ -391,6 +401,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         plot.setVisible(True)
         plot.show()
         plot.activateWindow()
+
+        if pop_out:
+            plot.pop_out()
 
     def init_for_designer(self):
         """
