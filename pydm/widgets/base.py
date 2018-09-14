@@ -205,8 +205,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_state = self.ALARM_NONE
         self._tooltip = None
         self._history_plot = None
-        self._mouse_event_times = {QEvent.MouseButtonPress: {},
-                                   QEvent.MouseButtonRelease: {}
+        self._mouse_click_times = {Qt.LeftButton: 0,
+                                   Qt.RightButton: 0,
+                                   Qt.MiddleButton: 0,
                                    }
 
         self._precision_from_pv = True
@@ -239,53 +240,35 @@ class PyDMWidget(PyDMPrimitiveWidget):
         # and show a tooltip if needed.
         channel = getattr(self, 'channel', None)
         valid_channel = is_channel_valid(channel)
-        press_types = (QEvent.MouseButtonPress, QEvent.MouseButtonRelease)
-        if event.type() in press_types:
-            self._mouse_event_times[event.type()][event.button()] = time.time()
-        elif event.type() == QEvent.Leave:
-            for event_type in press_types:
-                time_d = self._mouse_event_times[event_type]
-                for button in time_d:
-                    time_d[button] = 0
+        event_type = event.type()
 
-        if event.type() == QEvent.MouseButtonPress:
+        if event_type == QEvent.MouseButtonPress:
+            shift = self.app.queryKeyboardModifiers() == Qt.ShiftModifier
+            self._mouse_click_times[event.button()] = time.time()
             if event.button() == Qt.MiddleButton:
                 if valid_channel:
                     self.show_address_tooltip(event)
                 else:
                     logger.warning("Object %r has no PyDM Channels", self)
                 return True
+            elif event.button() == Qt.RightButton and shift:
+                # shift + right mouse to drag
+                self._start_channel_drag(event.pos() - self.rect().topLeft())
+                return True
+        elif event_type == QEvent.MouseButtonRelease:
+            if event.button() == Qt.RightButton:
+                press_time = self._mouse_click_times.get(Qt.RightButton, 0)
+                press_elapsed = time.time() - press_time
 
-        if (event.type() in (QEvent.MouseButtonPress, QEvent.MouseButtonRelease) and
-                event.button() == Qt.RightButton):
-            press_d = self._mouse_event_times[QEvent.MouseButtonPress]
-            release_d = self._mouse_event_times[QEvent.MouseButtonRelease]
+                # released - show either context menu or quick plot
 
-            def check_right_mouse():
-                press_time = press_d.get(Qt.RightButton, 0)
-                release_time = release_d.get(Qt.RightButton, 0)
-
-                press_elapsed = release_time - press_time
-                if press_time == release_time == 0:
-                    # mouse focus left the widget
-                    pass
-                elif press_elapsed < 0:
-                    # right mouse not released for timer duration
-                    self._start_channel_drag(event.pos() -
-                                             self.rect().topLeft())
-                elif press_elapsed <= 0.1:
+                if press_elapsed <= 0.25:
                     # short click - open context menu
                     self.open_context_menu(event)
                 else:
                     # long click - custom handling
                     self.show_long_click_information(event)
-            if event.type() == QEvent.MouseButtonRelease:
-                check_right_mouse()
-                press_d[Qt.RightButton] = 0
-                release_d[Qt.RightButton] = 0
-            else:
-                QTimer.singleShot(500, check_right_mouse)
-            return True
+                return True
 
         return False
 
