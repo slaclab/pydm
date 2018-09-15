@@ -1,15 +1,12 @@
-from ..PyQt.QtGui import QColor, QMenu, QAction
-from ..PyQt.QtCore import Qt, pyqtSlot, pyqtProperty, QTimer
 from pyqtgraph import ViewBox, AxisItem, TextItem, InfiniteLine, SignalProxy, CurvePoint
 import numpy as np
 import time
-import datetime
 import json
 from collections import OrderedDict
 from pyqtgraph import ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
-from qtpy.QtCore import Slot, Property, QTimer
+from qtpy.QtCore import Qt, Slot, Property, QTimer
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from .. utilities import remove_protocol
@@ -74,6 +71,14 @@ class TimePlotCurveItem(BasePlotCurveItem):
                                    value_slot=self.receiveNewValue)
 
     @property
+    def plotByTimeStamps(self):
+        return self.plot_by_timestamps
+
+    @plotByTimeStamps.setter
+    def plotByTimeStamps(self, new_value):
+        self.plot_by_timestamps = new_value
+
+    @property
     def minY(self):
         return self._min_y_value
 
@@ -97,18 +102,13 @@ class TimePlotCurveItem(BasePlotCurveItem):
             self.data_buffer[1, self._bufferSize - 1] = new_value
 
             if self.points_accumulated < self._bufferSize:
-                self.points_accumulated = self.points_accumulated + 1
-            self.data_changed.emit()
-
-            if self.points_accumulated < self._bufferSize - 1:
                 self.points_accumulated += 1
-
+            self.data_changed.emit()
         elif self._update_mode == PyDMTimePlot.AsynchronousMode:
             self.latest_value = new_value
 
     @Slot()
     def asyncUpdate(self):
-
         if self._update_mode != PyDMTimePlot.AsynchronousMode:
             return
         self.data_buffer = np.roll(self.data_buffer, -1)
@@ -155,15 +155,11 @@ class TimePlotCurveItem(BasePlotCurveItem):
             self._bufferSize = MINIMUM_BUFFER_SIZE
             self.initialize_buffer()
 
-
-    global pos
-    pos = -10
-
     @Slot()
     def redrawCurve(self):
         if self.connected:
-            x = self.data_buffer[0, -self.points_accumulated:]
-            y = self.data_buffer[1, -self.points_accumulated:]
+            x = self.data_buffer[0, -self.points_accumulated:].astype(np.float)
+            y = self.data_buffer[1, -self.points_accumulated:].astype(np.float)
 
             if self.plot_by_timestamps:
                 self.setData(y=y, x=x)
@@ -208,16 +204,19 @@ class PyDMTimePlot(BasePlot):
         self.plot_by_timestamps = plot_by_timestamps
         self.timeplot_display = timeplot_display
 
+        self._left_axis = AxisItem("left")
         if plot_by_timestamps:
             self._bottom_axis = TimeAxisItem('bottom')
         else:
             self.starting_epoch_time = time.time()
             self._bottom_axis = AxisItem('bottom')
 
-        self._left_axis = AxisItem("left")
-        super(PyDMTimePlot, self).__init__(parent=parent,
-                                           background=background,
-                                           axisItems={'bottom': self._bottom_axis, 'left': self._left_axis})
+        super(PyDMTimePlot, self).__init__(
+                                    parent=parent,
+                                    background=background,
+                                    axisItems={"bottom": self._bottom_axis,
+                                               "left": self._left_axis}
+                                    )
 
         if self.plot_by_timestamps:
             self.plotItem.disableAutoRange(ViewBox.XAxis)
@@ -292,6 +291,7 @@ class PyDMTimePlot(BasePlot):
 
         self.update_timer.timeout.connect(new_curve.asyncUpdate)
         self.addCurve(new_curve, curve_color=color)
+
         new_curve.data_changed.connect(self.set_needs_redraw)
         self.redraw_timer.start()
 
@@ -319,21 +319,21 @@ class PyDMTimePlot(BasePlot):
 
         for curve in self._curves:
             curve.redrawCurve()
+            if self.timeplot_display:
+                self.timeplot_display.update_curve_data(self._curves)
         self._needs_redraw = False
-
-        if self.timeplot_display:
-            self.timeplot_display.update_curve_data(self._curves)
-
 
     def updateXAxis(self, update_immediately=False):
         if len(self._curves) == 0:
             return
 
         if self.plot_by_timestamps:
-            if self._update_mode == PyDMTimePlot.AsynchronousMode:
+            if self._update_mode == PyDMTimePlot.SynchronousMode:
+                maxrange = max([curve.max_x() for curve in self._curves])
+            else:
                 maxrange = time.time()
-                minrange = maxrange - self._time_span
-                self.plotItem.setXRange(minrange, maxrange, padding=0.0, update=update_immediately)
+            minrange = maxrange - self._time_span
+            self.plotItem.setXRange(minrange, maxrange, padding=0.0, update=update_immediately)
         else:
             diff_time = self.starting_epoch_time - min([curve.max_x() for curve in self._curves])
             if diff_time > DEFAULT_X_MIN:
@@ -457,6 +457,8 @@ class PyDMTimePlot(BasePlot):
 
     def setBufferSize(self, value):
         if self._bufferSize != int(value):
+            # Originally, the bufferSize is the max between the user's input and 1, and 1 doesn't make sense.
+            # So, I'm comparing the user's input with the minimum buffer size, and pick the max between the two
             self._bufferSize = max(int(value), MINIMUM_BUFFER_SIZE)
             for curve in self._curves:
                 curve.setBufferSize(value)
@@ -524,7 +526,8 @@ class PyDMTimePlot(BasePlot):
             self._time_span = value
 
             if self.getUpdatesAsynchronously():
-                self.setBufferSize(int((self._time_span * 1000.0) / self._update_interval))
+                for curve in self._curves:
+                    self.setBufferSize(int((self._time_span * 1000.0) / self._update_interval))
             self.updateXAxis(update_immediately=True)
 
     def resetTimeSpan(self):
