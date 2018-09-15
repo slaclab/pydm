@@ -1,10 +1,12 @@
 import pytest
 import logging
 logger = logging.getLogger(__file__)
-from ..PyQt.QtGui import QLabel, QApplication, QColor, QBrush
-from ..PyQt.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Qt
+
+from qtpy.QtGui import QColor
+from qtpy.QtCore import QTimer, Qt
+
 from collections import OrderedDict
-from ..widgets.baseplot import BasePlotCurveItem, BasePlot, NoDataError
+from ...widgets.baseplot import BasePlotCurveItem, BasePlot, NoDataError
 
 
 @pytest.mark.parametrize("color, line_style, line_width, name", [
