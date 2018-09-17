@@ -1,6 +1,6 @@
 import pytest
 import logging
-logger = logging.getLogger(__file__)
+logger = logging.getLogger(__name__)
 
 from qtpy.QtGui import QColor
 from qtpy.QtCore import QTimer, Qt

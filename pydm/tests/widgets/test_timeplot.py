@@ -1,9 +1,9 @@
 import pytest
 from pyqtgraph import AxisItem
-from ...widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem
+from ...widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem, MINIMUM_BUFFER_SIZE
 
 import logging
-logger = logging.getLogger(__file__)
+logger = logging.getLogger(__name__)
 
 import numpy as np
 from collections import OrderedDict
@@ -25,7 +25,7 @@ def test_timeplotcurveitem_construct(qtbot, channel_address, name):
         assert pydm_timeplot_curve_item.to_dict()["name"] == remove_protocol(channel_address) if channel_address else \
             not pydm_timeplot_curve_item.to_dict()["name"]
 
-    assert pydm_timeplot_curve_item._bufferSize == 1200
+    assert pydm_timeplot_curve_item._bufferSize == MINIMUM_BUFFER_SIZE
     assert pydm_timeplot_curve_item._update_mode == PyDMTimePlot.SynchronousMode
     assert np.array_equal(pydm_timeplot_curve_item.data_buffer, np.zeros((2, pydm_timeplot_curve_item._bufferSize),
                                                                          order='f', dtype=float))
@@ -129,10 +129,10 @@ def test_timeplotcurveitem_receive_value(qtbot, signals, async_update, new_data)
 
 
 @pytest.mark.parametrize("async_update, new_data", [
-    # (False, -10),
-    # (False, 10.2333),
+    (False, -10),
+    (False, 10.2333),
     (True, 100),
-#    (True, -123.456)
+    (True, -123.456)
 ])
 def test_timeplotcurveitem_async_update(signals, async_update, new_data):
     pydm_timeplot_curve_item = TimePlotCurveItem()
@@ -150,9 +150,7 @@ def test_timeplotcurveitem_async_update(signals, async_update, new_data):
     if async_update:
         assert np.array_equal(pydm_timeplot_curve_item.data_buffer[1, pydm_timeplot_curve_item._bufferSize - 1],
                               new_data)
-        assert pydm_timeplot_curve_item.points_accumulated == 2
-    else:
-        assert pydm_timeplot_curve_item.points_accumulated == 0
+    assert pydm_timeplot_curve_item.points_accumulated == 2
 
 def test_timeplotcurve_initialize_buffer(qtbot):
     pydm_timeplot_curve_item = TimePlotCurveItem()
@@ -176,13 +174,13 @@ def test_timeplotcurve_get_set_reset_buffer_size(qtbot, new_buffer_size, expecte
     pydm_timeplot_curve_item = TimePlotCurveItem()
     qtbot.addWidget(pydm_timeplot_curve_item)
 
-    assert pydm_timeplot_curve_item.getBufferSize() == 1200
+    assert pydm_timeplot_curve_item.getBufferSize() == MINIMUM_BUFFER_SIZE
 
     pydm_timeplot_curve_item.setBufferSize(new_buffer_size)
     assert pydm_timeplot_curve_item.getBufferSize() == expected_set_buffer_size
 
     pydm_timeplot_curve_item.resetBufferSize()
-    assert pydm_timeplot_curve_item.getBufferSize() == 1200
+    assert pydm_timeplot_curve_item.getBufferSize() == MINIMUM_BUFFER_SIZE
 
 
 def test_timeplotcurve_max_x(qtbot):

@@ -1,8 +1,7 @@
 from qtpy.QtGui import QColor, QBrush
-from qtpy.QtWidgets import QLabel, QApplication
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt
 from .. import utilities
-from pyqtgraph import PlotWidget, ViewBox, AxisItem, PlotItem
+from pyqtgraph import PlotWidget, ViewBox, InfiniteLine, SignalProxy
 from pyqtgraph import PlotDataItem, mkPen
 from collections import OrderedDict
 from .base import PyDMPrimitiveWidget
@@ -246,10 +245,11 @@ class BasePlotCurveItem(PlotDataItem):
 
 
 class BasePlot(PlotWidget, PyDMPrimitiveWidget):
-    def __init__(self, parent=None, background='default', axisItems=None):
+    def __init__(self, parent=None, background='default', axisItems=None, plot_display=None):
         PlotWidget.__init__(self, parent=parent, background=background,
                             axisItems=axisItems)
         PyDMPrimitiveWidget.__init__(self)
+
         self.plotItem = self.getPlotItem()
         self.plotItem.hideButtons()
         self._auto_range_x = None
@@ -273,6 +273,18 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._show_legend = False
         self._legend = self.addLegend()
         self._legend.hide()
+
+        # Link to the PyDM Display that displays this plot
+        self.plot_display = plot_display
+
+        # Drawing crosshair on the ViewBox
+        self.vertical_crosshair_line = None
+        self.horizontal_crosshair_line = None
+        self.crosshair_movement_proxy = None
+
+        # Adding annotation
+        self.add_annot_mode = False
+        self.mouse_right_click_proxy = None
 
     def addCurve(self, plot_item, curve_color=None):
         if curve_color is None:
@@ -593,3 +605,66 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         self._redraw_rate = redraw_rate
         self.redraw_timer.setInterval(int((1.0/self._redraw_rate)*1000))
+
+    def mouseMoved(self, evt):
+        """
+        A handler for the crosshair feature. Every time the mouse move, the mouse coordinates are updated, and the
+        horizontal and vertical hairlines will be redrawn at the new coordinate. If a PyDMDisplay object is available,
+        that display will also have the x- and y- values to update on the UI.
+
+        Parameters
+        -------
+        evt: MouseEvent
+            The mouse event type, from which the mouse coordinates are obtained.
+        """
+        pos = evt[0]
+        if self.sceneBoundingRect().contains(pos):
+            mouse_point = self.getViewBox().mapSceneToView(pos)
+
+            self.vertical_crosshair_line.setPos(mouse_point.x())
+            self.horizontal_crosshair_line.setPos(mouse_point.y())
+
+            if self.plot_display:
+                self.plot_display.show_mouse_coordinates(mouse_point.x(), mouse_point.y())
+
+    def enableCrosshair(self, is_enabled,starting_x_pos, starting_y_pos,  vertical_angle=90, horizontal_angle=0,
+                        vertical_movable=False, horizontal_movable=False):
+        """
+        Enable the crosshair to be drawn on the ViewBox.
+
+        Parameters
+        ----------
+        is_enabled : bool
+            True is to draw the crosshair, False is to not draw.
+        starting_x_pos : float
+            The x coordinate where to start the horizontal crosshair line.
+        starting_y_pos : float
+            The y coordinate where to start the vertical crosshair line.
+        vertical_angle : float
+            The angle to tilt the vertical crosshair line. Default at 90 degrees.
+        horizontal_angle
+            The angle to tilt the horizontal crosshair line. Default at 0 degrees.
+        vertical_movable : bool
+            True if the vertical line can be moved by the user; False is not.
+        horizontal_movable
+            False if the horizontal line can be moved by the user; False is not.
+        """
+        if self.plot_display:
+            self.plot_display.show_mouse_coordinates(starting_x_pos, starting_y_pos)
+        if is_enabled:
+            self.vertical_crosshair_line = InfiniteLine(pos=starting_x_pos, angle=vertical_angle,
+                                                        movable=vertical_movable)
+            self.horizontal_crosshair_line = InfiniteLine(pos=starting_y_pos, angle=horizontal_angle,
+                                                          movable=horizontal_movable)
+
+            self.plotItem.addItem(self.vertical_crosshair_line)
+            self.plotItem.addItem(self.horizontal_crosshair_line)
+            self.crosshair_movement_proxy = SignalProxy(self.plotItem.scene().sigMouseMoved, rateLimit=60,
+                                                        slot=self.mouseMoved)
+        else:
+            if self.vertical_crosshair_line:
+                self.plotItem.removeItem(self.vertical_crosshair_line)
+            if self.horizontal_crosshair_line:
+                self.plotItem.removeItem(self.horizontal_crosshair_line)
+            if self.crosshair_movement_proxy:
+                self.crosshair_movement_proxy.disconnect()

@@ -1,5 +1,4 @@
-from pyqtgraph import ViewBox, AxisItem, TextItem, InfiniteLine, SignalProxy, CurvePoint
-import numpy as np
+from pyqtgraph import CurvePoint
 import time
 import json
 from collections import OrderedDict
@@ -11,7 +10,7 @@ from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from .. utilities import remove_protocol
 
-MINIMUM_BUFFER_SIZE = 1200
+MINIMUM_BUFFER_SIZE = 10
 DEFAULT_X_MIN = -30
 DEFAULT_Y_MIN = 0
 
@@ -200,9 +199,8 @@ class PyDMTimePlot(BasePlot):
     AsynchronousMode = 2
 
     def __init__(self, parent=None, init_y_channels=[], plot_by_timestamps=True, background='default',
-                 timeplot_display=None):
+                 plot_display=None):
         self.plot_by_timestamps = plot_by_timestamps
-        self.timeplot_display = timeplot_display
 
         self._left_axis = AxisItem("left")
         if plot_by_timestamps:
@@ -211,12 +209,9 @@ class PyDMTimePlot(BasePlot):
             self.starting_epoch_time = time.time()
             self._bottom_axis = AxisItem('bottom')
 
-        super(PyDMTimePlot, self).__init__(
-                                    parent=parent,
-                                    background=background,
-                                    axisItems={"bottom": self._bottom_axis,
-                                               "left": self._left_axis}
-                                    )
+        super(PyDMTimePlot, self).__init__(parent=parent, background=background,
+                                           axisItems={"bottom": self._bottom_axis, "left": self._left_axis},
+                                           plot_display=plot_display)
 
         if self.plot_by_timestamps:
             self.plotItem.disableAutoRange(ViewBox.XAxis)
@@ -235,10 +230,6 @@ class PyDMTimePlot(BasePlot):
         self._update_mode = PyDMTimePlot.SynchronousMode
         self._needs_redraw = True
 
-        # Drawing the chart for a finite duration of time
-        self.continuation_timer = QTimer(self)
-        self.continuation_timeout = None
-
         self.labels = {
             "left": None,
             "right": None,
@@ -256,19 +247,26 @@ class PyDMTimePlot(BasePlot):
         for channel in init_y_channels:
             self.addYChannel(channel)
 
-        # Drawing crosshair on the ViewBox
-        self.vertical_crosshair_line = None
-        self.horizontal_crosshair_line = None
-        self.crosshair_movement_proxy = None
-
-        # Adding annotation
-        self.add_annot_mode = False
-        self.mouse_right_click_proxy = None
-
     def initialize_for_designer(self):
         # If we are in Qt Designer, don't update the plot continuously.
         # This function gets called by PyDMTimePlot's designer plugin.
         self.redraw_timer.setSingleShot(True)
+
+    def getPlotByTimestamps(self):
+        """
+        Whether the graph will show the moving timestamps as the x-axis (default), or the relative time after the
+        starting time.
+
+        :return: True if the x-axis will show the moving timestamps (default); or the relative time as the x-axis
+                 ticks if False.
+        """
+        return self.plot_by_timestamps
+
+    def setPlotByTimesStamps(self, new_value):
+        if new_value != self.plot_by_timestamps:
+            self.plot_by_timestamps = new_value
+
+    plotByTimeStamps = Property("bool", getPlotByTimestamps, setPlotByTimesStamps)
 
     # Adds a new curve to the current plot
     def addYChannel(self, y_channel=None, name=None, color=None,
@@ -319,8 +317,8 @@ class PyDMTimePlot(BasePlot):
 
         for curve in self._curves:
             curve.redrawCurve()
-            if self.timeplot_display:
-                self.timeplot_display.update_curve_data(self._curves)
+            if self.plot_display:
+                self.plot_display.update_curve_data(self._curves)
         self._needs_redraw = False
 
     def updateXAxis(self, update_immediately=False):
@@ -400,58 +398,6 @@ class PyDMTimePlot(BasePlot):
         if len(self._legend.items) == 0:
             self.setShowLegend(False)
 
-    def add_annotation(self):
-        pass
-        # self.add_annot_mode = True
-        # self.mouse_right_click_proxy = SignalProxy(self.plotItem.scene().sigMouseClicked, rateLimit=60,
-        #                                            slot=self.mouseClicked)
-
-    def mouseClicked(self, evt):
-        pass
-        # if self.add_annot_mode and evt[0].button() == Qt.LeftButton:
-        #     pos = evt[0]
-        #     print(pos.scenePos())
-        #     if self.sceneBoundingRect().contains(pos.scenePos()):
-        #         mouse_point = self.getViewBox().mapSceneToView(pos.scenePos())
-        #         annot = TextItem(html='<div style="text-align: center"><span style="color: #FFF;">This is the'
-        #                               '</span><br><span style="color: #FF0; font-size: 16pt;">PEAK</span></div>',
-        #                          anchor=(-0.3, 0.5), border='w', fill=(0, 0, 255, 100))
-        #         self.plotItem.addItem(annot)
-        #         annot.setPos(mouse_point.x(), mouse_point.y())
-        #
-        #     self.add_annot_mode = False
-        #     self.mouse_right_click_proxy.disconnect()
-
-    def mouseMoved(self, evt):
-        pos = evt[0]
-        if self.sceneBoundingRect().contains(pos):
-            mouse_point = self.getViewBox().mapSceneToView(pos)
-
-            self.timeplot_display.show_mouse_coordinates(mouse_point.x(), mouse_point.y())
-            self.vertical_crosshair_line.setPos(mouse_point.x())
-            self.horizontal_crosshair_line.setPos(mouse_point.y())
-
-    def enableCrosshair(self, is_enabled, vertical_angle=90, horizontal_angle=0, vertical_movable=False,
-                        horizontal_movable=False):
-        self.timeplot_display.show_mouse_coordinates(DEFAULT_X_MIN, DEFAULT_Y_MIN)
-        if is_enabled:
-            self.vertical_crosshair_line = InfiniteLine(pos=DEFAULT_X_MIN, angle=vertical_angle,
-                                                        movable=vertical_movable)
-            self.horizontal_crosshair_line = InfiniteLine(pos=DEFAULT_Y_MIN, angle=horizontal_angle,
-                                                          movable=horizontal_movable)
-
-            self.plotItem.addItem(self.vertical_crosshair_line)
-            self.plotItem.addItem(self.horizontal_crosshair_line)
-            self.crosshair_movement_proxy = SignalProxy(self.plotItem.scene().sigMouseMoved, rateLimit=60,
-                                                        slot=self.mouseMoved)
-        else:
-            if self.vertical_crosshair_line:
-                self.plotItem.removeItem(self.vertical_crosshair_line)
-            if self.horizontal_crosshair_line:
-                self.plotItem.removeItem(self.horizontal_crosshair_line)
-            if self.crosshair_movement_proxy:
-                self.crosshair_movement_proxy.disconnect()
-
     def getBufferSize(self):
         return int(self._bufferSize)
 
@@ -472,15 +418,6 @@ class PyDMTimePlot(BasePlot):
     bufferSize = Property("int", getBufferSize,
                           setBufferSize, resetBufferSize)
 
-    def setContinuationTimer(self, timeout_milliseconds):
-        if timeout_milliseconds >= 0:
-            self.continuation_timeout = timeout_milliseconds
-            self.continuation_timer.timeout.connect(self.handle_continuation_timer_timeout)
-            self.continuation_timer.start(self.continuation_timeout)
-        else:
-            self.continuation_timer.stop()
-        self.redraw_timer.start()
-
     def pausePlotting(self):
         remaining_time = self.redraw_timer.remainingTime()
         if remaining_time > 0:
@@ -488,10 +425,6 @@ class PyDMTimePlot(BasePlot):
         else:
             self.redraw_timer.start()
         return remaining_time
-
-    def handle_continuation_timer_timeout(self):
-        self.redraw_timer.stop()
-        self.continuation_timer.stop()
 
     def getUpdatesAsynchronously(self):
         return self._update_mode == PyDMTimePlot.AsynchronousMode
@@ -564,9 +497,6 @@ class PyDMTimePlot(BasePlot):
     updateInterval = Property(float, getUpdateInterval,
                               setUpdateInterval, resetUpdateInterval)
 
-    def getRemainingDrawingTime(self):
-        return self.continuation_timer.remainingTime()
-
     def getAutoRangeX(self):
         return False
 
@@ -595,13 +525,18 @@ class PyDMTimePlot(BasePlot):
                          BasePlot.setMaxYRange, doc="""
     Maximum Y-axis value visible on the plot.""")
 
-    @property
-    def showRightAxis(self):
+    def getShowRightAxis(self):
         return self._show_right_axis
 
-    @showRightAxis.setter
-    def showRightAxis(self, show):
+    def setShowRightAxis(self, show):
         self._show_right_axis = show
+
+    showRightAxis = Property("bool", getShowRightAxis, setShowRightAxis)
+
+    def enableCrosshair(self, is_enabled, starting_x_pos=DEFAULT_X_MIN, starting_y_pos=DEFAULT_Y_MIN, vertical_angle=90,
+                        horizontal_angle=0, vertical_movable=False, horizontal_movable=False):
+        super(PyDMTimePlot, self).enableCrosshair(is_enabled, starting_x_pos, starting_y_pos, vertical_angle,
+                                                  horizontal_angle, vertical_movable, horizontal_movable)
 
 
 class TimeAxisItem(AxisItem):
