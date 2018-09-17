@@ -8,8 +8,8 @@ from pyqtgraph import ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
 from qtpy.QtCore import (Slot, Property, QTimer, Qt)
-from qtpy.QtWidgets import (QFrame, QVBoxLayout, QPushButton, QTableWidget,
-                            QTableWidgetItem)
+from qtpy.QtWidgets import (QFrame, QHBoxLayout, QVBoxLayout, QPushButton, QTableWidget,
+                            QTableWidgetItem, QLabel)
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol
@@ -196,6 +196,8 @@ class PyDMTimePlot(BasePlot):
         logger.debug('%s Curve address list:', self)
         for idx, curve in enumerate(self._curves):
             logger.debug('%d) %s', idx, curve.address)
+
+        self.showLegend = (len(self._curves) >= 2)
 
     # Adds a new curve to the current plot
     def addYChannel(self, y_channel=None, name=None, color=None,
@@ -412,16 +414,18 @@ class TimeAxisItem(AxisItem):
 
 class PyDMHistoryTable(QTableWidget, PyDMWidget):
     """
-    A QTableWidget with support for Channels and more from PyDM.
-
-    Values of the array are displayed in the selected number of columns.
-    The number of rows is determined by the size of the waveform.
-    It is possible to define the labels of each row and column.
+    A QTableWidget with 2 columns, timestamp and value, showing a
+    `camonitor`-like history of the channel.
 
     Parameters
     ----------
-    parent : QWidget
-        The parent widget for the Label
+    max_items : int, optional
+        Maximum number of history items to show
+    value_history : list, optional
+        List of (timestamp, value) pairs of init_channel prior to the
+        instantiation of this widget.
+    parent : QWidget, optional
+        The parent widget for the table
     init_channel : str, optional
         The channel to be used by the widget.
     """
@@ -430,12 +434,14 @@ class PyDMHistoryTable(QTableWidget, PyDMWidget):
                  init_channel=None):
         QTableWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
-        self._columnHeaders = ["Timestamp", "Value"]
+        self._columnHeaders = ["20WW-XX-YY AA:BB:CC.DDDDDD",  # timestamp
+                               "Value"]
         self._rowHeaders = []
         self._itemsFlags = (Qt.ItemIsSelectable |
                             Qt.ItemIsEnabled)
-        self.setColumnCount(2)
-        self.setSizeAdjustPolicy(self.AdjustToContents)
+        self.max_items = max_items
+
+        self.setup_ui()
 
         if value_history is None:
             value_history = []
@@ -443,6 +449,18 @@ class PyDMHistoryTable(QTableWidget, PyDMWidget):
             value_history = list(value_history)
 
         self.value_history = collections.deque(value_history, max_items)
+
+    def setup_ui(self):
+        self.setColumnCount(2)
+        self.setSizeAdjustPolicy(self.AdjustToContents)
+
+        self.setVerticalHeaderLabels(self._rowHeaders)
+        self.setHorizontalHeaderLabels(self._columnHeaders)
+        self.horizontalHeader().setVisible(False)
+        self.verticalHeader().setVisible(False)
+
+        self.resizeColumnsToContents()
+        self.horizontalHeader().setStretchLastSection(True)
 
     def value_changed(self, new_value):
         """
@@ -467,10 +485,6 @@ class PyDMHistoryTable(QTableWidget, PyDMWidget):
             ts = str(datetime.datetime.fromtimestamp(ts))
             self.setItem(row, 0, QTableWidgetItem(ts))
             self.setItem(row, 1, value_cell)
-
-        self.setVerticalHeaderLabels(self._rowHeaders)
-        self.setHorizontalHeaderLabels(self._columnHeaders)
-        self.resizeColumnsToContents()
 
     @Property("QStringList")
     def columnHeaderLabels(self):
@@ -529,28 +543,55 @@ class PyDMHistoryTable(QTableWidget, PyDMWidget):
 
 
 class PyDMHistoryFrame(QFrame):
-    def __init__(self, value_history, parent=None, background='default'):
+    '''
+    """
+    A frame holding a value history plot and table of past values.
+
+    Parameters
+    ----------
+    value_history : list
+        List of (timestamp, value) pairs of init_channel prior to the
+        instantiation of this widget.
+    max_items : int, optional
+        Maximum number of history items to show in the history table
+    parent : QWidget, optional
+        The parent widget. This is assumed to have a `channel` property.
+    '''
+
+    def __init__(self, value_history, max_items=5, parent=None,
+                 background='default'):
         super(PyDMHistoryFrame, self).__init__(parent=None)
+        self.value_history = value_history
+        self.setup_ui(value_history, channel=parent.channel,
+                      background=background)
+
+    def setup_ui(self, value_history, channel, background):
         self.setMinimumWidth(200)
         self.setMinimumHeight(200)
 
-        self.value_history = value_history
         self.pop_out_button = QPushButton('Expand')
         self.pop_out_button.pressed.connect(self.pop_out)
         self.pop_out_button.setMaximumWidth(100)
         self.popped_out = False
 
+        self.title_label = QLabel(channel)
+        self.title_label.setAlignment(Qt.AlignCenter)
+
+        self.title_frame = QFrame()
+        self.title_layout = QHBoxLayout()
+        self.title_frame.setLayout(self.title_layout)
+        self.title_layout.addWidget(self.pop_out_button)
+        self.title_layout.addWidget(self.title_label)
+
         self.layout = QVBoxLayout()
-        # self.title_widget = QLabel(parent.channel)
-        # self.title_widget.setAlignment(Qt.AlignCenter)
+
         self.plot_widget = PyDMTimePlot(parent=None,
-                                        init_y_channels=[parent.channel],
+                                        init_y_channels=[channel],
                                         background=background)
-        self.table_widget = PyDMHistoryTable(init_channel=parent.channel,
+        self.table_widget = PyDMHistoryTable(init_channel=channel,
                                              parent=None,
                                              value_history=value_history)
-        self.layout.addWidget(self.pop_out_button)
-        # self.layout.addWidget(self.title_widget)
+        self.layout.addWidget(self.title_frame)
         self.layout.addWidget(self.plot_widget)
         self.layout.addWidget(self.table_widget)
         self.setLayout(self.layout)
@@ -558,22 +599,24 @@ class PyDMHistoryFrame(QFrame):
         self._copy_history()
 
     def showEvent(self, event):
-        self.pop_out_button.setVisible(not self.popped_out)
+        self.title_frame.setVisible(not self.popped_out)
 
     def hideEvent(self, event):
-        self.pop_out_button.setVisible(True)
+        self.title_frame.setVisible(True)
         self.popped_out = False
 
     def pop_out(self):
+        'Expand from being a popup window to a full dialog'
         self.setWindowFlags(Qt.Dialog)
         self.setVisible(True)
         self.show()
         self.activateWindow()
 
         self.popped_out = True
-        self.pop_out_button.setVisible(False)
+        self.title_frame.setVisible(False)
 
     def _copy_history(self):
+        'Copy the value history into the PyDMTimePlot'
         if not self.plot_widget._curves:
             return
 
