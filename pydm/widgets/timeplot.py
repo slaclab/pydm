@@ -318,7 +318,7 @@ class PyDMTimePlot(BasePlot):
         for curve in self._curves:
             curve.redrawCurve()
             if self.plot_display:
-                self.plot_display.update_curve_data(self._curves)
+                self.plot_display.update_curve_data(curve)
         self._needs_redraw = False
 
     def updateXAxis(self, update_immediately=False):
