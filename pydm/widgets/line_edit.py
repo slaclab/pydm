@@ -82,7 +82,7 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
         """
         send_value = str(self.text())
         # Clean text of unit string
-        if self._show_units and self._unit in send_value:
+        if self._show_units and self._unit and self._unit in send_value:
             send_value = send_value[:-len(self._unit)].strip()
         try:
             if self.channeltype not in [str, np.ndarray]:
