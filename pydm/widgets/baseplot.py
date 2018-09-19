@@ -1,8 +1,7 @@
 from qtpy.QtGui import QColor, QBrush
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt
 from .. import utilities
-from pyqtgraph import PlotWidget, ViewBox, InfiniteLine, SignalProxy
-from pyqtgraph import PlotDataItem, mkPen
+from pyqtgraph import PlotWidget, PlotDataItem, mkPen, ViewBox, InfiniteLine, SignalProxy, CurvePoint, TextItem
 from collections import OrderedDict
 from .base import PyDMPrimitiveWidget
 
@@ -264,8 +263,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.setShowXGrid(False)
         self._show_y_grid = None
         self.setShowYGrid(False)
+
         self.redraw_timer = QTimer(self)
         self.redraw_timer.timeout.connect(self.redrawPlot)
+
         self._redraw_rate = 30 # Redraw at 30 Hz by default.
         self.maxRedrawRate = self._redraw_rate
         self._curves = []
@@ -282,10 +283,6 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.horizontal_crosshair_line = None
         self.crosshair_movement_proxy = None
 
-        # Adding annotation
-        self.add_annot_mode = False
-        self.mouse_right_click_proxy = None
-
     def addCurve(self, plot_item, curve_color=None):
         if curve_color is None:
             curve_color = utilities.colors.default_colors[
@@ -294,11 +291,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._curves.append(plot_item)
         self.addItem(plot_item)
         self.redraw_timer.start()
-        # self._legend.addItem(plot_item, plot_item.curve_name)
 
     def removeCurve(self, plot_item):
         self.removeItem(plot_item)
-        # self._legend.removeItem(plot_item.name())
         self._curves.remove(plot_item)
         if len(self._curves) < 1:
             self.redraw_timer.stop()
@@ -401,9 +396,24 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     title = Property(str, getPlotTitle, setPlotTitle, resetPlotTitle)
 
     def getShowLegend(self):
+        """
+        Check if the legend is being shown.
+
+        Returns : bool
+        -------
+            True if the legend is displayed on the graph; False if not.
+        """
         return self._show_legend
 
     def setShowLegend(self, value):
+        """
+        Set to display the legend on the graph.
+
+        Parameters
+        ----------
+        value : bool
+            True to display the legend; False is not.
+        """
         self._show_legend = value
         if self._show_legend:
             if self._legend is None:
@@ -415,6 +425,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                 self._legend.hide()
 
     def resetShowLegend(self):
+        """
+        Reset the legend display status to hidden.
+        """
         self.setShowLegend(False)
 
     showLegend = Property(bool, getShowLegend, setShowLegend, resetShowLegend)
@@ -606,6 +619,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._redraw_rate = redraw_rate
         self.redraw_timer.setInterval(int((1.0/self._redraw_rate)*1000))
 
+    def pausePlotting(self):
+        self.redraw_timer.stop() if self.redraw_timer.isActive() else self.redraw_timer.start()
+        return self.redraw_timer.isActive()
+
     def mouseMoved(self, evt):
         """
         A handler for the crosshair feature. Every time the mouse move, the mouse coordinates are updated, and the
@@ -637,9 +654,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         is_enabled : bool
             True is to draw the crosshair, False is to not draw.
         starting_x_pos : float
-            The x coordinate where to start the horizontal crosshair line.
+            The x coordinate where to start the vertical crosshair line.
         starting_y_pos : float
-            The y coordinate where to start the vertical crosshair line.
+            The y coordinate where to start the horizontal crosshair line.
         vertical_angle : float
             The angle to tilt the vertical crosshair line. Default at 90 degrees.
         horizontal_angle

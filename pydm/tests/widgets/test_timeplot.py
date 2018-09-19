@@ -150,7 +150,9 @@ def test_timeplotcurveitem_async_update(signals, async_update, new_data):
     if async_update:
         assert np.array_equal(pydm_timeplot_curve_item.data_buffer[1, pydm_timeplot_curve_item._bufferSize - 1],
                               new_data)
-    assert pydm_timeplot_curve_item.points_accumulated == 2
+        assert pydm_timeplot_curve_item.points_accumulated == 1
+    else:
+        assert pydm_timeplot_curve_item.points_accumulated == 2
 
 def test_timeplotcurve_initialize_buffer(qtbot):
     pydm_timeplot_curve_item = TimePlotCurveItem()
