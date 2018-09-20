@@ -82,7 +82,7 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
         """
         send_value = str(self.text())
         # Clean text of unit string
-        if self._show_units and self._unit in send_value:
+        if self._show_units and self._unit and self._unit in send_value:
             send_value = send_value[:-len(self._unit)].strip()
         try:
             if self.channeltype not in [str, np.ndarray]:
@@ -118,7 +118,7 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
                 # Lets just send what we have after all
                 self.send_value_signal[str].emit(send_value)
         except ValueError:
-            logger.error("Error trying to set data '{0}' with type '{1}' and format '{2}' at widget '{3}'."
+            logger.exception("Error trying to set data '{0}' with type '{1}' and format '{2}' at widget '{3}'."
                          .format(self.text(), self.channeltype, self._display_format_type, self.objectName()))
 
         self.clearFocus()
