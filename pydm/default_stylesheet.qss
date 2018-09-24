@@ -43,7 +43,7 @@ ALARM_DISCONNECTED = 4
 /* We have to call out the custom pen on PyDMDrawingWidget */
 PyDMDrawing[alarmSensitiveBorder="true"] {
     border: none;
-    qproperty-penWidth: 2px;
+    qproperty-penWidth: 2;
 
 }
 
