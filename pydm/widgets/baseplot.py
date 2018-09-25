@@ -248,6 +248,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         PlotWidget.__init__(self, parent=parent, background=background,
                             axisItems=axisItems)
         PyDMPrimitiveWidget.__init__(self)
+        self.app = QApplication.instance()
         self.plotItem = self.getPlotItem()
         self.plotItem.hideButtons()
         self._auto_range_x = None

@@ -19,6 +19,7 @@ import warnings
 import platform
 import collections
 from functools import partial
+from . import config
 from .display_module import Display
 from qtpy.QtCore import Qt, QEvent, QTimer, Slot
 from qtpy.QtWidgets import QApplication, QWidget, QToolTip, QAction, QMenu
@@ -33,10 +34,6 @@ from . import data_plugins
 from .widgets.rules import RulesDispatcher
 
 logger = logging.getLogger(__name__)
-DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
-if DEFAULT_PROTOCOL is not None:
-    # Get rid of the "://" part if it exists
-    DEFAULT_PROTOCOL = DEFAULT_PROTOCOL.split("://")[0]
 
 
 class PyDMApplication(QApplication):
@@ -497,9 +494,10 @@ class PyDMApplication(QApplication):
         match = re.match('.*://', channel.address)
         if match:
             protocol = match.group(0)[:-3]
-        elif DEFAULT_PROTOCOL is not None:
-            # If no protocol was specified, and the default protocol environment variable is specified, try to use that instead.
-            protocol = DEFAULT_PROTOCOL
+        elif config.DEFAULT_PROTOCOL is not None:
+            # If no protocol was specified, and the default protocol
+            # environment variable is specified, try to use that instead.
+            protocol = config.DEFAULT_PROTOCOL
         if protocol:
             try:
                 plugin_to_use = self.plugins[str(protocol)]
@@ -539,35 +537,6 @@ class PyDMApplication(QApplication):
         if plugin:
             plugin.remove_connection(channel)
 
-    def eventFilter(self, obj, event):
-        # Override the eventFilter to capture all middle mouse button events,
-        # and show a tooltip if needed.
-        if event.type() == QEvent.MouseButtonPress:
-            if event.button() == Qt.MiddleButton:
-                self.show_address_tooltip(obj, event)
-                return True
-        return False
-
-    # Not sure if showing the tooltip should be the job of the app,
-    # may want to revisit this.
-    def show_address_tooltip(self, obj, event):
-        if not len(obj.channels()):
-            logger.warning("Object %r has no PyDM Channels", obj)
-            return
-        addr = obj.channels()[0].address
-        QToolTip.showText(event.globalPos(), addr)
-        # If the address has a protocol, and it is the default protocol, strip it out before putting it on the clipboard.
-        m = re.match('(.+?):/{2,3}(.+?)$', addr)
-        if m is not None and DEFAULT_PROTOCOL is not None and m.group(1) == DEFAULT_PROTOCOL:
-            copy_text = m.group(2)
-        else:
-            copy_text = addr
-
-        clipboard = QApplication.clipboard()
-        clipboard.setText(copy_text)
-        event = QEvent(QEvent.Clipboard)
-        self.sendEvent(clipboard, event)
-
     def establish_widget_connections(self, widget):
         """
         Given a widget to start from, traverse the tree of child widgets,
@@ -583,15 +552,12 @@ class PyDMApplication(QApplication):
         widgets = [widget]
         widgets.extend(widget.findChildren(QWidget))
         for child_widget in widgets:
-            try:
-                if hasattr(child_widget, 'channels'):
+            if hasattr(child_widget, 'channels'):
+                try:
                     for channel in child_widget.channels():
                         self.add_connection(channel)
-                    # Take this opportunity to install a filter that intercepts middle-mouse clicks,
-                    # which we use to display a tooltip with the address of the widget's first channel.
-                    child_widget.installEventFilter(self)
-            except NameError:
-                pass
+                except NameError:
+                    pass
 
     def unregister_widget_rules(self, widget):
         """

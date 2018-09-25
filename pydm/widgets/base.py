@@ -1,13 +1,17 @@
+import re
+import collections
+import time
 import logging
 import functools
 import json
 import numpy as np
-from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect
-from qtpy.QtGui import QColor, QCursor
-from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
+from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect, QToolTip
+from qtpy.QtGui import QCursor, QDrag
+from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property, QTimer, QMimeData
 from .channel import PyDMChannel
 from ..utilities import is_pydm_app
 from .rules import RulesDispatcher
+from .. import config
 
 try:
     from json.decoder import JSONDecodeError
@@ -178,6 +182,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
     ALARM_INVALID = 3
     ALARM_DISCONNECTED = 4
 
+    # TODO: per-widget, app-wide max as well?
+    MAX_HISTORY = 100
+
     def __init__(self, init_channel=None):
         super(PyDMWidget, self).__init__()
 
@@ -197,6 +204,11 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_sensitive_border = True
         self._alarm_state = self.ALARM_NONE
         self._tooltip = None
+        self._history_plot = None
+        self._mouse_click_times = {Qt.LeftButton: 0,
+                                   Qt.RightButton: 0,
+                                   Qt.MiddleButton: 0,
+                                   }
 
         self._precision_from_pv = True
         self._prec = 0
@@ -209,18 +221,93 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.format_string = "{}"
 
         self.value = None
+        self.value_history = collections.deque([], self.MAX_HISTORY)
         self.channeltype = None
         self.subtype = None
 
-        # If this label is inside a PyDMApplication (not Designer) start it in '
+        # If this label is inside a PyDMApplication (not Designer) start it in
         # the disconnected state.
         if is_pydm_app():
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
+            self.installEventFilter(self)
 
-        self.setContextMenuPolicy(Qt.DefaultContextMenu)
-        self.contextMenuEvent = self.open_context_menu
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+
+    def eventFilter(self, obj, event):
+        # Override the eventFilter to capture all middle mouse button events,
+        # and show a tooltip if needed.
+        channel = getattr(self, 'channel', None)
+        valid_channel = is_channel_valid(channel)
+        event_type = event.type()
+
+        if event_type == QEvent.MouseButtonPress:
+            shift = self.app.queryKeyboardModifiers() == Qt.ShiftModifier
+            self._mouse_click_times[event.button()] = time.time()
+            if event.button() == Qt.MiddleButton:
+                if valid_channel:
+                    self.show_address_tooltip(event)
+                else:
+                    logger.warning("Object %r has no PyDM Channels", self)
+                return True
+            elif event.button() == Qt.RightButton and shift:
+                # shift + right mouse to drag
+                self._start_channel_drag(event.pos() - self.rect().topLeft())
+                return True
+        elif event_type == QEvent.MouseButtonRelease:
+            if event.button() == Qt.RightButton:
+                press_time = self._mouse_click_times.get(Qt.RightButton, 0)
+                press_elapsed = time.time() - press_time
+
+                # released - show either context menu or quick plot
+
+                if press_elapsed <= 0.25:
+                    # short click - open context menu
+                    self.open_context_menu(event)
+                else:
+                    # long click - custom handling
+                    self.show_long_click_information(event)
+                return True
+
+        return False
+
+    def _start_channel_drag(self, position):
+        'Start a drag-and-drop action of the channel from a given position'
+        channel = getattr(self, 'channel', None)
+        mime_data = QMimeData()
+        mime_data.setText(str(channel))
+        drag = QDrag(self)
+        drag.setMimeData(mime_data)
+        drag.setHotSpot(position)
+        self._drag_action = drag.exec_(Qt.MoveAction)
+
+    def show_long_click_information(self, event):
+        'Long right-mouse button click'
+        from .timeplot import PyDMHistoryFrame
+        if isinstance(self.window(), PyDMHistoryFrame):
+            # avoid history-inception
+            return False
+        self.open_history_plot(position=self.mapToGlobal(event.pos()))
+        return True
+
+    def show_address_tooltip(self, event):
+        'Show address in tooltip'
+        addr = self.channels()[0].address
+        QToolTip.showText(event.globalPos(), addr)
+        # If the address has a protocol, and it is the default protocol, strip
+        # it out before putting it on the clipboard.
+        m = re.match('(.+?):/{2,3}(.+?)$', addr)
+        if (m is not None and config.DEFAULT_PROTOCOL is not None and
+                m.group(1) == config.DEFAULT_PROTOCOL):
+            copy_text = m.group(2)
+        else:
+            copy_text = addr
+
+        clipboard = QApplication.clipboard()
+        clipboard.setText(copy_text)
+        event = QEvent(QEvent.Clipboard)
+        self.app.sendEvent(clipboard, event)
 
     def widget_ctx_menu(self):
         """
@@ -247,9 +334,20 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if menu is None:
             menu = QMenu(parent=self)
 
-        kwargs = {'channels': self.channels_for_tools(), 'sender': self}
-        if hasattr(self.app, 'assemble_tools_menu'):
-            self.app.assemble_tools_menu(menu, widget_only=True, **kwargs)
+        channels = self.channels_for_tools()
+        if channels:
+            menu.addSeparator()
+            action = menu.addAction('&History...')
+
+            def show_history(checked):
+                self.open_history_plot(pop_out=True)
+
+            action.triggered.connect(show_history)
+
+            if hasattr(self.app, 'assemble_tools_menu'):
+                self.app.assemble_tools_menu(menu, widget_only=True,
+                                             channels=self.channels_for_tools(),
+                                             sender=self)
         return menu
 
     def open_context_menu(self, ev):
@@ -263,6 +361,32 @@ class PyDMWidget(PyDMPrimitiveWidget):
         menu = self.generate_context_menu()
         action = menu.exec_(self.mapToGlobal(ev.pos()))
         del menu
+
+    def open_history_plot(self, position=None, pop_out=False):
+        if position is None:
+            position = QCursor.pos()
+        if self._history_plot is None:
+            from .timeplot import PyDMHistoryFrame
+            self._history_plot = PyDMHistoryFrame(
+                value_history=self.value_history, parent=self)
+            self._history_plot.setWindowTitle(
+                'Plot of {}'.format(self._channel))
+            self.app.establish_widget_connections(self._history_plot)
+
+        plot = self._history_plot
+        geom = plot.frameGeometry()
+        geom.moveTopLeft(position)
+
+        plot.setGeometry(geom)
+        plot.setWindowFlags(Qt.Popup | Qt.WindowStaysOnTopHint)
+        # plot.setWindowState(plot.windowState() & ~Qt.WindowMinimized |
+        #                     Qt.WindowActive)
+        plot.setVisible(True)
+        plot.show()
+        plot.activateWindow()
+
+        if pop_out:
+            plot.pop_out()
 
     def init_for_designer(self):
         """
@@ -311,6 +435,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
                 pass
 
         self.update_format_string()
+        # TODO: pydm should be keeping track of timestamps as well?
+        self.value_history.append((time.time(), new_val))
 
     @Property(int, designable=False)
     def alarmSeverity(self):
@@ -881,11 +1007,6 @@ class PyDMWritableWidget(PyDMWidget):
     def __init__(self, init_channel=None):
         self._write_access = False
         super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
-        self.app = QApplication.instance()
-        # We should  install the Event Filter only if we are running
-        # and not at the Designer
-        if is_pydm_app():
-            self.installEventFilter(self)
 
     def init_for_designer(self):
         """
@@ -912,6 +1033,10 @@ class PyDMWritableWidget(PyDMWidget):
             True to stop the event from being handled further; otherwise
             return false.
         """
+        filtered = super(PyDMWritableWidget, self).eventFilter(obj, event)
+        if filtered:
+            return filtered
+
         channel = getattr(self, 'channel', None)
         if is_channel_valid(channel):
             status = self._write_access and self._connected
