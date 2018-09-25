@@ -64,8 +64,6 @@ class BasePlotCurveItem(PlotDataItem):
         self.setSymbolBrush(None)
         if color is not None:
             self.color = color
-        if kws.get("name", None):
-            self.opts["name"] = kws["name"]
 
     @property
     def color_string(self):
