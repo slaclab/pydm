@@ -4,7 +4,7 @@ from collections import OrderedDict
 from pyqtgraph import ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
-from qtpy.QtCore import Qt, Slot, Property, QTimer
+from qtpy.QtCore import Signal, Slot, Property, QTimer
 from qtpy.QtWidgets import QAction
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
@@ -13,7 +13,8 @@ from .. utilities import remove_protocol
 import logging
 logger = logging.getLogger(__name__)
 
-MINIMUM_BUFFER_SIZE = 10
+MINIMUM_BUFFER_SIZE = 2
+DEFAULT_BUFFER_SIZE = 10000
 DEFAULT_X_MIN = -30
 DEFAULT_Y_MIN = 0
 DEFAULT_TIME_SPAN = 5.0
@@ -48,7 +49,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
             kws["name"] = name
 
         # Keep the x-axis moving with latest timestamps as ticks
-        self.plot_by_timestamps = plot_by_timestamps
+        self._plot_by_timestamps = plot_by_timestamps
 
         self.starting_epoch_time = time.time()
         self._bufferSize = MINIMUM_BUFFER_SIZE
@@ -88,12 +89,12 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     @property
     def plotByTimeStamps(self):
-        return self.plot_by_timestamps
+        return self._plot_by_timestamps
 
     @plotByTimeStamps.setter
     def plotByTimeStamps(self, new_value):
-        if self.plot_by_timestamps != new_value:
-            self.plot_by_timestamps = new_value
+        if self._plot_by_timestamps != new_value:
+            self._plot_by_timestamps = new_value
 
     @property
     def minY(self):
@@ -223,7 +224,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
             x = self.data_buffer[0, -self.points_accumulated:].astype(np.float)
             y = self.data_buffer[1, -self.points_accumulated:].astype(np.float)
 
-            if self.plot_by_timestamps:
+            if self._plot_by_timestamps:
                 self.setData(y=y, x=x)
             else:
                 time_diff = self.starting_epoch_time - x[len(x) - 1]
@@ -266,8 +267,9 @@ class PyDMTimePlot(BasePlot):
     SynchronousMode = 1
     AsynchronousMode = 2
 
-    def __init__(self, parent=None, init_y_channels=[], plot_by_timestamps=True, background='default',
-                 plot_display=None):
+    plot_redrawn_signal = Signal(TimePlotCurveItem)
+
+    def __init__(self, parent=None, init_y_channels=[], plot_by_timestamps=True, background='default'):
         """
         Parameters
         ----------
@@ -281,10 +283,8 @@ class PyDMTimePlot(BasePlot):
             x-axis starts at 0, and shows relative time in negative values to the left.
         background : str
             The color descriptor for the background of the graph
-        plot_display : Display
-            The PyDM display that contains the graph.
         """
-        self.plot_by_timestamps = plot_by_timestamps
+        self._plot_by_timestamps = plot_by_timestamps
 
         self._left_axis = AxisItem("left")
         if plot_by_timestamps:
@@ -294,17 +294,16 @@ class PyDMTimePlot(BasePlot):
             self._bottom_axis = AxisItem('bottom')
 
         super(PyDMTimePlot, self).__init__(parent=parent, background=background,
-                                           axisItems={"bottom": self._bottom_axis, "left": self._left_axis},
-                                           plot_display=plot_display)
+                                           axisItems={"bottom": self._bottom_axis, "left": self._left_axis})
 
-        if self.plot_by_timestamps:
+        if self._plot_by_timestamps:
             self.plotItem.disableAutoRange(ViewBox.XAxis)
             self.getViewBox().setMouseEnabled(x=False)
         else:
             self.plotItem.setRange(xRange=[DEFAULT_X_MIN, 0], padding=0)
             self.plotItem.setLimits(xMax=0)
 
-        self._bufferSize = MINIMUM_BUFFER_SIZE
+        self._bufferSize = DEFAULT_BUFFER_SIZE
 
         self._time_span = DEFAULT_TIME_SPAN  # This is in seconds
         self._update_interval = DEFAULT_UPDATE_INTERVAL
@@ -326,8 +325,6 @@ class PyDMTimePlot(BasePlot):
             "bottom": None
         }
 
-        self._show_right_axis = False
-
         for channel in init_y_channels:
             self.addYChannel(channel)
 
@@ -346,7 +343,7 @@ class PyDMTimePlot(BasePlot):
             True if the x-axis will show the moving timestamps (default); or the relative time as the x-axis
             ticks if False.
         """
-        return self.plot_by_timestamps
+        return self._plot_by_timestamps
 
     def setPlotByTimesStamps(self, new_value):
         """
@@ -358,8 +355,8 @@ class PyDMTimePlot(BasePlot):
             Set to True for the graph to show the moving timestamps as the x-axis (default), or to False for the graph
             to show the relative time on the x-axis after the starting time.
         """
-        if new_value != self.plot_by_timestamps:
-            self.plot_by_timestamps = new_value
+        if new_value != self._plot_by_timestamps:
+            self._plot_by_timestamps = new_value
 
     plotByTimeStamps = Property("bool", getPlotByTimestamps, setPlotByTimesStamps)
 
@@ -400,7 +397,7 @@ class PyDMTimePlot(BasePlot):
             plot_opts['lineWidth'] = lineWidth
 
         # Add curve
-        new_curve = TimePlotCurveItem(y_channel, plot_by_timestamps=self.plot_by_timestamps, name=name, color=color,
+        new_curve = TimePlotCurveItem(y_channel, plot_by_timestamps=self._plot_by_timestamps, name=name, color=color,
                                       **plot_opts)
         new_curve.setUpdatesAsynchronously(self.updatesAsynchronously)
         new_curve.setBufferSize(self._bufferSize)
@@ -455,8 +452,7 @@ class PyDMTimePlot(BasePlot):
 
         for curve in self._curves:
             curve.redrawCurve()
-            if self.plot_display:
-                self.plot_display.update_curve_data(curve)
+            self.plot_redrawn_signal.emit(curve)
         self._needs_redraw = False
 
     def updateXAxis(self, update_immediately=False):
@@ -472,7 +468,7 @@ class PyDMTimePlot(BasePlot):
         if len(self._curves) == 0:
             return
 
-        if self.plot_by_timestamps:
+        if self._plot_by_timestamps:
             if self._update_mode == PyDMTimePlot.SynchronousMode:
                 maxrange = max([curve.max_x() for curve in self._curves])
             else:
@@ -513,7 +509,7 @@ class PyDMTimePlot(BasePlot):
         try:
             new_list = [json.loads(str(i)) for i in new_list]
         except ValueError as e:
-            logger.error("Error parsing curve json data: {}".format(e))
+            logger.exception("Error parsing curve json data: {}".format(e))
             return
         self.clearCurves()
         for d in new_list:
@@ -623,8 +619,8 @@ class PyDMTimePlot(BasePlot):
         """
         Reset the data buffer size of the chart, and each of the chart's curve's data buffer, to the minimum
         """
-        if self._bufferSize != MINIMUM_BUFFER_SIZE:
-            self._bufferSize = MINIMUM_BUFFER_SIZE
+        if self._bufferSize != DEFAULT_BUFFER_SIZE:
+            self._bufferSize = DEFAULT_BUFFER_SIZE
             for curve in self._curves:
                 curve.resetBufferSize()
 
@@ -737,13 +733,13 @@ class PyDMTimePlot(BasePlot):
                               setUpdateInterval, resetUpdateInterval)
 
     def getAutoRangeX(self):
-        if self.plot_by_timestamps:
+        if self._plot_by_timestamps:
             return False
         else:
             super(PyDMTimePlot, self).getAutoRangeX()
 
     def setAutoRangeX(self, value):
-        if self.plot_by_timestamps:
+        if self._plot_by_timestamps:
             self._auto_range_x = False
             self.plotItem.enableAutoRange(ViewBox.XAxis, enable=self._auto_range_x)
         else:
@@ -769,32 +765,6 @@ class PyDMTimePlot(BasePlot):
     maxYRange = Property(float, BasePlot.getMaxYRange,
                          BasePlot.setMaxYRange, doc="""
     Maximum Y-axis value visible on the plot.""")
-
-    def getShowRightAxis(self):
-        """
-        Provide whether the right y-axis is being shown.
-
-        Returns : bool
-        -------
-        True if the graph shows the right y-axis. False if not.
-
-        """
-        return self._show_right_axis
-
-    def setShowRightAxis(self, show):
-        """
-        Set whether the graph should show the right y-axis.
-
-        Parameters
-        ----------
-        show : bool
-            True for showing the right a-xis; False is for not showing.
-        """
-        if self.showRightAxis != show:
-            self.showAxis("right")
-            self._show_right_axis = show
-
-    showRightAxis = Property("bool", getShowRightAxis, setShowRightAxis)
 
     def enableCrosshair(self, is_enabled, starting_x_pos=DEFAULT_X_MIN, starting_y_pos=DEFAULT_Y_MIN, vertical_angle=90,
                         horizontal_angle=0, vertical_movable=False, horizontal_movable=False):

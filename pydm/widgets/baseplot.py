@@ -244,7 +244,9 @@ class BasePlotCurveItem(PlotDataItem):
 
 
 class BasePlot(PlotWidget, PyDMPrimitiveWidget):
-    def __init__(self, parent=None, background='default', axisItems=None, plot_display=None):
+    crosshair_position_updated = Signal(float, float)
+
+    def __init__(self, parent=None, background='default', axisItems=None):
         PlotWidget.__init__(self, parent=parent, background=background,
                             axisItems=axisItems)
         PyDMPrimitiveWidget.__init__(self)
@@ -264,6 +266,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._show_y_grid = None
         self.setShowYGrid(False)
 
+        self._show_right_axis = False
+
         self.redraw_timer = QTimer(self)
         self.redraw_timer.timeout.connect(self.redrawPlot)
 
@@ -274,9 +278,6 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._show_legend = False
         self._legend = self.addLegend()
         self._legend.hide()
-
-        # Link to the PyDM Display that displays this plot
-        self.plot_display = plot_display
 
         # Drawing crosshair on the ViewBox
         self.vertical_crosshair_line = None
@@ -377,6 +378,34 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     def getBottomAxisLabel(self):
         return self.getAxis('bottom').labelText
+
+    def getShowRightAxis(self):
+        """
+        Provide whether the right y-axis is being shown.
+
+        Returns : bool
+        -------
+        True if the graph shows the right y-axis. False if not.
+
+        """
+        return self._show_right_axis
+
+    def setShowRightAxis(self, show):
+        """
+        Set whether the graph should show the right y-axis.
+
+        Parameters
+        ----------
+        show : bool
+            True for showing the right a-xis; False is for not showing.
+        """
+        if self._show_right_axis != show:
+            self.showAxis("right")
+        else:
+            self.hideAxis("right")
+        self._show_right_axis = show
+
+    showRightAxis = Property("bool", getShowRightAxis, setShowRightAxis)
 
     def getPlotTitle(self):
         if self._title is None:
@@ -637,14 +666,12 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         pos = evt[0]
         if self.sceneBoundingRect().contains(pos):
             mouse_point = self.getViewBox().mapSceneToView(pos)
-
             self.vertical_crosshair_line.setPos(mouse_point.x())
             self.horizontal_crosshair_line.setPos(mouse_point.y())
 
-            if self.plot_display:
-                self.plot_display.show_mouse_coordinates(mouse_point.x(), mouse_point.y())
+            self.crosshair_position_updated.emit(mouse_point.x(), mouse_point.y())
 
-    def enableCrosshair(self, is_enabled,starting_x_pos, starting_y_pos,  vertical_angle=90, horizontal_angle=0,
+    def enableCrosshair(self, is_enabled, starting_x_pos, starting_y_pos,  vertical_angle=90, horizontal_angle=0,
                         vertical_movable=False, horizontal_movable=False):
         """
         Enable the crosshair to be drawn on the ViewBox.
@@ -666,8 +693,6 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         horizontal_movable
             False if the horizontal line can be moved by the user; False is not.
         """
-        if self.plot_display:
-            self.plot_display.show_mouse_coordinates(starting_x_pos, starting_y_pos)
         if is_enabled:
             self.vertical_crosshair_line = InfiniteLine(pos=starting_x_pos, angle=vertical_angle,
                                                         movable=vertical_movable)
