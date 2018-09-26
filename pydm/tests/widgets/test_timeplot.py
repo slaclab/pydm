@@ -1,6 +1,6 @@
 import pytest
 from pyqtgraph import AxisItem
-from ...widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem, MINIMUM_BUFFER_SIZE
+from ...widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem, MINIMUM_BUFFER_SIZE, DEFAULT_BUFFER_SIZE
 
 import logging
 logger = logging.getLogger(__name__)
@@ -168,9 +168,10 @@ def test_timeplotcurve_initialize_buffer(qtbot):
 
 
 @pytest.mark.parametrize("new_buffer_size, expected_set_buffer_size", [
-    (0, 1),
-    (-5, 1),
-    (100, 100)
+    (0, DEFAULT_BUFFER_SIZE),
+    (-5, DEFAULT_BUFFER_SIZE),
+    (100, DEFAULT_BUFFER_SIZE),
+    (DEFAULT_BUFFER_SIZE + 1, DEFAULT_BUFFER_SIZE + 1)
 ])
 def test_timeplotcurve_get_set_reset_buffer_size(qtbot, new_buffer_size, expected_set_buffer_size):
     pydm_timeplot_curve_item = TimePlotCurveItem()
