@@ -13,8 +13,8 @@ from .. utilities import remove_protocol
 import logging
 logger = logging.getLogger(__name__)
 
-MINIMUM_BUFFER_SIZE = 2
-DEFAULT_BUFFER_SIZE = 10000
+MINIMUM_BUFFER_SIZE = 1200
+DEFAULT_BUFFER_SIZE = 7200
 DEFAULT_X_MIN = -30
 DEFAULT_Y_MIN = 0
 DEFAULT_TIME_SPAN = 5.0
@@ -189,6 +189,10 @@ class TimePlotCurveItem(BasePlotCurveItem):
         """
         Initialize the data buffer used to plot the current curve.
         """
+        if not self._plot_by_timestamps:
+            # Since we're initializing a new buffer, must reset the epoch time for the relative time x-axis
+            self.starting_epoch_time = time.time()
+
         self.points_accumulated = 0
 
         # If you don't specify dtype=float, you don't have enough
@@ -202,7 +206,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     def setBufferSize(self, value):
         if self._bufferSize != int(value):
-            self._bufferSize = max(int(value), 1)
+            self._bufferSize = max(int(value), DEFAULT_BUFFER_SIZE)
             self.initialize_buffer()
 
     def resetBufferSize(self):
@@ -443,7 +447,7 @@ class PyDMTimePlot(BasePlot):
     @Slot()
     def redrawPlot(self):
         """
-        Redraw the graph. If the display UI is provided, also check if the current curve is receiving data.
+        Redraw the graph
         """
         if not self._needs_redraw:
             return
@@ -611,7 +615,7 @@ class PyDMTimePlot(BasePlot):
         if self._bufferSize != int(value):
             # Originally, the bufferSize is the max between the user's input and 1, and 1 doesn't make sense.
             # So, I'm comparing the user's input with the minimum buffer size, and pick the max between the two
-            self._bufferSize = max(int(value), MINIMUM_BUFFER_SIZE)
+            self._bufferSize = max(int(value), DEFAULT_BUFFER_SIZE)
             for curve in self._curves:
                 curve.setBufferSize(value)
 
@@ -619,8 +623,8 @@ class PyDMTimePlot(BasePlot):
         """
         Reset the data buffer size of the chart, and each of the chart's curve's data buffer, to the minimum
         """
-        if self._bufferSize != DEFAULT_BUFFER_SIZE:
-            self._bufferSize = DEFAULT_BUFFER_SIZE
+        if self._bufferSize != MINIMUM_BUFFER_SIZE:
+            self._bufferSize = MINIMUM_BUFFER_SIZE
             for curve in self._curves:
                 curve.resetBufferSize()
 
