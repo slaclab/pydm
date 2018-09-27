@@ -122,6 +122,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
     def connectionStateChanged(self, connected):
         # Maybe change pen stroke?
         self.connected = connected
+        if not self.connected:
+            self.latest_value = np.nan
 
     @Slot(float)
     @Slot(int)
@@ -224,15 +226,13 @@ class TimePlotCurveItem(BasePlotCurveItem):
         On the other hand, if plot by relative time, take the time diff from the starting time of the curve, and plot
         the data to the time diff position on the x-axis.
         """
-        if self.connected:
-            x = self.data_buffer[0, -self.points_accumulated:].astype(np.float)
-            y = self.data_buffer[1, -self.points_accumulated:].astype(np.float)
+        x = self.data_buffer[0, -self.points_accumulated:].astype(np.float)
+        y = self.data_buffer[1, -self.points_accumulated:].astype(np.float)
 
-            if not self._plot_by_timestamps:
-                time_diff = time.time() - x[-1]
-                x = x - x[-1] - time_diff
+        if not self._plot_by_timestamps:
+            x = x - time.time()
 
-            self.setData(y=y, x=x)
+        self.setData(y=y, x=x)
 
     def setUpdatesAsynchronously(self, value):
         if value is True:
