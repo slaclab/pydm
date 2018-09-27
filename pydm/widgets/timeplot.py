@@ -13,10 +13,12 @@ from .. utilities import remove_protocol
 import logging
 logger = logging.getLogger(__name__)
 
-MINIMUM_BUFFER_SIZE = 1200
-DEFAULT_BUFFER_SIZE = 7200
+MINIMUM_BUFFER_SIZE = 2
+DEFAULT_BUFFER_SIZE = 18000
+
 DEFAULT_X_MIN = -30
 DEFAULT_Y_MIN = 0
+
 DEFAULT_TIME_SPAN = 5.0
 DEFAULT_UPDATE_INTERVAL = 100
 
@@ -208,12 +210,12 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     def setBufferSize(self, value):
         if self._bufferSize != int(value):
-            self._bufferSize = max(int(value), DEFAULT_BUFFER_SIZE)
+            self._bufferSize = max(int(value), MINIMUM_BUFFER_SIZE)
             self.initialize_buffer()
 
     def resetBufferSize(self):
-        if self._bufferSize != MINIMUM_BUFFER_SIZE:
-            self._bufferSize = MINIMUM_BUFFER_SIZE
+        if self._bufferSize != DEFAULT_BUFFER_SIZE:
+            self._bufferSize = DEFAULT_BUFFER_SIZE
             self.initialize_buffer()
 
     @Slot()
@@ -230,7 +232,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         y = self.data_buffer[1, -self.points_accumulated:].astype(np.float)
 
         if not self._plot_by_timestamps:
-            x = x - time.time()
+            x -= time.time()
 
         self.setData(y=y, x=x)
 
@@ -306,7 +308,7 @@ class PyDMTimePlot(BasePlot):
             self.plotItem.setRange(xRange=[DEFAULT_X_MIN, 0], padding=0)
             self.plotItem.setLimits(xMax=0)
 
-        self._bufferSize = DEFAULT_BUFFER_SIZE
+        self._bufferSize = MINIMUM_BUFFER_SIZE
 
         self._time_span = DEFAULT_TIME_SPAN  # This is in seconds
         self._update_interval = DEFAULT_UPDATE_INTERVAL
@@ -614,7 +616,7 @@ class PyDMTimePlot(BasePlot):
         if self._bufferSize != int(value):
             # Originally, the bufferSize is the max between the user's input and 1, and 1 doesn't make sense.
             # So, I'm comparing the user's input with the minimum buffer size, and pick the max between the two
-            self._bufferSize = max(int(value), DEFAULT_BUFFER_SIZE)
+            self._bufferSize = max(int(value), MINIMUM_BUFFER_SIZE)
             for curve in self._curves:
                 curve.setBufferSize(value)
 
@@ -622,8 +624,8 @@ class PyDMTimePlot(BasePlot):
         """
         Reset the data buffer size of the chart, and each of the chart's curve's data buffer, to the minimum
         """
-        if self._bufferSize != MINIMUM_BUFFER_SIZE:
-            self._bufferSize = MINIMUM_BUFFER_SIZE
+        if self._bufferSize != DEFAULT_BUFFER_SIZE:
+            self._bufferSize = DEFAULT_BUFFER_SIZE
             for curve in self._curves:
                 curve.resetBufferSize()
 
