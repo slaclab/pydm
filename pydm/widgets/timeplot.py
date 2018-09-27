@@ -228,12 +228,11 @@ class TimePlotCurveItem(BasePlotCurveItem):
             x = self.data_buffer[0, -self.points_accumulated:].astype(np.float)
             y = self.data_buffer[1, -self.points_accumulated:].astype(np.float)
 
-            if self._plot_by_timestamps:
-                self.setData(y=y, x=x)
-            else:
-                time_diff = self.starting_epoch_time - x[len(x) - 1]
-                self.setData(y=self.data_buffer[1, -self.points_accumulated:])
-                self.setPos(time_diff, 0)
+            if not self._plot_by_timestamps:
+                time_diff = time.time() - x[-1]
+                x = x - x[-1] - time_diff
+
+            self.setData(y=y, x=x)
 
     def setUpdatesAsynchronously(self, value):
         if value is True:
