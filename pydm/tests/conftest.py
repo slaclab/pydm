@@ -46,7 +46,6 @@ class ConnectionSignals(QObject):
     upper_ctrl_limit_signal = Signal([float])
     lower_ctrl_limit_signal = Signal([float])
 
-
     def __init__(self):
         super(ConnectionSignals, self).__init__()
         self._value = None

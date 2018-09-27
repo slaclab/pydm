@@ -168,10 +168,10 @@ def test_timeplotcurve_initialize_buffer(qtbot):
 
 
 @pytest.mark.parametrize("new_buffer_size, expected_set_buffer_size", [
-    (0, DEFAULT_BUFFER_SIZE),
-    (-5, DEFAULT_BUFFER_SIZE),
-    (100, DEFAULT_BUFFER_SIZE),
-    (DEFAULT_BUFFER_SIZE + 1, DEFAULT_BUFFER_SIZE + 1)
+    (0, MINIMUM_BUFFER_SIZE),
+    (-5, MINIMUM_BUFFER_SIZE),
+    (100, 100),
+    (MINIMUM_BUFFER_SIZE + 1, MINIMUM_BUFFER_SIZE + 1)
 ])
 def test_timeplotcurve_get_set_reset_buffer_size(qtbot, new_buffer_size, expected_set_buffer_size):
     pydm_timeplot_curve_item = TimePlotCurveItem()
@@ -183,7 +183,7 @@ def test_timeplotcurve_get_set_reset_buffer_size(qtbot, new_buffer_size, expecte
     assert pydm_timeplot_curve_item.getBufferSize() == expected_set_buffer_size
 
     pydm_timeplot_curve_item.resetBufferSize()
-    assert pydm_timeplot_curve_item.getBufferSize() == MINIMUM_BUFFER_SIZE
+    assert pydm_timeplot_curve_item.getBufferSize() == DEFAULT_BUFFER_SIZE
 
 
 def test_timeplotcurve_max_x(qtbot):
