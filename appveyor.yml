@@ -14,10 +14,6 @@ environment:
     secure: qROm2iOANaz9zZRZzyde8b7SMNpEC3rDP78SLAGaoRZBrLiE1MzP62VLjqfXMYBN
 
   matrix:
-    - PYTHON_VERSION: 2.7
-      MINICONDA: C:\Miniconda
-    - PYTHON_VERSION: 3.5
-      MINICONDA: C:\Miniconda35
     - PYTHON_VERSION: 3.6
       MINICONDA: C:\Miniconda36
 
