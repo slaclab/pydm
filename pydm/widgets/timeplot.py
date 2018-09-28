@@ -308,7 +308,7 @@ class PyDMTimePlot(BasePlot):
             self.plotItem.setRange(xRange=[DEFAULT_X_MIN, 0], padding=0)
             self.plotItem.setLimits(xMax=0)
 
-        self._bufferSize = MINIMUM_BUFFER_SIZE
+        self._bufferSize = DEFAULT_BUFFER_SIZE
 
         self._time_span = DEFAULT_TIME_SPAN  # This is in seconds
         self._update_interval = DEFAULT_UPDATE_INTERVAL
