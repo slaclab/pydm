@@ -1,4 +1,5 @@
 from numpy import ndarray
+import weakref
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
 
@@ -148,12 +149,17 @@ class PyDMPlugin(object):
 
     def __init__(self):
         self.connections = {}
+        self.channels = weakref.WeakSet()
 
     def get_address(self, channel):
         return str(channel.address.split(self.protocol + "://")[-1])
 
     def add_connection(self, channel):
         address = self.get_address(channel)
+        # If this channel is already connected to this plugin lets ignore
+        if channel in self.channels:
+            return
+        self.channels.add(channel)
         if address in self.connections:
             self.connections[address].add_listener(channel)
         else:
@@ -161,7 +167,9 @@ class PyDMPlugin(object):
 
     def remove_connection(self, channel):
         address = self.get_address(channel)
-        if address in self.connections:
+
+        if address in self.connections and channel in self.channels:
             self.connections[address].remove_listener(channel)
+            self.channels.remove(channel)
             if self.connections[address].listener_count < 1:
                 del self.connections[address]

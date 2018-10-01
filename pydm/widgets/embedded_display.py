@@ -137,11 +137,13 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         -------
         display : QWidget
         """
-        if os.path.isabs(self.filename):
-            return self.app.open_file(self.filename, macros=self.parsed_macros(),
+        # Expand user (~ or ~user) and environment variables.
+        fname = os.path.expanduser(os.path.expandvars(self.filename))
+        if os.path.isabs(fname):
+            return self.app.open_file(fname, macros=self.parsed_macros(),
                                       establish_connection=False)
         else:
-            return self.app.open_relative(self.filename, self, macros=self.parsed_macros(),
+            return self.app.open_relative(fname, self, macros=self.parsed_macros(),
                                           establish_connection=False)
 
     @property
