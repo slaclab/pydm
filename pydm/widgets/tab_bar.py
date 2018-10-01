@@ -307,8 +307,8 @@ class PyDMTabWidget(QTabWidget):
     def disconnectedAlarmIconColor(self, new_color):
         self.tabBar().disconnectedAlarmIconColor = new_color
 
-    alarmChannels = pyqtProperty("QStringList", getAlarmChannels,
-                                 setAlarmChannels, designable=False)
+    alarmChannels = Property("QStringList", getAlarmChannels,
+                             setAlarmChannels, designable=False)
 
     # We make a bunch of dummy properties to block out properties available on QTabWidget,
     # but that we don't want to support on PyDMTabWidget.
