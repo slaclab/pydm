@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.4.2+58.g37a3915 documentation</title>
+  <title>pydm.application &mdash; PyDM v1.4.2+62.g6f9e0e7 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.4.2+58.g37a3915
+                v1.4.2+62.g6f9e0e7
               </div>
             
           
@@ -370,6 +370,8 @@
 <span class="sd">            to pass in extra arguments.  It is probably rare that code you</span>
 <span class="sd">            write needs to use this argument.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Expand user (~ or ~user) and environment variables.</span>
+        <span class="n">ui_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expandvars</span><span class="p">(</span><span class="n">ui_file</span><span class="p">))</span>
         <span class="n">base_dir</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">path_info</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ui_file</span><span class="p">))</span>
         <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
         <span class="n">filepath_args</span> <span class="o">=</span> <span class="n">args</span>
@@ -987,7 +989,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'v1.4.2+58.g37a3915',
+            VERSION:'v1.4.2+62.g6f9e0e7',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
