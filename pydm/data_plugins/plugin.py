@@ -160,7 +160,7 @@ class PyDMPlugin(object):
         # If this channel is already connected to this plugin lets ignore
         if ch_id in self.channels:
             return
-        self.channels[id(channel)] = True
+        self.channels[ch_id] = True
         if address in self.connections:
             self.connections[address].add_listener(channel)
         else:
