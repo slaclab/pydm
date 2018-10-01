@@ -108,6 +108,8 @@ class PyDMMainWindow(QMainWindow):
 
     def join_to_current_file_path(self, ui_file):
         ui_file = str(ui_file)
+        # Expand user (~ or ~user) and environment variables.
+        ui_file = os.path.expanduser(os.path.expandvars(ui_file))
         if path.isabs(ui_file) or len(self.back_stack) == 0:
             return str(ui_file)
         else:

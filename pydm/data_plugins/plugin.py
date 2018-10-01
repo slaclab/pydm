@@ -1,4 +1,5 @@
 from numpy import ndarray
+from threading import Lock
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
 
@@ -148,20 +149,29 @@ class PyDMPlugin(object):
 
     def __init__(self):
         self.connections = {}
+        self.channels = {}
 
     def get_address(self, channel):
         return str(channel.address.split(self.protocol + "://")[-1])
 
     def add_connection(self, channel):
+        ch_id = id(channel)
         address = self.get_address(channel)
+        # If this channel is already connected to this plugin lets ignore
+        if ch_id in self.channels:
+            return
+        self.channels[id(channel)] = True
         if address in self.connections:
             self.connections[address].add_listener(channel)
         else:
             self.connections[address] = self.connection_class(channel, address, self.protocol)
 
     def remove_connection(self, channel):
+        ch_id = id(channel)
         address = self.get_address(channel)
-        if address in self.connections:
+
+        if address in self.connections and ch_id in self.channels:
             self.connections[address].remove_listener(channel)
+            del self.channels[ch_id]
             if self.connections[address].listener_count < 1:
                 del self.connections[address]

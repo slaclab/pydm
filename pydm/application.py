@@ -192,6 +192,8 @@ class PyDMApplication(QApplication):
             to pass in extra arguments.  It is probably rare that code you
             write needs to use this argument.
         """
+        # Expand user (~ or ~user) and environment variables.
+        ui_file = os.path.expanduser(os.path.expandvars(ui_file))
         base_dir, fname, args = path_info(str(ui_file))
         filepath = os.path.join(base_dir, fname)
         filepath_args = args
