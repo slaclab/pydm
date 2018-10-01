@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMTimePlot &mdash; PyDM v1.4.2+62.g6f9e0e7 documentation</title>
+  <title>PyDMTimePlot &mdash; PyDM v1.4.2+85.g51d38d5 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.4.2+62.g6f9e0e7
+                v1.4.2+85.g51d38d5
               </div>
             
           
@@ -197,12 +197,175 @@
 <h1>PyDMTimePlot<a class="headerlink" href="#pydmtimeplot" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pydm.widgets.timeplot.PyDMTimePlot">
-<em class="property">class </em><code class="descclassname">pydm.widgets.timeplot.</code><code class="descname">PyDMTimePlot</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_y_channels=[]</em>, <em>background='default'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
+<em class="property">class </em><code class="descclassname">pydm.widgets.timeplot.</code><code class="descname">PyDMTimePlot</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_y_channels=[]</em>, <em>plot_by_timestamps=True</em>, <em>background='default'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>TimePlot now supports two mode:</p>
+<ol class="arabic simple">
+<li>The “classic” mode, in which the x-axis shows the timestamps, and move to the left</li>
+<li>The new mode, in which the x-axis shows the negative time in seconds from the starting time, at which x = 0.</li>
+</ol>
+<p>To maintain backward compatibility, the default drawing mode is in the classic, “plot_by_timestamps” mode, for both
+TimePlotCurveItem and TimePlotCurve.</p>
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.addLegendItem">
+<code class="descname">addLegendItem</code><span class="sig-paren">(</span><em>item</em>, <em>pv_name</em>, <em>force_show_legend=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.addLegendItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.addLegendItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an item into the graph’s legend.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>item</strong> (<em>TimePlotCurveItem</em>) – A curve being plotted in the graph</li>
+<li><strong>pv_name</strong> (<em>str</em>) – The PV channel</li>
+<li><strong>force_show_legend</strong> (<em>bool</em>) – True to make the legend to be displayed; False to just add the item, but do not display the legend.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.addYChannel">
+<code class="descname">addYChannel</code><span class="sig-paren">(</span><em>y_channel=None</em>, <em>name=None</em>, <em>color=None</em>, <em>lineStyle=None</em>, <em>lineWidth=None</em>, <em>symbol=None</em>, <em>symbolSize=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.addYChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.addYChannel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a new curve to the current plot</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>y_channel</strong> (<em>str</em>) – The PV address</li>
+<li><strong>name</strong> (<em>str</em>) – The name of the curve (usually made the same as the PV address)</li>
+<li><strong>color</strong> (<em>QColor</em>) – The color for the curve</li>
+<li><strong>lineStyle</strong> (<em>str</em>) – The line style of the curve, i.e. solid, dash, dot, etc.</li>
+<li><strong>lineWidth</strong> (<em>int</em>) – How thick the curve line should be</li>
+<li><strong>symbol</strong> (<em>str</em>) – The symbols as markers along the curve, i.e. circle, square, triangle, star, etc.</li>
+<li><strong>symbolSize</strong> (<em>int</em>) – How big the symbols should be</li>
+<li><strong>Returns</strong> (<em>TimePlotCurveItem</em>) – </li>
+<li><strong>-------</strong> – The new curve just created.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pydm.widgets.timeplot.PyDMTimePlot.autoRangeY">
 <code class="descname">autoRangeY</code><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.autoRangeY" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the Y-axis automatically rescales to fit the data.
 If true, the values in minYRange and maxYRange are ignored.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.bufferSize">
+<code class="descname">bufferSize</code><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.bufferSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the size of the data buffer for the entire chart.</p>
+<p>The chart’s data buffer size.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.clearCurves">
+<code class="descname">clearCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.clearCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.clearCurves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all curves from the graph.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.curves">
+<code class="descname">curves</code><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.curves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dump the current list of curves and each curve’s settings into a list of JSON-formatted strings.</p>
+<blockquote>
+<div>A list of JSON-formatted strings, each containing a curve’s settings</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.enableCrosshair">
+<code class="descname">enableCrosshair</code><span class="sig-paren">(</span><em>is_enabled</em>, <em>starting_x_pos=-30</em>, <em>starting_y_pos=0</em>, <em>vertical_angle=90</em>, <em>horizontal_angle=0</em>, <em>vertical_movable=False</em>, <em>horizontal_movable=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.enableCrosshair"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.enableCrosshair" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display a crosshair on the graph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>is_enabled</strong> (<em>bool</em>) – True is to display the crosshair; False is to hide it.</li>
+<li><strong>starting_x_pos</strong> (<em>float</em>) – The x position where the vertical line will cross</li>
+<li><strong>starting_y_pos</strong> (<em>float</em>) – The y position where the horizontal line will cross</li>
+<li><strong>vertical_angle</strong> (<em>int</em>) – The angle of the vertical line</li>
+<li><strong>horizontal_angle</strong> (<em>int</em>) – The angle of the horizontal line</li>
+<li><strong>vertical_movable</strong> (<em>bool</em>) – True if the user can move the vertical line; False if not</li>
+<li><strong>horizontal_movable</strong> (<em>bool</em>) – True if the user can move the horizontal line; False if not</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.findCurve">
+<code class="descname">findCurve</code><span class="sig-paren">(</span><em>pv_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.findCurve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.findCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a curve from a graph’s curve list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pv_name</strong> (<em>str</em>) – The curve’s PV address.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">The found curve, or None.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.getBufferSize">
+<code class="descname">getBufferSize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.getBufferSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.getBufferSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the size of the data buffer for the entire chart.</p>
+<p>The chart’s data buffer size.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.getCurves">
+<code class="descname">getCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.getCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.getCurves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dump the current list of curves and each curve’s settings into a list of JSON-formatted strings.</p>
+<blockquote>
+<div>A list of JSON-formatted strings, each containing a curve’s settings</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.getPlotByTimestamps">
+<code class="descname">getPlotByTimestamps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.getPlotByTimestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.getPlotByTimestamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the graph will show the moving timestamps as the x-axis (default), or the relative time after the
+starting time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><em>True if the x-axis will show the moving timestamps (default); or the relative time as the x-axis</em></li>
+<li><em>ticks if False.</em></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.getTimeSpan">
+<code class="descname">getTimeSpan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.getTimeSpan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.getTimeSpan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the time duration for the chart to collect data before rotating its buffer.</p>
+<blockquote>
+<div>The time duration for the chart to collect data before rotating its buffer, in seconds.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.getUpdateInterval">
+<code class="descname">getUpdateInterval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.getUpdateInterval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.getUpdateInterval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the update interval for the chart.</p>
+<blockquote>
+<div>The update interval of the chart.</div></blockquote>
 </dd></dl>
 
 <dl class="attribute">
@@ -215,6 +378,211 @@ If true, the values in minYRange and maxYRange are ignored.</p>
 <dt id="pydm.widgets.timeplot.PyDMTimePlot.minYRange">
 <code class="descname">minYRange</code><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.minYRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Minimum Y-axis value visible on the plot.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.plotByTimeStamps">
+<code class="descname">plotByTimeStamps</code><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.plotByTimeStamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the graph will show the moving timestamps as the x-axis (default), or the relative time after the
+starting time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><em>True if the x-axis will show the moving timestamps (default); or the relative time as the x-axis</em></li>
+<li><em>ticks if False.</em></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.redrawPlot">
+<code class="descname">redrawPlot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.redrawPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.redrawPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Redraw the graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.refreshCurve">
+<code class="descname">refreshCurve</code><span class="sig-paren">(</span><em>curve</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.refreshCurve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.refreshCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a curve currently being plotted on the timeplot, then redraw that curve, which could have been updated
+with a new symbol, line style, line width, etc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>curve</strong> (<em>TimePlotCurveItem</em>) – The curve to be re-added.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.removeLegendItem">
+<code class="descname">removeLegendItem</code><span class="sig-paren">(</span><em>pv_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.removeLegendItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.removeLegendItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an item from the legend.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pv_name</strong> (<em>str</em>) – The PV channel, used to search for the legend item to remove.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.removeYChannel">
+<code class="descname">removeYChannel</code><span class="sig-paren">(</span><em>curve</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.removeYChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.removeYChannel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a curve from the graph. This also stops update the timer associated with the curve.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>curve</strong> (<em>TimePlotCurveItem</em>) – The curve to be removed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.removeYChannelAtIndex">
+<code class="descname">removeYChannelAtIndex</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.removeYChannelAtIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.removeYChannelAtIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a curve from the graph, given its index in the graph’s curve list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>int</em>) – The curve’s index from the graph’s curve list.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.resetBufferSize">
+<code class="descname">resetBufferSize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.resetBufferSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.resetBufferSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the data buffer size of the chart, and each of the chart’s curve’s data buffer, to the minimum</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.resetTimeSpan">
+<code class="descname">resetTimeSpan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.resetTimeSpan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.resetTimeSpan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the timespan to the default value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.resetUpdateInterval">
+<code class="descname">resetUpdateInterval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.resetUpdateInterval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.resetUpdateInterval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the chart’s update interval to the default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.setBufferSize">
+<code class="descname">setBufferSize</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.setBufferSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.setBufferSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the size of the data buffer of the entire chart. This will also update the same value for each of the
+data buffer of each chart’s curve.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>int</em>) – The new buffer size for the chart.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.setCurves">
+<code class="descname">setCurves</code><span class="sig-paren">(</span><em>new_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.setCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.setCurves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a list of curves into the graph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_list</strong> (<em>list</em>) – A list of JSON-formatted strings, each contains a curve and its settings</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.setPlotByTimesStamps">
+<code class="descname">setPlotByTimesStamps</code><span class="sig-paren">(</span><em>new_value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.setPlotByTimesStamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.setPlotByTimesStamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the x-axis appearance and behavior.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_value</strong> (<em>bool</em>) – Set to True for the graph to show the moving timestamps as the x-axis (default), or to False for the graph
+to show the relative time on the x-axis after the starting time.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.setTimeSpan">
+<code class="descname">setTimeSpan</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.setTimeSpan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.setTimeSpan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the time duration for the chart to collect data before rotating its buffer. This is applicable only for
+asynchronous data collection mode. The chart will allocate enough buffer for the new time span duration. Data
+arriving after each duration will be recorded into the buffer having been rotated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>float</em>) – The time span duration, in seconds, to allocate enough buffer to collect data for, before rotating the
+buffer.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.setUpdateInterval">
+<code class="descname">setUpdateInterval</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.setUpdateInterval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.setUpdateInterval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a new update interval for the chart and update its data buffer size.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>float</em>) – The new update interval value.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.timeSpan">
+<code class="descname">timeSpan</code><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.timeSpan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the time duration for the chart to collect data before rotating its buffer.</p>
+<blockquote>
+<div>The time duration for the chart to collect data before rotating its buffer, in seconds.</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.updateInterval">
+<code class="descname">updateInterval</code><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.updateInterval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the update interval for the chart.</p>
+<blockquote>
+<div>The update interval of the chart.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.timeplot.PyDMTimePlot.updateXAxis">
+<code class="descname">updateXAxis</code><span class="sig-paren">(</span><em>update_immediately=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.updateXAxis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.updateXAxis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the x-axis for every graph redraw.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>update_immediately</strong> (<em>bool</em>) – Update the axis range(s) immediately if True, or defer until the next rendering.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -263,7 +631,7 @@ If true, the values in minYRange and maxYRange are ignored.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v1.4.2+62.g6f9e0e7',
+            VERSION:'v1.4.2+85.g51d38d5',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
