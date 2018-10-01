@@ -118,3 +118,6 @@ class PyDMChannel(object):
         if equality_result is not NotImplemented:
             return not equality_result
         return NotImplemented
+
+    def __hash__(self):
+        return id(self)
