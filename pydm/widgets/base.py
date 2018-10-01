@@ -906,10 +906,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         return self.channels()
 
 
-    def qcolor_for_alarm(self, alarm, alarm_type=ALARM_CONTENT):
-        return QColor(self.alarm_style_sheet_map[alarm_type][alarm]["color"])
-
-
 class PyDMWritableWidget(PyDMWidget):
     """
     PyDM base class for Writable widgets.
