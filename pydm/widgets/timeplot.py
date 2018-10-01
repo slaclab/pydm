@@ -228,13 +228,17 @@ class TimePlotCurveItem(BasePlotCurveItem):
         On the other hand, if plot by relative time, take the time diff from the starting time of the curve, and plot
         the data to the time diff position on the x-axis.
         """
-        x = self.data_buffer[0, -self.points_accumulated:].astype(np.float)
-        y = self.data_buffer[1, -self.points_accumulated:].astype(np.float)
+        try:
+            x = self.data_buffer[0, -self.points_accumulated:].astype(np.float)
+            y = self.data_buffer[1, -self.points_accumulated:].astype(np.float)
 
-        if not self._plot_by_timestamps:
-            x -= time.time()
+            if not self._plot_by_timestamps:
+                x -= time.time()
 
-        self.setData(y=y, x=x)
+            self.setData(y=y, x=x)
+        except (ZeroDivisionError, OverflowError):
+            # Solve an issue with pyqtgraph and initial downsampling
+            pass
 
     def setUpdatesAsynchronously(self, value):
         if value is True:
