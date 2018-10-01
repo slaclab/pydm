@@ -191,7 +191,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         self.app = QApplication.instance()
         self._connected = True
-        self._color = self.local_connection_status_color_map[False]
         self._channel = None
         self._channels = list()
         self._show_units = False

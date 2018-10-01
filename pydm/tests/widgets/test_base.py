@@ -73,7 +73,6 @@ def test_pydmwidget_construct(qtbot, init_channel):
 
     assert pydm_label.app is None if not is_pydm_app else not None
     assert pydm_label._connected is not is_pydm_app
-    assert pydm_label._color == test_local_connection_status_color_map[False]
     if init_channel is None:
         assert pydm_label.channels() is None
     else:
