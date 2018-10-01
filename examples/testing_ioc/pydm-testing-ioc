@@ -46,7 +46,8 @@ pvdb = {
         'Float'            : { 'type' : 'float', 'value': 0.0, 'lolim':-1.2, 'lolo':-1.0, 'low':-0.8, 'high': 0.8, 'hihi': 1.0, 'hilim': 1.2, 'unit': 'mJ', 'prec': 3, 'asg' : 'default' },
         'StatusBits'       : { 'type' : 'int', 'value': 0b101010, 'lolim': 0, 'hilim': 32, 'asg' : 'default' },
         'SinVal'           : { 'type' : 'float', 'value': 0.0, 'asg': 'default' },
-        'CosVal'           : { 'type' : 'float', 'value': 0.0, 'asg': 'default' }
+        'CosVal'           : { 'type' : 'float', 'value': 0.0, 'asg': 'default' },
+        'Normal'           : { 'type' : 'float', 'value': 0.0, 'asg': 'default' }
 }
 
 
@@ -113,6 +114,7 @@ class myDriver(Driver):
             self.setParam('MinValue', data.min())
             self.setParam('MaxValue', data.max())
             self.setParam('MeanValue', data.mean())
+            self.setParam('Normal', numpy.random.normal())
             # scale/offset
             yScale = 1.0 / voltsPerDivision
             data = NUM_DIVISIONS / 2.0 + yScale * (data + voltOffset)
@@ -122,6 +124,7 @@ class myDriver(Driver):
             i = (i + 1) % MAX_POINTS
             self.setParam('SinVal', data[i])
             self.setParam('CosVal', cos_data[i])
+
             # Generate the image data
             x0 = 0.5 * (numpy.random.rand() - 0.5) + self.getParam('XPos')
             y0 = 0.5 * (numpy.random.rand() - 0.5) - self.getParam('YPos')

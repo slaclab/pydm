@@ -138,18 +138,8 @@ def test_value_change(qtbot, signals, value, display_format, precision, scale, u
 
 @pytest.mark.parametrize("init_value, user_typed_value, display_format, precision, scale, unit,"
                          "show_units, expected_received_value, expected_display_value", [
-    (123, 345, DisplayFormat.Default, 0, 1, "s", True, 345, "345 s"),
-    (123, 345.678,  DisplayFormat.Default, 3, 3, "s", False, 345.678, "1037.034"),
-    (123, 345.678, DisplayFormat.Default, 0, 0, "s", True, 0, "0 s"),
-    (123.321, 345.678, DisplayFormat.Decimal, 0, -1, "s", True, 345.678, "-345.678 s"),
-    (1e2, 1.3e3,  DisplayFormat.Exponential, 3, 3, "s", False, 1.3e3, "3.900e+03"),
-    (1e2, 1.3e3,  DisplayFormat.Exponential, 0, -1, "s", False, 1e3, "-1e+03"),
     ("abc", "cdf", DisplayFormat.Default, 3, 5, "s", True, "abc", "cdf s"),
     ("abc", "cdf", DisplayFormat.String, 3, 5, "s", False, "abc", "cdf"),
-    (0x1FF, "0xeff", DisplayFormat.Hex, 0, 1, "Me", True, 0xeff, "0xeff Me"),
-    (0x1FF, 0xeff, DisplayFormat.Hex, 0, 1, "Me", True, 0xeff, "0xeff Me"),
-    (0b100, "0b111", DisplayFormat.Binary, 0, 1, "KB", True, 0b111, "0b111 KB"),
-    (0b100, 0b111, DisplayFormat.Binary, 0, 1, "KB", True, 0b111, "0b111 KB"),
     (np.array([65, 66]), "[C D]", DisplayFormat.Default, 0, 10, "light years", True, "[C D]",
     "[C D] light years"),
     (np.array(["A", "B"]), "[C D]", DisplayFormat.String, 0, 10, "ms", True, "[C D]", "[C D] ms"),
@@ -174,10 +164,10 @@ def test_send_value(qtbot, signals, init_value, user_typed_value, display_format
         The signals fixture, which provides access signals to be bound to the appropriate slots
     init_value : int, float, hex, bin, str, numpy.array
         The initial value currently assigned to the widget
-    user_typed_value : int, float, hex, bin, str, numpy.array
+    user_typed_value : str
         The new value as provided (typed in) by the user
     display_format : DisplayFormat
-        The display format of the current value
+        The display format of the current value, only str allowed
     precision : int
         The number of decimal places to consider for the new value
     scale : int

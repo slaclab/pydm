@@ -1,6 +1,8 @@
 # coding: utf-8
 # Fixtures for PyDM Unit Tests
 
+pytest_plugins = 'pytester'
+
 import pytest
 from pytestqt.qt_compat import qt_api
 
@@ -11,9 +13,6 @@ import logging
 from qtpy.QtCore import QObject, Signal, Slot
 from ..application import PyDMApplication
 from ..widgets.base import PyDMWidget
-
-
-pytest_plugins = 'pytester'
 
 logger = logging.getLogger(__name__)
 _, file_path = tempfile.mkstemp(suffix=".log")
@@ -46,7 +45,6 @@ class ConnectionSignals(QObject):
     prec_signal = Signal(int)
     upper_ctrl_limit_signal = Signal([float])
     lower_ctrl_limit_signal = Signal([float])
-
 
     def __init__(self):
         super(ConnectionSignals, self).__init__()
