@@ -301,6 +301,8 @@ class PyDMTimePlot(BasePlot):
         super(PyDMTimePlot, self).__init__(parent=parent, background=background,
                                            axisItems={"bottom": self._bottom_axis, "left": self._left_axis})
 
+        self.setDownsampling(ds=True, auto=True, mode="mean")
+
         if self._plot_by_timestamps:
             self.plotItem.disableAutoRange(ViewBox.XAxis)
             self.getViewBox().setMouseEnabled(x=False)
