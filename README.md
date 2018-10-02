@@ -7,12 +7,12 @@
 # pydm: Python Display Manager
 pydm is a PyQt-based framework for building user interfaces for control systems.
 The goal is to provide a no-code, drag-and-drop system to make simple screens,
-as well as a straightforward python framework to build complex applications.
+as well as a straightforward Python framework to build complex applications.
 
 # Python Qt Wrapper
 PyDM project uses the [qtpy](https://github.com/spyder-ide/qtpy)
 as the abstraction layer for the Qt Python wrappers (PyQt5/PyQt4/PySide2/PySide).
-**All tests were performed with PyQt5**.
+**All tests are performed with PyQt5**.
 
 # Prerequisites
 * Python 2.7 or 3.6+
