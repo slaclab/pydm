@@ -10,6 +10,9 @@ if EPICS_LIB == "PYEPICS":
 elif EPICS_LIB == "PYCA":
     from pydm.data_plugins.epics_plugins.psp_plugin_component import PSPPlugin
     EPICSPlugin = PSPPlugin
+elif EPICS_LIB == "CAPROTO":
+    from pydm.data_plugins.epics_plugins.caproto_plugin_component import CaprotoPlugin
+    EPICSPlugin = CaprotoPlugin
 else:
     try:
         from pydm.data_plugins.epics_plugins.pyepics_plugin_component import PyEPICSPlugin
