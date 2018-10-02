@@ -23,8 +23,9 @@ class Connection(PyDMConnection):
         self.connection_state_signal.emit(conn)
 
     def add_listener(self, widget):
-        super().add_listener(widget)
+        super(Connection, self).add_listener(widget)
         self.send_connection_state(True)
+
 
 class FakePlugin(PyDMPlugin):
     protocol = "fake"
