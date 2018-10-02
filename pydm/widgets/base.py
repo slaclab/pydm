@@ -6,9 +6,8 @@ from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect
 from qtpy.QtGui import QColor, QClipboard, QCursor
 from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
-from ..utilities import is_pydm_app
+from ..utilities import is_pydm_app, remove_protocol
 from .rules import RulesDispatcher
-from ..data_plugins import DEFAULT_PROTOCOL
 
 try:
     from json.decoder import JSONDecodeError
@@ -387,13 +386,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
             return
         addr = self.channels()[0].address
         QToolTip.showText(event.globalPos(), addr)
-        # If the address has a protocol, and it is the default protocol, strip
-        # it out before putting it on the clipboard.
-        m = re.match('(.+?):/{2,3}(.+?)$', addr)
-        if m is not None and DEFAULT_PROTOCOL is not None and m.group(1) == DEFAULT_PROTOCOL:
-            copy_text = m.group(2)
-        else:
-            copy_text = addr
+        # If the address has a protocol, strip it out before putting it on the
+        # clipboard.
+        copy_text = remove_protocol(addr)
 
         clipboard = QApplication.clipboard()
         clipboard.setText(copy_text)

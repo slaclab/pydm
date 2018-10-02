@@ -11,6 +11,7 @@ import logging
 import imp
 import uuid
 from .plugin import PyDMPlugin
+from ..utilities import protocol_and_address
 
 logger = logging.getLogger(__name__)
 plugin_modules = {}
@@ -28,12 +29,9 @@ def plugin_for_address(address):
     Find the correct PyDMPlugin for a channel
     """
     # Check for a configured protocol
-    match = re.match('.*://', address)
-    protocol = None
-    if match:
-        protocol = match.group(0)[:-3]
+    protocol, addr = protocol_and_address(address)
     # Use default protocol
-    elif DEFAULT_PROTOCOL is not None:
+    if protocol is None and DEFAULT_PROTOCOL is not None:
         logger.debug("Using default protocol %s for %s",
                      DEFAULT_PROTOCOL, address)
         # If no protocol was specified, and the default protocol
