@@ -1,5 +1,5 @@
 import caproto.threading.pyepics_compat as epics
-from caproto._dbr import SubscriptionType
+from caproto import SubscriptionType
 import logging
 import numpy as np
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
