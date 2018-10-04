@@ -101,7 +101,6 @@ class PyDMMainWindow(QMainWindow):
         if self._display_widget is not None:
             self.setCentralWidget(QWidget())
             self.app.unregister_widget_rules(self._display_widget)
-            self.app.close_widget_connections(self._display_widget)
             self._display_widget.deleteLater()
             self._display_widget = None
             self.ui.actionEdit_in_Designer.setEnabled(False)
@@ -408,7 +407,7 @@ class PyDMMainWindow(QMainWindow):
 
     @Slot(bool)
     def show_connections(self, checked):
-        c = ConnectionInspector(self.app.list_all_connections(), self)
+        c = ConnectionInspector(self)
         c.show()
 
     @Slot(bool)

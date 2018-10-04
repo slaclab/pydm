@@ -2,6 +2,7 @@ from .units import find_unittype, convert, find_unit_options
 from . import macro
 from . import colors
 from .remove_protocol import remove_protocol, protocol_and_address
+from .connection import establish_widget_connections, close_widget_connections
 from .iconfont import IconFont
 
 import os

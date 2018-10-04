@@ -10,8 +10,6 @@ import sys
 import uuid
 import signal
 import subprocess
-import re
-import shlex
 import json
 import inspect
 import logging
@@ -377,8 +375,7 @@ class PyDMApplication(QApplication):
             kwargs['macros'] = macros
         return cls(**kwargs)
 
-    def open_file(self, ui_file, macros=None, command_line_args=None,
-                  establish_connection=True):
+    def open_file(self, ui_file, macros=None, command_line_args=None):
         """
         Open a .ui or .py file, and return a widget from the loaded file.
         This method is the entry point for all opening of new displays,
@@ -397,9 +394,6 @@ class PyDMApplication(QApplication):
             Typically, this argument is used by related display buttons
             to pass in extra arguments.  It is probably rare that code you
             write needs to use this argument.
-        establish_connection : bool, optional
-            Whether or not we should call `establish_widget_connections` for this
-            new widget. Default is True.
 
         Returns
         -------
@@ -428,8 +422,6 @@ class PyDMApplication(QApplication):
         # Add on the macros to the widget after initialization. This is
         # done for both ui files and python files.
         widget.base_macros = merged_macros
-        if establish_connection:
-            self.establish_widget_connections(widget)
         self.directory_stack.pop()
         self.macro_stack.pop()
         return widget
@@ -461,8 +453,7 @@ class PyDMApplication(QApplication):
         full_path = os.path.join(dirname, str(ui_file))
         return full_path
 
-    def open_relative(self, ui_file, widget, macros=None, command_line_args=[],
-                      establish_connection=True):
+    def open_relative(self, ui_file, widget, macros=None, command_line_args=[]):
         """
         open_relative opens a ui file with a relative path.  This is
         really only used by embedded displays.
@@ -474,8 +465,7 @@ class PyDMApplication(QApplication):
             if new_fname is not None and new_fname != "":
                 full_path = new_fname
         return self.open_file(full_path, macros=macros,
-                              command_line_args=command_line_args,
-                              establish_connection=establish_connection)
+                              command_line_args=command_line_args)
 
     def plugin_for_channel(self, channel):
         """
@@ -505,9 +495,6 @@ class PyDMApplication(QApplication):
         """
         warnings.warn("'PyDMApplication.add_connection' is deprecated, "
                       "use PyDMConnection.connect()")
-        plugin = self.plugin_for_channel(channel)
-        if plugin:
-            plugin.add_connection(channel)
 
     def remove_connection(self, channel):
         """
@@ -517,17 +504,15 @@ class PyDMApplication(QApplication):
         ----------
         channel : PyDMChannel
         """
-        plugin = self.plugin_for_channel(channel)
-        if plugin:
-            plugin.remove_connection(channel)
+        warnings.warn("'PyDMApplication.remove_connection' is deprecated, "
+                      "use PyDMConnection.disconnect()")
+
 
     def eventFilter(self, obj, event):
         warnings.warn("'PyDMApplication.eventFilter' is deprecated, "
                       " this function is now found on PyDMWidget")
         obj.eventFilter(obj, event)
 
-    # Not sure if showing the tooltip should be the job of the app,
-    # may want to revisit this.
     def show_address_tooltip(self, obj, event):
         warnings.warn("'PyDMApplication.show_address_tooltip' is deprecated, "
                       " this function is now found on PyDMWidget")
@@ -545,8 +530,21 @@ class PyDMApplication(QApplication):
         ----------
         widget : QWidget
         """
-        warnings.warn("'PyDMWidget now handles the creation of connection."
-                      "There should be no need to call this function.")
+        warnings.warn("'PyDMApplication.establish_widget_connections' is deprecated, "
+                      "this function is now found on `utilities.establish_widget_connections`.")
+
+    def close_widget_connections(self, widget):
+        """
+        Given a widget to start from, traverse the tree of child widgets,
+        and try to close connections to any widgets with channels.
+
+        Parameters
+        ----------
+        widget : QWidget
+        """
+        warnings.warn(
+            "'PyDMApplication.close_widget_connections' is deprecated, "
+            "this function is now found on `utilities.close_widget_connections`.")
 
     def unregister_widget_rules(self, widget):
         """
@@ -566,39 +564,6 @@ class PyDMApplication(QApplication):
                         RulesDispatcher().unregister(child_widget)
             except:
                 pass
-
-    def close_widget_connections(self, widget):
-        """
-        Given a widget to start from, traverse the tree of child widgets,
-        and try to close connections to any widgets with channels.
-
-        Parameters
-        ----------
-        widget : QWidget
-        """
-        widgets = [widget]
-        widgets.extend(widget.findChildren(QWidget))
-        for child_widget in widgets:
-            try:
-                if hasattr(child_widget, 'channels'):
-                    for channel in child_widget.channels():
-                        self.remove_connection(channel)
-            except NameError:
-                pass
-
-    def list_all_connections(self):
-        """
-        List all the connections for all the data plugins.
-
-        Returns
-        -------
-        list of connections
-        """
-        conns = []
-        for p in self.plugins.values():
-            for connection in p.connections.values():
-                conns.append(connection)
-        return conns
 
     def load_external_tools(self):
         """

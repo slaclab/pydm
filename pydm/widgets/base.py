@@ -159,6 +159,23 @@ class PyDMPrimitiveWidget(object):
             except JSONDecodeError as ex:
                 logger.exception('Invalid format for Rules')
 
+
+def widget_destroyed(channels, widget):
+    """
+    Callback invoked when the Widget is destroyed.
+    This method is used to ensure that the channels are disconnected.
+
+    Parameters
+    ----------
+    channels : list
+        A list of PyDMChannel objects that this widget uses.
+    widget : QWidget
+        The widget. Which is pretty useless at this point.
+    """
+    for ch in channels:
+        ch.disconnect()
+
+
 class PyDMWidget(PyDMPrimitiveWidget):
     """
     PyDM base class for Read-Only widgets.
@@ -221,6 +238,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
+
+        self.destroyed.connect(functools.partial(widget_destroyed, self._channels))
 
     def widget_ctx_menu(self):
         """
