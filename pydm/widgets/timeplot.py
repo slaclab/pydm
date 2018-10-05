@@ -305,7 +305,9 @@ class PyDMTimePlot(BasePlot):
         super(PyDMTimePlot, self).__init__(parent=parent, background=background,
                                            axisItems={"bottom": self._bottom_axis, "left": self._left_axis})
 
-        self.setDownsampling(ds=True, auto=True, mode="mean")
+        # Removing the downsampling while PR 763 is not merged at pyqtgraph
+        # Reference: https://github.com/pyqtgraph/pyqtgraph/pull/763
+        # self.setDownsampling(ds=True, auto=True, mode="mean")
 
         if self._plot_by_timestamps:
             self.plotItem.disableAutoRange(ViewBox.XAxis)
