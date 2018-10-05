@@ -27,6 +27,7 @@ from .tools import ExternalTool
 
 from .utilities import macro, which, path_info, find_display_in_path
 from .utilities.stylesheet import apply_stylesheet
+from .utilities import connection
 from . import data_plugins
 from .widgets.rules import RulesDispatcher
 
@@ -532,6 +533,7 @@ class PyDMApplication(QApplication):
         """
         warnings.warn("'PyDMApplication.establish_widget_connections' is deprecated, "
                       "this function is now found on `utilities.establish_widget_connections`.")
+        connection.establish_widget_connections(widget)
 
     def close_widget_connections(self, widget):
         """
@@ -545,6 +547,7 @@ class PyDMApplication(QApplication):
         warnings.warn(
             "'PyDMApplication.close_widget_connections' is deprecated, "
             "this function is now found on `utilities.close_widget_connections`.")
+        connection.close_widget_connections(widget)
 
     def unregister_widget_rules(self, widget):
         """
