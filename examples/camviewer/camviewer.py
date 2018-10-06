@@ -1,11 +1,13 @@
 # import epics
 # from qtpy import uic
+import functools
 from qtpy.QtCore import Slot, Signal, QPointF, QRectF
 from qtpy.QtGui import QPen
 from qtpy.QtWidgets import QSizePolicy
 from os import path
 from pydm import Display
 from pydm.widgets.channel import PyDMChannel
+from pydm.widgets.base import widget_destroyed
 from pydm.widgets.colormaps import cmap_names
 from pydm.utilities import establish_widget_connections, close_widget_connections
 import numpy as np
@@ -131,6 +133,9 @@ class CamViewer(Display):
         # Set up ROI buttons
         self.ui.setROIButton.clicked.connect(self.setROI)
         self.ui.resetROIButton.clicked.connect(self.resetROI)
+
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels))
+
 
     @Slot()
     def zoomIn(self):
