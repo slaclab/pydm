@@ -1,9 +1,10 @@
+import functools
 from qtpy.QtGui import QColor, QBrush
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt
 from .. import utilities
 from pyqtgraph import PlotWidget, PlotDataItem, mkPen, ViewBox, InfiniteLine, SignalProxy, CurvePoint, TextItem
 from collections import OrderedDict
-from .base import PyDMPrimitiveWidget
+from .base import PyDMPrimitiveWidget, widget_destroyed
 
 
 class NoDataError(Exception):
@@ -68,6 +69,8 @@ class BasePlotCurveItem(PlotDataItem):
         self.setSymbolBrush(None)
         if color is not None:
             self.color = color
+
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels))
 
     @property
     def color_string(self):

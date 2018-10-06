@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 
 class ReadingOrder(object):
     """Class to build ReadingOrder ENUM property."""
-
     Fortranlike = 0
     Clike = 1
 
@@ -586,7 +585,10 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         channels : list
             List of PyDMChannel objects
         """
-        return (self._imagechannel, self._widthchannel)
+        self._channels.clear()
+        self._channels.append(self._imagechannel)
+        self._channels.append(self._widthchannel)
+        return self._imagechannel, self._widthchannel
 
     def channels_for_tools(self):
         """Return channels for tools."""

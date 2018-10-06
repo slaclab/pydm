@@ -38,7 +38,7 @@ def is_channel_valid(channel):
 
 
 def only_if_channel_set(fcn):
-    '''Decorator to avoid executing a method if a channel is not valid or configured.'''
+    """Decorator to avoid executing a method if a channel is not valid or configured."""
 
     @functools.wraps(fcn)
     def wrapper(self, *args, **kwargs):
@@ -48,6 +48,29 @@ def only_if_channel_set(fcn):
             return
 
     return wrapper
+
+
+def widget_destroyed(channels, widget):
+    """
+    Callback invoked when the Widget is destroyed.
+    This method is used to ensure that the channels are disconnected.
+
+    Parameters
+    ----------
+    channels : list
+        A list of PyDMChannel objects that this widget uses.
+    widget : QWidget
+        The widget. Which is pretty useless at this point.
+    """
+    print("Called destroyed for: ", widget)
+    chs = channels()
+    if not chs:
+        return
+
+    print("Channels: ", chs)
+    for ch in chs:
+        if ch:
+            ch.disconnect()
 
 
 class PyDMPrimitiveWidget(object):
@@ -160,22 +183,6 @@ class PyDMPrimitiveWidget(object):
                 logger.exception('Invalid format for Rules')
 
 
-def widget_destroyed(channels, widget):
-    """
-    Callback invoked when the Widget is destroyed.
-    This method is used to ensure that the channels are disconnected.
-
-    Parameters
-    ----------
-    channels : list
-        A list of PyDMChannel objects that this widget uses.
-    widget : QWidget
-        The widget. Which is pretty useless at this point.
-    """
-    for ch in channels:
-        ch.disconnect()
-
-
 class PyDMWidget(PyDMPrimitiveWidget):
     """
     PyDM base class for Read-Only widgets.
@@ -239,7 +246,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
 
-        self.destroyed.connect(functools.partial(widget_destroyed, self._channels))
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels))
 
     def widget_ctx_menu(self):
         """

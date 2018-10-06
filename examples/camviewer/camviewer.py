@@ -29,14 +29,12 @@ class CamViewer(Display):
         # self.cameras = { "VCC": vcc_dict, "C-Iris": c_iris_dict, "Test": test_dict }
         self.cameras = {"Testing IOC Image": test_dict }
         self._channels = []
+        self.imageChannel = None
 
         # Populate the camera combo box
         self.ui.cameraComboBox.clear()
         for camera in self.cameras:
             self.ui.cameraComboBox.addItem(camera)
-
-        # Clear out any image data, reset width, get PVs ready for connection
-        self.initializeCamera(self.ui.cameraComboBox.currentText())
 
         # When the camera combo box changes, disconnect from PVs, re-initialize, then reconnect.
         self.ui.cameraComboBox.activated[str].connect(self.cameraChanged)
@@ -230,7 +228,7 @@ class CamViewer(Display):
         new_camera = str(new_camera)
         if self.imageChannel == self.cameras[new_camera]["image"]:
             return
-        remove_widget_connections(self)
+        close_widget_connections(self)
         self.disable_all_markers()
         self.initializeCamera(new_camera)
 
