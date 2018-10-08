@@ -67,6 +67,7 @@ class PyDMTabBar(QTabBar, PyDMWidget):
                                                   severity_slot=partial(
                                                       self.alarm_changed_for_tab,
                                                       index)))
+                self._channels[-1].connect()
         return self._channels
 
     def connection_changed_for_tab(self, index, conn):

@@ -20,6 +20,7 @@ from ...utilities import remove_protocol
 ])
 def test_timeplotcurveitem_construct(qtbot, channel_address, name):
     pydm_timeplot_curve_item = TimePlotCurveItem(channel_address=channel_address, name=name)
+    qtbot.addWidget(pydm_timeplot_curve_item)
 
     if not name:
         assert pydm_timeplot_curve_item.to_dict()["name"] == remove_protocol(channel_address) if channel_address else \
@@ -43,8 +44,10 @@ def test_timeplotcurveitem_construct(qtbot, channel_address, name):
     ("", None),
     (None, None)
 ])
-def test_timeplotcurveitem_to_dict(channel_address, name):
+def test_timeplotcurveitem_to_dict(qtbot, channel_address, name):
     pydm_timeplot_curve_item = TimePlotCurveItem(channel_address=channel_address, name=name)
+    qtbot.addWidget(pydm_timeplot_curve_item)
+
     dictionary = pydm_timeplot_curve_item.to_dict()
     assert isinstance(dictionary, OrderedDict)
 
@@ -60,8 +63,9 @@ def test_timeplotcurveitem_to_dict(channel_address, name):
     "",
     None
 ])
-def test_timeplotcurveitem_properties_and_setters(new_address):
+def test_timeplotcurveitem_properties_and_setters(qtbot, new_address):
     pydm_timeplot_curve_item = TimePlotCurveItem()
+    qtbot.addWidget(pydm_timeplot_curve_item)
 
     assert pydm_timeplot_curve_item.address is None
 
@@ -73,8 +77,9 @@ def test_timeplotcurveitem_properties_and_setters(new_address):
         assert pydm_timeplot_curve_item.channel is None
 
 
-def test_timeplotcurveitem_connection_state_changed(signals):
+def test_timeplotcurveitem_connection_state_changed(qtbot, signals):
     pydm_timeplot_curve_item = TimePlotCurveItem()
+    qtbot.addWidget(pydm_timeplot_curve_item)
     assert pydm_timeplot_curve_item.connected is False
 
     signals.connection_state_signal.connect(pydm_timeplot_curve_item.connectionStateChanged)
@@ -134,8 +139,9 @@ def test_timeplotcurveitem_receive_value(qtbot, signals, async_update, new_data)
     (True, 100),
     (True, -123.456)
 ])
-def test_timeplotcurveitem_async_update(signals, async_update, new_data):
+def test_timeplotcurveitem_async_update(qtbot, signals, async_update, new_data):
     pydm_timeplot_curve_item = TimePlotCurveItem()
+    qtbot.addWidget(pydm_timeplot_curve_item)
 
     assert pydm_timeplot_curve_item._update_mode == PyDMTimePlot.SynchronousMode
 

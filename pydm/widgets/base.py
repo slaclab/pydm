@@ -62,12 +62,10 @@ def widget_destroyed(channels, widget):
     widget : QWidget
         The widget. Which is pretty useless at this point.
     """
-    print("Called destroyed for: ", widget)
     chs = channels()
     if not chs:
         return
 
-    print("Channels: ", chs)
     for ch in chs:
         if ch:
             ch.disconnect()

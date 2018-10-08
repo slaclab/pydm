@@ -252,6 +252,9 @@ class WaveformCurveItem(BasePlotCurveItem):
             return ((float(np.amin(self.x_waveform)), float(np.amax(self.x_waveform))),
                     (float(np.amin(self.y_waveform)), float(np.amax(self.y_waveform))))
 
+    def channels(self):
+        return [self.y_channel, self.x_channel]
+
 
 class PyDMWaveformPlot(BasePlot):
     """

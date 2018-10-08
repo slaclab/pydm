@@ -70,7 +70,9 @@ class BasePlotCurveItem(PlotDataItem):
         if color is not None:
             self.color = color
 
-        self.destroyed.connect(functools.partial(widget_destroyed, self.channels))
+        if hasattr(self, "channels"):
+            self.destroyed.connect(functools.partial(widget_destroyed,
+                                                     self.channels))
 
     @property
     def color_string(self):
@@ -247,10 +249,8 @@ class BasePlotCurveItem(PlotDataItem):
                             ("symbol", self.symbol),
                             ("symbolSize", self.symbolSize)])
 
-    def channels(self):
-        """All channels for PlotCurve"""
-        return [getattr(self, chan) for chan in self._channels
-                if chan is not None]
+    def close(self):
+        pass
 
 
 class BasePlot(PlotWidget, PyDMPrimitiveWidget):
