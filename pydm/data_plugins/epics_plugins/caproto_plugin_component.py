@@ -96,10 +96,9 @@ class Connection(PyDMConnection):
             self.write_access_signal.emit(write_access)
 
     def reload_access_state(self):
-        # read_access = epics.ca.read_access(self.pv.chid)
-        # write_access = epics.ca.write_access(self.pv.chid)
-        # self.send_access_state(read_access, write_access)
-        self.send_access_state(True, True)
+        read_access = epics.ca.read_access(self.pv.chid)
+        write_access = epics.ca.write_access(self.pv.chid)
+        self.send_access_state(read_access, write_access)
 
     def send_connection_state(self, conn=None, *args, **kws):
         self.connected = conn
