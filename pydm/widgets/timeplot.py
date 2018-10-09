@@ -73,7 +73,6 @@ class TimePlotCurveItem(BasePlotCurveItem):
         # Keep the x-axis moving with latest timestamps as ticks
         self._plot_by_timestamps = plot_by_timestamps
 
-        self.starting_epoch_time = time.time()
         self._bufferSize = MINIMUM_BUFFER_SIZE
         self._update_mode = PyDMTimePlot.SynchronousMode
 
@@ -218,11 +217,6 @@ class TimePlotCurveItem(BasePlotCurveItem):
         """
         Initialize the data buffer used to plot the current curve.
         """
-        if not self._plot_by_timestamps:
-            # Since we're initializing a new buffer, must reset the epoch time
-            #for the relative time x-axis
-            self.starting_epoch_time = time.time()
-
         self.points_accumulated = 0
 
         # If you don't specify dtype=float, you don't have enough
