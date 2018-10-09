@@ -381,34 +381,6 @@ class PyDMTimePlot(BasePlot):
         # This function gets called by PyDMTimePlot's designer plugin.
         self.redraw_timer.setSingleShot(True)
 
-    def getPlotByTimestamps(self):
-        """
-        Whether the graph will show the moving timestamps as the x-axis
-        (default), or the relative time after the starting time.
-
-        Returns
-        -------
-            If True, the x-axis will show moving timestamps (default).
-            If False, the x-axis will show relative time.
-        """
-        return self._plot_by_timestamps
-
-    def setPlotByTimesStamps(self, new_value):
-        """
-        Change the x-axis appearance and behavior.
-
-        Parameters
-        ----------
-        new_value : bool
-            Set to True for the x-axis to show moving timestamps (default).
-            Set to False for the x-axis to show the relative time after the
-            starting time.
-        """
-        if new_value != self._plot_by_timestamps:
-            self._plot_by_timestamps = new_value
-
-    plotByTimeStamps = Property("bool", getPlotByTimestamps, setPlotByTimesStamps)
-
     def addYChannel(self, y_channel=None, name=None, color=None,
                     lineStyle=None, lineWidth=None, symbol=None,
                     symbolSize=None):
