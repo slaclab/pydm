@@ -25,13 +25,31 @@ DEFAULT_UPDATE_INTERVAL = 100
 
 class TimePlotCurveItem(BasePlotCurveItem):
     """
-    TimePlot now supports two mode:
+    TimePlotCurveItem represents a single curve in a time plot.
 
-    1. The "classic" mode, in which the x-axis shows the timestamps, and moves to the left
-    2. The new mode, in which the x-axis shows the negative time in seconds from the starting time, at which x = 0.
+    It is used to plot a scalar value vs. time.  In addition to the parameters
+    listed below, TimePlotCurveItem accepts keyword arguments for all plot
+    options that pyqtgraph.PlotDataItem accepts.
 
-    To maintain backward compatibility, the default drawing mode is in the classic, "plot_by_timestamps" mode, for both
-    TimePlotCurveItem and TimePlotCurve.
+    Parameters
+    ----------
+    channel_address : str
+        The address to of the scalar data to plot.
+    plot_by_timestamps : bool
+        If True, the x-axis shows timestamps as ticks, and those timestamps
+        scroll to the left as time progresses.  If False, the x-axis tick marks
+        show time relative to the current time.
+    color : QColor, optional
+        The color used to draw the curve line and the symbols.
+    lineStyle: int, optional
+        Style of the line connecting the data points.
+        Must be a value from the Qt::PenStyle enum
+        (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).
+    lineWidth: int, optional
+        Width of the line connecting the data points.
+    **kws : dict
+        Additional parameters supported by pyqtgraph.PlotDataItem,
+        like 'symbol' and 'symbolSize'.
     """
     def __init__(self, channel_address=None, plot_by_timestamps=True, **kws):
         """
@@ -40,10 +58,12 @@ class TimePlotCurveItem(BasePlotCurveItem):
         channel_address : str
             The PV address
         plot_by_timestamps : bool
-            True if the x-axis shows the timestamps as ticks, and moves automatically to the left. False if the the
-            x-axis starts at 0, and shows relative time in negative values to the left.
+            If True, the x-axis shows timestamps as ticks, and those timestamps
+            scroll to the left as time progresses.  If False, the x-axis tick
+            marks show time relative to the current time.
         kws : dict
-            Additional parameters.
+            Additional parameters supported by pyqtgraph.PlotDataItem,
+            like 'symbol' and 'symbolSize'.
         """
         channel_address = "" if channel_address is None else channel_address
         if "name" not in kws or not kws["name"]:
@@ -101,7 +121,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
     @property
     def minY(self):
         """
-        Get the minimum y-value so far in the same plot. This is useful to scale the y-axis for a selected curve.
+        Get the minimum y-value so far in the same plot. This is useful to
+        scale the y-axis for a selected curve.
 
         Returns : float
         -------
@@ -112,7 +133,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
     @property
     def maxY(self):
         """
-        Get the maximum y-value so far in the same plot. This is useful to scale the y-axis for a selected curve.
+        Get the maximum y-value so far in the same plot. This is useful to
+        scale the y-axis for a selected curve.
 
         Returns : float
         -------
@@ -133,12 +155,11 @@ class TimePlotCurveItem(BasePlotCurveItem):
         """
         Rotate and fill the data buffer when a new value is available.
 
-        The first array row is to record timestamps, when a new value arrives. The second array row is to record the
-        actual values.
-
-        For Synchronous mode, write the new value into the data buffer immediately, and increment the accumulated point
-        counter. For Asynchronous, write the new value into a temporary (buffered) variable, which is to be written to
-        the data buffer at the next data refresh cycle.
+        For Synchronous mode, write the new value into the data buffer
+        immediately, and increment the accumulated point counter.
+        For Asynchronous, write the new value into a temporary (buffered)
+        variable, which will be written to the data buffer when asyncUpdate
+        is called.
 
         Parameters
         ----------
@@ -149,7 +170,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
         if self._update_mode == PyDMTimePlot.SynchronousMode:
             self.data_buffer = np.roll(self.data_buffer, -1)
+            #The first array row is to record timestamps, when a new value arrives.
             self.data_buffer[0, self._bufferSize - 1] = time.time()
+            #The second array row is to record the actual values.
             self.data_buffer[1, self._bufferSize - 1] = new_value
 
             if self.points_accumulated < self._bufferSize:
@@ -161,8 +184,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
     @Slot()
     def asyncUpdate(self):
         """
-        Update the latest data read from the buffered variable into the data buffer, together with the timestamp when
-        this happens. Also increment the accumulated point counter.
+        Updates the latest data read from the buffered variable into the data
+        buffer, together with the timestamp when this happens. Also increments
+        the accumulated point counter.
         """
         if self._update_mode != PyDMTimePlot.AsynchronousMode:
             return
@@ -175,7 +199,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     def update_min_max_y_values(self, new_value):
         """
-        Updte the min and max y-value as a new value is available. This is useful for auto-scaling to a specific curve.
+        Updte the min and max y-value as a new value is available. This is
+        useful for auto-scaling to a specific curve.
 
         Parameters
         ----------
@@ -194,7 +219,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
         Initialize the data buffer used to plot the current curve.
         """
         if not self._plot_by_timestamps:
-            # Since we're initializing a new buffer, must reset the epoch time for the relative time x-axis
+            # Since we're initializing a new buffer, must reset the epoch time
+            #for the relative time x-axis
             self.starting_epoch_time = time.time()
 
         self.points_accumulated = 0
@@ -225,8 +251,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
         If plot by timestamps, plot the x-axis with the timestamps as the ticks.
 
-        On the other hand, if plot by relative time, take the time diff from the starting time of the curve, and plot
-        the data to the time diff position on the x-axis.
+        On the other hand, if plot by relative time, take the time diff from
+        the starting time of the curve, and plot the data to the time diff
+        position on the x-axis.
         """
         try:
             x = self.data_buffer[0, -self.points_accumulated:].astype(np.float)
@@ -253,7 +280,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     def max_x(self):
         """
-        Provide the the most recent timestamp accumulated from the data buffer. This is useful for scaling the x-axis.
+        Provide the the most recent timestamp accumulated from the data buffer.
+        This is useful for scaling the x-axis.
 
         Returns : float
         -------
@@ -265,13 +293,24 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
 class PyDMTimePlot(BasePlot):
     """
-    TimePlot now supports two mode:
+    PyDMWaveformPlot is a widget to plot one or more waveforms.
 
-    1. The "classic" mode, in which the x-axis shows the timestamps, and move to the left
-    2. The new mode, in which the x-axis shows the negative time in seconds from the starting time, at which x = 0.
+    Each curve can plot either a Y-axis waveform vs. its indices,
+    or a Y-axis waveform against an X-axis waveform.
 
-    To maintain backward compatibility, the default drawing mode is in the classic, "plot_by_timestamps" mode, for both
-    TimePlotCurveItem and TimePlotCurve.
+    Parameters
+    ----------
+    parent : optional
+        The parent of this widget.
+    init_y_channels : list
+        A list of scalar channels to plot vs time.
+    plot_by_timestamps : bool
+        If True, the x-axis shows timestamps as ticks, and those timestamps
+        scroll to the left as time progresses.  If False, the x-axis tick marks
+        show time relative to the current time.
+    background: optional
+        The background color for the plot.  Accepts any arguments that
+        pyqtgraph.mkColor will accept.
     """
     SynchronousMode = 1
     AsynchronousMode = 2
@@ -348,13 +387,13 @@ class PyDMTimePlot(BasePlot):
 
     def getPlotByTimestamps(self):
         """
-        Whether the graph will show the moving timestamps as the x-axis (default), or the relative time after the
-        starting time.
+        Whether the graph will show the moving timestamps as the x-axis
+        (default), or the relative time after the starting time.
 
         Returns
         -------
-            True if the x-axis will show the moving timestamps (default); or the relative time as the x-axis
-            ticks if False.
+            If True, the x-axis will show moving timestamps (default).
+            If False, the x-axis will show relative time.
         """
         return self._plot_by_timestamps
 
@@ -365,8 +404,9 @@ class PyDMTimePlot(BasePlot):
         Parameters
         ----------
         new_value : bool
-            Set to True for the graph to show the moving timestamps as the x-axis (default), or to False for the graph
-            to show the relative time on the x-axis after the starting time.
+            Set to True for the x-axis to show moving timestamps (default).
+            Set to False for the x-axis to show the relative time after the
+            starting time.
         """
         if new_value != self._plot_by_timestamps:
             self._plot_by_timestamps = new_value
@@ -392,13 +432,14 @@ class PyDMTimePlot(BasePlot):
         lineWidth : int
             How thick the curve line should be
         symbol : str
-            The symbols as markers along the curve, i.e. circle, square, triangle, star, etc.
+            The symbols as markers along the curve, i.e. circle, square,
+            triangle, star, etc.
         symbolSize : int
             How big the symbols should be
 
         Returns : TimePlotCurveItem
         -------
-            The new curve just created.
+            The newly created curve.
         """
         plot_opts = dict()
         plot_opts['symbol'] = symbol
@@ -425,7 +466,8 @@ class PyDMTimePlot(BasePlot):
 
     def removeYChannel(self, curve):
         """
-        Remove a curve from the graph. This also stops update the timer associated with the curve.
+        Remove a curve from the graph. This also stops update the timer
+        associated with the curve.
 
         Parameters
         ----------
@@ -439,7 +481,8 @@ class PyDMTimePlot(BasePlot):
 
     def removeYChannelAtIndex(self, index):
         """
-        Remove a curve from the graph, given its index in the graph's curve list.
+        Remove a curve from the graph, given its index in the graph's curve
+        list.
 
         Parameters
         ----------
@@ -475,7 +518,8 @@ class PyDMTimePlot(BasePlot):
         Parameters
         ----------
         update_immediately : bool
-            Update the axis range(s) immediately if True, or defer until the next rendering.
+            Update the axis range(s) immediately if True, or defer until the
+            next rendering.
 
         """
         if len(self._curves) == 0:
@@ -502,11 +546,13 @@ class PyDMTimePlot(BasePlot):
 
     def getCurves(self):
         """
-        Dump the current list of curves and each curve's settings into a list of JSON-formatted strings.
+        Dump the current list of curves and each curve's settings into a list
+        of JSON-formatted strings.
 
         Returns : str
         -------
-            A list of JSON-formatted strings, each containing a curve's settings
+            A list of JSON-formatted strings, each containing a curve's
+            settings
         """
         return [json.dumps(curve.to_dict()) for curve in self._curves]
 
@@ -517,7 +563,8 @@ class PyDMTimePlot(BasePlot):
         Parameters
         ----------
         new_list : list
-            A list of JSON-formatted strings, each contains a curve and its settings
+            A list of JSON-formatted strings, each contains a curve and its
+            settings
         """
         try:
             new_list = [json.loads(str(i)) for i in new_list]
@@ -557,8 +604,9 @@ class PyDMTimePlot(BasePlot):
 
     def refreshCurve(self, curve):
         """
-        Remove a curve currently being plotted on the timeplot, then redraw that curve, which could have been updated
-        with a new symbol, line style, line width, etc.
+        Remove a curve currently being plotted on the timeplot, then redraw
+        that curve, which could have been updated with a new symbol, line
+        style, line width, etc.
 
         Parameters
         ----------
@@ -568,8 +616,9 @@ class PyDMTimePlot(BasePlot):
         curve = self.findCurve(curve.channel)
         if curve:
             self.removeYChannel(curve)
-            self.addYChannel(y_channel=curve.address, color=curve.color, name=curve.address,
-                             lineStyle=curve.lineStyle, lineWidth=curve.lineWidth, symbol=curve.symbol,
+            self.addYChannel(y_channel=curve.address, color=curve.color,
+                             name=curve.address, lineStyle=curve.lineStyle,
+                             lineWidth=curve.lineWidth, symbol=curve.symbol,
                              symbolSize=curve.symbolSize)
 
     def addLegendItem(self, item, pv_name, force_show_legend=False):
@@ -583,7 +632,8 @@ class PyDMTimePlot(BasePlot):
         pv_name : str
             The PV channel
         force_show_legend : bool
-            True to make the legend to be displayed; False to just add the item, but do not display the legend.
+            True to make the legend to be displayed; False to just add the
+            item, but do not display the legend.
         """
         self._legend.addItem(item, pv_name)
         self.setShowLegend(force_show_legend)
@@ -613,8 +663,9 @@ class PyDMTimePlot(BasePlot):
 
     def setBufferSize(self, value):
         """
-        Set the size of the data buffer of the entire chart. This will also update the same value for each of the
-        data buffer of each chart's curve.
+        Set the size of the data buffer of the entire chart. This will also
+        update the same value for each of the data buffer of each chart's
+        curve.
 
         Parameters
         ----------
@@ -630,7 +681,8 @@ class PyDMTimePlot(BasePlot):
 
     def resetBufferSize(self):
         """
-        Reset the data buffer size of the chart, and each of the chart's curve's data buffer, to the minimum
+        Reset the data buffer size of the chart, and each of the chart's
+        curve's data buffer, to the minimum
         """
         if self._bufferSize != DEFAULT_BUFFER_SIZE:
             self._bufferSize = DEFAULT_BUFFER_SIZE
@@ -665,25 +717,28 @@ class PyDMTimePlot(BasePlot):
 
     def getTimeSpan(self):
         """
-        Get the time duration for the chart to collect data before rotating its buffer.
+        The extent of the x-axis of the chart, in seconds.  In other words,
+        how long a data point stays on the plot before falling off the left
+        edge.
 
         Returns : float
         -------
-            The time duration for the chart to collect data before rotating its buffer, in seconds.
+            The extent of the x-axis of the chart, in seconds.
         """
         return float(self._time_span)
 
     def setTimeSpan(self, value):
         """
-        Set the time duration for the chart to collect data before rotating its buffer. This is applicable only for
-        asynchronous data collection mode. The chart will allocate enough buffer for the new time span duration. Data
-        arriving after each duration will be recorded into the buffer having been rotated.
+        Set the extent of the x-axis of the chart, in seconds.
+        In aynchronous mode, the chart will allocate enough buffer for the new time span duration.
+        Data arriving after each duration will be recorded into the buffer
+        having been rotated.
 
         Parameters
         ----------
         value : float
-            The time span duration, in seconds, to allocate enough buffer to collect data for, before rotating the
-            buffer.
+            The time span duration, in seconds, to allocate enough buffer to
+            collect data for, before rotating the buffer.
         """
         value = float(value)
         if self._time_span != value:
