@@ -395,9 +395,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         Parameters
         ----------
         show : bool
-            True for showing the right a-xis; False is for not showing.
+            True for showing the right axis; False is for not showing.
         """
-        if self._show_right_axis != show:
+        if show:
             self.showAxis("right")
         else:
             self.hideAxis("right")
