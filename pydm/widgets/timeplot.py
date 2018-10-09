@@ -829,6 +829,9 @@ class PyDMTimePlot(BasePlot):
 
 
 class TimeAxisItem(AxisItem):
+    """
+    TimeAxisItem formats a unix time axis into a human-readable format.
+    """
     def tickStrings(self, values, scale, spacing):
         strings = []
         for val in values:
