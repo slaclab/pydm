@@ -319,12 +319,14 @@ class PyDMTimePlot(BasePlot):
         parent : Widget
             The parent widget of the chart.
         init_y_channels : list
-            A list of PV channels to plot when the graph is ready.
-         plot_by_timestamps : bool
-            True if the x-axis shows the timestamps as ticks, and moves automatically to the left. False if the the
-            x-axis starts at 0, and shows relative time in negative values to the left.
-        background : str
-            The color descriptor for the background of the graph
+            A list of scalar channels to plot vs time.
+        plot_by_timestamps : bool
+            If True, the x-axis shows timestamps as ticks, and those timestamps
+            scroll to the left as time progresses.  If False, the x-axis tick
+            marks show time relative to the current time.
+        background : str, optional
+            The background color for the plot.  Accepts any arguments that
+            pyqtgraph.mkColor will accept.
         """
         self._plot_by_timestamps = plot_by_timestamps
 
