@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.timeplot &mdash; PyDM v1.4.2+94.ga0f6777 documentation</title>
+  <title>pydm.widgets.timeplot &mdash; PyDM v1.4.2+101.g33487ea documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.4.2+94.ga0f6777
+                v1.4.2+101.g33487ea
               </div>
             
           
@@ -203,13 +203,31 @@
 
 <span class="k">class</span> <span class="nc">TimePlotCurveItem</span><span class="p">(</span><span class="n">BasePlotCurveItem</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    TimePlot now supports two mode:</span>
+<span class="sd">    TimePlotCurveItem represents a single curve in a time plot.</span>
 
-<span class="sd">    1. The &quot;classic&quot; mode, in which the x-axis shows the timestamps, and moves to the left</span>
-<span class="sd">    2. The new mode, in which the x-axis shows the negative time in seconds from the starting time, at which x = 0.</span>
+<span class="sd">    It is used to plot a scalar value vs. time.  In addition to the parameters</span>
+<span class="sd">    listed below, TimePlotCurveItem accepts keyword arguments for all plot</span>
+<span class="sd">    options that pyqtgraph.PlotDataItem accepts.</span>
 
-<span class="sd">    To maintain backward compatibility, the default drawing mode is in the classic, &quot;plot_by_timestamps&quot; mode, for both</span>
-<span class="sd">    TimePlotCurveItem and TimePlotCurve.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    channel_address : str</span>
+<span class="sd">        The address to of the scalar data to plot.</span>
+<span class="sd">    plot_by_timestamps : bool</span>
+<span class="sd">        If True, the x-axis shows timestamps as ticks, and those timestamps</span>
+<span class="sd">        scroll to the left as time progresses.  If False, the x-axis tick marks</span>
+<span class="sd">        show time relative to the current time.</span>
+<span class="sd">    color : QColor, optional</span>
+<span class="sd">        The color used to draw the curve line and the symbols.</span>
+<span class="sd">    lineStyle: int, optional</span>
+<span class="sd">        Style of the line connecting the data points.</span>
+<span class="sd">        Must be a value from the Qt::PenStyle enum</span>
+<span class="sd">        (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).</span>
+<span class="sd">    lineWidth: int, optional</span>
+<span class="sd">        Width of the line connecting the data points.</span>
+<span class="sd">    **kws : dict</span>
+<span class="sd">        Additional parameters supported by pyqtgraph.PlotDataItem,</span>
+<span class="sd">        like &#39;symbol&#39; and &#39;symbolSize&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel_address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -218,10 +236,12 @@
 <span class="sd">        channel_address : str</span>
 <span class="sd">            The PV address</span>
 <span class="sd">        plot_by_timestamps : bool</span>
-<span class="sd">            True if the x-axis shows the timestamps as ticks, and moves automatically to the left. False if the the</span>
-<span class="sd">            x-axis starts at 0, and shows relative time in negative values to the left.</span>
+<span class="sd">            If True, the x-axis shows timestamps as ticks, and those timestamps</span>
+<span class="sd">            scroll to the left as time progresses.  If False, the x-axis tick</span>
+<span class="sd">            marks show time relative to the current time.</span>
 <span class="sd">        kws : dict</span>
-<span class="sd">            Additional parameters.</span>
+<span class="sd">            Additional parameters supported by pyqtgraph.PlotDataItem,</span>
+<span class="sd">            like &#39;symbol&#39; and &#39;symbolSize&#39;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">channel_address</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">channel_address</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">channel_address</span>
         <span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kws</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">kws</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]:</span>
@@ -231,7 +251,6 @@
         <span class="c1"># Keep the x-axis moving with latest timestamps as ticks</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_plot_by_timestamps</span> <span class="o">=</span> <span class="n">plot_by_timestamps</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">starting_epoch_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">=</span> <span class="n">MINIMUM_BUFFER_SIZE</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_mode</span> <span class="o">=</span> <span class="n">PyDMTimePlot</span><span class="o">.</span><span class="n">SynchronousMode</span>
 
@@ -279,7 +298,8 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">minY</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the minimum y-value so far in the same plot. This is useful to scale the y-axis for a selected curve.</span>
+<span class="sd">        Get the minimum y-value so far in the same plot. This is useful to</span>
+<span class="sd">        scale the y-axis for a selected curve.</span>
 
 <span class="sd">        Returns : float</span>
 <span class="sd">        -------</span>
@@ -290,7 +310,8 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">maxY</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the maximum y-value so far in the same plot. This is useful to scale the y-axis for a selected curve.</span>
+<span class="sd">        Get the maximum y-value so far in the same plot. This is useful to</span>
+<span class="sd">        scale the y-axis for a selected curve.</span>
 
 <span class="sd">        Returns : float</span>
 <span class="sd">        -------</span>
@@ -311,12 +332,11 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Rotate and fill the data buffer when a new value is available.</span>
 
-<span class="sd">        The first array row is to record timestamps, when a new value arrives. The second array row is to record the</span>
-<span class="sd">        actual values.</span>
-
-<span class="sd">        For Synchronous mode, write the new value into the data buffer immediately, and increment the accumulated point</span>
-<span class="sd">        counter. For Asynchronous, write the new value into a temporary (buffered) variable, which is to be written to</span>
-<span class="sd">        the data buffer at the next data refresh cycle.</span>
+<span class="sd">        For Synchronous mode, write the new value into the data buffer</span>
+<span class="sd">        immediately, and increment the accumulated point counter.</span>
+<span class="sd">        For Asynchronous, write the new value into a temporary (buffered)</span>
+<span class="sd">        variable, which will be written to the data buffer when asyncUpdate</span>
+<span class="sd">        is called.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -327,7 +347,9 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_mode</span> <span class="o">==</span> <span class="n">PyDMTimePlot</span><span class="o">.</span><span class="n">SynchronousMode</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="c1">#The first array row is to record timestamps, when a new value arrives.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="c1">#The second array row is to record the actual values.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_value</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">:</span>
@@ -339,8 +361,9 @@
     <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">asyncUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Update the latest data read from the buffered variable into the data buffer, together with the timestamp when</span>
-<span class="sd">        this happens. Also increment the accumulated point counter.</span>
+<span class="sd">        Updates the latest data read from the buffered variable into the data</span>
+<span class="sd">        buffer, together with the timestamp when this happens. Also increments</span>
+<span class="sd">        the accumulated point counter.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_mode</span> <span class="o">!=</span> <span class="n">PyDMTimePlot</span><span class="o">.</span><span class="n">AsynchronousMode</span><span class="p">:</span>
             <span class="k">return</span>
@@ -353,7 +376,8 @@
 
     <span class="k">def</span> <span class="nf">update_min_max_y_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Updte the min and max y-value as a new value is available. This is useful for auto-scaling to a specific curve.</span>
+<span class="sd">        Updte the min and max y-value as a new value is available. This is</span>
+<span class="sd">        useful for auto-scaling to a specific curve.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -371,10 +395,6 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the data buffer used to plot the current curve.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot_by_timestamps</span><span class="p">:</span>
-            <span class="c1"># Since we&#39;re initializing a new buffer, must reset the epoch time for the relative time x-axis</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">starting_epoch_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># If you don&#39;t specify dtype=float, you don&#39;t have enough</span>
@@ -403,8 +423,9 @@
 
 <span class="sd">        If plot by timestamps, plot the x-axis with the timestamps as the ticks.</span>
 
-<span class="sd">        On the other hand, if plot by relative time, take the time diff from the starting time of the curve, and plot</span>
-<span class="sd">        the data to the time diff position on the x-axis.</span>
+<span class="sd">        On the other hand, if plot by relative time, take the time diff from</span>
+<span class="sd">        the starting time of the curve, and plot the data to the time diff</span>
+<span class="sd">        position on the x-axis.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
@@ -431,7 +452,8 @@
 
     <span class="k">def</span> <span class="nf">max_x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Provide the the most recent timestamp accumulated from the data buffer. This is useful for scaling the x-axis.</span>
+<span class="sd">        Provide the the most recent timestamp accumulated from the data buffer.</span>
+<span class="sd">        This is useful for scaling the x-axis.</span>
 
 <span class="sd">        Returns : float</span>
 <span class="sd">        -------</span>
@@ -443,13 +465,24 @@
 
 <div class="viewcode-block" id="PyDMTimePlot"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot">[docs]</a><span class="k">class</span> <span class="nc">PyDMTimePlot</span><span class="p">(</span><span class="n">BasePlot</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    TimePlot now supports two mode:</span>
+<span class="sd">    PyDMWaveformPlot is a widget to plot one or more waveforms.</span>
 
-<span class="sd">    1. The &quot;classic&quot; mode, in which the x-axis shows the timestamps, and move to the left</span>
-<span class="sd">    2. The new mode, in which the x-axis shows the negative time in seconds from the starting time, at which x = 0.</span>
+<span class="sd">    Each curve can plot either a Y-axis waveform vs. its indices,</span>
+<span class="sd">    or a Y-axis waveform against an X-axis waveform.</span>
 
-<span class="sd">    To maintain backward compatibility, the default drawing mode is in the classic, &quot;plot_by_timestamps&quot; mode, for both</span>
-<span class="sd">    TimePlotCurveItem and TimePlotCurve.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parent : optional</span>
+<span class="sd">        The parent of this widget.</span>
+<span class="sd">    init_y_channels : list</span>
+<span class="sd">        A list of scalar channels to plot vs time.</span>
+<span class="sd">    plot_by_timestamps : bool</span>
+<span class="sd">        If True, the x-axis shows timestamps as ticks, and those timestamps</span>
+<span class="sd">        scroll to the left as time progresses.  If False, the x-axis tick marks</span>
+<span class="sd">        show time relative to the current time.</span>
+<span class="sd">    background: optional</span>
+<span class="sd">        The background color for the plot.  Accepts any arguments that</span>
+<span class="sd">        pyqtgraph.mkColor will accept.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">SynchronousMode</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">AsynchronousMode</span> <span class="o">=</span> <span class="mi">2</span>
@@ -464,12 +497,14 @@
 <span class="sd">        parent : Widget</span>
 <span class="sd">            The parent widget of the chart.</span>
 <span class="sd">        init_y_channels : list</span>
-<span class="sd">            A list of PV channels to plot when the graph is ready.</span>
-<span class="sd">         plot_by_timestamps : bool</span>
-<span class="sd">            True if the x-axis shows the timestamps as ticks, and moves automatically to the left. False if the the</span>
-<span class="sd">            x-axis starts at 0, and shows relative time in negative values to the left.</span>
-<span class="sd">        background : str</span>
-<span class="sd">            The color descriptor for the background of the graph</span>
+<span class="sd">            A list of scalar channels to plot vs time.</span>
+<span class="sd">        plot_by_timestamps : bool</span>
+<span class="sd">            If True, the x-axis shows timestamps as ticks, and those timestamps</span>
+<span class="sd">            scroll to the left as time progresses.  If False, the x-axis tick</span>
+<span class="sd">            marks show time relative to the current time.</span>
+<span class="sd">        background : str, optional</span>
+<span class="sd">            The background color for the plot.  Accepts any arguments that</span>
+<span class="sd">            pyqtgraph.mkColor will accept.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_plot_by_timestamps</span> <span class="o">=</span> <span class="n">plot_by_timestamps</span>
 
@@ -524,33 +559,6 @@
         <span class="c1"># This function gets called by PyDMTimePlot&#39;s designer plugin.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">setSingleShot</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMTimePlot.getPlotByTimestamps"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.getPlotByTimestamps">[docs]</a>    <span class="k">def</span> <span class="nf">getPlotByTimestamps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Whether the graph will show the moving timestamps as the x-axis (default), or the relative time after the</span>
-<span class="sd">        starting time.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">            True if the x-axis will show the moving timestamps (default); or the relative time as the x-axis</span>
-<span class="sd">            ticks if False.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot_by_timestamps</span></div>
-
-<div class="viewcode-block" id="PyDMTimePlot.setPlotByTimesStamps"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.setPlotByTimesStamps">[docs]</a>    <span class="k">def</span> <span class="nf">setPlotByTimesStamps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Change the x-axis appearance and behavior.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        new_value : bool</span>
-<span class="sd">            Set to True for the graph to show the moving timestamps as the x-axis (default), or to False for the graph</span>
-<span class="sd">            to show the relative time on the x-axis after the starting time.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">new_value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot_by_timestamps</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_plot_by_timestamps</span> <span class="o">=</span> <span class="n">new_value</span></div>
-
-    <span class="n">plotByTimeStamps</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;bool&quot;</span><span class="p">,</span> <span class="n">getPlotByTimestamps</span><span class="p">,</span> <span class="n">setPlotByTimesStamps</span><span class="p">)</span>
-
 <div class="viewcode-block" id="PyDMTimePlot.addYChannel"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.addYChannel">[docs]</a>    <span class="k">def</span> <span class="nf">addYChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">lineStyle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineWidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">symbolSize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -570,13 +578,14 @@
 <span class="sd">        lineWidth : int</span>
 <span class="sd">            How thick the curve line should be</span>
 <span class="sd">        symbol : str</span>
-<span class="sd">            The symbols as markers along the curve, i.e. circle, square, triangle, star, etc.</span>
+<span class="sd">            The symbols as markers along the curve, i.e. circle, square,</span>
+<span class="sd">            triangle, star, etc.</span>
 <span class="sd">        symbolSize : int</span>
 <span class="sd">            How big the symbols should be</span>
 
 <span class="sd">        Returns : TimePlotCurveItem</span>
 <span class="sd">        -------</span>
-<span class="sd">            The new curve just created.</span>
+<span class="sd">            The newly created curve.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">plot_opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">plot_opts</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span>
@@ -603,7 +612,8 @@
 
 <div class="viewcode-block" id="PyDMTimePlot.removeYChannel"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.removeYChannel">[docs]</a>    <span class="k">def</span> <span class="nf">removeYChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Remove a curve from the graph. This also stops update the timer associated with the curve.</span>
+<span class="sd">        Remove a curve from the graph. This also stops update the timer</span>
+<span class="sd">        associated with the curve.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -617,7 +627,8 @@
 
 <div class="viewcode-block" id="PyDMTimePlot.removeYChannelAtIndex"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.removeYChannelAtIndex">[docs]</a>    <span class="k">def</span> <span class="nf">removeYChannelAtIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Remove a curve from the graph, given its index in the graph&#39;s curve list.</span>
+<span class="sd">        Remove a curve from the graph, given its index in the graph&#39;s curve</span>
+<span class="sd">        list.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -653,7 +664,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        update_immediately : bool</span>
-<span class="sd">            Update the axis range(s) immediately if True, or defer until the next rendering.</span>
+<span class="sd">            Update the axis range(s) immediately if True, or defer until the</span>
+<span class="sd">            next rendering.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -680,11 +692,13 @@
 
 <div class="viewcode-block" id="PyDMTimePlot.getCurves"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.getCurves">[docs]</a>    <span class="k">def</span> <span class="nf">getCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Dump the current list of curves and each curve&#39;s settings into a list of JSON-formatted strings.</span>
+<span class="sd">        Dump the current list of curves and each curve&#39;s settings into a list</span>
+<span class="sd">        of JSON-formatted strings.</span>
 
 <span class="sd">        Returns : str</span>
 <span class="sd">        -------</span>
-<span class="sd">            A list of JSON-formatted strings, each containing a curve&#39;s settings</span>
+<span class="sd">            A list of JSON-formatted strings, each containing a curve&#39;s</span>
+<span class="sd">            settings</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">]</span></div>
 
@@ -695,7 +709,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        new_list : list</span>
-<span class="sd">            A list of JSON-formatted strings, each contains a curve and its settings</span>
+<span class="sd">            A list of JSON-formatted strings, each contains a curve and its</span>
+<span class="sd">            settings</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">new_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">new_list</span><span class="p">]</span>
@@ -735,8 +750,9 @@
 
 <div class="viewcode-block" id="PyDMTimePlot.refreshCurve"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.refreshCurve">[docs]</a>    <span class="k">def</span> <span class="nf">refreshCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Remove a curve currently being plotted on the timeplot, then redraw that curve, which could have been updated</span>
-<span class="sd">        with a new symbol, line style, line width, etc.</span>
+<span class="sd">        Remove a curve currently being plotted on the timeplot, then redraw</span>
+<span class="sd">        that curve, which could have been updated with a new symbol, line</span>
+<span class="sd">        style, line width, etc.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -746,8 +762,9 @@
         <span class="n">curve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findCurve</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">channel</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">curve</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">removeYChannel</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">addYChannel</span><span class="p">(</span><span class="n">y_channel</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">address</span><span class="p">,</span>
-                             <span class="n">lineStyle</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">lineStyle</span><span class="p">,</span> <span class="n">lineWidth</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">lineWidth</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">addYChannel</span><span class="p">(</span><span class="n">y_channel</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
+                             <span class="n">name</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">lineStyle</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">lineStyle</span><span class="p">,</span>
+                             <span class="n">lineWidth</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">lineWidth</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span>
                              <span class="n">symbolSize</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">symbolSize</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMTimePlot.addLegendItem"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.addLegendItem">[docs]</a>    <span class="k">def</span> <span class="nf">addLegendItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">pv_name</span><span class="p">,</span> <span class="n">force_show_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -761,7 +778,8 @@
 <span class="sd">        pv_name : str</span>
 <span class="sd">            The PV channel</span>
 <span class="sd">        force_show_legend : bool</span>
-<span class="sd">            True to make the legend to be displayed; False to just add the item, but do not display the legend.</span>
+<span class="sd">            True to make the legend to be displayed; False to just add the</span>
+<span class="sd">            item, but do not display the legend.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_legend</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">pv_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setShowLegend</span><span class="p">(</span><span class="n">force_show_legend</span><span class="p">)</span></div>
@@ -791,8 +809,9 @@
 
 <div class="viewcode-block" id="PyDMTimePlot.setBufferSize"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.setBufferSize">[docs]</a>    <span class="k">def</span> <span class="nf">setBufferSize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the size of the data buffer of the entire chart. This will also update the same value for each of the</span>
-<span class="sd">        data buffer of each chart&#39;s curve.</span>
+<span class="sd">        Set the size of the data buffer of the entire chart. This will also</span>
+<span class="sd">        update the same value for each of the data buffer of each chart&#39;s</span>
+<span class="sd">        curve.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -808,7 +827,8 @@
 
 <div class="viewcode-block" id="PyDMTimePlot.resetBufferSize"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.resetBufferSize">[docs]</a>    <span class="k">def</span> <span class="nf">resetBufferSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reset the data buffer size of the chart, and each of the chart&#39;s curve&#39;s data buffer, to the minimum</span>
+<span class="sd">        Reset the data buffer size of the chart, and each of the chart&#39;s</span>
+<span class="sd">        curve&#39;s data buffer, to the minimum</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">!=</span> <span class="n">DEFAULT_BUFFER_SIZE</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">=</span> <span class="n">DEFAULT_BUFFER_SIZE</span>
@@ -843,25 +863,28 @@
 
 <div class="viewcode-block" id="PyDMTimePlot.getTimeSpan"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.getTimeSpan">[docs]</a>    <span class="k">def</span> <span class="nf">getTimeSpan</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the time duration for the chart to collect data before rotating its buffer.</span>
+<span class="sd">        The extent of the x-axis of the chart, in seconds.  In other words,</span>
+<span class="sd">        how long a data point stays on the plot before falling off the left</span>
+<span class="sd">        edge.</span>
 
 <span class="sd">        Returns : float</span>
 <span class="sd">        -------</span>
-<span class="sd">            The time duration for the chart to collect data before rotating its buffer, in seconds.</span>
+<span class="sd">            The extent of the x-axis of the chart, in seconds.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_time_span</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMTimePlot.setTimeSpan"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.setTimeSpan">[docs]</a>    <span class="k">def</span> <span class="nf">setTimeSpan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the time duration for the chart to collect data before rotating its buffer. This is applicable only for</span>
-<span class="sd">        asynchronous data collection mode. The chart will allocate enough buffer for the new time span duration. Data</span>
-<span class="sd">        arriving after each duration will be recorded into the buffer having been rotated.</span>
+<span class="sd">        Set the extent of the x-axis of the chart, in seconds.</span>
+<span class="sd">        In aynchronous mode, the chart will allocate enough buffer for the new time span duration.</span>
+<span class="sd">        Data arriving after each duration will be recorded into the buffer</span>
+<span class="sd">        having been rotated.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        value : float</span>
-<span class="sd">            The time span duration, in seconds, to allocate enough buffer to collect data for, before rotating the</span>
-<span class="sd">            buffer.</span>
+<span class="sd">            The time span duration, in seconds, to allocate enough buffer to</span>
+<span class="sd">            collect data for, before rotating the buffer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_span</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
@@ -984,6 +1007,9 @@
 
 
 <span class="k">class</span> <span class="nc">TimeAxisItem</span><span class="p">(</span><span class="n">AxisItem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    TimeAxisItem formats a unix time axis into a human-readable format.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">tickStrings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">spacing</span><span class="p">):</span>
         <span class="n">strings</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
