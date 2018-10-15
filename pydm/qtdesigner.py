@@ -16,6 +16,7 @@ class DesignerHooks(object):
         self.__form_editor = None
         self.__initialized = True
         self.__timer = None
+        self.__start_kicker()
 
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
@@ -40,7 +41,6 @@ class DesignerHooks(object):
 
     def setup_hooks(self):
         self.__set_stylesheet_hook()
-        self.__start_kicker()
 
     def __set_stylesheet_hook(self):
         if self.form_editor:
