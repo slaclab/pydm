@@ -6,8 +6,8 @@ import numpy as np
 import pyca
 from psp.Pv import Pv
 from qtpy.QtCore import Slot, Qt, QTimer
+from pydm import data_plugins
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
-from pydm.utilities import is_pydm_app
 
 # Map how we will interpret EPICS types in python.
 type_map = dict(
@@ -330,7 +330,7 @@ class Connection(PyDMConnection):
         self.connection_state_signal.emit(conn)
 
     def send_access_state(self, read_access, write_access):
-        if is_pydm_app() and self.app.is_read_only():
+        if data_plugins.is_read_only():
             self.write_access_signal.emit(False)
             return
         self.write_access_signal.emit(write_access)

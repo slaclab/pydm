@@ -7,6 +7,7 @@ from .pydm_ui import Ui_MainWindow
 from .display_module import Display
 from .connection_inspector import ConnectionInspector
 from .about_pydm import AboutWindow
+from . import data_plugins
 import subprocess
 import platform
 import logging
@@ -259,7 +260,7 @@ class PyDMMainWindow(QMainWindow):
         else:
             title = self._display_widget.windowTitle()
         title += " - PyDM"
-        if self.app.is_read_only():
+        if data_plugins.is_read_only():
             title += " [Read Only Mode]"
         self.setWindowTitle(title)
 

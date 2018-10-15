@@ -9,7 +9,7 @@ from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QMenu
 from qtpy.QtGui import QColor, QMouseEvent
 from ...utilities import is_pydm_app
-from ...application import PyDMApplication
+from ... import data_plugins
 from ...widgets.base import is_channel_valid, PyDMWidget
 from ...widgets.label import PyDMLabel
 from ...widgets.line_edit import PyDMLineEdit
@@ -489,7 +489,7 @@ def test_pydmwritablewidget_channels(qtbot):
         ("", False, False, False),
         (None, False, False, False),
     ])
-def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address,
+def test_pydmwritable_check_enable_state(qtbot, channel_address,
                                          connected, write_access,
                                          is_app_read_only):
     """
@@ -507,8 +507,6 @@ def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address,
     ----------
     qtbot : fixture
         Window for widget testing
-    monkeypatch : fixture
-        To override the default behavior of PyDMApplication.is_read_only()
     channel_address : str
         The channel address
     connected : bool
@@ -525,8 +523,7 @@ def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address,
     pydm_lineedit._connected = connected
     pydm_lineedit._write_access = write_access
 
-    monkeypatch.setattr(PyDMApplication, 'is_read_only',
-                        lambda *args: is_app_read_only)
+    data_plugins.set_read_only(is_app_read_only)
 
     original_tooltip = "Original Tooltip"
     pydm_lineedit.setToolTip(original_tooltip)
@@ -537,7 +534,7 @@ def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address,
         if not pydm_lineedit._connected:
             assert "PV is disconnected." in actual_tooltip
         elif not write_access:
-            if is_pydm_app() and pydm_lineedit.app.is_read_only():
+            if data_plugins.is_read_only():
                 assert "Running PyDM on Read-Only mode." in actual_tooltip
             else:
                 assert "Access denied by Channel Access Security." in actual_tooltip

@@ -112,6 +112,7 @@ class PyDMApplication(QApplication):
         # being called hierarchially (i.e., parent calls it first, then on down the ancestor tree, with no unrelated
         # calls in between).    If something crazy happens and PyDM somehow gains the ability to open files in a
         # multi-threaded way, for example, this system will fail.
+        data_plugins.set_read_only(read_only)
         self.main_window = None
         self.directory_stack = ['']
         self.macro_stack = [{}]
@@ -121,7 +122,6 @@ class PyDMApplication(QApplication):
         self.hide_menu_bar = hide_menu_bar
         self.hide_status_bar = hide_status_bar
         self.fullscreen = fullscreen
-        self.__read_only = read_only
 
         # Open a window if required.
         if ui_file is not None:
@@ -154,7 +154,9 @@ class PyDMApplication(QApplication):
         return super(PyDMApplication, self).exec_()
 
     def is_read_only(self):
-        return self.__read_only
+        warnings.warn("'PyDMApplication.is_read_only' is deprecated, "
+                      "use 'pydm.data_plugins.is_read_only' instead.")
+        return data_plugins.is_read_only()
 
     @Slot()
     def get_CPU_usage(self):

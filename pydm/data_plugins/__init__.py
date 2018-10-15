@@ -15,7 +15,7 @@ from ..utilities import protocol_and_address
 
 logger = logging.getLogger(__name__)
 plugin_modules = {}
-
+__read_only = False
 
 DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
 if DEFAULT_PROTOCOL is not None:
@@ -126,6 +126,30 @@ def load_plugins_from_path(locations, token):
                             # Add to return dictionary of added plugins
                             added_plugins[plugin.protocol] = plugin
     return added_plugins
+
+
+def is_read_only():
+    """
+    Check whether or not the app is running with the read only flag set.
+
+    Returns
+    -------
+    bool
+        True if read only. False otherwise.
+    """
+    return __read_only
+
+
+def set_read_only(read_only):
+    """
+    Set the read only flag for the data plugins.
+
+    Parameters
+    ----------
+    read_only : bool
+    """
+    global __read_only
+    __read_only = read_only
 
 
 # Load the data plugins from PYDM_DATA_PLUGINS_PATH

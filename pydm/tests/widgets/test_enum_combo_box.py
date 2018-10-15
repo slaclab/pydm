@@ -6,8 +6,7 @@ from logging import ERROR
 from qtpy.QtCore import Slot, Qt
 
 from ...widgets.enum_combo_box import PyDMEnumComboBox
-from ...application import PyDMApplication
-from ...utilities import is_pydm_app
+from ... import data_plugins
 
 
 # --------------------
@@ -90,7 +89,7 @@ def test_set_items(qtbot, enums):
     (False, False, False, True),
     (False, False, False, False),
 ])
-def test_check_enable_state(qtbot, signals, monkeypatch, connected, write_access, has_enum, is_app_read_only):
+def test_check_enable_state(qtbot, signals, connected, write_access, has_enum, is_app_read_only):
     """
     Test the tooltip generated depending on the channel connection, write access, whether the widget has enum strings,
     and whether the app is read-only.
@@ -108,8 +107,6 @@ def test_check_enable_state(qtbot, signals, monkeypatch, connected, write_access
         Window for widget testing
     signals : fixture
         The signals fixture, which provides access signals to be bound to the appropriate slots
-    monkeypatch : fixture
-        To override the default behavior of PyDMApplication.is_read_only()
     connected : bool
         True if the channel is connected; False otherwise
     write_access : bool
@@ -133,7 +130,7 @@ def test_check_enable_state(qtbot, signals, monkeypatch, connected, write_access
         signals.enum_strings_signal[tuple].emit(("START", "STOP", "PAUSE"))
         assert pydm_enumcombobox._has_enums
 
-    monkeypatch.setattr(PyDMApplication, 'is_read_only', lambda *args: is_app_read_only)
+    data_plugins.set_read_only(is_app_read_only)
 
     original_tooltip = "Original Tooltip"
     pydm_enumcombobox.setToolTip(original_tooltip)
@@ -143,7 +140,7 @@ def test_check_enable_state(qtbot, signals, monkeypatch, connected, write_access
     if not pydm_enumcombobox._connected:
         assert "PV is disconnected." in actual_tooltip
     elif not write_access:
-        if is_pydm_app() and pydm_enumcombobox.app.is_read_only():
+        if data_plugins.is_read_only():
             assert "Running PyDM on Read-Only mode." in actual_tooltip
         else:
             assert "Access denied by Channel Access Security." in actual_tooltip

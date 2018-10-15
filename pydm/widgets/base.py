@@ -6,6 +6,7 @@ from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect
 from qtpy.QtGui import QColor, QClipboard, QCursor
 from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
+from .. import data_plugins
 from ..utilities import is_pydm_app, remove_protocol
 from .rules import RulesDispatcher
 
@@ -1035,7 +1036,7 @@ class PyDMWritableWidget(PyDMWidget):
         elif not self._write_access:
             if tooltip != '':
                 tooltip += '\n'
-            if is_pydm_app() and self.app.is_read_only():
+            if data_plugins.is_read_only():
                 tooltip += "Running PyDM on Read-Only mode."
             else:
                 tooltip += "Access denied by Channel Access Security."
