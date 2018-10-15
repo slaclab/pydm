@@ -1,3 +1,5 @@
+from qtpy.QtCore import QTimer
+from qtpy.QtWidgets import QApplication
 from .utilities import stylesheet
 
 
@@ -13,6 +15,7 @@ class DesignerHooks(object):
             return
         self.__form_editor = None
         self.__initialized = True
+        self.__timer = None
 
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
@@ -37,6 +40,7 @@ class DesignerHooks(object):
 
     def setup_hooks(self):
         self.__set_stylesheet_hook()
+        self.__start_kicker()
 
     def __set_stylesheet_hook(self):
         if self.form_editor:
@@ -50,3 +54,12 @@ class DesignerHooks(object):
         style_data = stylesheet._get_style_data(None)
         widget = form_window_interface.formContainer()
         widget.setStyleSheet(style_data)
+
+    def __kick(self):
+        app = QApplication.instance()
+        app.processEvents()
+        self.__timer.singleShot(0.03, self.__kick)
+
+    def __start_kicker(self):
+        self.__timer = QTimer()
+        self.__timer.singleShot(0.01, self.__kick) # ~30Hz
