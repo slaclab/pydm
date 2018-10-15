@@ -108,6 +108,8 @@ class PyDMChannel(object):
         """
         try:
             plugin = plugin_for_address(self.address)
+            if not plugin:
+                return
             plugin.remove_connection(self)
         except Exception as exc:
             logger.exception("Unable to remove connection "
