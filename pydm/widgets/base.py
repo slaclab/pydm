@@ -818,10 +818,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         if self._channel != value:
             # Remove old connections
-            for channel in self._channels:
-                if channel.address == self._channel:
-                    channel.disconnect()
-                    self._channels.remove(channel)
+            for channel in [c for c in self._channels if
+                            c.address == self._channel]:
+                channel.disconnect()
+                self._channels.remove(channel)
             # Load new channel
             self._channel = str(value)
             channel = PyDMChannel(address=self._channel,
