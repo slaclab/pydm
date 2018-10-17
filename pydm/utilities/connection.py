@@ -1,7 +1,7 @@
 from qtpy.QtWidgets import QWidget
 
 
-def __change_connection_status(widget, status):
+def _change_connection_status(widget, status):
     """
     Connect or disconnect the inner channels of widgets on the
     given widget based on the status parameter.
@@ -40,7 +40,7 @@ def establish_widget_connections(widget):
     widget : QWidget
         The widget which will be iterated over for channel connection.
     """
-    __change_connection_status(widget, True)
+    _change_connection_status(widget, True)
 
 
 def close_widget_connections(widget):
@@ -52,4 +52,4 @@ def close_widget_connections(widget):
     widget : QWidget
         The widget which will be iterated over for channel disconnection.
     """
-    __change_connection_status(widget, False)
+    _change_connection_status(widget, False)
