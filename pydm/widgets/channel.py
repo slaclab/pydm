@@ -1,6 +1,8 @@
 import logging
 
 from pydm.data_plugins import plugin_for_address
+from pydm.utilities import is_qt_designer
+from pydm import config
 
 logger = logging.getLogger(__name__)
 
@@ -93,6 +95,8 @@ class PyDMChannel(object):
         """
         Connect a PyDMChannel to the proper PyDMPlugin
         """
+        if is_qt_designer() and not config.DESIGNER_ONLINE:
+            return
         logger.debug("Connecting %r", self.address)
         # Connect to proper PyDMPlugin
         try:
@@ -106,6 +110,8 @@ class PyDMChannel(object):
         """
         Disconnect a PyDMChannel
         """
+        if is_qt_designer() and not config.DESIGNER_ONLINE:
+            return
         try:
             plugin = plugin_for_address(self.address)
             if not plugin:
