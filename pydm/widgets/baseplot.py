@@ -304,7 +304,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.redraw_timer.start()
         # Connect channels
         for chan in plot_item.channels():
-            chan.connect()
+            if chan:
+                chan.connect()
         # self._legend.addItem(plot_item, plot_item.curve_name)
 
     def removeCurve(self, plot_item):
@@ -314,7 +315,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             self.redraw_timer.stop()
         # Disconnect channels
         for chan in plot_item.channels():
-            chan.disconnect()
+            if chan:
+                chan.disconnect()
 
     def removeCurveWithName(self, name):
         for curve in self._curves:

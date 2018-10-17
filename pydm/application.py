@@ -510,7 +510,6 @@ class PyDMApplication(QApplication):
         warnings.warn("'PyDMApplication.remove_connection' is deprecated, "
                       "use PyDMConnection.disconnect()")
 
-
     def eventFilter(self, obj, event):
         warnings.warn("'PyDMApplication.eventFilter' is deprecated, "
                       " this function is now found on PyDMWidget")
