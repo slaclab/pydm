@@ -153,9 +153,9 @@ def set_read_only(read_only):
 
 
 # Load the data plugins from PYDM_DATA_PLUGINS_PATH
-logger.info("*"*80)
-logger.info("* Loading PyDM Data Plugins")
-logger.info("*"*80)
+logger.debug("*"*80)
+logger.debug("* Loading PyDM Data Plugins")
+logger.debug("*"*80)
 
 DATA_PLUGIN_TOKEN = "_plugin.py"
 path = os.getenv("PYDM_DATA_PLUGINS_PATH", None)
