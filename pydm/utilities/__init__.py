@@ -4,6 +4,7 @@ from . import colors
 from .remove_protocol import remove_protocol, protocol_and_address
 from .connection import establish_widget_connections, close_widget_connections
 from .iconfont import IconFont
+from ..qtdesigner import DesignerHooks
 
 import os
 import sys
@@ -34,6 +35,18 @@ def is_pydm_app(app=None):
         return True
     else:
         return False
+
+
+def is_qt_designer():
+    """
+    Check whether or not running inside Qt Designer.
+
+    Returns
+    -------
+    bool
+        True if inside Designer, False otherwise.
+    """
+    return DesignerHooks().form_editor is not None
 
 
 def path_info(path_str):
