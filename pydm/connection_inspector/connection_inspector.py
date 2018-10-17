@@ -32,11 +32,10 @@ class ConnectionInspector(QWidget):
 
     def fetch_data(self):
         plugins = data_plugins.plugin_modules
-        conns = []
-        for p in plugins.values():
-            for connection in p.connections.values():
-                conns.append(connection)
-        return conns
+        return [connection
+                for p in plugins.values()
+                for connection in p.connections.values()
+                ]
 
     @Slot()
     def save_list_to_file(self):
