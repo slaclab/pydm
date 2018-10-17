@@ -12,16 +12,11 @@ import imp
 import uuid
 from .plugin import PyDMPlugin
 from ..utilities import protocol_and_address
+from .. import config
 
 logger = logging.getLogger(__name__)
 plugin_modules = {}
 __read_only = False
-
-DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
-if DEFAULT_PROTOCOL is not None:
-    DEFAULT_PROTOCOL = DEFAULT_PROTOCOL.replace('://', '')
-    logger.info("Using default PyDM protocol %s",
-                DEFAULT_PROTOCOL)
 
 
 def plugin_for_address(address):
@@ -31,12 +26,12 @@ def plugin_for_address(address):
     # Check for a configured protocol
     protocol, addr = protocol_and_address(address)
     # Use default protocol
-    if protocol is None and DEFAULT_PROTOCOL is not None:
+    if protocol is None and config.DEFAULT_PROTOCOL is not None:
         logger.debug("Using default protocol %s for %s",
-                     DEFAULT_PROTOCOL, address)
+                     config.DEFAULT_PROTOCOL, address)
         # If no protocol was specified, and the default protocol
         # environment variable is specified, try to use that instead.
-        protocol = DEFAULT_PROTOCOL
+        protocol = config.DEFAULT_PROTOCOL
     # Load proper plugin module
     if protocol:
         try:

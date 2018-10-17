@@ -1,9 +1,9 @@
 import os
-import pytest
 
 import pydm.data_plugins
 from pydm.data_plugins import (plugin_modules, load_plugins_from_path,
                                plugin_for_address)
+from pydm import config
 
 def test_data_plugin_add(qapp, test_plugin):
     # Check that adding this after import will be reflected in PyDMApp
@@ -30,7 +30,7 @@ def test_plugin_for_address(test_plugin):
                       test_plugin)
     assert plugin_for_address('tst:this') is None
     # Default protocol
-    pydm.data_plugins.DEFAULT_PROTOCOL = 'tst'
+    config.DEFAULT_PROTOCOL = 'tst'
     assert isinstance(plugin_for_address('tst:this'),
                       test_plugin)
 
