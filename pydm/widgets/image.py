@@ -107,6 +107,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """Initialize widget."""
         ImageView.__init__(self, parent)
         PyDMWidget.__init__(self)
+        self._channels = [None, None]
         self.thread = None
         self.axes = dict({'t': None, "x": 0, "y": 1, "c": None})
         self._imagechannel = None
@@ -537,6 +538,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
                             connection_slot=self.image_connection_state_changed,
                             value_slot=self.image_value_changed,
                             severity_slot=self.alarmSeverityChanged)
+            self._channels[0] = self._imagechannel
             self._imagechannel.connect()
 
     @Property(str)
@@ -574,7 +576,9 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
                             connection_slot=self.connectionStateChanged,
                             value_slot=self.image_width_changed,
                             severity_slot=self.alarmSeverityChanged)
+            self._channels[1] = self._widthchannel
             self._widthchannel.connect()
+
 
     def channels(self):
         """
@@ -585,10 +589,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         channels : list
             List of PyDMChannel objects
         """
-        self._channels.clear()
-        self._channels.append(self._imagechannel)
-        self._channels.append(self._widthchannel)
-        return self._imagechannel, self._widthchannel
+        return self._channels
 
     def channels_for_tools(self):
         """Return channels for tools."""
