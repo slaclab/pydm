@@ -35,11 +35,7 @@ def plugin_for_address(address):
     # Load proper plugin module
     if protocol:
         try:
-            # Provide proper protocol
-            try:
-                return plugin_modules[str(protocol)]
-            except KeyError:
-                pass # We will print the more complete message below.
+            return plugin_modules[str(protocol)]
         except KeyError as exc:
             logger.exception("Could not find protocol for %r", address)
     # Catch all in case of improper plugin specification
