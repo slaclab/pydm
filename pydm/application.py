@@ -579,12 +579,12 @@ class PyDMApplication(QApplication):
         EXT_TOOLS_TOKEN = "_tool.py"
         path = os.getenv("PYDM_TOOLS_PATH", None)
 
-        logger.info("*"*80)
-        logger.info("* Loading PyDM External Tools")
-        logger.info("*"*80)
+        logger.debug("*"*80)
+        logger.debug("* Loading PyDM External Tools")
+        logger.debug("*"*80)
 
         if path is not None:
-            logger.info("Looking for external tools at: {}".format(path))
+            logger.debug("Looking for external tools at: {}".format(path))
             if platform.system() == "Windows":
                 locations = path.split(";")
             else:
@@ -595,7 +595,7 @@ class PyDMApplication(QApplication):
                         if name.endswith(EXT_TOOLS_TOKEN):
                             self.install_external_tool(os.path.join(root, name))
         else:
-            logger.warning("External Tools not loaded. No External Tools Path specified.")
+            logger.debug("External Tools not loaded. No External Tools Path specified.")
 
     def install_external_tool(self, tool):
         """
