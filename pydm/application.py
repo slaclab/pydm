@@ -499,6 +499,7 @@ class PyDMApplication(QApplication):
         """
         warnings.warn("'PyDMApplication.add_connection' is deprecated, "
                       "use PyDMConnection.connect()")
+        channel.connect()
 
     def remove_connection(self, channel):
         """
@@ -510,6 +511,7 @@ class PyDMApplication(QApplication):
         """
         warnings.warn("'PyDMApplication.remove_connection' is deprecated, "
                       "use PyDMConnection.disconnect()")
+        channel.disconnect()
 
     def eventFilter(self, obj, event):
         warnings.warn("'PyDMApplication.eventFilter' is deprecated, "
@@ -567,7 +569,7 @@ class PyDMApplication(QApplication):
                 if hasattr(child_widget, 'rules'):
                     if child_widget.rules:
                         RulesDispatcher().unregister(child_widget)
-            except:
+            except Exception:
                 pass
 
     def load_external_tools(self):
