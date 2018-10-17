@@ -1,6 +1,8 @@
 from qtpy.QtCore import QTimer
+from qtpy.QtGui import QResizeEvent
 from qtpy.QtWidgets import QApplication
 from .utilities import stylesheet
+from . import data_plugins
 
 
 class DesignerHooks(object):
@@ -16,7 +18,7 @@ class DesignerHooks(object):
         self.__form_editor = None
         self.__initialized = True
         self.__timer = None
-        self.__start_kicker()
+        data_plugins.set_read_only(True)
 
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
@@ -54,12 +56,19 @@ class DesignerHooks(object):
         style_data = stylesheet._get_style_data(None)
         widget = form_window_interface.formContainer()
         widget.setStyleSheet(style_data)
+        if not self.__timer:
+            self.__start_kicker()
 
     def __kick(self):
-        app = QApplication.instance()
-        app.processEvents()
-        self.__timer.singleShot(0.03, self.__kick)
+        fwman = self.form_editor.formWindowManager()
+        if fwman:
+            widget = fwman.activeFormWindow()
+            if widget:
+                ev = QResizeEvent(widget.size(), widget.size())
+                QApplication.instance().sendEvent(widget, ev)
 
     def __start_kicker(self):
         self.__timer = QTimer()
-        self.__timer.singleShot(0.01, self.__kick) # ~30Hz
+        self.__timer.setInterval(100)
+        self.__timer.timeout.connect(self.__kick)
+        self.__timer.start()
