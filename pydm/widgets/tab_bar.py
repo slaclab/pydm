@@ -63,10 +63,8 @@ class PyDMTabBar(QTabBar, PyDMWidget):
             self._channels.append(chan)
 
     def channels(self):
-        # Note that because we cache the list of channels, tabs added or removed after this method
-        # is called will not ever get channel objects created, and will never connect to data sources.
         if self._channels is not None:
-            return self._channels
+            return list(self._channels)
         return None
 
     def connection_changed_for_tab(self, index, conn):
