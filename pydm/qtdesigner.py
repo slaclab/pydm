@@ -1,6 +1,4 @@
 from qtpy.QtCore import QTimer
-from qtpy.QtGui import QResizeEvent
-from qtpy.QtWidgets import QApplication
 from .utilities import stylesheet
 from . import data_plugins
 
