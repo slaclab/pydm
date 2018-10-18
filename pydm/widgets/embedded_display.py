@@ -47,8 +47,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         -------
         QSize
         """
-        return QSize(100,
-                     100)  # This is totally arbitrary, I just want *some* visible nonzero size
+        # This is totally arbitrary, I just want *some* visible nonzero size
+        return QSize(100, 100)
 
     @Property(str)
     def macros(self):
@@ -192,7 +192,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         if self._is_connected or self.embedded_widget is None:
             return
-        establish_widget_connection(self.embedded_widget)
+        establish_widget_connections(self.embedded_widget)
 
     def disconnect(self):
         """
