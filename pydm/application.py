@@ -403,6 +403,11 @@ class PyDMApplication(QApplication):
         -------
         QWidget
         """
+        if 'establish_connection' in kwargs:
+            logger.warning("Ignoring 'establish_connection' parameter at "
+                           "open_relative. The connection is now handled by the"
+                           " widgets.")
+
         # First split the ui_file string into a filepath and arguments
         args = command_line_args if command_line_args is not None else []
         dir_name, file_name, extra_args = path_info(ui_file)
@@ -463,6 +468,10 @@ class PyDMApplication(QApplication):
         open_relative opens a ui file with a relative path.  This is
         really only used by embedded displays.
         """
+        if 'establish_connection' in kwargs:
+            logger.warning("Ignoring 'establish_connection' parameter at "
+                           "open_relative. The connection is now handled by the"
+                           " widgets.")
         full_path = self.get_path(ui_file)
 
         if not os.path.exists(full_path):
