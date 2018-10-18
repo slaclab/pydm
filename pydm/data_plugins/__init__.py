@@ -141,6 +141,8 @@ def set_read_only(read_only):
     """
     global __read_only
     __read_only = read_only
+    if read_only:
+        logger.info("Running PyDM in Read Only mode.")
 
 
 # Load the data plugins from PYDM_DATA_PLUGINS_PATH
