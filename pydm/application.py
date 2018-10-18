@@ -379,7 +379,7 @@ class PyDMApplication(QApplication):
             kwargs['macros'] = macros
         return cls(**kwargs)
 
-    def open_file(self, ui_file, macros=None, command_line_args=None):
+    def open_file(self, ui_file, macros=None, command_line_args=None, **kwargs):
         """
         Open a .ui or .py file, and return a widget from the loaded file.
         This method is the entry point for all opening of new displays,
@@ -457,7 +457,8 @@ class PyDMApplication(QApplication):
         full_path = os.path.join(dirname, str(ui_file))
         return full_path
 
-    def open_relative(self, ui_file, widget, macros=None, command_line_args=[]):
+    def open_relative(self, ui_file, widget, macros=None, command_line_args=[],
+                      **kwargs):
         """
         open_relative opens a ui file with a relative path.  This is
         really only used by embedded displays.
