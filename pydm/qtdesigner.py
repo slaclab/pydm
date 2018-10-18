@@ -64,8 +64,7 @@ class DesignerHooks(object):
         if fwman:
             widget = fwman.activeFormWindow()
             if widget:
-                ev = QResizeEvent(widget.size(), widget.size())
-                QApplication.instance().sendEvent(widget, ev)
+                widget.update()
 
     def __start_kicker(self):
         self.__timer = QTimer()
