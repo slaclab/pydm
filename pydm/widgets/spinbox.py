@@ -227,7 +227,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
             from the PV if available.
         """
         if self._limits_from_channel != bool(value):
-            self._limits_from_channel = value
+            self._limits_from_channel = bool(value)
             self.update_limits()
 
     @Property(float)
@@ -250,6 +250,8 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
             The new lower limit value.
         """
         self._user_lower_limit = float(value)
+        self._user_upper_limit = max(
+            self._user_upper_limit, self._user_lower_limit)
         self.update_limits()
 
     @Property(float)
@@ -272,4 +274,6 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
             The new upper limit value.
         """
         self._user_upper_limit = float(value)
+        self._user_lower_limit = min(
+            self._user_lower_limit, self._user_upper_limit)
         self.update_limits()
