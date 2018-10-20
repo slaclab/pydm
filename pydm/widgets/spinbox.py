@@ -21,11 +21,15 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         self.setEnabled(False)
         self._alarm_sensitive_border = False
         self._show_step_exponent = True
-        self._limits_from_pv = True
+
         self.step_exponent = 0
         self.setDecimals(0)
         self.app = QApplication.instance()
         self.setAccelerated(True)
+
+        self._limits_from_channel = True
+        self._user_lower_limit = self.minimum()
+        self._user_upper_limit = self.maximum()
 
     def keyPressEvent(self, ev):
         """
@@ -138,13 +142,27 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
             New value for the control limit
         """
         super(PyDMSpinbox, self).ctrl_limit_changed(which, new_limit)
+        self.update_limits()
 
-        if not self._limits_from_pv:
-            return
-        if which == "UPPER":
-            self.setMaximum(new_limit)
+    def update_limits(self):
+        """
+        Callback invoked to update the control limits of the spinbox.
+
+        Parameters
+        ----------
+        which : str
+            Which control limit was changed. "UPPER" or "LOWER"
+        new_limit : float
+            New value for the control limit
+        """
+        if self._limits_from_channel:
+            if self._lower_ctrl_limit is not None:
+                self.setMinimum(self._lower_ctrl_limit)
+            if self._upper_ctrl_limit is not None:
+                self.setMaximum(self._upper_ctrl_limit)
         else:
-            self.setMinimum(new_limit)
+            self.setMinimum(self._user_lower_limit)
+            self.setMaximum(self._user_upper_limit)
 
     def precision_changed(self, new_precision):
         """
@@ -159,6 +177,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         """
         super(PyDMSpinbox, self).precision_changed(new_precision)
         self.setDecimals(new_precision)
+        self.update_limits()
 
     @Property(bool)
     def showStepExponent(self):
@@ -184,20 +203,20 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         self.update_format_string()
 
     @Property(bool)
-    def limitsFromPV(self):
+    def limitsFromChannel(self):
         """
         A choice whether or not to use the limits given by channel.
 
         Returns
         -------
-        limits_from_pv : bool
+        limits_from_channel : bool
             True means that the widget will use the limits information
             from the Channel if available.
         """
-        return self._limits_from_pv
+        return self._limits_from_channel
 
-    @limitsFromPV.setter
-    def limitsFromPV(self, value):
+    @limitsFromChannel.setter
+    def limitsFromChannel(self, value):
         """
         A choice whether or not to use the limits given by channel.
 
@@ -207,9 +226,50 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
             True means that the widget will use the limits information
             from the PV if available.
         """
-        if self._limits_from_pv != bool(value):
-            self._limits_from_pv = value
-            if self._upper_ctrl_limit is not None:
-                self.ctrl_limit_changed('UPPER', self._upper_ctrl_limit)
-            if self._lower_ctrl_limit is not None:
-                self.ctrl_limit_changed('LOWER', self._lower_ctrl_limit)
+        if self._limits_from_channel != bool(value):
+            self._limits_from_channel = value
+            self.update_limits()
+
+    @Property(float)
+    def userLowerLimit(self):
+        """
+        The user-defined lower limit for the spinbox.
+        Returns
+        -------
+        float
+        """
+        return self._user_lower_limit
+
+    @userLowerLimit.setter
+    def userLowerLimit(self, value):
+        """
+        The user-defined lower limit for the spinbox.
+        Parameters
+        ----------
+        value : float
+            The new lower limit value.
+        """
+        self._user_lower_limit = float(value)
+        self.update_limits()
+
+    @Property(float)
+    def userUpperLimit(self):
+        """
+        The user-defined upper limit for the spinbox.
+        Returns
+        -------
+        float
+        """
+        return self._user_upper_limit
+
+    @userUpperLimit.setter
+    def userUpperLimit(self, value):
+        """
+        The user-defined upper limit for the spinbox.
+        Parameters
+        ----------
+        value : float
+            The new upper limit value.
+        """
+        self._user_upper_limit = float(value)
+        self.update_limits()
