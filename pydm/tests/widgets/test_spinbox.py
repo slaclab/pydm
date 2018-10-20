@@ -33,6 +33,7 @@ def test_construct(qtbot):
     assert pydm_spinbox.valueBeingSet is False
     assert pydm_spinbox.isEnabled() is False
     assert pydm_spinbox._show_step_exponent is True
+    assert pydm_spinbox._limits_from_pv is True
     assert pydm_spinbox.step_exponent == 0
     assert pydm_spinbox.decimals() == 0
     assert pydm_spinbox.app == QApplication.instance()
@@ -282,38 +283,58 @@ def test_send_value(qtbot, signals, init_value, user_typed_value, precision):
     assert pydm_spinbox.value == user_typed_value
 
 
-@pytest.mark.parametrize("which_limit, new_limit", [
-    ("UPPER", 123.456),
-    ("LOWER", 12.345)
+@pytest.mark.parametrize("which_limit, new_limit, from_pv", [
+    ("UPPER", 123.456, True),
+    ("LOWER", 12.345, True),
+    ("UPPER", 123.456, False),
+    ("LOWER", 12.345, False),
 ])
-def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
+def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit, from_pv):
     """
     Test the upper and lower limit settings.
 
     Expectations:
-        The upper or lower limit can be emitted and subsequently read correctly.
+        The upper or lower limit can be emitted and subsequently read
+        correctly.
 
     Parameters
     ----------
     qtbot : fixture
         pytest-qt window for widget test
     signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
+        The signals fixture, which provides access signals to be bound to the
+        appropriate slots
     which_limit : str
-        "UPPER" if the new value is intended for the upper limit, "LOWER" for the lower limit
+        "UPPER" if the new value is intended for the upper limit, "LOWER" for
+        the lower limit
     new_limit : float
         The new limit value
+    from_pv : bool
+        If True the PyDMSpinbox limits will follow the ctrl limits from PV.
     """
     pydm_spinbox = PyDMSpinbox()
     qtbot.addWidget(pydm_spinbox)
+    pydm_spinbox.limitsFromPV = from_pv
 
-    if which_limit == "UPPER":
-        signals.upper_ctrl_limit_signal[type(new_limit)].connect(pydm_spinbox.upperCtrlLimitChanged)
+    is_upper = which_limit == "UPPER"
+
+    if is_upper:
+        signals.upper_ctrl_limit_signal[type(new_limit)].connect(
+                                    pydm_spinbox.upperCtrlLimitChanged)
         signals.upper_ctrl_limit_signal[type(new_limit)].emit(new_limit)
-
-        assert pydm_spinbox.get_ctrl_limits()[1] == new_limit
-    elif which_limit == "LOWER":
-        signals.lower_ctrl_limit_signal[type(new_limit)].connect(pydm_spinbox.lowerCtrlLimitChanged)
+        index = 1
+    else:
+        signals.lower_ctrl_limit_signal[type(new_limit)].connect(
+                                    pydm_spinbox.lowerCtrlLimitChanged)
         signals.lower_ctrl_limit_signal[type(new_limit)].emit(new_limit)
+        index = 0
+    assert pydm_spinbox.get_ctrl_limits()[index] == new_limit
 
-        assert pydm_spinbox.get_ctrl_limits()[0] == new_limit
+    limi = pydm_spinbox.maximum() if is_upper else pydm_spinbox.minimum()
+    expected_limi = new_limit if from_pv else (100.0 if is_upper else 0.0)
+    expected_limi = round(expected_limi, pydm_spinbox.decimals())
+    assert limi == expected_limi
+
+    pydm_spinbox.limitsFromPV = True
+    limi = pydm_spinbox.maximum() if is_upper else pydm_spinbox.minimum()
+    assert limi == round(new_limit, pydm_spinbox.decimals())
