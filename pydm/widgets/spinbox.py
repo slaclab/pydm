@@ -1,5 +1,5 @@
 from qtpy.QtWidgets import QDoubleSpinBox, QApplication
-from qtpy.QtCore import Property, QEvent, Qt
+from qtpy.QtCore import Property, Qt
 from .base import PyDMWritableWidget
 
 
@@ -55,12 +55,14 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
 
     def widget_ctx_menu(self):
         """
-        Fetch the Widget specific context menu which will be populated with additional tools by `assemble_tools_menu`.
+        Fetch the Widget specific context menu which will be populated with
+            additional tools by `assemble_tools_menu`.
 
         Returns
         -------
         QMenu or None
-            If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.
+            If the return of this method is None a new QMenu will be created
+            by `assemble_tools_menu`.
         """
         def toggle():
             self.showStepExponent = not self.showStepExponent
@@ -97,7 +99,8 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
             self.lineEdit().setToolTip("")
         else:
             self.setSuffix(units)
-            self.lineEdit().setToolTip('Step: 1E{0:+d}'.format(self.step_exponent))
+            self.lineEdit().setToolTip('Step: 1E{0:+d}'.format(
+                                                    self.step_exponent))
 
     def value_changed(self, new_val):
         """
