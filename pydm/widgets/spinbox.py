@@ -21,6 +21,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         self.setEnabled(False)
         self._alarm_sensitive_border = False
         self._show_step_exponent = True
+        self._limits_from_pv = True
         self.step_exponent = 0
         self.setDecimals(0)
         self.app = QApplication.instance()
@@ -134,6 +135,9 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
             New value for the control limit
         """
         super(PyDMSpinbox, self).ctrl_limit_changed(which, new_limit)
+
+        if not self._limits_from_pv:
+            return
         if which == "UPPER":
             self.setMaximum(new_limit)
         else:
@@ -175,3 +179,34 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         """
         self._show_step_exponent = val
         self.update_format_string()
+
+    @Property(bool)
+    def limitsFromPV(self):
+        """
+        A choice whether or not to use the limits given by channel.
+
+        Returns
+        -------
+        limits_from_pv : bool
+            True means that the widget will use the limits information
+            from the Channel if available.
+        """
+        return self._limits_from_pv
+
+    @limitsFromPV.setter
+    def limitsFromPV(self, value):
+        """
+        A choice whether or not to use the limits given by channel.
+
+        Parameters
+        ----------
+        value : bool
+            True means that the widget will use the limits information
+            from the PV if available.
+        """
+        if self._limits_from_pv != bool(value):
+            self._limits_from_pv = value
+            if self._upper_ctrl_limit is not None:
+                self.ctrl_limit_changed('UPPER', self._upper_ctrl_limit)
+            if self._lower_ctrl_limit is not None:
+                self.ctrl_limit_changed('LOWER', self._lower_ctrl_limit)
