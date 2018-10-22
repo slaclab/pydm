@@ -157,12 +157,12 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         """
         if self._limits_from_channel:
             if self._lower_ctrl_limit is not None:
-                self.setMinimum(self._lower_ctrl_limit)
+                super(PyDMSpinbox, self).setMinimum(self._lower_ctrl_limit)
             if self._upper_ctrl_limit is not None:
-                self.setMaximum(self._upper_ctrl_limit)
+                super(PyDMSpinbox, self).setMaximum(self._upper_ctrl_limit)
         else:
-            self.setMinimum(self._user_lower_limit)
-            self.setMaximum(self._user_upper_limit)
+            super(PyDMSpinbox, self).setMinimum(self._user_lower_limit)
+            super(PyDMSpinbox, self).setMaximum(self._user_upper_limit)
 
     def precision_changed(self, new_precision):
         """
@@ -230,20 +230,10 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
             self._limits_from_channel = bool(value)
             self.update_limits()
 
-    @Property(float)
-    def userLowerLimit(self):
+    def setMinimum(self, value):
         """
-        The user-defined lower limit for the spinbox.
-        Returns
-        -------
-        float
-        """
-        return self._user_lower_limit
+        Set the user-defined lower limit for the spinbox.
 
-    @userLowerLimit.setter
-    def userLowerLimit(self, value):
-        """
-        The user-defined lower limit for the spinbox.
         Parameters
         ----------
         value : float
@@ -254,20 +244,10 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
             self._user_upper_limit, self._user_lower_limit)
         self.update_limits()
 
-    @Property(float)
-    def userUpperLimit(self):
+    def setMaximum(self, value):
         """
-        The user-defined upper limit for the spinbox.
-        Returns
-        -------
-        float
-        """
-        return self._user_upper_limit
+        Set the user-defined upper limit for the spinbox.
 
-    @userUpperLimit.setter
-    def userUpperLimit(self, value):
-        """
-        The user-defined upper limit for the spinbox.
         Parameters
         ----------
         value : float
@@ -277,3 +257,17 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         self._user_lower_limit = min(
             self._user_lower_limit, self._user_upper_limit)
         self.update_limits()
+
+    def setRange(self, mini, maxi):
+        """
+        Set the user-defined limits for the spinbox.
+
+        Parameters
+        ----------
+        mini : float
+            The new lower limit value.
+        maxi: float
+            The new upper limit value.
+        """
+        self.setMinimum(mini)
+        self.setMaximum(maxi)

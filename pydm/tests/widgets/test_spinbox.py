@@ -364,32 +364,32 @@ def test_limit_setting(qtbot, signals, which_limit, chan_limit, user_limit):
         sig = signals.upper_ctrl_limit_signal[typ]
         sig.connect(pydm_spinbox.upperCtrlLimitChanged)
         sig.emit(chan_limit)
-        pydm_spinbox.userUpperLimit = user_limit
+        pydm_spinbox.setMaximum(user_limit)
     else:
         sig = signals.lower_ctrl_limit_signal[typ]
         sig.connect(pydm_spinbox.lowerCtrlLimitChanged)
         sig.emit(chan_limit)
-        pydm_spinbox.userLowerLimit = user_limit
+        pydm_spinbox.setMinimum(user_limit)
 
     prec = pydm_spinbox.decimals()
     assert pydm_spinbox.limitsFromChannel is True
     if is_upper:
-        assert pydm_spinbox.userUpperLimit == user_limit
+        assert pydm_spinbox._user_upper_limit == user_limit
         assert pydm_spinbox.get_ctrl_limits()[1] == chan_limit
         assert pydm_spinbox.maximum() == round(chan_limit, prec)
 
         pydm_spinbox.limitsFromChannel = False
         assert pydm_spinbox.limitsFromChannel is False
-        assert pydm_spinbox.userUpperLimit == user_limit
+        assert pydm_spinbox._user_upper_limit == user_limit
         assert pydm_spinbox.get_ctrl_limits()[1] == chan_limit
         assert pydm_spinbox.maximum() == round(user_limit, prec)
     else:
-        assert pydm_spinbox.userLowerLimit == user_limit
+        assert pydm_spinbox._user_lower_limit == user_limit
         assert pydm_spinbox.get_ctrl_limits()[0] == chan_limit
         assert pydm_spinbox.minimum() == round(chan_limit, prec)
 
         pydm_spinbox.limitsFromChannel = False
         assert pydm_spinbox.limitsFromChannel is False
-        assert pydm_spinbox.userLowerLimit == user_limit
+        assert pydm_spinbox._user_lower_limit == user_limit
         assert pydm_spinbox.get_ctrl_limits()[0] == chan_limit
         assert pydm_spinbox.minimum() == round(user_limit, prec)
