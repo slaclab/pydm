@@ -232,7 +232,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
 
     def setMinimum(self, value):
         """
-        Set the user-defined lower limit for the spinbox.
+        Set the user defined lower limit for the spinbox.
 
         Parameters
         ----------
@@ -246,7 +246,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
 
     def setMaximum(self, value):
         """
-        Set the user-defined upper limit for the spinbox.
+        Set the user defined upper limit for the spinbox.
 
         Parameters
         ----------
@@ -260,7 +260,7 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
 
     def setRange(self, mini, maxi):
         """
-        Set the user-defined limits for the spinbox.
+        Set the user defined limits for the spinbox.
 
         Parameters
         ----------
@@ -271,3 +271,14 @@ class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
         """
         self.setMinimum(mini)
         self.setMaximum(maxi)
+
+    def get_user_limits(self):
+        """
+        Get the user defined limits for the spinbox.
+
+        Returns
+        ----------
+        limits: tuple
+            2-tuple with the user defined minimum and maximum.
+        """
+        return (self._user_lower_limit, self._user_upper_limit)
