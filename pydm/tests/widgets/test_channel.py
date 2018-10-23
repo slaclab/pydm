@@ -1,12 +1,8 @@
 # Unit Tests for the Channel widget class
-
-import pytest
-
 from ...widgets.label import PyDMLabel
 from ...widgets.line_edit import PyDMLineEdit
 from ...widgets.channel import PyDMChannel
-
-
+from pydm.data_plugins import plugin_for_address
 class A():
     pass
 
@@ -39,7 +35,7 @@ def test_construct(qtbot):
         pydm_channel.write_access_slot is None and \
         pydm_channel.value_signal is None
 
-    pydm_label = PyDMLabel()
+    pydm_label = PyDMLabel(init_channel='tst://this')
     qtbot.addWidget(pydm_label)
 
     pydm_label_channels = pydm_label.channels()[0]
@@ -56,7 +52,7 @@ def test_construct(qtbot):
                                               write_access_slot=None)
     assert pydm_label_channels == default_pydm_label_channels
 
-    pydm_lineedit = PyDMLineEdit()
+    pydm_lineedit = PyDMLineEdit(init_channel='tst://this2')
     qtbot.addWidget(pydm_lineedit)
 
     # Test equal and not equal comparisons
@@ -67,3 +63,16 @@ def test_construct(qtbot):
     equal_result = not_same_type == default_pydm_label_channels
     not_equal_result = not_same_type != default_pydm_label_channels
     assert equal_result is False and not_equal_result is True
+
+
+def test_pydm_connection(test_plugin):
+    # Plugin, Channel and Registry
+    chan = PyDMChannel('tst://Tst:this')
+    plugin = plugin_for_address(chan.address)
+    plugin_no = len(plugin.connections)
+    # Make a connection
+    chan.connect()
+    assert len(plugin.connections) == plugin_no + 1
+    # Remove connections
+    chan.disconnect()
+    assert len(plugin.connections) == plugin_no

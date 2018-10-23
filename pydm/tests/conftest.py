@@ -13,6 +13,9 @@ import logging
 from qtpy.QtCore import QObject, Signal, Slot
 from ..application import PyDMApplication
 from ..widgets.base import PyDMWidget
+from pydm.data_plugins import PyDMPlugin, add_plugin
+
+pytest_plugins = 'pytester'
 
 logger = logging.getLogger(__name__)
 _, file_path = tempfile.mkstemp(suffix=".log")
@@ -114,3 +117,12 @@ def qapp(qapp_args):
         yield _qapp_instance
     else:
         yield app  # pragma: no cover
+
+
+@pytest.fixture(scope='session')
+def test_plugin():
+    # Create test PyDMPlugin with mock protocol
+    test_plug = PyDMPlugin
+    test_plug.protocol = 'tst'
+    add_plugin(test_plug)
+    return test_plug

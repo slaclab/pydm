@@ -51,6 +51,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
         Additional parameters supported by pyqtgraph.PlotDataItem,
         like 'symbol' and 'symbolSize'.
     """
+    _channels = ('channel',)
+
     def __init__(self, channel_address=None, plot_by_timestamps=True, **kws):
         """
         Parameters
@@ -85,7 +87,6 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.latest_value = None
         self.channel = None
         self.address = channel_address
-
         super(TimePlotCurveItem, self).__init__(**kws)
 
     def to_dict(self):
@@ -283,6 +284,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
         """
         return self.data_buffer[0, -1]
+
+    def channels(self):
+        return [self.channel]
 
 
 class PyDMTimePlot(BasePlot):

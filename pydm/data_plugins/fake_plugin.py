@@ -13,15 +13,18 @@ class Connection(PyDMConnection):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.send_new_value)
         self.timer.start(1000)
-        self.send_connection_state(True)
         self.connected = True
 
     def send_new_value(self):
         val_to_send = "{0}-{1}".format(self.value, random.randint(0, 9))
-        self.new_value_signal.emit(str(val_to_send))
+        self.new_value_signal[str].emit(str(val_to_send))
 
     def send_connection_state(self, conn):
         self.connection_state_signal.emit(conn)
+
+    def add_listener(self, widget):
+        super(Connection, self).add_listener(widget)
+        self.send_connection_state(True)
 
 
 class FakePlugin(PyDMPlugin):

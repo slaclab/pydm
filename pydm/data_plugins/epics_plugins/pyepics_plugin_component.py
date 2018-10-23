@@ -1,10 +1,10 @@
 import epics
 import logging
 import numpy as np
+from pydm.data_plugins import is_read_only
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from qtpy.QtCore import Slot, Qt
 from qtpy.QtWidgets import QApplication
-from pydm.utilities import is_pydm_app
 
 logger = logging.getLogger(__name__)
 
@@ -88,7 +88,7 @@ class Connection(PyDMConnection):
             self.lower_ctrl_limit_signal.emit(lower_ctrl_limit)
 
     def send_access_state(self, read_access, write_access, *args, **kws):
-        if is_pydm_app() and self.app.is_read_only():
+        if is_read_only():
             self.write_access_signal.emit(False)
             return
 
@@ -114,7 +114,7 @@ class Connection(PyDMConnection):
     @Slot(str)
     @Slot(np.ndarray)
     def put_value(self, new_val):
-        if is_pydm_app() and self.app.is_read_only():
+        if is_read_only():
             return
 
         if self.pv.write_access:
@@ -151,27 +151,6 @@ class Connection(PyDMConnection):
                 channel.value_signal[np.ndarray].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
-
-    def remove_listener(self, channel):
-        if channel.value_signal is not None:
-            try:
-                channel.value_signal[str].disconnect(self.put_value)
-            except (KeyError, TypeError):
-                pass
-            try:
-                channel.value_signal[int].disconnect(self.put_value)
-            except (KeyError, TypeError):
-                pass
-            try:
-                channel.value_signal[float].disconnect(self.put_value)
-            except (KeyError, TypeError):
-                pass
-            try:
-                channel.value_signal[np.ndarray].disconnect(self.put_value)
-            except (KeyError, TypeError):
-                pass
-
-        super(Connection, self).remove_listener(channel)
 
     def close(self):
         self.pv.disconnect()

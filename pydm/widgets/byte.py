@@ -1,7 +1,6 @@
 from qtpy.QtWidgets import QWidget, QTabWidget, QGridLayout, QLabel, QStyle, QStyleOption
 from qtpy.QtGui import QColor, QPen, QFontMetrics, QPainter, QBrush
 from qtpy.QtCore import Property, Qt, QSize, QPoint
-import numpy as np
 from .base import PyDMWidget
 
 

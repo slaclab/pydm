@@ -140,7 +140,7 @@ def test_pydmdrawing_paintEvent(qtbot, signals, alarm_sensitive_content):
     alarm_sensitive_content : bool
         True if the widget will be redraw with a different color if an alarm is triggered; False otherwise.
     """
-    pydm_drawing = PyDMDrawing()
+    pydm_drawing = PyDMDrawing(init_channel='fake://tst')
     qtbot.addWidget(pydm_drawing)
 
     pydm_drawing.alarmSensitiveContent = alarm_sensitive_content
@@ -149,6 +149,7 @@ def test_pydmdrawing_paintEvent(qtbot, signals, alarm_sensitive_content):
 
     with qtbot.waitExposed(pydm_drawing):
         pydm_drawing.show()
+    qtbot.waitUntil(lambda: pydm_drawing.isEnabled(), timeout=5000)
     pydm_drawing.setFocus()
 
     def wait_focus():
@@ -485,7 +486,7 @@ def test_pydmdrawingline_draw_item(qtbot, signals, alarm_sensitive_content):
     alarm_sensitive_content : bool
         True if the widget will be redraw with a different color if an alarm is triggered; False otherwise
     """
-    pydm_drawingline = PyDMDrawingLine()
+    pydm_drawingline = PyDMDrawingLine(init_channel='fake://tst')
     qtbot.addWidget(pydm_drawingline)
 
     pydm_drawingline.alarmSensitiveContent = alarm_sensitive_content
@@ -494,6 +495,7 @@ def test_pydmdrawingline_draw_item(qtbot, signals, alarm_sensitive_content):
 
     with qtbot.waitExposed(pydm_drawingline):
         pydm_drawingline.show()
+    qtbot.waitUntil(lambda: pydm_drawingline.isEnabled(), timeout=5000)
     pydm_drawingline.setFocus()
 
     def wait_focus():

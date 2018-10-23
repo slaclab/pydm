@@ -10,8 +10,6 @@ import sys
 import uuid
 import signal
 import subprocess
-import re
-import shlex
 import json
 import inspect
 import logging
@@ -19,6 +17,7 @@ import warnings
 import platform
 import collections
 from functools import partial
+from . import config
 from .display_module import Display
 from qtpy.QtCore import Qt, QEvent, QTimer, Slot
 from qtpy.QtWidgets import QApplication, QWidget, QToolTip, QAction, QMenu
@@ -29,14 +28,11 @@ from .tools import ExternalTool
 
 from .utilities import macro, which, path_info, find_display_in_path
 from .utilities.stylesheet import apply_stylesheet
+from .utilities import connection
 from . import data_plugins
 from .widgets.rules import RulesDispatcher
 
 logger = logging.getLogger(__name__)
-DEFAULT_PROTOCOL = os.getenv("PYDM_DEFAULT_PROTOCOL")
-if DEFAULT_PROTOCOL is not None:
-    # Get rid of the "://" part if it exists
-    DEFAULT_PROTOCOL = DEFAULT_PROTOCOL.split("://")[0]
 
 
 class PyDMApplication(QApplication):
@@ -117,6 +113,7 @@ class PyDMApplication(QApplication):
         # being called hierarchially (i.e., parent calls it first, then on down the ancestor tree, with no unrelated
         # calls in between).    If something crazy happens and PyDM somehow gains the ability to open files in a
         # multi-threaded way, for example, this system will fail.
+        data_plugins.set_read_only(read_only)
         self.main_window = None
         self.directory_stack = ['']
         self.macro_stack = [{}]
@@ -126,7 +123,6 @@ class PyDMApplication(QApplication):
         self.hide_menu_bar = hide_menu_bar
         self.hide_status_bar = hide_status_bar
         self.fullscreen = fullscreen
-        self.__read_only = read_only
 
         # Open a window if required.
         if ui_file is not None:
@@ -159,7 +155,9 @@ class PyDMApplication(QApplication):
         return super(PyDMApplication, self).exec_()
 
     def is_read_only(self):
-        return self.__read_only
+        warnings.warn("'PyDMApplication.is_read_only' is deprecated, "
+                      "use 'pydm.data_plugins.is_read_only' instead.")
+        return data_plugins.is_read_only()
 
     @Slot()
     def get_CPU_usage(self):
@@ -381,8 +379,7 @@ class PyDMApplication(QApplication):
             kwargs['macros'] = macros
         return cls(**kwargs)
 
-    def open_file(self, ui_file, macros=None, command_line_args=None,
-                  establish_connection=True):
+    def open_file(self, ui_file, macros=None, command_line_args=None, **kwargs):
         """
         Open a .ui or .py file, and return a widget from the loaded file.
         This method is the entry point for all opening of new displays,
@@ -401,14 +398,16 @@ class PyDMApplication(QApplication):
             Typically, this argument is used by related display buttons
             to pass in extra arguments.  It is probably rare that code you
             write needs to use this argument.
-        establish_connection : bool, optional
-            Whether or not we should call `establish_widget_connections` for this
-            new widget. Default is True.
 
         Returns
         -------
         QWidget
         """
+        if 'establish_connection' in kwargs:
+            logger.warning("Ignoring 'establish_connection' parameter at "
+                           "open_relative. The connection is now handled by the"
+                           " widgets.")
+
         # First split the ui_file string into a filepath and arguments
         args = command_line_args if command_line_args is not None else []
         dir_name, file_name, extra_args = path_info(ui_file)
@@ -432,8 +431,6 @@ class PyDMApplication(QApplication):
         # Add on the macros to the widget after initialization. This is
         # done for both ui files and python files.
         widget.base_macros = merged_macros
-        if establish_connection:
-            self.establish_widget_connections(widget)
         self.directory_stack.pop()
         self.macro_stack.pop()
         return widget
@@ -466,11 +463,15 @@ class PyDMApplication(QApplication):
         return full_path
 
     def open_relative(self, ui_file, widget, macros=None, command_line_args=[],
-                      establish_connection=True):
+                      **kwargs):
         """
         open_relative opens a ui file with a relative path.  This is
         really only used by embedded displays.
         """
+        if 'establish_connection' in kwargs:
+            logger.warning("Ignoring 'establish_connection' parameter at "
+                           "open_relative. The connection is now handled by the"
+                           " widgets.")
         full_path = self.get_path(ui_file)
 
         if not os.path.exists(full_path):
@@ -478,8 +479,7 @@ class PyDMApplication(QApplication):
             if new_fname is not None and new_fname != "":
                 full_path = new_fname
         return self.open_file(full_path, macros=macros,
-                              command_line_args=command_line_args,
-                              establish_connection=establish_connection)
+                              command_line_args=command_line_args)
 
     def plugin_for_channel(self, channel):
         """
@@ -493,29 +493,11 @@ class PyDMApplication(QApplication):
         -------
         PyDMPlugin
         """
+        warnings.warn("'PyDMApplication.plugin_for_channel' is deprecated, "
+                      "use 'pydm.data_plugins.plugin_for_address' instead.")
         if channel.address is None or channel.address == "":
             return None
-        protocol = None
-        match = re.match('.*://', channel.address)
-        if match:
-            protocol = match.group(0)[:-3]
-        elif DEFAULT_PROTOCOL is not None:
-            # If no protocol was specified, and the default protocol environment variable is specified, try to use that instead.
-            protocol = DEFAULT_PROTOCOL
-        if protocol:
-            try:
-                plugin_to_use = self.plugins[str(protocol)]
-                return plugin_to_use
-            except KeyError:
-                print("Couldn't find plugin for protocol: {0}".format(match.group(0)[:-3]))
-        #If you get this far, we didn't successfuly figure out what plugin to use for this channel.
-        logger.warning(
-            "Channel {addr} did not specify a valid protocol and no default "
-            "protocol is defined.  This channel will receive no data. To "
-            "specify a default protocol, set the PYDM_DEFAULT_PROTOCOL "
-            "environment variable.".format(addr=channel.address)
-        )
-        return None
+        return data_plugins.plugin_for_address(channel.address)
 
     def add_connection(self, channel):
         """
@@ -525,9 +507,9 @@ class PyDMApplication(QApplication):
         ----------
         channel : PyDMChannel
         """
-        plugin = self.plugin_for_channel(channel)
-        if plugin:
-            plugin.add_connection(channel)
+        warnings.warn("'PyDMApplication.add_connection' is deprecated, "
+                      "use PyDMConnection.connect()")
+        channel.connect()
 
     def remove_connection(self, channel):
         """
@@ -537,38 +519,19 @@ class PyDMApplication(QApplication):
         ----------
         channel : PyDMChannel
         """
-        plugin = self.plugin_for_channel(channel)
-        if plugin:
-            plugin.remove_connection(channel)
+        warnings.warn("'PyDMApplication.remove_connection' is deprecated, "
+                      "use PyDMConnection.disconnect()")
+        channel.disconnect()
 
     def eventFilter(self, obj, event):
-        # Override the eventFilter to capture all middle mouse button events,
-        # and show a tooltip if needed.
-        if event.type() == QEvent.MouseButtonPress:
-            if event.button() == Qt.MiddleButton:
-                self.show_address_tooltip(obj, event)
-                return True
-        return False
+        warnings.warn("'PyDMApplication.eventFilter' is deprecated, "
+                      " this function is now found on PyDMWidget")
+        obj.eventFilter(obj, event)
 
-    # Not sure if showing the tooltip should be the job of the app,
-    # may want to revisit this.
     def show_address_tooltip(self, obj, event):
-        if not len(obj.channels()):
-            logger.warning("Object %r has no PyDM Channels", obj)
-            return
-        addr = obj.channels()[0].address
-        QToolTip.showText(event.globalPos(), addr)
-        # If the address has a protocol, and it is the default protocol, strip it out before putting it on the clipboard.
-        m = re.match('(.+?):/{2,3}(.+?)$', addr)
-        if m is not None and DEFAULT_PROTOCOL is not None and m.group(1) == DEFAULT_PROTOCOL:
-            copy_text = m.group(2)
-        else:
-            copy_text = addr
-
-        clipboard = QApplication.clipboard()
-        clipboard.setText(copy_text)
-        event = QEvent(QEvent.Clipboard)
-        self.sendEvent(clipboard, event)
+        warnings.warn("'PyDMApplication.show_address_tooltip' is deprecated, "
+                      " this function is now found on PyDMWidget")
+        obj.show_address_tooltip(obj, event)
 
     def establish_widget_connections(self, widget):
         """
@@ -582,18 +545,23 @@ class PyDMApplication(QApplication):
         ----------
         widget : QWidget
         """
-        widgets = [widget]
-        widgets.extend(widget.findChildren(QWidget))
-        for child_widget in widgets:
-            try:
-                if hasattr(child_widget, 'channels'):
-                    for channel in child_widget.channels():
-                        self.add_connection(channel)
-                    # Take this opportunity to install a filter that intercepts middle-mouse clicks,
-                    # which we use to display a tooltip with the address of the widget's first channel.
-                    child_widget.installEventFilter(self)
-            except NameError:
-                pass
+        warnings.warn("'PyDMApplication.establish_widget_connections' is deprecated, "
+                      "this function is now found on `utilities.establish_widget_connections`.")
+        connection.establish_widget_connections(widget)
+
+    def close_widget_connections(self, widget):
+        """
+        Given a widget to start from, traverse the tree of child widgets,
+        and try to close connections to any widgets with channels.
+
+        Parameters
+        ----------
+        widget : QWidget
+        """
+        warnings.warn(
+            "'PyDMApplication.close_widget_connections' is deprecated, "
+            "this function is now found on `utilities.close_widget_connections`.")
+        connection.close_widget_connections(widget)
 
     def unregister_widget_rules(self, widget):
         """
@@ -611,41 +579,8 @@ class PyDMApplication(QApplication):
                 if hasattr(child_widget, 'rules'):
                     if child_widget.rules:
                         RulesDispatcher().unregister(child_widget)
-            except:
+            except Exception:
                 pass
-
-    def close_widget_connections(self, widget):
-        """
-        Given a widget to start from, traverse the tree of child widgets,
-        and try to close connections to any widgets with channels.
-
-        Parameters
-        ----------
-        widget : QWidget
-        """
-        widgets = [widget]
-        widgets.extend(widget.findChildren(QWidget))
-        for child_widget in widgets:
-            try:
-                if hasattr(child_widget, 'channels'):
-                    for channel in child_widget.channels():
-                        self.remove_connection(channel)
-            except NameError:
-                pass
-
-    def list_all_connections(self):
-        """
-        List all the connections for all the data plugins.
-
-        Returns
-        -------
-        list of connections
-        """
-        conns = []
-        for p in self.plugins.values():
-            for connection in p.connections.values():
-                conns.append(connection)
-        return conns
 
     def load_external_tools(self):
         """
@@ -657,12 +592,12 @@ class PyDMApplication(QApplication):
         EXT_TOOLS_TOKEN = "_tool.py"
         path = os.getenv("PYDM_TOOLS_PATH", None)
 
-        logger.info("*"*80)
-        logger.info("* Loading PyDM External Tools")
-        logger.info("*"*80)
+        logger.debug("*"*80)
+        logger.debug("* Loading PyDM External Tools")
+        logger.debug("*"*80)
 
         if path is not None:
-            logger.info("Looking for external tools at: {}".format(path))
+            logger.debug("Looking for external tools at: {}".format(path))
             if platform.system() == "Windows":
                 locations = path.split(";")
             else:
@@ -673,7 +608,7 @@ class PyDMApplication(QApplication):
                         if name.endswith(EXT_TOOLS_TOKEN):
                             self.install_external_tool(os.path.join(root, name))
         else:
-            logger.warning("External Tools not loaded. No External Tools Path specified.")
+            logger.debug("External Tools not loaded. No External Tools Path specified.")
 
     def install_external_tool(self, tool):
         """

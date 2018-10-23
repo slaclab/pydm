@@ -9,7 +9,7 @@ from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QMenu
 from qtpy.QtGui import QColor, QMouseEvent
 from ...utilities import is_pydm_app
-from ...application import PyDMApplication
+from ... import data_plugins
 from ...widgets.base import is_channel_valid, PyDMWidget
 from ...widgets.label import PyDMLabel
 from ...widgets.line_edit import PyDMLineEdit
@@ -73,8 +73,10 @@ def test_pydmwidget_construct(qtbot, init_channel):
 
     assert pydm_label.app is None if not is_pydm_app else not None
     assert pydm_label._connected is not is_pydm_app
-    assert pydm_label._channel == init_channel
-    assert pydm_label._channels is None
+    if init_channel is None:
+        assert pydm_label.channels() is None
+    else:
+        assert len(pydm_label.channels()) == 1
     assert pydm_label._show_units is False
     assert pydm_label._alarm_sensitive_content is False
     assert pydm_label.alarmSensitiveBorder is True
@@ -369,7 +371,7 @@ def test_channels_for_tools(qtbot):
     qtbot : fixture
         Window for widget testing
     """
-    pydm_label = PyDMLabel()
+    pydm_label = PyDMLabel(init_channel='tst://This')
     qtbot.addWidget(pydm_label)
 
     assert all(x == y for x, y in
@@ -389,16 +391,14 @@ def test_pydmwidget_channel_change(qtbot):
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
     assert pydm_label._channel is None
-    assert pydm_label._channels is None
+    assert pydm_label.channels() is None
 
     pydm_label.channel = 'foo://bar'
     assert pydm_label._channel == 'foo://bar'
-    assert pydm_label._channels is None
     assert pydm_label.channels()[0].address == 'foo://bar'
 
     pydm_label.channel = 'abc://def'
     assert pydm_label._channel == 'abc://def'
-    assert pydm_label._channels is None
     assert pydm_label.channels()[0].address == 'abc://def'
 
 
@@ -420,8 +420,8 @@ def test_pydmwidget_channels(qtbot):
     qtbot.addWidget(pydm_label)
 
     assert pydm_label._channel is None
-    assert pydm_label._channels is None
-
+    assert pydm_label.channels() is None
+    pydm_label.channel = 'test://this'
     pydm_channels = pydm_label.channels()[0]
 
     default_pydm_channels = PyDMChannel(address=pydm_label.channel,
@@ -436,13 +436,6 @@ def test_pydmwidget_channels(qtbot):
                                         value_signal=None,
                                         write_access_slot=None)
     assert pydm_channels == default_pydm_channels
-
-    new_channel = PyDMChannel(address=pydm_label.channel,
-                              connection_slot=pydm_label.connectionStateChanged,
-                              upper_ctrl_limit_slot=None,
-                              lower_ctrl_limit_slot=None)
-    pydm_label._channels = [new_channel]
-    assert pydm_label.channels()[0] == new_channel
 
 
 def test_pydmwritablewidget_channels(qtbot):
@@ -464,8 +457,9 @@ def test_pydmwritablewidget_channels(qtbot):
     qtbot.addWidget(pydm_lineedit)
 
     assert pydm_lineedit._channel is None
-    assert pydm_lineedit._channels is None
+    assert pydm_lineedit.channels() is None
 
+    pydm_lineedit.channel = 'tst://this'
     pydm_channels = pydm_lineedit.channels()[0]
 
     default_pydm_channels = PyDMChannel(address=pydm_lineedit.channel,
@@ -481,13 +475,6 @@ def test_pydmwritablewidget_channels(qtbot):
                                         write_access_slot=pydm_lineedit.writeAccessChanged)
     assert pydm_channels == default_pydm_channels
 
-    new_channel = PyDMChannel(address=pydm_lineedit.channel,
-                              connection_slot=pydm_lineedit.connectionStateChanged,
-                              upper_ctrl_limit_slot=None,
-                              lower_ctrl_limit_slot=None)
-    pydm_lineedit._channels = [new_channel]
-    assert pydm_lineedit.channels()[0] == new_channel
-
 
 @pytest.mark.parametrize(
     "channel_address, connected, write_access, is_app_read_only", [
@@ -502,7 +489,7 @@ def test_pydmwritablewidget_channels(qtbot):
         ("", False, False, False),
         (None, False, False, False),
     ])
-def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address,
+def test_pydmwritable_check_enable_state(qtbot, channel_address,
                                          connected, write_access,
                                          is_app_read_only):
     """
@@ -520,8 +507,6 @@ def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address,
     ----------
     qtbot : fixture
         Window for widget testing
-    monkeypatch : fixture
-        To override the default behavior of PyDMApplication.is_read_only()
     channel_address : str
         The channel address
     connected : bool
@@ -538,8 +523,7 @@ def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address,
     pydm_lineedit._connected = connected
     pydm_lineedit._write_access = write_access
 
-    monkeypatch.setattr(PyDMApplication, 'is_read_only',
-                        lambda *args: is_app_read_only)
+    data_plugins.set_read_only(is_app_read_only)
 
     original_tooltip = "Original Tooltip"
     pydm_lineedit.setToolTip(original_tooltip)
@@ -550,7 +534,7 @@ def test_pydmwritable_check_enable_state(qtbot, monkeypatch, channel_address,
         if not pydm_lineedit._connected:
             assert "PV is disconnected." in actual_tooltip
         elif not write_access:
-            if is_pydm_app() and pydm_lineedit.app.is_read_only():
+            if data_plugins.is_read_only():
                 assert "Running PyDM on Read-Only mode." in actual_tooltip
             else:
                 assert "Access denied by Channel Access Security." in actual_tooltip

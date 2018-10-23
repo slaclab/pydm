@@ -36,7 +36,7 @@
   <customwidget>
    <class>PyDMEmbeddedDisplay</class>
    <extends>QFrame</extends>
-   <header>pydm.widgets.new_embedded_display</header>
+   <header>pydm.widgets.embedded_display</header>
   </customwidget>
  </customwidgets>
  <resources/>

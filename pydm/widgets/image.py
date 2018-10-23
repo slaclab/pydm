@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 
 class ReadingOrder(object):
     """Class to build ReadingOrder ENUM property."""
-
     Fortranlike = 0
     Clike = 1
 
@@ -108,10 +107,11 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """Initialize widget."""
         ImageView.__init__(self, parent)
         PyDMWidget.__init__(self)
+        self._channels = [None, None]
         self.thread = None
         self.axes = dict({'t': None, "x": 0, "y": 1, "c": None})
-        self._imagechannel = image_channel
-        self._widthchannel = width_channel
+        self._imagechannel = None
+        self._widthchannel = None
         self.image_waveform = np.zeros(0)
         self._image_width = 0
         self._normalize_data = False
@@ -151,6 +151,11 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self._redraw_rate = 30
         self.maxRedrawRate = self._redraw_rate
         self.newImageSignal = self.getImageItem().sigImageChanged
+        # Set live channels if requested on initialization
+        if image_channel:
+            self.imageChannel = image_channel or ''
+        if width_channel:
+            self.widthChannel = width_channel or ''
 
     def widget_ctx_menu(self):
         """
@@ -508,7 +513,10 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         str
             Channel address
         """
-        return str(self._imagechannel)
+        if self._imagechannel:
+            return str(self._imagechannel.address)
+        else:
+            return ''
 
     @imageChannel.setter
     def imageChannel(self, value):
@@ -521,7 +529,17 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             Channel address
         """
         if self._imagechannel != value:
-            self._imagechannel = str(value)
+            # Disconnect old channel
+            if self._imagechannel:
+                self._imagechannel.disconnect()
+            # Create and connect new channel
+            self._imagechannel = PyDMChannel(
+                            address=value,
+                            connection_slot=self.image_connection_state_changed,
+                            value_slot=self.image_value_changed,
+                            severity_slot=self.alarmSeverityChanged)
+            self._channels[0] = self._imagechannel
+            self._imagechannel.connect()
 
     @Property(str)
     def widthChannel(self):
@@ -533,7 +551,10 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         str
             Channel address
         """
-        return str(self._widthchannel)
+        if self._widthchannel:
+            return str(self._widthchannel.address)
+        else:
+            return ''
 
     @widthChannel.setter
     def widthChannel(self, value):
@@ -546,7 +567,18 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             Channel address
         """
         if self._widthchannel != value:
-            self._widthchannel = str(value)
+            # Disconnect old channel
+            if self._widthchannel:
+                self._widthchannel.disconnect()
+            # Create and connect new channel
+            self._widthchannel = PyDMChannel(
+                            address=value,
+                            connection_slot=self.connectionStateChanged,
+                            value_slot=self.image_width_changed,
+                            severity_slot=self.alarmSeverityChanged)
+            self._channels[1] = self._widthchannel
+            self._widthchannel.connect()
+
 
     def channels(self):
         """
@@ -557,23 +589,11 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         channels : list
             List of PyDMChannel objects
         """
-        if self._channels is None:
-            self._channels = [
-                PyDMChannel(
-                    address=self.imageChannel,
-                    connection_slot=self.image_connection_state_changed,
-                    value_slot=self.image_value_changed,
-                    severity_slot=self.alarmSeverityChanged),
-                PyDMChannel(
-                    address=self.widthChannel,
-                    connection_slot=self.connectionStateChanged,
-                    value_slot=self.image_width_changed,
-                    severity_slot=self.alarmSeverityChanged)]
         return self._channels
 
     def channels_for_tools(self):
         """Return channels for tools."""
-        return [c for c in self.channels() if c.address == self.imageChannel]
+        return [self._imagechannel]
 
     @Property(int)
     def maxRedrawRate(self):
