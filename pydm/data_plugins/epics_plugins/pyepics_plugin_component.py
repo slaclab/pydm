@@ -1,7 +1,7 @@
 import epics
 import logging
 import numpy as np
-from pydm import data_plugins
+from pydm.data_plugins import is_read_only
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from qtpy.QtCore import Slot, Qt
 from qtpy.QtWidgets import QApplication
@@ -88,7 +88,7 @@ class Connection(PyDMConnection):
             self.lower_ctrl_limit_signal.emit(lower_ctrl_limit)
 
     def send_access_state(self, read_access, write_access, *args, **kws):
-        if data_plugins.is_read_only():
+        if is_read_only():
             self.write_access_signal.emit(False)
             return
 
@@ -114,7 +114,7 @@ class Connection(PyDMConnection):
     @Slot(str)
     @Slot(np.ndarray)
     def put_value(self, new_val):
-        if data_plugins.is_read_only():
+        if is_read_only():
             return
 
         if self.pv.write_access:
