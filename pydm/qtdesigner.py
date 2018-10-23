@@ -16,7 +16,6 @@ class DesignerHooks(object):
         self.__form_editor = None
         self.__initialized = True
         self.__timer = None
-        data_plugins.set_read_only(True)
 
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
@@ -40,9 +39,9 @@ class DesignerHooks(object):
         self.setup_hooks()
 
     def setup_hooks(self):
-        self.__set_stylesheet_hook()
+        # Set PyDM to be read-only
+        data_plugins.set_read_only(True)
 
-    def __set_stylesheet_hook(self):
         if self.form_editor:
             fwman = self.form_editor.formWindowManager()
             if fwman:
