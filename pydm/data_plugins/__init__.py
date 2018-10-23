@@ -4,7 +4,6 @@ environment variable and subfolders that follows the *_plugin.py and have
 classes that inherits from the pydm.data_plugins.PyDMPlugin class.
 """
 import os
-import re
 import sys
 import inspect
 import logging
@@ -89,11 +88,11 @@ def load_plugins_from_path(locations, token):
             if root.split(os.path.sep)[-1].startswith("__"):
                 continue
 
-            logger.info("Looking for PyDM Data Plugins at: %s", root)
+            logger.debug("Looking for PyDM Data Plugins at: %s", root)
             for name in files:
                 if name.endswith(token):
                     try:
-                        logger.info("Trying to load %s...", name)
+                        logger.debug("Trying to load %s...", name)
                         sys.path.append(root)
                         temp_name = str(uuid.uuid4())
                         module = imp.load_source(temp_name,
