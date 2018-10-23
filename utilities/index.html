@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utilities &mdash; PyDM v1.5.0 documentation</title>
+  <title>Utilities &mdash; PyDM v1.5.0+69.gb795e20 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.5.0
+                v1.5.0+69.gb795e20
               </div>
             
           
@@ -240,6 +240,22 @@ Which ensure that the file exists and we can read it.</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="pydm.utilities.is_qt_designer">
+<code class="descclassname">pydm.utilities.</code><code class="descname">is_qt_designer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#is_qt_designer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.is_qt_designer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether or not running inside Qt Designer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if inside Designer, False otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pydm.utilities.path_info">
 <code class="descclassname">pydm.utilities.</code><code class="descname">path_info</code><span class="sig-paren">(</span><em>path_str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#path_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.path_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve basic information about the given path.</p>
@@ -272,6 +288,26 @@ path.</p>
 </dd></dl>
 
 <span class="target" id="module-pydm.utilities.remove_protocol"></span><dl class="function">
+<dt id="pydm.utilities.remove_protocol.protocol_and_address">
+<code class="descclassname">pydm.utilities.remove_protocol.</code><code class="descname">protocol_and_address</code><span class="sig-paren">(</span><em>address</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/remove_protocol.html#protocol_and_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.remove_protocol.protocol_and_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Protocol and Address pieces of a Channel Address</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<em>str</em>) – The address from which to remove the address prefix.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>protocol</strong> (<em>str</em>) – The protocol used. None in case the protocol is not specified.</li>
+<li><strong>addr</strong> (<em>str</em>) – The piece of the address without the protocol.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pydm.utilities.remove_protocol.remove_protocol">
 <code class="descclassname">pydm.utilities.remove_protocol.</code><code class="descname">remove_protocol</code><span class="sig-paren">(</span><em>addr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/remove_protocol.html#remove_protocol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.remove_protocol.remove_protocol" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes the first occurrence of the protocol string (‘://’) from the string <cite>addr</cite></p>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.timeplot &mdash; PyDM v1.5.0 documentation</title>
+  <title>pydm.widgets.timeplot &mdash; PyDM v1.5.0+69.gb795e20 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.5.0
+                v1.5.0+69.gb795e20
               </div>
             
           
@@ -229,6 +229,8 @@
 <span class="sd">        Additional parameters supported by pyqtgraph.PlotDataItem,</span>
 <span class="sd">        like &#39;symbol&#39; and &#39;symbolSize&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_channels</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;channel&#39;</span><span class="p">,)</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel_address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters</span>
@@ -263,7 +265,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">latest_value</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">channel_address</span>
-
         <span class="nb">super</span><span class="p">(</span><span class="n">TimePlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -461,6 +462,9 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="PyDMTimePlot"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot">[docs]</a><span class="k">class</span> <span class="nc">PyDMTimePlot</span><span class="p">(</span><span class="n">BasePlot</span><span class="p">):</span>

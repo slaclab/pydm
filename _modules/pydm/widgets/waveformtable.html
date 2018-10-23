@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.waveformtable &mdash; PyDM v1.5.0 documentation</title>
+  <title>pydm.widgets.waveformtable &mdash; PyDM v1.5.0+69.gb795e20 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.5.0
+                v1.5.0+69.gb795e20
               </div>
             
           
@@ -252,10 +252,11 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valueBeingSet</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
-        <span class="n">new_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtype</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
-        <span class="n">ind</span> <span class="o">=</span> <span class="n">row</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()</span> <span class="o">+</span> <span class="n">column</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">waveform</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">waveform</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtype</span><span class="p">:</span>
+            <span class="n">new_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtype</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">row</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()</span> <span class="o">+</span> <span class="n">column</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">waveform</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">waveform</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMWaveformTable.check_enable_state"><a class="viewcode-back" href="../../../widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.check_enable_state">[docs]</a>    <span class="k">def</span> <span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.utilities.remove_protocol &mdash; PyDM v1.5.0 documentation</title>
+  <title>pydm.utilities.remove_protocol &mdash; PyDM v1.5.0+69.gb795e20 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.5.0
+                v1.5.0+69.gb795e20
               </div>
             
           
@@ -178,7 +178,9 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.utilities.remove_protocol</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="remove_protocol"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.remove_protocol.remove_protocol">[docs]</a><span></span><span class="k">def</span> <span class="nf">remove_protocol</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<div class="viewcode-block" id="remove_protocol"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.remove_protocol.remove_protocol">[docs]</a><span class="k">def</span> <span class="nf">remove_protocol</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Removes the first occurrence of the protocol string (&#39;://&#39;) from the string `addr`</span>
 
@@ -191,14 +193,34 @@
 <span class="sd">    -------</span>
 <span class="sd">    str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">protocol_and_address</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">addr</span></div>
 
-    <span class="n">name</span> <span class="o">=</span> <span class="n">addr</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">addr</span>
-    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">addr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;://&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># maxsplit = 1... removes only the first occurrence</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">addr</span>
 
-    <span class="k">return</span> <span class="n">name</span></div>
+<div class="viewcode-block" id="protocol_and_address"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.remove_protocol.protocol_and_address">[docs]</a><span class="k">def</span> <span class="nf">protocol_and_address</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the Protocol and Address pieces of a Channel Address</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    address : str</span>
+<span class="sd">        The address from which to remove the address prefix.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    protocol : str</span>
+<span class="sd">        The protocol used. None in case the protocol is not specified.</span>
+<span class="sd">    addr : str</span>
+<span class="sd">        The piece of the address without the protocol.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;.*?://&#39;</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+    <span class="n">protocol</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="n">address</span>
+    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+        <span class="n">protocol</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">addr</span></div>
 </pre></div>
 
            </div>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.utilities &mdash; PyDM v1.5.0 documentation</title>
+  <title>pydm.utilities &mdash; PyDM v1.5.0+69.gb795e20 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.5.0
+                v1.5.0+69.gb795e20
               </div>
             
           
@@ -179,8 +179,10 @@
 <span></span><span class="kn">from</span> <span class="nn">.units</span> <span class="k">import</span> <span class="n">find_unittype</span><span class="p">,</span> <span class="n">convert</span><span class="p">,</span> <span class="n">find_unit_options</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">macro</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">colors</span>
-<span class="kn">from</span> <span class="nn">.remove_protocol</span> <span class="k">import</span> <span class="n">remove_protocol</span>
+<span class="kn">from</span> <span class="nn">.remove_protocol</span> <span class="k">import</span> <span class="n">remove_protocol</span><span class="p">,</span> <span class="n">protocol_and_address</span>
+<span class="kn">from</span> <span class="nn">.connection</span> <span class="k">import</span> <span class="n">establish_widget_connections</span><span class="p">,</span> <span class="n">close_widget_connections</span>
 <span class="kn">from</span> <span class="nn">.iconfont</span> <span class="k">import</span> <span class="n">IconFont</span>
+<span class="kn">from</span> <span class="nn">..qtdesigner</span> <span class="k">import</span> <span class="n">DesignerHooks</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -211,6 +213,18 @@
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="is_qt_designer"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.is_qt_designer">[docs]</a><span class="k">def</span> <span class="nf">is_qt_designer</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check whether or not running inside Qt Designer.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if inside Designer, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">DesignerHooks</span><span class="p">()</span><span class="o">.</span><span class="n">form_editor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="path_info"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.path_info">[docs]</a><span class="k">def</span> <span class="nf">path_info</span><span class="p">(</span><span class="n">path_str</span><span class="p">):</span>

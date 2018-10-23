@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.5.0 documentation</title>
+  <title>pydm.application &mdash; PyDM v1.5.0+69.gb795e20 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.5.0
+                v1.5.0+69.gb795e20
               </div>
             
           
@@ -188,8 +188,6 @@
 <span class="kn">import</span> <span class="nn">uuid</span>
 <span class="kn">import</span> <span class="nn">signal</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">shlex</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -197,6 +195,7 @@
 <span class="kn">import</span> <span class="nn">platform</span>
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">config</span>
 <span class="kn">from</span> <span class="nn">.display_module</span> <span class="k">import</span> <span class="n">Display</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QEvent</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Slot</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QToolTip</span><span class="p">,</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QMenu</span>
@@ -207,14 +206,11 @@
 
 <span class="kn">from</span> <span class="nn">.utilities</span> <span class="k">import</span> <span class="n">macro</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">path_info</span><span class="p">,</span> <span class="n">find_display_in_path</span>
 <span class="kn">from</span> <span class="nn">.utilities.stylesheet</span> <span class="k">import</span> <span class="n">apply_stylesheet</span>
+<span class="kn">from</span> <span class="nn">.utilities</span> <span class="k">import</span> <span class="n">connection</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">data_plugins</span>
 <span class="kn">from</span> <span class="nn">.widgets.rules</span> <span class="k">import</span> <span class="n">RulesDispatcher</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-<span class="n">DEFAULT_PROTOCOL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYDM_DEFAULT_PROTOCOL&quot;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">DEFAULT_PROTOCOL</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="c1"># Get rid of the &quot;://&quot; part if it exists</span>
-    <span class="n">DEFAULT_PROTOCOL</span> <span class="o">=</span> <span class="n">DEFAULT_PROTOCOL</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;://&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="PyDMApplication"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication">[docs]</a><span class="k">class</span> <span class="nc">PyDMApplication</span><span class="p">(</span><span class="n">QApplication</span><span class="p">):</span>
@@ -295,6 +291,7 @@
         <span class="c1"># being called hierarchially (i.e., parent calls it first, then on down the ancestor tree, with no unrelated</span>
         <span class="c1"># calls in between).    If something crazy happens and PyDM somehow gains the ability to open files in a</span>
         <span class="c1"># multi-threaded way, for example, this system will fail.</span>
+        <span class="n">data_plugins</span><span class="o">.</span><span class="n">set_read_only</span><span class="p">(</span><span class="n">read_only</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">directory_stack</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">macro_stack</span> <span class="o">=</span> <span class="p">[{}]</span>
@@ -304,7 +301,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">hide_menu_bar</span> <span class="o">=</span> <span class="n">hide_menu_bar</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span> <span class="o">=</span> <span class="n">hide_status_bar</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fullscreen</span> <span class="o">=</span> <span class="n">fullscreen</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__read_only</span> <span class="o">=</span> <span class="n">read_only</span>
 
         <span class="c1"># Open a window if required.</span>
         <span class="k">if</span> <span class="n">ui_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -337,7 +333,9 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMApplication</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">is_read_only</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_only</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.is_read_only&#39; is deprecated, &quot;</span>
+                      <span class="s2">&quot;use &#39;pydm.data_plugins.is_read_only&#39; instead.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">is_read_only</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMApplication.get_CPU_usage"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.get_CPU_usage">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">get_CPU_usage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -559,8 +557,7 @@
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;macros&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">macros</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMApplication.open_file"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.open_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">establish_connection</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication.open_file"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.open_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Open a .ui or .py file, and return a widget from the loaded file.</span>
 <span class="sd">        This method is the entry point for all opening of new displays,</span>
@@ -579,14 +576,16 @@
 <span class="sd">            Typically, this argument is used by related display buttons</span>
 <span class="sd">            to pass in extra arguments.  It is probably rare that code you</span>
 <span class="sd">            write needs to use this argument.</span>
-<span class="sd">        establish_connection : bool, optional</span>
-<span class="sd">            Whether or not we should call `establish_widget_connections` for this</span>
-<span class="sd">            new widget. Default is True.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QWidget</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s1">&#39;establish_connection&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Ignoring &#39;establish_connection&#39; parameter at &quot;</span>
+                           <span class="s2">&quot;open_relative. The connection is now handled by the&quot;</span>
+                           <span class="s2">&quot; widgets.&quot;</span><span class="p">)</span>
+
         <span class="c1"># First split the ui_file string into a filepath and arguments</span>
         <span class="n">args</span> <span class="o">=</span> <span class="n">command_line_args</span> <span class="k">if</span> <span class="n">command_line_args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
         <span class="n">dir_name</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">extra_args</span> <span class="o">=</span> <span class="n">path_info</span><span class="p">(</span><span class="n">ui_file</span><span class="p">)</span>
@@ -610,8 +609,6 @@
         <span class="c1"># Add on the macros to the widget after initialization. This is</span>
         <span class="c1"># done for both ui files and python files.</span>
         <span class="n">widget</span><span class="o">.</span><span class="n">base_macros</span> <span class="o">=</span> <span class="n">merged_macros</span>
-        <span class="k">if</span> <span class="n">establish_connection</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">establish_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">directory_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">macro_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">widget</span></div>
@@ -644,11 +641,15 @@
         <span class="k">return</span> <span class="n">full_path</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.open_relative"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.open_relative">[docs]</a>    <span class="k">def</span> <span class="nf">open_relative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="p">[],</span>
-                      <span class="n">establish_connection</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                      <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        open_relative opens a ui file with a relative path.  This is</span>
 <span class="sd">        really only used by embedded displays.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s1">&#39;establish_connection&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Ignoring &#39;establish_connection&#39; parameter at &quot;</span>
+                           <span class="s2">&quot;open_relative. The connection is now handled by the&quot;</span>
+                           <span class="s2">&quot; widgets.&quot;</span><span class="p">)</span>
         <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="n">ui_file</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">full_path</span><span class="p">):</span>
@@ -656,8 +657,7 @@
             <span class="k">if</span> <span class="n">new_fname</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">new_fname</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
                 <span class="n">full_path</span> <span class="o">=</span> <span class="n">new_fname</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">,</span>
-                              <span class="n">command_line_args</span><span class="o">=</span><span class="n">command_line_args</span><span class="p">,</span>
-                              <span class="n">establish_connection</span><span class="o">=</span><span class="n">establish_connection</span><span class="p">)</span></div>
+                              <span class="n">command_line_args</span><span class="o">=</span><span class="n">command_line_args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.plugin_for_channel"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.plugin_for_channel">[docs]</a>    <span class="k">def</span> <span class="nf">plugin_for_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -671,29 +671,11 @@
 <span class="sd">        -------</span>
 <span class="sd">        PyDMPlugin</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.plugin_for_channel&#39; is deprecated, &quot;</span>
+                      <span class="s2">&quot;use &#39;pydm.data_plugins.plugin_for_address&#39; instead.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">channel</span><span class="o">.</span><span class="n">address</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">channel</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">protocol</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;.*://&#39;</span><span class="p">,</span> <span class="n">channel</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
-            <span class="n">protocol</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">DEFAULT_PROTOCOL</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># If no protocol was specified, and the default protocol environment variable is specified, try to use that instead.</span>
-            <span class="n">protocol</span> <span class="o">=</span> <span class="n">DEFAULT_PROTOCOL</span>
-        <span class="k">if</span> <span class="n">protocol</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">plugin_to_use</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugins</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">protocol</span><span class="p">)]</span>
-                <span class="k">return</span> <span class="n">plugin_to_use</span>
-            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t find plugin for protocol: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]))</span>
-        <span class="c1">#If you get this far, we didn&#39;t successfuly figure out what plugin to use for this channel.</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">&quot;Channel </span><span class="si">{addr}</span><span class="s2"> did not specify a valid protocol and no default &quot;</span>
-            <span class="s2">&quot;protocol is defined.  This channel will receive no data. To &quot;</span>
-            <span class="s2">&quot;specify a default protocol, set the PYDM_DEFAULT_PROTOCOL &quot;</span>
-            <span class="s2">&quot;environment variable.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addr</span><span class="o">=</span><span class="n">channel</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">plugin_for_address</span><span class="p">(</span><span class="n">channel</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.add_connection"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.add_connection">[docs]</a>    <span class="k">def</span> <span class="nf">add_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -703,9 +685,9 @@
 <span class="sd">        ----------</span>
 <span class="sd">        channel : PyDMChannel</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">plugin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_for_channel</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">plugin</span><span class="p">:</span>
-            <span class="n">plugin</span><span class="o">.</span><span class="n">add_connection</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span></div>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.add_connection&#39; is deprecated, &quot;</span>
+                      <span class="s2">&quot;use PyDMConnection.connect()&quot;</span><span class="p">)</span>
+        <span class="n">channel</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.remove_connection"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.remove_connection">[docs]</a>    <span class="k">def</span> <span class="nf">remove_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -715,38 +697,19 @@
 <span class="sd">        ----------</span>
 <span class="sd">        channel : PyDMChannel</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">plugin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_for_channel</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">plugin</span><span class="p">:</span>
-            <span class="n">plugin</span><span class="o">.</span><span class="n">remove_connection</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span></div>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.remove_connection&#39; is deprecated, &quot;</span>
+                      <span class="s2">&quot;use PyDMConnection.disconnect()&quot;</span><span class="p">)</span>
+        <span class="n">channel</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.eventFilter"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.eventFilter">[docs]</a>    <span class="k">def</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="c1"># Override the eventFilter to capture all middle mouse button events,</span>
-        <span class="c1"># and show a tooltip if needed.</span>
-        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">.</span><span class="n">MouseButtonPress</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MiddleButton</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">show_address_tooltip</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
-                <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.eventFilter&#39; is deprecated, &quot;</span>
+                      <span class="s2">&quot; this function is now found on PyDMWidget&quot;</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
 
-    <span class="c1"># Not sure if showing the tooltip should be the job of the app,</span>
-    <span class="c1"># may want to revisit this.</span>
     <span class="k">def</span> <span class="nf">show_address_tooltip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">channels</span><span class="p">()):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Object </span><span class="si">%r</span><span class="s2"> has no PyDM Channels&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
-            <span class="k">return</span>
-        <span class="n">addr</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">channels</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">address</span>
-        <span class="n">QToolTip</span><span class="o">.</span><span class="n">showText</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">globalPos</span><span class="p">(),</span> <span class="n">addr</span><span class="p">)</span>
-        <span class="c1"># If the address has a protocol, and it is the default protocol, strip it out before putting it on the clipboard.</span>
-        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;(.+?):/{2,3}(.+?)$&#39;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">DEFAULT_PROTOCOL</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">DEFAULT_PROTOCOL</span><span class="p">:</span>
-            <span class="n">copy_text</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">copy_text</span> <span class="o">=</span> <span class="n">addr</span>
-
-        <span class="n">clipboard</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">clipboard</span><span class="p">()</span>
-        <span class="n">clipboard</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">copy_text</span><span class="p">)</span>
-        <span class="n">event</span> <span class="o">=</span> <span class="n">QEvent</span><span class="p">(</span><span class="n">QEvent</span><span class="o">.</span><span class="n">Clipboard</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sendEvent</span><span class="p">(</span><span class="n">clipboard</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.show_address_tooltip&#39; is deprecated, &quot;</span>
+                      <span class="s2">&quot; this function is now found on PyDMWidget&quot;</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">show_address_tooltip</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMApplication.establish_widget_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.establish_widget_connections">[docs]</a>    <span class="k">def</span> <span class="nf">establish_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -760,18 +723,23 @@
 <span class="sd">        ----------</span>
 <span class="sd">        widget : QWidget</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">widgets</span> <span class="o">=</span> <span class="p">[</span><span class="n">widget</span><span class="p">]</span>
-        <span class="n">widgets</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">child_widget</span> <span class="ow">in</span> <span class="n">widgets</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child_widget</span><span class="p">,</span> <span class="s1">&#39;channels&#39;</span><span class="p">):</span>
-                    <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">child_widget</span><span class="o">.</span><span class="n">channels</span><span class="p">():</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">add_connection</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
-                    <span class="c1"># Take this opportunity to install a filter that intercepts middle-mouse clicks,</span>
-                    <span class="c1"># which we use to display a tooltip with the address of the widget&#39;s first channel.</span>
-                    <span class="n">child_widget</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-                <span class="k">pass</span></div>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.establish_widget_connections&#39; is deprecated, &quot;</span>
+                      <span class="s2">&quot;this function is now found on `utilities.establish_widget_connections`.&quot;</span><span class="p">)</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">establish_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMApplication.close_widget_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.close_widget_connections">[docs]</a>    <span class="k">def</span> <span class="nf">close_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given a widget to start from, traverse the tree of child widgets,</span>
+<span class="sd">        and try to close connections to any widgets with channels.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        widget : QWidget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;&#39;PyDMApplication.close_widget_connections&#39; is deprecated, &quot;</span>
+            <span class="s2">&quot;this function is now found on `utilities.close_widget_connections`.&quot;</span><span class="p">)</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">close_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.unregister_widget_rules"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.unregister_widget_rules">[docs]</a>    <span class="k">def</span> <span class="nf">unregister_widget_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -789,41 +757,8 @@
                 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child_widget</span><span class="p">,</span> <span class="s1">&#39;rules&#39;</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">child_widget</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
                         <span class="n">RulesDispatcher</span><span class="p">()</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">child_widget</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="k">pass</span></div>
-
-<div class="viewcode-block" id="PyDMApplication.close_widget_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.close_widget_connections">[docs]</a>    <span class="k">def</span> <span class="nf">close_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Given a widget to start from, traverse the tree of child widgets,</span>
-<span class="sd">        and try to close connections to any widgets with channels.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        widget : QWidget</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">widgets</span> <span class="o">=</span> <span class="p">[</span><span class="n">widget</span><span class="p">]</span>
-        <span class="n">widgets</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">child_widget</span> <span class="ow">in</span> <span class="n">widgets</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child_widget</span><span class="p">,</span> <span class="s1">&#39;channels&#39;</span><span class="p">):</span>
-                    <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">child_widget</span><span class="o">.</span><span class="n">channels</span><span class="p">():</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">remove_connection</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-                <span class="k">pass</span></div>
-
-<div class="viewcode-block" id="PyDMApplication.list_all_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.list_all_connections">[docs]</a>    <span class="k">def</span> <span class="nf">list_all_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        List all the connections for all the data plugins.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        list of connections</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">conns</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="k">for</span> <span class="n">connection</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">connections</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="n">conns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">conns</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.load_external_tools"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.load_external_tools">[docs]</a>    <span class="k">def</span> <span class="nf">load_external_tools</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -835,12 +770,12 @@
         <span class="n">EXT_TOOLS_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;_tool.py&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYDM_TOOLS_PATH&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;* Loading PyDM External Tools&quot;</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;* Loading PyDM External Tools&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Looking for external tools at: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Looking for external tools at: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
                 <span class="n">locations</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -851,7 +786,7 @@
                         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">EXT_TOOLS_TOKEN</span><span class="p">):</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">install_external_tool</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;External Tools not loaded. No External Tools Path specified.&quot;</span><span class="p">)</span></div>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;External Tools not loaded. No External Tools Path specified.&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.install_external_tool"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.install_external_tool">[docs]</a>    <span class="k">def</span> <span class="nf">install_external_tool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

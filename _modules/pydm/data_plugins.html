@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.data_plugins &mdash; PyDM v1.5.0 documentation</title>
+  <title>pydm.data_plugins &mdash; PyDM v1.5.0+69.gb795e20 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.5.0
+                v1.5.0+69.gb795e20
               </div>
             
           
@@ -188,9 +188,40 @@
 <span class="kn">import</span> <span class="nn">imp</span>
 <span class="kn">import</span> <span class="nn">uuid</span>
 <span class="kn">from</span> <span class="nn">.plugin</span> <span class="k">import</span> <span class="n">PyDMPlugin</span>
+<span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">protocol_and_address</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">config</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">plugin_modules</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">__read_only</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">plugin_for_address</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find the correct PyDMPlugin for a channel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check for a configured protocol</span>
+    <span class="n">protocol</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">protocol_and_address</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+    <span class="c1"># Use default protocol</span>
+    <span class="k">if</span> <span class="n">protocol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_PROTOCOL</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Using default protocol </span><span class="si">%s</span><span class="s2"> for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                     <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_PROTOCOL</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+        <span class="c1"># If no protocol was specified, and the default protocol</span>
+        <span class="c1"># environment variable is specified, try to use that instead.</span>
+        <span class="n">protocol</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_PROTOCOL</span>
+    <span class="c1"># Load proper plugin module</span>
+    <span class="k">if</span> <span class="n">protocol</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">plugin_modules</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">protocol</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Could not find protocol for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+    <span class="c1"># Catch all in case of improper plugin specification</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Channel </span><span class="si">{addr}</span><span class="s2"> did not specify a valid protocol &quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;and no default protocol is defined. This channel &quot;</span>
+                 <span class="s2">&quot;will receive no data. To specify a default protocol, &quot;</span>
+                 <span class="s2">&quot;set the PYDM_DEFAULT_PROTOCOL environment variable.&quot;</span>
+                 <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addr</span><span class="o">=</span><span class="n">address</span><span class="p">))</span>
+    <span class="k">return</span> <span class="kc">None</span>
 
 
 <div class="viewcode-block" id="add_plugin"><a class="viewcode-back" href="../../add_data_plugins.html#pydm.data_plugins.add_plugin">[docs]</a><span class="k">def</span> <span class="nf">add_plugin</span><span class="p">(</span><span class="n">plugin</span><span class="p">):</span>
@@ -235,11 +266,11 @@
             <span class="k">if</span> <span class="n">root</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">):</span>
                 <span class="k">continue</span>
 
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Looking for PyDM Data Plugins at: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Looking for PyDM Data Plugins at: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
                     <span class="k">try</span><span class="p">:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Trying to load </span><span class="si">%s</span><span class="s2">...&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Trying to load </span><span class="si">%s</span><span class="s2">...&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                         <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
                         <span class="n">temp_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
                         <span class="n">module</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">load_source</span><span class="p">(</span><span class="n">temp_name</span><span class="p">,</span>
@@ -265,10 +296,36 @@
     <span class="k">return</span> <span class="n">added_plugins</span></div>
 
 
+<span class="k">def</span> <span class="nf">is_read_only</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check whether or not the app is running with the read only flag set.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if read only. False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">__read_only</span>
+
+
+<span class="k">def</span> <span class="nf">set_read_only</span><span class="p">(</span><span class="n">read_only</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set the read only flag for the data plugins.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    read_only : bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">__read_only</span>
+    <span class="n">__read_only</span> <span class="o">=</span> <span class="n">read_only</span>
+    <span class="k">if</span> <span class="n">read_only</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Running PyDM in Read Only mode.&quot;</span><span class="p">)</span>
+
+
 <span class="c1"># Load the data plugins from PYDM_DATA_PLUGINS_PATH</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;* Loading PyDM Data Plugins&quot;</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;* Loading PyDM Data Plugins&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
 
 <span class="n">DATA_PLUGIN_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;_plugin.py&quot;</span>
 <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYDM_DATA_PLUGINS_PATH&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>

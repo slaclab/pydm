@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.tab_bar &mdash; PyDM v1.5.0 documentation</title>
+  <title>pydm.widgets.tab_bar &mdash; PyDM v1.5.0+69.gb795e20 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.5.0
+                v1.5.0+69.gb795e20
               </div>
             
           
@@ -176,12 +176,11 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.tab_bar</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="p">(</span><span class="n">QTabBar</span><span class="p">,</span> <span class="n">QTabWidget</span><span class="p">,</span>
-                            <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="k">import</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QColor</span>
+<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="p">(</span><span class="n">QTabBar</span><span class="p">,</span> <span class="n">QTabWidget</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="k">import</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QColor</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="k">import</span> <span class="n">PyDMChannel</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Q_ENUMS</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QVariant</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Property</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
 <span class="kn">from</span> <span class="nn">..utilities.iconfont</span> <span class="k">import</span> <span class="n">IconFont</span>
 
@@ -194,7 +193,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tab_connection_status</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tab_alarm_severity</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_no_alarm_icon_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_minor_alarm_icon_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">220</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_major_alarm_icon_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -208,7 +207,7 @@
         <span class="sd">&quot;&quot;&quot;A channel to use for this tab&#39;s alarm indicator.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">(),</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">(),</span> <span class="s2">&quot;&quot;</span><span class="p">)[</span><span class="s2">&quot;address&quot;</span><span class="p">])</span>
 
     <span class="nd">@currentTabAlarmChannel</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">currentTabAlarmChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_channel</span><span class="p">):</span>
@@ -217,28 +216,34 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_channel_for_tab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">(),</span> <span class="n">new_alarm_channel</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_channel_for_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_initial_icon_for_tab</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">idx</span><span class="p">:</span>
+            <span class="c1"># Disconnect the channel if we already had one in</span>
+            <span class="n">chan</span> <span class="o">=</span> <span class="n">idx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;channel&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">chan</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">chan</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">chan</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+                <span class="k">del</span> <span class="n">chan</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">chan</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s2">&quot;address&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_initial_icon_for_tab</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">channel</span><span class="p">:</span>
+            <span class="c1"># Create PyDMChannel and connecdt</span>
+            <span class="n">chan</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">channel</span><span class="p">),</span>
+                               <span class="n">connection_slot</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection_changed_for_tab</span><span class="p">,</span> <span class="n">index</span><span class="p">),</span>
+                               <span class="n">severity_slot</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alarm_changed_for_tab</span><span class="p">,</span> <span class="n">index</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chan</span>
+            <span class="n">chan</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chan</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># Note that because we cache the list of channels, tabs added or removed after this method</span>
-        <span class="c1"># is called will not ever get channel objects created, and will never connect to data sources.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
-            <span class="n">channel</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">channel</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">channel</span><span class="p">),</span>
-                                                  <span class="n">connection_slot</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span>
-                                                      <span class="bp">self</span><span class="o">.</span><span class="n">connection_changed_for_tab</span><span class="p">,</span>
-                                                      <span class="n">index</span><span class="p">),</span>
-                                                  <span class="n">severity_slot</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span>
-                                                      <span class="bp">self</span><span class="o">.</span><span class="n">alarm_changed_for_tab</span><span class="p">,</span>
-                                                      <span class="n">index</span><span class="p">)))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">connection_changed_for_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">conn</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">conn</span><span class="p">:</span>
@@ -254,15 +259,15 @@
 <span class="sd">        when it has been created in Qt Designer.  This property isn&#39;t directly editable</span>
 <span class="sd">        by users, they will go through the currentTabAlarmChannel property to edit this</span>
 <span class="sd">        information.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">())]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;address&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">())]</span>
 
     <span class="k">def</span> <span class="nf">setAlarmChannels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_channels</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">tab_number</span><span class="p">,</span> <span class="n">channel_address</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">new_alarm_channels</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_channel_for_tab</span><span class="p">(</span><span class="n">tab_number</span><span class="p">,</span> <span class="n">channel_address</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_initial_icon_for_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-        <span class="n">channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">channel</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="ow">and</span> <span class="n">idx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;address&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setTabIcon</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">icon_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ALARM_DISCONNECTED</span>
@@ -272,8 +277,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">setTabIcon</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alarm_icons</span><span class="p">[</span><span class="n">icon_index</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">tabInserted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMTabBar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">tabInserted</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">index</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s2">&quot;address&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_initial_icon_for_tab</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
@@ -355,7 +361,8 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMTabWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setTabBar</span><span class="p">(</span><span class="n">PyDMTabBar</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb</span> <span class="o">=</span> <span class="n">PyDMTabBar</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setTabBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tb</span><span class="p">)</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">currentTabAlarmChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -479,7 +486,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">disconnectedAlarmIconColor</span> <span class="o">=</span> <span class="n">new_color</span>
 
     <span class="n">alarmChannels</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getAlarmChannels</span><span class="p">,</span>
-                                 <span class="n">setAlarmChannels</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                             <span class="n">setAlarmChannels</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="c1"># We make a bunch of dummy properties to block out properties available on QTabWidget,</span>
     <span class="c1"># but that we don&#39;t want to support on PyDMTabWidget.</span>

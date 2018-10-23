@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.5.0 documentation</title>
+  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.5.0+69.gb795e20 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.5.0
+                v1.5.0+69.gb795e20
               </div>
             
           
@@ -183,7 +183,7 @@
 <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QComboBox</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Qt</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
-<span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="k">import</span> <span class="n">is_pydm_app</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">data_plugins</span>
 
 
 <div class="viewcode-block" id="PyDMEnumComboBox"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox">[docs]</a><span class="k">class</span> <span class="nc">PyDMEnumComboBox</span><span class="p">(</span><span class="n">QComboBox</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
@@ -259,7 +259,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span><span class="p">:</span>
             <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;PV is disconnected.&quot;</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_access</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">is_read_only</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">is_read_only</span><span class="p">():</span>
                 <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;Running PyDM on Read-Only mode.&quot;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;Access denied by Channel Access Security.&quot;</span>

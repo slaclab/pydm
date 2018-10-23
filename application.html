@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Application &mdash; PyDM v1.5.0 documentation</title>
+  <title>Application &mdash; PyDM v1.5.0+69.gb795e20 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.5.0
+                v1.5.0+69.gb795e20
               </div>
             
           
@@ -348,22 +348,6 @@ or an Instance of an ExternalTool.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.PyDMApplication.list_all_connections">
-<code class="descname">list_all_connections</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.list_all_connections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.list_all_connections" title="Permalink to this definition">¶</a></dt>
-<dd><p>List all the connections for all the data plugins.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of connections</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydm.PyDMApplication.load_external_tools">
 <code class="descname">load_external_tools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.load_external_tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.load_external_tools" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads all the external tools available at the given
@@ -513,7 +497,7 @@ write needs to use this argument.</li>
 
 <dl class="method">
 <dt id="pydm.PyDMApplication.open_file">
-<code class="descname">open_file</code><span class="sig-paren">(</span><em>ui_file</em>, <em>macros=None</em>, <em>command_line_args=None</em>, <em>establish_connection=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.open_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.open_file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">open_file</code><span class="sig-paren">(</span><em>ui_file</em>, <em>macros=None</em>, <em>command_line_args=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.open_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.open_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open a .ui or .py file, and return a widget from the loaded file.
 This method is the entry point for all opening of new displays,
 and manages handling macros and relative file paths when opening
@@ -530,8 +514,6 @@ to be opened.</li>
 Typically, this argument is used by related display buttons
 to pass in extra arguments.  It is probably rare that code you
 write needs to use this argument.</li>
-<li><strong>establish_connection</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not we should call <cite>establish_widget_connections</cite> for this
-new widget. Default is True.</li>
 </ul>
 </td>
 </tr>
@@ -547,7 +529,7 @@ new widget. Default is True.</li>
 
 <dl class="method">
 <dt id="pydm.PyDMApplication.open_relative">
-<code class="descname">open_relative</code><span class="sig-paren">(</span><em>ui_file</em>, <em>widget</em>, <em>macros=None</em>, <em>command_line_args=[]</em>, <em>establish_connection=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.open_relative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.open_relative" title="Permalink to this definition">¶</a></dt>
+<code class="descname">open_relative</code><span class="sig-paren">(</span><em>ui_file</em>, <em>widget</em>, <em>macros=None</em>, <em>command_line_args=[]</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.open_relative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.open_relative" title="Permalink to this definition">¶</a></dt>
 <dd><p>open_relative opens a ui file with a relative path.  This is
 really only used by embedded displays.</p>
 </dd></dl>

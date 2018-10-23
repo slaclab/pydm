@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.image &mdash; PyDM v1.5.0 documentation</title>
+  <title>pydm.widgets.image &mdash; PyDM v1.5.0+69.gb795e20 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.5.0
+                v1.5.0+69.gb795e20
               </div>
             
           
@@ -195,7 +195,6 @@
 
 <span class="k">class</span> <span class="nc">ReadingOrder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class to build ReadingOrder ENUM property.&quot;&quot;&quot;</span>
-
     <span class="n">Fortranlike</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">Clike</span> <span class="o">=</span> <span class="mi">1</span>
 
@@ -286,10 +285,11 @@
         <span class="sd">&quot;&quot;&quot;Initialize widget.&quot;&quot;&quot;</span>
         <span class="n">ImageView</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">({</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_imagechannel</span> <span class="o">=</span> <span class="n">image_channel</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_widthchannel</span> <span class="o">=</span> <span class="n">width_channel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_imagechannel</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_widthchannel</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_waveform</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_image_width</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_data</span> <span class="o">=</span> <span class="kc">False</span>
@@ -329,6 +329,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span> <span class="o">=</span> <span class="mi">30</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maxRedrawRate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">newImageSignal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">sigImageChanged</span>
+        <span class="c1"># Set live channels if requested on initialization</span>
+        <span class="k">if</span> <span class="n">image_channel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">imageChannel</span> <span class="o">=</span> <span class="n">image_channel</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">width_channel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">widthChannel</span> <span class="o">=</span> <span class="n">width_channel</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span>
 
 <div class="viewcode-block" id="PyDMImageView.widget_ctx_menu"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.widget_ctx_menu">[docs]</a>    <span class="k">def</span> <span class="nf">widget_ctx_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -686,7 +691,10 @@
 <span class="sd">        str</span>
 <span class="sd">            Channel address</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagechannel</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imagechannel</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagechannel</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
 
     <span class="nd">@imageChannel</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">imageChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -699,7 +707,17 @@
 <span class="sd">            Channel address</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imagechannel</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_imagechannel</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="c1"># Disconnect old channel</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imagechannel</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_imagechannel</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+            <span class="c1"># Create and connect new channel</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_imagechannel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span>
+                            <span class="n">address</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+                            <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_connection_state_changed</span><span class="p">,</span>
+                            <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_value_changed</span><span class="p">,</span>
+                            <span class="n">severity_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alarmSeverityChanged</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imagechannel</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_imagechannel</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">widthChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -711,7 +729,10 @@
 <span class="sd">        str</span>
 <span class="sd">            Channel address</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_widthchannel</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widthchannel</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_widthchannel</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
 
     <span class="nd">@widthChannel</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">widthChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -724,7 +745,18 @@
 <span class="sd">            Channel address</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widthchannel</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_widthchannel</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="c1"># Disconnect old channel</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widthchannel</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_widthchannel</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+            <span class="c1"># Create and connect new channel</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_widthchannel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span>
+                            <span class="n">address</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+                            <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connectionStateChanged</span><span class="p">,</span>
+                            <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_width_changed</span><span class="p">,</span>
+                            <span class="n">severity_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alarmSeverityChanged</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widthchannel</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_widthchannel</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+
 
 <div class="viewcode-block" id="PyDMImageView.channels"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.channels">[docs]</a>    <span class="k">def</span> <span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -735,23 +767,11 @@
 <span class="sd">        channels : list</span>
 <span class="sd">            List of PyDMChannel objects</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">PyDMChannel</span><span class="p">(</span>
-                    <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">imageChannel</span><span class="p">,</span>
-                    <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_connection_state_changed</span><span class="p">,</span>
-                    <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_value_changed</span><span class="p">,</span>
-                    <span class="n">severity_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alarmSeverityChanged</span><span class="p">),</span>
-                <span class="n">PyDMChannel</span><span class="p">(</span>
-                    <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthChannel</span><span class="p">,</span>
-                    <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connectionStateChanged</span><span class="p">,</span>
-                    <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_width_changed</span><span class="p">,</span>
-                    <span class="n">severity_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alarmSeverityChanged</span><span class="p">)]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span></div>
 
 <div class="viewcode-block" id="PyDMImageView.channels_for_tools"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView.channels_for_tools">[docs]</a>    <span class="k">def</span> <span class="nf">channels_for_tools</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return channels for tools.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">imageChannel</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagechannel</span><span class="p">]</span></div>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">maxRedrawRate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
