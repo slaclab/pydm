@@ -38,7 +38,7 @@ def plugin_for_address(address):
         except KeyError as exc:
             logger.exception("Could not find protocol for %r", address)
     # Catch all in case of improper plugin specification
-    logger.error("Channel {addr} did not specify a valid protocol ",
+    logger.error("Channel {addr} did not specify a valid protocol "
                  "and no default protocol is defined. This channel "
                  "will receive no data. To specify a default protocol, "
                  "set the PYDM_DEFAULT_PROTOCOL environment variable."
