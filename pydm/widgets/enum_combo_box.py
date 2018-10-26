@@ -5,7 +5,7 @@ import six
 from qtpy.QtWidgets import QComboBox
 from qtpy.QtCore import Slot, Qt
 from .base import PyDMWritableWidget
-from pydm.utilities import is_pydm_app
+from .. import data_plugins
 
 
 class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
@@ -81,7 +81,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         if not self._connected:
             tooltip += "PV is disconnected."
         elif not self._write_access:
-            if is_pydm_app() and self.app.is_read_only():
+            if data_plugins.is_read_only():
                 tooltip += "Running PyDM on Read-Only mode."
             else:
                 tooltip += "Access denied by Channel Access Security."

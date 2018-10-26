@@ -97,8 +97,6 @@ class RulesEngine(QThread):
 
     def __init__(self):
         QThread.__init__(self)
-        # Reference to App so we can establish the connection with the channel
-        self.app = QApplication.instance()
         self.map_lock = QMutex()
         self.widget_map = dict()
 
@@ -125,9 +123,8 @@ class RulesEngine(QThread):
                                                  ch_idx, ch['trigger'])
                     c = PyDMChannel(ch['channel'], connection_slot=conn_cb,
                                     value_slot=value_cb)
-                    if is_pydm_app():
-                        self.app.add_connection(c)
                     item['channels'].append(c)
+                    c.connect()
 
                 self.widget_map[widget].append(item)
 
@@ -137,8 +134,7 @@ class RulesEngine(QThread):
 
         for rule in w_data:
             for ch in rule['channels']:
-                if is_pydm_app():
-                    self.app.remove_connection(ch)
+                ch.disconnect()
 
         del w_data
 

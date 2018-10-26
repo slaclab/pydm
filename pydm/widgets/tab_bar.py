@@ -1,9 +1,8 @@
-from qtpy.QtWidgets import (QTabBar, QTabWidget,
-                            QVBoxLayout, QWidget, QLabel)
-from qtpy.QtGui import QIcon, QBrush, QColor
+from qtpy.QtWidgets import (QTabBar, QTabWidget, QWidget)
+from qtpy.QtGui import QIcon, QColor
 from .base import PyDMWidget
 from .channel import PyDMChannel
-from qtpy.QtCore import Property, Q_ENUMS, Qt, QVariant
+from qtpy.QtCore import Property
 from functools import partial
 from ..utilities.iconfont import IconFont
 
@@ -16,7 +15,7 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         self.tab_channels = {}
         self.tab_connection_status = {}
         self.tab_alarm_severity = {}
-        self._channels = None
+        self._channels = []
         self._no_alarm_icon_color = QColor(0, 220, 0)
         self._minor_alarm_icon_color = QColor(220, 220, 0)
         self._major_alarm_icon_color = QColor(255, 0, 0)
@@ -30,7 +29,7 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         """A channel to use for this tab's alarm indicator."""
         if self.currentIndex() < 0:
             return
-        return str(self.tab_channels.get(self.currentIndex(), ""))
+        return str(self.tab_channels.get(self.currentIndex(), "")["address"])
 
     @currentTabAlarmChannel.setter
     def currentTabAlarmChannel(self, new_alarm_channel):
@@ -39,28 +38,34 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         self.set_channel_for_tab(self.currentIndex(), new_alarm_channel)
 
     def set_channel_for_tab(self, index, channel):
-        self.tab_channels[index] = str(channel)
-        if index < self.count():
-            self.set_initial_icon_for_tab(index)
+        idx = self.tab_channels.get(index)
+        if idx:
+            # Disconnect the channel if we already had one in
+            chan = idx.get("channel", None)
+            if chan:
+                self._channels.remove(chan)
+                self.tab_channels[index]["channel"] = None
+                chan.disconnect()
+                del chan
+        else:
+            chan = None
+            self.tab_channels[index] = dict()
+
+        self.tab_channels[index]["address"] = str(channel)
+        self.set_initial_icon_for_tab(index)
+        if channel:
+            # Create PyDMChannel and connecdt
+            chan = PyDMChannel(address=str(channel),
+                               connection_slot=partial(self.connection_changed_for_tab, index),
+                               severity_slot=partial(self.alarm_changed_for_tab, index))
+            self.tab_channels[index]["channel"] = chan
+            chan.connect()
+            self._channels.append(chan)
 
     def channels(self):
-        # Note that because we cache the list of channels, tabs added or removed after this method
-        # is called will not ever get channel objects created, and will never connect to data sources.
         if self._channels is not None:
-            return self._channels
-
-        self._channels = []
-        for index in range(0, self.count()):
-            channel = str(self.tab_channels[index])
-            if channel != "":
-                self._channels.append(PyDMChannel(address=str(channel),
-                                                  connection_slot=partial(
-                                                      self.connection_changed_for_tab,
-                                                      index),
-                                                  severity_slot=partial(
-                                                      self.alarm_changed_for_tab,
-                                                      index)))
-        return self._channels
+            return list(self._channels)
+        return None
 
     def connection_changed_for_tab(self, index, conn):
         if not conn:
@@ -76,15 +81,15 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         when it has been created in Qt Designer.  This property isn't directly editable
         by users, they will go through the currentTabAlarmChannel property to edit this
         information."""
-        return [str(self.tab_channels[i]) for i in range(0, self.count())]
+        return [str(self.tab_channels[i]["address"]) for i in range(0, self.count())]
 
     def setAlarmChannels(self, new_alarm_channels):
         for tab_number, channel_address in enumerate(new_alarm_channels):
             self.set_channel_for_tab(tab_number, channel_address)
 
     def set_initial_icon_for_tab(self, index):
-        channel = self.tab_channels.get(index, "")
-        if channel in ("", "None", None):
+        idx = self.tab_channels.get(index)
+        if idx and idx.get("address") in ("", "None", None):
             self.setTabIcon(index, QIcon())
         else:
             icon_index = self.ALARM_DISCONNECTED
@@ -94,8 +99,9 @@ class PyDMTabBar(QTabBar, PyDMWidget):
             self.setTabIcon(index, self.alarm_icons[icon_index])
 
     def tabInserted(self, index):
+        super(PyDMTabBar, self).tabInserted(index)
         if index not in self.tab_channels:
-            self.tab_channels[index] = ""
+            self.tab_channels[index]["address"] = ""
         self.set_initial_icon_for_tab(index)
 
     @Property(QColor)
@@ -177,7 +183,8 @@ class PyDMTabWidget(QTabWidget):
 
     def __init__(self, parent=None):
         super(PyDMTabWidget, self).__init__(parent=parent)
-        self.setTabBar(PyDMTabBar(parent=self))
+        self.tb = PyDMTabBar(parent=self)
+        self.setTabBar(self.tb)
 
     @Property(str)
     def currentTabAlarmChannel(self):
@@ -301,7 +308,7 @@ class PyDMTabWidget(QTabWidget):
         self.tabBar().disconnectedAlarmIconColor = new_color
 
     alarmChannels = Property("QStringList", getAlarmChannels,
-                                 setAlarmChannels, designable=False)
+                             setAlarmChannels, designable=False)
 
     # We make a bunch of dummy properties to block out properties available on QTabWidget,
     # but that we don't want to support on PyDMTabWidget.

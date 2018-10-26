@@ -3,9 +3,8 @@
 
 import pytest
 
-from ...utilities import is_pydm_app
 from ...widgets.base import is_channel_valid
-from ...application import PyDMApplication
+from ... import data_plugins
 from ...widgets.base import PyDMWidget
 from ...widgets.frame import PyDMFrame
 
@@ -140,7 +139,7 @@ def test_alarm_severity_change(qtbot, signals, channel, alarm_sensitive_content,
     ("", False, False, False),
     (None, False, False, False),
 ])
-def test_check_enable_state(qtbot, signals, monkeypatch, channel_address, connected, write_access, is_app_read_only):
+def test_check_enable_state(qtbot, signals, channel_address, connected, write_access, is_app_read_only):
     """
     Test the tooltip generated depending on the channel address validation, connection, write access, and whether the
     app is read-only.
@@ -158,8 +157,6 @@ def test_check_enable_state(qtbot, signals, monkeypatch, channel_address, connec
         Window for widget testing
     signals : fixture
         The signals fixture, which provides access signals to be bound to the appropriate slots
-    monkeypatch : fixture
-        To override the default behavior of PyDMApplication.is_read_only()
     channel_address : str
         The channel address
     connected : bool
@@ -183,7 +180,7 @@ def test_check_enable_state(qtbot, signals, monkeypatch, channel_address, connec
         signals.connection_state_signal[bool].connect(pydm_frame.connectionStateChanged)
         signals.connection_state_signal[bool].emit(connected)
 
-        monkeypatch.setattr(PyDMApplication, 'is_read_only', lambda *args: is_app_read_only)
+        data_plugins.set_read_only(is_app_read_only)
 
         original_tooltip = "Original Tooltip"
         pydm_frame.setToolTip(original_tooltip)
@@ -194,7 +191,7 @@ def test_check_enable_state(qtbot, signals, monkeypatch, channel_address, connec
             if not pydm_frame._connected:
                 assert "PV is disconnected." in actual_tooltip
             elif not write_access:
-                if is_pydm_app() and pydm_frame.app.is_read_only():
+                if data_plugins.is_read_only():
                     assert "Running PyDM on Read-Only mode." in actual_tooltip
                 else:
                     assert "Access denied by Channel Access Security." in actual_tooltip

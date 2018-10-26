@@ -1,4 +1,6 @@
+from qtpy.QtCore import QTimer
 from .utilities import stylesheet
+from . import data_plugins
 
 
 class DesignerHooks(object):
@@ -13,6 +15,7 @@ class DesignerHooks(object):
             return
         self.__form_editor = None
         self.__initialized = True
+        self.__timer = None
 
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
@@ -36,9 +39,9 @@ class DesignerHooks(object):
         self.setup_hooks()
 
     def setup_hooks(self):
-        self.__set_stylesheet_hook()
+        # Set PyDM to be read-only
+        data_plugins.set_read_only(True)
 
-    def __set_stylesheet_hook(self):
         if self.form_editor:
             fwman = self.form_editor.formWindowManager()
             if fwman:
@@ -50,3 +53,18 @@ class DesignerHooks(object):
         style_data = stylesheet._get_style_data(None)
         widget = form_window_interface.formContainer()
         widget.setStyleSheet(style_data)
+        if not self.__timer:
+            self.__start_kicker()
+
+    def __kick(self):
+        fwman = self.form_editor.formWindowManager()
+        if fwman:
+            widget = fwman.activeFormWindow()
+            if widget:
+                widget.update()
+
+    def __start_kicker(self):
+        self.__timer = QTimer()
+        self.__timer.setInterval(100)
+        self.__timer.timeout.connect(self.__kick)
+        self.__timer.start()

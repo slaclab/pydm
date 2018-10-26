@@ -113,19 +113,19 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PyDMSlider</class>
-   <extends>QFrame</extends>
-   <header>pydm.widgets.slider</header>
-  </customwidget>
-  <customwidget>
-   <class>PyDMEnumComboBox</class>
-   <extends>QFrame</extends>
-   <header>pydm.widgets.enum_combo_box</header>
-  </customwidget>
-  <customwidget>
    <class>PyDMTabWidget</class>
    <extends>QTabWidget</extends>
    <header>pydm.widgets.tab_bar</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMEnumComboBox</class>
+   <extends>QComboBox</extends>
+   <header>pydm.widgets.enum_combo_box</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMSlider</class>
+   <extends>QFrame</extends>
+   <header>pydm.widgets.slider</header>
   </customwidget>
  </customwidgets>
  <resources/>

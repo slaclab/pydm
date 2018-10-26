@@ -1,10 +1,11 @@
-from qtpy.QtWidgets import QFrame, QApplication, QLabel, QVBoxLayout
+from qtpy.QtWidgets import QFrame, QApplication, QLabel, QVBoxLayout, QWidget
 from qtpy.QtCore import Qt, QSize
 from qtpy.QtCore import Property
 import json
 import os.path
 from .base import PyDMPrimitiveWidget
-from ..utilities import is_pydm_app
+from ..utilities import (is_pydm_app, establish_widget_connections,
+                         close_widget_connections)
 
 
 class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
@@ -17,6 +18,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         The parent widget for the Label
 
     """
+
     def __init__(self, parent=None):
         QFrame.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
@@ -45,7 +47,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         -------
         QSize
         """
-        return QSize(100, 100)  # This is totally arbitrary, I just want *some* visible nonzero size
+        # This is totally arbitrary, I just want *some* visible nonzero size
+        return QSize(100, 100)
 
     @Property(str)
     def macros(self):
@@ -110,10 +113,13 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             try:
                 self.embedded_widget = self.open_file()
             except ValueError as e:
-                self.err_label.setText("Could not parse macro string.\nError: {}".format(e))
+                self.err_label.setText(
+                    "Could not parse macro string.\nError: {}".format(e))
                 self.err_label.show()
             except IOError as e:
-                self.err_label.setText("Could not open {filename}.\nError: {err}".format(filename=self._filename, err=e))
+                self.err_label.setText(
+                    "Could not open {filename}.\nError: {err}".format(
+                        filename=self._filename, err=e))
                 self.err_label.show()
 
     def parsed_macros(self):
@@ -140,11 +146,10 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         # Expand user (~ or ~user) and environment variables.
         fname = os.path.expanduser(os.path.expandvars(self.filename))
         if os.path.isabs(fname):
-            return self.app.open_file(fname, macros=self.parsed_macros(),
-                                      establish_connection=False)
+            return self.app.open_file(fname, macros=self.parsed_macros())
         else:
-            return self.app.open_relative(fname, self, macros=self.parsed_macros(),
-                                          establish_connection=False)
+            return self.app.open_relative(fname, self,
+                                          macros=self.parsed_macros())
 
     @property
     def embedded_widget(self):
@@ -171,17 +176,13 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             return
         if self._embedded_widget is not None:
             self.layout.removeWidget(self._embedded_widget)
-            self.app.close_widget_connections(self._embedded_widget)
             self._embedded_widget.deleteLater()
             self._embedded_widget = None
-            should_reconnect = True
         self._embedded_widget = new_widget
         self._embedded_widget.setParent(self)
         self.layout.addWidget(self._embedded_widget)
         self.err_label.hide()
         self._embedded_widget.show()
-        if should_reconnect:
-            self.app.establish_widget_connections(self._embedded_widget)
         self._is_connected = True
 
     def connect(self):
@@ -191,7 +192,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         if self._is_connected or self.embedded_widget is None:
             return
-        self.app.establish_widget_connections(self.embedded_widget)
+        establish_widget_connections(self.embedded_widget)
 
     def disconnect(self):
         """
@@ -200,7 +201,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         if not self._is_connected or self.embedded_widget is None:
             return
-        self.app.close_widget_connections(self.embedded_widget)
+        close_widget_connections(self.embedded_widget)
 
     @Property(bool)
     def disconnectWhenHidden(self):

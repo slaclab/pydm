@@ -75,9 +75,9 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>0</y>
-             <width>213</width>
-             <height>560</height>
+             <y>-125</y>
+             <width>230</width>
+             <height>582</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -354,6 +354,22 @@
              </widget>
             </item>
             <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_24">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text">
+               <string>Tab Widget</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>tab_widget/tab_widget.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_15">
               <property name="toolTip">
                <string/>
@@ -366,6 +382,22 @@
               </property>
               <property name="displayFilename" stdset="0">
                <string>timeplot/timeplot.ui</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_23">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text">
+               <string>Scatter Plot</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>scatterplot/scatterplot.ui</string>
               </property>
              </widget>
             </item>
@@ -436,11 +468,36 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>366</width>
-             <height>443</height>
+             <width>358</width>
+             <height>457</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_25">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text">
+               <string>Widget Rules</string>
+              </property>
+              <property name="displayFilename" stdset="0">
+               <string>actions/actions2.ui</string>
+              </property>
+             </widget>
+            </item>
             <item>
              <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_18">
               <property name="enabled">

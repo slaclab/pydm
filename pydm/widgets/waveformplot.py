@@ -47,6 +47,7 @@ class WaveformCurveItem(BasePlotCurveItem):
     **kargs: optional
         PlotDataItem keyword arguments, such as symbol and symbolSize.
     """
+    _channels = ('x_channel', 'y_channel')
 
     def __init__(self, y_addr=None, x_addr=None, redraw_mode=None, **kws):
         y_addr = "" if y_addr is None else y_addr
@@ -250,6 +251,9 @@ class WaveformCurveItem(BasePlotCurveItem):
         else:
             return ((float(np.amin(self.x_waveform)), float(np.amax(self.x_waveform))),
                     (float(np.amin(self.y_waveform)), float(np.amax(self.y_waveform))))
+
+    def channels(self):
+        return [self.y_channel, self.x_channel]
 
 
 class PyDMWaveformPlot(BasePlot):

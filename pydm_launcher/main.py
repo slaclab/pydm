@@ -1,11 +1,20 @@
 import sys
 import argparse
-import pydm
 import json
 import logging
 
 
 def main():
+    logger = logging.getLogger('')
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter('[%(asctime)s] [%(levelname)-8s] - %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    logger.setLevel("INFO")
+    handler.setLevel("INFO")
+
+    import pydm
+
     parser = argparse.ArgumentParser(description="Python Display Manager")
     parser.add_argument(
         'displayfile',
@@ -93,11 +102,6 @@ def main():
                 key, value = pair.strip().split("=")
                 macros[key.strip()] = value.strip()
 
-    logger = logging.getLogger('')
-    handler = logging.StreamHandler()
-    formatter = logging.Formatter('[%(asctime)s] [%(levelname)-8s] - %(message)s')
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
     if pydm_args.log_level:
         logger.setLevel(pydm_args.log_level)
         handler.setLevel(pydm_args.log_level)

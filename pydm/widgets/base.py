@@ -3,10 +3,11 @@ import functools
 import json
 import numpy as np
 from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect
-from qtpy.QtGui import QColor, QCursor
+from qtpy.QtGui import QColor, QClipboard, QCursor
 from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
-from ..utilities import is_pydm_app
+from .. import data_plugins
+from ..utilities import is_pydm_app, remove_protocol
 from .rules import RulesDispatcher
 
 try:
@@ -38,7 +39,7 @@ def is_channel_valid(channel):
 
 
 def only_if_channel_set(fcn):
-    '''Decorator to avoid executing a method if a channel is not valid or configured.'''
+    """Decorator to avoid executing a method if a channel is not valid or configured."""
 
     @functools.wraps(fcn)
     def wrapper(self, *args, **kwargs):
@@ -48,6 +49,27 @@ def only_if_channel_set(fcn):
             return
 
     return wrapper
+
+
+def widget_destroyed(channels, widget):
+    """
+    Callback invoked when the Widget is destroyed.
+    This method is used to ensure that the channels are disconnected.
+
+    Parameters
+    ----------
+    channels : list
+        A list of PyDMChannel objects that this widget uses.
+    widget : QWidget
+        The widget. Which is pretty useless at this point.
+    """
+    chs = channels()
+    if not chs:
+        return
+
+    for ch in chs:
+        if ch:
+            ch.disconnect()
 
 
 class PyDMPrimitiveWidget(object):
@@ -159,6 +181,7 @@ class PyDMPrimitiveWidget(object):
             except JSONDecodeError as ex:
                 logger.exception('Invalid format for Rules')
 
+
 class PyDMWidget(PyDMPrimitiveWidget):
     """
     PyDM base class for Read-Only widgets.
@@ -190,8 +213,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         self.app = QApplication.instance()
         self._connected = True
-        self._channel = init_channel
-        self._channels = None
+        self._channel = None
+        self._channels = list()
         self._show_units = False
         self._alarm_sensitive_content = False
         self._alarm_sensitive_border = True
@@ -212,15 +235,17 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.channeltype = None
         self.subtype = None
 
-        # If this label is inside a PyDMApplication (not Designer) start it in '
+        # If this label is inside a PyDMApplication (not Designer) start it in
         # the disconnected state.
+        self.setContextMenuPolicy(Qt.DefaultContextMenu)
+        self.contextMenuEvent = self.open_context_menu
+        self.channel = init_channel
         if is_pydm_app():
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
 
-        self.setContextMenuPolicy(Qt.DefaultContextMenu)
-        self.contextMenuEvent = self.open_context_menu
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels))
 
     def widget_ctx_menu(self):
         """
@@ -360,6 +385,40 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if new_enum_strings != self.enum_strings:
             self.enum_strings = new_enum_strings
             self.value_changed(self.value)
+
+    def eventFilter(self, obj, event):
+        """
+        EventFilter to redirect "middle click" to :meth:`.show_address_tooltip`
+        """
+        # Override the eventFilter to capture all middle mouse button events,
+        # and show a tooltip if needed.
+        if event.type() == QEvent.MouseButtonPress:
+            if event.button() == Qt.MiddleButton:
+                self.show_address_tooltip(obj, event)
+                return True
+        return False
+
+    def show_address_tooltip(self, event):
+        """
+        Show the PyDMTooltip and copy address to clipboard
+
+        This is intended to replicate the behavior of the "middle click" from
+        EDM. If the QWidget does not have a valid PyDMChannel nothing will be
+        displayed
+        """
+        if not len(self._channels):
+            logger.warning("Object %r has no PyDM Channels", obj)
+            return
+        addr = self.channels()[0].address
+        QToolTip.showText(event.globalPos(), addr)
+        # If the address has a protocol, strip it out before putting it on the
+        # clipboard.
+        copy_text = remove_protocol(addr)
+
+        clipboard = QApplication.clipboard()
+        clipboard.setText(copy_text)
+        event = QEvent(QEvent.Clipboard)
+        self.sendEvent(clipboard, event)
 
     def unit_changed(self, new_unit):
         """
@@ -756,13 +815,35 @@ class PyDMWidget(PyDMPrimitiveWidget):
         value : str
             Channel address
         """
-        if value:
-            if self._channel != value:
-                self._channel = str(value)
-                self._channels = None
-        else:
-            self._channel = None
-            self._channels = None
+        if self._channel != value:
+            # Remove old connections
+            for channel in [c for c in self._channels if
+                            c.address == self._channel]:
+                channel.disconnect()
+                self._channels.remove(channel)
+            # Load new channel
+            self._channel = str(value)
+            channel = PyDMChannel(address=self._channel,
+                          connection_slot=self.connectionStateChanged,
+                          value_slot=self.channelValueChanged,
+                          severity_slot=self.alarmSeverityChanged,
+                          enum_strings_slot=self.enumStringsChanged,
+                          unit_slot=self.unitChanged,
+                          prec_slot=self.precisionChanged,
+                          upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
+                          lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
+                          value_signal=None,
+                          write_access_slot=None)
+            # Load writeable channels if our widget requires them. These should
+            # not exist on the base PyDMWidget but prevents us from duplicating
+            # the method below to only make two more connections
+            if hasattr(self, 'writeAccessChanged'):
+                channel.write_access_slot = self.writeAccessChanged
+            if hasattr(self, 'send_value_signal'):
+                channel.value_signal = self.send_value_signal
+            # Connect write channels if we have them
+            channel.connect()
+            self._channels.append(channel)
 
     def update_format_string(self):
         """
@@ -824,23 +905,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
         channels : list
             List of PyDMChannel objects
         """
-        if self._channels is not None:
+        if len(self._channels):
             return self._channels
-
-        self._channels = [
-            PyDMChannel(address=self.channel,
-                        connection_slot=self.connectionStateChanged,
-                        value_slot=self.channelValueChanged,
-                        severity_slot=self.alarmSeverityChanged,
-                        enum_strings_slot=self.enumStringsChanged,
-                        unit_slot=self.unitChanged,
-                        prec_slot=self.precisionChanged,
-                        upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
-                        lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
-                        value_signal=None,
-                        write_access_slot=None)
-        ]
-        return self._channels
+        else:
+            return None
 
     def channels_for_tools(self):
         """
@@ -923,7 +991,8 @@ class PyDMWritableWidget(PyDMWidget):
             if event.type() == QEvent.Enter and not status:
                 QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
 
-        return False
+        return PyDMWidget.eventFilter(self, obj, event)
+
 
     def write_access_changed(self, new_write_access):
         """
@@ -967,36 +1036,9 @@ class PyDMWritableWidget(PyDMWidget):
         elif not self._write_access:
             if tooltip != '':
                 tooltip += '\n'
-            if is_pydm_app() and self.app.is_read_only():
+            if data_plugins.is_read_only():
                 tooltip += "Running PyDM on Read-Only mode."
             else:
                 tooltip += "Access denied by Channel Access Security."
         self.setToolTip(tooltip)
         self.setEnabled(status)
-
-    def channels(self):
-        """
-        Returns the channels being used for this Widget.
-
-        Returns
-        -------
-        list
-            List of PyDMChannel objects
-        """
-        if self._channels is not None:
-            return self._channels
-
-        self._channels = [
-            PyDMChannel(address=self.channel,
-                        connection_slot=self.connectionStateChanged,
-                        value_slot=self.channelValueChanged,
-                        severity_slot=self.alarmSeverityChanged,
-                        enum_strings_slot=self.enumStringsChanged,
-                        unit_slot=self.unitChanged,
-                        prec_slot=self.precisionChanged,
-                        upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
-                        lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
-                        value_signal=self.send_value_signal,
-                        write_access_slot=self.writeAccessChanged)
-        ]
-        return self._channels

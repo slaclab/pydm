@@ -1,12 +1,15 @@
 # import epics
 # from qtpy import uic
+import functools
 from qtpy.QtCore import Slot, Signal, QPointF, QRectF
 from qtpy.QtGui import QPen
 from qtpy.QtWidgets import QSizePolicy
 from os import path
 from pydm import Display
 from pydm.widgets.channel import PyDMChannel
+from pydm.widgets.base import widget_destroyed
 from pydm.widgets.colormaps import cmap_names
+from pydm.utilities import establish_widget_connections, close_widget_connections
 import numpy as np
 from pyqtgraph import PlotWidget, mkPen
 from marker import ImageMarker
@@ -28,14 +31,12 @@ class CamViewer(Display):
         # self.cameras = { "VCC": vcc_dict, "C-Iris": c_iris_dict, "Test": test_dict }
         self.cameras = {"Testing IOC Image": test_dict }
         self._channels = []
+        self.imageChannel = None
 
         # Populate the camera combo box
         self.ui.cameraComboBox.clear()
         for camera in self.cameras:
             self.ui.cameraComboBox.addItem(camera)
-
-        # Clear out any image data, reset width, get PVs ready for connection
-        self.initializeCamera(self.ui.cameraComboBox.currentText())
 
         # When the camera combo box changes, disconnect from PVs, re-initialize, then reconnect.
         self.ui.cameraComboBox.activated[str].connect(self.cameraChanged)
@@ -133,6 +134,9 @@ class CamViewer(Display):
         self.ui.setROIButton.clicked.connect(self.setROI)
         self.ui.resetROIButton.clicked.connect(self.resetROI)
 
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels))
+
+
     @Slot()
     def zoomIn(self):
         self.ui.imageView.getView().scaleBy((0.5, 0.5))
@@ -229,10 +233,9 @@ class CamViewer(Display):
         new_camera = str(new_camera)
         if self.imageChannel == self.cameras[new_camera]["image"]:
             return
-        self.display_manager_window.close_widget_connections(self)
+        close_widget_connections(self)
         self.disable_all_markers()
         self.initializeCamera(new_camera)
-        self.display_manager_window.establish_widget_connections(self)
 
     def initializeCamera(self, new_camera):
         new_camera = str(new_camera)
@@ -277,6 +280,7 @@ class CamViewer(Display):
             self.ui.roiWLineEdit.setEnabled(False)
             self.ui.roiHLineEdit.clear()
             self.ui.roiHLineEdit.setEnabled(False)
+        establish_widget_connections(self)
 
     @Slot()
     def setROI(self):

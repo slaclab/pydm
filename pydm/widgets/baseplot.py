@@ -1,9 +1,10 @@
+import functools
 from qtpy.QtGui import QColor, QBrush
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt
 from .. import utilities
 from pyqtgraph import PlotWidget, PlotDataItem, mkPen, ViewBox, InfiniteLine, SignalProxy, CurvePoint, TextItem
 from collections import OrderedDict
-from .base import PyDMPrimitiveWidget
+from .base import PyDMPrimitiveWidget, widget_destroyed
 
 
 class NoDataError(Exception):
@@ -18,6 +19,10 @@ class BasePlotCurveItem(PlotDataItem):
 
     In addition to the parameters listed below, WaveformCurveItem accepts
     keyword arguments for all plot options that pyqtgraph.PlotDataItem accepts.
+    Each subclass of ``BasePlotCurveItem`` should have a class attribute
+    `_channels` that lets us know the attribute names where we can find
+    PyDMChannel objects. This allows us to connect and disconnect these
+    connections when appropriate
 
     Parameters
     ----------
@@ -64,6 +69,10 @@ class BasePlotCurveItem(PlotDataItem):
         self.setSymbolBrush(None)
         if color is not None:
             self.color = color
+
+        if hasattr(self, "channels"):
+            self.destroyed.connect(functools.partial(widget_destroyed,
+                                                     self.channels))
 
     @property
     def color_string(self):
@@ -240,6 +249,9 @@ class BasePlotCurveItem(PlotDataItem):
                             ("symbol", self.symbol),
                             ("symbolSize", self.symbolSize)])
 
+    def close(self):
+        pass
+
 
 class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     crosshair_position_updated = Signal(float, float)
@@ -290,12 +302,21 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._curves.append(plot_item)
         self.addItem(plot_item)
         self.redraw_timer.start()
+        # Connect channels
+        for chan in plot_item.channels():
+            if chan:
+                chan.connect()
+        # self._legend.addItem(plot_item, plot_item.curve_name)
 
     def removeCurve(self, plot_item):
         self.removeItem(plot_item)
         self._curves.remove(plot_item)
         if len(self._curves) < 1:
             self.redraw_timer.stop()
+        # Disconnect channels
+        for chan in plot_item.channels():
+            if chan:
+                chan.disconnect()
 
     def removeCurveWithName(self, name):
         for curve in self._curves:

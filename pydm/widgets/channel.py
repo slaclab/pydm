@@ -1,3 +1,12 @@
+import logging
+
+from pydm.data_plugins import plugin_for_address
+from pydm.utilities import is_qt_designer
+from pydm import config
+
+logger = logging.getLogger(__name__)
+
+
 class PyDMChannel(object):
     """
     Object to hold signals and slots for a PyDM Widget interface to an
@@ -82,6 +91,36 @@ class PyDMChannel(object):
 
         self.value_signal = value_signal
 
+    def connect(self):
+        """
+        Connect a PyDMChannel to the proper PyDMPlugin
+        """
+        if is_qt_designer() and not config.DESIGNER_ONLINE:
+            return
+        logger.debug("Connecting %r", self.address)
+        # Connect to proper PyDMPlugin
+        try:
+            plugin = plugin_for_address(self.address)
+            plugin.add_connection(self)
+        except Exception:
+            logger.exception("Unable to make proper connection "
+                             "for %r", self)
+
+    def disconnect(self):
+        """
+        Disconnect a PyDMChannel
+        """
+        if is_qt_designer() and not config.DESIGNER_ONLINE:
+            return
+        try:
+            plugin = plugin_for_address(self.address)
+            if not plugin:
+                return
+            plugin.remove_connection(self)
+        except Exception as exc:
+            logger.exception("Unable to remove connection "
+                             "for %r", self)
+
     def __eq__(self, other):
         if isinstance(self, other.__class__):
             address_matched = self.address == other.address
@@ -121,3 +160,6 @@ class PyDMChannel(object):
 
     def __hash__(self):
         return id(self)
+
+    def __repr__(self):
+        return '<PyDMChannel ({:})>'.format(self.address)

@@ -9,6 +9,7 @@ from .channel import PyDMChannel
 from ..utilities import remove_protocol
 
 class ScatterPlotCurveItem(BasePlotCurveItem):
+    _channels = ('x_channel', 'y_channel')
 
     def __init__(self, y_addr, x_addr, redraw_mode=None, **kws):
         self.x_channel = None
@@ -229,6 +230,9 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         y_data = self.data_buffer[1, -self.points_accumulated:]
         return ((float(np.amin(x_data)), float(np.amax(x_data))),
                 (float(np.amin(y_data)), float(np.amax(y_data))))
+
+    def channels(self):
+        return [self.y_channel, self.x_channel]
 
 
 class PyDMScatterPlot(BasePlot):

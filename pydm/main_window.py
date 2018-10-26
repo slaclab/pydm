@@ -7,6 +7,7 @@ from .pydm_ui import Ui_MainWindow
 from .display_module import Display
 from .connection_inspector import ConnectionInspector
 from .about_pydm import AboutWindow
+from . import data_plugins
 import subprocess
 import platform
 import logging
@@ -101,7 +102,6 @@ class PyDMMainWindow(QMainWindow):
         if self._display_widget is not None:
             self.setCentralWidget(QWidget())
             self.app.unregister_widget_rules(self._display_widget)
-            self.app.close_widget_connections(self._display_widget)
             self._display_widget.deleteLater()
             self._display_widget = None
             self.ui.actionEdit_in_Designer.setEnabled(False)
@@ -260,7 +260,7 @@ class PyDMMainWindow(QMainWindow):
         else:
             title = self._display_widget.windowTitle()
         title += " - PyDM"
-        if self.app.is_read_only():
+        if data_plugins.is_read_only():
             title += " [Read Only Mode]"
         self.setWindowTitle(title)
 
@@ -408,7 +408,7 @@ class PyDMMainWindow(QMainWindow):
 
     @Slot(bool)
     def show_connections(self, checked):
-        c = ConnectionInspector(self.app.list_all_connections(), self)
+        c = ConnectionInspector(self)
         c.show()
 
     @Slot(bool)
