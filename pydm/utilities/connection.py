@@ -25,7 +25,9 @@ def _change_connection_status(widget, status):
         try:
             if hasattr(child_widget, 'channels'):
                 if not channels:
-                    logger.error("Widget has not channels configured")
+                    logger.error("Widget %r has no channels configured. "
+                                 "Can not change connection status.",
+                                 child_widget)
                     return
                 else:
                     for channel in child_widget.channels():
