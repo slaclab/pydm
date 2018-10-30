@@ -1,4 +1,8 @@
+import logging
+
 from qtpy.QtWidgets import QWidget
+
+logger = logging.getLogger(__name__)
 
 
 def _change_connection_status(widget, status):
@@ -20,13 +24,17 @@ def _change_connection_status(widget, status):
     for child_widget in widgets:
         try:
             if hasattr(child_widget, 'channels'):
-                for channel in child_widget.channels():
-                    if channel is None:
-                        continue
-                    if status:
-                        channel.connect()
-                    else:
-                        channel.disconnect()
+                if not channels:
+                    logger.error("Widget has not channels configured")
+                    return
+                else:
+                    for channel in child_widget.channels():
+                        if channel is None:
+                            continue
+                        if status:
+                            channel.connect()
+                        else:
+                            channel.disconnect()
         except NameError:
             continue
 
