@@ -136,9 +136,10 @@ class TimePlotCurveItem(BasePlotCurveItem):
         Get the maximum y-value so far in the same plot. This is useful to
         scale the y-axis for a selected curve.
 
-        Returns : float
+        Returns
         -------
-        The maximum y-value collected so far for this current curve.
+        float
+            The maximum y-value collected so far for this current curve.
         """
         return self._max_y_value
 
@@ -278,10 +279,10 @@ class TimePlotCurveItem(BasePlotCurveItem):
         Provide the the most recent timestamp accumulated from the data buffer.
         This is useful for scaling the x-axis.
 
-        Returns : float
+        Returns
         -------
+        float
             The timestamp of the most recent data point recorded into the data buffer.
-
         """
         return self.data_buffer[0, -1]
 
@@ -409,8 +410,9 @@ class PyDMTimePlot(BasePlot):
         symbolSize : int
             How big the symbols should be
 
-        Returns : TimePlotCurveItem
+        Returns
         -------
+        new_curve : TimePlotCurveItem
             The newly created curve.
         """
         plot_opts = dict()
@@ -492,7 +494,6 @@ class PyDMTimePlot(BasePlot):
         update_immediately : bool
             Update the axis range(s) immediately if True, or defer until the
             next rendering.
-
         """
         if len(self._curves) == 0:
             return
@@ -521,8 +522,9 @@ class PyDMTimePlot(BasePlot):
         Dump the current list of curves and each curve's settings into a list
         of JSON-formatted strings.
 
-        Returns : str
+        Returns
         -------
+        settings : list
             A list of JSON-formatted strings, each containing a curve's
             settings
         """
@@ -568,6 +570,7 @@ class PyDMTimePlot(BasePlot):
 
         Returns
         -------
+        curve : TimePlotCurveItem
             The found curve, or None.
         """
         for curve in self._curves:
@@ -627,9 +630,10 @@ class PyDMTimePlot(BasePlot):
         """
         Get the size of the data buffer for the entire chart.
 
-        Returns : int
+        Returns
         -------
-        The chart's data buffer size.
+        size : int
+            The chart's data buffer size.
         """
         return int(self._bufferSize)
 
@@ -693,8 +697,9 @@ class PyDMTimePlot(BasePlot):
         how long a data point stays on the plot before falling off the left
         edge.
 
-        Returns : float
+        Returns
         -------
+        time_span : float
             The extent of the x-axis of the chart, in seconds.
         """
         return float(self._time_span)
@@ -737,8 +742,9 @@ class PyDMTimePlot(BasePlot):
         """
         Get the update interval for the chart.
 
-        Returns : float
+        Returns
         -------
+        interval : float
             The update interval of the chart.
         """
         return float(self._update_interval) / 1000.0
