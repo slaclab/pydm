@@ -23,9 +23,7 @@ as well as a straightforward python framework to build complex applications.
    :maxdepth: 1
    :caption: Tutorials
 
-   tutorials/first_display.rst
-   tutorials/scripted_displays.rst
-   tutorials/macros.rst
+   Explore Tutorials <https://slaclab.github.io/pydm-tutorial>
 
 .. toctree::
    :maxdepth: 2
