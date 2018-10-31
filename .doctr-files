@@ -1,6 +1,4 @@
-./_images/designer.png
 ./_images/open_editor.gif
-./_images/pydm_properties.png
 ./_images/rules_editor.png
 ./_images/tab_widget.png
 ./_modules/channel.html
@@ -44,9 +42,6 @@
 ./_sources/development/resources.rst.txt
 ./_sources/index.rst.txt
 ./_sources/installation.rst.txt
-./_sources/tutorials/first_display.rst.txt
-./_sources/tutorials/macros.rst.txt
-./_sources/tutorials/scripted_displays.rst.txt
 ./_sources/utilities/index.rst.txt
 ./_sources/widgets/byte.rst.txt
 ./_sources/widgets/checkbox.rst.txt
@@ -152,9 +147,6 @@
 ./py-modindex.html
 ./search.html
 ./searchindex.js
-./tutorials/first_display.html
-./tutorials/macros.html
-./tutorials/scripted_displays.html
 ./utilities/index.html
 ./widgets/byte.html
 ./widgets/checkbox.html

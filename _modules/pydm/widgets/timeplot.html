@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.timeplot &mdash; PyDM v1.5.0+76.gcd4f79a documentation</title>
+  <title>pydm.widgets.timeplot &mdash; PyDM v1.5.0+81.g837f8d5 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.5.0+76.gcd4f79a
+                v1.5.0+81.g837f8d5
               </div>
             
           
@@ -90,9 +90,7 @@
 </ul>
 <p class="caption"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/first_display.html">Building Your First Display with Qt Designer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/scripted_displays.html">Making Python-based Displays</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/macros.html">Macro Substitution</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
 <ul>
@@ -314,9 +312,10 @@
 <span class="sd">        Get the maximum y-value so far in the same plot. This is useful to</span>
 <span class="sd">        scale the y-axis for a selected curve.</span>
 
-<span class="sd">        Returns : float</span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        The maximum y-value collected so far for this current curve.</span>
+<span class="sd">        float</span>
+<span class="sd">            The maximum y-value collected so far for this current curve.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_y_value</span>
 
@@ -456,10 +455,10 @@
 <span class="sd">        Provide the the most recent timestamp accumulated from the data buffer.</span>
 <span class="sd">        This is useful for scaling the x-axis.</span>
 
-<span class="sd">        Returns : float</span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
+<span class="sd">        float</span>
 <span class="sd">            The timestamp of the most recent data point recorded into the data buffer.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
@@ -587,8 +586,9 @@
 <span class="sd">        symbolSize : int</span>
 <span class="sd">            How big the symbols should be</span>
 
-<span class="sd">        Returns : TimePlotCurveItem</span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
+<span class="sd">        new_curve : TimePlotCurveItem</span>
 <span class="sd">            The newly created curve.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">plot_opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -670,7 +670,6 @@
 <span class="sd">        update_immediately : bool</span>
 <span class="sd">            Update the axis range(s) immediately if True, or defer until the</span>
 <span class="sd">            next rendering.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
@@ -699,8 +698,9 @@
 <span class="sd">        Dump the current list of curves and each curve&#39;s settings into a list</span>
 <span class="sd">        of JSON-formatted strings.</span>
 
-<span class="sd">        Returns : str</span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
+<span class="sd">        settings : list</span>
 <span class="sd">            A list of JSON-formatted strings, each containing a curve&#39;s</span>
 <span class="sd">            settings</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -746,6 +746,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
+<span class="sd">        curve : TimePlotCurveItem</span>
 <span class="sd">            The found curve, or None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">:</span>
@@ -805,9 +806,10 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the size of the data buffer for the entire chart.</span>
 
-<span class="sd">        Returns : int</span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        The chart&#39;s data buffer size.</span>
+<span class="sd">        size : int</span>
+<span class="sd">            The chart&#39;s data buffer size.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">)</span></div>
 
@@ -871,8 +873,9 @@
 <span class="sd">        how long a data point stays on the plot before falling off the left</span>
 <span class="sd">        edge.</span>
 
-<span class="sd">        Returns : float</span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
+<span class="sd">        time_span : float</span>
 <span class="sd">            The extent of the x-axis of the chart, in seconds.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_time_span</span><span class="p">)</span></div>
@@ -915,8 +918,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the update interval for the chart.</span>
 
-<span class="sd">        Returns : float</span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
+<span class="sd">        interval : float</span>
 <span class="sd">            The update interval of the chart.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_interval</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1000.0</span></div>
