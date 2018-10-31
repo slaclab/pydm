@@ -10,6 +10,9 @@ cur_dir = path.abspath(path.dirname(__file__))
 with open(path.join(cur_dir, 'requirements.txt')) as f:
     requirements = f.read().split()
 
+with open(path.join(cur_dir, 'README.md')) as f:
+    long_description = f.read()
+
 # Remove the 'optional' requirements
 optional = ('PyQt5', 'PySide', 'psutil', 'pcaspy', 'pyepics')
 for package in optional:
@@ -51,9 +54,9 @@ setup(
     packages=find_packages(),
     package_dir={'pydm':'pydm', 'pydm_launcher':'pydm_launcher'},
     description='Python Display Manager',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/slaclab/pydm',
-    # scripts=['scripts/pydm', 'scripts/pydm-testing-ioc'],
-    # package_data={'pydm': ['data/access_rules.as']},
     entry_points={
         'gui_scripts': [
             'pydm=pydm_launcher.main:main'

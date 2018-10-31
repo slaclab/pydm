@@ -3,11 +3,29 @@
 [![Code Health](https://landscape.io/github/slaclab/pydm/master/landscape.svg?style=flat)](https://landscape.io/github/slaclab/pydm/master) 
 [![codecov](https://codecov.io/gh/slaclab/pydm/branch/master/graph/badge.svg)](https://codecov.io/gh/slaclab/pydm)
 
+<p align="center">
+  <h1 align="center">PyDM: Python Display Manager</h1>
 
-# pydm: Python Display Manager
-pydm is a PyQt-based framework for building user interfaces for control systems.
-The goal is to provide a no-code, drag-and-drop system to make simple screens,
-as well as a straightforward Python framework to build complex applications.
+  <p align="center">
+    PyDM is a PyQt-based framework for building user interfaces for control systems.
+    The goal is to provide a no-code, drag-and-drop system to make simple screens,
+    as well as a straightforward Python framework to build complex applications.
+    <br>
+    <br>
+    <strong>« Explore PyDM <a href="https://slaclab.github.io/pydm/">docs</a> and <a href="https://slaclab.github.io/pydm-tutorial">tutorials</a> »</strong>
+    <br>
+    <br>
+    <a href="https://github.com/slaclab/pydm/issues/new?template=bug-report.md">Report bug</a>
+    ·
+    <a href="https://github.com/slaclab/pydm/issues/new?template=feature-request.md&labels=request">Request feature</a>
+    ·
+    <a href="https://github.com/slaclab/pydm/blob/master/.github/CONTRIBUTING.md">How to Contribute</a>
+    ·
+    <a href="https://github.com/slaclab/pydm/blob/master/.github/SUPPORT.md">Support</a>
+  </p>
+</p>
+
+<br>
 
 # Python Qt Wrapper
 PyDM project uses the [qtpy](https://github.com/spyder-ide/qtpy)
