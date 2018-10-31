@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMTimePlot &mdash; PyDM v1.5.0+76.gcd4f79a documentation</title>
+  <title>PyDMTimePlot &mdash; PyDM v1.5.0+81.g837f8d5 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.5.0+76.gcd4f79a
+                v1.5.0+81.g837f8d5
               </div>
             
           
@@ -92,9 +92,7 @@
 </ul>
 <p class="caption"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/first_display.html">Building Your First Display with Qt Designer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/scripted_displays.html">Making Python-based Displays</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/macros.html">Macro Substitution</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
 <ul class="current">
@@ -246,7 +244,7 @@ item, but do not display the legend.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>y_channel</strong> (<em>str</em>) – The PV address</li>
 <li><strong>name</strong> (<em>str</em>) – The name of the curve (usually made the same as the PV address)</li>
 <li><strong>color</strong> (<em>QColor</em>) – The color for the curve</li>
@@ -255,9 +253,13 @@ item, but do not display the legend.</li>
 <li><strong>symbol</strong> (<em>str</em>) – The symbols as markers along the curve, i.e. circle, square,
 triangle, star, etc.</li>
 <li><strong>symbolSize</strong> (<em>int</em>) – How big the symbols should be</li>
-<li><strong>Returns</strong> (<em>TimePlotCurveItem</em>) – </li>
-<li><strong>-------</strong> – The newly created curve.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_curve</strong> – The newly created curve.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TimePlotCurveItem</p>
 </td>
 </tr>
 </tbody>
@@ -275,7 +277,16 @@ If true, the values in minYRange and maxYRange are ignored.</p>
 <dt id="pydm.widgets.timeplot.PyDMTimePlot.bufferSize">
 <code class="descname">bufferSize</code><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.bufferSize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the size of the data buffer for the entire chart.</p>
-<p>The chart’s data buffer size.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>size</strong> – The chart’s data buffer size.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -289,9 +300,17 @@ If true, the values in minYRange and maxYRange are ignored.</p>
 <code class="descname">curves</code><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.curves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump the current list of curves and each curve’s settings into a list
 of JSON-formatted strings.</p>
-<blockquote>
-<div>A list of JSON-formatted strings, each containing a curve’s
-settings</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>settings</strong> – A list of JSON-formatted strings, each containing a curve’s
+settings</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -327,9 +346,9 @@ settings</div></blockquote>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pv_name</strong> (<em>str</em>) – The curve’s PV address.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>curve</strong> – The found curve, or None.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">The found curve, or None.</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">TimePlotCurveItem</td>
 </tr>
 </tbody>
 </table>
@@ -339,7 +358,16 @@ settings</div></blockquote>
 <dt id="pydm.widgets.timeplot.PyDMTimePlot.getBufferSize">
 <code class="descname">getBufferSize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.getBufferSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.getBufferSize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the size of the data buffer for the entire chart.</p>
-<p>The chart’s data buffer size.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>size</strong> – The chart’s data buffer size.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -347,9 +375,17 @@ settings</div></blockquote>
 <code class="descname">getCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.getCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.getCurves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump the current list of curves and each curve’s settings into a list
 of JSON-formatted strings.</p>
-<blockquote>
-<div>A list of JSON-formatted strings, each containing a curve’s
-settings</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>settings</strong> – A list of JSON-formatted strings, each containing a curve’s
+settings</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -358,16 +394,32 @@ settings</div></blockquote>
 <dd><p>The extent of the x-axis of the chart, in seconds.  In other words,
 how long a data point stays on the plot before falling off the left
 edge.</p>
-<blockquote>
-<div>The extent of the x-axis of the chart, in seconds.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>time_span</strong> – The extent of the x-axis of the chart, in seconds.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.timeplot.PyDMTimePlot.getUpdateInterval">
 <code class="descname">getUpdateInterval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.getUpdateInterval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.getUpdateInterval" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the update interval for the chart.</p>
-<blockquote>
-<div>The update interval of the chart.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>interval</strong> – The update interval of the chart.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -536,16 +588,32 @@ collect data for, before rotating the buffer.</td>
 <dd><p>The extent of the x-axis of the chart, in seconds.  In other words,
 how long a data point stays on the plot before falling off the left
 edge.</p>
-<blockquote>
-<div>The extent of the x-axis of the chart, in seconds.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>time_span</strong> – The extent of the x-axis of the chart, in seconds.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.timeplot.PyDMTimePlot.updateInterval">
 <code class="descname">updateInterval</code><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.updateInterval" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the update interval for the chart.</p>
-<blockquote>
-<div>The update interval of the chart.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>interval</strong> – The update interval of the chart.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
