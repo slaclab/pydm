@@ -70,7 +70,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         self.initialized = False
         self.is_container = is_container
         self.cls = cls
-        self.group = group
+        self._group = group
         self.extensions = extensions
         self.manager = None
 
@@ -130,7 +130,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         Return a common group name so all PyDM Widgets are together in
         Qt Designer.
         """
-        return self.group
+        return self._group
 
     def toolTip(self):
         """
