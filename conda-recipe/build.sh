@@ -8,7 +8,7 @@ mkdir -p $PREFIX/etc/pydm
 
 # Create auxiliary vars
 DESIGNER_PLUGIN_PATH=$PREFIX/etc/pydm
-DESIGNER_PLUGIN=$DESIGNER_PLUGIN_PATH/designer_plugin.py
+DESIGNER_PLUGIN=$DESIGNER_PLUGIN_PATH/pydm_designer_plugin.py
 ACTIVATE=$PREFIX/etc/conda/activate.d/pydm.sh
 DEACTIVATE=$PREFIX/etc/conda/deactivate.d/pydm.sh
 
