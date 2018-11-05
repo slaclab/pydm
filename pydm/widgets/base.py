@@ -675,7 +675,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_sensitive_border = checked
         self.alarm_severity_changed(self._alarm_state)
 
-    @Property(bool)
     def precisionFromPV(self):
         """
         A choice whether or not to use the precision given by channel.
@@ -699,8 +698,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         return self._precision_from_pv
 
-    @precisionFromPV.setter
-    def precisionFromPV(self, value):
+    def setPrecisionFromPV(self, value):
         """
         A choice whether or not to use the precision given by channel.
 
@@ -724,7 +722,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if self._precision_from_pv != bool(value):
             self._precision_from_pv = value
 
-    @Property(int)
     def precision(self):
         """
         The precision to be used when formatting the output of the PV
@@ -736,8 +733,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         return self._prec
 
-    @precision.setter
-    def precision(self, new_prec):
+    def setPrecision(self, new_prec):
         """
         The precision to be used when formatting the output of the PV.
         This has no effect when ```precisionFromPV``` is True.
@@ -755,7 +751,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self._prec = int(new_prec)
             self.update_format_string()
 
-    @Property(bool)
     def showUnits(self):
         """
         A choice whether or not to show the units given by the channel
@@ -772,8 +767,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         return self._show_units
 
-    @showUnits.setter
-    def showUnits(self, show_units):
+    def setShowUnits(self, show_units):
         """
         A choice whether or not to show the units given by the channel
 

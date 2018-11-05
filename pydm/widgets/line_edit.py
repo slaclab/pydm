@@ -270,3 +270,28 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
         if self._display is not None:
             self.setText(self._display)
         super(PyDMLineEdit, self).focusOutEvent(event)
+    
+    # The methods for precisionFromPV, precision, and showUnits are
+    # all defined in PyDMWidget, but we don't expose them as properties there,
+    # because not all widgets necessarily need them.
+    # A future version of PyDM may move the methods out of PyDMWidget entirely.
+    precisionFromPV = Property(bool, PyDMWritableWidget.precisionFromPV,
+                          PyDMWritableWidget.setPrecisionFromPV,
+                          doc="""
+    If True, the widget will use the precision information
+    from the Channel, if available.
+    """)
+
+    precision = Property(int, PyDMWritableWidget.precision,
+                          PyDMWritableWidget.setPrecision,
+                          doc="""
+    The precision to be used when formatting the output of the PV.
+    """)
+    
+    showUnits = Property(bool, PyDMWritableWidget.showUnits,
+                          PyDMWritableWidget.setShowUnits,
+                          doc="""
+    If set to True, the units given in the channel will be displayed
+    with the value. If using an EPICS channel, this will automatically
+    be linked to the EGU field of the PV.
+    """)

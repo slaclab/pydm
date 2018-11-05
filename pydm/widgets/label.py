@@ -78,3 +78,28 @@ class PyDMLabel(QLabel, PyDMWidget, DisplayFormat):
         # If you made it this far, just turn whatever the heck the value
         # is into a string and display it.
         self.setText(str(new_value))
+    
+    # The methods for precisionFromPV, precision, and showUnits are
+    # all defined in PyDMWidget, but we don't expose them as properties there,
+    # because not all widgets necessarily need them.
+    # A future version of PyDM may move the methods out of PyDMWidget entirely.
+    precisionFromPV = Property(bool, PyDMWidget.precisionFromPV,
+                          PyDMWidget.setPrecisionFromPV,
+                          doc="""
+    If True, the widget will use the precision information
+    from the Channel, if available.
+    """)
+
+    precision = Property(int, PyDMWidget.precision,
+                          PyDMWidget.setPrecision,
+                          doc="""
+    The precision to be used when formatting the output of the PV.
+    """)
+    
+    showUnits = Property(bool, PyDMWidget.showUnits,
+                          PyDMWidget.setShowUnits,
+                          doc="""
+    If set to True, the units given in the channel will be displayed
+    with the value. If using an EPICS channel, this will automatically
+    be linked to the EGU field of the PV.
+    """)
