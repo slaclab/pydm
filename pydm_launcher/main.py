@@ -61,7 +61,8 @@ def main():
         default='INFO'
         )
     parser.add_argument('--version', action='version',
-                    version='PyDM {version}'.format(version=pydm.__version__))
+                    version='PyDM {version}'.format(version=pydm.__version__),
+                    help="Show PyDM's version number and exit.")
     parser.add_argument(
         '-m', '--macro',
         help='Specify macro replacements to use, in JSON object format.' +
@@ -76,9 +77,9 @@ def main():
         )
     parser.add_argument(
         '--stylesheet',
-        help='Provide the full path to the CSS stylesheet file, which must' +
-             ' contain the appearances (styles) to be applied to specific ' +
-             ' Qt/PyDM widget types.',
+        help='Specify the full path to a CSS stylesheet file, which' +
+             ' can be used to customize the appearance of PyDM and' +
+             ' Qt widgets.',
         default=None
         )
     parser.add_argument(
