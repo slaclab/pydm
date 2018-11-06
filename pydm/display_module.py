@@ -1,8 +1,8 @@
+import sys
 from os import path
 from qtpy import uic
 from qtpy.QtWidgets import QWidget
 from .utilities import macro
-
 
 class Display(QWidget):
     def __init__(self, parent=None, args=None, macros=None):
@@ -11,7 +11,8 @@ class Display(QWidget):
         self.load_ui(parent=parent, macros=macros)
 
     def ui_filepath(self):
-        raise NotImplementedError
+        path_to_class = sys.modules[self.__module__].__file__
+        return path.join(path.dirname(path.realpath(path_to_class)), self.ui_filename())
 
     def ui_filename(self):
         raise NotImplementedError
