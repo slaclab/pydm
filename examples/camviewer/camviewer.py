@@ -503,9 +503,6 @@ class CamViewer(Display):
     def ui_filename(self):
         return 'camviewer.ui'
 
-    def ui_filepath(self):
-        return path.join(path.dirname(path.realpath(__file__)), self.ui_filename())
-
     def channels(self):
         return self._channels
 
