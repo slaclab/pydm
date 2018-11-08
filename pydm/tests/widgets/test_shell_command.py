@@ -168,13 +168,14 @@ def test_get_set_command(qtbot, current_cmd, next_cmd):
     assert pydm_shell_command.command == next_cmd
 
 
-@pytest.mark.parametrize("cmd", [
-    "ping google.com -n 3" if platform.system() == "Windows" else "ping google.com -c 3",
-    "pydm_shell_invalid_command_test invalid command",
-    "",
-    None,
+@pytest.mark.parametrize("cmd, val", [
+    ("choice /c yn /d n /t 0" if platform.system() == "Windows" else "sleep 0",
+        2 if platform.system() == "Windows" else 0),
+    ("pydm_shell_invalid_command_test invalid command", None),
+    ("", None),
+    (None, None),
 ])
-def test_mouse_release_event(qtbot, cmd, caplog):
+def test_mouse_release_event(qtbot, caplog, cmd, val):
     """
     Test to ensure the widget's triggering of the Mouse Release event, which will also execute the shell command.
 
@@ -193,6 +194,8 @@ def test_mouse_release_event(qtbot, cmd, caplog):
         To capture the log messages
     cmd : str
         The shell command for the widget to execute
+    val : int
+        The expected exit code.
     """
     pydm_shell_command = PyDMShellCommand()
     qtbot.addWidget(pydm_shell_command)
@@ -202,8 +205,8 @@ def test_mouse_release_event(qtbot, cmd, caplog):
 
     if cmd:
         if "invalid" not in cmd:
-            output = pydm_shell_command.process.stdout.readlines()
-            assert len(output) > 0
+            ret = pydm_shell_command.process.wait()
+            assert ret == val
         else:
             for record in caplog.records:
                 assert record.levelno == ERROR
@@ -212,13 +215,14 @@ def test_mouse_release_event(qtbot, cmd, caplog):
         assert pydm_shell_command.process is None
 
 
-@pytest.mark.parametrize("cmd", [
-    "ping google.com -n 3" if platform.system() == "Windows" else "ping google.com -c 3",
-    "pydm_shell_invalid_command_test invalid command",
-    "",
-    None,
+@pytest.mark.parametrize("cmd, val", [
+    ("choice /c yn /d n /t 0" if platform.system() == "Windows" else "sleep 0",
+        2 if platform.system() == "Windows" else 0),
+    ("pydm_shell_invalid_command_test invalid command", None),
+    ("", None),
+    (None, None),
 ])
-def test_execute_command(qtbot, signals, caplog, cmd):
+def test_execute_command(qtbot, signals, caplog, cmd, val):
     """
     Test to ensure the widget's ability to execute a shell command.
 
@@ -238,6 +242,8 @@ def test_execute_command(qtbot, signals, caplog, cmd):
         To capture the log messages
     cmd : str
         The shell command for the widget to execute
+    val : int
+        The expected exit code.
     """
     pydm_shell_command = PyDMShellCommand()
     qtbot.addWidget(pydm_shell_command)
@@ -248,8 +254,8 @@ def test_execute_command(qtbot, signals, caplog, cmd):
 
     if cmd:
         if "invalid" not in cmd:
-            output = pydm_shell_command.process.stdout.readlines()
-            assert len(output) > 0
+            ret = pydm_shell_command.process.wait()
+            assert ret == val
         else:
             for record in caplog.records:
                 assert record.levelno == ERROR
@@ -287,7 +293,7 @@ def test_execute_multiple_commands(qtbot, signals, caplog, allow_multiple):
 
     pydm_shell_command._allow_multiple = allow_multiple
 
-    cmd = "ping google.com -n 10" if platform.system() == "Windows" else "ping google.com"
+    cmd = "choice /c yn /d y /t 1" if platform.system() == "Windows" else "sleep 0.1"
     pydm_shell_command.command = cmd
     signals.send_value_signal[str].connect(pydm_shell_command.execute_command)
     signals.send_value_signal[str].emit(cmd)
