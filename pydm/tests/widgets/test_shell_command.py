@@ -169,7 +169,7 @@ def test_get_set_command(qtbot, current_cmd, next_cmd):
 
 
 @pytest.mark.parametrize("cmd", [
-    "ping google.com -n 3" if platform.system() == "Windows" else "ping google.com -c 3",
+    "TIMEOUT /T 0" if platform.system() == "Windows" else "sleep 0",
     "pydm_shell_invalid_command_test invalid command",
     "",
     None,
@@ -202,8 +202,8 @@ def test_mouse_release_event(qtbot, cmd, caplog):
 
     if cmd:
         if "invalid" not in cmd:
-            output = pydm_shell_command.process.stdout.readlines()
-            assert len(output) > 0
+            ret = pydm_shell_command.process.wait()
+            assert ret == 0
         else:
             for record in caplog.records:
                 assert record.levelno == ERROR
@@ -213,7 +213,7 @@ def test_mouse_release_event(qtbot, cmd, caplog):
 
 
 @pytest.mark.parametrize("cmd", [
-    "ping google.com -n 3" if platform.system() == "Windows" else "ping google.com -c 3",
+    "TIMEOUT /T 0" if platform.system() == "Windows" else "sleep 0",
     "pydm_shell_invalid_command_test invalid command",
     "",
     None,
@@ -248,8 +248,8 @@ def test_execute_command(qtbot, signals, caplog, cmd):
 
     if cmd:
         if "invalid" not in cmd:
-            output = pydm_shell_command.process.stdout.readlines()
-            assert len(output) > 0
+            ret = pydm_shell_command.process.wait()
+            assert ret == 0
         else:
             for record in caplog.records:
                 assert record.levelno == ERROR
@@ -287,7 +287,7 @@ def test_execute_multiple_commands(qtbot, signals, caplog, allow_multiple):
 
     pydm_shell_command._allow_multiple = allow_multiple
 
-    cmd = "ping google.com -n 10" if platform.system() == "Windows" else "ping google.com"
+    cmd = "TIMEOUT /T 0" if platform.system() == "Windows" else "sleep 0.1"
     pydm_shell_command.command = cmd
     signals.send_value_signal[str].connect(pydm_shell_command.execute_command)
     signals.send_value_signal[str].emit(cmd)
