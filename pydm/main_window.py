@@ -8,6 +8,7 @@ from .display_module import Display
 from .connection_inspector import ConnectionInspector
 from .about_pydm import AboutWindow
 from . import data_plugins
+from . import tools
 import subprocess
 import platform
 import logging
@@ -82,6 +83,8 @@ class PyDMMainWindow(QMainWindow):
             if os.path.isfile(designer_path):
                 self.designer_path = designer_path
                 break
+
+        self.update_tools_menu()
 
     def set_display_widget(self, new_widget):
         if new_widget == self._display_widget:
@@ -373,7 +376,20 @@ class PyDMMainWindow(QMainWindow):
 
         if filename:
             filename = str(filename)
-            self.app.install_external_tool(filename)
+            tools.install_external_tool(filename)
+            self.update_tools_menu()
+
+    def update_tools_menu(self):
+        """
+        Update the Main Window Tools menu.
+        """
+        kwargs = {'channels': None, 'sender': self}
+        tools.assemble_tools_menu(self.ui.menuTools,
+                                  clear_menu=True,
+                                  **kwargs)
+
+        self.ui.menuTools.addSeparator()
+        self.ui.menuTools.addAction(self.ui.actionLoadTool)
 
     @Slot(bool)
     def reload_display(self, checked):

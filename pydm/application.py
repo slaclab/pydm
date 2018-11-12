@@ -14,17 +14,12 @@ import json
 import inspect
 import logging
 import warnings
-import platform
-import collections
-from functools import partial
-from . import config
 from .display_module import Display
-from qtpy.QtCore import Qt, QEvent, QTimer, Slot
-from qtpy.QtWidgets import QApplication, QWidget, QToolTip, QAction, QMenu
-from qtpy.QtGui import QClipboard, QColor
+from qtpy.QtCore import Qt, QTimer, Slot
+from qtpy.QtWidgets import QApplication, QWidget
+from qtpy.QtGui import QColor
 from qtpy import uic
 from .main_window import PyDMMainWindow
-from .tools import ExternalTool
 
 from .utilities import macro, which, path_info, find_display_in_path
 from .utilities.stylesheet import apply_stylesheet
@@ -81,7 +76,6 @@ class PyDMApplication(QApplication):
     """
     # Instantiate our plugins.
     plugins = data_plugins.plugin_modules
-    tools = dict()
 
     # HACK. To be replaced with some stylesheet stuff eventually.
     alarm_severity_color_map = {
@@ -258,12 +252,13 @@ class PyDMApplication(QApplication):
                                      hide_status_bar=self.hide_status_bar)
 
         self.main_window = main_window
+        self.main_window.update_tools_menu()
+
         if self.fullscreen:
             main_window.enter_fullscreen()
         else:
             main_window.show()
 
-        self.load_external_tools()
         # If we are launching a new window, we don't want it to sit right on top of an existing window.
         if len(self.windows) > 1:
             main_window.move(main_window.x() + 10, main_window.y() + 10)
@@ -581,134 +576,3 @@ class PyDMApplication(QApplication):
                         RulesDispatcher().unregister(child_widget)
             except Exception:
                 pass
-
-    def load_external_tools(self):
-        """
-        Loads all the external tools available at the given
-        `PYDM_TOOLS_PATH` environment variable and subfolders that
-        follows the `*_tool.py` and have classes that inherits from
-        the `pydm.tools.ExternalTool` class.
-        """
-        EXT_TOOLS_TOKEN = "_tool.py"
-        path = os.getenv("PYDM_TOOLS_PATH", None)
-
-        logger.debug("*"*80)
-        logger.debug("* Loading PyDM External Tools")
-        logger.debug("*"*80)
-
-        if path is not None:
-            logger.debug("Looking for external tools at: {}".format(path))
-            if platform.system() == "Windows":
-                locations = path.split(";")
-            else:
-                locations = path.split(":")
-            for loc in locations:
-                for root, _, files in os.walk(loc):
-                    for name in files:
-                        if name.endswith(EXT_TOOLS_TOKEN):
-                            self.install_external_tool(os.path.join(root, name))
-        else:
-            logger.debug("External Tools not loaded. No External Tools Path specified.")
-
-    def install_external_tool(self, tool):
-        """
-        Install an External Tool at the PyDMApplication and add it to the
-        main window Tools menu.
-
-        Parameters
-        ----------
-        tool : str or pydm.tools.ExternalTool
-            The full path to a file containing a ExternalTool definition
-            or an Instance of an ExternalTool.
-        """
-
-        def reorder_tools_dict():
-            self.tools = collections.OrderedDict(sorted(self.tools.items()))
-            for k in self.tools.keys():
-                if isinstance(self.tools[k], dict):
-                    self.tools[k] = collections.OrderedDict(sorted(self.tools[k].items()))
-
-        try:
-            if isinstance(tool, str):
-                base_dir, _, _ = path_info(tool)
-                sys.path.append(base_dir)
-                temp_name = str(uuid.uuid4())
-
-                module = imp.load_source(temp_name, tool)
-                classes = [obj for _, obj in inspect.getmembers(module)
-                           if inspect.isclass(obj) and issubclass(obj, ExternalTool) and obj != ExternalTool]
-                if len(classes) == 0:
-                    raise ValueError("Invalid File Format. {} has no class inheriting from ExternalTool. Nothing to open at this time.".format(tool))
-                obj = [c() for c in classes]
-            elif isinstance(tool, ExternalTool):
-                # The actual tool to be installed...
-                obj = [tool]
-            else:
-                raise ValueError("Invalid argument for parameter 'tool'. String or ExternalTool expected.")
-
-            for o in obj:
-                if o.group is not None and o.group != "":
-                    if o.group not in self.tools:
-                        self.tools[o.group] = dict()
-                    self.tools[o.group][o.name] = o
-                else:
-                    self.tools[o.name] = o
-
-            reorder_tools_dict()
-            kwargs = {'channels': None, 'sender': self.main_window}
-            self.assemble_tools_menu(self.main_window.ui.menuTools, clear_menu=True, **kwargs)
-        except Exception as e:
-            print("Failed to load External Tool: ", tool, ". Exception was: ", str(e))
-
-    def assemble_tools_menu(self, parent_menu, clear_menu=False, widget_only=False, **kwargs):
-        """
-        Assemble the Tools menu for a given parent menu.
-
-        Parameters
-        ----------
-        parent_menu : QMenu
-            The main menu item to hold the tools menu tree.
-        clear_menu : bool
-            Whether of not we should clear the menu before adding the tools.
-        widget_only : bool
-            Whether or not generate only the menu for widgets compatible
-            tools. This should be True when creating the menu for the
-            PyDMWidgets and False for most of the other cases.
-        kwargs : dict
-            Parameters sent directly to the `call` method of the ExternalTool
-            instance. In general this dict is composed by `channels` which
-            is a list and `sender` which is a QWidget.
-
-        """
-        def assemble_action(menu, tool_obj):
-            if tool_obj.icon is not None:
-                action = menu.addAction(tool_obj.name)
-                action.setIcon(tool_obj.icon)
-            else:
-                action = menu.addAction(tool_obj.name)
-            action.triggered.connect(partial(tool_obj.call, **kwargs))
-
-        if clear_menu:
-            parent_menu.clear()
-        else:
-            parent_menu.addSeparator()
-
-        for k, v in self.tools.items():
-            if isinstance(v, dict):
-                m = QMenu(k, parent=parent_menu)
-                should_create_menu = False
-                for _, t in v.items():
-                    if widget_only and not t.use_with_widgets:
-                        continue
-                    assemble_action(m, t)
-                    should_create_menu = True
-                if should_create_menu:
-                    parent_menu.addMenu(m)
-            else:
-                if widget_only and not v.use_with_widgets:
-                        continue
-                assemble_action(parent_menu, v)
-
-        if not widget_only:
-            parent_menu.addSeparator()
-            parent_menu.addAction(self.main_window.ui.actionLoadTool)
