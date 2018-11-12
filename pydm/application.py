@@ -77,20 +77,6 @@ class PyDMApplication(QApplication):
     # Instantiate our plugins.
     plugins = data_plugins.plugin_modules
 
-    # HACK. To be replaced with some stylesheet stuff eventually.
-    alarm_severity_color_map = {
-        0: QColor(0, 0, 0),  # NO_ALARM
-        1: QColor(220, 220, 20),  # MINOR_ALARM
-        2: QColor(240, 0, 0),  # MAJOR_ALARM
-        3: QColor(240, 0, 240)  # INVALID_ALARM
-    }
-
-    # HACK. To be replaced with some stylesheet stuff eventually.
-    connection_status_color_map = {
-        False: QColor(255, 255, 255),
-        True: QColor(0, 0, 0)
-    }
-
     def __init__(self, ui_file=None, command_line_args=[], display_args=[],
                  perfmon=False, hide_nav_bar=False, hide_menu_bar=False,
                  hide_status_bar=False, read_only=False, macros=None,
