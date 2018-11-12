@@ -62,7 +62,7 @@ def install_external_tool(tool):
 
         ext_tools = collections.OrderedDict(sorted(ext_tools.items()))
         for k in ext_tools.keys():
-            if isinstance(tools[k], dict):
+            if isinstance(ext_tools[k], dict):
                 ext_tools[k] = collections.OrderedDict(
                     sorted(ext_tools[k].items()))
     except Exception as e:
