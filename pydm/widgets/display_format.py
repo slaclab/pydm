@@ -2,6 +2,8 @@ import math
 import numpy as np
 
 import logging
+import warnings
+
 logger = logging.getLogger(__name__)
 
 
@@ -27,7 +29,9 @@ def parse_value_for_display(value, precision, display_format_type=DisplayFormat.
             try:
                 # Stop at the first zero (EPICS convention)
                 # Assume the ndarray is one-dimensional
-                zeros = np.where(value == 0)[0]
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+                    zeros = np.where(value == 0)[0]
                 if zeros.size > 0:
                     value = value[:zeros[0]]
                 r = value.tobytes().decode(string_encoding)
