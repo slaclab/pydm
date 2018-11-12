@@ -16,6 +16,7 @@ from ..utilities import path_info
 logger = logging.getLogger(__name__)
 ext_tools = {}
 
+
 def install_external_tool(tool):
     """
     Install an External Tool at the PyDMApplication and add it to the
@@ -27,12 +28,7 @@ def install_external_tool(tool):
         The full path to a file containing a ExternalTool definition
         or an Instance of an ExternalTool.
     """
-    def reorder_tools_dict():
-        tools = collections.OrderedDict(sorted(ext_tools.items()))
-        for k in ext_tools.keys():
-            if isinstance(tools[k], dict):
-                tools[k] = collections.OrderedDict(
-                    sorted(tools[k].items()))
+    global ext_tools
 
     try:
         if isinstance(tool, str):
@@ -64,7 +60,11 @@ def install_external_tool(tool):
             else:
                 ext_tools[o.name] = o
 
-        reorder_tools_dict()
+        ext_tools = collections.OrderedDict(sorted(ext_tools.items()))
+        for k in ext_tools.keys():
+            if isinstance(tools[k], dict):
+                ext_tools[k] = collections.OrderedDict(
+                    sorted(ext_tools[k].items()))
     except Exception as e:
         logger.exception("Failed to load External Tool: %s." % tool)
 
@@ -130,10 +130,6 @@ def load_external_tools():
     the `pydm.tools.ExternalTool` class.
     """
     if not ext_tools:
-        logger.debug("*" * 80)
-        logger.debug("* Loading PyDM External Tools")
-        logger.debug("*" * 80)
-
         EXT_TOOLS_TOKEN = "_tool.py"
         path = os.getenv("PYDM_TOOLS_PATH", None)
 
