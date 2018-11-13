@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Application &mdash; PyDM v1.5.0+94.gded7862 documentation</title>
+  <title>Application &mdash; PyDM v1.5.0+100.g23973cb documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.5.0+94.gded7862
+                v1.5.0+100.g23973cb
               </div>
             
           
@@ -234,30 +234,6 @@ create a PyDMMainWindow in the initialization (Default is True).</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.PyDMApplication.assemble_tools_menu">
-<code class="descname">assemble_tools_menu</code><span class="sig-paren">(</span><em>parent_menu</em>, <em>clear_menu=False</em>, <em>widget_only=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.assemble_tools_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.assemble_tools_menu" title="Permalink to this definition">¶</a></dt>
-<dd><p>Assemble the Tools menu for a given parent menu.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent_menu</strong> (<em>QMenu</em>) – The main menu item to hold the tools menu tree.</li>
-<li><strong>clear_menu</strong> (<em>bool</em>) – Whether of not we should clear the menu before adding the tools.</li>
-<li><strong>widget_only</strong> (<em>bool</em>) – Whether or not generate only the menu for widgets compatible
-tools. This should be True when creating the menu for the
-PyDMWidgets and False for most of the other cases.</li>
-<li><strong>kwargs</strong> (<em>dict</em>) – Parameters sent directly to the <cite>call</cite> method of the ExternalTool
-instance. In general this dict is composed by <cite>channels</cite> which
-is a list and <cite>sender</cite> which is a QWidget.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydm.PyDMApplication.close_widget_connections">
 <code class="descname">close_widget_connections</code><span class="sig-paren">(</span><em>widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.close_widget_connections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.close_widget_connections" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a widget to start from, traverse the tree of child widgets,
@@ -327,31 +303,6 @@ you are running pydm from.  This function does that translation.</p>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydm.PyDMApplication.install_external_tool">
-<code class="descname">install_external_tool</code><span class="sig-paren">(</span><em>tool</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.install_external_tool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.install_external_tool" title="Permalink to this definition">¶</a></dt>
-<dd><p>Install an External Tool at the PyDMApplication and add it to the
-main window Tools menu.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tool</strong> (<em>str</em><em> or </em><em>pydm.tools.ExternalTool</em>) – The full path to a file containing a ExternalTool definition
-or an Instance of an ExternalTool.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydm.PyDMApplication.load_external_tools">
-<code class="descname">load_external_tools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.load_external_tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.load_external_tools" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads all the external tools available at the given
-<cite>PYDM_TOOLS_PATH</cite> environment variable and subfolders that
-follows the <cite>*_tool.py</cite> and have classes that inherits from
-the <cite>pydm.tools.ExternalTool</cite> class.</p>
 </dd></dl>
 
 <dl class="method">
@@ -628,7 +579,6 @@ and try to unregister rules to any widgets.</p>
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   
