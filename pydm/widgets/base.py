@@ -7,6 +7,7 @@ from qtpy.QtGui import QColor, QClipboard, QCursor
 from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
 from .. import data_plugins
+from .. import tools
 from ..utilities import is_pydm_app, remove_protocol
 from .rules import RulesDispatcher
 
@@ -273,8 +274,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
             menu = QMenu(parent=self)
 
         kwargs = {'channels': self.channels_for_tools(), 'sender': self}
-        if hasattr(self.app, 'assemble_tools_menu'):
-            self.app.assemble_tools_menu(menu, widget_only=True, **kwargs)
+        tools.assemble_tools_menu(menu, widget_only=True, **kwargs)
         return menu
 
     def open_context_menu(self, ev):
