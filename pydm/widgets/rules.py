@@ -161,7 +161,13 @@ class RulesEngine(QThread):
 
     def unregister(self, widget_ref):
         with QMutexLocker(self.map_lock):
-            w_data = self.widget_map.pop(widget_ref, None)
+            # If hash() is called the first time only after the object was
+            # deleted, the call will raise TypeError.
+            # In order to ignore it, let's just call it again
+            try:
+                w_data = self.widget_map.pop(widget_ref, None)
+            except TypeError:
+                w_data = self.widget_map.pop(widget_ref, None)
 
         if not w_data:
             return
@@ -230,7 +236,8 @@ class RulesEngine(QThread):
         -------
         None
         """
-        self.widget_map[widget_ref][index]['conn'][ch_index] = value
+        with QMutexLocker(self.map_lock):
+            self.widget_map[widget_ref][index]['conn'][ch_index] = value
 
     def warn_unconnected_channels(self, widget_ref, index):
         logger.error(
