@@ -7,6 +7,7 @@ from .pydm_ui import Ui_MainWindow
 from .display_module import Display
 from .connection_inspector import ConnectionInspector
 from .about_pydm import AboutWindow
+from .widgets import rules
 from . import data_plugins
 from . import tools
 import subprocess
@@ -104,7 +105,7 @@ class PyDMMainWindow(QMainWindow):
     def clear_display_widget(self):
         if self._display_widget is not None:
             self.setCentralWidget(QWidget())
-            self.app.unregister_widget_rules(self._display_widget)
+            rules.unregister_widget_rules(self._display_widget)
             self._display_widget.deleteLater()
             self._display_widget = None
             self.ui.actionEdit_in_Designer.setEnabled(False)

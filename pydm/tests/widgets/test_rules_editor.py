@@ -43,7 +43,7 @@ def test_rules_editor(qtbot, monkeypatch):
     rules_list = [{'name': 'Rule #1', 'property': 'Enable',
                    'expression': 'ch[0] > 1',
                    'channels': [
-                       {'channel': 'foo://MTEST:Float', 'trigger': True}]}]
+                       {'channel': 'ca://MTEST:Float', 'trigger': True}]}]
 
     # Add the rules to the widget
     widget.rules = json.dumps(rules_list)
@@ -61,7 +61,7 @@ def test_rules_editor(qtbot, monkeypatch):
     assert re.txt_name.text() == 'Rule #1'
     assert re.cmb_property.currentText() == 'Enable'
     assert re.tbl_channels.rowCount() == 1
-    assert re.tbl_channels.item(0, 0).text() == 'foo://MTEST:Float'
+    assert re.tbl_channels.item(0, 0).text() == 'ca://MTEST:Float'
     assert re.tbl_channels.item(0, 1).checkState() == QtCore.Qt.Checked
     assert re.lbl_expected_type.text() == 'bool'
     assert re.txt_expression.text() == 'ch[0] > 1'
@@ -72,8 +72,8 @@ def test_rules_editor(qtbot, monkeypatch):
     assert re.rules[0]['name'] == 'Rule #1-Test'
 
     qtbot.mouseClick(re.btn_add_channel, QtCore.Qt.LeftButton)
-    re.tbl_channels.item(1, 0).setText("foo://TEST")
-    assert re.rules[0]['channels'][1]['channel'] == 'foo://TEST'
+    re.tbl_channels.item(1, 0).setText("ca://TEST")
+    assert re.rules[0]['channels'][1]['channel'] == 'ca://TEST'
     assert re.rules[0]['channels'][1]['trigger'] is False
 
     re.txt_expression.clear()
@@ -168,7 +168,7 @@ def test_rules_editor_data_valid(qtbot):
     rules_list = [{'name': 'Rule #1', 'property': 'Enable',
                    'expression': 'ch[0] > 1',
                    'channels': [
-                       {'channel': 'foo://MTEST:Float', 'trigger': True}]}]
+                       {'channel': 'ca://MTEST:Float', 'trigger': True}]}]
 
     # Add the rules to the widget
     widget.rules = json.dumps(rules_list)

@@ -1,3 +1,4 @@
+import weakref
 import logging
 import functools
 import json
@@ -61,16 +62,16 @@ def widget_destroyed(channels, widget):
     ----------
     channels : list
         A list of PyDMChannel objects that this widget uses.
-    widget : QWidget
-        The widget. Which is pretty useless at this point.
+    widget : weakref
+        Weakref to the widget.
     """
     chs = channels()
-    if not chs:
-        return
+    if chs:
+        for ch in chs:
+            if ch:
+                ch.disconnect(destroying=True)
 
-    for ch in chs:
-        if ch:
-            ch.disconnect()
+    RulesDispatcher().unregister(widget)
 
 
 class PyDMPrimitiveWidget(object):
@@ -246,7 +247,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
 
-        self.destroyed.connect(functools.partial(widget_destroyed, self.channels))
+        self.destroyed.connect(
+            functools.partial(widget_destroyed, self.channels, weakref.ref(self))
+        )
 
     def widget_ctx_menu(self):
         """
