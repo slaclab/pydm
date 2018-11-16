@@ -163,13 +163,12 @@ class RulesEngine(QThread):
         with QMutexLocker(self.map_lock):
             # If hash() is called the first time only after the object was
             # deleted, the call will raise TypeError.
-            # In order to ignore it, let's just call it again
+            # We should just ignore it.
             w_data = None
             try:
                 w_data = self.widget_map.pop(widget_ref, None)
             except TypeError:
-                print("***** DEBUG: ", w_data, " - ", widget_ref)
-                print("***** Map: ", self.widget_map)
+                pass
 
         if not w_data:
             return
