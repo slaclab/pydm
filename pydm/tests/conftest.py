@@ -1,8 +1,6 @@
 # coding: utf-8
 # Fixtures for PyDM Unit Tests
 
-pytest_plugins = 'pytester'
-
 import pytest
 from pytestqt.qt_compat import qt_api
 
@@ -14,8 +12,6 @@ from qtpy.QtCore import QObject, Signal, Slot
 from ..application import PyDMApplication
 from ..widgets.base import PyDMWidget
 from pydm.data_plugins import PyDMPlugin, add_plugin
-
-pytest_plugins = 'pytester'
 
 logger = logging.getLogger(__name__)
 _, file_path = tempfile.mkstemp(suffix=".log")
