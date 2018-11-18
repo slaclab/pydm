@@ -4,3 +4,6 @@ include pydm/utilities/*.pkl
 include pydm/utilities/fontawesome*
 include pydm/about_pydm/contributors.txt
 include pydm/default_stylesheet.qss
+include requirements.txt
+include README.md
+include LICENSE.md
