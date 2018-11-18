@@ -13,7 +13,6 @@ import inspect
 class AboutWindow(QWidget):
     def __init__(self, parent=None):
         super(AboutWindow, self).__init__(parent, Qt.Window)
-        self.app = QApplication.instance()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.ui.pydmVersionLabel.setText(str(self.ui.pydmVersionLabel.text()).format(version=pydm.__version__))
@@ -58,7 +57,7 @@ class AboutWindow(QWidget):
         self.ui.dataPluginsTableWidget.setHorizontalHeaderLabels(col_labels)
         self.ui.dataPluginsTableWidget.horizontalHeader().setStretchLastSection(True)
         self.ui.dataPluginsTableWidget.verticalHeader().setVisible(False)
-        for (protocol, plugin) in self.app.plugins.items():
+        for (protocol, plugin) in pydm.data_plugins.plugin_modules.items():
             protocol_item = QTableWidgetItem(protocol)
             file_item = QTableWidgetItem(inspect.getfile(plugin.__class__))
             new_row = self.ui.dataPluginsTableWidget.rowCount()
