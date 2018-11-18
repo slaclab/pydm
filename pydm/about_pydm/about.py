@@ -33,7 +33,7 @@ class AboutWindow(QWidget):
         self.ui.externalToolsTableWidget.setHorizontalHeaderLabels(col_labels)
         self.ui.externalToolsTableWidget.horizontalHeader().setStretchLastSection(True)
         self.ui.externalToolsTableWidget.verticalHeader().setVisible(False)
-        self.add_tools_to_list(self.app.tools)
+        self.add_tools_to_list(pydm.tools.ext_tools)
 
     def add_tools_to_list(self, tools):
         for (name, tool) in tools.items():
