@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMSpinbox &mdash; PyDM v1.5.0+105.g44b4a93 documentation</title>
+  <title>PyDMEnumButton &mdash; PyDM v1.5.0+105.g44b4a93 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="PyDMWaveformTable" href="waveformtable.html" />
-    <link rel="prev" title="PyDMSlider" href="slider.html" /> 
+    <link rel="next" title="PyDMEnumComboBox" href="enum_combo_box.html" />
+    <link rel="prev" title="PyDMCheckbox" href="checkbox.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -100,13 +100,13 @@
 <li class="toctree-l2"><a class="reference internal" href="index.html#display-widgets">Display Widgets</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#input-widgets">Input Widgets</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="checkbox.html">PyDMCheckbox</a></li>
-<li class="toctree-l3"><a class="reference internal" href="enum_button.html">PyDMEnumButton</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PyDMEnumButton</a></li>
 <li class="toctree-l3"><a class="reference internal" href="enum_combo_box.html">PyDMEnumComboBox</a></li>
 <li class="toctree-l3"><a class="reference internal" href="line_edit.html">PyDMLineEdit</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pushbutton.html">PyDMPushButton</a></li>
 <li class="toctree-l3"><a class="reference internal" href="shell_command.html">PyDMShellCommand</a></li>
 <li class="toctree-l3"><a class="reference internal" href="slider.html">PyDMSlider</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">PyDMSpinbox</a></li>
+<li class="toctree-l3"><a class="reference internal" href="spinbox.html">PyDMSpinbox</a></li>
 <li class="toctree-l3"><a class="reference internal" href="waveformtable.html">PyDMWaveformTable</a></li>
 </ul>
 </li>
@@ -178,13 +178,13 @@
         
           <li><a href="index.html">Widgets</a> &raquo;</li>
         
-      <li>PyDMSpinbox</li>
+      <li>PyDMEnumButton</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/widgets/spinbox.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/widgets/enum_button.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -197,12 +197,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pydmspinbox">
-<h1>PyDMSpinbox<a class="headerlink" href="#pydmspinbox" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pydmenumbutton">
+<h1>PyDMEnumButton<a class="headerlink" href="#pydmenumbutton" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="pydm.widgets.spinbox.PyDMSpinbox">
-<em class="property">class </em><code class="descclassname">pydm.widgets.spinbox.</code><code class="descname">PyDMSpinbox</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox" title="Permalink to this definition">¶</a></dt>
-<dd><p>A QDoubleSpinBox with support for Channels and more from PyDM.</p>
+<dt id="pydm.widgets.enum_button.PyDMEnumButton">
+<em class="property">class </em><code class="descclassname">pydm.widgets.enum_button.</code><code class="descname">PyDMEnumButton</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>A QWidget that renders buttons for every option of Enum Items.
+For now three types of buttons can be rendered:
+- Push Button
+- Radio Button
+- Check Box</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -210,143 +214,129 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
 <li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<li><strong>Signals</strong> – </li>
+<li><strong>-------</strong> – </li>
+<li><strong>send_value_signal</strong> (<em>int</em><em>, </em><em>float</em><em>, </em><em>str</em><em>, </em><em>bool</em><em> or </em><em>np.ndarray</em>) – Emitted when the user changes the value.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="pydm.widgets.spinbox.PyDMSpinbox.ctrl_limit_changed">
-<code class="descname">ctrl_limit_changed</code><span class="sig-paren">(</span><em>which</em>, <em>new_limit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.ctrl_limit_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.ctrl_limit_changed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Callback invoked when the Channel receives new control limit
-values.</p>
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.check_enable_state">
+<code class="descname">check_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.check_enable_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.check_enable_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether or not the widget should be disable.
+This method also disables the widget and add a Tool Tip
+with the reason why it is disabled.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all inner widgets from the layout</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.enum_strings_changed">
+<code class="descname">enum_strings_changed</code><span class="sig-paren">(</span><em>new_enum_strings</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.enum_strings_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.enum_strings_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel has new enum values.
+This callback also triggers a value_changed call so the
+new enum values to be broadcasted.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>which</strong> (<em>str</em>) – Which control limit was changed. “UPPER” or “LOWER”</li>
-<li><strong>new_limit</strong> (<em>float</em>) – New value for the control limit</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_enum_strings</strong> (<em>tuple</em>) – The new list of values</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.spinbox.PyDMSpinbox.keyPressEvent">
-<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>ev</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.keyPressEvent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method invoked when a key press event happens on the QDoubleSpinBox.</p>
-<dl class="docutils">
-<dt>For PyDMSpinBox we are interested on the Keypress events for:</dt>
-<dd><ul class="first last simple">
-<li>CTRL + Left/Right : Increase or Decrease the step exponent;</li>
-<li>Up / Down : Add or Remove <cite>singleStep</cite> units to the value;</li>
-<li>PageUp / PageDown : Add or Remove 10 times <cite>singleStep</cite> units
-to the value;</li>
-<li>Return or Enter : Send the value to the channel using the
-<cite>send_value_signal</cite>.</li>
-</ul>
-</dd>
-</dl>
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.handle_button_clicked">
+<code class="descname">handle_button_clicked</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.handle_button_clicked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.handle_button_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the event of a button being clicked.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ev</strong> (<em>QEvent</em>) – </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) – The clicked button id.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.spinbox.PyDMSpinbox.precision_changed">
-<code class="descname">precision_changed</code><span class="sig-paren">(</span><em>new_precision</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.precision_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.precision_changed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Callback invoked when the Channel has new precision value.
-This callback also triggers an update_format_string call so the
-new precision value is considered.</p>
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.minimumSizeHint">
+<code class="descname">minimumSizeHint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.minimumSizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.minimumSizeHint" title="Permalink to this definition">¶</a></dt>
+<dd><p>This property holds the recommended minimum size for the widget.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_precison</strong> (<em>int</em><em> or </em><em>float</em>) – The new precision value</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QSize</td>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydm.widgets.spinbox.PyDMSpinbox.send_value">
-<code class="descname">send_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.send_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.send_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method invoked to send the current value on the QDoubleSpinBox to
-the channel using the <cite>send_value_signal</cite>.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pydm.widgets.spinbox.PyDMSpinbox.showStepExponent">
-<code class="descname">showStepExponent</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.showStepExponent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether to show or not the step exponent</p>
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.orientation">
+<code class="descname">orientation</code><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to lay out the bit indicators vertically or horizontally.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.spinbox.PyDMSpinbox.update_format_string">
-<code class="descname">update_format_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.update_format_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.update_format_string" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reconstruct the format string to be used when representing the
-output value.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.rebuild_layout">
+<code class="descname">rebuild_layout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.rebuild_layout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.rebuild_layout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to reorganize the top-level widget and its contents
+according to the layout property values.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.spinbox.PyDMSpinbox.update_step_size">
-<code class="descname">update_step_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.update_step_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.update_step_size" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update the Single Step size on the QDoubleSpinBox.</p>
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.rebuild_widgets">
+<code class="descname">rebuild_widgets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.rebuild_widgets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.rebuild_widgets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild the list of widgets based on a new enum or generates a default
+list of fake strings so we can see something at Designer.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.spinbox.PyDMSpinbox.value_changed">
-<code class="descname">value_changed</code><span class="sig-paren">(</span><em>new_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.value_changed" title="Permalink to this definition">¶</a></dt>
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.value_changed">
+<code class="descname">value_changed</code><span class="sig-paren">(</span><em>new_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.value_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel value is changed.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_val</strong> (<em>int</em><em> or </em><em>float</em>) – The new value from the channel.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_val</strong> (<em>int</em>) – The new value from the channel.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="pydm.widgets.spinbox.PyDMSpinbox.widget_ctx_menu">
-<code class="descname">widget_ctx_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.widget_ctx_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.widget_ctx_menu" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch the Widget specific context menu which will be populated with additional tools by <cite>assemble_tools_menu</cite>.</p>
+<dl class="attribute">
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.widgetType">
+<code class="descname">widgetType</code><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.widgetType" title="Permalink to this definition">¶</a></dt>
+<dd><p>The widget type to be used when composing the group.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">If the return of this method is None a new QMenu will be created by <cite>assemble_tools_menu</cite>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QMenu or None</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">WidgetType</td>
 </tr>
 </tbody>
 </table>
@@ -364,10 +354,10 @@ output value.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="waveformtable.html" class="btn btn-neutral float-right" title="PyDMWaveformTable" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="enum_combo_box.html" class="btn btn-neutral float-right" title="PyDMEnumComboBox" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="slider.html" class="btn btn-neutral" title="PyDMSlider" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="checkbox.html" class="btn btn-neutral" title="PyDMCheckbox" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

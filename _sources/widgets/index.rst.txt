@@ -23,6 +23,7 @@ Input Widgets
    :maxdepth: 1
 
    checkbox.rst
+   enum_button.rst
    enum_combo_box.rst
    line_edit.rst
    pushbutton.rst

@@ -16,6 +16,7 @@
 ./_modules/pydm/widgets/display_format.html
 ./_modules/pydm/widgets/drawing.html
 ./_modules/pydm/widgets/embedded_display.html
+./_modules/pydm/widgets/enum_button.html
 ./_modules/pydm/widgets/enum_combo_box.html
 ./_modules/pydm/widgets/frame.html
 ./_modules/pydm/widgets/image.html
@@ -47,6 +48,7 @@
 ./_sources/widgets/checkbox.rst.txt
 ./_sources/widgets/drawing.rst.txt
 ./_sources/widgets/embedded_display.rst.txt
+./_sources/widgets/enum_button.rst.txt
 ./_sources/widgets/enum_combo_box.rst.txt
 ./_sources/widgets/frame.rst.txt
 ./_sources/widgets/image.rst.txt
@@ -152,6 +154,7 @@
 ./widgets/checkbox.html
 ./widgets/drawing.html
 ./widgets/embedded_display.html
+./widgets/enum_button.html
 ./widgets/enum_combo_box.html
 ./widgets/frame.html
 ./widgets/image.html
