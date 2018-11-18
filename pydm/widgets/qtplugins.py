@@ -16,6 +16,7 @@ from .drawing import (PyDMDrawingLine, PyDMDrawingRectangle,
                       PyDMDrawingPolygon)
 
 from .embedded_display import PyDMEmbeddedDisplay
+from .enum_button import PyDMEnumButton
 from .enum_combo_box import PyDMEnumComboBox
 from .frame import PyDMFrame
 from .image import PyDMImageView
@@ -105,6 +106,11 @@ PyDMDrawingPolygonPlugin = qtplugin_factory(PyDMDrawingPolygon,
 PyDMEmbeddedDisplayPlugin = qtplugin_factory(PyDMEmbeddedDisplay,
                                              group=WidgetCategory.CONTAINER,
                                              extensions=BASE_EXTENSIONS)
+
+# Enum Button plugin
+PyDMEnumButtonPlugin = qtplugin_factory(PyDMEnumButton,
+                                        group=WidgetCategory.INPUT,
+                                        extensions=BASE_EXTENSIONS)
 
 # Enum Combobox plugin
 PyDMEnumComboBoxPlugin = qtplugin_factory(PyDMEnumComboBox,
