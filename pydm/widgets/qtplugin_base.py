@@ -145,11 +145,6 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         A longer description of the widget for Qt Designer. By default, this
         is the entire class docstring.
         """
-        try:
-            if isinstance(self.cls.__doc__, str):
-                return self.cls.__doc__
-        except AttributeError:
-            pass
         return ""
 
     def isContainer(self):
@@ -173,11 +168,8 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
             " <property name=\"toolTip\" >\n"
             "  <string>{1}</string>\n"
             " </property>\n"
-            " <property name=\"whatsThis\" >\n"
-            "  <string>{2}</string>\n"
-            " </property>\n"
             "</widget>\n"
-        ).format(self.name(), self.toolTip(), self.whatsThis())
+        ).format(self.name(), self.toolTip())
 
     def includeFile(self):
         """
