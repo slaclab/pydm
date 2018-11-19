@@ -29,8 +29,7 @@ def test_construct(qtbot):
 
 @pytest.mark.parametrize("widget_type", [
     WidgetType.PushButton,
-    WidgetType.RadioButton,
-    WidgetType.CheckBox
+    WidgetType.RadioButton
 ])
 def test_widget_type(qtbot, widget_type):
     """
