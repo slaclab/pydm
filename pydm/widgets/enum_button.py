@@ -9,10 +9,9 @@ from .base import PyDMWritableWidget
 class WidgetType(object):
     PushButton = 0
     RadioButton = 1
-    CheckBox = 2
 
 
-class_for_type = [QPushButton, QRadioButton, QCheckBox]
+class_for_type = [QPushButton, QRadioButton]
 
 
 class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
@@ -21,7 +20,6 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
     For now three types of buttons can be rendered:
     - Push Button
     - Radio Button
-    - Check Box
 
     Parameters
     ----------
