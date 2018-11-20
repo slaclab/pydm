@@ -2,8 +2,8 @@ import logging
 import functools
 import json
 import numpy as np
-from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect
-from qtpy.QtGui import QColor, QClipboard, QCursor
+from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect, QToolTip
+from qtpy.QtGui import QCursor
 from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
 from .. import data_plugins
