@@ -394,7 +394,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         # and show a tooltip if needed.
         if event.type() == QEvent.MouseButtonPress:
             if event.button() == Qt.MiddleButton:
-                self.show_address_tooltip(obj, event)
+                self.show_address_tooltip(event)
                 return True
         return False
 

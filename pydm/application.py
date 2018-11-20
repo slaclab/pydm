@@ -512,7 +512,7 @@ class PyDMApplication(QApplication):
     def show_address_tooltip(self, obj, event):
         warnings.warn("'PyDMApplication.show_address_tooltip' is deprecated, "
                       " this function is now found on PyDMWidget")
-        obj.show_address_tooltip(obj, event)
+        obj.show_address_tooltip(event)
 
     def establish_widget_connections(self, widget):
         """
