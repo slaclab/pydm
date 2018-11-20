@@ -407,7 +407,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         displayed
         """
         if not len(self._channels):
-            logger.warning("Object %r has no PyDM Channels", obj)
+            logger.warning("Object %r has no PyDM Channels", self)
             return
         addr = self.channels()[0].address
         QToolTip.showText(event.globalPos(), addr)
