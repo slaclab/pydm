@@ -10,7 +10,7 @@ cur_dir = path.abspath(path.dirname(__file__))
 with open(path.join(cur_dir, 'requirements.txt')) as f:
     requirements = f.read().split()
 
-with open(path.join(cur_dir, 'README.md')) as f:
+with open(path.join(cur_dir, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 # Remove the 'optional' requirements
