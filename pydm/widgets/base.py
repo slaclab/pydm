@@ -418,7 +418,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         clipboard = QApplication.clipboard()
         clipboard.setText(copy_text)
         event = QEvent(QEvent.Clipboard)
-        self.sendEvent(clipboard, event)
+        self.app.sendEvent(clipboard, event)
 
     def unit_changed(self, new_unit):
         """
