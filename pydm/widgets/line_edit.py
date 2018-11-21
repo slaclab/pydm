@@ -132,10 +132,6 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
         self.setEnabled(True)
         self.setReadOnly(not new_write_access)
 
-    def precision_changed(self, new_precision):
-        super(PyDMLineEdit, self).precision_changed(new_precision)
-        self.set_display()
-
     def unit_changed(self, new_unit):
         """
         Accept a unit to display with a channel's value
@@ -146,7 +142,6 @@ class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
         """
         super(PyDMLineEdit, self).unit_changed(new_unit)
         self._scale = 1
-        self.set_display()
         self.create_unit_options()
 
     def create_unit_options(self):
