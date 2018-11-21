@@ -82,6 +82,7 @@ def test_key_press_event(qtbot, signals, monkeypatch, first_key_pressed, second_
     signals.new_value_signal[float].emit(INIT_SPINBOX_VALUE)
 
     pydm_spinbox.setFocus()
+
     def wait_focus():
         return pydm_spinbox.hasFocus()
     qtbot.waitUntil(wait_focus, timeout=5000)
@@ -208,6 +209,10 @@ def test_update_format_string(qtbot, signals, show_unit, new_unit, step_exp, sho
     pydm_spinbox.step_exponent = step_exp
     pydm_spinbox.showStepExponent = show_step_exp
     assert pydm_spinbox.showStepExponent == show_step_exp
+
+    INIT_SPINBOX_VALUE = 1.2
+    signals.new_value_signal[float].connect(pydm_spinbox.channelValueChanged)
+    signals.new_value_signal[float].emit(INIT_SPINBOX_VALUE)
 
     units = ""
     pydm_spinbox.showUnits = show_unit
