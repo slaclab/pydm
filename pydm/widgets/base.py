@@ -2,8 +2,8 @@ import logging
 import functools
 import json
 import numpy as np
-from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect
-from qtpy.QtGui import QColor, QClipboard, QCursor
+from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect, QToolTip
+from qtpy.QtGui import QCursor
 from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
 from .. import data_plugins
@@ -394,7 +394,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         # and show a tooltip if needed.
         if event.type() == QEvent.MouseButtonPress:
             if event.button() == Qt.MiddleButton:
-                self.show_address_tooltip(obj, event)
+                self.show_address_tooltip(event)
                 return True
         return False
 
@@ -407,7 +407,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         displayed
         """
         if not len(self._channels):
-            logger.warning("Object %r has no PyDM Channels", obj)
+            logger.warning("Object %r has no PyDM Channels", self)
             return
         addr = self.channels()[0].address
         QToolTip.showText(event.globalPos(), addr)
@@ -418,7 +418,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         clipboard = QApplication.clipboard()
         clipboard.setText(copy_text)
         event = QEvent(QEvent.Clipboard)
-        self.sendEvent(clipboard, event)
+        self.app.sendEvent(clipboard, event)
 
     def unit_changed(self, new_unit):
         """
