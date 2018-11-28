@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.scale &mdash; PyDM v1.6.1+20.g80370c5 documentation</title>
+  <title>pydm.widgets.scale &mdash; PyDM v1.6.1+22.g349cd4f documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.6.1+20.g80370c5
+                v1.6.1+22.g349cd4f
               </div>
             
           
@@ -571,6 +571,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">upper_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;&lt;max&gt;&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_value_position</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">TopEdge</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_limits_from_channel</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_lower_limit</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_upper_limit</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup_widgets_for_orientation</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_position</span><span class="p">)</span>
@@ -607,8 +610,9 @@
 <span class="sd">        new_limit : float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMScaleIndicator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">upperCtrlLimitChanged</span><span class="p">(</span><span class="n">new_limit</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_upper_limit</span><span class="p">(</span><span class="n">new_limit</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">limitsFromChannel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_upper_limit</span><span class="p">(</span><span class="n">new_limit</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMScaleIndicator.lowerCtrlLimitChanged"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.lowerCtrlLimitChanged">[docs]</a>    <span class="k">def</span> <span class="nf">lowerCtrlLimitChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -621,8 +625,9 @@
 <span class="sd">        new_limit : float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMScaleIndicator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">lowerCtrlLimitChanged</span><span class="p">(</span><span class="n">new_limit</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_lower_limit</span><span class="p">(</span><span class="n">new_limit</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">limitsFromChannel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_lower_limit</span><span class="p">(</span><span class="n">new_limit</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMScaleIndicator.setup_widgets_for_orientation"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setup_widgets_for_orientation">[docs]</a>    <span class="k">def</span> <span class="nf">setup_widgets_for_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">,</span> <span class="n">flipped</span><span class="p">,</span> <span class="n">inverted</span><span class="p">,</span>
                                       <span class="n">value_position</span><span class="p">):</span>
@@ -1153,7 +1158,97 @@
 <span class="sd">        ----------</span>
 <span class="sd">        checked : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_origin_at_zero</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_origin_at_zero</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">limitsFromChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not the scale indicator should use the limits information</span>
+<span class="sd">        from the channel.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limits_from_channel</span>
+
+    <span class="nd">@limitsFromChannel</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">limitsFromChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not the scale indicator should use the limits information</span>
+<span class="sd">        from the channel.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        checked : bool</span>
+<span class="sd">            True to use the limits from the Channel, False to use the user-defined</span>
+<span class="sd">            values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limits_from_channel</span> <span class="o">!=</span> <span class="n">checked</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_limits_from_channel</span> <span class="o">=</span> <span class="n">checked</span>
+            <span class="k">if</span> <span class="n">checked</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_ctrl_limit</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_lower_limit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lower_ctrl_limit</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_ctrl_limit</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_upper_limit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upper_ctrl_limit</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_lower_limit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user_lower_limit</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_upper_limit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user_upper_limit</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">userLowerLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The user-defined lower limit for the scale.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_lower_limit</span>
+
+    <span class="nd">@userLowerLimit</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">userLowerLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The user-defined lower limit for the scale.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : float</span>
+<span class="sd">            The new lower limit value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limits_from_channel</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_lower_limit</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_lower_limit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user_lower_limit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">userUpperLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The user-defined upper limit for the scale.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_upper_limit</span>
+
+    <span class="nd">@userUpperLimit</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">userUpperLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The user-defined upper limit for the scale.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : float</span>
+<span class="sd">            The new upper limit value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limits_from_channel</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_upper_limit</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_upper_limit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user_upper_limit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span></div>
 </pre></div>
 
            </div>
