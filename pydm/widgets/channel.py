@@ -75,7 +75,6 @@ class PyDMChannel(object):
                  enum_strings_slot=None, unit_slot=None, prec_slot=None,
                  upper_ctrl_limit_slot=None, lower_ctrl_limit_slot=None,
                  value_signal=None):
-
         self.address = address
 
         self.connection_slot = connection_slot
@@ -106,7 +105,7 @@ class PyDMChannel(object):
             logger.exception("Unable to make proper connection "
                              "for %r", self)
 
-    def disconnect(self):
+    def disconnect(self, destroying=False):
         """
         Disconnect a PyDMChannel
         """
@@ -116,7 +115,7 @@ class PyDMChannel(object):
             plugin = plugin_for_address(self.address)
             if not plugin:
                 return
-            plugin.remove_connection(self)
+            plugin.remove_connection(self, destroying=destroying)
         except Exception as exc:
             logger.exception("Unable to remove connection "
                              "for %r", self)

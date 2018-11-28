@@ -29,7 +29,10 @@
     <string/>
    </property>
    <property name="rules" stdset="0">
-    <string>[{&quot;name&quot;: &quot;New Rule&quot;, &quot;property&quot;: &quot;Visible&quot;, &quot;expression&quot;: &quot;np.abs(ch[0]) &gt; 1&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://MTEST:Float&quot;, &quot;trigger&quot;: true}]}]</string>
+    <string>[{&quot;name&quot;: &quot;Plot Visible Rule&quot;, &quot;property&quot;: &quot;Visible&quot;, &quot;expression&quot;: &quot;np.abs(ch[0]) &gt; 1&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://MTEST:Float&quot;, &quot;trigger&quot;: true}]}]</string>
+   </property>
+   <property name="curves">
+    <stringlist/>
    </property>
   </widget>
   <widget class="PyDMLineEdit" name="PyDMLineEdit">
@@ -48,7 +51,7 @@
     <string/>
    </property>
    <property name="rules" stdset="0">
-    <string>[{&quot;name&quot;: &quot;New Rule&quot;, &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;np.abs(ch[0]) &gt; 1&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://MTEST:Float&quot;, &quot;trigger&quot;: true}]}]</string>
+    <string>[{&quot;name&quot;: &quot;Line Edit Enable&quot;, &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;np.abs(ch[0]) &gt; 1&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://MTEST:Float&quot;, &quot;trigger&quot;: true}]}]</string>
    </property>
    <property name="channel" stdset="0">
     <string>ca://MTEST:Float</string>
