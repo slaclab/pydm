@@ -9,8 +9,7 @@ import tempfile
 import logging
 
 from qtpy.QtCore import QObject, Signal, Slot
-from ..application import PyDMApplication
-from ..widgets.base import PyDMWidget
+from pydm.application import PyDMApplication
 from pydm.data_plugins import PyDMPlugin, add_plugin
 
 logger = logging.getLogger(__name__)

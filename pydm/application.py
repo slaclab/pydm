@@ -543,22 +543,3 @@ class PyDMApplication(QApplication):
             "'PyDMApplication.close_widget_connections' is deprecated, "
             "this function is now found on `utilities.close_widget_connections`.")
         connection.close_widget_connections(widget)
-
-    def unregister_widget_rules(self, widget):
-        """
-        Given a widget to start from, traverse the tree of child widgets,
-        and try to unregister rules to any widgets.
-
-        Parameters
-        ----------
-        widget : QWidget
-        """
-        widgets = [widget]
-        widgets.extend(widget.findChildren(QWidget))
-        for child_widget in widgets:
-            try:
-                if hasattr(child_widget, 'rules'):
-                    if child_widget.rules:
-                        RulesDispatcher().unregister(child_widget)
-            except Exception:
-                pass

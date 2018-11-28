@@ -1,5 +1,6 @@
 import logging
 import time
+import weakref
 
 from ...widgets.rules import RulesEngine, RulesDispatcher
 from ...widgets.label import PyDMLabel
@@ -48,10 +49,10 @@ def test_unregister(qtbot):
 
     dispatcher = RulesDispatcher()
     dispatcher.register(widget, rules)
-    assert widget in dispatcher.rules_engine.widget_map
+    assert weakref.ref(widget) in dispatcher.rules_engine.widget_map
 
     dispatcher.unregister(widget)
-    assert widget not in dispatcher.rules_engine.widget_map
+    assert weakref.ref(widget) not in dispatcher.rules_engine.widget_map
 
 
 def test_rules_full(qtbot, caplog):
@@ -78,23 +79,23 @@ def test_rules_full(qtbot, caplog):
     dispatcher.register(widget, rules)
 
     re = dispatcher.rules_engine
-    assert widget in re.widget_map
-    assert len(re.widget_map[widget]) == 1
-    assert re.widget_map[widget][0]['rule'] == rules[0]
+    assert weakref.ref(widget) in re.widget_map
+    assert len(re.widget_map[weakref.ref(widget)]) == 1
+    assert re.widget_map[weakref.ref(widget)][0]['rule'] == rules[0]
 
-    re.callback_value(widget, 0, 0, trigger=True, value=1)
+    re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=1)
     for record in caplog.records:
         assert record.levelno == logging.ERROR
     assert "Not all channels are connected" in caplog.text
 
     blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
 
-    re.callback_conn(widget, 0, 0, value=True)
-    re.callback_value(widget, 0, 0, trigger=True, value=5)
-    assert re.widget_map[widget][0]['calculate'] is True
+    re.callback_conn(weakref.ref(widget), 0, 0, value=True)
+    re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=5)
+    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is True
 
-    time.sleep(2)
-    assert re.widget_map[widget][0]['calculate'] is False
+    time.sleep(0.1)
+    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is False
 
     blocker.wait()
     assert not widget.isVisible()
@@ -103,13 +104,13 @@ def test_rules_full(qtbot, caplog):
 
     rules[0]['expression'] = 'foo'
     dispatcher.register(widget, rules)
-    assert len(re.widget_map[widget]) == 1
-    re.callback_conn(widget, 0, 0, value=True)
-    re.callback_value(widget, 0, 0, trigger=True, value='a')
-    time.sleep(2)
+    assert len(re.widget_map[weakref.ref(widget)]) == 1
+    re.callback_conn(weakref.ref(widget), 0, 0, value=True)
+    re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value='a')
+    time.sleep(0.1)
     for record in caplog.records:
         assert record.levelno == logging.ERROR
     assert "Error while evaluating Rule" in caplog.text
 
     dispatcher.unregister(widget)
-    assert widget not in re.widget_map
+    assert weakref.ref(widget) not in re.widget_map
