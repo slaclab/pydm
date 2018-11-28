@@ -4,6 +4,7 @@ from qtpy import uic
 from qtpy.QtWidgets import QWidget
 from .utilities import macro
 
+
 class Display(QWidget):
     def __init__(self, parent=None, args=None, macros=None, ui_filename=None):
         super(Display, self).__init__(parent=parent)
@@ -14,6 +15,8 @@ class Display(QWidget):
     def ui_filepath(self):
         """ Returns the path to the ui file relative to the file of the class
         calling this function."""
+        if not self.ui_filename():
+            return None
         path_to_class = sys.modules[self.__module__].__file__
         return path.join(path.dirname(path.realpath(path_to_class)), self.ui_filename())
 
