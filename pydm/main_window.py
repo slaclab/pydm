@@ -443,7 +443,8 @@ class PyDMMainWindow(QMainWindow):
         a.show()
 
     def resizeForNewDisplayWidget(self):
-        self.resize(self._new_widget_size)
+        if not self.isFullScreen():
+            self.resize(self._new_widget_size)
 
     def closeEvent(self, event):
         self.clear_display_widget()
