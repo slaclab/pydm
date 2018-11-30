@@ -106,11 +106,10 @@ class PyDMApplication(QApplication):
 
         # Open a window if required.
         if ui_file is not None:
-            apply_stylesheet(stylesheet_path)
-            self.make_main_window()
+            self.make_main_window(stylesheet_path=stylesheet_path)
             self.make_window(ui_file, macros, command_line_args)
         elif use_main_window:
-            self.make_main_window()
+            self.make_main_window(stylesheet_path=stylesheet_path)
 
         self.had_file = ui_file is not None
         # Re-enable sigint (usually blocked by pyqt)
@@ -226,7 +225,7 @@ class PyDMApplication(QApplication):
         # All new windows are spawned as new processes.
         self.new_pydm_process(ui_file, macros, command_line_args)
 
-    def make_main_window(self):
+    def make_main_window(self, stylesheet_path=None):
         """
         Instantiate a new PyDMMainWindow, add it to the application's
         list of windows. Typically, this function is only called as part
@@ -238,6 +237,8 @@ class PyDMApplication(QApplication):
                                      hide_status_bar=self.hide_status_bar)
 
         self.main_window = main_window
+        if stylesheet_path:
+            apply_stylesheet(stylesheet_path, widget=self.main_window)
         self.main_window.update_tools_menu()
 
         if self.fullscreen:
