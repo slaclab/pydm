@@ -50,6 +50,7 @@
     <addaction name="actionEnter_Fullscreen"/>
     <addaction name="actionIncrease_Font_Size"/>
     <addaction name="actionDecrease_Font_Size"/>
+    <addaction name="actionDefault_Font_Size"/>
     <addaction name="separator"/>
     <addaction name="actionShow_File_Path_in_Title_Bar"/>
     <addaction name="actionShow_Navigation_Bar"/>
@@ -270,6 +271,14 @@
    </property>
    <property name="shortcut">
     <string>F11</string>
+   </property>
+  </action>
+  <action name="actionDefault_Font_Size">
+   <property name="text">
+    <string>Default Font Size</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+0</string>
    </property>
   </action>
  </widget>

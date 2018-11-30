@@ -27,6 +27,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.setupUi(self)
         self._display_widget = None
         self._showing_file_path_in_title_bar = False
+        self.default_font_size = QApplication.instance().font().pointSizeF()
         self.ui.navbar.setIconSize(QSize(24, 24))
         self.ui.navbar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         # No search bar for now, since there isn't really any capability to search yet.
@@ -49,6 +50,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionReload_Display.triggered.connect(self.reload_display)
         self.ui.actionIncrease_Font_Size.triggered.connect(self.increase_font_size)
         self.ui.actionDecrease_Font_Size.triggered.connect(self.decrease_font_size)
+        self.ui.actionDefault_Font_Size.triggered.connect(self.reset_font_size)
         self.ui.actionEnter_Fullscreen.triggered.connect(self.enter_fullscreen)
         self.ui.actionShow_File_Path_in_Title_Bar.triggered.connect(self.toggle_file_path_in_title_bar)
         self.ui.actionShow_Navigation_Bar.triggered.connect(self.toggle_nav_bar)
@@ -413,6 +415,13 @@ class PyDMMainWindow(QMainWindow):
     def decrease_font_size(self, checked):
         current_font = QApplication.instance().font()
         current_font.setPointSizeF(current_font.pointSizeF() / 1.1)
+        QApplication.instance().setFont(current_font)
+        QTimer.singleShot(0, self.resizeForNewDisplayWidget)
+    
+    @Slot(bool)
+    def reset_font_size(self, checked):
+        current_font = QApplication.instance().font()
+        current_font.setPointSizeF(self.default_font_size)
         QApplication.instance().setFont(current_font)
         QTimer.singleShot(0, self.resizeForNewDisplayWidget)
 
