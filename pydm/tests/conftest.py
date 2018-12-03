@@ -18,15 +18,6 @@ handler = logging.FileHandler(file_path)
 logger.addHandler(handler)
 
 
-"""
-PyDMWidget Style Sheet
-
-This serves as the invariance for the widget's appearance, depending on the alarm type, and the content and border
-appearances.
-
-In case of style assertion failures, check if the widget styles in the main PyDM code have changed, and whether those
-changes are as intended. If they are, update the reference style sheet below accordingly.
-"""
 class ConnectionSignals(QObject):
     """
     An assortment of signals, to which a unit test can choose from and bind an appropriate slot

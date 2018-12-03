@@ -17,8 +17,6 @@ from ...widgets.drawing import (deg_to_qt, qt_to_deg, PyDMDrawing,
                                 PyDMDrawingPie, PyDMDrawingChord,
                                 PyDMDrawingPolygon)
 
-from ...utilities import is_pydm_app
-
 
 # --------------------
 # POSITIVE TEST CASES
@@ -525,9 +523,6 @@ def test_pydmdrawingimage_construct(qtbot):
     assert pydm_drawingimage._pixmap is not None
     assert pydm_drawingimage._aspect_ratio_mode == Qt.KeepAspectRatio
     assert pydm_drawingimage.filename == ""
-
-    if not is_pydm_app():
-        assert pydm_drawingimage.get_designer_window()
 
     base_path = os.path.dirname(__file__)
     test_file = os.path.join(base_path, '..', '..', '..', 'examples', 'drawing',
