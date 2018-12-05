@@ -47,7 +47,7 @@ class Connection(PyDMConnection):
     def send_new_value(self, value=None, char_value=None, count=None, typefull=None, type=None, *args, **kws):
         self.update_ctrl_vars(**kws)
 
-        if value is not None and not np.array_equal(value, self.value):
+        if value is not None and not np.array_equal(value, self._value):
             self._value = value
             if isinstance(value, np.ndarray):
                 self.new_value_signal[np.ndarray].emit(value)
