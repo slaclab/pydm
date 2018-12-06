@@ -237,8 +237,7 @@ class PyDMApplication(QApplication):
                                      hide_status_bar=self.hide_status_bar)
 
         self.main_window = main_window
-        if stylesheet_path:
-            apply_stylesheet(stylesheet_path, widget=self.main_window)
+        apply_stylesheet(stylesheet_path, widget=self.main_window)
         self.main_window.update_tools_menu()
 
         if self.fullscreen:
