@@ -285,7 +285,8 @@ def test_label_alarms(qtbot, signals, alarm_severity, alarm_sensitive_content, a
     """
     QApplication.instance().make_main_window()
     main_window = QApplication.instance().main_window
-    pydm_label = PyDMLabel(parent=main_window, init_channel="CA://FOOO")
+    qtbot.addWidget(main_window)
+    pydm_label = PyDMLabel(parent=main_window, init_channel="ca://FOOO")
     qtbot.addWidget(pydm_label)
 
     pydm_label.alarmSensitiveContent = alarm_sensitive_content
