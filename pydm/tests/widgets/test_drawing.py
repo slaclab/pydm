@@ -5,6 +5,7 @@ from logging import ERROR
 import pytest
 
 from qtpy.QtGui import QColor, QBrush, QPixmap
+from qtpy.QtWidgets import QApplication
 from qtpy.QtCore import Property, Qt, QPoint, QSize
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 
@@ -16,6 +17,8 @@ from ...widgets.drawing import (deg_to_qt, qt_to_deg, PyDMDrawing,
                                 PyDMDrawingCircle, PyDMDrawingArc,
                                 PyDMDrawingPie, PyDMDrawingChord,
                                 PyDMDrawingPolygon)
+
+from ...utilities.stylesheet import apply_stylesheet
 
 
 # --------------------
@@ -128,6 +131,8 @@ def test_pydmdrawing_paintEvent(qtbot, signals, alarm_sensitive_content):
 
     Expectations:
     The paintEvent will be triggered, and the widget's brush color is correctly set.
+    
+    NOTE: This test depends on the default stylesheet having different values for 'qproperty-brush' for different alarm states of PyDMDrawing.
 
     Parameters
     ----------
@@ -138,22 +143,21 @@ def test_pydmdrawing_paintEvent(qtbot, signals, alarm_sensitive_content):
     alarm_sensitive_content : bool
         True if the widget will be redraw with a different color if an alarm is triggered; False otherwise.
     """
-    pydm_drawing = PyDMDrawing(init_channel='fake://tst')
+    QApplication.instance().make_main_window()
+    main_window = QApplication.instance().main_window
+    qtbot.addWidget(main_window)
+    pydm_drawing = PyDMDrawing(parent=main_window, init_channel='fake://tst')
     qtbot.addWidget(pydm_drawing)
-
     pydm_drawing.alarmSensitiveContent = alarm_sensitive_content
+    brush_before = pydm_drawing.brush.color().name()
     signals.new_severity_signal.connect(pydm_drawing.alarmSeverityChanged)
     signals.new_severity_signal.emit(PyDMWidget.ALARM_MAJOR)
 
-    with qtbot.waitExposed(pydm_drawing):
-        pydm_drawing.show()
-    qtbot.waitUntil(lambda: pydm_drawing.isEnabled(), timeout=5000)
-    pydm_drawing.setFocus()
-
-    def wait_focus():
-        return pydm_drawing.hasFocus()
-
-    qtbot.waitUntil(wait_focus, timeout=5000)
+    brush_after = pydm_drawing.brush.color().name()
+    if alarm_sensitive_content:
+        assert brush_before != brush_after
+    else:
+        assert brush_before == brush_after
 
 
 @pytest.mark.parametrize("widget_width, widget_height, expected_results", [

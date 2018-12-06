@@ -10,6 +10,7 @@ from ...widgets.label import PyDMLabel
 from ...widgets.base import PyDMWidget
 from ...widgets.display_format import parse_value_for_display, DisplayFormat
 
+from qtpy.QtWidgets import QApplication, QStyleOption
 
 # --------------------
 # POSITIVE TEST CASES
@@ -267,6 +268,8 @@ def test_label_alarms(qtbot, signals, alarm_severity, alarm_sensitive_content, a
        solid, transparent, etc.
     3. The alarm color and border appearance will change only if each corresponding Boolean flag is set to True
 
+    NOTE: This test depends on the default stylesheet having different values for 'color' for different alarm states of PyDMLabel.
+
     Parameters
     ----------
     qtbot : fixture
@@ -280,16 +283,30 @@ def test_label_alarms(qtbot, signals, alarm_severity, alarm_sensitive_content, a
     alarm_sensitive_border : bool
         True if the widget's border will change color and thickness accordingly to the alarm's severity; False if not
     """
-    pydm_label = PyDMLabel(init_channel="CA://FOOO")
+    QApplication.instance().make_main_window()
+    main_window = QApplication.instance().main_window
+    qtbot.addWidget(main_window)
+    pydm_label = PyDMLabel(parent=main_window, init_channel="ca://FOOO")
     qtbot.addWidget(pydm_label)
 
     pydm_label.alarmSensitiveContent = alarm_sensitive_content
     pydm_label.alarmSensitiveBorder = alarm_sensitive_border
 
     signals.new_severity_signal.connect(pydm_label.alarmSeverityChanged)
+    initial_severity = pydm_label._alarm_state
+    option = QStyleOption()
+    option.initFrom(pydm_label)
+    before_color = option.palette.text().color().name()
     signals.new_severity_signal.emit(alarm_severity)
 
     assert pydm_label._alarm_state == alarm_severity
+    option = QStyleOption()
+    option.initFrom(pydm_label)
+    after_color = option.palette.text().color().name()
+    if alarm_sensitive_content and (alarm_severity != initial_severity):
+        assert after_color != before_color
+    else:
+        assert after_color == before_color
 
 
 TOOLTIP_TEXT = "Testing with Alarm State Changes, Channel Provided."
