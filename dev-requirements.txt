@@ -1,4 +1,4 @@
 codecov
 pytest
 pytest-qt
-pytest-cov
+pytest-cov<2.6.0
