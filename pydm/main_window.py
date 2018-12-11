@@ -22,6 +22,7 @@ class PyDMMainWindow(QMainWindow):
     def __init__(self, parent=None, hide_nav_bar=False, hide_menu_bar=False, hide_status_bar=False):
         super(PyDMMainWindow, self).__init__(parent)
         self.app = QApplication.instance()
+        self.font_factor = 1
         self.iconFont = IconFont()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -406,23 +407,32 @@ class PyDMMainWindow(QMainWindow):
 
     @Slot(bool)
     def increase_font_size(self, checked):
-        current_font = QApplication.instance().font()
-        current_font.setPointSizeF(current_font.pointSizeF() * 1.1)
-        QApplication.instance().setFont(current_font)
-        QTimer.singleShot(0, self.resizeForNewDisplayWidget)
+        old_factor = self.font_factor
+        self.font_factor += 0.1
+        self.set_font_size(old_factor, self.font_factor)
 
     @Slot(bool)
     def decrease_font_size(self, checked):
-        current_font = QApplication.instance().font()
-        current_font.setPointSizeF(current_font.pointSizeF() / 1.1)
-        QApplication.instance().setFont(current_font)
-        QTimer.singleShot(0, self.resizeForNewDisplayWidget)
-    
+        old_factor = self.font_factor
+        self.font_factor -= 0.1
+        self.set_font_size(old_factor, self.font_factor)
+
     @Slot(bool)
     def reset_font_size(self, checked):
-        current_font = QApplication.instance().font()
-        current_font.setPointSizeF(self.default_font_size)
+        old_factor = self.font_factor
+        self.font_factor = 1
+        self.set_font_size(old_factor, self.font_factor)
+
+    def set_font_size(self, old, new):
+        current_font = self.app.font()
+        current_font.setPointSizeF(current_font.pointSizeF()/old*new)
         QApplication.instance().setFont(current_font)
+
+        for w in self.app.allWidgets():
+            w_c_f = w.font()
+            w_c_f.setPointSizeF(w_c_f.pointSizeF()/old*new)
+            w.setFont(w_c_f)
+
         QTimer.singleShot(0, self.resizeForNewDisplayWidget)
 
     @Slot(bool)
