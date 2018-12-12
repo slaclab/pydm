@@ -288,6 +288,9 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             indicator_spacing = 5
         else:
             indicator_spacing = 0
+
+        self.layout().setContentsMargins(0, 0, 0, 0)
+
         if self._orientation == Qt.Horizontal:
             self.layout().setHorizontalSpacing(indicator_spacing)
             self.layout().setVerticalSpacing(label_spacing)
