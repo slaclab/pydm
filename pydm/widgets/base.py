@@ -243,6 +243,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.contextMenuEvent = self.open_context_menu
         self.channel = init_channel
         if not is_qt_designer():
+            # We should  install the Event Filter only if we are running
+            # and not at the Designer
+            self.installEventFilter(self)
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
@@ -954,11 +957,6 @@ class PyDMWritableWidget(PyDMWidget):
     def __init__(self, init_channel=None):
         self._write_access = False
         super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
-        self.app = QApplication.instance()
-        # We should  install the Event Filter only if we are running
-        # and not at the Designer
-        if not is_qt_designer():
-            self.installEventFilter(self)
 
     def init_for_designer(self):
         """
