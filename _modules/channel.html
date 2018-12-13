@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>channel &mdash; PyDM v1.6.5+2.g54651cb documentation</title>
+  <title>channel &mdash; PyDM v1.6.5+4.g9600879 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.6.5+2.g54651cb
+                v1.6.5+4.g9600879
               </div>
             
           
@@ -183,6 +183,14 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">clear_channel_address</span><span class="p">(</span><span class="n">channel</span><span class="p">):</span>
+    <span class="c1"># We must remove spaces, \n, \t and other crap from</span>
+    <span class="c1"># channel address</span>
+    <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+
 <div class="viewcode-block" id="PyDMChannel"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel">[docs]</a><span class="k">class</span> <span class="nc">PyDMChannel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Object to hold signals and slots for a PyDM Widget interface to an</span>
@@ -251,6 +259,7 @@
                  <span class="n">enum_strings_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prec_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">upper_ctrl_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lower_ctrl_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">value_signal</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_address</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">connection_slot</span> <span class="o">=</span> <span class="n">connection_slot</span>
@@ -265,6 +274,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lower_ctrl_limit_slot</span> <span class="o">=</span> <span class="n">lower_ctrl_limit_slot</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span> <span class="o">=</span> <span class="n">value_signal</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_address</span>
+
+    <span class="nd">@address</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_address</span> <span class="o">=</span> <span class="n">clear_channel_address</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMChannel.connect"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
