@@ -1,7 +1,7 @@
 import io
 import six
 from string import Template
-
+import json
 
 def substitute_in_file(file_path, macros):
     """
@@ -34,3 +34,18 @@ def find_base_macros(widget):
             return widget.base_macros
         widget = widget.parent()
     return {}
+
+def parse_macro_string(macro_string):
+    macro_string = str(macro_string)
+    try:
+        macros = json.loads(macro_string)
+        return macros
+    except ValueError:
+        if macro_string.find("=") < 0:
+            raise ValueError("Could not parse macro argument as JSON.")
+        macros = {}
+        for pair in macro_string.split(","):
+            key, value = pair.strip().split("=")
+            macros[key.strip()] = value.strip()
+        return macros
+    
