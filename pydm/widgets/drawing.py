@@ -507,12 +507,12 @@ class PyDMDrawingImage(PyDMDrawing):
         # But we always have an internal value to reference
         else:
             self._file = filename
-        if is_qt_designer():
+        if is_qt_designer():  # pragma: no cover
             designer_window = self.get_designer_window()
             if designer_window is not None:
                 designer_window.fileNameChanged.connect(self.designer_form_saved)
 
-    def get_designer_window(self):
+    def get_designer_window(self):  # pragma: no cover
         # Internal function to find the designer window that owns this widget.
         p = self.parent()
         while p is not None:
@@ -522,7 +522,7 @@ class PyDMDrawingImage(PyDMDrawing):
         return None
 
     @Slot(str)
-    def designer_form_saved(self, filename):
+    def designer_form_saved(self, filename):  # pragma: no cover
         self.filename = self._file
 
     @Property(str)
@@ -563,7 +563,7 @@ class PyDMDrawingImage(PyDMDrawing):
                 if is_pydm_app():
                     abs_path = QApplication.instance().get_path(abs_path)
                 # Based on the QtDesigner
-                elif is_qt_designer():
+                elif is_qt_designer():  # pragma: no cover
                     p = self.get_designer_window()
                     if p is not None:
                         ui_dir = p.absoluteDir().absolutePath()
@@ -591,7 +591,7 @@ class PyDMDrawingImage(PyDMDrawing):
         else:
             # Warn the user loudly if their file does not exist, but avoid
             # doing this in Designer as this spams the user as they are typing
-            if not is_qt_designer():
+            if not is_qt_designer():  # pragma: no cover
                 logger.error("Image file  %r does not exist", abs_path)
             pixmap = QPixmap(self.sizeHint())
             pixmap.fill(self.null_color)
