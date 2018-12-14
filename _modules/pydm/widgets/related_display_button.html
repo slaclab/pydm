@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.related_display_button &mdash; PyDM v1.6.5+8.gf978863 documentation</title>
+  <title>pydm.widgets.related_display_button &mdash; PyDM v1.6.5+13.gc05be12 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.6.5+8.gf978863
+                v1.6.5+13.gc05be12
               </div>
             
           
@@ -183,7 +183,7 @@
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMPrimitiveWidget</span>
 <span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">IconFont</span>
-<span class="kn">from</span> <span class="nn">..utilities.macro</span> <span class="k">import</span> <span class="n">find_base_macros</span>
+<span class="kn">from</span> <span class="nn">..utilities.macro</span> <span class="k">import</span> <span class="n">find_base_macros</span><span class="p">,</span> <span class="n">parse_macro_string</span>
 
 
 <div class="viewcode-block" id="PyDMRelatedDisplayButton"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton">[docs]</a><span class="k">class</span> <span class="nc">PyDMRelatedDisplayButton</span><span class="p">(</span><span class="n">QPushButton</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">):</span>
@@ -377,10 +377,7 @@
         <span class="c1"># Check for None and &quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayFilename</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">macros</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macro_string</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">macros</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_macro_string</span><span class="p">))</span>
-
+        <span class="n">macros</span> <span class="o">=</span> <span class="n">parse_macro_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_macro_string</span><span class="p">)</span>
         <span class="n">base_macros</span> <span class="o">=</span> <span class="n">find_base_macros</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">merged_macros</span> <span class="o">=</span> <span class="n">base_macros</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">merged_macros</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">macros</span><span class="p">)</span>

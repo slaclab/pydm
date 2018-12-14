@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.utilities.macro &mdash; PyDM v1.6.5+8.gf978863 documentation</title>
+  <title>pydm.utilities.macro &mdash; PyDM v1.6.5+13.gc05be12 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.6.5+8.gf978863
+                v1.6.5+13.gc05be12
               </div>
             
           
@@ -179,7 +179,13 @@
 <span></span><span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">six</span>
 <span class="kn">from</span> <span class="nn">string</span> <span class="k">import</span> <span class="n">Template</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
+<span class="c1"># Macro parsing states</span>
+<span class="n">PRE_NAME</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">IN_NAME</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">PRE_VAL</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">IN_VAL</span> <span class="o">=</span> <span class="mi">3</span>
 
 <div class="viewcode-block" id="substitute_in_file"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.macro.substitute_in_file">[docs]</a><span class="k">def</span> <span class="nf">substitute_in_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">macros</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -212,6 +218,75 @@
             <span class="k">return</span> <span class="n">widget</span><span class="o">.</span><span class="n">base_macros</span>
         <span class="n">widget</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
     <span class="k">return</span> <span class="p">{}</span></div>
+
+<div class="viewcode-block" id="parse_macro_string"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.macro.parse_macro_string">[docs]</a><span class="k">def</span> <span class="nf">parse_macro_string</span><span class="p">(</span><span class="n">macro_string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parses a macro string and returns a dictionary.</span>
+<span class="sd">    First, this method attempts to parse the string as JSON.</span>
+<span class="sd">    If that fails, it attempts to parse it as an EPICS-style</span>
+<span class="sd">    macro string.  The parsing algorithm for that case is very</span>
+<span class="sd">    closely based on macParseDefns in libCom/macUtil.c&quot;&quot;&quot;</span>
+    <span class="n">macro_string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">macro_string</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">macros</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">macro_string</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">macros</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">macro_string</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Could not parse macro argument as JSON.&quot;</span><span class="p">)</span>
+        <span class="n">macros</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">PRE_NAME</span>
+        <span class="n">quote</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">name_start</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">name_end</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">val_start</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">val_end</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">macro_string</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">quote</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="n">quote</span><span class="p">:</span>
+                    <span class="n">quote</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">:</span>
+                <span class="n">quote</span> <span class="o">=</span> <span class="n">c</span>
+                <span class="k">continue</span>
+            <span class="n">escape</span> <span class="o">=</span> <span class="n">macro_string</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="n">PRE_NAME</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">quote</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">escape</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">isspace</span><span class="p">()</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">&quot;,&quot;</span><span class="p">):</span>
+                    <span class="k">continue</span>
+                <span class="n">name_start</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="n">IN_NAME</span>
+            <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="n">IN_NAME</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">quote</span> <span class="ow">or</span> <span class="n">escape</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">&quot;=&quot;</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">&quot;,&quot;</span><span class="p">:</span>
+                    <span class="n">name_end</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="n">PRE_VAL</span>
+            <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="n">PRE_VAL</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">quote</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">escape</span><span class="p">)</span> <span class="ow">and</span> <span class="n">c</span><span class="o">.</span><span class="n">isspace</span><span class="p">():</span>
+                    <span class="k">continue</span>
+                <span class="n">val_start</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="n">IN_VAL</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">macro_string</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">val_end</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="n">IN_VAL</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">quote</span> <span class="ow">or</span> <span class="n">escape</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">&quot;,&quot;</span><span class="p">:</span>
+                    <span class="n">val_end</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="n">PRE_NAME</span>
+                <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">macro_string</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">val_end</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="n">PRE_NAME</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="kc">None</span> <span class="ow">in</span> <span class="p">(</span><span class="n">name_start</span><span class="p">,</span> <span class="n">name_end</span><span class="p">,</span> <span class="n">val_start</span><span class="p">,</span> <span class="n">val_end</span><span class="p">)):</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">macro_string</span><span class="p">[</span><span class="n">name_start</span><span class="p">:</span><span class="n">name_end</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">macro_string</span><span class="p">[</span><span class="n">val_start</span><span class="p">:</span><span class="n">val_end</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;&quot;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">macros</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+                <span class="n">name_start</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">name_end</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">val_start</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">val_end</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="n">PRE_NAME</span>
+        <span class="k">return</span> <span class="n">macros</span></div>
+    
 </pre></div>
 
            </div>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utilities &mdash; PyDM v1.6.5+8.gf978863 documentation</title>
+  <title>Utilities &mdash; PyDM v1.6.5+13.gc05be12 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.6.5+8.gf978863
+                v1.6.5+13.gc05be12
               </div>
             
           
@@ -366,6 +366,16 @@ Icon strings can be found at: <a class="reference external" href="https://fontaw
 <code class="descclassname">pydm.utilities.macro.</code><code class="descname">find_base_macros</code><span class="sig-paren">(</span><em>widget</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/macro.html#find_base_macros"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.macro.find_base_macros" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find and return the first set of defined base_macros from this widget or
 its ancestors.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydm.utilities.macro.parse_macro_string">
+<code class="descclassname">pydm.utilities.macro.</code><code class="descname">parse_macro_string</code><span class="sig-paren">(</span><em>macro_string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/macro.html#parse_macro_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.macro.parse_macro_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a macro string and returns a dictionary.
+First, this method attempts to parse the string as JSON.
+If that fails, it attempts to parse it as an EPICS-style
+macro string.  The parsing algorithm for that case is very
+closely based on macParseDefns in libCom/macUtil.c</p>
 </dd></dl>
 
 <dl class="function">
