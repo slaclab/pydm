@@ -1,7 +1,13 @@
 import io
 import six
 from string import Template
+import json
 
+# Macro parsing states
+PRE_NAME = 0
+IN_NAME = 1
+PRE_VAL = 2
+IN_VAL = 3
 
 def substitute_in_file(file_path, macros):
     """
@@ -34,3 +40,72 @@ def find_base_macros(widget):
             return widget.base_macros
         widget = widget.parent()
     return {}
+
+def parse_macro_string(macro_string):
+    """Parses a macro string and returns a dictionary.
+    First, this method attempts to parse the string as JSON.
+    If that fails, it attempts to parse it as an EPICS-style
+    macro string.  The parsing algorithm for that case is very
+    closely based on macParseDefns in libCom/macUtil.c"""
+    macro_string = str(macro_string)
+    try:
+        macros = json.loads(macro_string)
+        return macros
+    except ValueError:
+        if "=" not in macro_string:
+            raise ValueError("Could not parse macro argument as JSON.")
+        macros = {}
+        state = PRE_NAME
+        quote = None
+        name_start = None
+        name_end = None
+        val_start = None
+        val_end = None
+        for (i,c) in enumerate(macro_string):
+            if quote:
+                if c == quote:
+                    quote = False
+            elif c == "'" or c == '"':
+                quote = c
+                continue
+            escape = macro_string[i-1] == "\\"
+            if state == PRE_NAME:
+                if (not quote) and (not escape) and (c.isspace() or c == ","):
+                    continue
+                name_start = i
+                state = IN_NAME
+            elif state == IN_NAME:
+                if quote or escape:
+                    continue
+                if c == "=" or c == ",":
+                    name_end = i
+                    state = PRE_VAL
+            elif state == PRE_VAL:
+                if (not quote) and (not escape) and c.isspace():
+                    continue
+                val_start = i
+                state = IN_VAL
+                if i == len(macro_string)-1:
+                    val_end = i+1
+            elif state == IN_VAL:
+                if quote or escape:
+                    continue
+                if c == ",":
+                    val_end = i
+                    state = PRE_NAME
+                elif i == len(macro_string)-1:
+                    val_end = i+1
+                    state = PRE_NAME
+                else:
+                    continue
+            if not (None in (name_start, name_end, val_start, val_end)):
+                key = macro_string[name_start:name_end].strip().replace("\\", "")
+                val = macro_string[val_start:val_end].strip('"\'').replace("\\", "")
+                macros[key] = val
+                name_start = None
+                name_end = None
+                val_start = None
+                val_end = None
+                state = PRE_NAME
+        return macros
+    

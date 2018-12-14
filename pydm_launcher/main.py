@@ -14,6 +14,7 @@ def main():
     handler.setLevel("INFO")
 
     import pydm
+    from pydm.utilities.macro import parse_macro_string
 
     parser = argparse.ArgumentParser(description="Python Display Manager")
     parser.add_argument(
@@ -93,15 +94,7 @@ def main():
     pydm_args = parser.parse_args()
     macros = None
     if pydm_args.macro is not None:
-        try:
-            macros = json.loads(pydm_args.macro)
-        except ValueError:
-            if pydm_args.macro.find("=") < 0:
-                raise ValueError("Could not parse macro argument as JSON.")
-            macros = {}
-            for pair in pydm_args.macro.split(","):
-                key, value = pair.strip().split("=")
-                macros[key.strip()] = value.strip()
+        macros = parse_macro_string(pydm_args.macro)
 
     if pydm_args.log_level:
         logger.setLevel(pydm_args.log_level)

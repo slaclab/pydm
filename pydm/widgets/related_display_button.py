@@ -7,7 +7,7 @@ import logging
 from functools import partial
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
-from ..utilities.macro import find_base_macros
+from ..utilities.macro import find_base_macros, parse_macro_string
 
 
 class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
@@ -201,10 +201,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         # Check for None and ""
         if not self.displayFilename:
             return
-        macros = {}
-        if self._macro_string is not None:
-            macros = json.loads(str(self._macro_string))
-
+        macros = parse_macro_string(self._macro_string)
         base_macros = find_base_macros(self)
         merged_macros = base_macros.copy()
         merged_macros.update(macros)
