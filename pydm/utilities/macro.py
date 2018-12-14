@@ -52,7 +52,7 @@ def parse_macro_string(macro_string):
         macros = json.loads(macro_string)
         return macros
     except ValueError:
-        if macro_string.find("=") < 0:
+        if "=" not in macro_string:
             raise ValueError("Could not parse macro argument as JSON.")
         macros = {}
         state = PRE_NAME
