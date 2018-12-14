@@ -190,6 +190,8 @@ class WaveformCurveItem(BasePlotCurveItem):
         """
         if new_waveform is None:
             return
+        if np.isinf(new_waveform).all():
+            return
         self.latest_x = new_waveform
         self.needs_new_x = False
         # Don't redraw unless we already have Y data.
@@ -202,6 +204,8 @@ class WaveformCurveItem(BasePlotCurveItem):
         Handler for new y waveform data.
         """
         if new_waveform is None:
+            return
+        if np.isinf(new_waveform).all():
             return
         self.latest_y = new_waveform
         self.needs_new_y = False

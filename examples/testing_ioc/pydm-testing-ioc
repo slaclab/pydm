@@ -47,7 +47,10 @@ pvdb = {
         'StatusBits'       : { 'type' : 'int', 'value': 0b101010, 'lolim': 0, 'hilim': 32, 'asg' : 'default' },
         'SinVal'           : { 'type' : 'float', 'value': 0.0, 'asg': 'default' },
         'CosVal'           : { 'type' : 'float', 'value': 0.0, 'asg': 'default' },
-        'Normal'           : { 'type' : 'float', 'value': 0.0, 'asg': 'default' }
+        'Normal'           : { 'type' : 'float', 'value': 0.0, 'asg': 'default' },
+        'Infinity'         : { 'count': MAX_POINTS,
+                              'prec' : 5, 'asg' : 'default', 'value': numpy.array([numpy.inf]*MAX_POINTS)}
+
 }
 
 
