@@ -22,24 +22,16 @@ def _change_connection_status(widget, status):
     widgets = [widget]
     widgets.extend(widget.findChildren(QWidget))
     for child_widget in widgets:
-        try:
-            if hasattr(child_widget, 'channels'):
-                if not channels:
-                    logger.error("Widget %r has no channels configured. "
-                                 "Can not change connection status.",
-                                 child_widget)
-                    return
+        if hasattr(child_widget, 'channels'):
+            if child_widget.channels() is None:
+                continue
+            for channel in child_widget.channels():
+                if channel is None:
+                    continue
+                if status:
+                    channel.connect()
                 else:
-                    for channel in child_widget.channels():
-                        if channel is None:
-                            continue
-                        if status:
-                            channel.connect()
-                        else:
-                            channel.disconnect()
-        except NameError:
-            continue
-
+                    channel.disconnect()
 
 def establish_widget_connections(widget):
     """
