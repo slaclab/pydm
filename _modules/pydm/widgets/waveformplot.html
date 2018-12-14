@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.waveformplot &mdash; PyDM v1.6.5+6.g2f93141 documentation</title>
+  <title>pydm.widgets.waveformplot &mdash; PyDM v1.6.5+8.gf978863 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.6.5+6.g2f93141
+                v1.6.5+8.gf978863
               </div>
             
           
@@ -366,6 +366,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_waveform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">new_waveform</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">latest_x</span> <span class="o">=</span> <span class="n">new_waveform</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_x</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="c1"># Don&#39;t redraw unless we already have Y data.</span>
@@ -378,6 +380,8 @@
 <span class="sd">        Handler for new y waveform data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_waveform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">new_waveform</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">latest_y</span> <span class="o">=</span> <span class="n">new_waveform</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_y</span> <span class="o">=</span> <span class="kc">False</span>
