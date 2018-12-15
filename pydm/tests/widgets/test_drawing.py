@@ -673,8 +673,7 @@ def test_pydmdrawingimage_draw_item(qapp, qtbot, monkeypatch, width, height,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_drawingimage.paintEvent(None)
-    qapp.processEvents()
+    pydm_drawingimage.show()
 
 
 # # ---------------------
@@ -717,8 +716,7 @@ def test_pydmdrawingrectangle_draw_item(qapp, qtbot, monkeypatch, width, height,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_drawingrectangle.paintEvent(None)
-    qapp.processEvents()
+    pydm_drawingrectangle.show()
 
 
 # # ---------------------
@@ -804,8 +802,7 @@ def test_pydmdrawingtriangle_draw_item(qapp, qtbot, monkeypatch, width, height,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_drawingtriangle.paintEvent(None)
-    qapp.processEvents()
+    pydm_drawingtriangle.show()
 
 # # -------------------
 # # PyDMDrawingEclipse
@@ -844,8 +841,7 @@ def test_pydmdrawingeclipse_draw_item(qapp, qtbot, monkeypatch, width, height,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_dymdrawingeclipse.paintEvent(None)
-    qapp.processEvents()
+    pydm_dymdrawingeclipse.show()
 
 
 # # ------------------
@@ -916,8 +912,7 @@ def test_pydmdrawingcircle_draw_item(qapp, qtbot, monkeypatch, width, height,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_dymdrawingcircle.paintEvent(None)
-    qapp.processEvents()
+    pydm_dymdrawingcircle.show()
 
 
 # # ---------------
@@ -988,8 +983,7 @@ def test_pydmdrawingarc_draw_item(qapp, qtbot, monkeypatch, width, height,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_drawingarc.paintEvent(None)
-    qapp.processEvents()
+    pydm_drawingarc.show()
 
 
 # # ---------------
@@ -1046,8 +1040,7 @@ def test_pydmdrawingpie_draw_item(qapp, qtbot, monkeypatch, width, height, pen_w
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_drawingpie.paintEvent(None)
-    qapp.processEvents()
+    pydm_drawingpie.show()
 
 
 # # -----------------
@@ -1104,8 +1097,7 @@ def test_pydmdrawingchord_draw_item(qapp, qtbot, monkeypatch, width, height,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_drawingchord.paintEvent(None)
-    qapp.processEvents()
+    pydm_drawingchord.show()
 
 # # ---------------------
 # # PyDMDrawingPolygon
@@ -1155,8 +1147,7 @@ def test_pydmdrawingpolygon_calculate_drawing_points(qapp, qtbot, x, y, width,
         assert p.x() == pytest.approx(expected_points[idx][0], 0.1)
         assert p.y() == pytest.approx(expected_points[idx][1], 0.1)
 
-    drawing.paintEvent(None)
-    qapp.processEvents()
+    drawing.show()
 
 # --------------------
 # NEGATIVE TEST CASES
