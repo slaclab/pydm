@@ -9,7 +9,7 @@ from qtpy.QtGui import (QColor, QPainter, QBrush, QPen, QPolygon, QPolygonF, QPi
 from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
-from ..utilities import is_pydm_app
+from ..utilities import is_pydm_app, is_qt_designer
 
 logger = logging.getLogger(__name__)
 
@@ -71,8 +71,12 @@ class PyDMDrawing(QWidget, PyDMWidget):
         self._painter = QPainter()
         self._pen = QPen(Qt.NoPen)
         self._pen_style = Qt.NoPen
+        self._pen_cap_style = Qt.SquareCap
+        self._pen_join_style = Qt.MiterJoin
         self._pen_width = 0
         self._pen_color = QColor(0, 0, 0)
+        self._pen.setCapStyle(self._pen_cap_style)
+        self._pen.setJoinStyle(self._pen_join_style)
         self._original_pen_style = self._pen_style
         self._original_pen_color = self._pen_color
         QWidget.__init__(self, parent)
@@ -96,19 +100,18 @@ class PyDMDrawing(QWidget, PyDMWidget):
         ----------
         event : QPaintEvent
         """
-        self._painter.begin(self)
+        painter = QPainter(self)
         opt = QStyleOption()
         opt.initFrom(self)
-        self.style().drawPrimitive(QStyle.PE_Widget, opt, self._painter, self)
-        self._painter.setRenderHint(QPainter.Antialiasing)
+        self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
+        painter.setRenderHint(QPainter.Antialiasing)
 
-        self._painter.setBrush(self._brush)
-        self._painter.setPen(self._pen)
+        painter.setBrush(self._brush)
+        painter.setPen(self._pen)
 
-        self.draw_item()
-        self._painter.end()
+        self.draw_item(painter)
 
-    def draw_item(self):
+    def draw_item(self, painter):
         """
         The classes inheriting from PyDMDrawing must overwrite this method.
         This method translate the painter to the center point given by
@@ -116,8 +119,8 @@ class PyDMDrawing(QWidget, PyDMWidget):
         degrees.
         """
         xc, yc = self.get_center()
-        self._painter.translate(xc, yc)
-        self._painter.rotate(-self._rotation)
+        painter.translate(xc, yc)
+        painter.rotate(-self._rotation)
 
     def get_center(self):
         """
@@ -298,6 +301,60 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._pen.setStyle(new_style)
             self.update()
 
+    @Property(Qt.PenCapStyle)
+    def penCapStyle(self):
+        """
+        PyQT Property for the pen cap to be used when drawing the border
+
+        Returns
+        -------
+        int
+            Index at Qt.PenCapStyle enum
+        """
+        return self._pen_cap_style
+
+    @penCapStyle.setter
+    def penCapStyle(self, new_style):
+        """
+        PyQT Property for the pen cap style to be used when drawing the border
+
+        Parameters
+        ----------
+        new_style : int
+            Index at Qt.PenStyle enum
+        """
+        if new_style != self._pen_cap_style:
+            self._pen_cap_style = new_style
+            self._pen.setCapStyle(new_style)
+            self.update()
+
+    @Property(Qt.PenJoinStyle)
+    def penJoinStyle(self):
+        """
+        PyQT Property for the pen join style to be used when drawing the border
+
+        Returns
+        -------
+        int
+            Index at Qt.PenJoinStyle enum
+        """
+        return self._pen_join_style
+
+    @penJoinStyle.setter
+    def penJoinStyle(self, new_style):
+        """
+        PyQT Property for the pen join style to be used when drawing the border
+
+        Parameters
+        ----------
+        new_style : int
+            Index at Qt.PenStyle enum
+        """
+        if new_style != self._pen_join_style:
+            self._pen_join_style = new_style
+            self._pen.setJoinStyle(new_style)
+            self.update()
+
     @Property(QColor)
     def penColor(self):
         """
@@ -389,6 +446,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
             if self._original_pen_style is not None:
                 self.penStyle = self._original_pen_style
 
+
 class PyDMDrawingLine(PyDMDrawing):
     """
     A widget with a line drawn in it.
@@ -403,15 +461,18 @@ class PyDMDrawingLine(PyDMDrawing):
     """
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingLine, self).__init__(parent, init_channel)
+        self.rotation = 45
+        self.penStyle = Qt.SolidLine
+        self.penWidth = 1
 
-    def draw_item(self):
+    def draw_item(self, painter):
         """
         Draws the line after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingLine, self).draw_item()
-        x, _, w, _ = self.get_bounds()
-        self._painter.drawRect(x, 0, w, 1)
+        super(PyDMDrawingLine, self).draw_item(painter)
+        x, y, w, h = self.get_bounds()
+        painter.drawLine(x, y, w, h)
 
 
 class PyDMDrawingImage(PyDMDrawing):
@@ -446,12 +507,12 @@ class PyDMDrawingImage(PyDMDrawing):
         # But we always have an internal value to reference
         else:
             self._file = filename
-        if not is_pydm_app():
+        if is_qt_designer():  # pragma: no cover
             designer_window = self.get_designer_window()
             if designer_window is not None:
                 designer_window.fileNameChanged.connect(self.designer_form_saved)
 
-    def get_designer_window(self):
+    def get_designer_window(self):  # pragma: no cover
         # Internal function to find the designer window that owns this widget.
         p = self.parent()
         while p is not None:
@@ -461,7 +522,7 @@ class PyDMDrawingImage(PyDMDrawing):
         return None
 
     @Slot(str)
-    def designer_form_saved(self, filename):
+    def designer_form_saved(self, filename):  # pragma: no cover
         self.filename = self._file
 
     @Property(str)
@@ -495,15 +556,14 @@ class PyDMDrawingImage(PyDMDrawing):
         pixmap = None
         self._file = new_file
         abs_path = os.path.expanduser(os.path.expandvars(self._file))
-        is_app = is_pydm_app()
         # Find the absolute path relative to UI
         if not os.path.isabs(abs_path):
             try:
                 # Based on the QApplication
-                if is_app:
+                if is_pydm_app():
                     abs_path = QApplication.instance().get_path(abs_path)
                 # Based on the QtDesigner
-                else:
+                elif is_qt_designer():  # pragma: no cover
                     p = self.get_designer_window()
                     if p is not None:
                         ui_dir = p.absoluteDir().absolutePath()
@@ -531,7 +591,7 @@ class PyDMDrawingImage(PyDMDrawing):
         else:
             # Warn the user loudly if their file does not exist, but avoid
             # doing this in Designer as this spams the user as they are typing
-            if is_app:
+            if not is_qt_designer():  # pragma: no cover
                 logger.error("Image file  %r does not exist", abs_path)
             pixmap = QPixmap(self.sizeHint())
             pixmap.fill(self.null_color)
@@ -573,12 +633,12 @@ class PyDMDrawingImage(PyDMDrawing):
             self._aspect_ratio_mode = new_mode
             self.update()
 
-    def draw_item(self):
+    def draw_item(self, painter):
         """
         Draws the image after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingImage, self).draw_item()
+        super(PyDMDrawingImage, self).draw_item(painter)
         x, y, w, h = self.get_bounds(maxsize=True, force_no_pen=True)
         if not isinstance(self._pixmap, QMovie):
             _scaled = self._pixmap.scaled(w, h, self._aspect_ratio_mode,
@@ -590,7 +650,7 @@ class PyDMDrawingImage(PyDMDrawing):
             if h > _scaled.height():
                 logger.debug("Centering image vertically ...")
                 y += (h - _scaled.height())/2
-            self._painter.drawPixmap(x, y, _scaled)
+            painter.drawPixmap(x, y, _scaled)
 
     def movie_frame_changed(self, frame_no):
         """
@@ -641,14 +701,14 @@ class PyDMDrawingRectangle(PyDMDrawing):
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingRectangle, self).__init__(parent, init_channel)
 
-    def draw_item(self):
+    def draw_item(self, painter):
         """
         Draws the rectangle after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingRectangle, self).draw_item()
+        super(PyDMDrawingRectangle, self).draw_item(painter)
         x, y, w, h = self.get_bounds(maxsize=True)
-        self._painter.drawRect(x, y, w, h)
+        painter.drawRect(x, y, w, h)
 
 
 class PyDMDrawingTriangle(PyDMDrawing):
@@ -673,16 +733,16 @@ class PyDMDrawingTriangle(PyDMDrawing):
             QPoint(w / 2.0, y)
         ]
 
-    def draw_item(self):
+    def draw_item(self, painter):
         """
         Draws the triangle after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingTriangle, self).draw_item()
+        super(PyDMDrawingTriangle, self).draw_item(painter)
         x, y, w, h = self.get_bounds(maxsize=True)
         points = self._calculate_drawing_points(x, y, w, h)
 
-        self._painter.drawPolygon(QPolygon(points))
+        painter.drawPolygon(QPolygon(points))
 
 
 class PyDMDrawingEllipse(PyDMDrawing):
@@ -700,15 +760,16 @@ class PyDMDrawingEllipse(PyDMDrawing):
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingEllipse, self).__init__(parent, init_channel)
 
-    def draw_item(self):
+    def draw_item(self, painter):
         """
         Draws the ellipse after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingEllipse, self).draw_item()
+        super(PyDMDrawingEllipse, self).draw_item(painter)
         maxsize = not self.is_square()
         _, _, w, h = self.get_bounds(maxsize=maxsize)
-        self._painter.drawEllipse(QPoint(0, 0), w / 2.0, h / 2.0)
+        painter.drawEllipse(QPoint(0, 0), w / 2.0, h / 2.0)
+
 
 class PyDMDrawingCircle(PyDMDrawing):
     """
@@ -728,15 +789,15 @@ class PyDMDrawingCircle(PyDMDrawing):
     def _calculate_radius(self, width, height):
         return min(width, height) / 2.0
 
-    def draw_item(self):
+    def draw_item(self, painter):
         """
         Draws the circle after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingCircle, self).draw_item()
+        super(PyDMDrawingCircle, self).draw_item(painter)
         _, _, w, h = self.get_bounds()
         r = self._calculate_radius(w, h)
-        self._painter.drawEllipse(QPoint(0, 0), r, r)
+        painter.drawEllipse(QPoint(0, 0), r, r)
 
 
 class PyDMDrawingArc(PyDMDrawing):
@@ -810,15 +871,15 @@ class PyDMDrawingArc(PyDMDrawing):
             self._span_angle = deg_to_qt(new_angle)
             self.update()
 
-    def draw_item(self):
+    def draw_item(self, painter):
         """
         Draws the arc after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingArc, self).draw_item()
+        super(PyDMDrawingArc, self).draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
-        self._painter.drawArc(x, y, w, h, self._start_angle, self._span_angle)
+        painter.drawArc(x, y, w, h, self._start_angle, self._span_angle)
 
 
 class PyDMDrawingPie(PyDMDrawingArc):
@@ -836,15 +897,15 @@ class PyDMDrawingPie(PyDMDrawingArc):
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingPie, self).__init__(parent, init_channel)
 
-    def draw_item(self):
+    def draw_item(self, painter):
         """
         Draws the pie after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingPie, self).draw_item()
+        super(PyDMDrawingPie, self).draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
-        self._painter.drawPie(x, y, w, h, self._start_angle, self._span_angle)
+        painter.drawPie(x, y, w, h, self._start_angle, self._span_angle)
 
 
 class PyDMDrawingChord(PyDMDrawingArc):
@@ -862,15 +923,15 @@ class PyDMDrawingChord(PyDMDrawingArc):
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingChord, self).__init__(parent, init_channel)
 
-    def draw_item(self):
+    def draw_item(self, painter):
         """
         Draws the chord after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingChord, self).draw_item()
+        super(PyDMDrawingChord, self).draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
-        self._painter.drawChord(x, y, w, h, self._start_angle, self._span_angle)
+        painter.drawChord(x, y, w, h, self._start_angle, self._span_angle)
 
 
 class PyDMDrawingPolygon(PyDMDrawing):
@@ -920,13 +981,13 @@ class PyDMDrawingPolygon(PyDMDrawing):
 
         return points
 
-    def draw_item(self):
+    def draw_item(self, painter):
         """
         Draws the Polygon after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingPolygon, self).draw_item()
+        super(PyDMDrawingPolygon, self).draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=not self.is_square())
         poly = self._calculate_drawing_points(x, y, w, h)
-        self._painter.drawPolygon(QPolygonF(poly))
+        painter.drawPolygon(QPolygonF(poly))
