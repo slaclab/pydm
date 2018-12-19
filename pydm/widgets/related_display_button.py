@@ -9,6 +9,8 @@ from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
 from ..utilities.macro import find_base_macros, parse_macro_string
 
+logger = logging.getLogger(__name__)
+
 
 class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
     """
@@ -177,11 +179,13 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         if mouse_event.button() != Qt.LeftButton:
             return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
         try:
-            if mouse_event.modifiers() == Qt.ShiftModifier or self._open_in_new_window:
+            if mouse_event.modifiers() == Qt.ShiftModifier \
+                    or self._open_in_new_window:
                 self.open_display(target=self.NEW_WINDOW)
             else:
                 self.open_display()
-        except:
+        except Exception as ex:
+            logger.exception("Failed to open display.")
             pass
         finally:
             super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)

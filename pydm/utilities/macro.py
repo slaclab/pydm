@@ -41,13 +41,18 @@ def find_base_macros(widget):
         widget = widget.parent()
     return {}
 
+
 def parse_macro_string(macro_string):
     """Parses a macro string and returns a dictionary.
     First, this method attempts to parse the string as JSON.
     If that fails, it attempts to parse it as an EPICS-style
     macro string.  The parsing algorithm for that case is very
     closely based on macParseDefns in libCom/macUtil.c"""
+    if not macro_string:
+        return {}
+
     macro_string = str(macro_string)
+
     try:
         macros = json.loads(macro_string)
         return macros
