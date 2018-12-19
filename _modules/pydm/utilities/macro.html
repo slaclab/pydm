@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.utilities.macro &mdash; PyDM v1.6.5+18.gb52028e documentation</title>
+  <title>pydm.utilities.macro &mdash; PyDM v1.6.5+20.g8d387e9 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                v1.6.5+18.gb52028e
+                v1.6.5+20.g8d387e9
               </div>
             
           
@@ -219,13 +219,18 @@
         <span class="n">widget</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
     <span class="k">return</span> <span class="p">{}</span></div>
 
+
 <div class="viewcode-block" id="parse_macro_string"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.macro.parse_macro_string">[docs]</a><span class="k">def</span> <span class="nf">parse_macro_string</span><span class="p">(</span><span class="n">macro_string</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Parses a macro string and returns a dictionary.</span>
 <span class="sd">    First, this method attempts to parse the string as JSON.</span>
 <span class="sd">    If that fails, it attempts to parse it as an EPICS-style</span>
 <span class="sd">    macro string.  The parsing algorithm for that case is very</span>
 <span class="sd">    closely based on macParseDefns in libCom/macUtil.c&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">macro_string</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
     <span class="n">macro_string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">macro_string</span><span class="p">)</span>
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">macros</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">macro_string</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">macros</span>
