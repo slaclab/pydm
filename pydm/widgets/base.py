@@ -3,7 +3,8 @@ import logging
 import functools
 import json
 import numpy as np
-from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect, QToolTip
+from qtpy.QtWidgets import (QApplication, QMenu, QGraphicsOpacityEffect,
+                            QToolTip, QWidget)
 from qtpy.QtGui import QCursor
 from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
@@ -72,6 +73,23 @@ def widget_destroyed(channels, widget):
                 ch.disconnect(destroying=True)
 
     RulesDispatcher().unregister(widget)
+
+
+def refresh_style(widget):
+    """
+    Method that traverse the widget tree starting at `widget` and refresh the
+    style for this widget and its childs.
+
+    Parameters
+    ----------
+    widget : QWidget
+    """
+    widgets = [widget]
+    widgets.extend(widget.findChildren(QWidget))
+    for child_widget in widgets:
+        child_widget.style().unpolish(child_widget)
+        child_widget.style().polish(child_widget)
+        child_widget.update()
 
 
 class PyDMPrimitiveWidget(object):
@@ -373,9 +391,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self._alarm_state = PyDMWidget.ALARM_NONE
         else:
             self._alarm_state = new_alarm_severity
-        self.style().unpolish(self)
-        self.style().polish(self)
-        self.update()
+        refresh_style(self)
 
     def enum_strings_changed(self, new_enum_strings):
         """
