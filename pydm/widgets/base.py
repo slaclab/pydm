@@ -9,7 +9,8 @@ from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
 from .. import data_plugins
 from .. import tools
-from ..utilities import is_qt_designer, remove_protocol
+from ..utilities import (is_qt_designer, remove_protocol,
+                         close_widget_connections)
 from .rules import RulesDispatcher
 
 try:
@@ -1043,3 +1044,8 @@ class PyDMWritableWidget(PyDMWidget):
                 tooltip += "Access denied by Channel Access Security."
         self.setToolTip(tooltip)
         self.setEnabled(status)
+
+    def deleteLater(self):
+        """Close widget connections before deleting"""
+        close_widget_connections(self)
+        super().deleteLater()
