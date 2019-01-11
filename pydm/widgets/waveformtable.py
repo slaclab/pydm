@@ -43,11 +43,17 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         new_waveform : np.ndarray
             The new waveform value from the channel.
         """
+        try:
+            len_wave = len(new_waveform)
+        except TypeError:
+            new_waveform = np.array([new_waveform])
+            len_wave = 1
+
         PyDMWritableWidget.value_changed(self, new_waveform)
         self._valueBeingSet = True
         self.waveform = new_waveform
         col_count = self.columnCount()
-        len_wave = len(new_waveform)
+
         row_count = len_wave//col_count + (1 if len_wave % col_count else 0)
         self.setRowCount(row_count)
         for ind, element in enumerate(new_waveform):
