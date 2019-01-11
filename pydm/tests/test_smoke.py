@@ -1,10 +1,10 @@
 from __future__ import print_function
+import inspect
 import os
 import pkgutil
 import sys
-import types
 import time
-from inspect import isclass, signature, Parameter
+import types
 
 import pytest
 
@@ -30,7 +30,7 @@ def get_all_widgets(base_class=QWidget, prefix='PyDM'):
 
             obj = getattr(module, name)
 
-            if (isclass(obj) and issubclass(obj, base_class)
+            if (inspect.isclass(obj) and issubclass(obj, base_class)
                     and obj is not base_class):
                 print(module_name, name)
                 ret.append(obj)
@@ -93,13 +93,12 @@ special_method_args = {
                              [PyDMWidget.ALARM_INVALID, ],
                              [PyDMWidget.ALARM_DISCONNECTED, ],
                              ],
-    'value_changed': [[0]],
 }
 
 
 @pytest.mark.xfail(reason='smoke test', strict=False)
 @pytest.mark.parametrize("cls", all_widgets)
-def test_smoke_widget(qtbot, cls, call_methods=False):
+def test_smoke_widget(qtbot, cls, call_methods=True):
     widget = cls()
 
     # qtbot.addWidget(widget)
@@ -160,20 +159,27 @@ def test_smoke_widget(qtbot, cls, call_methods=False):
 
                 if attr in special_method_args:
                     arg_options = special_method_args[attr]
+                elif attr in ('value_changed', 'channelValueChanged'):
+                    arg_options = [[initial_value]]
                 else:
                     try:
-                        sig = signature(method)
+                        try:
+                            # Python 3.0+
+                            argspec = inspect.getfullargspec(method)
+                        except AttributeError:
+                            # Python 2.7
+                            argspec = inspect.getargspec(method)
                     except ValueError:
                         # built-in method; skip
                         continue
-                    parameters = [param
-                                  for param in sig.parameters.values()
-                                  if param.name != 'self' and
-                                  param.kind != Parameter.KEYWORD_ONLY]
 
-                    if len(parameters) == 0:
+                    args = argspec.args
+                    if 'self' in args:
+                        args.remove('self')
+
+                    if len(args) == 0:
                         arg_options = [[]]
-                    elif len(parameters) == 1:
+                    elif len(args) == 1:
                         # Try sending every type we know about
                         arg_options = [[param] for param in method_parameters]
                     else:
@@ -184,10 +190,17 @@ def test_smoke_widget(qtbot, cls, call_methods=False):
                     print('Calling method', attr, 'with args', args, end=': ')
                     sys.stdout.flush()
                     try:
-                        print('Returned:', method(*args))
+                        ret = method(*args)
                     except Exception as ex:
                         print('Failed', type(ex), ex)
-
+                    else:
+                        print('Returned:', ret)
+                        if isinstance(ret, QWidget) and ret is not widget:
+                            try:
+                                print('Closing likely new widget')
+                                ret.close()
+                            except Exception:
+                                pass
         try:
             print('Closing widget')
             widget.close()
@@ -195,5 +208,6 @@ def test_smoke_widget(qtbot, cls, call_methods=False):
             widget.deleteLater()
             time.sleep(0.1)
             del widget
+            time.sleep(0.5)
         except Exception as ex:
             print('Exception on closing widget', type(ex), ex)
