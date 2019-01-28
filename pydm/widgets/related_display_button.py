@@ -79,13 +79,6 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
                 self._icon = self.icon()
                 self.setIcon(QIcon())
 
-    def check_enable_state(self):
-        """
-        Because the related display button's channel is only used for alarm
-        status, the widget is never disabled by connection state.
-        """
-        self.setEnabled(True)
-
     @Property(str)
     def displayFilename(self):
         """
