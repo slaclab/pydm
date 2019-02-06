@@ -4,6 +4,7 @@ from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
 import os
 import json
 import logging
+import warnings
 from functools import partial
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
@@ -41,8 +42,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         self.setIconSize(QSize(16, 16))
         self.setIcon(self._icon)
 
-        self._additional_filenames = []
-        self._additional_titles = []
+        self._filenames = []
+        self._titles = []
+        self._macros = []
         self.num_additional_items = 0
         self._shift_key_was_down = False
         self.setCursor(QCursor(self._icon.pixmap(16, 16)))
@@ -126,7 +128,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
                 self._icon = self.icon()
                 self.setIcon(QIcon())
 
-    @Property(str)
+    @Property(str, designable=False)
     def displayFilename(self):
         """
         The filename to open
@@ -146,22 +148,22 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         ----------
         value : str
         """
+        warnings.warn("'PyDMRelatedDisplayButton.displayFilename' is deprecated, "
+                      "use 'PyDMRelatedDisplayButton.filenames' instead.")
         if self._display_filename != value:
             self._display_filename = str(value)
             self._rebuild_menu()
             
-    @Property(str)
+    @Property('QStringList')
     def macros(self):
         """
         The macro substitutions to use when launching the display, in JSON object format.
 
         Returns
         -------
-        str
+        list of str
         """
-        if self._macro_string is None:
-            return ""
-        return self._macro_string
+        return self._macros
 
     @macros.setter
     def macros(self, new_macros):
@@ -170,12 +172,12 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
 
         Parameters
         ----------
-        new_macros : str
+        new_macros : list of str
         """
-        if len(new_macros) < 1:
-            self._macro_string = None
-        else:
-            self._macro_string = new_macros
+        #Handle the deprecated form of macros where it was a single string.
+        if isinstance(new_macros, str):
+            new_macros = [new_macros]
+        self._macros = new_macros
 
     @Property(bool)
     def openInNewWindow(self):
