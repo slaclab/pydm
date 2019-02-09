@@ -216,15 +216,6 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
         self._slider.setValue(self.find_closest_slider_position_to_value(val))
         self._mute_internal_slider_changes = False
 
-    def alarm_severity_changed(self, new_alarm_severity):
-        PyDMWritableWidget.alarm_severity_changed(self, new_alarm_severity)
-        try:
-            self.value_label.style().unpolish(self.value_label)
-            self.value_label.style().polish(self.value_label)
-            self.value_label.update()
-        except AttributeError: # In case self.value_label was not yet created
-            pass
-
     def value_changed(self, new_val):
         """
         Callback invoked when the Channel value is changed.

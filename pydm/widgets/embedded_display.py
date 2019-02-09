@@ -6,6 +6,7 @@ import os.path
 from .base import PyDMPrimitiveWidget
 from ..utilities import (is_pydm_app, establish_widget_connections,
                          close_widget_connections)
+from ..utilities.macro import parse_macro_string
 
 
 class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
@@ -130,10 +131,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         --------
         dict
         """
-        if self.macros is not None and len(self.macros) > 0:
-            return json.loads(self.macros)
-        else:
-            return {}
+        return parse_macro_string(self.macros)
 
     def open_file(self):
         """

@@ -23,10 +23,13 @@ class Connection(PyDMConnection):
     def __init__(self, channel, pv, protocol=None, parent=None):
         super(Connection, self).__init__(channel, pv, protocol, parent)
         self.app = QApplication.instance()
-        self.pv = epics.PV(pv, connection_callback=self.send_connection_state, form='ctrl', auto_monitor=epics.dbr.DBE_VALUE|epics.dbr.DBE_ALARM, access_callback=self.send_access_state)
+        self.pv = epics.PV(pv, connection_callback=self.send_connection_state,
+                           form='ctrl', auto_monitor=epics.dbr.DBE_VALUE|epics.dbr.DBE_ALARM|epics.dbr.DBE_PROPERTY,
+                           access_callback=self.send_access_state)
         self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
         self.add_listener(channel)
 
+        self._value = None
         self._severity = None
         self._precision = None
         self._enum_strs = None
@@ -35,6 +38,7 @@ class Connection(PyDMConnection):
         self._lower_ctrl_limit = None
 
     def clear_cache(self):
+        self._value = None
         self._severity = None
         self._precision = None
         self._enum_strs = None
@@ -44,7 +48,9 @@ class Connection(PyDMConnection):
 
     def send_new_value(self, value=None, char_value=None, count=None, ftype=None, type=None, *args, **kws):
         self.update_ctrl_vars(**kws)
-        if value is not None:
+
+        if value is not None and not np.array_equal(value, self._value):
+            self._value = value
             if isinstance(value, np.ndarray):
                 self.new_value_signal[np.ndarray].emit(value)
             else:

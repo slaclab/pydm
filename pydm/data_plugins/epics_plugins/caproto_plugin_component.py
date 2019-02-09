@@ -5,7 +5,7 @@ import numpy as np
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from qtpy.QtCore import Slot, Qt
 from qtpy.QtWidgets import QApplication
-from pydm.utilities import is_pydm_app
+from pydm.data_plugins import is_read_only
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +23,7 @@ class Connection(PyDMConnection):
     def __init__(self, channel, pv, protocol=None, parent=None):
         super(Connection, self).__init__(channel, pv, protocol, parent)
         self.app = QApplication.instance()
+        self._value = None
         self._severity = None
         self._precision = None
         self._enum_strs = None
@@ -30,11 +31,12 @@ class Connection(PyDMConnection):
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
 
-        self.pv = epics.get_pv(pv, connection_callback=self.send_connection_state, form='ctrl', auto_monitor=SubscriptionType.DBE_VALUE|SubscriptionType.DBE_ALARM, access_callback=self.send_access_state)
+        self.pv = epics.get_pv(pv, connection_callback=self.send_connection_state, form='ctrl', auto_monitor=SubscriptionType.DBE_VALUE|SubscriptionType.DBE_ALARM|SubscriptionType.DBE_PROPERTY, access_callback=self.send_access_state)
         self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
         self.add_listener(channel)
 
     def clear_cache(self):
+        self._value = None
         self._severity = None
         self._precision = None
         self._enum_strs = None
@@ -44,7 +46,9 @@ class Connection(PyDMConnection):
 
     def send_new_value(self, value=None, char_value=None, count=None, typefull=None, type=None, *args, **kws):
         self.update_ctrl_vars(**kws)
-        if value is not None:
+
+        if value is not None and not np.array_equal(value, self._value):
+            self._value = value
             if isinstance(value, np.ndarray):
                 self.new_value_signal[np.ndarray].emit(value)
             else:
@@ -88,7 +92,7 @@ class Connection(PyDMConnection):
             self.lower_ctrl_limit_signal.emit(lower_ctrl_limit)
 
     def send_access_state(self, read_access, write_access, *args, **kws):
-        if is_pydm_app() and self.app.is_read_only():
+        if is_read_only():
             self.write_access_signal.emit(False)
             return
 
@@ -96,8 +100,8 @@ class Connection(PyDMConnection):
             self.write_access_signal.emit(write_access)
 
     def reload_access_state(self):
-        read_access = epics.ca.read_access(self.pv.chid)
-        write_access = epics.ca.write_access(self.pv.chid)
+        read_access = self.pv.read_access
+        write_access = self.pv.write_access
         self.send_access_state(read_access, write_access)
 
     def send_connection_state(self, conn=None, *args, **kws):
@@ -114,7 +118,7 @@ class Connection(PyDMConnection):
     @Slot(str)
     @Slot(np.ndarray)
     def put_value(self, new_val):
-        if is_pydm_app() and self.app.is_read_only():
+        if is_read_only():
             return
 
         if self.pv.write_access:
@@ -151,27 +155,6 @@ class Connection(PyDMConnection):
                 channel.value_signal[np.ndarray].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
-
-    def remove_listener(self, channel):
-        if channel.value_signal is not None:
-            try:
-                channel.value_signal[str].disconnect(self.put_value)
-            except (KeyError, TypeError):
-                pass
-            try:
-                channel.value_signal[int].disconnect(self.put_value)
-            except (KeyError, TypeError):
-                pass
-            try:
-                channel.value_signal[float].disconnect(self.put_value)
-            except (KeyError, TypeError):
-                pass
-            try:
-                channel.value_signal[np.ndarray].disconnect(self.put_value)
-            except (KeyError, TypeError):
-                pass
-
-        super(Connection, self).remove_listener(channel)
 
     def close(self):
         self.pv.disconnect()

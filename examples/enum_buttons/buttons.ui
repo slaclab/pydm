@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>583</width>
+    <height>438</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="PyDMEnumButton" name="PyDMEnumButton">
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
+        <string>
+    A QWidget that renders buttons for every option of Enum Items.
+    For now three types of buttons can be rendered:
+    - Push Button
+    - Radio Button
+    - Check Box
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+
+    Signals
+    -------
+    send_value_signal : int, float, str, bool or np.ndarray
+        Emitted when the user changes the value.
+    </string>
+       </property>
+       <property name="channel" stdset="0">
+        <string>ca://MTEST:Run</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="PyDMEnumButton" name="PyDMEnumButton_2">
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
+        <string>
+    A QWidget that renders buttons for every option of Enum Items.
+    For now three types of buttons can be rendered:
+    - Push Button
+    - Radio Button
+    - Check Box
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+
+    Signals
+    -------
+    send_value_signal : int, float, str, bool or np.ndarray
+        Emitted when the user changes the value.
+    </string>
+       </property>
+       <property name="channel" stdset="0">
+        <string>ca://MTEST:Run</string>
+       </property>
+       <property name="widgetType" stdset="0">
+        <enum>PyDMEnumButton::RadioButton</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="PyDMEnumButton" name="PyDMEnumButton_3">
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
+        <string>
+    A QWidget that renders buttons for every option of Enum Items.
+    For now three types of buttons can be rendered:
+    - Push Button
+    - Radio Button
+    - Check Box
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+
+    Signals
+    -------
+    send_value_signal : int, float, str, bool or np.ndarray
+        Emitted when the user changes the value.
+    </string>
+       </property>
+       <property name="channel" stdset="0">
+        <string>ca://MTEST:Run</string>
+       </property>
+       <property name="widgetType" stdset="0">
+        <enum>PyDMEnumButton::CheckBox</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="PyDMEnumButton" name="PyDMEnumButton_5">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>
+    A QWidget that renders buttons for every option of Enum Items.
+    For now three types of buttons can be rendered:
+    - Push Button
+    - Radio Button
+    - Check Box
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+
+    Signals
+    -------
+    send_value_signal : int, float, str, bool or np.ndarray
+        Emitted when the user changes the value.
+    </string>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Run</string>
+     </property>
+     <property name="orientation" stdset="0">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMEnumButton" name="PyDMEnumButton_6">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>
+    A QWidget that renders buttons for every option of Enum Items.
+    For now three types of buttons can be rendered:
+    - Push Button
+    - Radio Button
+    - Check Box
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+
+    Signals
+    -------
+    send_value_signal : int, float, str, bool or np.ndarray
+        Emitted when the user changes the value.
+    </string>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Run</string>
+     </property>
+     <property name="widgetType" stdset="0">
+      <enum>PyDMEnumButton::RadioButton</enum>
+     </property>
+     <property name="orientation" stdset="0">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMEnumButton" name="PyDMEnumButton_4">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>
+    A QWidget that renders buttons for every option of Enum Items.
+    For now three types of buttons can be rendered:
+    - Push Button
+    - Radio Button
+    - Check Box
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+
+    Signals
+    -------
+    send_value_signal : int, float, str, bool or np.ndarray
+        Emitted when the user changes the value.
+    </string>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Run</string>
+     </property>
+     <property name="widgetType" stdset="0">
+      <enum>PyDMEnumButton::CheckBox</enum>
+     </property>
+     <property name="orientation" stdset="0">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMEnumButton</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.enum_button</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

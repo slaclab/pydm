@@ -395,6 +395,9 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         self.upper_label.setText('<max>')
 
         self._value_position = Qt.TopEdge
+        self._limits_from_channel = True
+        self._user_lower_limit = 0
+        self._user_upper_limit = 0
 
         self.value_label.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.setup_widgets_for_orientation(Qt.Horizontal, False, False, self._value_position)
@@ -431,8 +434,9 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         new_limit : float
         """
         super(PyDMScaleIndicator, self).upperCtrlLimitChanged(new_limit)
-        self.scale_indicator.set_upper_limit(new_limit)
-        self.update_labels()
+        if self.limitsFromChannel:
+            self.scale_indicator.set_upper_limit(new_limit)
+            self.update_labels()
 
     def lowerCtrlLimitChanged(self, new_limit):
         """
@@ -445,8 +449,9 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         new_limit : float
         """
         super(PyDMScaleIndicator, self).lowerCtrlLimitChanged(new_limit)
-        self.scale_indicator.set_lower_limit(new_limit)
-        self.update_labels()
+        if self.limitsFromChannel:
+            self.scale_indicator.set_lower_limit(new_limit)
+            self.update_labels()
 
     def setup_widgets_for_orientation(self, new_orientation, flipped, inverted,
                                       value_position):
@@ -978,3 +983,93 @@ class PyDMScaleIndicator(QFrame, PyDMWidget):
         checked : bool
         """
         self.scale_indicator.set_origin_at_zero(checked)
+
+    @Property(bool)
+    def limitsFromChannel(self):
+        """
+        Whether or not the scale indicator should use the limits information
+        from the channel.
+
+        Returns
+        -------
+        bool
+        """
+        return self._limits_from_channel
+
+    @limitsFromChannel.setter
+    def limitsFromChannel(self, checked):
+        """
+        Whether or not the scale indicator should use the limits information
+        from the channel.
+
+        Parameters
+        ----------
+        checked : bool
+            True to use the limits from the Channel, False to use the user-defined
+            values.
+        """
+        if self._limits_from_channel != checked:
+            self._limits_from_channel = checked
+            if checked:
+                if self._lower_ctrl_limit:
+                    self.scale_indicator.set_lower_limit(self._lower_ctrl_limit)
+                if self._upper_ctrl_limit:
+                    self.scale_indicator.set_upper_limit(self._upper_ctrl_limit)
+            else:
+                self.scale_indicator.set_lower_limit(self._user_lower_limit)
+                self.scale_indicator.set_upper_limit(self._user_upper_limit)
+            self.update_labels()
+
+    @Property(float)
+    def userLowerLimit(self):
+        """
+        The user-defined lower limit for the scale.
+
+        Returns
+        -------
+        float
+        """
+        return self._user_lower_limit
+
+    @userLowerLimit.setter
+    def userLowerLimit(self, value):
+        """
+        The user-defined lower limit for the scale.
+
+        Parameters
+        ----------
+        value : float
+            The new lower limit value.
+        """
+        if self._limits_from_channel:
+            return
+        self._user_lower_limit = value
+        self.scale_indicator.set_lower_limit(self._user_lower_limit)
+        self.update_labels()
+
+    @Property(float)
+    def userUpperLimit(self):
+        """
+        The user-defined upper limit for the scale.
+
+        Returns
+        -------
+        float
+        """
+        return self._user_upper_limit
+
+    @userUpperLimit.setter
+    def userUpperLimit(self, value):
+        """
+        The user-defined upper limit for the scale.
+
+        Parameters
+        ----------
+        value : float
+            The new upper limit value.
+        """
+        if self._limits_from_channel:
+            return
+        self._user_upper_limit = value
+        self.scale_indicator.set_upper_limit(self._user_upper_limit)
+        self.update_labels()

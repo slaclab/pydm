@@ -5,6 +5,7 @@ from logging import ERROR
 import pytest
 
 from qtpy.QtGui import QColor, QBrush, QPixmap
+from qtpy.QtWidgets import QApplication
 from qtpy.QtCore import Property, Qt, QPoint, QSize
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 
@@ -17,7 +18,7 @@ from ...widgets.drawing import (deg_to_qt, qt_to_deg, PyDMDrawing,
                                 PyDMDrawingPie, PyDMDrawingChord,
                                 PyDMDrawingPolygon)
 
-from ...utilities import is_pydm_app
+from ...utilities.stylesheet import apply_stylesheet
 
 
 # --------------------
@@ -130,6 +131,8 @@ def test_pydmdrawing_paintEvent(qtbot, signals, alarm_sensitive_content):
 
     Expectations:
     The paintEvent will be triggered, and the widget's brush color is correctly set.
+    
+    NOTE: This test depends on the default stylesheet having different values for 'qproperty-brush' for different alarm states of PyDMDrawing.
 
     Parameters
     ----------
@@ -140,22 +143,21 @@ def test_pydmdrawing_paintEvent(qtbot, signals, alarm_sensitive_content):
     alarm_sensitive_content : bool
         True if the widget will be redraw with a different color if an alarm is triggered; False otherwise.
     """
-    pydm_drawing = PyDMDrawing(init_channel='fake://tst')
+    QApplication.instance().make_main_window()
+    main_window = QApplication.instance().main_window
+    qtbot.addWidget(main_window)
+    pydm_drawing = PyDMDrawing(parent=main_window, init_channel='fake://tst')
     qtbot.addWidget(pydm_drawing)
-
     pydm_drawing.alarmSensitiveContent = alarm_sensitive_content
+    brush_before = pydm_drawing.brush.color().name()
     signals.new_severity_signal.connect(pydm_drawing.alarmSeverityChanged)
     signals.new_severity_signal.emit(PyDMWidget.ALARM_MAJOR)
 
-    with qtbot.waitExposed(pydm_drawing):
-        pydm_drawing.show()
-    qtbot.waitUntil(lambda: pydm_drawing.isEnabled(), timeout=5000)
-    pydm_drawing.setFocus()
-
-    def wait_focus():
-        return pydm_drawing.hasFocus()
-
-    qtbot.waitUntil(wait_focus, timeout=5000)
+    brush_after = pydm_drawing.brush.color().name()
+    if alarm_sensitive_content:
+        assert brush_before != brush_after
+    else:
+        assert brush_before == brush_after
 
 
 @pytest.mark.parametrize("widget_width, widget_height, expected_results", [
@@ -444,14 +446,23 @@ def test_pydmdrawing_properties_and_setters(qtbot):
     assert pydm_drawing.rotation == 0.0
     assert pydm_drawing._brush.style() == Qt.SolidPattern
     assert pydm_drawing.penStyle == Qt.NoPen
+    assert pydm_drawing.penCapStyle == Qt.SquareCap
+    assert pydm_drawing.penJoinStyle == Qt.MiterJoin
 
-    # The pen width will retain the previously set value if a negative value is attempted to be assigned to it
+    # The pen width will retain the previously set value if a negative value
+    # is attempted to be assigned to it
     pydm_drawing.penWidth = -1
     assert pydm_drawing.penWidth == 0
 
     pydm_drawing.penWidth = 5
     pydm_drawing.penWidth = -1
     assert pydm_drawing.penWidth == 5
+
+    pydm_drawing.penJoinStyle = Qt.RoundJoin
+    assert pydm_drawing.penJoinStyle == Qt.RoundJoin
+
+    pydm_drawing.penCapStyle = Qt.RoundCap
+    assert pydm_drawing.penCapStyle == Qt.RoundCap
 
     pydm_drawing.penColor = QColor(255, 0, 0)
     pydm_drawing.rotation = 99.99
@@ -525,9 +536,6 @@ def test_pydmdrawingimage_construct(qtbot):
     assert pydm_drawingimage._pixmap is not None
     assert pydm_drawingimage._aspect_ratio_mode == Qt.KeepAspectRatio
     assert pydm_drawingimage.filename == ""
-
-    if not is_pydm_app():
-        assert pydm_drawingimage.get_designer_window()
 
     base_path = os.path.dirname(__file__)
     test_file = os.path.join(base_path, '..', '..', '..', 'examples', 'drawing',
@@ -636,7 +644,7 @@ def test_pydmdrawingimage_size_hint(qtbot, monkeypatch, is_pixmap_empty):
     (10.25, 100.0, 5.125),
     (100.0, 10.25, 5.125),
 ])
-def test_pydmdrawingimage_draw_item(qtbot, monkeypatch, width, height,
+def test_pydmdrawingimage_draw_item(qapp, qtbot, monkeypatch, width, height,
                                     pen_width):
     """
     Test the rendering of a PyDMDrawingImage object.
@@ -665,7 +673,7 @@ def test_pydmdrawingimage_draw_item(qtbot, monkeypatch, width, height,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_drawingimage.draw_item()
+    pydm_drawingimage.show()
 
 
 # # ---------------------
@@ -679,7 +687,7 @@ def test_pydmdrawingimage_draw_item(qtbot, monkeypatch, width, height,
     (10.25, 100.0, 5.125),
     (100.0, 10.25, 5.125),
 ])
-def test_pydmdrawingrectangle_draw_item(qtbot, monkeypatch, width, height,
+def test_pydmdrawingrectangle_draw_item(qapp, qtbot, monkeypatch, width, height,
                                         pen_width):
     """
     Test the rendering of a PyDMDrawingRectangle object.
@@ -708,7 +716,7 @@ def test_pydmdrawingrectangle_draw_item(qtbot, monkeypatch, width, height,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_drawingrectangle.draw_item()
+    pydm_drawingrectangle.show()
 
 
 # # ---------------------
@@ -765,7 +773,7 @@ def test_pydmdrawingtriangle_calculate_drawing_points(qtbot, x, y, width,
     (10.25, 100.0, 5.125),
     (100.0, 10.25, 5.125),
 ])
-def test_pydmdrawingtriangle_draw_item(qtbot, monkeypatch, width, height,
+def test_pydmdrawingtriangle_draw_item(qapp, qtbot, monkeypatch, width, height,
                                        pen_width):
     """
     Test the rendering of a PyDMDrawingTriangle object.
@@ -794,8 +802,7 @@ def test_pydmdrawingtriangle_draw_item(qtbot, monkeypatch, width, height,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_drawingtriangle.draw_item()
-
+    pydm_drawingtriangle.show()
 
 # # -------------------
 # # PyDMDrawingEclipse
@@ -805,7 +812,7 @@ def test_pydmdrawingtriangle_draw_item(qtbot, monkeypatch, width, height,
     (10.25, 10.25, 1.5),
     (10.25, 100.0, 5.125),
 ])
-def test_pydmdrawingeclipse_draw_item(qtbot, monkeypatch, width, height,
+def test_pydmdrawingeclipse_draw_item(qapp, qtbot, monkeypatch, width, height,
                                       pen_width):
     """
     Test the rendering of a PyDMDrawingEclipse object.
@@ -834,7 +841,7 @@ def test_pydmdrawingeclipse_draw_item(qtbot, monkeypatch, width, height,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_dymdrawingeclipse.draw_item()
+    pydm_dymdrawingeclipse.show()
 
 
 # # ------------------
@@ -876,7 +883,7 @@ def test_pydmdrawingcircle_calculate_radius(qtbot, width, height,
     (10.25, 10.25, 1.5),
     (10.25, 100.0, 5.125),
 ])
-def test_pydmdrawingcircle_draw_item(qtbot, monkeypatch, width, height,
+def test_pydmdrawingcircle_draw_item(qapp, qtbot, monkeypatch, width, height,
                                      pen_width):
     """
     Test the rendering of a PyDMDrawingCircle object.
@@ -905,7 +912,7 @@ def test_pydmdrawingcircle_draw_item(qtbot, monkeypatch, width, height,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_dymdrawingcircle.draw_item()
+    pydm_dymdrawingcircle.show()
 
 
 # # ---------------
@@ -941,7 +948,7 @@ def test_pydmdrawingarc_construct(qtbot):
     (10.333, 11.777, 11, 45),
     (10.333, 11.777, -11, -25),
 ])
-def test_pydmdrawingarc_draw_item(qtbot, monkeypatch, width, height,
+def test_pydmdrawingarc_draw_item(qapp, qtbot, monkeypatch, width, height,
                                   start_angle_deg, span_angle_deg):
     """
     Test the rendering of a PyDMDrawingArc object.
@@ -976,7 +983,7 @@ def test_pydmdrawingarc_draw_item(qtbot, monkeypatch, width, height,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_drawingarc.draw_item()
+    pydm_drawingarc.show()
 
 
 # # ---------------
@@ -994,7 +1001,7 @@ def test_pydmdrawingarc_draw_item(qtbot, monkeypatch, width, height,
         (10.333, 11.777, 3, 15.333, 11, 45),
         (10.333, 11.777, 3, 15.333, -11, -25),
     ])
-def test_pydmdrawingpie_draw_item(qtbot, monkeypatch, width, height, pen_width,
+def test_pydmdrawingpie_draw_item(qapp, qtbot, monkeypatch, width, height, pen_width,
                                   rotation_deg, start_angle_deg,
                                   span_angle_deg):
     """
@@ -1033,7 +1040,7 @@ def test_pydmdrawingpie_draw_item(qtbot, monkeypatch, width, height, pen_width,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_drawingpie.draw_item()
+    pydm_drawingpie.show()
 
 
 # # -----------------
@@ -1051,7 +1058,7 @@ def test_pydmdrawingpie_draw_item(qtbot, monkeypatch, width, height, pen_width,
         (10.333, 11.777, 3, 15.333, 11, 45),
         (10.333, 11.777, 3, 15.333, -11, -25),
     ])
-def test_pydmdrawingchord_draw_item(qtbot, monkeypatch, width, height,
+def test_pydmdrawingchord_draw_item(qapp, qtbot, monkeypatch, width, height,
                                     pen_width, rotation_deg, start_angle_deg,
                                     span_angle_deg):
     """
@@ -1090,7 +1097,7 @@ def test_pydmdrawingchord_draw_item(qtbot, monkeypatch, width, height,
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_drawingchord.draw_item()
+    pydm_drawingchord.show()
 
 # # ---------------------
 # # PyDMDrawingPolygon
@@ -1099,7 +1106,7 @@ def test_pydmdrawingchord_draw_item(qtbot, monkeypatch, width, height,
     (0, 0, 100, 100, 3, [(50.0, 0),(-25, 43.3012),(-25, -43.3012)]),
     (0, 0, 100, 100, 4, [(50.0, 0), (0, 50.0), (-50.0, 0), (0, -50.0)])
 ])
-def test_pydmdrawingpolygon_calculate_drawing_points(qtbot, x, y, width,
+def test_pydmdrawingpolygon_calculate_drawing_points(qapp, qtbot, x, y, width,
                                                       height, num_points,
                                                       expected_points):
     """
@@ -1140,7 +1147,7 @@ def test_pydmdrawingpolygon_calculate_drawing_points(qtbot, x, y, width,
         assert p.x() == pytest.approx(expected_points[idx][0], 0.1)
         assert p.y() == pytest.approx(expected_points[idx][1], 0.1)
 
-    drawing.draw_item()
+    drawing.show()
 
 # --------------------
 # NEGATIVE TEST CASES

@@ -113,7 +113,7 @@
         The file to be opened
     </string>
        </property>
-       <property name="text" stdset="0">
+       <property name="text">
         <string>Open Display</string>
        </property>
       </widget>
@@ -145,7 +145,7 @@
   </customwidget>
   <customwidget>
    <class>PyDMRelatedDisplayButton</class>
-   <extends>QFrame</extends>
+   <extends>QPushButton</extends>
    <header>pydm.widgets.related_display_button</header>
   </customwidget>
   <customwidget>

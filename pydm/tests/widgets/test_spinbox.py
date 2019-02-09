@@ -245,6 +245,10 @@ def test_update_format_string(
     pydm_spinbox.showStepExponent = show_step_exp
     assert pydm_spinbox.showStepExponent == show_step_exp
 
+    INIT_SPINBOX_VALUE = 1.2
+    signals.new_value_signal[float].connect(pydm_spinbox.channelValueChanged)
+    signals.new_value_signal[float].emit(INIT_SPINBOX_VALUE)
+
     units = ""
     pydm_spinbox.showUnits = show_unit
     if show_unit:

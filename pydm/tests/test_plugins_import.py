@@ -38,6 +38,11 @@ def test_import_frame_plugin():
     from ..widgets.frame import PyDMFrame
     PyDMFramePlugin = qtplugin_factory(PyDMFrame, is_container=True)
 
+def test_import_enum_button_plugin():
+    # Enum Button plugin
+    from ..widgets.enum_button import PyDMEnumButton
+    PyDMEnumButtonPlugin = qtplugin_factory(PyDMEnumButton)
+
 def test_import_combobox_plugin():
     # Enum Combobox plugin
     from ..widgets.enum_combo_box import PyDMEnumComboBox

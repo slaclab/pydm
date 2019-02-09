@@ -1,8 +1,6 @@
 # coding: utf-8
 # Fixtures for PyDM Unit Tests
 
-pytest_plugins = 'pytester'
-
 import pytest
 from pytestqt.qt_compat import qt_api
 
@@ -11,11 +9,8 @@ import tempfile
 import logging
 
 from qtpy.QtCore import QObject, Signal, Slot
-from ..application import PyDMApplication
-from ..widgets.base import PyDMWidget
+from pydm.application import PyDMApplication
 from pydm.data_plugins import PyDMPlugin, add_plugin
-
-pytest_plugins = 'pytester'
 
 logger = logging.getLogger(__name__)
 _, file_path = tempfile.mkstemp(suffix=".log")
@@ -23,15 +18,6 @@ handler = logging.FileHandler(file_path)
 logger.addHandler(handler)
 
 
-"""
-PyDMWidget Style Sheet
-
-This serves as the invariance for the widget's appearance, depending on the alarm type, and the content and border
-appearances.
-
-In case of style assertion failures, check if the widget styles in the main PyDM code have changed, and whether those
-changes are as intended. If they are, update the reference style sheet below accordingly.
-"""
 class ConnectionSignals(QObject):
     """
     An assortment of signals, to which a unit test can choose from and bind an appropriate slot

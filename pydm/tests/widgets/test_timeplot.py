@@ -12,9 +12,9 @@ from ...utilities import remove_protocol
 
 
 @pytest.mark.parametrize("channel_address, name", [
-    ("MTEST://test_value:Float", "test_name"),
-    ("MTEST://test_value:Float", ""),
-    ("MTEST://test_value:Float", None),
+    ("ca://test_value:Float", "test_name"),
+    ("ca://test_value:Float", ""),
+    ("ca://test_value:Float", None),
     ("", None),
     (None, None)
 ])
@@ -38,9 +38,9 @@ def test_timeplotcurveitem_construct(qtbot, channel_address, name):
 
 
 @pytest.mark.parametrize("channel_address, name", [
-    ("MTEST://test_value:Float", "test_name"),
-    ("MTEST://test_value:Float", ""),
-    ("MTEST://test_value:Float", None),
+    ("ca://test_value:Float", "test_name"),
+    ("ca://test_value:Float", ""),
+    ("ca://test_value:Float", None),
     ("", None),
     (None, None)
 ])

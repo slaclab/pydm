@@ -19,9 +19,6 @@ class ImageViewer(Display):
     def ui_filename(self):
         return 'image_view.ui'
 
-    def ui_filepath(self):
-        return path.join(path.dirname(path.realpath(__file__)), self.ui_filename())
-
     def draw_markers(self, *args, **kwargs):
         with self.markers_lock:
             for m in self.markers:

@@ -14,6 +14,7 @@ def main():
     handler.setLevel("INFO")
 
     import pydm
+    from pydm.utilities.macro import parse_macro_string
 
     parser = argparse.ArgumentParser(description="Python Display Manager")
     parser.add_argument(
@@ -61,7 +62,8 @@ def main():
         default='INFO'
         )
     parser.add_argument('--version', action='version',
-                    version='PyDM {version}'.format(version=pydm.__version__))
+                    version='PyDM {version}'.format(version=pydm.__version__),
+                    help="Show PyDM's version number and exit.")
     parser.add_argument(
         '-m', '--macro',
         help='Specify macro replacements to use, in JSON object format.' +
@@ -76,9 +78,9 @@ def main():
         )
     parser.add_argument(
         '--stylesheet',
-        help='Provide the full path to the CSS stylesheet file, which must' +
-             ' contain the appearances (styles) to be applied to specific ' +
-             ' Qt/PyDM widget types.',
+        help='Specify the full path to a CSS stylesheet file, which' +
+             ' can be used to customize the appearance of PyDM and' +
+             ' Qt widgets.',
         default=None
         )
     parser.add_argument(
@@ -92,15 +94,7 @@ def main():
     pydm_args = parser.parse_args()
     macros = None
     if pydm_args.macro is not None:
-        try:
-            macros = json.loads(pydm_args.macro)
-        except ValueError:
-            if pydm_args.macro.find("=") < 0:
-                raise ValueError("Could not parse macro argument as JSON.")
-            macros = {}
-            for pair in pydm_args.macro.split(","):
-                key, value = pair.strip().split("=")
-                macros[key.strip()] = value.strip()
+        macros = parse_macro_string(pydm_args.macro)
 
     if pydm_args.log_level:
         logger.setLevel(pydm_args.log_level)

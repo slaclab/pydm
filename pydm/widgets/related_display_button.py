@@ -7,7 +7,9 @@ import logging
 from functools import partial
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
-from ..utilities.macro import find_base_macros
+from ..utilities.macro import find_base_macros, parse_macro_string
+
+logger = logging.getLogger(__name__)
 
 
 class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
@@ -177,11 +179,13 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         if mouse_event.button() != Qt.LeftButton:
             return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
         try:
-            if mouse_event.modifiers() == Qt.ShiftModifier or self._open_in_new_window:
+            if mouse_event.modifiers() == Qt.ShiftModifier \
+                    or self._open_in_new_window:
                 self.open_display(target=self.NEW_WINDOW)
             else:
                 self.open_display()
-        except:
+        except Exception as ex:
+            logger.exception("Failed to open display.")
             pass
         finally:
             super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
@@ -201,10 +205,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         # Check for None and ""
         if not self.displayFilename:
             return
-        macros = {}
-        if self._macro_string is not None:
-            macros = json.loads(str(self._macro_string))
-
+        macros = parse_macro_string(self._macro_string)
         base_macros = find_base_macros(self)
         merged_macros = base_macros.copy()
         merged_macros.update(macros)

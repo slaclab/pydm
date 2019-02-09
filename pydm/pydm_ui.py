@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pydm.ui'
 #
-# Created by: PyQt5 UI code generator 5.6
+# Created by: PyQt5 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -93,6 +93,8 @@ class Ui_MainWindow(object):
         self.actionLoadTool.setObjectName("actionLoadTool")
         self.actionEnter_Fullscreen = QtWidgets.QAction(MainWindow)
         self.actionEnter_Fullscreen.setObjectName("actionEnter_Fullscreen")
+        self.actionDefault_Font_Size = QtWidgets.QAction(MainWindow)
+        self.actionDefault_Font_Size.setObjectName("actionDefault_Font_Size")
         self.menuFile.addAction(self.actionOpen_File)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionEdit_in_Designer)
@@ -102,6 +104,7 @@ class Ui_MainWindow(object):
         self.menuView.addAction(self.actionEnter_Fullscreen)
         self.menuView.addAction(self.actionIncrease_Font_Size)
         self.menuView.addAction(self.actionDecrease_Font_Size)
+        self.menuView.addAction(self.actionDefault_Font_Size)
         self.menuView.addSeparator()
         self.menuView.addAction(self.actionShow_File_Path_in_Title_Bar)
         self.menuView.addAction(self.actionShow_Navigation_Bar)
@@ -158,4 +161,6 @@ class Ui_MainWindow(object):
         self.actionLoadTool.setText(_translate("MainWindow", "Load..."))
         self.actionEnter_Fullscreen.setText(_translate("MainWindow", "Enter Fullscreen"))
         self.actionEnter_Fullscreen.setShortcut(_translate("MainWindow", "F11"))
+        self.actionDefault_Font_Size.setText(_translate("MainWindow", "Default Font Size"))
+        self.actionDefault_Font_Size.setShortcut(_translate("MainWindow", "Ctrl+0"))
 

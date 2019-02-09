@@ -7,7 +7,9 @@ from .pydm_ui import Ui_MainWindow
 from .display_module import Display
 from .connection_inspector import ConnectionInspector
 from .about_pydm import AboutWindow
+from .widgets import rules
 from . import data_plugins
+from . import tools
 import subprocess
 import platform
 import logging
@@ -20,11 +22,13 @@ class PyDMMainWindow(QMainWindow):
     def __init__(self, parent=None, hide_nav_bar=False, hide_menu_bar=False, hide_status_bar=False):
         super(PyDMMainWindow, self).__init__(parent)
         self.app = QApplication.instance()
+        self.font_factor = 1
         self.iconFont = IconFont()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self._display_widget = None
         self._showing_file_path_in_title_bar = False
+        self.default_font_size = QApplication.instance().font().pointSizeF()
         self.ui.navbar.setIconSize(QSize(24, 24))
         self.ui.navbar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         # No search bar for now, since there isn't really any capability to search yet.
@@ -47,6 +51,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionReload_Display.triggered.connect(self.reload_display)
         self.ui.actionIncrease_Font_Size.triggered.connect(self.increase_font_size)
         self.ui.actionDecrease_Font_Size.triggered.connect(self.decrease_font_size)
+        self.ui.actionDefault_Font_Size.triggered.connect(self.reset_font_size)
         self.ui.actionEnter_Fullscreen.triggered.connect(self.enter_fullscreen)
         self.ui.actionShow_File_Path_in_Title_Bar.triggered.connect(self.toggle_file_path_in_title_bar)
         self.ui.actionShow_Navigation_Bar.triggered.connect(self.toggle_nav_bar)
@@ -83,6 +88,8 @@ class PyDMMainWindow(QMainWindow):
                 self.designer_path = designer_path
                 break
 
+        self.update_tools_menu()
+
     def set_display_widget(self, new_widget):
         if new_widget == self._display_widget:
             return
@@ -101,7 +108,7 @@ class PyDMMainWindow(QMainWindow):
     def clear_display_widget(self):
         if self._display_widget is not None:
             self.setCentralWidget(QWidget())
-            self.app.unregister_widget_rules(self._display_widget)
+            rules.unregister_widget_rules(self._display_widget)
             self._display_widget.deleteLater()
             self._display_widget = None
             self.ui.actionEdit_in_Designer.setEnabled(False)
@@ -373,7 +380,20 @@ class PyDMMainWindow(QMainWindow):
 
         if filename:
             filename = str(filename)
-            self.app.install_external_tool(filename)
+            tools.install_external_tool(filename)
+            self.update_tools_menu()
+
+    def update_tools_menu(self):
+        """
+        Update the Main Window Tools menu.
+        """
+        kwargs = {'channels': None, 'sender': self}
+        tools.assemble_tools_menu(self.ui.menuTools,
+                                  clear_menu=True,
+                                  **kwargs)
+
+        self.ui.menuTools.addSeparator()
+        self.ui.menuTools.addAction(self.ui.actionLoadTool)
 
     @Slot(bool)
     def reload_display(self, checked):
@@ -387,16 +407,32 @@ class PyDMMainWindow(QMainWindow):
 
     @Slot(bool)
     def increase_font_size(self, checked):
-        current_font = QApplication.instance().font()
-        current_font.setPointSizeF(current_font.pointSizeF() * 1.1)
-        QApplication.instance().setFont(current_font)
-        QTimer.singleShot(0, self.resizeForNewDisplayWidget)
+        old_factor = self.font_factor
+        self.font_factor += 0.1
+        self.set_font_size(old_factor, self.font_factor)
 
     @Slot(bool)
     def decrease_font_size(self, checked):
-        current_font = QApplication.instance().font()
-        current_font.setPointSizeF(current_font.pointSizeF() / 1.1)
+        old_factor = self.font_factor
+        self.font_factor -= 0.1
+        self.set_font_size(old_factor, self.font_factor)
+
+    @Slot(bool)
+    def reset_font_size(self, checked):
+        old_factor = self.font_factor
+        self.font_factor = 1
+        self.set_font_size(old_factor, self.font_factor)
+
+    def set_font_size(self, old, new):
+        current_font = self.app.font()
+        current_font.setPointSizeF(current_font.pointSizeF()/old*new)
         QApplication.instance().setFont(current_font)
+
+        for w in self.app.allWidgets():
+            w_c_f = w.font()
+            w_c_f.setPointSizeF(w_c_f.pointSizeF()/old*new)
+            w.setFont(w_c_f)
+
         QTimer.singleShot(0, self.resizeForNewDisplayWidget)
 
     @Slot(bool)
@@ -417,7 +453,8 @@ class PyDMMainWindow(QMainWindow):
         a.show()
 
     def resizeForNewDisplayWidget(self):
-        self.resize(self._new_widget_size)
+        if not self.isFullScreen():
+            self.resize(self._new_widget_size)
 
     def closeEvent(self, event):
         self.clear_display_widget()

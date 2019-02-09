@@ -7,6 +7,14 @@ from pydm import config
 logger = logging.getLogger(__name__)
 
 
+def clear_channel_address(channel):
+    # We must remove spaces, \n, \t and other crap from
+    # channel address
+    if channel is None:
+        return None
+    return str(channel).strip()
+
+
 class PyDMChannel(object):
     """
     Object to hold signals and slots for a PyDM Widget interface to an
@@ -75,7 +83,7 @@ class PyDMChannel(object):
                  enum_strings_slot=None, unit_slot=None, prec_slot=None,
                  upper_ctrl_limit_slot=None, lower_ctrl_limit_slot=None,
                  value_signal=None):
-
+        self._address = None
         self.address = address
 
         self.connection_slot = connection_slot
@@ -90,6 +98,14 @@ class PyDMChannel(object):
         self.lower_ctrl_limit_slot = lower_ctrl_limit_slot
 
         self.value_signal = value_signal
+
+    @property
+    def address(self):
+        return self._address
+
+    @address.setter
+    def address(self, address):
+        self._address = clear_channel_address(address)
 
     def connect(self):
         """
@@ -106,7 +122,7 @@ class PyDMChannel(object):
             logger.exception("Unable to make proper connection "
                              "for %r", self)
 
-    def disconnect(self):
+    def disconnect(self, destroying=False):
         """
         Disconnect a PyDMChannel
         """
@@ -116,7 +132,7 @@ class PyDMChannel(object):
             plugin = plugin_for_address(self.address)
             if not plugin:
                 return
-            plugin.remove_connection(self)
+            plugin.remove_connection(self, destroying=destroying)
         except Exception as exc:
             logger.exception("Unable to remove connection "
                              "for %r", self)

@@ -1,8 +1,12 @@
 # Unit Tests for the Channel widget class
+import pytest
+
 from ...widgets.label import PyDMLabel
 from ...widgets.line_edit import PyDMLineEdit
 from ...widgets.channel import PyDMChannel
 from pydm.data_plugins import plugin_for_address
+
+
 class A():
     pass
 
@@ -76,3 +80,21 @@ def test_pydm_connection(test_plugin):
     # Remove connections
     chan.disconnect()
     assert len(plugin.connections) == plugin_no
+
+
+
+@pytest.mark.parametrize(
+    "ch, ch_expected", [
+        ("ca://MTEST:Float", "ca://MTEST:Float"),
+        (" foo://bar", "foo://bar"),
+        (" foo://bar ", "foo://bar"),
+        ("foo://bar ", "foo://bar"),
+        ("\nfoo://bar", "foo://bar"),
+        ("\tfoo://bar", "foo://bar"),
+        ("", ""),
+        (None, None),
+    ])
+def test_channel_address(ch, ch_expected):
+    channel = PyDMChannel()
+    channel.address = ch
+    assert channel.address == ch_expected
