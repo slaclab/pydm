@@ -1,5 +1,6 @@
 import os
 import json
+import logging
 from qtpy.QtWidgets import (QFrame, QApplication, QLabel, QVBoxLayout,
                            QHBoxLayout, QWidget, QStyle, QSizePolicy,
                            QLayout, QListWidget, QListWidgetItem)
