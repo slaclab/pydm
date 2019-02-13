@@ -564,6 +564,8 @@ class PyDMApplication(QApplication):
         merged_macros = self.macro_stack[-1].copy()
         merged_macros.update(macros)
         #self.macro_stack.append(merged_macros)
-        f = macro.replace_macros_in_template(template, macros)
+        f = macro.replace_macros_in_template(template, merged_macros)
         #self.macro_stack.pop()
-        return self.load_ui_file(f)
+        w = self.load_ui_file(f)
+        w.base_macros = merged_macros
+        return w
