@@ -1,6 +1,6 @@
 import logging
 
-from pydm.data_plugins import plugin_for_address
+import pydm.data_plugins
 from pydm.utilities import is_qt_designer
 from pydm import config
 
@@ -116,8 +116,7 @@ class PyDMChannel(object):
         logger.debug("Connecting %r", self.address)
         # Connect to proper PyDMPlugin
         try:
-            plugin = plugin_for_address(self.address)
-            plugin.add_connection(self)
+            pydm.data_plugins.establish_connection(self)
         except Exception:
             logger.exception("Unable to make proper connection "
                              "for %r", self)
@@ -129,7 +128,7 @@ class PyDMChannel(object):
         if is_qt_designer() and not config.DESIGNER_ONLINE:
             return
         try:
-            plugin = plugin_for_address(self.address)
+            plugin = pydm.data_plugins.plugin_for_address(self.address)
             if not plugin:
                 return
             plugin.remove_connection(self, destroying=destroying)

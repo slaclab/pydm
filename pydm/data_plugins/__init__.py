@@ -9,6 +9,12 @@ import inspect
 import logging
 import imp
 import uuid
+try:
+    from Queue import Queue
+except ImportError:
+    from queue import Queue
+from contextlib import contextmanager
+
 from .plugin import PyDMPlugin
 from ..utilities import protocol_and_address
 from .. import config
@@ -16,7 +22,32 @@ from .. import config
 logger = logging.getLogger(__name__)
 plugin_modules = {}
 __read_only = False
+global __CONNECTION_QUEUE__
+__CONNECTION_QUEUE__ = None
 
+@contextmanager
+def connection_queue():
+    global __CONNECTION_QUEUE__
+    if __CONNECTION_QUEUE__ is None:
+        __CONNECTION_QUEUE__ = Queue()
+    try:
+        yield
+        while not __CONNECTION_QUEUE__.empty():
+            channel = __CONNECTION_QUEUE__.get()
+            establish_connection_immediately(channel)
+    finally:
+        __CONNECTION_QUEUE__ = None
+        
+def establish_connection(channel):
+    global __CONNECTION_QUEUE__
+    if __CONNECTION_QUEUE__:
+        __CONNECTION_QUEUE__.put(channel)
+    else:
+        establish_connection_immediately(channel)
+
+def establish_connection_immediately(channel):
+    plugin = plugin_for_address(channel.address)
+    plugin.add_connection(channel)
 
 def plugin_for_address(address):
     """
