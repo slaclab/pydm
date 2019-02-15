@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Related Display Button with Multiple Files</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -20,22 +20,21 @@
       <string/>
      </property>
      <property name="text">
-      <string>More Displays</string>
+      <string>Multiple Displays...</string>
      </property>
-     <property name="additionalFilenames" stdset="0">
+     <property name="filenames" stdset="0">
       <stringlist>
        <string>display1.ui</string>
        <string>display2.ui</string>
       </stringlist>
      </property>
-     <property name="additionalTitles" stdset="0">
+     <property name="titles" stdset="0">
       <stringlist>
        <string>Display 1</string>
-       <string>Display 2</string>
       </stringlist>
      </property>
-     <property name="displayFilename" stdset="0">
-      <string/>
+     <property name="openInNewWindow" stdset="0">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
