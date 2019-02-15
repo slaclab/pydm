@@ -105,7 +105,7 @@ class PyDMPrimitiveWidget(object):
         'Opacity': ['set_opacity', float]
     }
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         self._rules = None
         self._opacity = 1.0
 
