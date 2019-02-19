@@ -9,10 +9,7 @@ import inspect
 import logging
 import imp
 import uuid
-try:
-    from Queue import Queue
-except ImportError:
-    from queue import Queue
+from collections import deque
 from contextlib import contextmanager
 
 from .plugin import PyDMPlugin
@@ -29,11 +26,11 @@ __CONNECTION_QUEUE__ = None
 def connection_queue():
     global __CONNECTION_QUEUE__
     if __CONNECTION_QUEUE__ is None:
-        __CONNECTION_QUEUE__ = Queue()
+        __CONNECTION_QUEUE__ = deque()
     try:
         yield
-        while not __CONNECTION_QUEUE__.empty():
-            channel = __CONNECTION_QUEUE__.get()
+        while not len(__CONNECTION_QUEUE__) == 0:
+            channel = __CONNECTION_QUEUE__.pop()
             establish_connection_immediately(channel)
     finally:
         __CONNECTION_QUEUE__ = None
@@ -41,7 +38,7 @@ def connection_queue():
 def establish_connection(channel):
     global __CONNECTION_QUEUE__
     if __CONNECTION_QUEUE__:
-        __CONNECTION_QUEUE__.put(channel)
+        __CONNECTION_QUEUE__.append(channel)
     else:
         establish_connection_immediately(channel)
 
