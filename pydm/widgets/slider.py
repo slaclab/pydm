@@ -258,7 +258,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             The format string to be used including or not the precision
             and unit
         """
-        fs = PyDMWritableWidget.update_format_string(self)
+        fs = super(PyDMSlider, self).update_format_string()
         self.update_labels()
         return fs
 
