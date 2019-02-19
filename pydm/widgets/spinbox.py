@@ -1,9 +1,9 @@
 from qtpy.QtWidgets import QDoubleSpinBox, QApplication
 from qtpy.QtCore import Property, QEvent, Qt
-from .base import PyDMWritableWidget
+from .base import PyDMWritableWidget, TextFormatter
 
 
-class PyDMSpinbox(QDoubleSpinBox, PyDMWritableWidget):
+class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
     """
     A QDoubleSpinBox with support for Channels and more from PyDM.
 

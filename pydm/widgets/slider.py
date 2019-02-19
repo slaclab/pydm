@@ -3,11 +3,11 @@ logger = logging.getLogger(__name__)
 
 from qtpy.QtWidgets import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
 from qtpy.QtCore import Qt, Signal, Slot, Property
-from .base import PyDMWritableWidget
+from .base import PyDMWritableWidget, TextFormatter
 import numpy as np
 
 
-class PyDMSlider(QFrame, PyDMWritableWidget):
+class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
     """
     A QSlider with support for Channels and more from PyDM.
 
