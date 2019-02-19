@@ -157,6 +157,15 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         if width_channel:
             self.widthChannel = width_channel or ''
 
+    @Property(str, designable=False)
+    def channel(self):
+        return
+
+    @channel.setter
+    def channel(self, ch):
+        logger.info("Use the imageChannel property with the ImageView widget.")
+        return
+
     def widget_ctx_menu(self):
         """
         Fetch the Widget specific context menu.
