@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.slider &mdash; PyDM v1.6.5+37.gcaeb0e4 documentation</title>
+  <title>pydm.widgets.slider &mdash; PyDM v1.6.5+41.ga64a0fa documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.6.5+37.gcaeb0e4
+                v1.6.5+41.ga64a0fa
               </div>
             
           
@@ -181,11 +181,11 @@
 
 <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QSlider</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QWidget</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">TextFormatter</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="PyDMSlider"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider">[docs]</a><span class="k">class</span> <span class="nc">PyDMSlider</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider">[docs]</a><span class="k">class</span> <span class="nc">PyDMSlider</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QSlider with support for Channels and more from PyDM.</span>
 
@@ -436,7 +436,7 @@
 <span class="sd">            The format string to be used including or not the precision</span>
 <span class="sd">            and unit</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">fs</span> <span class="o">=</span> <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="n">update_format_string</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">fs</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSlider</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">update_format_string</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">fs</span></div>
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.spinbox &mdash; PyDM v1.6.5+37.gcaeb0e4 documentation</title>
+  <title>pydm.widgets.spinbox &mdash; PyDM v1.6.5+41.ga64a0fa documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.6.5+37.gcaeb0e4
+                v1.6.5+41.ga64a0fa
               </div>
             
           
@@ -178,10 +178,10 @@
   <h1>Source code for pydm.widgets.spinbox</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QDoubleSpinBox</span><span class="p">,</span> <span class="n">QApplication</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QEvent</span><span class="p">,</span> <span class="n">Qt</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">TextFormatter</span>
 
 
-<div class="viewcode-block" id="PyDMSpinbox"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox">[docs]</a><span class="k">class</span> <span class="nc">PyDMSpinbox</span><span class="p">(</span><span class="n">QDoubleSpinBox</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSpinbox"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox">[docs]</a><span class="k">class</span> <span class="nc">PyDMSpinbox</span><span class="p">(</span><span class="n">QDoubleSpinBox</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QDoubleSpinBox with support for Channels and more from PyDM.</span>
 

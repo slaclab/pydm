@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.label &mdash; PyDM v1.6.5+37.gcaeb0e4 documentation</title>
+  <title>pydm.widgets.label &mdash; PyDM v1.6.5+41.ga64a0fa documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.6.5+37.gcaeb0e4
+                v1.6.5+41.ga64a0fa
               </div>
             
           
@@ -176,14 +176,14 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.label</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
+<span></span><span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">TextFormatter</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QApplication</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
 <span class="kn">from</span> <span class="nn">.display_format</span> <span class="k">import</span> <span class="n">DisplayFormat</span><span class="p">,</span> <span class="n">parse_value_for_display</span>
 <span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="k">import</span> <span class="n">is_pydm_app</span>
 
 
-<div class="viewcode-block" id="PyDMLabel"><a class="viewcode-back" href="../../../widgets/label.html#pydm.widgets.label.PyDMLabel">[docs]</a><span class="k">class</span> <span class="nc">PyDMLabel</span><span class="p">(</span><span class="n">QLabel</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">DisplayFormat</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMLabel"><a class="viewcode-back" href="../../../widgets/label.html#pydm.widgets.label.PyDMLabel">[docs]</a><span class="k">class</span> <span class="nc">PyDMLabel</span><span class="p">(</span><span class="n">QLabel</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">DisplayFormat</span><span class="p">):</span>
     <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">DisplayFormat</span><span class="p">)</span>
     <span class="n">DisplayFormat</span> <span class="o">=</span> <span class="n">DisplayFormat</span>
     <span class="sd">&quot;&quot;&quot;</span>

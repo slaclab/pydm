@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.scale &mdash; PyDM v1.6.5+37.gcaeb0e4 documentation</title>
+  <title>pydm.widgets.scale &mdash; PyDM v1.6.5+41.ga64a0fa documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.6.5+37.gcaeb0e4
+                v1.6.5+41.ga64a0fa
               </div>
             
           
@@ -176,7 +176,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.scale</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
+<span></span><span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">TextFormatter</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="k">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPolygon</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span> <span class="n">QPainter</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QGridLayout</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">Property</span>
@@ -542,7 +542,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">repaint</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="PyDMScaleIndicator"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator">[docs]</a><span class="k">class</span> <span class="nc">PyDMScaleIndicator</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMScaleIndicator"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator">[docs]</a><span class="k">class</span> <span class="nc">PyDMScaleIndicator</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A bar-shaped indicator for scalar value with support for Channels and</span>
 <span class="sd">    more from PyDM.</span>
