@@ -104,7 +104,7 @@ jobs:
         cp -r $(Build.Repository.LocalPath)/artifacts/docs_html/* .
         git add *
         git commit -m "Updating Docs with latest build - ***NO_CI***"
-        git push origin pages-test
+        git push origin gh-pages
       displayName: Documentation - Upload
 
   - job: 'Publish_PyPI'
