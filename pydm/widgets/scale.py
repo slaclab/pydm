@@ -1,4 +1,4 @@
-from .base import PyDMWidget
+from .base import PyDMWidget, TextFormatter
 from qtpy.QtGui import QColor, QPolygon, QPen, QPainter
 from qtpy.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QWidget, QGridLayout
 from qtpy.QtCore import Qt, QPoint, Property
@@ -364,7 +364,7 @@ class QScale(QFrame):
             self.repaint()
 
 
-class PyDMScaleIndicator(QFrame, PyDMWidget):
+class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
     """
     A bar-shaped indicator for scalar value with support for Channels and
     more from PyDM.

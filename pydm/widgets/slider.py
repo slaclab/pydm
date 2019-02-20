@@ -3,11 +3,11 @@ logger = logging.getLogger(__name__)
 
 from qtpy.QtWidgets import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
 from qtpy.QtCore import Qt, Signal, Slot, Property
-from .base import PyDMWritableWidget
+from .base import PyDMWritableWidget, TextFormatter
 import numpy as np
 
 
-class PyDMSlider(QFrame, PyDMWritableWidget):
+class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
     """
     A QSlider with support for Channels and more from PyDM.
 
@@ -258,7 +258,7 @@ class PyDMSlider(QFrame, PyDMWritableWidget):
             The format string to be used including or not the precision
             and unit
         """
-        fs = PyDMWritableWidget.update_format_string(self)
+        fs = super(PyDMSlider, self).update_format_string()
         self.update_labels()
         return fs
 
