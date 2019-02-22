@@ -105,7 +105,7 @@ class PyDMPrimitiveWidget(object):
         'Opacity': ['set_opacity', float]
     }
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         self._rules = None
         self._opacity = 1.0
 
@@ -201,7 +201,221 @@ class PyDMPrimitiveWidget(object):
             except JSONDecodeError as ex:
                 logger.exception('Invalid format for Rules')
 
+class TextFormatter(object):
+    def __init__(self):
+        self._show_units = False
+        self.format_string = "{}"
+        self._precision_from_pv = True
+        self._prec = 0
+        self._unit = ""
+    
+    def update_format_string(self):
+        """
+        Reconstruct the format string to be used when representing the
+        output value.
 
+        Returns
+        -------
+        format_string : str
+            The format string to be used including or not the precision
+            and unit
+        """
+        self.format_string = "{}"
+        if isinstance(self.value, (int, float)):
+            self.format_string = "{:." + str(self._prec) + "f}"
+        if self._show_units and self._unit != "":
+            self.format_string += " {}".format(self._unit)
+        return self.format_string
+    
+    def precision_changed(self, new_precision):
+        """
+        Callback invoked when the Channel has new precision value.
+        This callback also triggers an update_format_string call so the
+        new precision value is considered.
+
+        Parameters
+        ----------
+        new_precison : int or float
+            The new precision value
+        """
+        if self._precision_from_pv and new_precision != self._prec:
+            self._prec = new_precision
+            if self.value is not None:
+                self.value_changed(self.value)
+    
+    @Slot(int)
+    @Slot(float)
+    def precisionChanged(self, new_prec):
+        """
+        PyQT Slot for changes on the precision of the Channel
+        This slot sends the new precision value to the
+        ```precision_changed``` callback.
+
+        Parameters
+        ----------
+        new_prec : int or float
+        """
+        self.precision_changed(new_prec)
+    
+    @Property(int)
+    def precision(self):
+        """
+        The precision to be used when formatting the output of the PV
+
+        Returns
+        -------
+        prec : int
+            The current precision value
+        """
+        return self._prec
+
+    @precision.setter
+    def precision(self, new_prec):
+        """
+        The precision to be used when formatting the output of the PV.
+        This has no effect when ```precisionFromPV``` is True.
+
+        Parameters
+        ----------
+        new_prec : int
+            The new precision value to use
+        """
+        # Only allow one to change the property if not getting the precision
+        # from the PV
+        if self._precision_from_pv:
+            return
+        if new_prec and self._prec != int(new_prec) and new_prec >= 0:
+            self._prec = int(new_prec)
+            self.value_changed(self.value)
+    
+    @Slot(str)
+    def unitChanged(self, new_unit):
+        """
+        PyQT Slot for changes on the unit of the Channel
+        This slot sends the new unit string to the
+        ```unit_changed``` callback.
+
+        Parameters
+        ----------
+        new_unit : str
+        """
+        self.unit_changed(new_unit)
+    
+    def unit_changed(self, new_unit):
+        """
+        Callback invoked when the Channel has new unit value.
+        This callback also triggers an update_format_string call so the
+        new unit value is considered if ```showUnits``` is set.
+
+        Parameters
+        ----------
+        new_unit : str
+            The new unit
+        """
+        if self._unit != new_unit:
+            self._unit = new_unit
+            if self.value is not None:
+                self.value_changed(self.value)
+    
+
+    @Property(bool)
+    def showUnits(self):
+        """
+        A choice whether or not to show the units given by the channel
+
+        If set to True, the units given in the channel will be displayed
+        with the value. If using an EPICS channel, this will automatically
+        be linked to the EGU field of the PV.
+
+        Returns
+        -------
+        show_units : bool
+            True means that the unit will be appended to the output value
+            format string
+        """
+        return self._show_units
+
+    @showUnits.setter
+    def showUnits(self, show_units):
+        """
+        A choice whether or not to show the units given by the channel
+
+        If set to True, the units given in the channel will be displayed
+        with the value. If using an EPICS channel, this will automatically
+        be linked to the EGU field of the PV.
+
+        Paramters
+        ---------
+        show_units : bool
+            True means that the unit will be appended to the output value
+            format string
+        """
+        if self._show_units != show_units:
+            self._show_units = show_units
+            self.update_format_string()
+    
+    @Property(bool)
+    def precisionFromPV(self):
+        """
+        A choice whether or not to use the precision given by channel.
+
+        If set to False, the value received will be displayed as is, with
+        no modification to the number of displayed significant figures.
+        However, if set to True, and the channel specifies a display
+        precision, a float or integer channel value will be set to display
+        the correct precision. When using an EPICS Channel, the precision
+        value corresponds to the PV's PREC field.
+
+        It is also important to note, that if the value of the channel
+        is a String, the choice of True or False will have no affect on
+        the display.
+
+        Returns
+        -------
+        precison_from_pv : bool
+            True means that the widget will use the precision information
+            from the Channel if available.
+        """
+        return self._precision_from_pv
+
+    @precisionFromPV.setter
+    def precisionFromPV(self, value):
+        """
+        A choice whether or not to use the precision given by channel.
+
+        If set to False, the value received will be displayed as is, with
+        no modification to the number of displayed significant figures.
+        However, if set to True, and the channel specifies a display
+        precision, a float or integer channel value will be set to
+        display the correct precision. When using an EPICS Channel, the
+        precision value corresponds to the PV's PREC field.
+
+        It is also important to note, that if the value of the channel is
+        a String, the choice of True or False will have no affect on the
+        display.
+
+        Parameters
+        ----------
+        value : bool
+            True means that the widget will use the precision information
+            from the PV if available.
+        """
+        if self._precision_from_pv != bool(value):
+            self._precision_from_pv = value
+    
+    def value_changed(self, new_val):
+        """
+        Callback invoked when the Channel value is changed.
+
+        Parameters
+        ----------
+        new_val : str, int, float, bool or np.ndarray
+            The new value from the channel. The type depends on the channel.
+        """
+        super(TextFormatter, self).value_changed(new_val)
+        self.update_format_string()
+
+  
 class PyDMWidget(PyDMPrimitiveWidget):
     """
     PyDM base class for Read-Only widgets.
@@ -241,15 +455,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_state = self.ALARM_NONE
         self._tooltip = None
 
-        self._precision_from_pv = True
-        self._prec = 0
-        self._unit = ""
-
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
 
         self.enum_strings = None
-        self.format_string = "{}"
 
         self.value = None
         self.channeltype = None
@@ -359,8 +568,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
             except NameError:
                 pass
 
-        self.update_format_string()
-
     @Property(int, designable=False)
     def alarmSeverity(self):
         return self._alarm_state
@@ -442,38 +649,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         event = QEvent(QEvent.Clipboard)
         self.app.sendEvent(clipboard, event)
 
-    def unit_changed(self, new_unit):
-        """
-        Callback invoked when the Channel has new unit value.
-        This callback also triggers an update_format_string call so the
-        new unit value is considered if ```showUnits``` is set.
-
-        Parameters
-        ----------
-        new_unit : str
-            The new unit
-        """
-        if self._unit != new_unit:
-            self._unit = new_unit
-            if self.value is not None:
-                self.value_changed(self.value)
-
-    def precision_changed(self, new_precision):
-        """
-        Callback invoked when the Channel has new precision value.
-        This callback also triggers an update_format_string call so the
-        new precision value is considered.
-
-        Parameters
-        ----------
-        new_precison : int or float
-            The new precision value
-        """
-        if self._precision_from_pv and new_precision != self._prec:
-            self._prec = new_precision
-            if self.value is not None:
-                self.value_changed(self.value)
-
     def ctrl_limit_changed(self, which, new_limit):
         """
         Callback invoked when the Channel receives new control limit
@@ -546,33 +721,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         new_enum_strings : tuple
         """
         self.enum_strings_changed(new_enum_strings)
-
-    @Slot(str)
-    def unitChanged(self, new_unit):
-        """
-        PyQT Slot for changes on the unit of the Channel
-        This slot sends the new unit string to the
-        ```unit_changed``` callback.
-
-        Parameters
-        ----------
-        new_unit : str
-        """
-        self.unit_changed(new_unit)
-
-    @Slot(int)
-    @Slot(float)
-    def precisionChanged(self, new_prec):
-        """
-        PyQT Slot for changes on the precision of the Channel
-        This slot sends the new precision value to the
-        ```precision_changed``` callback.
-
-        Parameters
-        ----------
-        new_prec : int or float
-        """
-        self.precision_changed(new_prec)
 
     @Slot(float)
     def upperCtrlLimitChanged(self, new_limit):
@@ -699,122 +847,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_sensitive_border = checked
         self.alarm_severity_changed(self._alarm_state)
 
-    @Property(bool)
-    def precisionFromPV(self):
-        """
-        A choice whether or not to use the precision given by channel.
-
-        If set to False, the value received will be displayed as is, with
-        no modification to the number of displayed significant figures.
-        However, if set to True, and the channel specifies a display
-        precision, a float or integer channel value will be set to display
-        the correct precision. When using an EPICS Channel, the precision
-        value corresponds to the PV's PREC field.
-
-        It is also important to note, that if the value of the channel
-        is a String, the choice of True or False will have no affect on
-        the display.
-
-        Returns
-        -------
-        precison_from_pv : bool
-            True means that the widget will use the precision information
-            from the Channel if available.
-        """
-        return self._precision_from_pv
-
-    @precisionFromPV.setter
-    def precisionFromPV(self, value):
-        """
-        A choice whether or not to use the precision given by channel.
-
-        If set to False, the value received will be displayed as is, with
-        no modification to the number of displayed significant figures.
-        However, if set to True, and the channel specifies a display
-        precision, a float or integer channel value will be set to
-        display the correct precision. When using an EPICS Channel, the
-        precision value corresponds to the PV's PREC field.
-
-        It is also important to note, that if the value of the channel is
-        a String, the choice of True or False will have no affect on the
-        display.
-
-        Parameters
-        ----------
-        value : bool
-            True means that the widget will use the precision information
-            from the PV if available.
-        """
-        if self._precision_from_pv != bool(value):
-            self._precision_from_pv = value
-
-    @Property(int)
-    def precision(self):
-        """
-        The precision to be used when formatting the output of the PV
-
-        Returns
-        -------
-        prec : int
-            The current precision value
-        """
-        return self._prec
-
-    @precision.setter
-    def precision(self, new_prec):
-        """
-        The precision to be used when formatting the output of the PV.
-        This has no effect when ```precisionFromPV``` is True.
-
-        Parameters
-        ----------
-        new_prec : int
-            The new precision value to use
-        """
-        # Only allow one to change the property if not getting the precision
-        # from the PV
-        if self._precision_from_pv:
-            return
-        if new_prec and self._prec != int(new_prec) and new_prec >= 0:
-            self._prec = int(new_prec)
-            self.value_changed(self.value)
-
-    @Property(bool)
-    def showUnits(self):
-        """
-        A choice whether or not to show the units given by the channel
-
-        If set to True, the units given in the channel will be displayed
-        with the value. If using an EPICS channel, this will automatically
-        be linked to the EGU field of the PV.
-
-        Returns
-        -------
-        show_units : bool
-            True means that the unit will be appended to the output value
-            format string
-        """
-        return self._show_units
-
-    @showUnits.setter
-    def showUnits(self, show_units):
-        """
-        A choice whether or not to show the units given by the channel
-
-        If set to True, the units given in the channel will be displayed
-        with the value. If using an EPICS channel, this will automatically
-        be linked to the EGU field of the PV.
-
-        Paramters
-        ---------
-        show_units : bool
-            True means that the unit will be appended to the output value
-            format string
-        """
-        if self._show_units != show_units:
-            self._show_units = show_units
-            self.update_format_string()
-
     @Property(str)
     def channel(self):
         """
@@ -852,8 +884,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
                                   value_slot=self.channelValueChanged,
                                   severity_slot=self.alarmSeverityChanged,
                                   enum_strings_slot=self.enumStringsChanged,
-                                  unit_slot=self.unitChanged,
-                                  prec_slot=self.precisionChanged,
+                                  unit_slot=None,
+                                  prec_slot=None,
                                   upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
                                   lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
                                   value_signal=None,
@@ -865,27 +897,14 @@ class PyDMWidget(PyDMPrimitiveWidget):
                 channel.write_access_slot = self.writeAccessChanged
             if hasattr(self, 'send_value_signal'):
                 channel.value_signal = self.send_value_signal
+            # Do the same thing for classes that use the TextFormatter mixin.
+            if hasattr(self, 'unitChanged'):
+                channel.unit_slot = self.unitChanged
+            if hasattr(self, 'precisionChanged'):
+                channel.prec_slot = self.precisionChanged
             # Connect write channels if we have them
             channel.connect()
             self._channels.append(channel)
-
-    def update_format_string(self):
-        """
-        Reconstruct the format string to be used when representing the
-        output value.
-
-        Returns
-        -------
-        format_string : str
-            The format string to be used including or not the precision
-            and unit
-        """
-        self.format_string = "{}"
-        if isinstance(self.value, (int, float)):
-            self.format_string = "{:." + str(self._prec) + "f}"
-        if self._show_units and self._unit != "":
-            self.format_string += " {}".format(self._unit)
-        return self.format_string
 
     def restore_original_tooltip(self):
         if self._tooltip is None:

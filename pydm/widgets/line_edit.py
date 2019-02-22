@@ -8,11 +8,11 @@ logger = logging.getLogger(__name__)
 from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
 from qtpy.QtCore import Property, Q_ENUMS
 from .. import utilities
-from .base import PyDMWritableWidget
+from .base import PyDMWritableWidget, TextFormatter
 from .display_format import DisplayFormat, parse_value_for_display
 
 
-class PyDMLineEdit(QLineEdit, PyDMWritableWidget, DisplayFormat):
+class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
     Q_ENUMS(DisplayFormat)
     DisplayFormat = DisplayFormat
     """

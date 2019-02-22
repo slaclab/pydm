@@ -401,14 +401,15 @@ class PyDMApplication(QApplication):
         merged_macros = self.macro_stack[-1].copy()
         merged_macros.update(macros)
         self.macro_stack.append(merged_macros)
-        if extension == '.ui':
-            widget = self.load_ui_file(filepath, merged_macros)
-        elif extension == '.py':
-            widget = self.load_py_file(filepath, args, merged_macros)
-        else:
-            self.directory_stack.pop()
-            self.macro_stack.pop()
-            raise ValueError("Invalid file type: {}".format(extension))
+        with data_plugins.connection_queue():
+            if extension == '.ui':
+                widget = self.load_ui_file(filepath, merged_macros)
+            elif extension == '.py':
+                widget = self.load_py_file(filepath, args, merged_macros)
+            else:
+                self.directory_stack.pop()
+                self.macro_stack.pop()
+                raise ValueError("Invalid file type: {}".format(extension))
         # Add on the macros to the widget after initialization. This is
         # done for both ui files and python files.
         widget.base_macros = merged_macros

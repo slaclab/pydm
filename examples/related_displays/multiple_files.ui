@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Related Display Button with Multiple Files</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Multiple Displays...</string>
+     </property>
+     <property name="filenames" stdset="0">
+      <stringlist>
+       <string>display1.ui</string>
+       <string>display2.ui</string>
+      </stringlist>
+     </property>
+     <property name="titles" stdset="0">
+      <stringlist>
+       <string>Display 1</string>
+      </stringlist>
+     </property>
+     <property name="openInNewWindow" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMRelatedDisplayButton</class>
+   <extends>QPushButton</extends>
+   <header>pydm.widgets.related_display_button</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
