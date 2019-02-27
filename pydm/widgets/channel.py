@@ -1,8 +1,12 @@
 import logging
+import weakref
+
+from qtpy.QtCore import QObject, Signal, Slot
 
 import pydm.data_plugins
-from pydm.utilities import is_qt_designer
 from pydm import config
+from pydm.utilities import is_qt_designer
+from pydm.data_plugins.data_store import DataStore
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +19,7 @@ def clear_channel_address(channel):
     return str(channel).strip()
 
 
-class PyDMChannel(object):
+class PyDMChannel(QObject):
     """
     Object to hold signals and slots for a PyDM Widget interface to an
     external plugin
@@ -46,58 +50,40 @@ class PyDMChannel(object):
 
     Parameters
     ----------
+    parent : QObject, optional
+        The parent of this PyDMChannel. Defaults to None.
+
     address : str, optional
         The name of the address to be used by the plugin. This
         should usually be a user inputted field when a specific
         PyDM widget is initialized
 
-    connection_slot : Slot, optional
-        A function to be run when the connection state
-        changes
-
-    value_slot : Slot, optional
-        A function to be run when the value updates
-
-    severity_slot : Slot, optional
-        A function to be run when the severity changes
-
-    write_access_slot : Slot, optional
-        A function to be run when the write access changes
-
-    enum_strings_slot : Slot, optional
-        A function to be run when the enum_strings change
-
-    unit_slot : Slot, optional
-        A function to be run when the unit changes
-
-    prec_slot : Slot, optional
-        A function to be run when the precision value changes
-
-    value_signal : Signal, optional
-        Attach a signal here that emits a desired value to be sent
-        through the plugin
+    callback : callable, optional
+        The function or method to be invoked when data changes for this channel
 
     """
-    def __init__(self, address=None, connection_slot=None, value_slot=None,
-                 severity_slot=None, write_access_slot=None,
-                 enum_strings_slot=None, unit_slot=None, prec_slot=None,
-                 upper_ctrl_limit_slot=None, lower_ctrl_limit_slot=None,
-                 value_signal=None):
+    transmit = Signal([dict])
+
+    def __init__(self, parent=None, address=None, callback=None, *args,
+                 **kwargs):
+        super(PyDMChannel, self).__init__(parent=parent)
         self._address = None
+        self._monitors = set()  # Convert to list of WeakMethod in the future
         self.address = address
+        if callback:
+            print('Subscribed to channel')
+            self.subscribe(callback)
 
-        self.connection_slot = connection_slot
-        self.value_slot = value_slot
-        self.severity_slot = severity_slot
-        self.write_access_slot = write_access_slot
-        self.enum_strings_slot = enum_strings_slot
-        self.unit_slot = unit_slot
-        self.prec_slot = prec_slot
-
-        self.upper_ctrl_limit_slot = upper_ctrl_limit_slot
-        self.lower_ctrl_limit_slot = lower_ctrl_limit_slot
-
-        self.value_signal = value_signal
+    @Slot()
+    def notified(self):
+        print('We were notified of new data...', self._monitors)
+        data, intro = self.get(with_introspection=True)
+        for mon in self._monitors:
+            print('Lets try the monitors: ', mon)
+            try:
+                mon(data=data, introspection=intro)
+            except Exception as ex:
+                logger.exception("Error invoking callback for %r", self)
 
     @property
     def address(self):
@@ -120,8 +106,7 @@ class PyDMChannel(object):
         try:
             pydm.data_plugins.establish_connection(self)
         except Exception:
-            logger.exception("Unable to make proper connection "
-                             "for %r", self)
+            logger.exception("Unable to make proper connection for %r", self)
 
     def disconnect(self, destroying=False):
         """
@@ -134,39 +119,31 @@ class PyDMChannel(object):
             if not plugin:
                 return
             plugin.remove_connection(self, destroying=destroying)
+            self.transmit.disconnect()
         except Exception as exc:
-            logger.exception("Unable to remove connection "
-                             "for %r", self)
+            logger.exception("Unable to remove connection for %r", self)
+
+    def get(self, with_introspection=False):
+        return DataStore().fetch(self.address, with_introspection)
+
+    def put(self, data):
+        self.data_signal.emit(data)
+
+    def subscribe(self, callback):
+        if callable(callback):
+            self._monitors.add(callback)
+        else:
+            logger.error('Callback for %r must be a callable.', self)
+
+    def unsubscribe(self, callback):
+        self._monitors.remove(callback)
+
+    def clear_subscriptions(self):
+        self._monitors = set()
 
     def __eq__(self, other):
         if isinstance(self, other.__class__):
-            address_matched = self.address == other.address
-            connection_slot_matched = self.connection_slot == other.connection_slot
-            value_slot_matched = self.value_slot == other.value_slot
-            severity_slot_matched = self.severity_slot == other.severity_slot
-            enum_strings_slot_matched = self.enum_strings_slot == other.enum_strings_slot
-            unit_slot_matched = self.unit_slot == other.unit_slot
-            prec_slot_matched = self.prec_slot == other.prec_slot
-            upper_ctrl_slot_matched = self.upper_ctrl_limit_slot == other.upper_ctrl_limit_slot
-            lower_ctrl_slot_matched = self.lower_ctrl_limit_slot == other.lower_ctrl_limit_slot
-            write_access_slot_matched = self.write_access_slot == other.write_access_slot
-
-            value_signal_matched = True
-            if self.value_signal and other.value_signal:
-                value_signal_matched = self.value_signal.signal == other.value_signal.signal
-
-            return (address_matched and
-                    connection_slot_matched and
-                    value_slot_matched and
-                    severity_slot_matched and
-                    enum_strings_slot_matched and
-                    unit_slot_matched and
-                    prec_slot_matched and
-                    upper_ctrl_slot_matched and
-                    lower_ctrl_slot_matched and
-                    write_access_slot_matched and
-                    value_signal_matched)
-
+            return self.address == other.address
         return NotImplemented
 
     def __ne__(self, other):

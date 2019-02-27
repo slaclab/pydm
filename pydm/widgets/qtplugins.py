@@ -42,6 +42,7 @@ BASE_EXTENSIONS = [RulesExtension]
 # Label plugin
 PyDMLabelPlugin = qtplugin_factory(PyDMLabel, group=WidgetCategory.DISPLAY,
                                    extensions=BASE_EXTENSIONS)
+
 # Time Plot plugin
 PyDMTimePlotPlugin = qtplugin_factory(PyDMTimePlot, group=WidgetCategory.PLOT,
                                       extensions=[TimeCurveEditorExtension,

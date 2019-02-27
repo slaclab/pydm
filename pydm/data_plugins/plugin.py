@@ -1,151 +1,57 @@
-import weakref
 import threading
+import weakref
 
-from numpy import ndarray
-
-from ..utilities.remove_protocol import protocol_and_address
-from qtpy.QtCore import Signal, QObject, Qt
+from qtpy.QtCore import Slot, Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
+
+from .data_store import DataStore, DEFAULT_INTROSPECTION
+from ..utilities.remove_protocol import protocol_and_address
 
 
 class PyDMConnection(QObject):
-    new_value_signal = Signal([float], [int], [str], [ndarray])
-    connection_state_signal = Signal(bool)
-    new_severity_signal = Signal(int)
-    write_access_signal = Signal(bool)
-    enum_strings_signal = Signal(tuple)
-    unit_signal = Signal(str)
-    prec_signal = Signal(int)
-    upper_ctrl_limit_signal = Signal([float], [int])
-    lower_ctrl_limit_signal = Signal([float], [int])
+    notify = Signal()
 
     def __init__(self, channel, address, protocol=None, parent=None):
         super(PyDMConnection, self).__init__(parent)
+        self.data = {}
+        self.introspection = DEFAULT_INTROSPECTION
+        self.channel = channel
         self.protocol = protocol
         self.address = address
-        self.connected = False
-        self.value = None
         self.listener_count = 0
         self.app = QApplication.instance()
 
     def add_listener(self, channel):
         self.listener_count = self.listener_count + 1
-        if channel.connection_slot is not None:
-            self.connection_state_signal.connect(channel.connection_slot, Qt.QueuedConnection)
-
-        if channel.value_slot is not None:
-            try:
-                self.new_value_signal[int].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[float].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[str].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[ndarray].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
-
-        if channel.severity_slot is not None:
-            self.new_severity_signal.connect(channel.severity_slot, Qt.QueuedConnection)
-
-        if channel.write_access_slot is not None:
-            self.write_access_signal.connect(channel.write_access_slot, Qt.QueuedConnection)
-
-        if channel.enum_strings_slot is not None:
-            self.enum_strings_signal.connect(channel.enum_strings_slot, Qt.QueuedConnection)
-
-        if channel.unit_slot is not None:
-            self.unit_signal.connect(channel.unit_slot, Qt.QueuedConnection)
-
-        if channel.upper_ctrl_limit_slot is not None:
-            self.upper_ctrl_limit_signal.connect(channel.upper_ctrl_limit_slot, Qt.QueuedConnection)
-
-        if channel.lower_ctrl_limit_slot is not None:
-            self.lower_ctrl_limit_signal.connect(channel.lower_ctrl_limit_slot, Qt.QueuedConnection)
-
-        if channel.prec_slot is not None:
-            self.prec_signal.connect(channel.prec_slot, Qt.QueuedConnection)
+        self.notify.connect(channel.notified, Qt.QueuedConnection)
+        channel.transmit.connect(self._validate_data_from_channel,
+                                 Qt.QueuedConnection)
 
     def remove_listener(self, channel, destroying=False):
         if not destroying:
-            if channel.connection_slot is not None:
-                try:
-                    self.connection_state_signal.disconnect(channel.connection_slot)
-                except TypeError:
-                    pass
-
-            if channel.value_slot is not None:
-                try:
-                    self.new_value_signal[int].disconnect(channel.value_slot)
-                except TypeError:
-                    pass
-                try:
-                    self.new_value_signal[float].disconnect(channel.value_slot)
-                except TypeError:
-                    pass
-                try:
-                    self.new_value_signal[str].disconnect(channel.value_slot)
-                except TypeError:
-                    pass
-                try:
-                    self.new_value_signal[ndarray].disconnect(channel.value_slot)
-                except TypeError:
-                    pass
-
-            if channel.severity_slot is not None:
-                try:
-                    self.new_severity_signal.disconnect(channel.severity_slot)
-                except (KeyError, TypeError):
-                    pass
-
-            if channel.write_access_slot is not None:
-                try:
-                    self.write_access_signal.disconnect(channel.write_access_slot)
-                except (KeyError, TypeError):
-                    pass
-
-            if channel.enum_strings_slot is not None:
-                try:
-                    self.enum_strings_signal.disconnect(channel.enum_strings_slot)
-                except (KeyError, TypeError):
-                    pass
-
-            if channel.unit_slot is not None:
-                try:
-                    self.unit_signal.disconnect(channel.unit_slot)
-                except (KeyError, TypeError):
-                    pass
-
-            if channel.upper_ctrl_limit_slot is not None:
-                try:
-                    self.upper_ctrl_limit_signal.disconnect(channel.upper_ctrl_limit_slot)
-                except (KeyError, TypeError):
-                    pass
-
-            if channel.lower_ctrl_limit_slot is not None:
-                try:
-                    self.lower_ctrl_limit_signal.disconnect(channel.lower_ctrl_limit_slot)
-                except (KeyError, TypeError):
-                    pass
-
-            if channel.prec_slot is not None:
-                try:
-                    self.prec_signal.disconnect(channel.prec_slot)
-                except (KeyError, TypeError):
-                    pass
+            self.notify.disconnect(channel.notified)
 
         self.listener_count = self.listener_count - 1
         if self.listener_count < 1:
             self.close()
 
     def close(self):
+        DataStore().remove(self.address)
+
+    @Slot(dict)
+    def _validate_data_from_channel(self, payload):
+        # if is_read_only():
+        #     return
+        self.receive_from_channel(payload)
+
+    def receive_from_channel(self, payload):
         pass
+
+    def send_to_channel(self):
+        print('Called send_to_channel')
+        DataStore()[self.channel.address] = (self.data, self.introspection)
+        print('New Entry: ', DataStore()._data)
+        self.notify.emit()
 
 
 class PyDMPlugin(object):
@@ -171,15 +77,17 @@ class PyDMPlugin(object):
             if address in self.connections:
                 self.connections[address].add_listener(channel)
             else:
-                self.connections[address] = self.connection_class(channel, address,
-                                                                  self.protocol)
+                self.connections[address] = self.connection_class(
+                    channel, address, self.protocol
+                )
 
     def remove_connection(self, channel, destroying=False):
         with self.lock:
             address = self.get_address(channel)
             if address in self.connections and channel in self.channels:
-                self.connections[address].remove_listener(channel,
-                                                          destroying=destroying)
+                self.connections[address].remove_listener(
+                    channel,
+                    destroying=destroying)
                 self.channels.remove(channel)
                 if self.connections[address].listener_count < 1:
                     del self.connections[address]

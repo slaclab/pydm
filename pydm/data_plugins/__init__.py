@@ -17,12 +17,15 @@ from ..utilities import protocol_and_address
 from .. import config
 
 logger = logging.getLogger(__name__)
+
 plugin_modules = {}
 __read_only = False
+
 global __CONNECTION_QUEUE__
 __CONNECTION_QUEUE__ = None
 global __DEFER_CONNECTIONS__
 __DEFER_CONNECTIONS__ = False
+
 
 @contextmanager
 def connection_queue(defer_connections=False):
@@ -58,9 +61,11 @@ def establish_connection(channel):
     else:
         establish_connection_immediately(channel)
 
+
 def establish_connection_immediately(channel):
     plugin = plugin_for_address(channel.address)
     plugin.add_connection(channel)
+
 
 def plugin_for_address(address):
     """

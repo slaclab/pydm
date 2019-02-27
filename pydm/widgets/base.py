@@ -6,9 +6,10 @@ import numpy as np
 from qtpy.QtWidgets import (QApplication, QMenu, QGraphicsOpacityEffect,
                             QToolTip, QWidget)
 from qtpy.QtGui import QCursor
-from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
+from qtpy.QtCore import Qt, QEvent, Slot, Property
 from .channel import PyDMChannel
 from .. import data_plugins
+from ..data_plugins.data_store import DataKeys
 from .. import tools
 from ..utilities import is_qt_designer, remove_protocol
 from .rules import RulesDispatcher
@@ -42,7 +43,10 @@ def is_channel_valid(channel):
 
 
 def only_if_channel_set(fcn):
-    """Decorator to avoid executing a method if a channel is not valid or configured."""
+    """
+    Decorator to avoid executing a method if a channel is not valid or
+    configured.
+    """
 
     @functools.wraps(fcn)
     def wrapper(self, *args, **kwargs):
@@ -201,6 +205,7 @@ class PyDMPrimitiveWidget(object):
             except JSONDecodeError as ex:
                 logger.exception('Invalid format for Rules')
 
+
 class TextFormatter(object):
     def __init__(self):
         self._show_units = False
@@ -242,21 +247,7 @@ class TextFormatter(object):
             self._prec = new_precision
             if self.value is not None:
                 self.value_changed(self.value)
-    
-    @Slot(int)
-    @Slot(float)
-    def precisionChanged(self, new_prec):
-        """
-        PyQT Slot for changes on the precision of the Channel
-        This slot sends the new precision value to the
-        ```precision_changed``` callback.
 
-        Parameters
-        ----------
-        new_prec : int or float
-        """
-        self.precision_changed(new_prec)
-    
     @Property(int)
     def precision(self):
         """
@@ -287,20 +278,7 @@ class TextFormatter(object):
         if new_prec and self._prec != int(new_prec) and new_prec >= 0:
             self._prec = int(new_prec)
             self.value_changed(self.value)
-    
-    @Slot(str)
-    def unitChanged(self, new_unit):
-        """
-        PyQT Slot for changes on the unit of the Channel
-        This slot sends the new unit string to the
-        ```unit_changed``` callback.
 
-        Parameters
-        ----------
-        new_unit : str
-        """
-        self.unit_changed(new_unit)
-    
     def unit_changed(self, new_unit):
         """
         Callback invoked when the Channel has new unit value.
@@ -458,6 +436,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
 
+        self._use_introspection = True
+
         self.enum_strings = None
 
         self.value = None
@@ -474,7 +454,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
             # and not at the Designer
             self.installEventFilter(self)
             self._connected = False
-            self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
+            self.alarm_severity_changed(self.ALARM_DISCONNECTED)
             self.check_enable_state()
 
         self.destroyed.connect(
@@ -543,9 +523,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._connected = connected
         self.check_enable_state()
         if not connected:
-            self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
+            self.alarm_severity_changed(self.ALARM_DISCONNECTED)
         else:
-            self.alarmSeverityChanged(self.ALARM_NONE)
+            self.alarm_severity_changed(self.ALARM_NONE)
 
     def value_changed(self, new_val):
         """
@@ -599,7 +579,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if not self._channel:
             self._alarm_state = PyDMWidget.ALARM_NONE
         else:
-            self._alarm_state = new_alarm_severity
+            if self._connected:
+                self._alarm_state = new_alarm_severity
+            else:
+                self._alarm_state = PyDMWidget.ALARM_DISCONNECTED
         refresh_style(self)
 
     def enum_strings_changed(self, new_enum_strings):
@@ -651,6 +634,30 @@ class PyDMWidget(PyDMPrimitiveWidget):
         event = QEvent(QEvent.Clipboard)
         self.app.sendEvent(clipboard, event)
 
+    def upper_limit_changed(self, new_limit):
+        """
+        Callback invoked when the Channel receives new control upper limit
+        value.
+
+        Parameters
+        ----------
+        new_limit : float
+            New value for the control limit
+        """
+        self.ctrl_limit_changed('UPPER', new_limit)
+
+    def lower_limit_changed(self, new_limit):
+        """
+        Callback invoked when the Channel receives new control lower limit
+        value.
+
+        Parameters
+        ----------
+        new_limit : float
+            New value for the control limit
+        """
+        self.ctrl_limit_changed('UPPER', new_limit)
+
     def ctrl_limit_changed(self, which, new_limit):
         """
         Callback invoked when the Channel receives new control limit
@@ -667,88 +674,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self._upper_ctrl_limit = new_limit
         else:
             self._lower_ctrl_limit = new_limit
-
-    @Slot(bool)
-    def connectionStateChanged(self, connected):
-        """
-        PyQT Slot for changes on the Connection State of the Channel
-        This slot sends the connection state to the ```connection_changed```
-        callback.
-
-        Parameters
-        ----------
-        connected : bool
-        """
-        # false = disconnected, true = connected
-        self.connection_changed(connected)
-
-    @Slot(int)
-    @Slot(float)
-    @Slot(str)
-    @Slot(bool)
-    @Slot(np.ndarray)
-    def channelValueChanged(self, new_val):
-        """
-        PyQT Slot for changes on the Value of the Channel
-        This slot sends the value to the ```value_changed``` callback.
-
-        Parameters
-        ----------
-        new_val : int, float, str, bool or np.ndarray
-        """
-        self.value_changed(new_val)
-
-    @Slot(int)
-    def alarmSeverityChanged(self, new_alarm_severity):
-        """
-        PyQT Slot for changes on the Alarm Severity of the Channel
-        This slot sends the severity value to the
-        ```alarm_severity_changed``` callback.
-
-        Parameters
-        ----------
-        new_alarm_severity : int
-        """
-        self.alarm_severity_changed(new_alarm_severity)
-
-    @Slot(tuple)
-    def enumStringsChanged(self, new_enum_strings):
-        """
-        PyQT Slot for changes on the string values of the Channel
-        This slot sends the new strings to the
-        ```enum_strings_changed``` callback.
-
-        Parameters
-        ----------
-        new_enum_strings : tuple
-        """
-        self.enum_strings_changed(new_enum_strings)
-
-    @Slot(float)
-    def upperCtrlLimitChanged(self, new_limit):
-        """
-        PyQT Slot for changes on the upper control limit value of the Channel
-        This slot sends the new limit value to the
-        ```ctrl_limit_changed``` callback.
-
-        Parameters
-        ----------
-        new_limit : float
-        """
-        self.ctrl_limit_changed("UPPER", new_limit)
-
-    @Slot(float)
-    def lowerCtrlLimitChanged(self, new_limit):
-        """
-        PyQT Slot for changes on the lower control limit value of the Channel
-        This slot sends the new limit value to the
-        ```ctrl_limit_changed``` callback.
-
-        Parameters
-        ----------
-        new_limit : float
-        """
-        self.ctrl_limit_changed("LOWER", new_limit)
 
     @Slot()
     def force_redraw(self):
@@ -881,32 +806,45 @@ class PyDMWidget(PyDMPrimitiveWidget):
                 self._channels.remove(channel)
             # Load new channel
             self._channel = str(value)
-            channel = PyDMChannel(address=self._channel,
-                                  connection_slot=self.connectionStateChanged,
-                                  value_slot=self.channelValueChanged,
-                                  severity_slot=self.alarmSeverityChanged,
-                                  enum_strings_slot=self.enumStringsChanged,
-                                  unit_slot=None,
-                                  prec_slot=None,
-                                  upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
-                                  lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
-                                  value_signal=None,
-                                  write_access_slot=None)
-            # Load writeable channels if our widget requires them. These should
-            # not exist on the base PyDMWidget but prevents us from duplicating
-            # the method below to only make two more connections
-            if hasattr(self, 'writeAccessChanged'):
-                channel.write_access_slot = self.writeAccessChanged
-            if hasattr(self, 'send_value_signal'):
-                channel.value_signal = self.send_value_signal
-            # Do the same thing for classes that use the TextFormatter mixin.
-            if hasattr(self, 'unitChanged'):
-                channel.unit_slot = self.unitChanged
-            if hasattr(self, 'precisionChanged'):
-                channel.prec_slot = self.precisionChanged
-            # Connect write channels if we have them
+            channel = PyDMChannel(parent=self,
+                                  address=self._channel,
+                                  callback=self._receive_data)
             channel.connect()
             self._channels.append(channel)
+
+    def _receive_data(self, data=None, introspection=None, *args, **kwargs):
+        mapping = {
+            DataKeys.CONNECTION: 'connection_changed',
+            DataKeys.SEVERITY: 'alarm_severity_changed',
+            DataKeys.WRITE_ACCESS: 'write_access_changed',
+            DataKeys.ENUM_STRINGS: 'enum_strings_changed',
+            DataKeys.UNIT: 'unit_changed',
+            DataKeys.PRECISION: 'precision_changed',
+            DataKeys.UPPER_LIMIT: 'upper_limit_changed',
+            DataKeys.LOWER_LIMIT: 'lower_limit_changed',
+            DataKeys.VALUE: 'value_changed'
+        }
+        if self._use_introspection and introspection is None:
+            return
+        else:
+            pass
+            # TODO: Assemble an introspection dict here with
+            #   the keys informed via the properties
+            # introspection = DataKeys.generate_introspection_for(
+            # )
+
+        if data is None:
+            return
+
+        for dkey, method_name in mapping.items():
+            real_key = introspection.get(dkey, None)
+            if real_key is None or real_key == '':
+                continue
+            method = getattr(self, method_name, None)
+            if not method:
+                continue
+            new_value = data.get(real_key)
+            method(new_value)
 
     def restore_original_tooltip(self):
         if self._tooltip is None:
@@ -979,17 +917,7 @@ class PyDMWritableWidget(PyDMWidget):
     ----------
     init_channel : str, optional
         The channel to be used by the widget.
-
-    Signals
-    -------
-    send_value_signal : int, float, str, bool or np.ndarray
-        Emitted when the user changes the value
     """
-
-    __Signals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray])")
-
-    # Emitted when the user changes the value.
-    send_value_signal = Signal([int], [float], [str], [bool], [np.ndarray])
 
     def __init__(self, init_channel=None):
         self._write_access = False
@@ -1045,18 +973,6 @@ class PyDMWritableWidget(PyDMWidget):
         """
         self._write_access = new_write_access
         self.check_enable_state()
-
-    @Slot(bool)
-    def writeAccessChanged(self, write_access):
-        """
-        PyQT Slot for changes on the write access value of the Channel
-        This slot sends the write access value to the ```write_access_changed``` callback.
-
-        Parameters
-        ----------
-        write_access : bool
-        """
-        self.write_access_changed(write_access)
 
     @only_if_channel_set
     def check_enable_state(self):
