@@ -3,6 +3,7 @@ from qtpy import QtWidgets, QtCore
 
 from ..widgets.base import PyDMPrimitiveWidget
 
+from ..widgets.channel_editor import ChannelEditor
 from ..widgets.rules_editor import RulesEditor
 from ..widgets.waveformplot_curve_editor import WaveformPlotCurveEditorDialog
 from ..widgets.timeplot_curve_editor import TimePlotCurveEditorDialog
@@ -63,6 +64,22 @@ class PyDMExtension(object):
 
     def actions(self):
         raise NotImplementedError
+
+
+class ChannelExtension(PyDMExtension):
+    def __init__(self, widget):
+        super(ChannelExtension, self).__init__(widget)
+        self.widget = widget
+        self.edit_channels_action = QtWidgets.QAction("Edit Channels...",
+                                                      self.widget)
+        self.edit_channels_action.triggered.connect(self.edit_channels)
+
+    def edit_channels(self, state):
+        edit_channels_dialog = ChannelEditor(self.widget, parent=None)
+        edit_channels_dialog.exec_()
+
+    def actions(self):
+        return [self.edit_channels_action]
 
 
 class RulesExtension(PyDMExtension):

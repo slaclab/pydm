@@ -2,10 +2,21 @@ import threading
 import weakref
 
 from qtpy.QtCore import Slot, Signal, QObject, Qt
-from qtpy.QtWidgets import QApplication
+from qtpy import QtWidgets
 
 from .data_store import DataStore, DEFAULT_INTROSPECTION
 from ..utilities.remove_protocol import protocol_and_address
+
+
+class DefaultParameterEditor(QtWidgets.QWidget):
+    def __init__(self, parent=None):
+        super(DefaultParameterEditor, self).__init__(parent)
+        self.setLayout(QtWidgets.QFormLayout())
+        self.edit_address = QtWidgets.QLineEdit(self)
+        self.layout().addRow(QtWidgets.QLabel('Address'), self.edit_address)
+
+    def parameters(self):
+        return {'address': self.edit_address.text()}
 
 
 class PyDMConnection(QObject):
@@ -19,7 +30,7 @@ class PyDMConnection(QObject):
         self.protocol = protocol
         self.address = address
         self.listener_count = 0
-        self.app = QApplication.instance()
+        self.app = QtWidgets.QApplication.instance()
         self.add_listener(channel)
 
     def add_listener(self, channel):
@@ -58,6 +69,7 @@ class PyDMConnection(QObject):
 class PyDMPlugin(object):
     protocol = None
     connection_class = PyDMConnection
+    param_editor = DefaultParameterEditor
 
     def __init__(self):
         self.connections = {}

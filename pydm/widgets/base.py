@@ -578,15 +578,6 @@ class PyDMWidget(ChannelKeys, PyDMPrimitiveWidget):
         self.destroyed.connect(
             functools.partial(widget_destroyed, self.channels, weakref.ref(self))
         )
-        self._foo = Foo()
-
-    @Property('PyQt_PyObject')
-    def foo(self):
-        return self._foo
-
-    @foo.setter
-    def foo(self, nf):
-        pass
 
     def widget_ctx_menu(self):
         """

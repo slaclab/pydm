@@ -2,7 +2,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 from .qtplugin_base import qtplugin_factory, WidgetCategory
-from .qtplugin_extensions import (RulesExtension, WaveformCurveEditorExtension,
+from .qtplugin_extensions import (ChannelExtension, RulesExtension,
+                                  WaveformCurveEditorExtension,
                                   TimeCurveEditorExtension,
                                   ScatterCurveEditorExtension)
 from .tab_bar_qtplugin import TabWidgetPlugin
@@ -38,7 +39,7 @@ from .template_repeater import PyDMTemplateRepeater
 
 from .treeview import PyDMTreeView
 
-BASE_EXTENSIONS = [RulesExtension]
+BASE_EXTENSIONS = [ChannelExtension, RulesExtension]
 
 # Label plugin
 PyDMLabelPlugin = qtplugin_factory(PyDMLabel, group=WidgetCategory.DISPLAY,
