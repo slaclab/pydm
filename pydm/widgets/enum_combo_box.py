@@ -21,8 +21,6 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
 
     Signals
     -------
-    send_value_signal : int, float, str, bool or np.ndarray
-        Emitted when the user changes the value.
     activated : int, str
         Emitted when the user chooses an item in the combobox.
     currentIndexChanged : int, str
@@ -143,6 +141,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         """
         super(PyDMEnumComboBox, self).enum_strings_changed(new_enum_strings)
         self.set_items(new_enum_strings)
+        self.value_changed(self.value)
 
     def value_changed(self, new_val):
         """
@@ -176,15 +175,17 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
                 return
             # Set the index
             self.setCurrentIndex(idx)
+            self.update()
 
     @Slot(int)
     def internal_combo_box_activated_int(self, index):
         """
         PyQT Slot for when the user chooses an item in the combobox.
-        This slot triggers the ```send_value_signal```.
+        This slot triggers the write to the PyDMChannel.
+
         Parameters
         ----------
         index : int
 
         """
-        self.send_value_signal.emit(index)
+        self.write_to_channel(index)

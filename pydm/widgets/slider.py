@@ -28,6 +28,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
     def __init__(self, parent=None, init_channel=None):
         QFrame.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
+        TextFormatter.__init__(self)
         self.alarmSensitiveContent = True
         self.alarmSensitiveBorder = False
         # Internal values for properties
@@ -41,6 +42,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self._user_maximum = 10.0
         self._num_steps = 101
         self._orientation = Qt.Horizontal
+        self.set_enable_state()
         # Set up all the internal widgets that make up a PyDMSlider.
         # We'll add all these things to layouts when we call setup_widgets_for_orientation
         label_size_policy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
@@ -224,7 +226,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         new_val : int or float
             The new value from the channel.
         """
-        PyDMWritableWidget.value_changed(self, new_val)
+        super(PyDMSlider, self).value_changed(new_val)
         if hasattr(self, "value_label"):
             self.value_label.setText(self.format_string.format(self.value))
         if not self._slider.isSliderDown():
@@ -242,7 +244,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         new_limit : float
             New value for the control limit
         """
-        PyDMWritableWidget.ctrl_limit_changed(self, which, new_limit)
+        super(PyDMSlider, self).ctrl_limit_changed(which, new_limit)
         if not self.userDefinedLimits:
             self.reset_slider_limits()
 
@@ -327,7 +329,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         # plugin will send a put to the channel.  Don't update self.value or self._value
         # in here, it is pointless at best, and could cause an infinite loop at worst.
         if not self._mute_internal_slider_changes:
-            self.send_value_signal[float].emit(self.value)
+            self.write_to_channel(self.value)
 
     @Property(bool)
     def showLimitLabels(self):

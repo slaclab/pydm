@@ -47,7 +47,5 @@ class PyDMCheckbox(QCheckBox, PyDMWritableWidget):
         checked : bool
             True in case the checkbox was checked, False otherwise.
         """
-        if checked:
-            self.send_value_signal.emit(1)
-        else:
-            self.send_value_signal.emit(0)
+        val = 1 if checked else 0
+        self.write_to_channel(val)

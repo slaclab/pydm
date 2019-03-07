@@ -20,8 +20,10 @@ class PyDMConnection(QObject):
         self.address = address
         self.listener_count = 0
         self.app = QApplication.instance()
+        self.add_listener(channel)
 
     def add_listener(self, channel):
+        print('Called Add_Listener for: ', channel)
         self.listener_count = self.listener_count + 1
         self.notify.connect(channel.notified, Qt.QueuedConnection)
         channel.transmit.connect(self._validate_data_from_channel,
@@ -30,6 +32,7 @@ class PyDMConnection(QObject):
     def remove_listener(self, channel, destroying=False):
         if not destroying:
             self.notify.disconnect(channel.notified)
+            self.channel.transmit.disconnect(self._validate_data_from_channel)
 
         self.listener_count = self.listener_count - 1
         if self.listener_count < 1:
@@ -48,9 +51,7 @@ class PyDMConnection(QObject):
         pass
 
     def send_to_channel(self):
-        print('Called send_to_channel')
         DataStore()[self.channel.address] = (self.data, self.introspection)
-        print('New Entry: ', DataStore()._data)
         self.notify.emit()
 
 
@@ -68,10 +69,12 @@ class PyDMPlugin(object):
         return protocol_and_address(channel.address)[1]
 
     def add_connection(self, channel):
+        print('Invoked add_connection for: ', channel.address )
         with self.lock:
             address = self.get_address(channel)
             # If this channel is already connected to this plugin lets ignore
             if channel in self.channels:
+                print('ABORT... Channel in self.channels')
                 return
             self.channels.add(channel)
             if address in self.connections:

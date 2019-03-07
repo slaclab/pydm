@@ -70,16 +70,14 @@ class PyDMChannel(QObject):
         self._address = None
         self._monitors = set()  # Convert to list of WeakMethod in the future
         self.address = address
+        print('Creating channel for: ', address, ' with callback: ', callback)
         if callback:
-            print('Subscribed to channel')
             self.subscribe(callback)
 
     @Slot()
     def notified(self):
-        print('We were notified of new data...', self._monitors)
         data, intro = self.get(with_introspection=True)
         for mon in self._monitors:
-            print('Lets try the monitors: ', mon)
             try:
                 mon(data=data, introspection=intro)
             except Exception as ex:
@@ -119,7 +117,6 @@ class PyDMChannel(QObject):
             if not plugin:
                 return
             plugin.remove_connection(self, destroying=destroying)
-            self.transmit.disconnect()
         except Exception as exc:
             logger.exception("Unable to remove connection for %r", self)
 
@@ -127,7 +124,7 @@ class PyDMChannel(QObject):
         return DataStore().fetch(self.address, with_introspection)
 
     def put(self, data):
-        self.data_signal.emit(data)
+        self.transmit.emit(data)
 
     def subscribe(self, callback):
         if callable(callback):

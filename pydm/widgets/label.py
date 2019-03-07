@@ -71,6 +71,7 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
         if isinstance(new_value, str):
             self.setText(new_value)
             return
+
         # If the value is an enum, display the appropriate enum string for
         # the value.
         if self.enum_strings is not None and isinstance(new_value, int):
@@ -83,6 +84,9 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
         # format string if necessary.
         if isinstance(new_value, (int, float)):
             self.setText(self.format_string.format(new_value))
+            # This call to processEvents fix a memory leak with setText
+            # when used with a QLabel
+            self.app.processEvents()
             return
         # If you made it this far, just turn whatever the heck the value
         # is into a string and display it.

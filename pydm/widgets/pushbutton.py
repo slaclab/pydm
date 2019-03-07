@@ -323,7 +323,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         Send a new value to the channel.
 
         This function interprets the settings of the PyDMPushButton and sends
-        the appropriate value out through the :attr:`.send_value_signal`.
+        the appropriate value out to the channel.
 
         Returns
         -------
@@ -350,10 +350,10 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
         if not self._relative or self.channeltype == str:
             send_value = self._pressValue
-            self.send_value_signal[self.channeltype].emit(self.channeltype(send_value))
+            self.write_to_channel(self.channeltype(send_value))
         else:
             send_value = self.value + self.channeltype(self._pressValue)
-            self.send_value_signal[self.channeltype].emit(send_value)
+            self.write_to_channel(send_value)
         return send_value
 
     @Slot(int)

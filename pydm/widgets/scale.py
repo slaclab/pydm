@@ -382,6 +382,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
     def __init__(self, parent=None, init_channel=None):
         QFrame.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
+        TextFormatter.__init__(self)
         self._show_value = True
         self._show_limits = True
 
@@ -423,9 +424,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_value(new_value)
         self.update_labels()
 
-    def upperCtrlLimitChanged(self, new_limit):
+    def upper_limit_changed(self, new_limit):
         """
-        PyQT Slot for changes on the upper control limit value of the Channel
+        Changes on the upper control limit value of the Channel
         This slot sends the new limit value to the
         ```ctrl_limit_changed``` callback.
 
@@ -433,12 +434,12 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         ----------
         new_limit : float
         """
-        super(PyDMScaleIndicator, self).upperCtrlLimitChanged(new_limit)
+        super(PyDMScaleIndicator, self).upper_limit_changed(new_limit)
         if self.limitsFromChannel:
             self.scale_indicator.set_upper_limit(new_limit)
             self.update_labels()
 
-    def lowerCtrlLimitChanged(self, new_limit):
+    def lower_limit_changed(self, new_limit):
         """
         PyQT Slot for changes on the lower control limit value of the Channel
         This slot sends the new limit value to the
@@ -448,7 +449,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         ----------
         new_limit : float
         """
-        super(PyDMScaleIndicator, self).lowerCtrlLimitChanged(new_limit)
+        super(PyDMScaleIndicator, self).lower_limit_changed(new_limit)
         if self.limitsFromChannel:
             self.scale_indicator.set_lower_limit(new_limit)
             self.update_labels()

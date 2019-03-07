@@ -17,6 +17,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
     def __init__(self, parent=None, init_channel=None):
         QDoubleSpinBox.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
+        TextFormatter.__init__(self)
         self.valueBeingSet = False
         self.setEnabled(False)
         self._alarm_sensitive_border = False
@@ -35,8 +36,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
             - Up / Down : Add or Remove `singleStep` units to the value;
             - PageUp / PageDown : Add or Remove 10 times `singleStep` units
               to the value;
-            - Return or Enter : Send the value to the channel using the
-              `send_value_signal`.
+            - Return or Enter : Send the value to the channel;
 
         Parameters
         ----------
@@ -115,11 +115,11 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
     def send_value(self):
         """
         Method invoked to send the current value on the QDoubleSpinBox to
-        the channel using the `send_value_signal`.
+        the channel.
         """
         value = QDoubleSpinBox.value(self)
         if not self.valueBeingSet:
-            self.send_value_signal[float].emit(value)
+            self.write_to_channel(value)
 
     def ctrl_limit_changed(self, which, new_limit):
         """

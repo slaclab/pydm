@@ -32,6 +32,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
     def __init__(self, parent=None, init_channel=None):
         QLineEdit.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
+        TextFormatter.__init__(self)
         self.app = QApplication.instance()
         self._display = None
         self._scale = 1
@@ -73,7 +74,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
 
     def send_value(self):
         """
-        Emit a :attr:`send_value_signal` to update channel value.
+        Execute a put to the channel.
 
         The text is cleaned of all units, user-formatting and scale values
         before being sent back to the channel. This function is attached the
@@ -103,19 +104,19 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                     num_value = locale.atof(send_value)
 
                 num_value = num_value / scale
-                self.send_value_signal[self.channeltype].emit(num_value)
+                self.write_to_channel(num_value)
             elif self.channeltype == np.ndarray:
                 # Arrays will be in the [1.2 3.4 22.214] format
                 if self._display_format_type == DisplayFormat.String:
-                    self.send_value_signal[str].emit(send_value)
+                    self.write_to_channel(send_value)
                 else:
                     arr_value = list(filter(None, send_value.replace("[", "").replace("]", "").split(" ")))
                     arr_value = np.array(arr_value, dtype=self.subtype)
-                    self.send_value_signal[np.ndarray].emit(arr_value)
+                    self.write_to_channel(arr_value)
             else:
                 # Channel Type is String
                 # Lets just send what we have after all
-                self.send_value_signal[str].emit(send_value)
+                self.write_to_channel(send_value)
         except ValueError:
             logger.exception("Error trying to set data '{0}' with type '{1}' and format '{2}' at widget '{3}'."
                          .format(self.text(), self.channeltype, self._display_format_type, self.objectName()))

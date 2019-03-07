@@ -6,12 +6,12 @@ import numpy as np
 from qtpy.QtWidgets import (QApplication, QMenu, QGraphicsOpacityEffect,
                             QToolTip, QWidget)
 from qtpy.QtGui import QCursor
-from qtpy.QtCore import Qt, QEvent, Slot, Property
+from qtpy.QtCore import Qt, QEvent, Slot, Property, QObject, QMetaType
 from .channel import PyDMChannel
 from .. import data_plugins
-from ..data_plugins.data_store import DataKeys
+from ..data_plugins.data_store import DataKeys, DEFAULT_INTROSPECTION
 from .. import tools
-from ..utilities import is_qt_designer, remove_protocol
+from ..utilities import is_qt_designer, remove_protocol, nested_dict_get
 from .rules import RulesDispatcher
 
 try:
@@ -206,6 +206,112 @@ class PyDMPrimitiveWidget(object):
                 logger.exception('Invalid format for Rules')
 
 
+class ChannelKeys(object):
+    def __init__(self, *args, **kwargs):
+        super(ChannelKeys, self).__init__(*args, **kwargs)
+        self._keys = DEFAULT_INTROSPECTION.copy()
+
+    def get_property(self, key):
+        return self._keys.get(key, '')
+
+    def set_property(self, key, val, reload_data=False):
+        if val is None or val == '':
+            del self._keys[key]
+            return
+        self._keys[key] = val
+        if reload_data:
+            self.reload_data()
+
+    def reload_data(self):
+        return
+        chs = self.channels()
+
+        if chs is not None and len(chs) > 0:
+            ch = self.channels()[0]
+            ch.notified()
+
+    @Property(bool)
+    def channelUseIntrospection(self):
+        return self._channel_use_introspection
+
+    @channelUseIntrospection.setter
+    def channelUseIntrospection(self, checked):
+        self._channel_use_introspection = checked
+        self.reload_data()
+
+    @Property(str)
+    def channelConnectionKey(self):
+        return self.get_property(DataKeys.CONNECTION)
+
+    @channelConnectionKey.setter
+    def channelConnectionKey(self, val):
+        self.set_property(DataKeys.CONNECTION, val)
+
+    @Property(str)
+    def channelValueKey(self):
+        return self.get_property(DataKeys.VALUE)
+
+    @channelValueKey.setter
+    def channelValueKey(self, val):
+        self.set_property(DataKeys.VALUE, val)
+
+    @Property(str)
+    def channelSeverityKey(self):
+        return self.get_property(DataKeys.SEVERITY)
+
+    @channelSeverityKey.setter
+    def channelSeverityKey(self, val):
+        self.set_property(DataKeys.SEVERITY, val)
+
+    @Property(str)
+    def channelWriteAccessKey(self):
+        return self.get_property(DataKeys.WRITE_ACCESS)
+
+    @channelWriteAccessKey.setter
+    def channelWriteAccessKey(self, val):
+        self.set_property(DataKeys.WRITE_ACCESS, val)
+
+    @Property(str)
+    def channelEnumStringsKey(self):
+        return self.get_property(DataKeys.ENUM_STRINGS)
+
+    @channelEnumStringsKey.setter
+    def channelEnumStringsKey(self, val):
+        self.set_property(DataKeys.ENUM_STRINGS, val)
+
+    @Property(str)
+    def channelUnitStringsKey(self):
+        return self.get_property(DataKeys.UNIT)
+
+    @channelUnitStringsKey.setter
+    def channelUnitStringsKey(self, val):
+        self.set_property(DataKeys.UNIT, val)
+
+    @Property(str)
+    def channelPrecisionKey(self):
+        return self.get_property(DataKeys.PRECISION)
+
+    @channelPrecisionKey.setter
+    def channelPrecisionKey(self, val):
+        self.set_property(DataKeys.PRECISION, val)
+
+    @Property(str)
+    def channelUpperLimitKey(self):
+        return self.get_property(DataKeys.UPPER_LIMIT)
+
+    @channelUpperLimitKey.setter
+    def channelUpperLimitKey(self, val):
+        self.set_property(DataKeys.UPPER_LIMIT, val)
+
+    @Property(str)
+    def channelLowerLimitKey(self):
+        return self.get_property(DataKeys.LOWER_LIMIT)
+
+    @channelLowerLimitKey.setter
+    def channelLowerLimitKey(self, val):
+        self.set_property(DataKeys.LOWER_LIMIT, val)
+
+
 class TextFormatter(object):
     def __init__(self):
         self._show_units = False
@@ -390,11 +496,11 @@ class TextFormatter(object):
         new_val : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
         """
-        super(TextFormatter, self).value_changed(new_val)
         self.update_format_string()
+        super(TextFormatter, self).value_changed(new_val)
 
   
-class PyDMWidget(PyDMPrimitiveWidget):
+class PyDMWidget(ChannelKeys, PyDMPrimitiveWidget):
     """
     PyDM base class for Read-Only widgets.
     This class implements all the functions of connection, alarm
@@ -413,7 +519,21 @@ class PyDMWidget(PyDMPrimitiveWidget):
     ALARM_INVALID = 3
     ALARM_DISCONNECTED = 4
 
+    _DATA_METHOD_MAPPING = {
+        DataKeys.CONNECTION: 'connection_changed',
+        DataKeys.SEVERITY: 'alarm_severity_changed',
+        DataKeys.WRITE_ACCESS: 'write_access_changed',
+        DataKeys.ENUM_STRINGS: 'enum_strings_changed',
+        DataKeys.UNIT: 'unit_changed',
+        DataKeys.PRECISION: 'precision_changed',
+        DataKeys.UPPER_LIMIT: 'upper_limit_changed',
+        DataKeys.LOWER_LIMIT: 'lower_limit_changed',
+        DataKeys.VALUE: 'value_changed'
+    }
+
     def __init__(self, init_channel=None):
+        self._channel_use_introspection = True
+
         super(PyDMWidget, self).__init__()
 
         if not all([prop in PyDMPrimitiveWidget.RULE_PROPERTIES for prop in
@@ -435,8 +555,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
-
-        self._use_introspection = True
 
         self.enum_strings = None
 
@@ -460,6 +578,15 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.destroyed.connect(
             functools.partial(widget_destroyed, self.channels, weakref.ref(self))
         )
+        self._foo = Foo()
+
+    @Property('PyQt_PyObject')
+    def foo(self):
+        return self._foo
+
+    @foo.setter
+    def foo(self, nf):
+        pass
 
     def widget_ctx_menu(self):
         """
@@ -485,7 +612,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         menu = self.widget_ctx_menu()
         if menu is None:
             menu = QMenu(parent=self)
-
         kwargs = {'channels': self.channels_for_tools(), 'sender': self}
         tools.assemble_tools_menu(menu, widget_only=True, **kwargs)
         return menu
@@ -499,7 +625,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
         ev : QEvent
         """
         menu = self.generate_context_menu()
-        action = menu.exec_(self.mapToGlobal(ev.pos()))
+        menu.exec_(self.mapToGlobal(ev.pos()))
+        menu.deleteLater()
         del menu
 
     def init_for_designer(self):
@@ -656,7 +783,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         new_limit : float
             New value for the control limit
         """
-        self.ctrl_limit_changed('UPPER', new_limit)
+        self.ctrl_limit_changed('LOWER', new_limit)
 
     def ctrl_limit_changed(self, which, new_limit):
         """
@@ -809,42 +936,34 @@ class PyDMWidget(PyDMPrimitiveWidget):
             channel = PyDMChannel(parent=self,
                                   address=self._channel,
                                   callback=self._receive_data)
+            # Connect the channel...
             channel.connect()
+            # Force initial data fill...
+            channel.notified()
             self._channels.append(channel)
 
     def _receive_data(self, data=None, introspection=None, *args, **kwargs):
-        mapping = {
-            DataKeys.CONNECTION: 'connection_changed',
-            DataKeys.SEVERITY: 'alarm_severity_changed',
-            DataKeys.WRITE_ACCESS: 'write_access_changed',
-            DataKeys.ENUM_STRINGS: 'enum_strings_changed',
-            DataKeys.UNIT: 'unit_changed',
-            DataKeys.PRECISION: 'precision_changed',
-            DataKeys.UPPER_LIMIT: 'upper_limit_changed',
-            DataKeys.LOWER_LIMIT: 'lower_limit_changed',
-            DataKeys.VALUE: 'value_changed'
-        }
-        if self._use_introspection and introspection is None:
+        if self._channel_use_introspection and introspection is None:
             return
         else:
-            pass
-            # TODO: Assemble an introspection dict here with
-            #   the keys informed via the properties
-            # introspection = DataKeys.generate_introspection_for(
-            # )
+            introspection = self._keys
 
         if data is None:
             return
 
-        for dkey, method_name in mapping.items():
-            real_key = introspection.get(dkey, None)
+        for dkey, real_key in introspection.items():
             if real_key is None or real_key == '':
+                continue
+            try:
+                method_name = self._DATA_METHOD_MAPPING[dkey]
+            except KeyError:
                 continue
             method = getattr(self, method_name, None)
             if not method:
                 continue
-            new_value = data.get(real_key)
-            method(new_value)
+            new_value = nested_dict_get(data, real_key.split('.'))
+            if new_value is not None:
+                method(new_value)
 
     def restore_original_tooltip(self):
         if self._tooltip is None:
@@ -911,7 +1030,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
 class PyDMWritableWidget(PyDMWidget):
     """
     PyDM base class for Writable widgets.
-    This class implements the send_value_signal and also the event filter for write access changes on PVs.
+    This class implements the `write_to_channel` and also the event filter for
+    write access changes on PVs.
 
     Parameters
     ----------
@@ -996,3 +1116,6 @@ class PyDMWritableWidget(PyDMWidget):
                 tooltip += "Access denied by Channel Access Security."
         self.setToolTip(tooltip)
         self.setEnabled(status)
+
+    def write_to_channel(self, value, key=DataKeys.VALUE):
+        self._channels[0].put({key: value})

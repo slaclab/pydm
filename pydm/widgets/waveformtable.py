@@ -78,7 +78,7 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
             new_val = self.subtype(item.text())
             ind = row*self.columnCount() + column
             self.waveform[ind] = new_val
-            self.send_value_signal[np.ndarray].emit(self.waveform)
+            self.write_to_channel(self.waveform)
 
     def check_enable_state(self):
         """

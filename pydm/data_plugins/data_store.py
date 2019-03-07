@@ -1,4 +1,29 @@
 from enum import Enum
+import collections
+
+
+def dict_merge(dct, merge_dct):
+    """ Recursive dict merge. Inspired by :meth:``dict.update()``, instead of
+    updating only top-level keys, dict_merge recurses down into dicts nested
+    to an arbitrary depth, updating keys. The ``merge_dct`` is merged into
+    ``dct``.
+
+    Credits to angstwad for his original solution:
+    https://gist.github.com/angstwad/bf22d1822c38a92ec0a9
+
+    Parameters
+    ----------
+    dct: dict
+        Dict onto which the merge is executed
+    merge_dct: dict
+        Dict merged into dct
+    """
+    for k, v in merge_dct.items():
+        if (k in dct and isinstance(dct[k], dict)
+                and isinstance(merge_dct[k], collections.Mapping)):
+            dict_merge(dct[k], merge_dct[k])
+        else:
+            dct[k] = merge_dct[k]
 
 
 class DataKeys(str, Enum):
@@ -16,7 +41,8 @@ class DataKeys(str, Enum):
     UPPER_LIMIT = 'UPPER_LIMIT'
     LOWER_LIMIT = 'LOWER_LIMIT'
 
-    def generate_introspection_for(self, connection_key=None, value_key=None,
+    @staticmethod
+    def generate_introspection_for(connection_key=None, value_key=None,
                                    severity_key=None, write_access_key=None,
                                    enum_strings_key=None, unit_key=None,
                                    precision_key=None, upper_limit_key=None,
@@ -55,15 +81,15 @@ class DataKeys(str, Enum):
 
         """
         lookup_table = [
-            (connection_key, self.CONNECTION),
-            (value_key, self.VALUE),
-            (severity_key, self.SEVERITY),
-            (write_access_key, self.WRITE_ACCESS),
-            (enum_strings_key, self.ENUM_STRINGS),
-            (unit_key, self.UNIT),
-            (precision_key, self.PRECISION),
-            (upper_limit_key, self.UPPER_LIMIT),
-            (lower_limit_key, self.LOWER_LIMIT)
+            (connection_key, DataKeys.CONNECTION),
+            (value_key, DataKeys.VALUE),
+            (severity_key, DataKeys.SEVERITY),
+            (write_access_key, DataKeys.WRITE_ACCESS),
+            (enum_strings_key, DataKeys.ENUM_STRINGS),
+            (unit_key, DataKeys.UNIT),
+            (precision_key, DataKeys.PRECISION),
+            (upper_limit_key, DataKeys.UPPER_LIMIT),
+            (lower_limit_key, DataKeys.LOWER_LIMIT)
         ]
         introspection = dict()
 
@@ -154,9 +180,11 @@ class DataStore(object):
             The introspection payload to be stored.
 
         """
-        self._data.update({address: data})
+        # dict_merge(self._data, {address: data})
+        self._data[address] = data
         if introspection:
-            self._introspection.update({address: introspection})
+            self._introspection[address] = introspection
+            # dict_merge(self._introspection, {address: introspection})
 
     def remove(self, address):
         """

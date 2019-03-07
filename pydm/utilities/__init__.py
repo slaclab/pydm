@@ -1,3 +1,9 @@
+import os
+import sys
+import platform
+import ntpath
+import shlex
+
 from .units import find_unittype, convert, find_unit_options
 from . import macro
 from . import colors
@@ -5,12 +11,6 @@ from .remove_protocol import remove_protocol, protocol_and_address
 from .connection import establish_widget_connections, close_widget_connections
 from .iconfont import IconFont
 from ..qtdesigner import DesignerHooks
-
-import os
-import sys
-import platform
-import ntpath
-import shlex
 
 
 def is_pydm_app(app=None):
@@ -20,7 +20,8 @@ def is_pydm_app(app=None):
     Parameters
     ----------
     app : QApplication, Optional
-        The app to inspect. If no application is provided the current running `QApplication` will be queried.
+        The app to inspect. If no application is provided the current running
+        `QApplication` will be queried.
 
     Returns
     -------
@@ -173,3 +174,12 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None, pathext=None):
                 if _access_check(name, mode):
                     return name
     return None
+
+
+def nested_dict_get(input_dict, nested_key):
+    internal_dict_value = input_dict
+    for k in nested_key:
+        internal_dict_value = internal_dict_value.get(k, None)
+        if internal_dict_value is None:
+            return None
+    return internal_dict_value

@@ -36,11 +36,15 @@ from .waveformplot import PyDMWaveformPlot
 from .scatterplot import PyDMScatterPlot
 from .template_repeater import PyDMTemplateRepeater
 
+from .treeview import PyDMTreeView
 
 BASE_EXTENSIONS = [RulesExtension]
 
 # Label plugin
 PyDMLabelPlugin = qtplugin_factory(PyDMLabel, group=WidgetCategory.DISPLAY,
+                                   extensions=BASE_EXTENSIONS)
+
+PyDMTreeViewPlugin = qtplugin_factory(PyDMTreeView, group=WidgetCategory.DISPLAY,
                                    extensions=BASE_EXTENSIONS)
 
 # Time Plot plugin

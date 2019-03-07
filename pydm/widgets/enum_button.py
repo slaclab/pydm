@@ -28,10 +28,6 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
     init_channel : str, optional
         The channel to be used by the widget.
 
-    Signals
-    -------
-    send_value_signal : int, float, str, bool or np.ndarray
-        Emitted when the user changes the value.
     """
     Q_ENUMS(WidgetType)
     WidgetType = WidgetType
@@ -136,7 +132,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         id : int
             The clicked button id.
         """
-        self.send_value_signal.emit(id)
+        self.write_to_channel(id)
 
     def clear(self):
         """

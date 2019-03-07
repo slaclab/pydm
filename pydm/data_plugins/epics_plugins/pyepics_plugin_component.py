@@ -14,14 +14,13 @@ logger = logging.getLogger(__name__)
 
 class Connection(PyDMConnection):
 
-    def __init__(self, channel, pv, protocol=None, parent=None):
-        super(Connection, self).__init__(channel, pv, protocol, parent)
+    def __init__(self, channel, address, protocol=None, parent=None):
+        super(Connection, self).__init__(channel, address, protocol, parent)
         monitor_mask = dbr.DBE_VALUE | dbr.DBE_ALARM | dbr.DBE_PROPERTY
-        self.pv = epics.PV(pv, connection_callback=self.send_connection_state,
+        self.pv = epics.PV(address, connection_callback=self.send_connection_state,
                            form='ctrl', auto_monitor=monitor_mask,
                            access_callback=self.send_access_state)
         self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
-        self.add_listener(channel)
 
     def send_new_value(self, value=None, **kws):
         self.update_ctrl_vars(**kws)
@@ -34,9 +33,6 @@ class Connection(PyDMConnection):
     def update_ctrl_vars(self, units=None, enum_strs=None, severity=None,
                          upper_ctrl_limit=None, lower_ctrl_limit=None,
                          precision=None, write_access=None, *args, **kws):
-        if write_access is not None:
-            print('Invoked update_ctrl_vars callback with: write_access = ',
-                  write_access)
         if severity is not None:
             self.data[DataKeys.SEVERITY] = severity
         if precision is not None:
@@ -58,7 +54,6 @@ class Connection(PyDMConnection):
             self.data[DataKeys.LOWER_LIMIT] = lower_ctrl_limit
 
     def send_access_state(self, read_access, write_access, *args, **kws):
-        print('Invoked send_access_state callback with: write_access = ', write_access)
         if is_read_only():
             self.data[DataKeys.WRITE_ACCESS] = False
             return
