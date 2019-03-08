@@ -1,3 +1,4 @@
+import numpy as np
 from qtpy import QtWidgets
 
 from .base import PyDMWidget
@@ -26,12 +27,11 @@ class PyDMTreeView(QtWidgets.QWidget, PyDMWidget):
                 self._items[parent].addChild(widget)
             except:
                 pass
-            if isinstance(value, list) and not isinstance(value[0], dict):
-                widget.setText(1, str(value))
 
     def _parse_data(self, data, parent='root'):
         def parse(item, parent, index=None):
             if not isinstance(item, dict):
+                self._items[parent].setText(1, str(item))
                 return
             for k, v in item.items():
                 if index is not None:
@@ -49,7 +49,10 @@ class PyDMTreeView(QtWidgets.QWidget, PyDMWidget):
                     if name not in self._items:
                         self._create_node(parent, name, v, False)
                     else:
-                        self._items[name].setText(1, str(v))
+                        if isinstance(v, np.ndarray):
+                            self._items[name].setText(1, 'Array of shape: {}'.format(v.shape))
+                        else:
+                            self._items[name].setText(1, str(v))
 
         if isinstance(data, list):
             for idx, itm in enumerate(data):
