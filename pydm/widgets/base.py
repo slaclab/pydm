@@ -3,10 +3,11 @@ import logging
 import functools
 import json
 import numpy as np
+import sys
 from qtpy.QtWidgets import (QApplication, QMenu, QGraphicsOpacityEffect,
                             QToolTip, QWidget)
 from qtpy.QtGui import QCursor
-from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
+from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property, Q_ENUMS
 from .channel import PyDMChannel
 from .. import data_plugins
 from .. import tools
@@ -90,6 +91,96 @@ def refresh_style(widget):
         child_widget.style().unpolish(child_widget)
         child_widget.style().polish(child_widget)
         child_widget.update()
+
+
+class EnumBase(QWidget):
+    _qt_enums_used_ = set()
+
+    if sys.version_info < (3, 6):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._qt_enums_used_ = self._find_all_qt_enums()
+    else:
+        def __init_subclass__(cls, **kwargs):
+            super().__init_subclass__(**kwargs)
+            cls._qt_enums_used_ = cls._find_all_qt_enums()
+
+    @classmethod
+    def _find_all_qt_enums(cls):
+        '''
+        The set of all used Q_ENUMS on this class
+        '''
+        used_enums = set()
+        for mro_class in cls.mro():
+            try:
+                cls_enums = mro_class._qt_enums_used_
+            except AttributeError:
+                ...
+            else:
+                if cls_enums is not None:
+                    for enum in cls_enums:
+                        used_enums.add(enum)
+        return used_enums
+
+
+def UsesEnums(enum_classes, namespace, mixin_name='EnumMixin'):
+    '''
+    Add Qt Designer compatible enums to a class. Under the hood, this generates
+    a base class for the target class.
+
+    Parameters
+    ----------
+    enum_classes : list
+        Enum classes - can be either of type `enum.Enum` or a simple namespace
+        where one attribute is associated with one value.
+    namespace : str
+        Name of the namespace that Qt will see (e.g., the name of the widget
+        class)
+    mixin_name : str, optional
+        Name of the generated mixin class
+
+    Returns
+    -------
+    mixin_class : type
+        Mix this class with the widget class to use the enum
+    '''
+    mixin_class = []  # placeholder, filled in by exec()
+    exec_globals = dict(enum_classes=enum_classes,
+                        EnumBase=EnumBase,
+                        Q_ENUMS=Q_ENUMS,
+                        mixin_class=mixin_class,
+                        namespace=namespace,
+                        **{cls.__name__: cls for cls in enum_classes})
+
+    lines = ['class {namespace}(EnumBase):'.format(namespace=namespace)]
+    for enum_class in enum_classes:
+        lines.append('    {0} = {0}'.format(enum_class.__name__))
+    lines.append('    Q_ENUMS(*enum_classes)')
+    lines.append('mixin_class.append({namespace})'.format(namespace=namespace))
+
+    exec('\n'.join(lines), exec_globals)
+
+    mixin_class, = mixin_class
+    mixin_class.__name__ = mixin_name
+    mixin_class.__qualname__ = mixin_name
+
+    for enum_class in enum_classes:
+        # Allow access via cls.enum_class_name.member
+        setattr(mixin_class, enum_class.__name__, enum_class)
+
+        # Allow access via cls.member (omitting class_name.)
+        if hasattr(enum_class, '__members__'):
+            # For enum_class.enum_class
+            for name, member in enum_class.__members__.items():
+                setattr(EnumBase, name, member)
+        else:
+            # For any other type
+            instance = enum_class()
+            for name in dir(instance):
+                if not name.startswith('_'):
+                    setattr(EnumBase, name, getattr(instance, name))
+
+    return mixin_class
 
 
 class PyDMPrimitiveWidget(object):
@@ -208,7 +299,7 @@ class TextFormatter(object):
         self._precision_from_pv = True
         self._prec = 0
         self._unit = ""
-    
+
     def update_format_string(self):
         """
         Reconstruct the format string to be used when representing the
@@ -226,7 +317,7 @@ class TextFormatter(object):
         if self._show_units and self._unit != "":
             self.format_string += " {}".format(self._unit)
         return self.format_string
-    
+
     def precision_changed(self, new_precision):
         """
         Callback invoked when the Channel has new precision value.
@@ -242,7 +333,7 @@ class TextFormatter(object):
             self._prec = new_precision
             if self.value is not None:
                 self.value_changed(self.value)
-    
+
     @Slot(int)
     @Slot(float)
     def precisionChanged(self, new_prec):
@@ -256,7 +347,7 @@ class TextFormatter(object):
         new_prec : int or float
         """
         self.precision_changed(new_prec)
-    
+
     @Property(int)
     def precision(self):
         """
@@ -287,7 +378,7 @@ class TextFormatter(object):
         if new_prec and self._prec != int(new_prec) and new_prec >= 0:
             self._prec = int(new_prec)
             self.value_changed(self.value)
-    
+
     @Slot(str)
     def unitChanged(self, new_unit):
         """
@@ -300,7 +391,7 @@ class TextFormatter(object):
         new_unit : str
         """
         self.unit_changed(new_unit)
-    
+
     def unit_changed(self, new_unit):
         """
         Callback invoked when the Channel has new unit value.
@@ -316,7 +407,7 @@ class TextFormatter(object):
             self._unit = new_unit
             if self.value is not None:
                 self.value_changed(self.value)
-    
+
 
     @Property(bool)
     def showUnits(self):
@@ -353,7 +444,7 @@ class TextFormatter(object):
         if self._show_units != show_units:
             self._show_units = show_units
             self.update_format_string()
-    
+
     @Property(bool)
     def precisionFromPV(self):
         """
@@ -402,7 +493,7 @@ class TextFormatter(object):
         """
         if self._precision_from_pv != bool(value):
             self._precision_from_pv = value
-    
+
     def value_changed(self, new_val):
         """
         Callback invoked when the Channel value is changed.
@@ -415,7 +506,7 @@ class TextFormatter(object):
         super(TextFormatter, self).value_changed(new_val)
         self.update_format_string()
 
-  
+
 class PyDMWidget(PyDMPrimitiveWidget):
     """
     PyDM base class for Read-Only widgets.
