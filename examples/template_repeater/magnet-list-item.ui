@@ -81,6 +81,11 @@
      <property name="text">
       <string>Unit...</string>
      </property>
+     <property name="filenames" stdset="0">
+      <stringlist>
+       <string>mag_block_template.ui</string>
+      </stringlist>
+     </property>
      <property name="displayFilename" stdset="0">
       <string>mag_block_template.ui</string>
      </property>
@@ -326,6 +331,18 @@
      <property name="channel" stdset="0">
       <string>ca://${devname}:BCTRL</string>
      </property>
+     <property name="userDefinedLimits" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="userMinimum" stdset="0">
+      <double>-1.000000000000000</double>
+     </property>
+     <property name="userMaximum" stdset="0">
+      <double>1.000000000000000</double>
+     </property>
+     <property name="num_steps" stdset="0">
+      <number>101</number>
+     </property>
     </widget>
    </item>
    <item>
@@ -356,6 +373,9 @@
    </item>
    <item>
     <widget class="PyDMPushButton" name="abortButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="toolTip">
       <string/>
      </property>
