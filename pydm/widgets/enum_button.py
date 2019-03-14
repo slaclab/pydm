@@ -1,9 +1,9 @@
 from qtpy.QtCore import (Qt, QSize, Property, Slot, Q_ENUMS)
 from qtpy.QtWidgets import (QWidget, QButtonGroup, QGridLayout, QPushButton,
-                            QRadioButton, QCheckBox)
+                            QRadioButton)
 
-from .. import data_plugins
 from .base import PyDMWritableWidget
+from .. import data_plugins
 
 
 class WidgetType(object):
@@ -104,8 +104,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         -------
         new_orientation : Qt.Orientation, int
         """
-        self._orientation = new_orientation
-        self.rebuild_layout()
+        if new_orientation != self._orientation:
+            self._orientation = new_orientation
+            self.rebuild_layout()
 
     @Slot(int)
     def handle_button_clicked(self, id):
@@ -136,6 +137,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         Rebuild the list of widgets based on a new enum or generates a default
         list of fake strings so we can see something at Designer.
         """
+
         def generate_widgets(items):
             while len(self._widgets) != 0:
                 w = self._widgets.pop(0)
@@ -201,8 +203,8 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         new_val : int
             The new value from the channel.
         """
-        super(PyDMEnumButton, self).value_changed(new_val)
-        if new_val is not None:
+        if new_val is not None and new_val != self.value:
+            super(PyDMEnumButton, self).value_changed(new_val)
             btn = self._btn_group.button(new_val)
             if btn:
                 btn.setChecked(True)
@@ -218,7 +220,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         new_enum_strings : tuple
             The new list of values
         """
-        super(PyDMEnumButton, self).enum_strings_changed(new_enum_strings)
-        self._has_enums = True
-        self.check_enable_state()
-        self.rebuild_widgets()
+        if new_enum_strings is not None \
+                and new_enum_strings != self.enum_strings:
+            super(PyDMEnumButton, self).enum_strings_changed(new_enum_strings)
+            self._has_enums = True
+            self.check_enable_state()
+            self.rebuild_widgets()
