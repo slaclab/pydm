@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/hhslepicka/pydm-test/_apis/build/status/PyDM%20Pipeline?branchName=master)](https://dev.azure.com/hhslepicka/pydm-test/_build/latest?definitionId=2&branchName=master)
+[![Build Status](https://dev.azure.com/pydm/pydm/_apis/build/status/slaclab.pydm?branchName=master)](https://dev.azure.com/pydm/pydm/_build/latest?definitionId=1&branchName=master)
 [![codecov](https://codecov.io/gh/slaclab/pydm/branch/master/graph/badge.svg)](https://codecov.io/gh/slaclab/pydm)
 
 <p align="center">
