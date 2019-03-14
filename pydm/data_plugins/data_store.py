@@ -1,4 +1,3 @@
-from enum import Enum
 import collections
 
 
@@ -26,7 +25,7 @@ def dict_merge(dct, merge_dct):
             dct[k] = merge_dct[k]
 
 
-class DataKeys(str, Enum):
+class DataKeys(object):
     """
     Enum class which holds the keys expected by the PyDMWidgets when used with
     a structured data to parse the data in search for the needed fields.
@@ -100,7 +99,8 @@ class DataKeys(str, Enum):
         return introspection
 
 
-DEFAULT_INTROSPECTION = {i.name: i.value for i in DataKeys}
+DEFAULT_INTROSPECTION = {k: v for k, v in DataKeys.__dict__.items()
+                         if isinstance(v, str) and not k.startswith('_')}
 
 
 class DataStore(object):
@@ -180,11 +180,9 @@ class DataStore(object):
             The introspection payload to be stored.
 
         """
-        # dict_merge(self._data, {address: data})
         self._data[address] = data
         if introspection:
             self._introspection[address] = introspection
-            # dict_merge(self._introspection, {address: introspection})
 
     def remove(self, address):
         """

@@ -1,5 +1,6 @@
 from qtpy.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
 from qtpy import QtWidgets, QtCore
+from qtpy.QtDesigner import QDesignerFormWindowInterface
 
 from ..widgets.base import PyDMPrimitiveWidget
 
@@ -75,8 +76,27 @@ class ChannelExtension(PyDMExtension):
         self.edit_channels_action.triggered.connect(self.edit_channels)
 
     def edit_channels(self, state):
-        edit_channels_dialog = ChannelEditor(self.widget, parent=None)
-        edit_channels_dialog.exec_()
+        config = []
+        for prop, display in self.widget._CHANNELS_CONFIG.items():
+            attr = getattr(self.widget, prop)
+            if callable(attr):
+                value = attr()
+            else:
+                value = attr
+            config.append([prop, display, value])
+        editor = ChannelEditor(config, parent=self.widget)
+        editor.exec_()
+
+        for new_config in editor.return_value:
+            prop, _, value = new_config
+            attr = getattr(self.widget, prop)
+            if callable(attr):
+                attr(value)
+            else:
+                formWindow = QDesignerFormWindowInterface.findFormWindow(
+                    self.widget)
+                if formWindow:
+                    formWindow.cursor().setProperty(prop, value)
 
     def actions(self):
         return [self.edit_channels_action]

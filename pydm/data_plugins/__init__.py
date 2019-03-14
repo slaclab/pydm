@@ -9,6 +9,7 @@ import inspect
 import logging
 import imp
 import uuid
+import json
 from collections import deque
 from contextlib import contextmanager
 from qtpy.QtWidgets import QApplication
@@ -72,7 +73,13 @@ def plugin_for_address(address):
     Find the correct PyDMPlugin for a channel
     """
     # Check for a configured protocol
-    protocol, addr = protocol_and_address(address)
+    try:
+        conn = json.loads(address)
+        protocol = conn.get('protocol', None)
+        address = conn.get('parameters', '')
+    except json.JSONDecodeError:
+        protocol, addr = protocol_and_address(address)
+
     # Use default protocol
     if protocol is None and config.DEFAULT_PROTOCOL is not None:
         logger.debug("Using default protocol %s for %s",

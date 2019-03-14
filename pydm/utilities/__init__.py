@@ -3,6 +3,7 @@ import sys
 import platform
 import ntpath
 import shlex
+import json
 
 from .units import find_unittype, convert, find_unit_options
 from . import macro
@@ -179,7 +180,10 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None, pathext=None):
 def nested_dict_get(input_dict, nested_key):
     internal_dict_value = input_dict
     for k in nested_key:
-        internal_dict_value = internal_dict_value.get(k, None)
+        if isinstance(internal_dict_value, list):
+            internal_dict_value = internal_dict_value[int(k)]
+        else:
+            internal_dict_value = internal_dict_value.get(k, None)
         if internal_dict_value is None:
             return None
     return internal_dict_value

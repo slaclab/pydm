@@ -4,11 +4,13 @@ from collections import OrderedDict
 from p4p.client.thread import Context, Disconnected
 from qtpy.QtCore import Slot, Qt
 
+from pydm.utilities.channel import parse_channel_config
+
 from pydm.data_plugins import is_read_only
 from pydm.data_plugins.data_store import DataKeys
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
-from .pva_helper import pre_process
+from .pva_helper import pre_process, nt_introspection
 
 logger = logging.getLogger(__name__)
 
@@ -36,14 +38,12 @@ class Connection(PyDMConnection):
 
     def __init__(self, channel, address, protocol=None, parent=None):
         super(Connection, self).__init__(channel, address, protocol, parent)
+        conn = parse_channel_config(address, force_dict=True)
+        address = conn.get('parameters', {}).get('address')
+        self.nt_id = None
         self.monitor = PVAContext().context.monitor(name=address,
                                                     cb=self.send_new_value,
                                                     notify_disconnect=True)
-        # Best effort to estimate some keys
-        self.introspection = DataKeys.generate_introspection_for(
-            connection_key='CONNECTION',
-            value_key='value',
-        )
         self._introspection_set = False
 
     def send_new_value(self, payload):
@@ -51,17 +51,25 @@ class Connection(PyDMConnection):
             self.data = {'CONNECTION': False}
         else:
             self.data = payload.todict(None, OrderedDict)
+            if self.nt_id != payload.getID():
+                self.nt_id = payload.getID()
+                intro_keys = nt_introspection.get(self.nt_id, None)
+                if intro_keys is not None:
+                    self.introspection = DataKeys.generate_introspection_for(
+                        **intro_keys
+                    )
             pre_process(self.data, payload.getID())
             self.data['CONNECTION'] = True
+            self.data['WRITE_ACCESS'] = True
         self.send_to_channel()
 
     @Slot(dict)
     def receive_from_channel(self, payload):
         try:
-            self.context.put(payload)
+            PVAContext().context.put(self.monitor.name, payload)
         except Exception as e:
             logger.exception("Unable to put %s to %s.  Exception: %s",
-                             payload, self.pv.pvname, str(e))
+                             payload, self.monitor.name, str(e))
 
     def close(self):
         self.monitor.close()

@@ -19,7 +19,10 @@ def decompress(structure):
     for dim in structure.get('dimension', []):
         shape.append(dim.get('size'))
     codec = structure.get('codec', {})
-    dtype = ScalarType[codec.get('parameters')]
+    data_type = codec.get('parameters')
+    if data_type is None:
+        return
+    dtype = ScalarType[data_type]
     codec_name = codec.get('name')
     uncompressed_size = structure.get('uncompressedSize')
 

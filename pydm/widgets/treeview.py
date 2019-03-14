@@ -14,13 +14,13 @@ class PyDMTreeView(QtWidgets.QWidget, PyDMWidget):
         self.widget = QtWidgets.QTreeWidget(self)
         self.widget.setHeaderLabels(['Key', 'Value'])
         self.layout().addWidget(self.widget)
-        self._items['root'] = self.widget
+        self._items['root'] = self.widget.invisibleRootItem()
         self._visited_items = set(['root'])
 
-    def _create_node(self, parent, name, value, expanded=True):
+    def _create_node(self, parent, name, display, value, expanded=True):
         if name not in self._items:
             widget = QtWidgets.QTreeWidgetItem(self._items[parent])
-            widget.setText(0, name.split('_')[-1])
+            widget.setText(0, display)
             widget.setExpanded(expanded)
             self._items[name] = widget
             try:
@@ -38,10 +38,11 @@ class PyDMTreeView(QtWidgets.QWidget, PyDMWidget):
                     name = "{}_{}_{}".format(parent, index, k)
                 else:
                     name = "{}_{}".format(parent, k)
+                display = k
 
                 self._visited_items.add(name)
 
-                self._create_node(parent, name, v, True)
+                self._create_node(parent, name, display, v, True)
 
                 if isinstance(v, (dict, list)):
                     self._parse_data(v, name)
@@ -50,15 +51,17 @@ class PyDMTreeView(QtWidgets.QWidget, PyDMWidget):
                         self._create_node(parent, name, v, False)
                     else:
                         if isinstance(v, np.ndarray):
-                            self._items[name].setText(1, 'Array of shape: {}'.format(v.shape))
+                            val = 'Array of shape: {}'.format(v.shape)
+                            self._items[name].setText(1, val)
                         else:
                             self._items[name].setText(1, str(v))
 
         if isinstance(data, list):
             for idx, itm in enumerate(data):
                 name = "{}_{}".format(parent, idx)
+                display = str(idx)
                 self._visited_items.add(name)
-                self._create_node(parent, name, None, True)
+                self._create_node(parent, name, display, None, True)
                 parse(itm, name, idx)
         elif isinstance(data, dict):
             return parse(data, parent)
@@ -72,7 +75,10 @@ class PyDMTreeView(QtWidgets.QWidget, PyDMWidget):
         for entry in skipped:
             item = self._items.pop(entry)
             try:
-                item.parent().removeChild(item)
+                if item.parent() is None:
+                    self.widget.invisibleRootItem().removeChild(item)
+                else:
+                    item.parent().removeChild(item)
             except:
                 # We are skipping here the case in which we deleted the parent
                 # already and that will generate a RuntimeError as the

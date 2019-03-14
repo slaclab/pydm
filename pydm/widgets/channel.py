@@ -1,10 +1,10 @@
 import logging
-import weakref
+import json
 
 from qtpy.QtCore import QObject, Signal, Slot
 
 import pydm.data_plugins
-from pydm import config
+from pydm import config as PYDM_CONFIG
 from pydm.utilities import is_qt_designer
 from pydm.data_plugins.data_store import DataStore
 
@@ -64,24 +64,38 @@ class PyDMChannel(QObject):
     """
     transmit = Signal([dict])
 
-    def __init__(self, parent=None, address=None, callback=None, *args,
-                 **kwargs):
+    def __init__(self, parent=None, address=None, callback=None,
+                 config=None,
+                 *args, **kwargs):
         super(PyDMChannel, self).__init__(parent=parent)
+        if config is None:
+            config = {}
+        self._config = config
         self._address = None
+        self._protocol = None
+        self._parameters = None
+        self._use_introspection = config.get('use_introspection', True)
+        self._introspection = config.get('introspection', {})
         self._monitors = set()  # Convert to list of WeakMethod in the future
+        self._busy = False
         self.address = address
-        print('Creating channel for: ', address, ' with callback: ', callback)
         if callback:
             self.subscribe(callback)
 
     @Slot()
     def notified(self):
+        if self._busy:
+            return
+        self._busy = True
         data, intro = self.get(with_introspection=True)
+        if not self._use_introspection:
+            intro = self._introspection
         for mon in self._monitors:
             try:
                 mon(data=data, introspection=intro)
             except Exception as ex:
                 logger.exception("Error invoking callback for %r", self)
+        self._busy = False
 
     @property
     def address(self):
@@ -89,7 +103,13 @@ class PyDMChannel(QObject):
 
     @address.setter
     def address(self, address):
-        self._address = clear_channel_address(address)
+        if address is None:
+            conn = self._config.get('connection', {})
+            self._protocol = conn.get('protocol')
+            self._parameters = conn.get('parameters')
+            self._address = json.dumps(conn)
+        else:
+            self._address = clear_channel_address(address)
 
     def connect(self):
         """
@@ -97,7 +117,7 @@ class PyDMChannel(QObject):
         """
         if not self.address:
             return
-        if is_qt_designer() and not config.DESIGNER_ONLINE:
+        if is_qt_designer() and not PYDM_CONFIG.DESIGNER_ONLINE:
             return
         logger.debug("Connecting %r", self.address)
         # Connect to proper PyDMPlugin
@@ -110,7 +130,7 @@ class PyDMChannel(QObject):
         """
         Disconnect a PyDMChannel
         """
-        if is_qt_designer() and not config.DESIGNER_ONLINE:
+        if is_qt_designer() and not PYDM_CONFIG.DESIGNER_ONLINE:
             return
         try:
             plugin = pydm.data_plugins.plugin_for_address(self.address)
@@ -120,8 +140,20 @@ class PyDMChannel(QObject):
         except Exception as exc:
             logger.exception("Unable to remove connection for %r", self)
 
+    def get_introspection(self):
+        if self._use_introspection:
+            return DataStore().introspect(self.address)
+        return self._introspection
+
     def get(self, with_introspection=False):
-        return DataStore().fetch(self.address, with_introspection)
+        ret = DataStore().fetch(self.address, with_introspection)
+        if not with_introspection:
+            return ret
+        data, intro = ret
+        # In case of user-defined introspection for inner fields
+        if not self._use_introspection:
+            intro = self._introspection
+        return data, intro
 
     def put(self, data):
         self.transmit.emit(data)

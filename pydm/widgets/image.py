@@ -1,11 +1,14 @@
+import logging
+from collections import OrderedDict
+
+import numpy as np
+
 from qtpy.QtWidgets import QActionGroup
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QThread
 from pyqtgraph import ImageView
 from pyqtgraph import ColorMap
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
-import numpy as np
-import threading
-import logging
+
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
 from .base import PyDMWidget
@@ -100,6 +103,13 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
 
     Q_ENUMS(ReadingOrder)
     Q_ENUMS(PyDMColorMap)
+
+    _CHANNELS_CONFIG = OrderedDict(
+        [
+            ('imageChannel', 'Image Channel'),
+            ('widthChannel', 'Width Channel (optional)')
+        ]
+    )
 
     color_maps = cmaps
 

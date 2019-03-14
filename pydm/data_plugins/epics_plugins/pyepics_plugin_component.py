@@ -5,6 +5,8 @@ from epics import dbr
 import numpy as np
 from qtpy.QtCore import Slot, Qt
 
+from pydm.utilities.channel import parse_channel_config
+
 from pydm.data_plugins import is_read_only
 from pydm.data_plugins.data_store import DataKeys
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
@@ -16,6 +18,8 @@ class Connection(PyDMConnection):
 
     def __init__(self, channel, address, protocol=None, parent=None):
         super(Connection, self).__init__(channel, address, protocol, parent)
+        conn = parse_channel_config(address, force_dict=True)
+        address = conn.get('parameters', {}).get('address')
         monitor_mask = dbr.DBE_VALUE | dbr.DBE_ALARM | dbr.DBE_PROPERTY
         self.pv = epics.PV(address, connection_callback=self.send_connection_state,
                            form='ctrl', auto_monitor=monitor_mask,
@@ -32,7 +36,7 @@ class Connection(PyDMConnection):
 
     def update_ctrl_vars(self, units=None, enum_strs=None, severity=None,
                          upper_ctrl_limit=None, lower_ctrl_limit=None,
-                         precision=None, write_access=None, *args, **kws):
+                         precision=None, *args, **kws):
         if severity is not None:
             self.data[DataKeys.SEVERITY] = severity
         if precision is not None:
@@ -77,6 +81,7 @@ class Connection(PyDMConnection):
 
     @Slot(dict)
     def receive_from_channel(self, payload):
+        print('PyEPICS - Receive From Channel: ', payload)
         new_val = payload.get(DataKeys.VALUE, None)
 
         if self.pv.write_access and new_val is not None:

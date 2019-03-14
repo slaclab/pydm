@@ -8,15 +8,48 @@ from .data_store import DataStore, DEFAULT_INTROSPECTION
 from ..utilities.remove_protocol import protocol_and_address
 
 
-class DefaultParameterEditor(QtWidgets.QWidget):
+class BaseParameterEditor(QtWidgets.QWidget):
+    def __init__(self, parent=None, *args, **kwargs):
+        super(BaseParameterEditor, self).__init__(parent, *args, **kwargs)
+
+    @property
+    def parameters(self):
+        raise NotImplementedError
+
+    @parameters.setter
+    def parameters(self, params):
+        raise NotImplementedError
+
+    def validate(self):
+        raise NotImplementedError
+
+
+class DefaultParameterEditor(BaseParameterEditor):
     def __init__(self, parent=None):
         super(DefaultParameterEditor, self).__init__(parent)
         self.setLayout(QtWidgets.QFormLayout())
         self.edit_address = QtWidgets.QLineEdit(self)
-        self.layout().addRow(QtWidgets.QLabel('Address'), self.edit_address)
+        self.layout().setFieldGrowthPolicy(
+            QtWidgets.QFormLayout.AllNonFixedFieldsGrow
+        )
 
+        self.layout().addRow(QtWidgets.QLabel('Address:'), self.edit_address)
+
+    @property
     def parameters(self):
         return {'address': self.edit_address.text()}
+
+    @parameters.setter
+    def parameters(self, params):
+        print("Loading params: ", params)
+        address = params.get('address', '')
+        self.edit_address.setText(address)
+
+    def validate(self):
+        return True, ''
+
+    def clear(self):
+        self.edit_address.setText('')
 
 
 class PyDMConnection(QObject):
@@ -81,12 +114,10 @@ class PyDMPlugin(object):
         return protocol_and_address(channel.address)[1]
 
     def add_connection(self, channel):
-        print('Invoked add_connection for: ', channel.address )
         with self.lock:
             address = self.get_address(channel)
             # If this channel is already connected to this plugin lets ignore
             if channel in self.channels:
-                print('ABORT... Channel in self.channels')
                 return
             self.channels.add(channel)
             if address in self.connections:

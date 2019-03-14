@@ -1,11 +1,15 @@
-import os
 import json
-import functools
+import os
 import webbrowser
+from collections import OrderedDict
+from copy import deepcopy
 
-from qtpy import QtWidgets, QtCore, QtDesigner
-from ..utilities.iconfont import IconFont
-from .. import data_plugins
+from qtpy import QtWidgets, QtCore
+
+from pydm import data_plugins
+from pydm.data_plugins.data_store import DEFAULT_INTROSPECTION
+from pydm.utilities import protocol_and_address
+from pydm.config import DEFAULT_PROTOCOL
 
 
 class ChannelEditor(QtWidgets.QDialog):
@@ -18,25 +22,61 @@ class ChannelEditor(QtWidgets.QDialog):
     widget : PyDMWidget
         The widget which we want to edit the `rules` property.
     """
+    PROPERTY = 0
+    DISPLAY = 1
+    VALUE = 2
 
-    def __init__(self, widget, parent=None):
+    def __init__(self, config, parent=None):
         super(ChannelEditor, self).__init__(parent)
 
-        self.widget = widget
-        self.lst_rule_item = None
+        self.config = config
+        self.original_config = deepcopy(config)
+        self.return_value = None
+
+        # The central widget which is specific for each Data Plugin on PyDM
+        self.plugin_param_widget = None
+
+        # Placeholder for the current selected item on the list
+        self.lst_channel_item = None
+
+        # Flag for the methods to mark if we are loading data through code
+        # to block callbacks from happening.
         self.loading_data = True
 
+        # A list of available Data plugins
         self.available_plugins = data_plugins.plugin_modules.keys()
+
+        self.introspection_widgets = OrderedDict()
 
         self.setup_ui()
 
-        try:
-            self.channels = json.loads(widget.channels)
-        except:
-            self.channels = []
+        for idx, cfg in enumerate(self.config):
+            _, display, value = cfg
+            self.config[idx][ChannelEditor.VALUE] = self.parse_address(value)
+            item = QtWidgets.QListWidgetItem(display, parent=self.lst_channels)
+            self.lst_channels.addItem(item)
+        self.lst_channels.setCurrentRow(0)
+        if len(self.config) == 1:
+            self.list_frame.setVisible(False)
 
-        # for ch in self.channels:
-        #     self.lst_rules.addItem(ch.get("name", ''))
+    @staticmethod
+    def parse_address(address):
+        if not address:
+            return {}
+        try:
+            configs = json.loads(address)
+        except json.JSONDecodeError:
+            # Kept here for backwards compatibility...
+            protocol, addr = protocol_and_address(address)
+            configs = {
+                'connection': {
+                    'protocol': protocol,
+                    'parameters': {'address': addr},
+                },
+                'use_introspection': True,
+                'introspection': {}
+            }
+        return configs
 
     def setup_ui(self):
         """
@@ -46,8 +86,6 @@ class ChannelEditor(QtWidgets.QDialog):
         -------
         None
         """
-        iconfont = IconFont()
-
         self.setWindowTitle("PyDM Channel Editor")
         vlayout = QtWidgets.QVBoxLayout()
         vlayout.setContentsMargins(5, 5, 5, 5)
@@ -61,23 +99,25 @@ class ChannelEditor(QtWidgets.QDialog):
 
         # Creating the widgets for the String List and
         # buttons to add and remove actions
-        list_frame = QtWidgets.QFrame(parent=self)
-        list_frame.setMinimumHeight(300)
-        list_frame.setMinimumWidth(240)
-        list_frame.setLineWidth(1)
-        list_frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        list_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.list_frame = QtWidgets.QFrame(parent=self)
+        self.list_frame.setMinimumHeight(300)
+        self.list_frame.setMaximumWidth(200)
+        self.list_frame.setLineWidth(1)
+        self.list_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.list_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         lf_layout = QtWidgets.QVBoxLayout()
-        list_frame.setLayout(lf_layout)
+        self.list_frame.setLayout(lf_layout)
 
         self.lst_channels = QtWidgets.QListWidget()
-        self.lst_channels.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding))
+        self.lst_channels.setSizePolicy(
+            QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred,
+                                  QtWidgets.QSizePolicy.Expanding)
+        )
         self.lst_channels.itemSelectionChanged.connect(self.load_from_list)
-        lf_layout.addWidget(self.lst_rules)
+        lf_layout.addWidget(self.lst_channels)
 
-        hlayout.addWidget(list_frame)
+        hlayout.addWidget(self.list_frame)
 
-        return
         buttons_layout = QtWidgets.QHBoxLayout()
         save_btn = QtWidgets.QPushButton("Save", parent=self)
         save_btn.setAutoDefault(False)
@@ -96,6 +136,7 @@ class ChannelEditor(QtWidgets.QDialog):
         # Creating the widgets that we will use to compose the
         # rule parameters
         self.frm_edit = QtWidgets.QFrame()
+        self.frm_edit.setMinimumSize(600, 400)
         self.frm_edit.setEnabled(False)
         self.frm_edit.setLineWidth(1)
         self.frm_edit.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -106,91 +147,82 @@ class ChannelEditor(QtWidgets.QDialog):
 
         hlayout.addWidget(self.frm_edit)
 
-        edit_name_layout = QtWidgets.QFormLayout()
-        edit_name_layout.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
-        lbl_name = QtWidgets.QLabel("Rule Name:")
-        self.txt_name = QtWidgets.QLineEdit()
-        self.txt_name.editingFinished.connect(self.name_changed)
-        edit_name_layout.addRow(lbl_name, self.txt_name)
-        lbl_property = QtWidgets.QLabel("Property:")
-        self.cmb_property = QtWidgets.QComboBox()
-        for name, prop in self.available_properties.items():
-            self.cmb_property.addItem(name, prop)
-        edit_name_layout.addRow(lbl_property, self.cmb_property)
+        cmb_plugin_layout = QtWidgets.QFormLayout()
+        cmb_plugin_layout.setFieldGrowthPolicy(
+            QtWidgets.QFormLayout.ExpandingFieldsGrow)
 
-        frm_edit_layout.addLayout(edit_name_layout)
+        lbl_property = QtWidgets.QLabel("Data Plugin:")
+        self.cmb_plugin = QtWidgets.QComboBox()
 
-        btn_add_remove_layout = QtWidgets.QHBoxLayout()
-        self.btn_add_channel = QtWidgets.QPushButton()
-        self.btn_add_channel.setAutoDefault(False)
-        self.btn_add_channel.setDefault(False)
-        self.btn_add_channel.setText("Add Channel")
-        self.btn_add_channel.setIconSize(QtCore.QSize(16, 16))
-        self.btn_add_channel.setIcon(iconfont.icon("plus-circle"))
-        self.btn_add_channel.clicked.connect(self.add_channel)
-        self.btn_del_channel = QtWidgets.QPushButton()
-        self.btn_del_channel.setAutoDefault(False)
-        self.btn_del_channel.setDefault(False)
-        self.btn_del_channel.setText("Remove Channel")
-        self.btn_del_channel.setIconSize(QtCore.QSize(16, 16))
-        self.btn_del_channel.setIcon(iconfont.icon("minus-circle"))
-        self.btn_del_channel.clicked.connect(self.del_channel)
-        btn_add_remove_layout.addWidget(self.btn_add_channel)
-        btn_add_remove_layout.addWidget(self.btn_del_channel)
+        for name in self.available_plugins:
+            self.cmb_plugin.addItem(name)
+        cmb_plugin_layout.addRow(lbl_property, self.cmb_plugin)
+        self.cmb_plugin.currentTextChanged.connect(self.plugin_changed)
 
-        frm_edit_layout.addLayout(btn_add_remove_layout)
+        frm_edit_layout.addLayout(cmb_plugin_layout)
 
-        self.tbl_channels = QtWidgets.QTableWidget()
-        self.tbl_channels.setMinimumWidth(350)
-        self.tbl_channels.setShowGrid(True)
-        self.tbl_channels.setCornerButtonEnabled(False)
-        self.tbl_channels.model().dataChanged.connect(self.tbl_channels_changed)
-        headers = ["Channel", "Trigger?"]
-        self.tbl_channels.setColumnCount(len(headers))
-        self.tbl_channels.setHorizontalHeaderLabels(headers)
-        header = self.tbl_channels.horizontalHeader()
-        header.setResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        header.setResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        self.param_layout = QtWidgets.QVBoxLayout()
+        frm_edit_layout.addLayout(self.param_layout)
 
-        frm_edit_layout.addWidget(self.tbl_channels)
+        intro_group = QtWidgets.QGroupBox(self)
+        intro_group.setTitle("Data Keys")
 
-        expression_layout = QtWidgets.QFormLayout()
-        expression_layout.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
-        lbl_expected = QtWidgets.QLabel("Expected Type:")
-        self.lbl_expected_type = QtWidgets.QLabel(parent=self)
-        # self.lbl_expected_type.setText("")
-        self.lbl_expected_type.setStyleSheet(
-            "color: rgb(0, 128, 255); font-weight: bold;")
-        expression_layout.addRow(lbl_expected, self.lbl_expected_type)
+        intro_group.setLayout(QtWidgets.QVBoxLayout())
+        self.chb_introspection = QtWidgets.QCheckBox()
+        self.chb_introspection.setText("Use Introspection ?")
+        self.chb_introspection.clicked.connect(self.introspection_changed)
 
-        lbl_expression = QtWidgets.QLabel("Expression:")
-        expr_help_layout = QtWidgets.QHBoxLayout()
-        self.txt_expression = QtWidgets.QLineEdit()
-        self.txt_expression.editingFinished.connect(self.expression_changed)
-        expr_help_layout.addWidget(self.txt_expression)
-        self.btn_help = QtWidgets.QPushButton()
-        self.btn_help.setAutoDefault(False)
-        self.btn_help.setDefault(False)
-        self.btn_help.setText("Help")
-        self.btn_help.setStyleSheet("background-color: rgb(176, 227, 255);")
-        self.btn_help.clicked.connect(functools.partial(self.open_help, open=True))
-        expr_help_layout.addWidget(self.btn_help)
-        expression_layout.addRow(lbl_expression, expr_help_layout)
+        self.frm_datakeys = QtWidgets.QFrame()
+        self.frm_datakeys.setLayout(QtWidgets.QFormLayout())
+        self.frm_datakeys.layout().setFieldGrowthPolicy(
+            QtWidgets.QFormLayout.AllNonFixedFieldsGrow
+        )
 
-        self.cmb_property.currentIndexChanged.connect(self.property_changed)
-        self.cmb_property.setCurrentText(self.default_property)
+        keys_scroll = QtWidgets.QScrollArea(self)
+        keys_scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        keys_scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        keys_scroll.setWidget(self.frm_datakeys)
+        keys_scroll.setWidgetResizable(True)
+        keys_scroll.setMinimumHeight(200)
 
-        frm_edit_layout.addLayout(expression_layout)
+        for key in DEFAULT_INTROSPECTION:
+            label_text = ' '.join(key.split('_')).title() + " Key"
+            label = QtWidgets.QLabel(label_text)
+            self.introspection_widgets[key] = QtWidgets.QLineEdit(
+                self.frm_datakeys)
+            self.frm_datakeys.layout().addRow(label,
+                                              self.introspection_widgets[key])
+
+        intro_group.layout().addWidget(self.chb_introspection)
+        intro_group.layout().addWidget(keys_scroll)
+
+        frm_edit_layout.addWidget(intro_group)
+
+        frm_edit_layout.addStretch(1)
+
+    def plugin_changed(self, plugin):
+        def cleanup():
+            try:
+                if self.plugin_param_widget:
+                    self.param_layout.removeWidget(self.plugin_param_widget)
+                    self.plugin_param_widget.setVisible(False)
+                    self.plugin_param_widget.deleteLater()
+            except RuntimeError:
+                pass
+
+        module = data_plugins.plugin_modules.get(plugin, None)
+        cleanup()
+        if module:
+            self.plugin_param_widget = module.param_editor(self)
+            self.param_layout.addWidget(self.plugin_param_widget)
+
+    def introspection_changed(self, checked):
+        self.frm_datakeys.setVisible(not checked)
 
     def clear_form(self):
         """Clear the form and reset the fields."""
         self.loading_data = True
-        self.lst_rule_item = None
-        self.txt_name.setText("")
-        self.cmb_property.setCurrentIndex(-1)
-        self.tbl_channels.clearContents()
-        self.txt_expression.setText("")
-        self.frm_edit.setEnabled(False)
+        self.cmb_plugin.setCurrentIndex(-1)
         self.loading_data = False
 
     def load_from_list(self):
@@ -201,54 +233,62 @@ class ChannelEditor(QtWidgets.QDialog):
         -------
         None
         """
-        item = self.lst_rules.currentItem()
-        idx = self.lst_rules.indexFromItem(item).row()
+        if self.lst_channel_item is not None:
+            self.save_item()
+            self.clear_form()
+
+        item = self.lst_channels.currentItem()
+        idx = self.lst_channels.indexFromItem(item).row()
 
         if idx < 0:
             return
 
         self.loading_data = True
-        self.lst_rule_item = item
-        data = self.rules[idx]
-        self.txt_name.setText(data.get('name', ''))
-        self.cmb_property.setCurrentText(data.get('property', ''))
-        self.property_changed(0)
-        self.txt_expression.setText(data.get('expression', ''))
+        self.lst_channel_item = item
+        data = self.config[idx][ChannelEditor.VALUE]
+        conn = data.get('connection', {})
+        plugin = conn.get('protocol', '')
 
-        channels = data.get('channels', [])
-        self.tbl_channels.clearContents()
-        self.tbl_channels.setRowCount(len(channels))
-        vlabel = [str(i) for i in range(len(channels))]
-        self.tbl_channels.setVerticalHeaderLabels(vlabel)
-        for row, ch in enumerate(channels):
-            ch_name = ch.get('channel', '')
-            ch_tr = ch.get('trigger', False)
-            self.tbl_channels.setItem(row, 0,
-                                      QtWidgets.QTableWidgetItem(str(ch_name)))
-            checkBoxItem = QtWidgets.QTableWidgetItem()
-            if ch_tr:
-                checkBoxItem.setCheckState(QtCore.Qt.Checked)
-            else:
-                checkBoxItem.setCheckState(QtCore.Qt.Unchecked)
-            self.tbl_channels.setItem(row, 1, checkBoxItem)
+        if not plugin and DEFAULT_PROTOCOL:
+            plugin = DEFAULT_PROTOCOL
+
+        if plugin:
+            self.cmb_plugin.setCurrentText(plugin)
+            self.plugin_changed(conn.get('protocol', ''))
+            self.plugin_param_widget.parameters = conn.get('parameters', {})
+        else:
+            self.cmb_plugin.setCurrentIndex(-1)
+        checked = data.get('use_introspection', True)
+        self.chb_introspection.setChecked(checked)
+        self.introspection_changed(checked)
+
+        intro = data.get('introspection', {})
+        for k, val in intro.items():
+            self.introspection_widgets[k].setText(val)
+
         self.frm_edit.setEnabled(True)
         self.loading_data = False
 
-    def add_rule(self):
-        """Add a new rule to the list of rules."""
-        default_name = "New Rule"
-        data = {"name": default_name,
-                "property": self.default_property,
-                "expression": "",
-                "channels": []
-                }
-        self.rules.append(data)
-        self.lst_rule_item = QtWidgets.QListWidgetItem()
-        self.lst_rule_item.setText(default_name)
-        self.lst_rules.addItem(self.lst_rule_item)
-        self.lst_rules.setCurrentItem(self.lst_rule_item)
-        self.load_from_list()
-        self.txt_name.setFocus()
+    def save_item(self, index=None):
+        if not index:
+            idx = self.lst_channels.indexFromItem(self.lst_channel_item).row()
+        else:
+            idx = index
+
+        if self.cmb_plugin.currentIndex() < 0:
+            return
+
+        self.config[idx][ChannelEditor.VALUE] = {
+            'connection': {
+                'protocol': self.cmb_plugin.currentText(),
+                'parameters': self.plugin_param_widget.parameters,
+            },
+            'use_introspection': self.chb_introspection.isChecked(),
+            'introspection': self.collect_introspection()
+        }
+
+    def collect_introspection(self):
+        return {k: w.text() for k, w in self.introspection_widgets.items()}
 
     def get_current_index(self):
         """
@@ -260,92 +300,12 @@ class ChannelEditor(QtWidgets.QDialog):
             The index selected at the list of rules or -1 in case the item
             does not exist.
         """
-        if self.lst_rule_item is None:
+        if self.lst_channel_item is None:
             return -1
-        return self.lst_rules.indexFromItem(self.lst_rule_item).row()
+        return self.lst_channel_item.indexFromItem(self.lst_channel_item).row()
 
-    def change_entry(self, entry, value):
-        """
-        Change an entry at the rules dictionary.
-
-        Parameters
-        ----------
-        entry : str
-            The key for the dictionary
-        value : any
-            The value to set on the key. It can be any type, depending on the
-            key.
-
-        Returns
-        -------
-        None
-        """
-        idx = self.get_current_index()
-        self.rules[idx][entry] = value
-
-    def del_rule(self):
-        """Delete the rule selected in the rules list."""
-        idx = self.get_current_index()
-        if idx < 0:
-            return
-        name = self.lst_rule_item.text()
-
-        confirm_message = "Are you sure you want to delete Rule: {}?".format(
-            name)
-        reply = QtWidgets.QMessageBox().question(self, 'Message',
-                                             confirm_message,
-                                             QtWidgets.QMessageBox.Yes,
-                                             QtWidgets.QMessageBox.No)
-
-        if reply == QtWidgets.QMessageBox.Yes:
-            self.lst_rules.takeItem(idx)
-            self.lst_rules.clearSelection()
-            self.rules.pop(idx)
-            self.clear_form()
-
-    def add_channel(self):
-        """Add a new empty channel to the table."""
-        self.loading_data = True
-
-        # Make the first entry be checked as suggestion
-        if self.tbl_channels.rowCount() == 0:
-            state = QtCore.Qt.Checked
-        else:
-            state = QtCore.Qt.Unchecked
-
-        self.tbl_channels.insertRow(self.tbl_channels.rowCount())
-        row = self.tbl_channels.rowCount() - 1
-        self.tbl_channels.setItem(row, 0, QtWidgets.QTableWidgetItem(""))
-        checkBoxItem = QtWidgets.QTableWidgetItem()
-        checkBoxItem.setCheckState(state)
-        checkBoxItem.setFlags(QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable)
-        self.tbl_channels.setItem(row, 1, checkBoxItem)
-        vlabel = [str(i) for i in range(self.tbl_channels.rowCount())]
-        self.tbl_channels.setVerticalHeaderLabels(vlabel)
-        self.loading_data = False
-        self.tbl_channels_changed()
-
-    def del_channel(self):
-        """Delete the selected channel at the table."""
-        items = self.tbl_channels.selectedIndexes()
-        if len(items) == 0:
-            return
-
-        c = "channel" if len(items) == 1 else "channels"
-        confirm_message = "Delete the selected {}?".format(c)
-        reply = QtWidgets.QMessageBox().question(self, 'Message',
-                                             confirm_message,
-                                             QtWidgets.QMessageBox.Yes,
-                                             QtWidgets.QMessageBox.No)
-
-        if reply == QtWidgets.QMessageBox.Yes:
-            for itm in reversed(items):
-                row = itm.row()
-                self.tbl_channels.removeRow(row)
-
-        self.tbl_channels_changed()
-
-    def open_help(self, open=True):
+    @staticmethod
+    def open_help(open=True):
         """
         Open the Help context for Rules.
         The documentation website prefix is given by the `PYDM_DOCS_URL`
@@ -367,40 +327,6 @@ class ChannelEditor(QtWidgets.QDialog):
         else:
             return help_url
 
-    def name_changed(self):
-        """Callback executed when the rule name is changed."""
-        self.lst_rule_item.setText(self.txt_name.text())
-        self.change_entry("name", self.txt_name.text())
-
-    def property_changed(self, index):
-        """Callback executed when the property is selected."""
-        try:
-            prop = self.cmb_property.currentData()
-            self.lbl_expected_type.setText(prop[1].__name__)
-            idx = self.get_current_index()
-            self.change_entry("property", self.cmb_property.currentText())
-        except:
-            self.lbl_expected_type.setText("")
-
-    def tbl_channels_changed(self, *args, **kwargs):
-        """Callback executed when the channels in the table are modified."""
-        if self.loading_data:
-            return
-
-        new_channels = []
-
-        for row in range(self.tbl_channels.rowCount()):
-            ch = self.tbl_channels.item(row, 0).text()
-            tr = self.tbl_channels.item(row,
-                                        1).checkState() == QtCore.Qt.Checked
-            new_channels.append({"channel": ch, "trigger": tr})
-
-        self.change_entry("channels", new_channels)
-
-    def expression_changed(self):
-        """Callback executed when the expression is modified."""
-        self.change_entry("expression", self.txt_expression.text())
-
     def is_data_valid(self):
         """
         Sanity check the form data.
@@ -408,65 +334,106 @@ class ChannelEditor(QtWidgets.QDialog):
         Returns
         -------
         tuple : (bool, str)
-            True and "" in case there is no error or False and the error message
-            otherwise.
+            True and "" in case there is no error or False and the error
+            message otherwise.
         """
-        errors = []
-        for idx, rule in enumerate(self.rules):
-            name = rule.get("name")
-            expression = rule.get("expression")
-            channels = rule.get("channels", [])
-
-            if name is None or name == "":
-                errors.append("Rule #{} has no name.".format(idx + 1))
-            if expression is None or expression == "":
-                errors.append("Rule #{} has no expression.".format(idx + 1))
-            if len(channels) == 0:
-                errors.append("Rule #{} has no channel.".format(idx + 1))
-            else:
-                found_trigger = False
-                for ch_idx, ch in enumerate(channels):
-                    if not ch.get("channel", ""):
-                        errors.append(
-                            "Rule #{} - Ch. #{} has no channel.".format(idx + 1,
-                                                                        ch_idx))
-                    if ch.get("trigger", False) and not found_trigger:
-                        found_trigger = True
-
-                if not found_trigger:
-                    errors.append(
-                        "Rule #{} has no channel for trigger.".format(idx + 1))
-
-        if len(errors) > 0:
-            error_msg = os.linesep.join(errors)
-            return False, error_msg
-
-        return True, ""
+        return self.plugin_param_widget.validate()
 
     @QtCore.Slot()
     def saveChanges(self):
-        """Save the new rules at the widget `rules` property."""
-        # If the form is being edited, we make sure self.rules has all the
-        # latest values from the form before we try to validate.  This fixes
-        # a problem where the last form item change wouldn't get saved unless
-        # the user knew to hit 'enter' or leave the field to end editing before
-        # hitting save.
-        if self.frm_edit.isEnabled():
-            self.expression_changed()
-            self.name_changed()
-            self.tbl_channels_changed()
+        """Save the channel configs and set `return_value`."""
+        self.save_item()
         status, message = self.is_data_valid()
         if status:
-            data = json.dumps(self.rules)
-            formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self.widget)
-            if formWindow:
-                formWindow.cursor().setProperty("rules", data)
+            for idx, cfg in enumerate(self.config):
+                self.config[idx][ChannelEditor.VALUE] = json.dumps(
+                    cfg[ChannelEditor.VALUE]
+                )
+            self.return_value = self.config
             self.accept()
         else:
             QtWidgets.QMessageBox.critical(self, "Error Saving", message,
-                                       QtWidgets.QMessageBox.Ok)
+                                           QtWidgets.QMessageBox.Ok)
 
     @QtCore.Slot()
     def cancelChanges(self):
         """Abort the changes and close the dialog."""
+        self.return_value = self.original_config
         self.close()
+
+    def closeEvent(self, event):
+        if self.return_value is None:
+            self.return_value = self.original_config
+        super(ChannelEditor, self).closeEvent(event)
+
+
+if __name__ == '__main__':
+    class TestWidget(QtWidgets.QWidget):
+        _CHANNELS_CONFIG = OrderedDict(
+            [
+                ('channel', 'Channel'),
+                ('imageChannel', 'Image Channel (optional)'),
+            ]
+        )
+
+        def __init__(self, *args, **kwargs):
+            super(TestWidget, self).__init__(*args, **kwargs)
+            self._channel = None
+            self._image_channel = json.dumps(
+                {
+                    'connection': {
+                        'protocol': 'archiver',
+                        'parameters': {'address': 'test_archiver'},
+                    },
+                    'use_introspection': False,
+                    'introspection': {'CONNECTION': 'FOO', 'VALUE': 'BAR.X',
+                                      'SEVERITY': 'BAR.Z',
+                                      'WRITE_ACCESS': 'TEST',
+                                      'ENUM_STRINGS': '', 'UNIT': '',
+                                      'PRECISION': '',
+                                      'UPPER_LIMIT': '', 'LOWER_LIMIT': ''}}
+            )
+
+        @QtCore.Property(str)
+        def channel(self):
+            return self._channel
+
+        @channel.setter
+        def channel(self, ch):
+            if self._channel != ch:
+                self._channel = ch
+                print('New Channel: ', ch)
+
+        @QtCore.Property(str)
+        def imageChannel(self):
+            return self._image_channel
+
+        @imageChannel.setter
+        def imageChannel(self, ch):
+            if self._image_channel != ch:
+                self._image_channel = ch
+                print('New Image Channel: ', ch)
+
+
+    app = QtWidgets.QApplication([])
+    tw = TestWidget()
+
+    config_map = []
+    for prop, display in tw._CHANNELS_CONFIG.items():
+        attr = getattr(tw, prop)
+        if callable(attr):
+            value = attr()
+        else:
+            value = attr
+        config_map.append([prop, display, value])
+    editor = ChannelEditor(config_map, parent=None)
+    editor.exec_()
+    print('Editor finished with: ')
+    print(editor.return_value)
+    for new_config in editor.return_value:
+        prop, _, value = new_config
+        attr = getattr(tw, prop)
+        if callable(attr):
+            value = attr(value)
+        else:
+            setattr(tw, prop, value)
