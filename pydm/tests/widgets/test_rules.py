@@ -94,10 +94,8 @@ def test_rules_full(qtbot, caplog):
     re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=5)
     assert re.widget_map[weakref.ref(widget)][0]['calculate'] is True
 
-    time.sleep(0.1)
-    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is False
-
     blocker.wait()
+    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is False
     assert not widget.isVisible()
 
     caplog.clear()
