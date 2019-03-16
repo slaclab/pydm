@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/slaclab/pydm.svg?branch=master)](https://travis-ci.org/slaclab/pydm) 
-[![Build status](https://ci.appveyor.com/api/projects/status/sw8rp4an7o79m833?svg=true)](https://ci.appveyor.com/project/hhslepicka/pydm-fxpsx)
-[![Code Health](https://landscape.io/github/slaclab/pydm/master/landscape.svg?style=flat)](https://landscape.io/github/slaclab/pydm/master) 
+[![Build Status](https://dev.azure.com/pydm/pydm/_apis/build/status/slaclab.pydm?branchName=master)](https://dev.azure.com/pydm/pydm/_build/latest?definitionId=1&branchName=master)
 [![codecov](https://codecov.io/gh/slaclab/pydm/branch/master/graph/badge.svg)](https://codecov.io/gh/slaclab/pydm)
 
 <p align="center">
@@ -83,10 +81,24 @@ will have a file named designer_plugin.py which will make all the PyDM widgets
 available to the Qt Designer.
 
 ### Most Recent Development Build
+
+[![Anaconda-Server Badge](https://anaconda.org/pydm-dev/pydm/badges/installer/conda.svg)](https://conda.anaconda.org/pydm-dev)
+[![Anaconda-Server Badge](https://anaconda.org/pydm-dev/pydm/badges/platforms.svg)](https://anaconda.org/pydm-dev/pydm)
+[![Anaconda-Server Badge](https://anaconda.org/pydm-dev/pydm/badges/version.svg)](https://anaconda.org/pydm-dev/pydm)
+[![Anaconda-Server Badge](https://anaconda.org/pydm-dev/pydm/badges/downloads.svg)](https://anaconda.org/pydm-dev/pydm)
+
+
 ```sh
 conda install -c pydm-dev -c conda-forge pydm
 ```
 ### Most Recent Tagged Build
+
+[![Anaconda-Server Badge](https://anaconda.org/pydm-tag/pydm/badges/installer/conda.svg)](https://conda.anaconda.org/pydm-tag)
+[![Anaconda-Server Badge](https://anaconda.org/pydm-tag/pydm/badges/platforms.svg)](https://anaconda.org/pydm-tag/pydm)
+[![Anaconda-Server Badge](https://anaconda.org/pydm-tag/pydm/badges/version.svg)](https://anaconda.org/pydm-tag/pydm)
+[![Anaconda-Server Badge](https://anaconda.org/pydm-tag/pydm/badges/downloads.svg)](https://anaconda.org/pydm-tag/pydm)
+
+
 ```sh
 conda install -c pydm-tag -c conda-forge pydm
 ```

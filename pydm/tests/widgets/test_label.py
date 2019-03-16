@@ -292,6 +292,9 @@ def test_label_alarms(qtbot, signals, alarm_severity, alarm_sensitive_content, a
     pydm_label.alarmSensitiveContent = alarm_sensitive_content
     pydm_label.alarmSensitiveBorder = alarm_sensitive_border
 
+    signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
+    signals.connection_state_signal.emit(True)
+
     signals.new_severity_signal.connect(pydm_label.alarmSeverityChanged)
     initial_severity = pydm_label._alarm_state
     option = QStyleOption()
