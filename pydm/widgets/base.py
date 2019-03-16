@@ -540,13 +540,12 @@ class PyDMWidget(PyDMPrimitiveWidget):
         connected : int
             When this value is 0 the channel is disconnected, 1 otherwise.
         """
-        if connected != self._connected:
-            self._connected = connected
-            self.check_enable_state()
-            if not connected:
-                self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
-            else:
-                self.alarmSeverityChanged(self.ALARM_NONE)
+        self._connected = connected
+        self.check_enable_state()
+        if not connected:
+            self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
+        else:
+            self.alarmSeverityChanged(self.ALARM_NONE)
 
     def value_changed(self, new_val):
         """

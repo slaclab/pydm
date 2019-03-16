@@ -7,6 +7,7 @@ from logging import ERROR
 
 from qtpy.QtWidgets import QMenu
 from ...widgets.line_edit import PyDMLineEdit
+from ...data_plugins import set_read_only, is_read_only
 from ...utilities import is_pydm_app, find_unit_options
 from ...widgets.display_format import DisplayFormat, parse_value_for_display
 
@@ -44,7 +45,6 @@ def test_construct(qtbot, init_channel):
     assert pydm_lineedit._display is None
     assert pydm_lineedit._scale == 1
     assert pydm_lineedit._prec == 0
-    assert pydm_lineedit.isEnabled() == False
     assert pydm_lineedit.showUnits == False
     assert isinstance(pydm_lineedit.unitMenu, QMenu) and pydm_lineedit.unitMenu.title() == "Convert Units"
     assert pydm_lineedit.displayFormat == pydm_lineedit.DisplayFormat.Default
@@ -228,7 +228,7 @@ def test_send_value(qtbot, signals, init_value, user_typed_value, display_format
     (True, True, "", False),
     (True, True, "", True),
 ])
-def test_write_access_changed(qtbot, signals, new_write_access, is_channel_connected, tooltip, is_app_read_only):
+def test_write_access_changed(qapp, qtbot, signals, new_write_access, is_channel_connected, tooltip, is_app_read_only):
     """
     Test the widget's write access status and tooltip, which depends on the connection status of the data channel and
     the app's read-only status.
@@ -243,6 +243,8 @@ def test_write_access_changed(qtbot, signals, new_write_access, is_channel_conne
 
     Parameters
     ----------
+    qapp : fixture
+        pytest-qt qapp instance.
     qtbot : fixture
         pytest-qt window for widget testing
     signals : fixture
@@ -258,24 +260,27 @@ def test_write_access_changed(qtbot, signals, new_write_access, is_channel_conne
     """
     pydm_lineedit = PyDMLineEdit()
     qtbot.addWidget(pydm_lineedit)
+    pydm_lineedit.show()
 
-    pydm_lineedit.channel = "CA://MTEST"
-    pydm_lineedit._conneted = is_channel_connected
+    set_read_only(is_app_read_only)
+
+    pydm_lineedit.channel = "ca://MTEST"
     pydm_lineedit.setToolTip(tooltip)
-    pydm_lineedit.app.__read_only = is_app_read_only
 
-    signals.write_access_signal.connect(pydm_lineedit.writeAccessChanged)
-    signals.write_access_signal.emit(new_write_access)
+    pydm_lineedit.connectionStateChanged(is_channel_connected)
+    pydm_lineedit.writeAccessChanged(new_write_access)
+    qapp.processEvents()
 
-    # The widget is expected to be always enabled
-    assert pydm_lineedit.isEnabled()
-    assert pydm_lineedit.isReadOnly() == (not new_write_access)
+    if new_write_access:
+        assert not pydm_lineedit.isReadOnly()
+    else:
+        assert pydm_lineedit.isReadOnly()
 
     actual_tooltip = pydm_lineedit.toolTip()
     if not pydm_lineedit._connected:
         assert "PV is disconnected." in actual_tooltip
     elif not new_write_access:
-        if is_pydm_app() and is_app_read_only:
+        if is_app_read_only:
             assert "Running PyDM on Read-Only mode." in actual_tooltip
         else:
             assert "Access denied by Channel Access Security." in actual_tooltip
