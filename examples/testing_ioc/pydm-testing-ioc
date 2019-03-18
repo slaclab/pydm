@@ -10,7 +10,7 @@ FREQUENCY = 1000
 AMPLITUDE = 1.0
 NUM_DIVISIONS = 10
 MIN_UPDATE_TIME = 0.001
-IMAGE_SIZE = 512
+IMAGE_SIZE = 1024
 MESSAGE = "PyDM Rocks!"
 
 prefix = 'MTEST:'
@@ -131,8 +131,8 @@ class myDriver(Driver):
             # Generate the image data
             x0 = 0.5 * (numpy.random.rand() - 0.5) + self.getParam('XPos')
             y0 = 0.5 * (numpy.random.rand() - 0.5) - self.getParam('YPos')
-            xsig = 0.8 - 0.2 * numpy.random.rand()
-            ysig = 0.8 - 0.2 * numpy.random.rand()
+            xsig = 1.2 - 0.2 * numpy.random.rand()
+            ysig = 1.2 - 0.2 * numpy.random.rand()
             z = gaussian_2d(xgrid, ygrid, x0, y0, xsig, ysig)
             image_data = numpy.abs(256.0 * (z)).flatten(order='C').astype(numpy.uint8, copy=False)
             self.setParam('Image', image_data)

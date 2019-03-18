@@ -2,17 +2,19 @@ import logging
 from collections import OrderedDict
 
 import numpy as np
-
-from qtpy.QtWidgets import QActionGroup
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QThread
-from pyqtgraph import ImageView
+import pyqtgraph
 from pyqtgraph import ColorMap
+from pyqtgraph import ImageView
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
+from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QThread
+from qtpy.QtWidgets import QActionGroup
 
+from .base import PyDMWidget, generic_callback
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
-from .base import PyDMWidget
-import pyqtgraph
+from ..data_plugins.data_store import DataKeys
+from ..utilities.channel import parse_channel_config
+
 pyqtgraph.setConfigOption('imageAxisOrder', 'row-major')
 
 logger = logging.getLogger(__name__)
@@ -120,7 +122,9 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self._channels = [None, None]
         self.thread = None
         self.axes = dict({'t': None, "x": 0, "y": 1, "c": None})
+        self._imagechannel_address = ''
         self._imagechannel = None
+        self._widthchannel_address = ''
         self._widthchannel = None
         self.image_waveform = np.zeros(0)
         self._image_width = 0
@@ -532,10 +536,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         str
             Channel address
         """
-        if self._imagechannel:
-            return str(self._imagechannel.address)
-        else:
-            return ''
+        return self._imagechannel_address
 
     @imageChannel.setter
     def imageChannel(self, value):
@@ -547,18 +548,36 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         value : str
             Channel address
         """
-        if self._imagechannel != value:
+        if self._imagechannel_address != value:
             # Disconnect old channel
             if self._imagechannel:
                 self._imagechannel.disconnect()
-            # Create and connect new channel
-            self._imagechannel = PyDMChannel(
-                            address=value,
-                            connection_slot=self.image_connection_state_changed,
-                            value_slot=self.image_value_changed,
-                            severity_slot=self.alarmSeverityChanged)
+
+            config = parse_channel_config(value, force_dict=True)
+            if len(config) == 0:
+                return
+            self._imagechannel_address = value
+            address = None
+            self._imagechannel = PyDMChannel(parent=self,
+                                             address=address,
+                                             callback=self._receive_image_data,
+                                             config=config
+                                             )
             self._channels[0] = self._imagechannel
+
+            # Connect the channel...
             self._imagechannel.connect()
+            # Force initial data fill...
+            self._imagechannel.notified()
+
+    def _receive_image_data(self, data=None, introspection=None,
+                            *args, **kwargs):
+        if data is None or introspection is None:
+            return
+        generic_callback(self, data, introspection, {
+            DataKeys.CONNECTION: 'image_connection_state_changed',
+            DataKeys.VALUE: 'image_value_changed',
+            DataKeys.SEVERITY: 'alarm_severity_changed'})
 
     @Property(str)
     def widthChannel(self):
@@ -570,10 +589,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         str
             Channel address
         """
-        if self._widthchannel:
-            return str(self._widthchannel.address)
-        else:
-            return ''
+        return self._widthchannel_address
 
     @widthChannel.setter
     def widthChannel(self, value):
@@ -585,19 +601,36 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         value : str
             Channel address
         """
-        if self._widthchannel != value:
+        if self._widthchannel_address != value:
             # Disconnect old channel
             if self._widthchannel:
                 self._widthchannel.disconnect()
-            # Create and connect new channel
-            self._widthchannel = PyDMChannel(
-                            address=value,
-                            connection_slot=self.connectionStateChanged,
-                            value_slot=self.image_width_changed,
-                            severity_slot=self.alarmSeverityChanged)
-            self._channels[1] = self._widthchannel
-            self._widthchannel.connect()
 
+            config = parse_channel_config(value, force_dict=True)
+            if len(config) == 0:
+                return
+            self._widthchannel_address = value
+            address = None
+            self._widthchannel = PyDMChannel(parent=self,
+                                             address=address,
+                                             callback=self._receive_width_data,
+                                             config=config
+                                             )
+            self._channels[1] = self._widthchannel
+
+            # Connect the channel...
+            self._widthchannel.connect()
+            # Force initial data fill...
+            self._widthchannel.notified()
+
+    def _receive_width_data(self, data=None, introspection=None,
+                            *args, **kwargs):
+        if data is None or introspection is None:
+            return
+        generic_callback(self, data, introspection, {
+            DataKeys.CONNECTION: 'connection_state_changed',
+            DataKeys.VALUE: 'image_width_changed',
+            DataKeys.SEVERITY: 'alarm_severity_changed'})
 
     def channels(self):
         """

@@ -14,7 +14,7 @@ from .channel import PyDMChannel
 from .rules import RulesDispatcher
 from .. import data_plugins
 from .. import tools
-from ..data_plugins.data_store import DataKeys, DEFAULT_INTROSPECTION
+from ..data_plugins.data_store import DataKeys
 from ..utilities import (is_qt_designer, remove_protocol, nested_dict_get)
 from ..utilities.channel import parse_channel_config
 
@@ -873,8 +873,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
             config = parse_channel_config(value, force_dict=True)
             address = None
-            if isinstance(config, str):
-                address = config
             channel = PyDMChannel(parent=self,
                                   address=address,
                                   callback=self._receive_data,

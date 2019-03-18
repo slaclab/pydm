@@ -75,6 +75,6 @@ def pre_process(structure, nt_id):
     if 'NTNDArray' in nt_id:
         try:
             decompress(structure)
-            adjust_color(structure)
+            # adjust_color(structure)
         except Exception:
             logger.exception('Failed to pre-process NTNDArray.')
