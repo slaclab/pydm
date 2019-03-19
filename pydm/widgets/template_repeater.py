@@ -4,7 +4,7 @@ import logging
 from qtpy.QtWidgets import (QFrame, QApplication, QLabel, QVBoxLayout,
                            QHBoxLayout, QWidget, QStyle, QSizePolicy,
                            QLayout, QListWidget, QListWidgetItem)
-from qtpy.QtCore import Qt, QSize, QRect, Property, QPoint, QUrl, Q_ENUMS
+from qtpy.QtCore import Qt, QSize, QRect, Slot, Property, QPoint, QUrl, Q_ENUMS
 from qtpy import uic
 from .base import PyDMPrimitiveWidget, PyDMWidget
 from .embedded_display import PyDMEmbeddedDisplay
@@ -121,6 +121,24 @@ class LayoutType(object):
 layout_class_for_type = (QVBoxLayout, QHBoxLayout, FlowLayout)
 
 class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
+    """
+    PyDMTemplateRepeater takes a .ui file with macro variables as a template, and a JSON
+    file (or a list of dictionaries) with a list of values to use to fill in
+    the macro variables, then creates a layout with one instance of the
+    template for each item in the list.
+
+    It can be very convenient if you have displays that repeat the same set of
+    widgets over and over - for instance, if you have a standard set of
+    controls for a magnet, and want to build a display with a list of controls
+    for every magnet, the Template Repeater lets you do that with a minimum
+    amount of work: just build a template for a single magnet, and a JSON list
+    with the data that describes all of the magnets.
+
+    Parameters
+    ----------
+    parent : optional
+        The parent of this widget.
+    """
     Q_ENUMS(LayoutType)
     LayoutType = LayoutType
     def __init__(self, parent=None):
@@ -150,6 +168,10 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
     def layoutType(self, new_type):
         """
         The layout type to use.
+        Options are:
+        - **Vertical**: Instances of the template are laid out vertically, in rows.
+        - **Horizontal**: Instances of the template are laid out horizontally, in columns.
+        - **Flow**: Instances of the template are laid out horizontally until they reach the edge of the template, at which point they "wrap" into a new row.
 
         Parameters
         ----------
@@ -161,10 +183,26 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
     
     @Property(int)
     def countShownInDesigner(self):
+        """
+        The number of instances to show in Qt Designer.  This property has no
+        effect outside of Designer.
+        
+        Returns
+        -------
+        int
+        """
         return self._count_shown_in_designer
     
     @countShownInDesigner.setter
     def countShownInDesigner(self, new_count):
+        """
+        The number of instances to show in Qt Designer.  This property has no
+        effect outside of Designer.
+        
+        Parameters
+        ----------
+        new_count : int
+        """
         if not is_qt_designer():
             return
         try:
@@ -179,10 +217,24 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
     
     @Property(str)
     def templateFilename(self):
+        """
+        The path to the .ui file to use as a template.
+        
+        Returns
+        -------
+        str
+        """
         return self._template_filename
     
     @templateFilename.setter
     def templateFilename(self, new_filename):
+        """
+        The path to the .ui file to use as a template.
+        
+        Parameters
+        ----------
+        new_filename : str
+        """
         if new_filename != self._template_filename:
             self._template_filename = new_filename
             self._cached_template = None
@@ -193,20 +245,45 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
     
     @Property(str)
     def dataSource(self):
+        """
+        The path to the JSON file to fill in each instance of the template.
+        
+        Returns
+        -------
+        str
+        """
         return self._data_source
     
     @dataSource.setter
-    def dataSource(self, new_filename):
+    def dataSource(self, data_source):
+        """
+        Sets the path to the JSON file to fill in each instance of the template.
+        
+        For example, if you build a template that contains two macro variables,
+        ${NAME} and ${UNIT}, your JSON file should be a list of dictionaries,
+        each with keys for NAME and UNIT, like this:
+        
+        [{"NAME": "First Device", "UNIT": 1}, {"NAME": "Second Device", "UNIT": 2}]
+        
+        Parameters
+        -------
+        data_source : str
+        """
         if new_filename != self._data_source:
             self._data_source = new_filename
             if self._data_source:
-                self.rebuild()
+                try:
+                    with open(self._data_source) as f:
+                        self.data = json.load(f)
+                except IOError as e:
+                    self.data = []
             else:
                 self.clear()
         
     def open_template_file(self, variables=None):
         """
         Opens the widget specified in the templateFilename property.
+        
         Parameters
         ----------
         variables : dict
@@ -251,7 +328,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
             self.setLayout(l)
         print("layout class should be {}, was set to {}".format(layout_class, type(self.layout())))
         with pydm.data_plugins.connection_queue():
-            for i, variables in enumerate(self.data()):
+            for i, variables in enumerate(self.data):
                 if is_qt_designer() and i > self.countShownInDesigner - 1:
                     break
                 w = self.open_template_file(variables)
@@ -265,6 +342,8 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         print("rebuild took {} seconds".format(endtime-starttime))
     
     def clear(self):
+        """ Clear out any existing instances of the template inside
+        the widget."""
         if not self.layout():
             print("No layout, not clearing.")
             return
@@ -272,14 +351,25 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
             item = self.layout().takeAt(0)
             item.widget().deleteLater()
             del item
-        
+    
+    @property    
     def data(self):
-        if not self._data:
-            try:
-                with open(self._data_source) as f:
-                    self._data = json.load(f)
-            except IOError as e:
-                self._data = []
+        """
+        The dictionary used by the widget to fill in each instance of the template.
+        This property will be overwritten if the user changes the dataSource
+        property.
+        """
         return self._data
+    
+    @data.setter
+    def data(self, new_data):
+        """
+        Sets the dictionary used by the widget to fill in each instance of 
+        the template.  This property will be overwritten if the user changes
+        the dataSource property.  After setting this property, `rebuild` 
+        is automatically called to refresh the widget.
+        """
+        self._data = new_data
+        self.rebuild()
 
     
