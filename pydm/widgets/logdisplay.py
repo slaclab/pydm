@@ -25,7 +25,8 @@ def logger_destroyed(log, obj):
         already destroyed and must not be accessed.
     """
     if log:
-        log.handlers.clear()
+        for handler in log.handlers:
+            log.removeHandler(handler)
 
 
 class GuiHandler(QObject, logging.Handler):
