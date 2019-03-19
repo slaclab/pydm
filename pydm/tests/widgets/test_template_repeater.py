@@ -7,18 +7,11 @@ from ...widgets import PyDMSlider, PyDMTemplateRepeater
 test_template_path = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     "../test_data", "template.ui")
-
-@pytest.fixture
-def template_repeater():
-    QApplication.instance().make_main_window()
-    main_window = QApplication.instance().main_window
-    main_window.setWindowTitle("Template Repeater Test")
-    repeater = PyDMTemplateRepeater(parent=main_window)
-    return repeater
     
-def test_template_file(qtbot, template_repeater):
+def test_template_file(qtbot):
     # Test that loading a template and setting data instantiates an instance
     # of the template.
+    template_repeater = PyDMTemplateRepeater()
     qtbot.addWidget(template_repeater)
     template_repeater.templateFilename = test_template_path
     test_data = [{"devname": "test_device"}]
