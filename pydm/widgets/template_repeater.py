@@ -343,6 +343,11 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
             item.widget().deleteLater()
             del item
     
+    def count(self):
+        if not self.layout():
+            return 0
+        return self.layout().count()
+    
     @property    
     def data(self):
         """
