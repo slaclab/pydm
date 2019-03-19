@@ -102,6 +102,7 @@ jobs:
         git config --global user.email "azurebot@nonvalidemail.com"
         git checkout gh-pages
         cp -r $(Build.Repository.LocalPath)/artifacts/docs_html/* .
+        rm -rf $(Build.Repository.LocalPath)/artifacts
         git add *
         git commit -m "Updating Docs with latest build - ***NO_CI***"
         git push origin gh-pages
