@@ -13,8 +13,6 @@ import pydm.data_plugins
 from ..utilities import macro
 logger = logging.getLogger(__name__)
 
-import time
-
 class FlowLayout(QLayout):
     def __init__(self, parent=None, margin=-1, h_spacing=-1, v_spacing=-1):
         QLayout.__init__(self, parent)
@@ -42,7 +40,6 @@ class FlowLayout(QLayout):
         return len(self.item_list)
     
     def itemAt(self, index):
-        print("itemAt:", index)
         if index >= 0 and index < len(self.item_list):
             return self.item_list[index]
         else:
@@ -315,7 +312,6 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         self.clear()
         if not self.templateFilename:
             return
-        starttime = time.time()
         self.setUpdatesEnabled(False)
         
         layout_class = layout_class_for_type[self.layoutType]
@@ -324,9 +320,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
                 # Trick to remove the existing layout by re-parenting it in an empty widget.
                 QWidget().setLayout(self.layout())
             l = layout_class(self)
-            print("Setting a new layout: {}".format(l))
             self.setLayout(l)
-        print("layout class should be {}, was set to {}".format(layout_class, type(self.layout())))
         with pydm.data_plugins.connection_queue():
             for i, variables in enumerate(self.data):
                 if is_qt_designer() and i > self.countShownInDesigner - 1:
@@ -338,14 +332,11 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
                 w.setParent(self)
                 self.layout().addWidget(w)
         self.setUpdatesEnabled(True)
-        endtime = time.time()
-        print("rebuild took {} seconds".format(endtime-starttime))
     
     def clear(self):
         """ Clear out any existing instances of the template inside
         the widget."""
         if not self.layout():
-            print("No layout, not clearing.")
             return
         while self.layout().count() > 0:
             item = self.layout().takeAt(0)
