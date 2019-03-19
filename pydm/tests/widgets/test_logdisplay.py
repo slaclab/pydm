@@ -14,6 +14,8 @@ def test_write(qtbot, log):
     logd = PyDMLogDisplay(parent=None, logname=log.name, level=logging.INFO)
     qtbot.addWidget(logd)
     logd.show()
+    assert logd.logLevel == logging.INFO
+    assert logd.logName == log.name
     # Watch our error message show up in the log
     err_msg = 'This is a test of the emergency broadcast system'
     log.error(err_msg)
@@ -33,3 +35,13 @@ def test_write(qtbot, log):
     info_msg = 'The more things change the more they stay the same'
     log.info(info_msg)
     assert info_msg in logd.text.toPlainText()
+    logd.clear()
+    assert logd.text.toPlainText() == ''
+
+
+def test_handler_cleanup(qtbot, log):
+    logd = PyDMLogDisplay(logname=log.name, level=logging.DEBUG)
+    qtbot.addWidget(logd)
+    del logd
+    log.error("This will explode if the handler does not exist")
+    assert log.handlers == []
