@@ -310,7 +310,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         """ Clear out all existing widgets, and populate the list using the
         template file and data source."""
         self.clear()
-        if not self.templateFilename:
+        if (not self.templateFilename) or (not self.data):
             return
         self.setUpdatesEnabled(False)
         
