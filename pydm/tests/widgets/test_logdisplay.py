@@ -33,3 +33,10 @@ def test_write(qtbot, log):
     info_msg = 'The more things change the more they stay the same'
     log.info(info_msg)
     assert info_msg in logd.text.toPlainText()
+
+
+def test_handler_cleanup(qtbot, log):
+    logd = PyDMLogDisplay(logname=log.name, level=logging.DEBUG)
+    del logd
+    log.error("This will explode if the handler does not exist")
+    assert log.handlers == []
