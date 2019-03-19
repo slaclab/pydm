@@ -1,11 +1,11 @@
-from qtpy.QtWidgets import QPushButton, QMenu, QAction
-from qtpy.QtGui import QCursor, QIcon
-from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
-import os
-import json
 import logging
 import warnings
 from functools import partial
+
+from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
+from qtpy.QtGui import QCursor, QIcon
+from qtpy.QtWidgets import QPushButton, QMenu, QAction
+
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
 from ..utilities.macro import find_base_macros, parse_macro_string
@@ -53,28 +53,29 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         self._macro_string = None
         self._open_in_new_window = False
         self.open_in_new_window_action = QAction("Open in New Window", self)
-        self.open_in_new_window_action.triggered.connect(partial(self.open_display, target=self.NEW_WINDOW))
+        self.open_in_new_window_action.triggered.connect(
+            partial(self.open_display, target=self.NEW_WINDOW))
         self._show_icon = True
         self._menu_needs_rebuild = True
 
     @Property('QStringList')
     def filenames(self):
         return self._filenames
-    
+
     @filenames.setter
     def filenames(self, val):
         self._filenames = val
         self._menu_needs_rebuild = True
-        
+
     @Property('QStringList')
     def titles(self):
         return self._titles
-    
+
     @titles.setter
     def titles(self, val):
         self._titles = val
         self._menu_needs_rebuild = True
-    
+
     def _rebuild_menu(self):
         if not any(self._filenames):
             self._filenames = []
@@ -96,7 +97,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             macros = ""
             if i < len(self._macros):
                 macros = self._macros[i]
-            action.triggered.connect(partial(self.open_display, filename, macros, target=None))
+            action.triggered.connect(
+                partial(self.open_display, filename, macros, target=None))
         self.setMenu(menu)
         self._menu_needs_rebuild = False
 
@@ -156,12 +158,13 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         ----------
         value : str
         """
-        warnings.warn("'PyDMRelatedDisplayButton.displayFilename' is deprecated, "
-                      "use 'PyDMRelatedDisplayButton.filenames' instead.")
+        warnings.warn(
+            "'PyDMRelatedDisplayButton.displayFilename' is deprecated, "
+            "use 'PyDMRelatedDisplayButton.filenames' instead.")
         if value:
             self._filenames.insert(0, str(value))
         self._display_filename = ""
-            
+
     @Property('QStringList')
     def macros(self):
         """
@@ -182,7 +185,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         ----------
         new_macros : list of str
         """
-        #Handle the deprecated form of macros where it was a single string.
+        # Handle the deprecated form of macros where it was a single string.
         if isinstance(new_macros, str):
             new_macros = [new_macros]
         self._macros = new_macros
@@ -208,7 +211,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         open_in_new : bool
         """
         self._open_in_new_window = open_in_new
-    
+
     def mousePressEvent(self, event):
         if self._menu_needs_rebuild:
             self._rebuild_menu()
@@ -235,9 +238,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
 
         """
         if mouse_event.button() != Qt.LeftButton:
-            return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
+            return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(
+                mouse_event)
         if self.menu() is not None:
-            return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
+            return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(
+                mouse_event)
         if len(self.filenames) == 0:
             return
         try:
@@ -249,7 +254,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             logger.exception("Failed to open display.")
             pass
         finally:
-            super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
+            super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(
+                mouse_event)
 
     @Slot()
     def open_display(self, filename, macro_string="", target=None):
@@ -266,12 +272,12 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         # Check for None and ""
         if not filename:
             return
-        
+
         macros = parse_macro_string(macro_string)
         base_macros = find_base_macros(self)
         merged_macros = base_macros.copy()
         merged_macros.update(macros)
-        
+
         if self._shift_key_was_down:
             target = self.NEW_WINDOW
         if target is None:

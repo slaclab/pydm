@@ -102,7 +102,7 @@ class RulesDispatcher(object):
             if isinstance(widget, weakref.ref):
                 widget_ref = widget
                 widget = widget()
-            if widget is None: # Widget is dead... lets unregister the ref
+            if widget is None:  # Widget is dead... lets unregister the ref
                 self.rules_engine.unregister(widget_ref)
             else:
                 widget.rule_evaluated(payload)

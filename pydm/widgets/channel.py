@@ -85,7 +85,6 @@ class PyDMChannel(QObject):
     @Slot()
     def notified(self):
         if self._busy:
-            print('We are busy with other request')
             return
         self._busy = True
         data, intro = self.get(with_introspection=True)
