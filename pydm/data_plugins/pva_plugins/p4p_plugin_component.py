@@ -43,6 +43,7 @@ class Connection(PyDMConnection):
         self.nt_id = None
         self.monitor = PVAContext().context.monitor(name=address,
                                                     cb=self.send_new_value,
+                                                    # request='pipeline=true', To test in the future and return to Michael
                                                     notify_disconnect=True)
         self._introspection_set = False
 

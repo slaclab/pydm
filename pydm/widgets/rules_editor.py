@@ -165,12 +165,12 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.setShowGrid(True)
         self.tbl_channels.setCornerButtonEnabled(False)
         self.tbl_channels.model().dataChanged.connect(self.tbl_channels_changed)
-        headers = ["Channel", "Trigger?"]
+        headers = ["Channel", "", "Trigger?"]
         self.tbl_channels.setColumnCount(len(headers))
         self.tbl_channels.setHorizontalHeaderLabels(headers)
         header = self.tbl_channels.horizontalHeader()
         header.setResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        header.setResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        header.setResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
 
         frm_edit_layout.addWidget(self.tbl_channels)
 
@@ -245,12 +245,13 @@ class RulesEditor(QtWidgets.QDialog):
             ch_tr = ch.get('trigger', False)
             self.tbl_channels.setItem(row, 0,
                                       QtWidgets.QTableWidgetItem(str(ch_name)))
+
             checkBoxItem = QtWidgets.QTableWidgetItem()
             if ch_tr:
                 checkBoxItem.setCheckState(QtCore.Qt.Checked)
             else:
                 checkBoxItem.setCheckState(QtCore.Qt.Unchecked)
-            self.tbl_channels.setItem(row, 1, checkBoxItem)
+            self.tbl_channels.setItem(row, 2, checkBoxItem)
         self.frm_edit.setEnabled(True)
         self.loading_data = False
 
@@ -339,7 +340,7 @@ class RulesEditor(QtWidgets.QDialog):
         checkBoxItem = QtWidgets.QTableWidgetItem()
         checkBoxItem.setCheckState(state)
         checkBoxItem.setFlags(QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable)
-        self.tbl_channels.setItem(row, 1, checkBoxItem)
+        self.tbl_channels.setItem(row, 2, checkBoxItem)
         vlabel = [str(i) for i in range(self.tbl_channels.rowCount())]
         self.tbl_channels.setVerticalHeaderLabels(vlabel)
         self.loading_data = False
@@ -414,7 +415,7 @@ class RulesEditor(QtWidgets.QDialog):
         for row in range(self.tbl_channels.rowCount()):
             ch = self.tbl_channels.item(row, 0).text()
             tr = self.tbl_channels.item(row,
-                                        1).checkState() == QtCore.Qt.Checked
+                                        2).checkState() == QtCore.Qt.Checked
             new_channels.append({"channel": ch, "trigger": tr})
 
         self.change_entry("channels", new_channels)
