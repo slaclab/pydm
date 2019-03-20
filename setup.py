@@ -7,10 +7,10 @@ from os import path, environ
 
 cur_dir = path.abspath(path.dirname(__file__))
 
-with open(path.join(cur_dir, 'requirements.txt')) as f:
+with open(path.join(cur_dir, 'requirements.txt', 'r')) as f:
     requirements = f.read().split()
 
-with open(path.join(cur_dir, 'README.md'), encoding='utf-8') as f:
+with open(path.join(cur_dir, 'README.md'), 'r', encoding='utf-8') as f:
     long_description = f.read()
 
 # Remove the 'optional' requirements
