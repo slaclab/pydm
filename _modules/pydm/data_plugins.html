@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.data_plugins &mdash; PyDM v1.6.5+62.g810b4fe5 documentation</title>
+  <title>pydm.data_plugins &mdash; PyDM v1.6.5+64.g635229fb documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.6.5+62.g810b4fe5
+                v1.6.5+64.g635229fb
               </div>
             
           
@@ -207,6 +207,8 @@
         <span class="n">__CONNECTION_QUEUE__</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">yield</span>
+        <span class="k">if</span> <span class="n">__CONNECTION_QUEUE__</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="k">while</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">__CONNECTION_QUEUE__</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">channel</span> <span class="o">=</span> <span class="n">__CONNECTION_QUEUE__</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
             <span class="n">establish_connection_immediately</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
