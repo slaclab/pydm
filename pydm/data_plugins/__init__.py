@@ -29,6 +29,8 @@ def connection_queue():
         __CONNECTION_QUEUE__ = deque()
     try:
         yield
+        if __CONNECTION_QUEUE__ is None:
+            return
         while not len(__CONNECTION_QUEUE__) == 0:
             channel = __CONNECTION_QUEUE__.pop()
             establish_connection_immediately(channel)

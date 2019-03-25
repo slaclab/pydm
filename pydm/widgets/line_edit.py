@@ -37,7 +37,6 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         self._scale = 1
 
         self.returnPressed.connect(self.send_value)
-        self.setEnabled(False)
         self.unitMenu = QMenu('Convert Units', self)
         self.create_unit_options()
         self._display_format_type = self.DisplayFormat.Default
@@ -129,7 +128,6 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         Change the PyDMLineEdit to read only if write access is denied
         """
         super(PyDMLineEdit, self).write_access_changed(new_write_access)
-        self.setEnabled(True)
         self.setReadOnly(not new_write_access)
 
     def unit_changed(self, new_unit):

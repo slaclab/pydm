@@ -1,0 +1,170 @@
+# Azure Pipelines CI job template for PyDM Tests
+
+parameters:
+  name: ''
+  vmImage: ''
+
+jobs:
+- job: ${{ parameters.name }}
+  pool:
+    vmImage: ${{ parameters.vmImage }}
+  strategy:
+    matrix:
+      Python27:
+        python.version: '2.7'
+      Python36:
+        python.version: '3.6'
+        BUILD_DOCS: ${{ parameters.build_docs }}
+      Python37:
+        python.version: '3.7'
+
+  steps:
+  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+    displayName: 'Windows - Add conda to PATH'
+    condition: eq(variables['agent.os'], 'Windows_NT' )
+
+  - bash: echo "##vso[task.prependpath]$CONDA/bin"
+    displayName: 'MacOS - Add conda to PATH'
+    condition: eq(variables['agent.os'], 'Darwin' )
+
+  - bash: echo "##vso[task.prependpath]/usr/share/miniconda/bin"
+    displayName: 'Linux - Add conda to PATH'
+    condition: eq(variables['agent.os'], 'Linux' )
+
+  # Linux
+  - bash: |
+      # Install & Start Windows Manager for Linux
+      sudo apt-get install -y xvfb herbstluftwm
+      sudo /sbin/start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1024x768x24 -ac +extension GLX +render -noreset
+      sleep 3
+
+      # Fix Anaconda permissions
+      sudo install -d -m 0777 /usr/share/miniconda/
+      sudo install -d -m 0777 /usr/share/miniconda/envs
+
+    displayName: 'Linux - Prepare OS'
+    condition: eq(variables['agent.os'], 'Linux' )
+
+  # Linux
+  - bash: |
+      sudo /sbin/start-stop-daemon --start --pidfile /tmp/custom_herbstluftwm_99.pid --make-pidfile --background --exec /usr/bin/herbstluftwm
+      sleep 1
+    env:
+      DISPLAY: :99.0
+    displayName: 'Linux - Start herbstluftwm'
+    condition: eq(variables['agent.os'], 'Linux' )
+
+  # MacOS
+  - bash: |
+     # Fix Anaconda permissions
+     sudo install -d -m 0777 /usr/local/miniconda/envs
+    displayName: 'MacOS - Prepare OS'
+    condition: eq(variables['agent.os'], 'Darwin' )
+
+  - task: CondaEnvironment@0
+    displayName: 'Anaconda - Create'
+    inputs:
+      environmentName: 'test-environment-$(python.version)'
+      packageSpecs: 'python=$(python.version) conda-build anaconda-client'
+      updateConda: true
+
+  - bash: |
+     conda info --envs
+    displayName: Debug
+
+  - bash: |
+      source activate base
+      conda config --set always_yes yes
+      conda config --append channels conda-forge
+      conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
+    displayName: 'Anaconda - Configure - Add local bld-dir'
+
+  - bash: |
+      source activate base
+      conda build -q conda-recipe --python=$(python.version) --output-folder bld-dir
+    displayName: 'Anaconda - Build PyDM Package'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish - Anaconda Package'
+    inputs:
+      PathtoPublish: 'bld-dir'
+      ArtifactName: 'anaconda_package'
+
+  - bash: |
+      source activate base
+      conda install -q pydm --file dev-requirements.txt -c conda-forge
+    displayName: 'Anaconda - Install Dependencies (Non-Windows)'
+    condition: ne(variables['agent.os'], 'Windows_NT' )
+
+  # Windows Only
+  - bash: |
+      source activate base
+      conda install -q pydm -c conda-forge
+      pip install -r dev-requirements.txt
+    displayName: 'Anaconda - Install Dependencies (Windows)'
+    condition: eq(variables['agent.os'], 'Windows_NT' )
+
+  # Windows Only
+  - powershell: |
+      $MyProcess = Start-Process $Env:REPEATER -PassThru
+    env:
+      REPEATER: $(CONDA_PREFIX)\Lib\site-packages\epics\clibs\win64\caRepeater.exe
+    displayName: 'Windows - Start CaRepeater'
+    condition: eq(variables['agent.os'], 'Windows_NT' )
+
+  - bash: |
+      source activate base
+      python run_tests.py --cov=pydm --cov-report=xml:$(python.version)/coverage.xml --cov-report=html:$(python.version)/htmlcov --junitxml=$(python.version)/junit/test-results.xml
+    displayName: 'Tests - Run'
+    continueOnError: false
+    env:
+      DISPLAY: :99.0
+
+  - task: PublishTestResults@2
+    displayName: 'Publish - Test Results'
+    inputs:
+      testResultsFiles: '$(System.DefaultWorkingDirectory)/$(python.version)/**/test-results.xml'
+      testRunTitle: 'Tests for $(Agent.OS) - Python $(python.version)'
+      condition: succeededOrFailed()
+
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Publish - Coverage Results'
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/$(python.version)/**/coverage.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/$(python.version)/**/htmlcov'
+    condition: succeededOrFailed()
+
+  - bash: |
+      bash <(curl -s https://codecov.io/bash) -f $(System.DefaultWorkingDirectory)/$(python.version)/coverage.xml -t $(CODECOV_TOKEN) || echo 'Codecov failed to upload.'
+    displayName: 'Publish - Codecov.io'
+
+  - bash: |
+      source activate base
+      pip install -r docs-requirements.txt
+      pushd docs
+      make html
+      popd
+    displayName: 'Documentation - Build HTML'
+    condition: |
+      and(
+        and(
+          eq(variables['agent.os'], 'Linux' ),
+          eq(variables['BUILD_DOCS'], 1)
+        ),
+        succeeded()
+      )
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish - Documentation'
+    inputs:
+      PathtoPublish: 'docs/build/html/'
+      ArtifactName: 'docs_html'
+    condition: |
+      and(
+        and(
+          eq(variables['agent.os'], 'Linux' ),
+          eq(variables['BUILD_DOCS'], 1)
+        ),
+        succeeded()
+      )

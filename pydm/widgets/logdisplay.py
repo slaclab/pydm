@@ -1,4 +1,5 @@
 import logging
+import functools
 
 from collections import OrderedDict
 
@@ -8,6 +9,24 @@ from qtpy.QtWidgets import (QWidget, QPlainTextEdit, QComboBox, QLabel,
                             QPushButton, QHBoxLayout, QVBoxLayout)
 
 logger = logging.getLogger(__name__)
+
+
+def logger_destroyed(log, obj):
+    """
+    Callback invoked when the Widget is destroyed.
+    This method is used to ensure that the log handlers are cleared.
+
+    Parameters
+    ----------
+    log : Logger
+        The logger object being used by the PyDMLogDisplay widget.
+    obj : QWidget
+        The widget which is being destroyed. All childs of this widget are
+        already destroyed and must not be accessed.
+    """
+    if log:
+        for handler in log.handlers:
+            log.removeHandler(handler)
 
 
 class GuiHandler(QObject, logging.Handler):
@@ -39,9 +58,7 @@ class GuiHandler(QObject, logging.Handler):
 
     def __init__(self, level=logging.NOTSET, parent=None):
         logging.Handler.__init__(self, level=level)
-        QObject.__init__(self)
-        # Set the parent widget
-        self.setParent(parent)
+        QObject.__init__(self, parent=parent)
 
     def emit(self, record):
         """Emit formatted log messages when received but only if level is set."""
@@ -133,6 +150,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
         self.level = None
         self.logName = logname or ''
         self.logLevel = level
+        self.destroyed.connect(functools.partial(logger_destroyed, self.log))
 
     def sizeHint(self):
         return QSize(400, 300)

@@ -594,6 +594,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
             and 3 = INVALID
         """
         # 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID
+        if new_alarm_severity == self._alarm_state:
+            return
         if not self._channel:
             self._alarm_state = PyDMWidget.ALARM_NONE
         else:
