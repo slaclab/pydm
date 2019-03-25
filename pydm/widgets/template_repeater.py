@@ -266,8 +266,8 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         -------
         data_source : str
         """
-        if new_filename != self._data_source:
-            self._data_source = new_filename
+        if data_source != self._data_source:
+            self._data_source = data_source
             if self._data_source:
                 try:
                     with open(self._data_source) as f:
