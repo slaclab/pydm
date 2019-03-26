@@ -4,7 +4,7 @@ import weakref
 from qtpy.QtCore import Slot, Signal, QObject, Qt
 from qtpy import QtWidgets
 
-from .data_store import DataStore, DEFAULT_INTROSPECTION
+from .data_store import DataStore, DataKeys, DEFAULT_INTROSPECTION
 from ..utilities.remove_protocol import protocol_and_address
 
 
@@ -57,6 +57,7 @@ class PyDMConnection(QObject):
 
     def __init__(self, channel, address, protocol=None, parent=None):
         super(PyDMConnection, self).__init__(parent)
+        self.connected = False
         self.data = {}
         self.introspection = DEFAULT_INTROSPECTION
         self.channel = channel
@@ -67,7 +68,6 @@ class PyDMConnection(QObject):
         self.add_listener(channel)
 
     def add_listener(self, channel):
-        print('Called Add_Listener for: ', channel)
         self.listener_count = self.listener_count + 1
         self.notify.connect(channel.notified, Qt.QueuedConnection)
         channel.transmit.connect(self._validate_data_from_channel,
@@ -95,6 +95,8 @@ class PyDMConnection(QObject):
         pass
 
     def send_to_channel(self):
+        self.introspection.get(DataKeys.CONNECTION, 'CONNECTION')
+        self.connected = self.data.get('CONNECTION', False)
         DataStore()[self.channel.address] = (self.data, self.introspection)
         self.notify.emit()
 
