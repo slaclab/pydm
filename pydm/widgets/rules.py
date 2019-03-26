@@ -6,6 +6,9 @@ from qtpy.QtCore import QThread, QMutex, Signal, QMutexLocker
 from qtpy.QtWidgets import QWidget
 
 from .channel import PyDMChannel
+from ..utilities import generic_callback
+from ..utilities.channel import parse_channel_config
+from ..data_plugins.data_store import DataKeys
 
 import numpy as np
 import math
@@ -131,6 +134,7 @@ class RulesEngine(QThread):
         self.unregister(ref)
 
     def register(self, widget, rules):
+        print('Invoked register for: ', rules)
         widget_ref = weakref.ref(widget, self.widget_destroyed)
         if widget_ref in self.widget_map:
             self.unregister(widget_ref)
@@ -152,12 +156,33 @@ class RulesEngine(QThread):
                                                 idx, ch_idx)
                     value_cb = functools.partial(self.callback_value, widget_ref,
                                                  idx, ch_idx, ch['trigger'])
-                    c = PyDMChannel(ch['channel'], connection_slot=conn_cb,
-                                    value_slot=value_cb)
-                    item['channels'].append(c)
-                    c.connect()
+
+                    callback = functools.partial(self._receive_data, conn_cb,
+                                                 value_cb)
+
+                    config = parse_channel_config(ch['channel'],
+                                                  force_dict=True)
+                    address = None
+                    channel = PyDMChannel(parent=self,
+                                          address=address,
+                                          callback=callback,
+                                          config=config
+                                          )
+                    item['channels'].append(channel)
+                    # Connect the channel...
+                    channel.connect()
+                    # Force initial data fill...
+                    channel.notified()
 
                 self.widget_map[widget_ref].append(item)
+
+    def _receive_data(self, conn_cb, value_cb, data, introspection, *args,
+                      **kwargs):
+        mapping = {
+            DataKeys.CONNECTION: conn_cb,
+            DataKeys.VALUE: value_cb
+        }
+        generic_callback(self, data, introspection, mapping=mapping)
 
     def unregister(self, widget_ref):
         with QMutexLocker(self.map_lock):

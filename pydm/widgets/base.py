@@ -15,7 +15,7 @@ from .rules import RulesDispatcher
 from .. import data_plugins
 from .. import tools
 from ..data_plugins.data_store import DataKeys
-from ..utilities import (is_qt_designer, remove_protocol, nested_dict_get)
+from ..utilities import (is_qt_designer, remove_protocol, generic_callback)
 from ..utilities.channel import parse_channel_config
 
 try:
@@ -24,41 +24,6 @@ except ImportError:
     JSONDecodeError = ValueError
 
 logger = logging.getLogger(__name__)
-
-
-def generic_callback(widget, data, introspection, mapping):
-    """
-    This callback executes the methods mapped at `mapping` with the data
-    from the channel following the introspection definition.
-
-    Parameters
-    ----------
-    widget : QWidget
-        The widget being affected by this callback
-    data : dict
-        Data from the channel
-    introspection : dict
-        Mapping between DataKey and plugin data fields
-    mapping : dict
-        Map containing the relation between DataKey and method for widget
-    """
-    try:
-        for data_key, real_key in introspection.items():
-            if real_key is None or real_key == '':
-                continue
-            try:
-                method_name = mapping[data_key]
-            except KeyError:
-                continue
-            method = getattr(widget, method_name, None)
-            if not method:
-                continue
-            new_value = nested_dict_get(data, real_key.split('.'))
-            if new_value is not None:
-                method(new_value)
-    except RuntimeError:
-        # We should bail out as the widget is destroyed.
-        pass
 
 
 def is_channel_valid(channel):

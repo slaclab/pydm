@@ -62,7 +62,7 @@ def test_rules_editor(qtbot, monkeypatch):
     assert re.cmb_property.currentText() == 'Enable'
     assert re.tbl_channels.rowCount() == 1
     assert re.tbl_channels.item(0, 0).text() == 'ca://MTEST:Float'
-    assert re.tbl_channels.item(0, 1).checkState() == QtCore.Qt.Checked
+    assert re.tbl_channels.item(0, 2).checkState() == QtCore.Qt.Checked
     assert re.lbl_expected_type.text() == 'bool'
     assert re.txt_expression.text() == 'ch[0] > 1'
 
@@ -113,11 +113,11 @@ def test_rules_editor(qtbot, monkeypatch):
 
     qtbot.mouseClick(re.btn_add_channel, QtCore.Qt.LeftButton)
     assert re.tbl_channels.item(0, 0).text() == ''
-    assert re.tbl_channels.item(0, 1).checkState() == QtCore.Qt.Checked
+    assert re.tbl_channels.item(0, 2).checkState() == QtCore.Qt.Checked
 
     qtbot.mouseClick(re.btn_add_channel, QtCore.Qt.LeftButton)
     assert re.tbl_channels.item(1, 0).text() == ''
-    assert re.tbl_channels.item(1, 1).checkState() == QtCore.Qt.Unchecked
+    assert re.tbl_channels.item(1, 2).checkState() == QtCore.Qt.Unchecked
 
     # Switch between the rules
     re.lst_rules.setCurrentRow(0)

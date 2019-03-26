@@ -5,6 +5,7 @@ import webbrowser
 
 from qtpy import QtWidgets, QtCore, QtDesigner
 from ..utilities.iconfont import IconFont
+from .channel_editor import ChannelEditor
 
 
 class RulesEditor(QtWidgets.QDialog):
@@ -246,6 +247,13 @@ class RulesEditor(QtWidgets.QDialog):
             self.tbl_channels.setItem(row, 0,
                                       QtWidgets.QTableWidgetItem(str(ch_name)))
 
+            channel_btn = QtWidgets.QPushButton('Channel',
+                                                parent=self.tbl_channels)
+            channel_btn.clicked.connect(
+                functools.partial(self.handle_channel_click, row)
+            )
+            self.tbl_channels.setCellWidget(row, 1, channel_btn)
+
             checkBoxItem = QtWidgets.QTableWidgetItem()
             if ch_tr:
                 checkBoxItem.setCheckState(QtCore.Qt.Checked)
@@ -336,7 +344,16 @@ class RulesEditor(QtWidgets.QDialog):
 
         self.tbl_channels.insertRow(self.tbl_channels.rowCount())
         row = self.tbl_channels.rowCount() - 1
+
         self.tbl_channels.setItem(row, 0, QtWidgets.QTableWidgetItem(""))
+
+        channel_btn = QtWidgets.QPushButton('Channel',
+                                            parent=self.tbl_channels)
+        channel_btn.clicked.connect(
+            functools.partial(self.handle_channel_click, row)
+        )
+        self.tbl_channels.setCellWidget(row, 1, channel_btn)
+
         checkBoxItem = QtWidgets.QTableWidgetItem()
         checkBoxItem.setCheckState(state)
         checkBoxItem.setFlags(QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable)
@@ -364,6 +381,20 @@ class RulesEditor(QtWidgets.QDialog):
                 row = itm.row()
                 self.tbl_channels.removeRow(row)
 
+        self.tbl_channels_changed()
+
+    def handle_channel_click(self, row):
+        item = self.tbl_channels.item(row, 0)
+        current_value = item.text()
+        config = [['channel', 'Channel', current_value]]
+        editor = ChannelEditor(config, parent=self)
+        editor.exec_()
+
+        if len(editor.return_value) > 0:
+            prop, _, value = editor.return_value[0]
+            item.setText(str(current_value))
+            self.tbl_channels.setItem(row, 0,
+                                      QtWidgets.QTableWidgetItem(value))
         self.tbl_channels_changed()
 
     def open_help(self, open=True):

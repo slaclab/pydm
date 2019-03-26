@@ -3,7 +3,6 @@ import sys
 import platform
 import ntpath
 import shlex
-import json
 
 from .units import find_unittype, convert, find_unit_options
 from . import macro
@@ -187,3 +186,45 @@ def nested_dict_get(input_dict, nested_key):
         if internal_dict_value is None:
             return None
     return internal_dict_value
+
+
+def generic_callback(widget, data, introspection, mapping):
+    """
+    This callback executes the methods mapped at `mapping` with the data
+    from the channel following the introspection definition.
+
+    Parameters
+    ----------
+    widget : QWidget
+        The widget being affected by this callback
+    data : dict
+        Data from the channel
+    introspection : dict
+        Mapping between DataKey and plugin data fields
+    mapping : dict
+        Map containing the relation between DataKey and method for widget
+    """
+    if data is None:
+        return
+    try:
+        for data_key, real_key in introspection.items():
+            if real_key is None or real_key == '':
+                continue
+            try:
+                method_name = mapping[data_key]
+            except KeyError:
+                continue
+            if isinstance(method_name, str):
+                method = getattr(widget, method_name, None)
+            elif callable(method_name):
+                method = method_name
+            else:
+                method = None
+            if not method:
+                continue
+            new_value = nested_dict_get(data, real_key.split('.'))
+            if new_value is not None:
+                method(new_value)
+    except RuntimeError:
+        # We should bail out as the widget is destroyed.
+        pass
