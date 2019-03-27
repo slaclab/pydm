@@ -26,13 +26,13 @@ class FlowLayout(QLayout):
     
     def horizontalSpacing(self):
         if self.m_h_space >= 0:
-            return m_h_space
+            return self.m_h_space
         else:
             return self.smart_spacing(QStyle.PM_LayoutHorizontalSpacing)
     
     def verticalSpacing(self):
         if self.m_v_space >= 0:
-            return m_v_space
+            return self.m_v_space
         else:
             return self.smart_spacing(QStyle.PM_LayoutVerticalSpacing)
     
