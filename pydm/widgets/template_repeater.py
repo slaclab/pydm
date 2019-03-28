@@ -270,7 +270,14 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
             self._data_source = data_source
             if self._data_source:
                 try:
-                    with open(self._data_source) as f:
+                    # Expand user (~ or ~user) and environment variables.
+                    fname = os.path.expanduser(os.path.expandvars(self._data_source))
+                    if is_pydm_app():
+                        # If we're running this inside the PyDM app, we can
+                        # make sure the path is relative to the currently loaded
+                        # display (.ui or .py file).
+                        fname = self.app.get_path(fname)
+                    with open(fname) as f:
                         self.data = json.load(f)
                 except IOError as e:
                     self.data = []
