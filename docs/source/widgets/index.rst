@@ -49,6 +49,7 @@ Container Widgets
    embedded_display.rst
    frame.rst
    tab_widget.rst
+   template_repeater.rst
 
 Drawing Widgets
 ---------------

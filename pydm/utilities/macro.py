@@ -24,11 +24,17 @@ def substitute_in_file(file_path, macros):
     file : io.StringIO
         File-like object with the proper substitutions.
     """
-    with open(file_path) as orig_file:
-        text = Template(orig_file.read())
-    expanded_text = text.safe_substitute(macros)
+    template = template_for_file(file_path)
+    return replace_macros_in_template(template, macros)
+
+def replace_macros_in_template(template, macros):
+    expanded_text = template.safe_substitute(macros)
     return io.StringIO(six.text_type(expanded_text))
 
+def template_for_file(file_path):
+    with open(file_path) as orig_file:
+        text = Template(orig_file.read())
+    return text
 
 def find_base_macros(widget):
     '''

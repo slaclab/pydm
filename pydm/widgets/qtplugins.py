@@ -34,6 +34,7 @@ from .scale import PyDMScaleIndicator
 from .timeplot import PyDMTimePlot
 from .waveformplot import PyDMWaveformPlot
 from .scatterplot import PyDMScatterPlot
+from .template_repeater import PyDMTemplateRepeater
 
 
 BASE_EXTENSIONS = [RulesExtension]
@@ -175,3 +176,8 @@ PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable,
 
 # Tab Widget plugin
 PyDMTabWidgetPlugin = TabWidgetPlugin(extensions=BASE_EXTENSIONS)
+
+# Tab Widget plugin
+PyDMTemplateRepeaterPlugin = qtplugin_factory(PyDMTemplateRepeater,
+                                             group=WidgetCategory.CONTAINER,
+                                             extensions=BASE_EXTENSIONS)

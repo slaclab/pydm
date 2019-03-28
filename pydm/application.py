@@ -544,3 +544,27 @@ class PyDMApplication(QApplication):
             "'PyDMApplication.close_widget_connections' is deprecated, "
             "this function is now found on `utilities.close_widget_connections`.")
         connection.close_widget_connections(widget)
+
+    
+    def open_template(self, template_filename):
+        fname = os.path.expanduser(os.path.expandvars(template_filename))
+        if os.path.isabs(fname):
+            full_path=fname
+        else:
+            full_path = self.get_path(template_filename)
+            if not os.path.exists(full_path):
+                new_fname = find_display_in_path(template_filename)
+                if new_fname is not None and new_fname != "":
+                    full_path = new_fname
+        template = macro.template_for_file(full_path)
+        return template
+
+    def widget_from_template(self, template, macros):
+        if macros is None:
+            macros = {}
+        merged_macros = self.macro_stack[-1].copy()
+        merged_macros.update(macros)
+        f = macro.replace_macros_in_template(template, merged_macros)
+        w = self.load_ui_file(f)
+        w.base_macros = merged_macros
+        return w
