@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.6.5+67.gced5b643 documentation</title>
+  <title>pydm.application &mdash; PyDM v1.6.5+90.g5130abf4 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.6.5+67.gced5b643
+                v1.6.5+90.g5130abf4
               </div>
             
           
@@ -721,7 +721,31 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;&#39;PyDMApplication.close_widget_connections&#39; is deprecated, &quot;</span>
             <span class="s2">&quot;this function is now found on `utilities.close_widget_connections`.&quot;</span><span class="p">)</span>
-        <span class="n">connection</span><span class="o">.</span><span class="n">close_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span></div></div>
+        <span class="n">connection</span><span class="o">.</span><span class="n">close_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span></div>
+
+    
+    <span class="k">def</span> <span class="nf">open_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template_filename</span><span class="p">):</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expandvars</span><span class="p">(</span><span class="n">template_filename</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+            <span class="n">full_path</span><span class="o">=</span><span class="n">fname</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="n">template_filename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">full_path</span><span class="p">):</span>
+                <span class="n">new_fname</span> <span class="o">=</span> <span class="n">find_display_in_path</span><span class="p">(</span><span class="n">template_filename</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">new_fname</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">new_fname</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                    <span class="n">full_path</span> <span class="o">=</span> <span class="n">new_fname</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="n">macro</span><span class="o">.</span><span class="n">template_for_file</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">template</span>
+
+    <span class="k">def</span> <span class="nf">widget_from_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">macros</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">macros</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">macros</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">merged_macros</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">macro_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">merged_macros</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">macros</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">macro</span><span class="o">.</span><span class="n">replace_macros_in_template</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">merged_macros</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_ui_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">base_macros</span> <span class="o">=</span> <span class="n">merged_macros</span>
+        <span class="k">return</span> <span class="n">w</span></div>
 </pre></div>
 
            </div>

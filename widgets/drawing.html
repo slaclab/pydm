@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMDrawing Widgets &mdash; PyDM v1.6.5+67.gced5b643 documentation</title>
+  <title>PyDMDrawing Widgets &mdash; PyDM v1.6.5+90.g5130abf4 documentation</title>
   
 
   
@@ -36,7 +36,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Widget Rules" href="widget_rules/index.html" />
-    <link rel="prev" title="PyDMTabWidget" href="tab_widget.html" /> 
+    <link rel="prev" title="PyDMTemplateRepeater" href="template_repeater.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.6.5+67.gced5b643
+                v1.6.5+90.g5130abf4
               </div>
             
           
@@ -198,18 +198,14 @@
 <em class="property">class </em><code class="descclassname">pydm.widgets.drawing.</code><code class="descname">PyDMDrawing</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class to be used for all PyDM Drawing Widgets.
 This class inherits from QWidget and PyDMWidget.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawing.alarm_severity_changed">
 <code class="descname">alarm_severity_changed</code><span class="sig-paren">(</span><em>new_alarm_severity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawing.alarm_severity_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.alarm_severity_changed" title="Permalink to this definition">¶</a></dt>
@@ -220,15 +216,12 @@ This callback handles the composition of the stylesheet to be
 applied and the call
 to update to redraw the widget with the needed changes for the
 new state.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_alarm_severity</strong> (<em>int</em>) – The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
-and 3 = INVALID</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_alarm_severity</strong> (<em>int</em>) – The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
+and 3 = INVALID</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -236,16 +229,14 @@ and 3 = INVALID</td>
 <code class="descname">brush</code><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.brush" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyQT Property for the brush object to be used when coloring the
 drawing</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QBrush</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QBrush</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -261,44 +252,38 @@ degrees.</p>
 <dt id="pydm.widgets.drawing.PyDMDrawing.get_bounds">
 <code class="descname">get_bounds</code><span class="sig-paren">(</span><em>maxsize=False</em>, <em>force_no_pen=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawing.get_bounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.get_bounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a tuple containing the useful area for the drawing.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>maxsize</strong> (<em>bool</em><em>, </em><em>default is False</em>) – If True, width and height information are based on the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>maxsize</strong> (<em>bool</em><em>, </em><em>default is False</em>) – If True, width and height information are based on the
 maximum inner rectangle dimensions given by <code class="docutils literal notranslate"><span class="pre">`get_inner_max`</span></code>,
-otherwise width and height will receive the widget size.</li>
-<li><strong>force_no_pen</strong> (<em>bool</em><em>, </em><em>default is False</em>) – If True the pen width will not be considered when calculating
-the bounds.</li>
+otherwise width and height will receive the widget size.</p></li>
+<li><p><strong>force_no_pen</strong> (<em>bool</em><em>, </em><em>default is False</em>) – If True the pen width will not be considered when calculating
+the bounds.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>x, y, w, h</strong> – Tuple with X and Y coordinates followed by the maximum width
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>x, y, w, h</strong> – Tuple with X and Y coordinates followed by the maximum width
 and height.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawing.get_center">
 <code class="descname">get_center</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawing.get_center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.get_center" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simple calculation of the canvas’ center point.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>x, y</strong> – Tuple with X and Y coordinates of the center.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>x, y</strong> – Tuple with X and Y coordinates of the center.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -306,16 +291,14 @@ and height.</p>
 <code class="descname">get_inner_max</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawing.get_inner_max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.get_inner_max" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the largest inner rectangle in a rotated rectangle.
 This implementation was based on <a class="reference external" href="https://stackoverflow.com/a/18402507">https://stackoverflow.com/a/18402507</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>w, h</strong> – The width and height of the largest rectangle.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>w, h</strong> – The width and height of the largest rectangle.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -323,32 +306,28 @@ This implementation was based on <a class="reference external" href="https://sta
 <code class="descname">has_border</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawing.has_border"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.has_border" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether or not the drawing have a border based on the
 Pen Style and Pen width.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the drawing has a border, False otherwise.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the drawing has a border, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawing.is_square">
 <code class="descname">is_square</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawing.is_square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.is_square" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the widget has the same width and height values.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True in case the widget has a square shape, False otherwise.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True in case the widget has a square shape, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -360,94 +339,81 @@ widget was moved.</p>
 <p>At PyDMDrawing this method handles the alarm painting with parameters
 from the stylesheet, configures the brush, pen and calls <code class="docutils literal notranslate"><span class="pre">`draw_item`</span></code>
 so the specifics can be performed for each of the drawing classes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> (<em>QPaintEvent</em>) – </td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>event</strong> (<em>QPaintEvent</em>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.drawing.PyDMDrawing.penCapStyle">
 <code class="descname">penCapStyle</code><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.penCapStyle" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyQT Property for the pen cap to be used when drawing the border</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Index at Qt.PenCapStyle enum</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Index at Qt.PenCapStyle enum</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.drawing.PyDMDrawing.penColor">
 <code class="descname">penColor</code><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.penColor" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyQT Property for the pen color to be used when drawing the border</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QColor</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QColor</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.drawing.PyDMDrawing.penJoinStyle">
 <code class="descname">penJoinStyle</code><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.penJoinStyle" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyQT Property for the pen join style to be used when drawing the border</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Index at Qt.PenJoinStyle enum</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Index at Qt.PenJoinStyle enum</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.drawing.PyDMDrawing.penStyle">
 <code class="descname">penStyle</code><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.penStyle" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyQT Property for the pen style to be used when drawing the border</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Index at Qt.PenStyle enum</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Index at Qt.PenStyle enum</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.drawing.PyDMDrawing.penWidth">
 <code class="descname">penWidth</code><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.penWidth" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyQT Property for the pen width to be used when drawing the border</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -455,16 +421,14 @@ so the specifics can be performed for each of the drawing classes.</p>
 <code class="descname">rotation</code><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawing.rotation" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyQT Property for the counter-clockwise rotation in degrees
 to be applied to the drawing.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -479,18 +443,14 @@ to be applied to the drawing.</p>
 <em class="property">class </em><code class="descclassname">pydm.widgets.drawing.</code><code class="descname">PyDMDrawingLine</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingLine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine" title="Permalink to this definition">¶</a></dt>
 <dd><p>A widget with a line drawn in it.
 This class inherits from PyDMDrawing.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawingLine.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><em>painter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingLine.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.draw_item" title="Permalink to this definition">¶</a></dt>
@@ -505,30 +465,23 @@ This class inherits from PyDMDrawing.</p>
 <em class="property">class </em><code class="descclassname">pydm.widgets.drawing.</code><code class="descname">PyDMDrawingImage</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em>, <em>filename=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Renders an image given by the <code class="docutils literal notranslate"><span class="pre">filename</span></code> property.
 This class inherits from PyDMDrawing.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="pydm.widgets.drawing.PyDMDrawingImage.null_color">
 <code class="descname">null_color</code><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.null_color" title="Permalink to this definition">¶</a></dt>
 <dd><p>QColor to fill the image if the filename is not found.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Qt.Color</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Qt.Color</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -536,16 +489,14 @@ This class inherits from PyDMDrawing.</p>
 <code class="descname">aspectRatioMode</code><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.aspectRatioMode" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyQT Property for aspect ratio mode to be used when rendering
 the image</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Index at Qt.AspectRatioMode enum</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Index at Qt.AspectRatioMode enum</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -560,50 +511,45 @@ the image</p>
 <code class="descname">filename</code><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.filename" title="Permalink to this definition">¶</a></dt>
 <dd><p>The filename of the image to be displayed.
 This can be an absolute or relative path to the display file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The filename configured.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The filename configured.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawingImage.movie_finished">
 <code class="descname">movie_finished</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingImage.movie_finished"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.movie_finished" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback executed when the movie is finished.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawingImage.movie_frame_changed">
 <code class="descname">movie_frame_changed</code><span class="sig-paren">(</span><em>frame_no</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingImage.movie_frame_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.movie_frame_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback executed when a new frame is available at the QMovie.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>frame_no</strong> (<em>int</em>) – The new frame index</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame_no</strong> (<em>int</em>) – The new frame index</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -618,18 +564,14 @@ This can be an absolute or relative path to the display file.</p>
 <em class="property">class </em><code class="descclassname">pydm.widgets.drawing.</code><code class="descname">PyDMDrawingRectangle</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingRectangle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingRectangle" title="Permalink to this definition">¶</a></dt>
 <dd><p>A widget with a rectangle drawn in it.
 This class inherits from PyDMDrawing.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawingRectangle.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><em>painter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingRectangle.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingRectangle.draw_item" title="Permalink to this definition">¶</a></dt>
@@ -644,18 +586,14 @@ This class inherits from PyDMDrawing.</p>
 <em class="property">class </em><code class="descclassname">pydm.widgets.drawing.</code><code class="descname">PyDMDrawingTriangle</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingTriangle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingTriangle" title="Permalink to this definition">¶</a></dt>
 <dd><p>A widget with a triangle drawn in it.
 This class inherits from PyDMDrawing.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawingTriangle.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><em>painter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingTriangle.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingTriangle.draw_item" title="Permalink to this definition">¶</a></dt>
@@ -670,18 +608,14 @@ This class inherits from PyDMDrawing.</p>
 <em class="property">class </em><code class="descclassname">pydm.widgets.drawing.</code><code class="descname">PyDMDrawingEllipse</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingEllipse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingEllipse" title="Permalink to this definition">¶</a></dt>
 <dd><p>A widget with an ellipse drawn in it.
 This class inherits from PyDMDrawing.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawingEllipse.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><em>painter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingEllipse.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingEllipse.draw_item" title="Permalink to this definition">¶</a></dt>
@@ -696,18 +630,14 @@ This class inherits from PyDMDrawing.</p>
 <em class="property">class </em><code class="descclassname">pydm.widgets.drawing.</code><code class="descname">PyDMDrawingCircle</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingCircle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingCircle" title="Permalink to this definition">¶</a></dt>
 <dd><p>A widget with a circle drawn in it.
 This class inherits from PyDMDrawing.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawingCircle.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><em>painter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingCircle.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingCircle.draw_item" title="Permalink to this definition">¶</a></dt>
@@ -722,18 +652,14 @@ This class inherits from PyDMDrawing.</p>
 <em class="property">class </em><code class="descclassname">pydm.widgets.drawing.</code><code class="descname">PyDMDrawingArc</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingArc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc" title="Permalink to this definition">¶</a></dt>
 <dd><p>A widget with an arc drawn in it.
 This class inherits from PyDMDrawing.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawingArc.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><em>painter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingArc.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc.draw_item" title="Permalink to this definition">¶</a></dt>
@@ -745,32 +671,28 @@ This class inherits from PyDMDrawing.</p>
 <dt id="pydm.widgets.drawing.PyDMDrawingArc.spanAngle">
 <code class="descname">spanAngle</code><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc.spanAngle" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyQT Property for the span angle in degrees</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Angle in degrees</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Angle in degrees</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.drawing.PyDMDrawingArc.startAngle">
 <code class="descname">startAngle</code><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc.startAngle" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyQT Property for the start angle in degrees</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Angle in degrees</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Angle in degrees</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -780,18 +702,14 @@ This class inherits from PyDMDrawing.</p>
 <em class="property">class </em><code class="descclassname">pydm.widgets.drawing.</code><code class="descname">PyDMDrawingPie</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingPie"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPie" title="Permalink to this definition">¶</a></dt>
 <dd><p>A widget with a pie drawn in it.
 This class inherits from PyDMDrawing.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawingPie.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><em>painter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingPie.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPie.draw_item" title="Permalink to this definition">¶</a></dt>
@@ -806,18 +724,14 @@ This class inherits from PyDMDrawing.</p>
 <em class="property">class </em><code class="descclassname">pydm.widgets.drawing.</code><code class="descname">PyDMDrawingChord</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingChord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingChord" title="Permalink to this definition">¶</a></dt>
 <dd><p>A widget with a chord drawn in it.
 This class inherits from PyDMDrawing.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawingChord.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><em>painter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingChord.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingChord.draw_item" title="Permalink to this definition">¶</a></dt>
@@ -832,18 +746,14 @@ This class inherits from PyDMDrawing.</p>
 <em class="property">class </em><code class="descclassname">pydm.widgets.drawing.</code><code class="descname">PyDMDrawingPolygon</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingPolygon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolygon" title="Permalink to this definition">¶</a></dt>
 <dd><p>A widget with a polygon drawn in it.
 This class inherits from PyDMDrawing.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pydm.widgets.drawing.PyDMDrawingPolygon.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><em>painter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingPolygon.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolygon.draw_item" title="Permalink to this definition">¶</a></dt>
@@ -855,16 +765,14 @@ This class inherits from PyDMDrawing.</p>
 <dt id="pydm.widgets.drawing.PyDMDrawingPolygon.numberOfPoints">
 <code class="descname">numberOfPoints</code><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolygon.numberOfPoints" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyQT Property for the number of points</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Number of Points</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Number of Points</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -882,7 +790,7 @@ This class inherits from PyDMDrawing.</p>
         <a href="widget_rules/index.html" class="btn btn-neutral float-right" title="Widget Rules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="tab_widget.html" class="btn btn-neutral float-left" title="PyDMTabWidget" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="template_repeater.html" class="btn btn-neutral float-left" title="PyDMTemplateRepeater" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

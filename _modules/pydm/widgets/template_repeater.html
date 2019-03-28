@@ -1,0 +1,598 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pydm.widgets.template_repeater &mdash; PyDM v1.6.5+90.g5130abf4 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.6.5+90.g5130abf4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyDM</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pydm.widgets.template_repeater</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pydm.widgets.template_repeater</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span>
+                           <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span>
+                           <span class="n">QLayout</span><span class="p">,</span> <span class="n">QListWidget</span><span class="p">,</span> <span class="n">QListWidgetItem</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QUrl</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
+<span class="kn">from</span> <span class="nn">qtpy</span> <span class="k">import</span> <span class="n">uic</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span>
+<span class="kn">from</span> <span class="nn">.embedded_display</span> <span class="k">import</span> <span class="n">PyDMEmbeddedDisplay</span>
+<span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="k">import</span> <span class="n">is_qt_designer</span><span class="p">,</span> <span class="n">is_pydm_app</span>
+<span class="kn">import</span> <span class="nn">pydm.data_plugins</span>
+<span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">macro</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">FlowLayout</span><span class="p">(</span><span class="n">QLayout</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">margin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">h_spacing</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">v_spacing</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">QLayout</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="n">margin</span><span class="p">,</span> <span class="n">margin</span><span class="p">,</span> <span class="n">margin</span><span class="p">,</span> <span class="n">margin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_h_space</span> <span class="o">=</span> <span class="n">h_spacing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_v_space</span> <span class="o">=</span> <span class="n">v_spacing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">def</span> <span class="nf">addItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">horizontalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_h_space</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_h_space</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">smart_spacing</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">PM_LayoutHorizontalSpacing</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">verticalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_v_space</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_v_space</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">smart_spacing</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">PM_LayoutVerticalSpacing</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">itemAt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="k">def</span> <span class="nf">takeAt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="k">def</span> <span class="nf">expandingDirections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientations</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">hasHeightForWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    
+    <span class="k">def</span> <span class="nf">heightForWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_layout</span><span class="p">(</span><span class="n">QRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="kc">True</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">setGeometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rect</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FlowLayout</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_layout</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimumSize</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">minimumSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">QSize</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">:</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">size</span><span class="o">.</span><span class="n">expandedTo</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">minimumSize</span><span class="p">())</span>
+        <span class="c1">#size += QSize(2*self.margin(), 2*self.margin())</span>
+        <span class="n">size</span> <span class="o">+=</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">size</span>
+    
+    <span class="k">def</span> <span class="nf">do_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">test_only</span><span class="p">):</span>
+        <span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getContentsMargins</span><span class="p">()</span>
+        <span class="n">effective_rect</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">adjusted</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="o">-</span><span class="n">right</span><span class="p">,</span> <span class="o">-</span><span class="n">bottom</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">effective_rect</span><span class="o">.</span><span class="n">x</span><span class="p">()</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">effective_rect</span><span class="o">.</span><span class="n">y</span><span class="p">()</span>
+        <span class="n">line_height</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">:</span>
+            <span class="n">wid</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">widget</span><span class="p">()</span>
+            <span class="n">space_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizontalSpacing</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">space_x</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">space_x</span> <span class="o">=</span> <span class="n">wid</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">layoutSpacing</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">PushButton</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">PushButton</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+            <span class="n">space_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">verticalSpacing</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">space_y</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">space_y</span> <span class="o">=</span> <span class="n">wid</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">layoutSpacing</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">PushButton</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">PushButton</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span><span class="p">)</span>
+            <span class="n">next_x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">sizeHint</span><span class="p">()</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">+</span> <span class="n">space_x</span>
+            <span class="k">if</span> <span class="n">next_x</span> <span class="o">-</span> <span class="n">space_x</span> <span class="o">&gt;</span> <span class="n">effective_rect</span><span class="o">.</span><span class="n">right</span><span class="p">()</span> <span class="ow">and</span> <span class="n">line_height</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">effective_rect</span><span class="o">.</span><span class="n">x</span><span class="p">()</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">line_height</span> <span class="o">+</span> <span class="n">space_y</span>
+                <span class="n">next_x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">sizeHint</span><span class="p">()</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">+</span> <span class="n">space_x</span>
+                <span class="n">line_height</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">test_only</span><span class="p">:</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">QRect</span><span class="p">(</span><span class="n">QPoint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">item</span><span class="o">.</span><span class="n">sizeHint</span><span class="p">()))</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">next_x</span>
+            <span class="n">line_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">line_height</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">sizeHint</span><span class="p">()</span><span class="o">.</span><span class="n">height</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">y</span> <span class="o">+</span> <span class="n">line_height</span> <span class="o">-</span> <span class="n">rect</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">+</span> <span class="n">bottom</span>
+    
+    <span class="k">def</span> <span class="nf">smart_spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pm</span><span class="p">):</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parent</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">parent</span><span class="o">.</span><span class="n">isWidgetType</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">pixelMetric</span><span class="p">(</span><span class="n">pm</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">spacing</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">LayoutType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">Vertical</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">Horizontal</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">Flow</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">layout_class_for_type</span> <span class="o">=</span> <span class="p">(</span><span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">FlowLayout</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMTemplateRepeater"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater">[docs]</a><span class="k">class</span> <span class="nc">PyDMTemplateRepeater</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">,</span> <span class="n">LayoutType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    PyDMTemplateRepeater takes a .ui file with macro variables as a template, and a JSON</span>
+<span class="sd">    file (or a list of dictionaries) with a list of values to use to fill in</span>
+<span class="sd">    the macro variables, then creates a layout with one instance of the</span>
+<span class="sd">    template for each item in the list.</span>
+
+<span class="sd">    It can be very convenient if you have displays that repeat the same set of</span>
+<span class="sd">    widgets over and over - for instance, if you have a standard set of</span>
+<span class="sd">    controls for a magnet, and want to build a display with a list of controls</span>
+<span class="sd">    for every magnet, the Template Repeater lets you do that with a minimum</span>
+<span class="sd">    amount of work: just build a template for a single magnet, and a JSON list</span>
+<span class="sd">    with the data that describes all of the magnets.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parent : optional</span>
+<span class="sd">        The parent of this widget.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">LayoutType</span><span class="p">)</span>
+    <span class="n">LayoutType</span> <span class="o">=</span> <span class="n">LayoutType</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="n">PyDMPrimitiveWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_template_filename</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_count_shown_in_designer</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cached_template</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_layout_type</span> <span class="o">=</span> <span class="n">LayoutType</span><span class="o">.</span><span class="n">Vertical</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+    
+    <span class="nd">@Property</span><span class="p">(</span><span class="n">LayoutType</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">layoutType</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The layout type to use.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        LayoutType</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_type</span>
+
+    <span class="nd">@layoutType</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">layoutType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The layout type to use.</span>
+<span class="sd">        Options are:</span>
+<span class="sd">        - **Vertical**: Instances of the template are laid out vertically, in rows.</span>
+<span class="sd">        - **Horizontal**: Instances of the template are laid out horizontally, in columns.</span>
+<span class="sd">        - **Flow**: Instances of the template are laid out horizontally until they reach the edge of the template, at which point they &quot;wrap&quot; into a new row.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_type : LayoutType</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_type</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_type</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_layout_type</span> <span class="o">=</span> <span class="n">new_type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+    
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">countShownInDesigner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The number of instances to show in Qt Designer.  This property has no</span>
+<span class="sd">        effect outside of Designer.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count_shown_in_designer</span>
+    
+    <span class="nd">@countShownInDesigner</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">countShownInDesigner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_count</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The number of instances to show in Qt Designer.  This property has no</span>
+<span class="sd">        effect outside of Designer.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_count : int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">new_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_count</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t convert </span><span class="si">{}</span><span class="s2"> to integer.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_count</span><span class="p">))</span>
+            <span class="k">return</span>
+        <span class="n">new_count</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">new_count</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_count</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count_shown_in_designer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_count_shown_in_designer</span> <span class="o">=</span> <span class="n">new_count</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+    
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">templateFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The path to the .ui file to use as a template.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_template_filename</span>
+    
+    <span class="nd">@templateFilename</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">templateFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The path to the .ui file to use as a template.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_filename : str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_filename</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_template_filename</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_template_filename</span> <span class="o">=</span> <span class="n">new_filename</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cached_template</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_template_filename</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">dataSource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The path to the JSON file to fill in each instance of the template.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span>
+    
+    <span class="nd">@dataSource</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">dataSource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_source</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the path to the JSON file to fill in each instance of the template.</span>
+<span class="sd">        </span>
+<span class="sd">        For example, if you build a template that contains two macro variables,</span>
+<span class="sd">        ${NAME} and ${UNIT}, your JSON file should be a list of dictionaries,</span>
+<span class="sd">        each with keys for NAME and UNIT, like this:</span>
+<span class="sd">        </span>
+<span class="sd">        [{&quot;NAME&quot;: &quot;First Device&quot;, &quot;UNIT&quot;: 1}, {&quot;NAME&quot;: &quot;Second Device&quot;, &quot;UNIT&quot;: 2}]</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        data_source : str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">data_source</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span> <span class="o">=</span> <span class="n">data_source</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># Expand user (~ or ~user) and environment variables.</span>
+                    <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expandvars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">():</span>
+                        <span class="c1"># If we&#39;re running this inside the PyDM app, we can</span>
+                        <span class="c1"># make sure the path is relative to the currently loaded</span>
+                        <span class="c1"># display (.ui or .py file).</span>
+                        <span class="n">fname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        
+<div class="viewcode-block" id="PyDMTemplateRepeater.open_template_file"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.open_template_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_template_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Opens the widget specified in the templateFilename property.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        variables : dict</span>
+<span class="sd">            A dictionary of macro variables to apply when loading, in addition</span>
+<span class="sd">            to all the macros specified on the template repeater widget.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        display : QWidget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">variables</span><span class="p">:</span>
+            <span class="n">variables</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Expand user (~ or ~user) and environment variables.</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expandvars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">templateFilename</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_template</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cached_template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">open_template</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">widget_from_template</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cached_template</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">macro</span><span class="o">.</span><span class="n">substitute_in_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">uic</span><span class="o">.</span><span class="n">loadUi</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception while opening template file.&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span></div>
+       
+<div class="viewcode-block" id="PyDMTemplateRepeater.rebuild"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.rebuild">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Clear out all existing widgets, and populate the list using the</span>
+<span class="sd">        template file and data source.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">templateFilename</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setUpdatesEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        
+        <span class="n">layout_class</span> <span class="o">=</span> <span class="n">layout_class_for_type</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">layoutType</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">())</span> <span class="o">!=</span> <span class="n">layout_class</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Trick to remove the existing layout by re-parenting it in an empty widget.</span>
+                <span class="n">QWidget</span><span class="p">()</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">())</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">layout_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">pydm</span><span class="o">.</span><span class="n">data_plugins</span><span class="o">.</span><span class="n">connection_queue</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">variables</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">is_qt_designer</span><span class="p">()</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">countShownInDesigner</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_template_file</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">w</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">w</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">()</span>
+                    <span class="n">w</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;No Template Loaded.  Data: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">variables</span><span class="p">))</span>
+                <span class="n">w</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setUpdatesEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="PyDMTemplateRepeater.clear"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Clear out any existing instances of the template inside</span>
+<span class="sd">        the widget.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">takeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">widget</span><span class="p">()</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+            <span class="k">del</span> <span class="n">item</span></div>
+    
+    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">():</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+    
+    <span class="nd">@property</span>    
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The dictionary used by the widget to fill in each instance of the template.</span>
+<span class="sd">        This property will be overwritten if the user changes the dataSource</span>
+<span class="sd">        property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+    
+    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the dictionary used by the widget to fill in each instance of </span>
+<span class="sd">        the template.  This property will be overwritten if the user changes</span>
+<span class="sd">        the dataSource property.  After setting this property, `rebuild` </span>
+<span class="sd">        is automatically called to refresh the widget.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">new_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span></div>
+
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

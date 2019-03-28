@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMByteIndicator &mdash; PyDM v1.6.5+67.gced5b643 documentation</title>
+  <title>PyDMByteIndicator &mdash; PyDM v1.6.5+90.g5130abf4 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.6.5+67.gced5b643
+                v1.6.5+90.g5130abf4
               </div>
             
           
@@ -204,48 +204,40 @@
 <em class="property">class </em><code class="descclassname">pydm.widgets.byte.</code><code class="descname">PyDMByteIndicator</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Widget for graphical representation of bits from an integer number
 with support for Channels and more from PyDM</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.bigEndian">
 <code class="descname">bigEndian</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.bigEndian" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether the most significant bit is at the start or end of the widget.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.circles">
 <code class="descname">circles</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.circles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw indicators as circles, rather than rectangles.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -260,14 +252,11 @@ with support for Channels and more from PyDM</p>
 <dd><p>Callback invoked when the connection state of the Channel is changed.
 This callback acts on the connection state to enable/disable the widget
 and also trigger the change on alarm severity to ALARM_DISCONNECTED.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connected</strong> (<em>int</em>) – When this value is 0 the channel is disconnected, 1 otherwise.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>connected</strong> (<em>int</em>) – When this value is 0 the channel is disconnected, 1 otherwise.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -281,96 +270,84 @@ when using the widget with the Qt Designer</p>
 <dt id="pydm.widgets.byte.PyDMByteIndicator.labelPosition">
 <code class="descname">labelPosition</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.labelPosition" title="Permalink to this definition">¶</a></dt>
 <dd><p>The side of the widget to display labels on.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.labels">
 <code class="descname">labels</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Labels for each bit.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.numBits">
 <code class="descname">numBits</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.numBits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of bits to interpret.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.offColor">
 <code class="descname">offColor</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.offColor" title="Permalink to this definition">¶</a></dt>
 <dd><p>The color for a bit in the ‘off’ state.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QColor</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QColor</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.onColor">
 <code class="descname">onColor</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.onColor" title="Permalink to this definition">¶</a></dt>
 <dd><p>The color for a bit in the ‘on’ state.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QColor</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QColor</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.orientation">
 <code class="descname">orientation</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.orientation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to lay out the bit indicators vertically or horizontally.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -390,32 +367,28 @@ according to the layout property values.</p>
 <dt id="pydm.widgets.byte.PyDMByteIndicator.shift">
 <code class="descname">shift</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.shift" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bit shift.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.showLabels">
 <code class="descname">showLabels</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.showLabels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not to show labels next to each bit indicator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -428,14 +401,11 @@ according to the layout property values.</p>
 <dt id="pydm.widgets.byte.PyDMByteIndicator.value_changed">
 <code class="descname">value_changed</code><span class="sig-paren">(</span><em>new_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.value_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel value is changed.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_val</strong> (<em>int</em>) – The new value from the channel.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_val</strong> (<em>int</em>) – The new value from the channel.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

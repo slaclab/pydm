@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Application &mdash; PyDM v1.6.5+67.gced5b643 documentation</title>
+  <title>Application &mdash; PyDM v1.6.5+90.g5130abf4 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.6.5+67.gced5b643
+                v1.6.5+90.g5130abf4
               </div>
             
           
@@ -187,52 +187,45 @@
 <dd><p>PyDMApplication handles loading PyDM display files, opening
 new windows, and most importantly, establishing and managing
 connections to channels via data plugins.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ui_file</strong> (<em>str</em><em>, </em><em>optional</em>) – The file path to a PyDM display file (.ui or .py).</li>
-<li><strong>command_line_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of strings representing arguments supplied at the command
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ui_file</strong> (<em>str</em><em>, </em><em>optional</em>) – The file path to a PyDM display file (.ui or .py).</p></li>
+<li><p><strong>command_line_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of strings representing arguments supplied at the command
 line.  All arguments in this list are handled by QApplication,
-in addition to PyDMApplication.</li>
-<li><strong>display_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command line arguments that should be forwarded to the
+in addition to PyDMApplication.</p></li>
+<li><p><strong>display_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command line arguments that should be forwarded to the
 Display class.  This is only useful if a Related Display Button
 is opening up a .py file with extra arguments specified, and
 probably isn’t something you will ever need to use when writing
-code that instantiates PyDMApplication.</li>
-<li><strong>perfmon</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to enable performance monitoring using ‘psutil’.
+code that instantiates PyDMApplication.</p></li>
+<li><p><strong>perfmon</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to enable performance monitoring using ‘psutil’.
 When enabled, CPU load information on a per-thread basis is
-periodically printed to the terminal.</li>
-<li><strong>hide_nav_bar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to display the navigation bar (forward/back/home buttons)
-when the main window is first displayed.</li>
-<li><strong>hide_menu_bar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to display the menu bar (File, View)
-when the main window is first displayed.</li>
-<li><strong>hide_status_bar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to display the status bar (general messages and errors)
-when the main window is first displayed.</li>
-<li><strong>read_only</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to launch PyDM in a read-only state.</li>
-<li><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to be forwarded to the display class
-being loaded.</li>
-<li><strong>use_main_window</strong> (<em>bool</em><em>, </em><em>optional</em>) – If ui_file is note given, this parameter controls whether or not to
-create a PyDMMainWindow in the initialization (Default is True).</li>
-<li><strong>fullscreen</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to launch PyDM in a full screen mode.</li>
+periodically printed to the terminal.</p></li>
+<li><p><strong>hide_nav_bar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to display the navigation bar (forward/back/home buttons)
+when the main window is first displayed.</p></li>
+<li><p><strong>hide_menu_bar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to display the menu bar (File, View)
+when the main window is first displayed.</p></li>
+<li><p><strong>hide_status_bar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to display the status bar (general messages and errors)
+when the main window is first displayed.</p></li>
+<li><p><strong>read_only</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to launch PyDM in a read-only state.</p></li>
+<li><p><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to be forwarded to the display class
+being loaded.</p></li>
+<li><p><strong>use_main_window</strong> (<em>bool</em><em>, </em><em>optional</em>) – If ui_file is note given, this parameter controls whether or not to
+create a PyDMMainWindow in the initialization (Default is True).</p></li>
+<li><p><strong>fullscreen</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to launch PyDM in a full screen mode.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pydm.PyDMApplication.add_connection">
 <code class="descname">add_connection</code><span class="sig-paren">(</span><em>channel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.add_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.add_connection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new connection to a channel.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>channel</strong> (<a class="reference internal" href="channel.html#channel.PyDMChannel" title="channel.PyDMChannel"><em>PyDMChannel</em></a>) – </td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>channel</strong> (<a class="reference internal" href="channel.html#channel.PyDMChannel" title="channel.PyDMChannel"><em>PyDMChannel</em></a>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -240,14 +233,11 @@ create a PyDMMainWindow in the initialization (Default is True).</li>
 <code class="descname">close_widget_connections</code><span class="sig-paren">(</span><em>widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.close_widget_connections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.close_widget_connections" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a widget to start from, traverse the tree of child widgets,
 and try to close connections to any widgets with channels.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>widget</strong> (<em>QWidget</em>) – </td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>widget</strong> (<em>QWidget</em>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -257,14 +247,11 @@ and try to close connections to any widgets with channels.</p>
 and try to establish connections to any widgets with channels.</p>
 <p>Display subclasses which dynamically create widgets may need to
 use this method.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>widget</strong> (<em>QWidget</em>) – </td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>widget</strong> (<em>QWidget</em>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -293,18 +280,17 @@ and drawing image come to mind) and the standard is that they expect
 paths to be given relative to the .ui or .py file in which the widget
 lives.  But, python and Qt want the file path relative to the directory
 you are running pydm from.  This function does that translation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ui_file</strong> (<em>str</em>) – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ui_file</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -314,27 +300,23 @@ you are running pydm from.  This function does that translation.</p>
 if the file actually contains a valid PyDM Display subclass, and if
 the checks pass, create and return an instance.</p>
 <p>This is an internal method, users will usually want to use <cite>open_file</cite> instead.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pyfile</strong> (<em>str</em>) – The path to a .ui file to load.</li>
-<li><strong>args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command-line arguments to pass to the
-loaded display subclass.</li>
-<li><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the
-loaded display subclass.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pyfile</strong> (<em>str</em>) – The path to a .ui file to load.</p></li>
+<li><p><strong>args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command-line arguments to pass to the
+loaded display subclass.</p></li>
+<li><p><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the
+loaded display subclass.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">pydm.Display</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pydm.Display</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -342,25 +324,21 @@ loaded display subclass.</li>
 <code class="descname">load_ui_file</code><span class="sig-paren">(</span><em>uifile</em>, <em>macros=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.load_ui_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.load_ui_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a .ui file, perform macro substitution, then return the resulting QWidget.</p>
 <p>This is an internal method, users will usually want to use <cite>open_file</cite> instead.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>uifile</strong> (<em>str</em>) – The path to a .ui file to load.</li>
-<li><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the file
-to be opened.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uifile</strong> (<em>str</em>) – The path to a .ui file to load.</p></li>
+<li><p><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the file
+to be opened.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">QWidget</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QWidget</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -376,23 +354,19 @@ one window per process.</p>
 <dt id="pydm.PyDMApplication.make_window">
 <code class="descname">make_window</code><span class="sig-paren">(</span><em>ui_file</em>, <em>macros=None</em>, <em>command_line_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.make_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.make_window" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open the ui_file in the window.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ui_file</strong> (<em>str</em>) – The path to a .ui or .py file to open in the new process.</li>
-<li><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the display file
-to be opened.</li>
-<li><strong>command_line_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command line arguments to pass to the new process.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ui_file</strong> (<em>str</em>) – The path to a .ui or .py file to open in the new process.</p></li>
+<li><p><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the display file
+to be opened.</p></li>
+<li><p><strong>command_line_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command line arguments to pass to the new process.
 Typically, this argument is used by related display buttons
 to pass in extra arguments.  It is probably rare that code you
-write needs to use this argument.</li>
+write needs to use this argument.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -402,23 +376,19 @@ write needs to use this argument.</li>
 new windows in PyDM typically actually spawn an entirely new PyDM process.
 This keeps each window isolated, so that one window cannot slow
 down or crash another.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ui_file</strong> (<em>str</em>) – The path to a .ui or .py file to open in the new process.</li>
-<li><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the display file
-to be opened.</li>
-<li><strong>command_line_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command line arguments to pass to the new process.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ui_file</strong> (<em>str</em>) – The path to a .ui or .py file to open in the new process.</p></li>
+<li><p><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the display file
+to be opened.</p></li>
+<li><p><strong>command_line_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command line arguments to pass to the new process.
 Typically, this argument is used by related display buttons
 to pass in extra arguments.  It is probably rare that code you
-write needs to use this argument.</li>
+write needs to use this argument.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -427,23 +397,19 @@ write needs to use this argument.</li>
 <dd><p>Make a new window and open the supplied file.
 Currently, this method just calls <cite>new_pydm_process</cite>.</p>
 <p>This is an internal method that typically will not be needed by users.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ui_file</strong> (<em>str</em>) – The path to a .ui or .py file to open in the new process.</li>
-<li><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the display file
-to be opened.</li>
-<li><strong>command_line_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command line arguments to pass to the new process.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ui_file</strong> (<em>str</em>) – The path to a .ui or .py file to open in the new process.</p></li>
+<li><p><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the display file
+to be opened.</p></li>
+<li><p><strong>command_line_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command line arguments to pass to the new process.
 Typically, this argument is used by related display buttons
 to pass in extra arguments.  It is probably rare that code you
-write needs to use this argument.</li>
+write needs to use this argument.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -453,29 +419,25 @@ write needs to use this argument.</li>
 This method is the entry point for all opening of new displays,
 and manages handling macros and relative file paths when opening
 nested displays.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ui_file</strong> (<em>str</em>) – The path to a .ui or .py file to open in the new process.</li>
-<li><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the display file
-to be opened.</li>
-<li><strong>command_line_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command line arguments to pass to the new process.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ui_file</strong> (<em>str</em>) – The path to a .ui or .py file to open in the new process.</p></li>
+<li><p><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the display file
+to be opened.</p></li>
+<li><p><strong>command_line_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command line arguments to pass to the new process.
 Typically, this argument is used by related display buttons
 to pass in extra arguments.  It is probably rare that code you
-write needs to use this argument.</li>
+write needs to use this argument.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">QWidget</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QWidget</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -489,32 +451,28 @@ really only used by embedded displays.</p>
 <dt id="pydm.PyDMApplication.plugin_for_channel">
 <code class="descname">plugin_for_channel</code><span class="sig-paren">(</span><em>channel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.plugin_for_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.plugin_for_channel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a PyDMChannel object, determine the appropriate plugin to use.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>channel</strong> (<a class="reference internal" href="channel.html#channel.PyDMChannel" title="channel.PyDMChannel"><em>PyDMChannel</em></a>) – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">PyDMPlugin</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>channel</strong> (<a class="reference internal" href="channel.html#channel.PyDMChannel" title="channel.PyDMChannel"><em>PyDMChannel</em></a>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>PyDMPlugin</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.PyDMApplication.remove_connection">
 <code class="descname">remove_connection</code><span class="sig-paren">(</span><em>channel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.remove_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.remove_connection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a connection to a channel.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>channel</strong> (<a class="reference internal" href="channel.html#channel.PyDMChannel" title="channel.PyDMChannel"><em>PyDMChannel</em></a>) – </td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>channel</strong> (<a class="reference internal" href="channel.html#channel.PyDMChannel" title="channel.PyDMChannel"><em>PyDMChannel</em></a>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMCheckbox &mdash; PyDM v1.6.5+67.gced5b643 documentation</title>
+  <title>PyDMCheckbox &mdash; PyDM v1.6.5+90.g5130abf4 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.6.5+67.gced5b643
+                v1.6.5+90.g5130abf4
               </div>
             
           
@@ -205,31 +205,24 @@
 <dt id="pydm.widgets.checkbox.PyDMCheckbox">
 <em class="property">class </em><code class="descclassname">pydm.widgets.checkbox.</code><code class="descname">PyDMCheckbox</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/checkbox.html#PyDMCheckbox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.checkbox.PyDMCheckbox" title="Permalink to this definition">¶</a></dt>
 <dd><p>A QCheckbox with support for Channels and more from PyDM</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pydm.widgets.checkbox.PyDMCheckbox.send_value">
 <code class="descname">send_value</code><span class="sig-paren">(</span><em>checked</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/checkbox.html#PyDMCheckbox.send_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.checkbox.PyDMCheckbox.send_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method that emit the signal to notify the Channel that a new
 value was written at the widget.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>checked</strong> (<em>bool</em>) – True in case the checkbox was checked, False otherwise.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>checked</strong> (<em>bool</em>) – True in case the checkbox was checked, False otherwise.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -237,14 +230,11 @@ value was written at the widget.</p>
 <code class="descname">value_changed</code><span class="sig-paren">(</span><em>new_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/checkbox.html#PyDMCheckbox.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.checkbox.PyDMCheckbox.value_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel value is changed.
 Sets the checkbox checked or not based on the new value.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_val</strong> (<em>int</em>) – The new value from the channel.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_val</strong> (<em>int</em>) – The new value from the channel.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

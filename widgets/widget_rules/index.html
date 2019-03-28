@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Widget Rules &mdash; PyDM v1.6.5+67.gced5b643 documentation</title>
+  <title>Widget Rules &mdash; PyDM v1.6.5+90.g5130abf4 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.6.5+67.gced5b643
+                v1.6.5+90.g5130abf4
               </div>
             
           
@@ -214,50 +214,46 @@ on it to show the Task Menu and select the <code class="docutils literal notrans
 clicking on the <strong>Add Rule</strong> button on the top left side or delete a rule by
 clicking on the <strong>Remove Rule</strong> sign.</p>
 <ul>
-<li><dl class="first docutils">
-<dt><strong>Rule Name</strong></dt>
-<dd><p class="first last">It is very  important to give a meaningful name to a rule in order to troubleshoot
+<li><dl class="simple">
+<dt><strong>Rule Name</strong></dt><dd><p>It is very  important to give a meaningful name to a rule in order to troubleshoot
 it as well as make it clear for others what this rule does.</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><strong>Property</strong></dt>
-<dd><p class="first">The property combo box will display all possible options to be configured at this
+<li><dl>
+<dt><strong>Property</strong></dt><dd><p>The property combo box will display all possible options to be configured at this
 widget using the rules mechanism. Most of the widgets will allow users to tweak
 the following properties:</p>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt><strong>Visible</strong>:</dt>
-<dd>If the result of the expression is <strong>True</strong> the widget will be visible, otherwise it will be hidden.</dd>
+<li><dl class="simple">
+<dt><strong>Visible</strong>:</dt><dd><p>If the result of the expression is <strong>True</strong> the widget will be visible, otherwise it will be hidden.</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><strong>Enable</strong>:</dt>
-<dd>If the result of the expression is <strong>True</strong> the widget will be enabled, otherwise it will be disabled.</dd>
+<li><dl class="simple">
+<dt><strong>Enable</strong>:</dt><dd><p>If the result of the expression is <strong>True</strong> the widget will be enabled, otherwise it will be disabled.</p>
+</dd>
 </dl>
 </li>
 </ul>
-<p class="last">Once a property is selected, it is time to add at least one channel to be used
+<p>Once a property is selected, it is time to add at least one channel to be used
 as trigger and value for the expression.</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><strong>Channels</strong></dt>
-<dd><p class="first">To do so, click at the <strong>+ Add Channel</strong> button on top of the table and fill in
+<li><dl>
+<dt><strong>Channels</strong></dt><dd><p>To do so, click at the <strong>+ Add Channel</strong> button on top of the table and fill in
 the channel address.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">Trigger</span></code> option defines if the expression will be evaluated or not when
 this channel’s value is changed. At least one channel must be marked as <code class="docutils literal notranslate"><span class="pre">Trigger</span></code>.</p>
-<p class="last">With the channel(s) added it is time to create the expression.</p>
+<p>With the channel(s) added it is time to create the expression.</p>
 </dd>
 </dl>
 </li>
 </ul>
 <ul id="expression">
-<li><dl class="first docutils">
-<dt><strong>Expression</strong></dt>
-<dd><p class="first">When the user selects a property, the <code class="docutils literal notranslate"><span class="pre">Expected</span> <span class="pre">Type</span></code> label is updated with
+<li><dl>
+<dt><strong>Expression</strong></dt><dd><p>When the user selects a property, the <code class="docutils literal notranslate"><span class="pre">Expected</span> <span class="pre">Type</span></code> label is updated with
 the expected data type for the given property.</p>
 <p>It is the user responsibility to cast the data properly and ensure that the
 proper data type or equivalent is the result of the evaluation.</p>
@@ -268,25 +264,25 @@ channel, <code class="docutils literal notranslate"><span class="pre">ch[2]</spa
 <p>To make the expression mechanism more flexible, users can make usage of the
 following libraries:</p>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt><strong>Numpy</strong>: <a class="reference external" href="http://www.numpy.org/">http://www.numpy.org/</a></dt>
-<dd>In order to use the Numpy library functions you will need to use the <strong>np.</strong>
+<li><dl class="simple">
+<dt><strong>Numpy</strong>: <a class="reference external" href="http://www.numpy.org/">http://www.numpy.org/</a></dt><dd><p>In order to use the Numpy library functions you will need to use the <strong>np.</strong>
 prefix. E.g:
 For Numpy Absolute (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.absolute.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.absolute.html</a>)
-you should use: <code class="docutils literal notranslate"><span class="pre">np.absolute(...)</span></code>.</dd>
+you should use: <code class="docutils literal notranslate"><span class="pre">np.absolute(...)</span></code>.</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><strong>Math</strong>: <a class="reference external" href="https://docs.python.org/3.6/library/math.html">https://docs.python.org/3.6/library/math.html</a></dt>
-<dd>The math module from Python is imported in full so different than the Numpy
+<li><dl class="simple">
+<dt><strong>Math</strong>: <a class="reference external" href="https://docs.python.org/3.6/library/math.html">https://docs.python.org/3.6/library/math.html</a></dt><dd><p>The math module from Python is imported in full so different than the Numpy
 case, all the functions are already imported and can be used directly without
-the need to explicitly use the module name.</dd>
+the need to explicitly use the module name.</p>
+</dd>
 </dl>
 </li>
 </ul>
-<div class="last admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">For now, PyDM only provide support for Numpy and Math, in case other libraries
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For now, PyDM only provide support for Numpy and Math, in case other libraries
 or modules are required for the expression namespace please open an Issue so
 we can add it.</p>
 </div>

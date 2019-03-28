@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Including Data Plugins &mdash; PyDM v1.6.5+67.gced5b643 documentation</title>
+  <title>Including Data Plugins &mdash; PyDM v1.6.5+90.g5130abf4 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.6.5+67.gced5b643
+                v1.6.5+90.g5130abf4
               </div>
             
           
@@ -202,39 +202,32 @@ otherwise they will not be registered in time for connections to be made.</p>
 <dt id="pydm.data_plugins.add_plugin">
 <code class="descclassname">pydm.data_plugins.</code><code class="descname">add_plugin</code><span class="sig-paren">(</span><em>plugin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/data_plugins.html#add_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.data_plugins.add_plugin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a PyDM plugin to the global registry of protocol vs. plugins</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin</strong> (<em>PyDMPlugin</em>) – The class of plugin to instantiate</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>plugin</strong> (<em>PyDMPlugin</em>) – The class of plugin to instantiate</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pydm.data_plugins.load_plugins_from_path">
 <code class="descclassname">pydm.data_plugins.</code><code class="descname">load_plugins_from_path</code><span class="sig-paren">(</span><em>locations</em>, <em>token</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/data_plugins.html#load_plugins_from_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.data_plugins.load_plugins_from_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load plugins from file locations that match a specific token</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>locations</strong> (<em>list</em>) – List of file locations</li>
-<li><strong>token</strong> (<em>str</em>) – Phrase that must match the end of the filename for it to be checked for
-PyDMPlugins</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locations</strong> (<em>list</em>) – List of file locations</p></li>
+<li><p><strong>token</strong> (<em>str</em>) – Phrase that must match the end of the filename for it to be checked for
+PyDMPlugins</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>plugins</strong> – Dictionary of plugins add from this folder</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>plugins</strong> – Dictionary of plugins add from this folder</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

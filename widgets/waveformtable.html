@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMWaveformTable &mdash; PyDM v1.6.5+67.gced5b643 documentation</title>
+  <title>PyDMWaveformTable &mdash; PyDM v1.6.5+90.g5130abf4 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.6.5+67.gced5b643
+                v1.6.5+90.g5130abf4
               </div>
             
           
@@ -208,18 +208,14 @@
 <p>Values of the array are displayed in the selected number of columns.
 The number of rows is determined by the size of the waveform.
 It is possible to define the labels of each row and column.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pydm.widgets.waveformtable.PyDMWaveformTable.check_enable_state">
 <code class="descname">check_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.check_enable_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.check_enable_state" title="Permalink to this definition">¶</a></dt>
@@ -231,16 +227,14 @@ editable when we have write access.</p>
 <dt id="pydm.widgets.waveformtable.PyDMWaveformTable.columnHeaderLabels">
 <code class="descname">columnHeaderLabels</code><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.columnHeaderLabels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the list of labels for the columns of the Table.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of strings</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list of strings</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -252,48 +246,39 @@ editable when we have write access.</p>
 <dt id="pydm.widgets.waveformtable.PyDMWaveformTable.rowHeaderLabels">
 <code class="descname">rowHeaderLabels</code><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.rowHeaderLabels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the list of labels for the rows of the Table.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of strings</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list of strings</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.waveformtable.PyDMWaveformTable.send_waveform">
 <code class="descname">send_waveform</code><span class="sig-paren">(</span><em>row</em>, <em>column</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.send_waveform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.send_waveform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update Channel value when cell value is changed.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>row</strong> (<em>int</em>) – Row of the changed cell.</li>
-<li><strong>column</strong> (<em>int</em>) – Column of the changed cell.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> (<em>int</em>) – Row of the changed cell.</p></li>
+<li><p><strong>column</strong> (<em>int</em>) – Column of the changed cell.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.waveformtable.PyDMWaveformTable.value_changed">
 <code class="descname">value_changed</code><span class="sig-paren">(</span><em>new_waveform</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.value_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel value is changed.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_waveform</strong> (<em>np.ndarray</em>) – The new waveform value from the channel.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_waveform</strong> (<em>np.ndarray</em>) – The new waveform value from the channel.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

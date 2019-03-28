@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMWaveformPlot &mdash; PyDM v1.6.5+67.gced5b643 documentation</title>
+  <title>PyDMWaveformPlot &mdash; PyDM v1.6.5+90.g5130abf4 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.6.5+67.gced5b643
+                v1.6.5+90.g5130abf4
               </div>
             
           
@@ -201,69 +201,61 @@
 <dd><p>PyDMWaveformPlot is a widget to plot one or more waveforms.</p>
 <p>Each curve can plot either a Y-axis waveform vs. its indices,
 or a Y-axis waveform against an X-axis waveform.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>optional</em>) – The parent of this widget.</li>
-<li><strong>init_x_channels</strong> (<em>optional</em>) – init_x_channels can be a string with the address for a channel,
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>optional</em>) – The parent of this widget.</p></li>
+<li><p><strong>init_x_channels</strong> (<em>optional</em>) – init_x_channels can be a string with the address for a channel,
 or a list of strings, each containing an address for a channel.
 If not specified, y-axis waveforms will be plotted against their
 indices. If a list is specified for both init_x_channels and
 init_y_channels, they both must have the same length.
 If a single x channel was specified, and a list of y channels are
-specified, all y channels will be plotted against the same x channel.</li>
-<li><strong>init_y_channels</strong> (<em>optional</em>) – init_y_channels can be a string with the address for a channel,
+specified, all y channels will be plotted against the same x channel.</p></li>
+<li><p><strong>init_y_channels</strong> (<em>optional</em>) – init_y_channels can be a string with the address for a channel,
 or a list of strings, each containing an address for a channel.
 If a list is specified for both init_x_channels and init_y_channels,
 they both must have the same length.
 If a single x channel was specified, and a list of y channels are
-specified, all y channels will be plotted against the same x channel.</li>
-<li><strong>background</strong> (<em>optional</em>) – The background color for the plot.  Accepts any arguments that
-pyqtgraph.mkColor will accept.</li>
+specified, all y channels will be plotted against the same x channel.</p></li>
+<li><p><strong>background</strong> (<em>optional</em>) – The background color for the plot.  Accepts any arguments that
+pyqtgraph.mkColor will accept.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.addChannel">
 <code class="descname">addChannel</code><span class="sig-paren">(</span><em>y_channel=None</em>, <em>x_channel=None</em>, <em>name=None</em>, <em>color=None</em>, <em>lineStyle=None</em>, <em>lineWidth=None</em>, <em>symbol=None</em>, <em>symbolSize=None</em>, <em>redraw_mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.addChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.addChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new curve to the plot.  In addition to the arguments below,
 all other keyword arguments are passed to the underlying
 pyqtgraph.PlotDataItem used to draw the curve.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>y_channel</strong> (<em>str</em>) – The address for the y channel for the curve.</li>
-<li><strong>x_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The address for the x channel for the curve.</li>
-<li><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – A name for this curve.  The name will be used in the plot legend.</li>
-<li><strong>color</strong> (<em>str</em><em> or </em><em>QColor</em><em>, </em><em>optional</em>) – A color for the line of the curve.  If not specified, the plot will
-automatically assign a unique color from a set of default colors.</li>
-<li><strong>lineStyle</strong> (<em>int</em><em>, </em><em>optional</em>) – Style of the line connecting the data points.
-0 means no line (scatter plot).</li>
-<li><strong>lineWidth</strong> (<em>int</em><em>, </em><em>optional</em>) – Width of the line connecting the data points.</li>
-<li><strong>redraw_mode</strong> (<em>int</em><em>, </em><em>optional</em>) – <dl class="docutils">
-<dt>WaveformCurveItem.REDRAW_ON_EITHER: (Default)</dt>
-<dd>Redraw after either X or Y receives new data.</dd>
-<dt>WaveformCurveItem.REDRAW_ON_X:</dt>
-<dd>Redraw after X receives new data.</dd>
-<dt>WaveformCurveItem.REDRAW_ON_Y:</dt>
-<dd>Redraw after Y receives new data.</dd>
-<dt>WaveformCurveItem.REDRAW_ON_BOTH:</dt>
-<dd>Redraw after both X and Y receive new data.</dd>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_channel</strong> (<em>str</em>) – The address for the y channel for the curve.</p></li>
+<li><p><strong>x_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The address for the x channel for the curve.</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – A name for this curve.  The name will be used in the plot legend.</p></li>
+<li><p><strong>color</strong> (<em>str</em><em> or </em><em>QColor</em><em>, </em><em>optional</em>) – A color for the line of the curve.  If not specified, the plot will
+automatically assign a unique color from a set of default colors.</p></li>
+<li><p><strong>lineStyle</strong> (<em>int</em><em>, </em><em>optional</em>) – Style of the line connecting the data points.
+0 means no line (scatter plot).</p></li>
+<li><p><strong>lineWidth</strong> (<em>int</em><em>, </em><em>optional</em>) – Width of the line connecting the data points.</p></li>
+<li><p><strong>redraw_mode</strong> (<em>int</em><em>, </em><em>optional</em>) – <dl class="simple">
+<dt>WaveformCurveItem.REDRAW_ON_EITHER: (Default)</dt><dd><p>Redraw after either X or Y receives new data.</p>
+</dd>
+<dt>WaveformCurveItem.REDRAW_ON_X:</dt><dd><p>Redraw after X receives new data.</p>
+</dd>
+<dt>WaveformCurveItem.REDRAW_ON_Y:</dt><dd><p>Redraw after Y receives new data.</p>
+</dd>
+<dt>WaveformCurveItem.REDRAW_ON_BOTH:</dt><dd><p>Redraw after both X and Y receive new data.</p>
+</dd>
 </dl>
-</li>
-<li><strong>symbol</strong> (<em>int</em><em>, </em><em>optional</em>) – Which symbol to use to represent the data.</li>
-<li><strong>symbol</strong> – Size of the symbol.</li>
+</p></li>
+<li><p><strong>symbol</strong> (<em>int</em><em>, </em><em>optional</em>) – Which symbol to use to represent the data.</p></li>
+<li><p><strong>symbol</strong> – Size of the symbol.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -284,16 +276,14 @@ If true, the values in minYRange and maxYRange are ignored.</p>
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.channels">
 <code class="descname">channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.channels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of channels used by all curves in the plot.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -349,14 +339,11 @@ Called by curves when they get new data.</p>
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannel">
 <code class="descname">removeChannel</code><span class="sig-paren">(</span><em>curve</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.removeChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a curve from the plot.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>curve</strong> (<em>WaveformCurveItem</em>) – The curve to remove.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>curve</strong> (<em>WaveformCurveItem</em>) – The curve to remove.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -364,14 +351,11 @@ Called by curves when they get new data.</p>
 <code class="descname">removeChannelAtIndex</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.removeChannelAtIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannelAtIndex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a curve from the plot, given an index
 for a curve.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>int</em>) – Index for the curve to remove.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index for the curve to remove.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -381,14 +365,11 @@ for a curve.</p>
 is mostly used as a way to load curves from a .ui file, and
 almost all users will want to add curves through addChannel,
 not this method.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_list</strong> (<em>list</em>) – A list of json strings representing each curve in the plot.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_list</strong> (<em>list</em>) – A list of json strings representing each curve in the plot.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

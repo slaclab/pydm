@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMPushButton &mdash; PyDM v1.6.5+67.gced5b643 documentation</title>
+  <title>PyDMPushButton &mdash; PyDM v1.6.5+90.g5130abf4 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.6.5+67.gced5b643
+                v1.6.5+90.g5130abf4
               </div>
             
           
@@ -215,37 +215,31 @@ the <a class="reference internal" href="#pydm.widgets.pushbutton.PyDMPushButton.
 to the current value of the channel. This means that the button will
 increment a channel by a fixed amount with every click, a consistent
 relative move</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> (<em>QObject</em><em>, </em><em>optional</em>) – Parent of PyDMPushButton</li>
-<li><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – String to place on button</li>
-<li><strong>icon</strong> (<em>QIcon</em><em>, </em><em>optional</em>) – An Icon to display on the PyDMPushButton</li>
-<li><strong>pressValue</strong> (<em>int</em><em>, </em><em>float</em><em>, </em><em>str</em>) – Value to be sent when the button is clicked</li>
-<li><strong>relative</strong> (<em>bool</em><em>, </em><em>optional</em>) – Choice to have the button perform a relative put, instead of always
-setting to an absolute value</li>
-<li><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of channel to manipulate</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QObject</em><em>, </em><em>optional</em>) – Parent of PyDMPushButton</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – String to place on button</p></li>
+<li><p><strong>icon</strong> (<em>QIcon</em><em>, </em><em>optional</em>) – An Icon to display on the PyDMPushButton</p></li>
+<li><p><strong>pressValue</strong> (<em>int</em><em>, </em><em>float</em><em>, </em><em>str</em>) – Value to be sent when the button is clicked</p></li>
+<li><p><strong>relative</strong> (<em>bool</em><em>, </em><em>optional</em>) – Choice to have the button perform a relative put, instead of always
+setting to an absolute value</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of channel to manipulate</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="pydm.widgets.pushbutton.PyDMPushButton.confirmMessage">
 <code class="descname">confirmMessage</code><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.confirmMessage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Message to be displayed at the Confirmation dialog.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -253,17 +247,15 @@ setting to an absolute value</li>
 <code class="descname">confirm_dialog</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.confirm_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.confirm_dialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show the confirmation dialog with the proper message in case
 <code class="docutils literal notranslate"><span class="pre">`showConfirmMessage`</span></code> is True.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the message was confirmed or if <code class="docutils literal notranslate"><span class="pre">`showCofirmMessage`</span></code>
-is False.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the message was confirmed or if <code class="docutils literal notranslate"><span class="pre">`showCofirmMessage`</span></code>
+is False.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -271,36 +263,32 @@ is False.</td>
 <code class="descname">password</code><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.password" title="Permalink to this definition">¶</a></dt>
 <dd><p>Password to be encrypted using SHA256.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">To avoid issues exposing the password this method
+<p class="admonition-title">Warning</p>
+<p>To avoid issues exposing the password this method
 always returns an empty string.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.pushbutton.PyDMPushButton.passwordProtected">
 <code class="descname">passwordProtected</code><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.passwordProtected" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not this button is password protected.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -310,32 +298,28 @@ always returns an empty string.</p>
 <p>The type of this value does not matter because it is automatically
 converted to match the prexisting value type of the channel. However,
 the sign of the value matters for both the fixed and relative modes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.pushbutton.PyDMPushButton.protectedPassword">
 <code class="descname">protectedPassword</code><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.protectedPassword" title="Permalink to this definition">¶</a></dt>
 <dd><p>The encrypted password.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -349,16 +333,14 @@ without any operation.</p>
 value to <code class="xref py py-meth docutils literal notranslate"><span class="pre">receiveValue()</span></code>. This is designed to eliminate the
 undesirable behavior of concatenating strings as opposed to doing
 mathematical addition.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -367,46 +349,43 @@ mathematical addition.</p>
 <dd><p>Send a new value to the channel.</p>
 <p>This function interprets the settings of the PyDMPushButton and sends
 the appropriate value out through the <code class="xref py py-attr docutils literal notranslate"><span class="pre">send_value_signal</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><em>None if any of the following condition is False</em> –<ol class="arabic">
-<li>There’s no new value (pressValue) for the widget</li>
-<li>There’s no initial or current value for the widget</li>
-<li>The confirmation dialog returns No as the user’s answer to the dialog</li>
-<li>The password validation dialog returns a validation error</li>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>None if any of the following condition is False</em> –</p>
+<ol class="arabic simple">
+<li><p>There’s no new value (pressValue) for the widget</p></li>
+<li><p>There’s no initial or current value for the widget</p></li>
+<li><p>The confirmation dialog returns No as the user’s answer to the dialog</p></li>
+<li><p>The password validation dialog returns a validation error</p></li>
 </ol>
 </li>
-<li><em>Otherwise, return the value sent to the channel</em> –<ol class="arabic">
-<li>The value sent to the channel is the same as the pressValue if the existing
-channel type is a str, or the relative flag is False</li>
-<li>The value sent to the channel is the sum of the existing value and the pressValue
-if the relative flag is True, and the channel type is not a str</li>
+<li><p><em>Otherwise, return the value sent to the channel</em> –</p>
+<ol class="arabic simple">
+<li><p>The value sent to the channel is the same as the pressValue if the existing
+channel type is a str, or the relative flag is False</p></li>
+<li><p>The value sent to the channel is the sum of the existing value and the pressValue
+if the relative flag is True, and the channel type is not a str</p></li>
 </ol>
 </li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.pushbutton.PyDMPushButton.showConfirmDialog">
 <code class="descname">showConfirmDialog</code><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.showConfirmDialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wether or not to display a confirmation dialog.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -417,14 +396,11 @@ PyDMPushButton.</p>
 <p>This is useful to dynamically change the pressValue of the button
 during runtime. This enables the applied value to be linked to the
 state of a different widget, say a QLineEdit or QSlider</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>int</em><em>, </em><em>float</em><em> or </em><em>str</em>) – </td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>int</em><em>, </em><em>float</em><em> or </em><em>str</em>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -432,17 +408,15 @@ state of a different widget, say a QLineEdit or QSlider</p>
 <code class="descname">validate_password</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.validate_password"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.validate_password" title="Permalink to this definition">¶</a></dt>
 <dd><p>If the widget is <code class="docutils literal notranslate"><span class="pre">`passwordProtected`</span></code>, this method will propmt
 the user for the correct password.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True in case the password was correct of if the widget is not
-password protected.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True in case the password was correct of if the widget is not
+password protected.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

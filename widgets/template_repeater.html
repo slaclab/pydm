@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMRelatedDisplayButton &mdash; PyDM v1.6.5+90.g5130abf4 documentation</title>
+  <title>PyDMTemplateRepeater &mdash; PyDM v1.6.5+90.g5130abf4 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="PyDMScaleIndicator" href="scale.html" />
-    <link rel="prev" title="PyDMLogDisplay" href="log.html" /> 
+    <link rel="next" title="PyDMDrawing Widgets" href="drawing.html" />
+    <link rel="prev" title="PyDMTabWidget" href="tab_widget.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -99,19 +99,16 @@
 <p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Widgets</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="index.html#display-widgets">Display Widgets</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="byte.html">PyDMByteIndicator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="image.html">PyDMImageView</a></li>
-<li class="toctree-l3"><a class="reference internal" href="label.html">PyDMLabel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="log.html">PyDMLogDisplay</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">PyDMRelatedDisplayButton</a></li>
-<li class="toctree-l3"><a class="reference internal" href="scale.html">PyDMScaleIndicator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="symbol.html">PyDMSymbol</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#display-widgets">Display Widgets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#input-widgets">Input Widgets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#plot-widgets">Plot Widgets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#container-widgets">Container Widgets</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#container-widgets">Container Widgets</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="embedded_display.html">PyDMEmbeddedDisplay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="frame.html">PyDMFrame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tab_widget.html">PyDMTabWidget</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PyDMTemplateRepeater</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#drawing-widgets">Drawing Widgets</a></li>
 </ul>
 </li>
@@ -178,13 +175,13 @@
         
           <li><a href="index.html">Widgets</a> &raquo;</li>
         
-      <li>PyDMRelatedDisplayButton</li>
+      <li>PyDMTemplateRepeater</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/widgets/related_display_button.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/widgets/template_repeater.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -197,28 +194,60 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pydmrelateddisplaybutton">
-<h1>PyDMRelatedDisplayButton<a class="headerlink" href="#pydmrelateddisplaybutton" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pydmtemplaterepeater">
+<h1>PyDMTemplateRepeater<a class="headerlink" href="#pydmtemplaterepeater" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton">
-<em class="property">class </em><code class="descclassname">pydm.widgets.related_display_button.</code><code class="descname">PyDMRelatedDisplayButton</code><span class="sig-paren">(</span><em>parent=None</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton" title="Permalink to this definition">¶</a></dt>
-<dd><p>A QPushButton capable of opening a new Display at the same of at a
-new window.</p>
+<dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater">
+<em class="property">class </em><code class="descclassname">pydm.widgets.template_repeater.</code><code class="descname">PyDMTemplateRepeater</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/template_repeater.html#PyDMTemplateRepeater"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyDMTemplateRepeater takes a .ui file with macro variables as a template, and a JSON
+file (or a list of dictionaries) with a list of values to use to fill in
+the macro variables, then creates a layout with one instance of the
+template for each item in the list.</p>
+<p>It can be very convenient if you have displays that repeat the same set of
+widgets over and over - for instance, if you have a standard set of
+controls for a magnet, and want to build a display with a list of controls
+for every magnet, the Template Repeater lets you do that with a minimum
+amount of work: just build a template for a single magnet, and a JSON list
+with the data that describes all of the magnets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em>) – The file to be opened</p></li>
-</ul>
+<dd class="field-odd"><p><strong>parent</strong> (<em>optional</em>) – The parent of this widget.</p>
 </dd>
 </dl>
+<dl class="method">
+<dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/template_repeater.html#PyDMTemplateRepeater.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear out any existing instances of the template inside
+the widget.</p>
+</dd></dl>
+
 <dl class="attribute">
-<dt id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.displayFilename">
-<code class="descname">displayFilename</code><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.displayFilename" title="Permalink to this definition">¶</a></dt>
-<dd><p>use the ‘filenames’ property.
-This property simply returns the first filename from the ‘filenames’
-property.
-The filename to open</p>
+<dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.countShownInDesigner">
+<code class="descname">countShownInDesigner</code><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.countShownInDesigner" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of instances to show in Qt Designer.  This property has no
+effect outside of Designer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.data">
+<code class="descname">data</code><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dictionary used by the widget to fill in each instance of the template.
+This property will be overwritten if the user changes the dataSource
+property.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.dataSource">
+<code class="descname">dataSource</code><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.dataSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>The path to the JSON file to fill in each instance of the template.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p></p>
@@ -226,85 +255,58 @@ The filename to open</p>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>str</p>
 </dd>
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>DEPRECATED</p>
-</dd>
 </dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.macros">
-<code class="descname">macros</code><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.macros" title="Permalink to this definition">¶</a></dt>
-<dd><p>The macro substitutions to use when launching the display, in JSON object format.</p>
+<dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.layoutType">
+<code class="descname">layoutType</code><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.layoutType" title="Permalink to this definition">¶</a></dt>
+<dd><p>The layout type to use.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p></p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list of str</p>
+<dd class="field-even"><p>LayoutType</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.mousePressEvent">
-<code class="descname">mousePressEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QMouseEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.mousePressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.mousePressEvent" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.openInNewWindow">
-<code class="descname">openInNewWindow</code><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.openInNewWindow" title="Permalink to this definition">¶</a></dt>
-<dd><p>If true, the button will open the display in a new window, rather than in the existing window.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.open_display">
-<code class="descname">open_display</code><span class="sig-paren">(</span><em>filename</em>, <em>macro_string=''</em>, <em>target=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.open_display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.open_display" title="Permalink to this definition">¶</a></dt>
-<dd><p>Open the configured <cite>filename</cite> with the given <cite>target</cite>.</p>
+<dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.open_template_file">
+<code class="descname">open_template_file</code><span class="sig-paren">(</span><em>variables=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/template_repeater.html#PyDMTemplateRepeater.open_template_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.open_template_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens the widget specified in the templateFilename property.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>target</strong> (<em>int</em>) – PyDMRelatedDisplayButton.EXISTING_WINDOW or 0 will open the
-file on the same window. PyDMRelatedDisplayButton.NEW_WINDOW
-or 1 will result on a new process.</p>
+<dd class="field-odd"><p><strong>variables</strong> (<em>dict</em>) – A dictionary of macro variables to apply when loading, in addition
+to all the macros specified on the template repeater widget.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>display</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QWidget</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.push_button_release_event">
-<code class="descname">push_button_release_event</code><span class="sig-paren">(</span><em>mouse_event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.push_button_release_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.push_button_release_event" title="Permalink to this definition">¶</a></dt>
-<dd><p>Opens the related display given by <cite>filename</cite>.
-If the Shift Key is hold it will open in a new window.</p>
-<p>Called when a mouse button is released. A widget receives mouse
-release events when it has received the corresponding mouse press
-event. This means that if the user presses the mouse inside your
-widget, then drags the mouse somewhere else before releasing the
-mouse button, your widget receives the release event.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>mouse_event</strong> (<em>QMouseEvent</em>) – </p>
-</dd>
-</dl>
+<dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.rebuild">
+<code class="descname">rebuild</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/template_repeater.html#PyDMTemplateRepeater.rebuild"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.rebuild" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear out all existing widgets, and populate the list using the
+template file and data source.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.showIcon">
-<code class="descname">showIcon</code><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.showIcon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether or not we should show the selected Icon.</p>
+<dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.templateFilename">
+<code class="descname">templateFilename</code><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.templateFilename" title="Permalink to this definition">¶</a></dt>
+<dd><p>The path to the .ui file to use as a template.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p></p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>bool</p>
+<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -321,10 +323,10 @@ mouse button, your widget receives the release event.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="scale.html" class="btn btn-neutral float-right" title="PyDMScaleIndicator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="drawing.html" class="btn btn-neutral float-right" title="PyDMDrawing Widgets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="log.html" class="btn btn-neutral float-left" title="PyDMLogDisplay" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="tab_widget.html" class="btn btn-neutral float-left" title="PyDMTabWidget" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

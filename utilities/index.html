@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utilities &mdash; PyDM v1.6.5+67.gced5b643 documentation</title>
+  <title>Utilities &mdash; PyDM v1.6.5+90.g5130abf4 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.6.5+67.gced5b643
+                v1.6.5+90.g5130abf4
               </div>
             
           
@@ -199,78 +199,70 @@ of protocol in a string, handling macro substitution in files, etc.</p>
 This is basically a wrapper on top of the <code class="docutils literal notranslate"><span class="pre">which</span></code>
 command defined below so we don’t need to keep redefining
 the <code class="docutils literal notranslate"><span class="pre">PYDM_DISPLAYS_PATH</span></code> variable.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>file</strong> (<em>str</em>) – The file name.</li>
-<li><strong>mode</strong> (<em>int</em>) – The mode required for the file, defaults to os.F_OK | os.R_OK.
-Which ensure that the file exists and we can read it.</li>
-<li><strong>path</strong> (<em>str</em>) – The PATH string.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>str</em>) – The file name.</p></li>
+<li><p><strong>mode</strong> (<em>int</em>) – The mode required for the file, defaults to os.F_OK | os.R_OK.
+Which ensure that the file exists and we can read it.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – The PATH string.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Returns the full path to the file or None in case it was not found.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the full path to the file or None in case it was not found.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pydm.utilities.is_pydm_app">
 <code class="descclassname">pydm.utilities.</code><code class="descname">is_pydm_app</code><span class="sig-paren">(</span><em>app=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#is_pydm_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.is_pydm_app" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether or not <cite>QApplication.instance()</cite> is a PyDMApplication.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>app</strong> (<em>QApplication</em><em>, </em><em>Optional</em>) – The app to inspect. If no application is provided the current running <cite>QApplication</cite> will be queried.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if it is a PyDMApplication, False otherwise.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>app</strong> (<em>QApplication</em><em>, </em><em>Optional</em>) – The app to inspect. If no application is provided the current running <cite>QApplication</cite> will be queried.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if it is a PyDMApplication, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pydm.utilities.is_qt_designer">
 <code class="descclassname">pydm.utilities.</code><code class="descname">is_qt_designer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#is_qt_designer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.is_qt_designer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether or not running inside Qt Designer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if inside Designer, False otherwise.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if inside Designer, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pydm.utilities.path_info">
 <code class="descclassname">pydm.utilities.</code><code class="descname">path_info</code><span class="sig-paren">(</span><em>path_str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#path_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.path_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve basic information about the given path.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_str</strong> (<em>str</em>) – The path from which to extract information.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">base dir, file name, list of args</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path_str</strong> (<em>str</em>) – The path from which to extract information.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>base dir, file name, list of args</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -291,38 +283,35 @@ path.</p>
 <dt id="pydm.utilities.remove_protocol.protocol_and_address">
 <code class="descclassname">pydm.utilities.remove_protocol.</code><code class="descname">protocol_and_address</code><span class="sig-paren">(</span><em>address</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/remove_protocol.html#protocol_and_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.remove_protocol.protocol_and_address" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the Protocol and Address pieces of a Channel Address</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<em>str</em>) – The address from which to remove the address prefix.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><strong>protocol</strong> (<em>str</em>) – The protocol used. None in case the protocol is not specified.</li>
-<li><strong>addr</strong> (<em>str</em>) – The piece of the address without the protocol.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>address</strong> (<em>str</em>) – The address from which to remove the address prefix.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>protocol</strong> (<em>str</em>) – The protocol used. None in case the protocol is not specified.</p></li>
+<li><p><strong>addr</strong> (<em>str</em>) – The piece of the address without the protocol.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pydm.utilities.remove_protocol.remove_protocol">
 <code class="descclassname">pydm.utilities.remove_protocol.</code><code class="descname">remove_protocol</code><span class="sig-paren">(</span><em>addr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/remove_protocol.html#remove_protocol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.remove_protocol.remove_protocol" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes the first occurrence of the protocol string (‘://’) from the string <cite>addr</cite></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>addr</strong> (<em>str</em>) – The address from which to remove the address prefix.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>addr</strong> (<em>str</em>) – The address from which to remove the address prefix.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -337,25 +326,21 @@ to use IconFont.icon() to get a QIcon object for the character they want.</p>
 <dt id="pydm.utilities.iconfont.IconFont.icon">
 <code class="descname">icon</code><span class="sig-paren">(</span><em>name</em>, <em>color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont.icon" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve the icon given a name and color.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>str</em>) – The Icon string identifier.
-Icon strings can be found at: <a class="reference external" href="https://fontawesome.com/icons?d=gallery">https://fontawesome.com/icons?d=gallery</a></li>
-<li><strong>color</strong> (<em>QColor</em><em>, </em><em>Optional</em>) – The base color to use when constructing the Icon. Default is QColor(90, 90, 90).</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The Icon string identifier.
+Icon strings can be found at: <a class="reference external" href="https://fontawesome.com/icons?d=gallery">https://fontawesome.com/icons?d=gallery</a></p></li>
+<li><p><strong>color</strong> (<em>QColor</em><em>, </em><em>Optional</em>) – The base color to use when constructing the Icon. Default is QColor(90, 90, 90).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The desired Icon.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">QIcon</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The desired Icon.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QIcon</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -384,24 +369,20 @@ closely based on macParseDefns in libCom/macUtil.c</p>
 <dt id="pydm.utilities.macro.substitute_in_file">
 <code class="descclassname">pydm.utilities.macro.</code><code class="descname">substitute_in_file</code><span class="sig-paren">(</span><em>file_path</em>, <em>macros</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/macro.html#substitute_in_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.macro.substitute_in_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Substitute the macros given by ${name} at the given file with the entries on the <cite>macros</cite> dictionary.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>file_path</strong> (<em>str</em>) – The path to the file in which to substitute</li>
-<li><strong>macros</strong> (<em>dict</em>) – Dictionary containing macro name as key and value as what will be substituted.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>str</em>) – The path to the file in which to substitute</p></li>
+<li><p><strong>macros</strong> (<em>dict</em>) – Dictionary containing macro name as key and value as what will be substituted.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>file</strong> – File-like object with the proper substitutions.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">io.StringIO</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>file</strong> – File-like object with the proper substitutions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>io.StringIO</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -411,43 +392,38 @@ closely based on macParseDefns in libCom/macUtil.c</p>
 <dt id="pydm.utilities.colors.hex_from_svg_color">
 <code class="descclassname">pydm.utilities.colors.</code><code class="descname">hex_from_svg_color</code><span class="sig-paren">(</span><em>color_string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/colors.html#hex_from_svg_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.colors.hex_from_svg_color" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the HEX color based on its SVG equivalent.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>color_string</strong> (<em>str</em>) – The SVG color string. E.g. black</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The HEX color string.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>color_string</strong> (<em>str</em>) – The SVG color string. E.g. black</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The HEX color string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pydm.utilities.colors.svg_color_from_hex">
 <code class="descclassname">pydm.utilities.colors.</code><code class="descname">svg_color_from_hex</code><span class="sig-paren">(</span><em>hex_string</em>, <em>hex_on_fail=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/colors.html#svg_color_from_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.colors.svg_color_from_hex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the SVG color based on its HEX equivalent.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>hex_string</strong> (<em>str</em>) – The color code in hex. E.g. #000000</li>
-<li><strong>hex_on_fail</strong> (<em>bool</em><em>, </em><em>Optional</em>) – Whether or not to return the <cite>hex_string</cite> when an invalid color is submitted.
-Default is False.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hex_string</strong> (<em>str</em>) – The color code in hex. E.g. #000000</p></li>
+<li><p><strong>hex_on_fail</strong> (<em>bool</em><em>, </em><em>Optional</em>) – Whether or not to return the <cite>hex_string</cite> when an invalid color is submitted.
+Default is False.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The SVG color string.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The SVG color string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -457,78 +433,71 @@ Default is False.</li>
 <dt id="pydm.utilities.units.convert">
 <code class="descclassname">pydm.utilities.units.</code><code class="descname">convert</code><span class="sig-paren">(</span><em>unit</em>, <em>desired</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.convert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the conversion rate of two different unit strings.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>unit</strong> (<em>str</em>) – The current unit string</li>
-<li><strong>desired</strong> (<em>str</em>) – The desired unit string</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unit</strong> (<em>str</em>) – The current unit string</p></li>
+<li><p><strong>desired</strong> (<em>str</em>) – The desired unit string</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The relation between unit and desired or None if not found.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float or None</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The relation between unit and desired or None if not found.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float or None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pydm.utilities.units.find_unit">
 <code class="descclassname">pydm.utilities.units.</code><code class="descname">find_unit</code><span class="sig-paren">(</span><em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#find_unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.find_unit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the conversion of a unit string.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>unit</strong> (<em>str</em>) – The unit string</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The unit value relative to the standard or None if not found.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float or None</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>unit</strong> (<em>str</em>) – The unit string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The unit value relative to the standard or None if not found.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float or None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pydm.utilities.units.find_unit_options">
 <code class="descclassname">pydm.utilities.units.</code><code class="descname">find_unit_options</code><span class="sig-paren">(</span><em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#find_unit_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.find_unit_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the options for a given unit.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>unit</strong> (<em>str</em>) – The unit string</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The list of similar units in crescent order or None if not found.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list or None</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>unit</strong> (<em>str</em>) – The unit string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The list of similar units in crescent order or None if not found.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list or None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pydm.utilities.units.find_unittype">
 <code class="descclassname">pydm.utilities.units.</code><code class="descname">find_unittype</code><span class="sig-paren">(</span><em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#find_unittype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.find_unittype" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the type of a unit string.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>unit</strong> (<em>str</em>) – The unit string</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>tp</strong> – The unit type name or None if not found.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>unit</strong> (<em>str</em>) – The unit string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tp</strong> – The unit type name or None if not found.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
