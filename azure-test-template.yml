@@ -106,7 +106,7 @@ jobs:
 
   - bash: |
       source activate base
-      python run_tests.py --show-cov
+      python run_tests.py --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python.version)" --napoleon-docstrings
     displayName: 'Tests - Run'
     continueOnError: false
     env:
