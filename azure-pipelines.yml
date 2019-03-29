@@ -104,7 +104,7 @@ jobs:
         cp -r $(Build.Repository.LocalPath)/artifacts/docs_html/* .
         rm -rf $(Build.Repository.LocalPath)/artifacts
         git add *
-        git commit -m "Updating Docs with latest build - ***NO_CI***"
+        git commit -m "Updating Docs with latest build"
         git push origin gh-pages
       displayName: Documentation - Upload
 

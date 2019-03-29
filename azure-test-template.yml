@@ -114,30 +114,11 @@ jobs:
 
   - bash: |
       source activate base
-      python run_tests.py --cov=pydm --cov-report=xml:$(python.version)/coverage.xml --cov-report=html:$(python.version)/htmlcov --junitxml=$(python.version)/junit/test-results.xml
+      python run_tests.py --show-cov
     displayName: 'Tests - Run'
     continueOnError: false
     env:
       DISPLAY: :99.0
-
-  - task: PublishTestResults@2
-    displayName: 'Publish - Test Results'
-    inputs:
-      testResultsFiles: '$(System.DefaultWorkingDirectory)/$(python.version)/**/test-results.xml'
-      testRunTitle: 'Tests for $(Agent.OS) - Python $(python.version)'
-      condition: succeededOrFailed()
-
-  - task: PublishCodeCoverageResults@1
-    displayName: 'Publish - Coverage Results'
-    inputs:
-      codeCoverageTool: Cobertura
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/$(python.version)/**/coverage.xml'
-      reportDirectory: '$(System.DefaultWorkingDirectory)/$(python.version)/**/htmlcov'
-    condition: succeededOrFailed()
-
-  - bash: |
-      bash <(curl -s https://codecov.io/bash) -f $(System.DefaultWorkingDirectory)/$(python.version)/coverage.xml -t $(CODECOV_TOKEN) || echo 'Codecov failed to upload.'
-    displayName: 'Publish - Codecov.io'
 
   - bash: |
       source activate base
