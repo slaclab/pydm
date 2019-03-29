@@ -92,17 +92,9 @@ jobs:
 
   - bash: |
       source activate base
-      conda install -q pydm --file dev-requirements.txt -c conda-forge
-    displayName: 'Anaconda - Install Dependencies (Non-Windows)'
-    condition: ne(variables['agent.os'], 'Windows_NT' )
-
-  # Windows Only
-  - bash: |
-      source activate base
       conda install -q pydm -c conda-forge
       pip install -r dev-requirements.txt
-    displayName: 'Anaconda - Install Dependencies (Windows)'
-    condition: eq(variables['agent.os'], 'Windows_NT' )
+    displayName: 'Anaconda - Install Dependencies'
 
   # Windows Only
   - powershell: |
