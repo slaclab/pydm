@@ -70,6 +70,7 @@ jobs:
     condition: |
       and
       (
+        succeeded(),
         eq(dependencies.DeployControl.outputs['var.build_ok'], true),
         or
         (
@@ -104,7 +105,7 @@ jobs:
         cp -r $(Build.Repository.LocalPath)/artifacts/docs_html/* .
         rm -rf $(Build.Repository.LocalPath)/artifacts
         git add *
-        git commit -m "Updating Docs with latest build - ***NO_CI***"
+        git commit -m "Updating Docs with latest build"
         git push origin gh-pages
       displayName: Documentation - Upload
 
@@ -113,6 +114,7 @@ jobs:
     condition: |
       and
       (
+        succeeded(),
         eq(dependencies.DeployControl.outputs['var.build_ok'], true),
         contains(variables['Build.SourceBranch'],'refs/tags')
       )
@@ -161,12 +163,12 @@ jobs:
       condition: contains(variables['Build.SourceBranch'], 'tags')
       displayName: PyPI - Upload
 
-
   - job: 'Publish_Anaconda'
     displayName: Publish - Anaconda
     condition: |
       and
       (
+        succeeded(),
         eq(dependencies.DeployControl.outputs['var.build_ok'], true),
         or
         (
