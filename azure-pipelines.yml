@@ -70,6 +70,7 @@ jobs:
     condition: |
       and
       (
+        succeeded(),
         eq(dependencies.DeployControl.outputs['var.build_ok'], true),
         or
         (
@@ -113,6 +114,7 @@ jobs:
     condition: |
       and
       (
+        succeeded(),
         eq(dependencies.DeployControl.outputs['var.build_ok'], true),
         contains(variables['Build.SourceBranch'],'refs/tags')
       )
@@ -161,12 +163,12 @@ jobs:
       condition: contains(variables['Build.SourceBranch'], 'tags')
       displayName: PyPI - Upload
 
-
   - job: 'Publish_Anaconda'
     displayName: Publish - Anaconda
     condition: |
       and
       (
+        succeeded(),
         eq(dependencies.DeployControl.outputs['var.build_ok'], true),
         or
         (
