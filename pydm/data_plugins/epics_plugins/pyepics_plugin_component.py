@@ -2,13 +2,12 @@ import logging
 
 import epics
 from epics import dbr
-import numpy as np
-from qtpy.QtCore import Slot, Qt
+from qtpy.QtCore import Slot
 
 from pydm.utilities.channel import parse_channel_config
 
 from pydm.data_plugins import is_read_only
-from pydm.data_plugins.data_store import DataKeys
+from pydm.data_store import DataKeys
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
 logger = logging.getLogger(__name__)

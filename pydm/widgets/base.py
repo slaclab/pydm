@@ -14,7 +14,7 @@ from .channel import PyDMChannel
 from .rules import RulesDispatcher
 from .. import data_plugins
 from .. import tools
-from ..data_plugins.data_store import DataKeys
+from ..data_store import DataKeys
 from ..utilities import (is_qt_designer, remove_protocol, generic_callback)
 from ..utilities.channel import parse_channel_config
 

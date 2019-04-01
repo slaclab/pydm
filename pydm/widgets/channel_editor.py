@@ -6,10 +6,10 @@ from copy import deepcopy
 
 from qtpy import QtWidgets, QtCore
 
-from pydm import data_plugins
-from pydm.data_plugins.data_store import DEFAULT_INTROSPECTION
-from pydm.utilities import protocol_and_address
-from pydm.config import DEFAULT_PROTOCOL
+from .. import data_plugins
+from ..data_store import DEFAULT_INTROSPECTION
+from ..utilities import protocol_and_address
+from ..config import DEFAULT_PROTOCOL
 
 
 class ChannelEditor(QtWidgets.QDialog):

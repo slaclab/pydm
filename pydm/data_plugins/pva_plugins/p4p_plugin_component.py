@@ -2,12 +2,11 @@ import logging
 from collections import OrderedDict
 
 from p4p.client.thread import Context, Disconnected
-from qtpy.QtCore import Slot, Qt
+from qtpy.QtCore import Slot
 
 from pydm.utilities.channel import parse_channel_config
 
-from pydm.data_plugins import is_read_only
-from pydm.data_plugins.data_store import DataKeys
+from pydm.data_store import DataKeys
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
 from .pva_helper import pre_process, nt_introspection
@@ -43,7 +42,6 @@ class Connection(PyDMConnection):
         self.nt_id = None
         self.monitor = PVAContext().context.monitor(name=address,
                                                     cb=self.send_new_value,
-                                                    # request='pipeline=true', To test in the future and return to Michael
                                                     notify_disconnect=True)
         self._introspection_set = False
 

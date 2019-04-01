@@ -3,10 +3,10 @@ import json
 
 from qtpy.QtCore import QObject, Signal, Slot
 
-import pydm.data_plugins
-from pydm import config as PYDM_CONFIG
-from pydm.utilities import is_qt_designer
-from pydm.data_plugins.data_store import DataStore
+from .. import data_plugins
+from .. import config as PYDM_CONFIG
+from ..utilities import is_qt_designer
+from ..data_store import DataStore
 
 logger = logging.getLogger(__name__)
 
@@ -122,7 +122,7 @@ class PyDMChannel(QObject):
         logger.debug("Connecting %r", self.address)
         # Connect to proper PyDMPlugin
         try:
-            pydm.data_plugins.establish_connection(self)
+            data_plugins.establish_connection(self)
         except Exception:
             logger.exception("Unable to make proper connection for %r", self)
 
@@ -133,7 +133,7 @@ class PyDMChannel(QObject):
         if is_qt_designer() and not PYDM_CONFIG.DESIGNER_ONLINE:
             return
         try:
-            plugin = pydm.data_plugins.plugin_for_address(self.address)
+            plugin = data_plugins.plugin_for_address(self.address)
             if not plugin:
                 return
             plugin.remove_connection(self, destroying=destroying)

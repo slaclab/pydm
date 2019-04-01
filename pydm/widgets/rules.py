@@ -8,7 +8,7 @@ from qtpy.QtWidgets import QWidget
 from .channel import PyDMChannel
 from ..utilities import generic_callback
 from ..utilities.channel import parse_channel_config
-from ..data_plugins.data_store import DataKeys
+from ..data_store import DataKeys
 
 import numpy as np
 import math

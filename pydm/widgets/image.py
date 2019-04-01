@@ -12,7 +12,7 @@ from qtpy.QtWidgets import QActionGroup
 from .base import PyDMWidget, generic_callback
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
-from ..data_plugins.data_store import DataKeys
+from ..data_store import DataKeys
 from ..utilities.channel import parse_channel_config
 
 pyqtgraph.setConfigOption('imageAxisOrder', 'row-major')

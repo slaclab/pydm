@@ -4,7 +4,7 @@ import weakref
 from qtpy.QtCore import Slot, Signal, QObject, Qt
 from qtpy import QtWidgets
 
-from .data_store import DataStore, DataKeys, DEFAULT_INTROSPECTION
+from ..data_store import DataStore, DataKeys, DEFAULT_INTROSPECTION
 from ..utilities.remove_protocol import protocol_and_address
 
 

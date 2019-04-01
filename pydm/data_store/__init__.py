@@ -1,30 +1,3 @@
-import collections
-
-
-def dict_merge(dct, merge_dct):
-    """ Recursive dict merge. Inspired by :meth:``dict.update()``, instead of
-    updating only top-level keys, dict_merge recurses down into dicts nested
-    to an arbitrary depth, updating keys. The ``merge_dct`` is merged into
-    ``dct``.
-
-    Credits to angstwad for his original solution:
-    https://gist.github.com/angstwad/bf22d1822c38a92ec0a9
-
-    Parameters
-    ----------
-    dct: dict
-        Dict onto which the merge is executed
-    merge_dct: dict
-        Dict merged into dct
-    """
-    for k, v in merge_dct.items():
-        if (k in dct and isinstance(dct[k], dict)
-                and isinstance(merge_dct[k], collections.Mapping)):
-            dict_merge(dct[k], merge_dct[k])
-        else:
-            dct[k] = merge_dct[k]
-
-
 class DataKeys(object):
     """
     Enum class which holds the keys expected by the PyDMWidgets when used with
