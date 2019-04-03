@@ -9,7 +9,12 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
     Q_ENUMS(DisplayFormat)
     DisplayFormat = DisplayFormat
     """
-    A QLabel with support for Channels and more from PyDM
+    A QLabel with support for setting the text via a PyDM Channel, or
+    through the PyDM Rules system.
+    
+    Note: If a PyDMLabel is configured to use a Channel, and also with a rule
+    which changes the 'Text' property, the behavior is undefined.  Use either
+    the Channel *or* a text rule, but not both.
 
     Parameters
     ----------
