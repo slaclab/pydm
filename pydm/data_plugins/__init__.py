@@ -46,8 +46,7 @@ def establish_connection(channel):
 
 def establish_connection_immediately(channel):
     plugin = plugin_for_address(channel.address)
-    if plugin:
-        plugin.add_connection(channel)
+    plugin.add_connection(channel)
 
 def plugin_for_address(address):
     """
@@ -55,8 +54,6 @@ def plugin_for_address(address):
     """
     # Check for a configured protocol
     protocol, addr = protocol_and_address(address)
-    if not addr:
-        return None
     # Use default protocol
     if protocol is None and config.DEFAULT_PROTOCOL is not None:
         logger.debug("Using default protocol %s for %s",
