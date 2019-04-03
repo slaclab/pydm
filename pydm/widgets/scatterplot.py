@@ -4,9 +4,13 @@ from collections import OrderedDict
 import numpy as np
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Slot, Property, Qt
+from .base import generic_callback
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
+from ..data_store import DataKeys
 from ..utilities import remove_protocol
+from ..utilities.channel import parse_channel_config
+
 
 class ScatterPlotCurveItem(BasePlotCurveItem):
     _channels = ('x_channel', 'y_channel')
@@ -14,6 +18,8 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
     def __init__(self, y_addr, x_addr, redraw_mode=None, **kws):
         self.x_channel = None
         self.y_channel = None
+        self._x_address = ""
+        self._y_address = ""
         self.x_address = x_addr
         self.y_address = y_addr
         self.x_connected = False
@@ -67,9 +73,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         -------
         str
         """
-        if self.x_channel is None:
-            return None
-        return self.x_channel.address
+        return self._x_address
 
     @x_address.setter
     def x_address(self, new_address):
@@ -80,13 +84,40 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         -------
         new_address: str
         """
-        if new_address is None or len(str(new_address)) < 1:
-            self.x_channel = None
+        if new_address is None or len(new_address) == 0:
+            if self.x_channel:
+                self.x_channel.disconnect()
             return
-        self.x_channel = PyDMChannel(
-            address=new_address,
-            connection_slot=self.xConnectionStateChanged,
-            value_slot=self.receiveXValue)
+        if self._x_address != new_address:
+            # Disconnect old channel
+            if self.x_channel:
+                self.x_channel.disconnect()
+
+            config = parse_channel_config(new_address, force_dict=True)
+            print('x_address - config = ', config)
+            if len(config) == 0:
+                return
+            self._x_address = new_address
+            address = None
+            self.x_channel = PyDMChannel(parent=None,
+                                         address=address,
+                                         callback=self._receive_x_data,
+                                         config=config
+                                         )
+
+            # Connect the channel...
+            self.x_channel.connect()
+            # Force initial data fill...
+            self.x_channel.notified()
+
+    def _receive_x_data(self, data=None, introspection=None,
+                        *args, **kwargs):
+        if data is None or introspection is None:
+            return
+        generic_callback(self, data, introspection, {
+            DataKeys.CONNECTION: 'xConnectionStateChanged',
+            DataKeys.VALUE: 'receiveXValue'})
+
 
     @property
     def y_address(self):
@@ -97,26 +128,50 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         -------
         str
         """
-        if self.y_channel is None:
-            return None
-        return self.y_channel.address
+        return self._y_address
 
-    @y_address.setter
+    @x_address.setter
     def y_address(self, new_address):
         """
         The address of the channel used to get the y axis data.
 
         Parameters
-        ----------
+        -------
         new_address: str
         """
-        if new_address is None or len(str(new_address)) < 1:
-            self.y_channel = None
+        if new_address is None or len(new_address) == 0:
+            if self.y_channel:
+                self.y_channel.disconnect()
             return
-        self.y_channel = PyDMChannel(
-            address=new_address,
-            connection_slot=self.yConnectionStateChanged,
-            value_slot=self.receiveYValue)
+
+        if self._y_address != new_address:
+            # Disconnect old channel
+            if self.y_channel:
+                self.y_channel.disconnect()
+
+            config = parse_channel_config(new_address, force_dict=True)
+            if len(config) == 0:
+                return
+            self._y_address = new_address
+            address = None
+            self.y_channel = PyDMChannel(parent=None,
+                                         address=address,
+                                         callback=self._receive_y_data,
+                                         config=config
+                                         )
+
+            # Connect the channel...
+            self.y_channel.connect()
+            # Force initial data fill...
+            self.y_channel.notified()
+
+    def _receive_y_data(self, data=None, introspection=None,
+                        *args, **kwargs):
+        if data is None or introspection is None:
+            return
+        generic_callback(self, data, introspection, {
+            DataKeys.CONNECTION: 'yConnectionStateChanged',
+            DataKeys.VALUE: 'receiveYValue'})
 
     @Slot(bool)
     def xConnectionStateChanged(self, connected):

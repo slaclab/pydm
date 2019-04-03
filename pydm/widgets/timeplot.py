@@ -5,10 +5,12 @@ from pyqtgraph import ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Signal, Slot, Property, QTimer
-from qtpy.QtWidgets import QAction
+from .base import generic_callback
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
+from ..data_store import DataKeys
 from .. utilities import remove_protocol
+from ..utilities.channel import parse_channel_config
 
 import logging
 logger = logging.getLogger(__name__)
@@ -67,7 +69,6 @@ class TimePlotCurveItem(BasePlotCurveItem):
             Additional parameters supported by pyqtgraph.PlotDataItem,
             like 'symbol' and 'symbolSize'.
         """
-        channel_address = "" if channel_address is None else channel_address
         if "name" not in kws or not kws["name"]:
             name = remove_protocol(channel_address)
             kws["name"] = name
@@ -86,8 +87,10 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.points_accumulated = 0
         self.latest_value = None
         self.channel = None
+        self.channel_address = ""
         self.address = channel_address
         super(TimePlotCurveItem, self).__init__(**kws)
+
 
     def to_dict(self):
         dic_ = OrderedDict([("channel", self.address), ])
@@ -96,18 +99,44 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     @property
     def address(self):
-        if self.channel is None:
-            return None
-        return self.channel.address
+        if self.channel_address:
+            return str(self.channel_address)
+        return None
 
     @address.setter
     def address(self, new_address):
-        if new_address is None or len(str(new_address)) < 1:
-            self.channel = None
+        if new_address is None or len(new_address) == 0:
+            if self.channel:
+                self.channel.disconnect()
             return
-        self.channel = PyDMChannel(address=new_address,
-                                   connection_slot=self.connectionStateChanged,
-                                   value_slot=self.receiveNewValue)
+
+        if self.channel_address != new_address:
+            # Disconnect old channel
+            if self.channel:
+                self.channel.disconnect()
+
+            config = parse_channel_config(new_address, force_dict=True)
+            if len(config) == 0:
+                return
+            self.channel_address = new_address
+            address = None
+            self.channel = PyDMChannel(parent=None,
+                                       address=address,
+                                       callback=self._receive_data,
+                                       config=config
+                                       )
+            # Connect the channel...
+            self.channel.connect()
+            # Force initial data fill...
+            self.channel.notified()
+
+    def _receive_data(self, data=None, introspection=None,
+                      *args, **kwargs):
+        if data is None or introspection is None:
+            return
+        generic_callback(self, data, introspection, {
+            DataKeys.CONNECTION: 'connectionStateChanged',
+            DataKeys.VALUE: 'receiveNewValue'})
 
     @property
     def plotByTimeStamps(self):
