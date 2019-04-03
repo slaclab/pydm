@@ -22,6 +22,10 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
     def __init__(self, parent=None, init_channel=None):
         QLabel.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
+        if 'Text' not in PyDMLabel.RULE_PROPERTIES:
+            PyDMLabel.RULE_PROPERTIES = PyDMWidget.RULE_PROPERTIES.copy()
+            PyDMLabel.RULE_PROPERTIES.update(
+                {'Text': ['value_changed', str]})
         self.app = QApplication.instance()
         self.setTextFormat(Qt.PlainText)
         self.setTextInteractionFlags(Qt.NoTextInteraction)
