@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.label &mdash; PyDM v1.6.5+95.gc8f918a6 documentation</title>
+  <title>pydm.widgets.label &mdash; PyDM v1.6.5+100.gd82a6481 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.6.5+95.gc8f918a6
+                v1.6.5+100.gd82a6481
               </div>
             
           
@@ -187,7 +187,12 @@
     <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">DisplayFormat</span><span class="p">)</span>
     <span class="n">DisplayFormat</span> <span class="o">=</span> <span class="n">DisplayFormat</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A QLabel with support for Channels and more from PyDM</span>
+<span class="sd">    A QLabel with support for setting the text via a PyDM Channel, or</span>
+<span class="sd">    through the PyDM Rules system.</span>
+<span class="sd">    </span>
+<span class="sd">    Note: If a PyDMLabel is configured to use a Channel, and also with a rule</span>
+<span class="sd">    which changes the &#39;Text&#39; property, the behavior is undefined.  Use either</span>
+<span class="sd">    the Channel *or* a text rule, but not both.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -200,6 +205,10 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QLabel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;Text&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PyDMLabel</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="p">:</span>
+            <span class="n">PyDMLabel</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span> <span class="o">=</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">PyDMLabel</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">{</span><span class="s1">&#39;Text&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;value_changed&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">]})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setTextFormat</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">PlainText</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setTextInteractionFlags</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">NoTextInteraction</span><span class="p">)</span>
