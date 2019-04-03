@@ -100,13 +100,12 @@ jobs:
 
     - bash: |
         git config --global user.name "Azure Pipelines"
-        git config --global user.email "azurebot@nonvalidemail.com"
         git checkout gh-pages
         cp -r $(Build.Repository.LocalPath)/artifacts/docs_html/* .
         rm -rf $(Build.Repository.LocalPath)/artifacts
         git add *
         git commit -m "Updating Docs with latest build"
-        git push origin gh-pages
+        git push https://$(GITHUB_DOCS_PAT)@github.com/$(Build.Repository.Name).git gh-pages
       displayName: Documentation - Upload
 
   - job: 'Publish_PyPI'
