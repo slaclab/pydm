@@ -247,7 +247,7 @@ class RulesEditor(QtWidgets.QDialog):
             self.tbl_channels.setItem(row, 0,
                                       QtWidgets.QTableWidgetItem(str(ch_name)))
 
-            channel_btn = QtWidgets.QPushButton('Channel',
+            channel_btn = QtWidgets.QPushButton('Edit Channel',
                                                 parent=self.tbl_channels)
             channel_btn.clicked.connect(
                 functools.partial(self.handle_channel_click, row)
@@ -347,7 +347,7 @@ class RulesEditor(QtWidgets.QDialog):
 
         self.tbl_channels.setItem(row, 0, QtWidgets.QTableWidgetItem(""))
 
-        channel_btn = QtWidgets.QPushButton('Channel',
+        channel_btn = QtWidgets.QPushButton('Edit Channel',
                                             parent=self.tbl_channels)
         channel_btn.clicked.connect(
             functools.partial(self.handle_channel_click, row)
