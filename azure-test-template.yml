@@ -65,8 +65,8 @@ jobs:
     displayName: 'Anaconda - Create'
     inputs:
       environmentName: 'test-environment-$(python.version)'
-      packageSpecs: 'python=$(python.version) conda-build anaconda-client'
-      updateConda: true
+      packageSpecs: 'python=$(python.version) conda=4.6.8 conda-build anaconda-client'
+      updateConda: false
 
   - bash: |
      conda info --envs
@@ -92,7 +92,7 @@ jobs:
 
   - bash: |
       source activate base
-      conda install -q pydm -c conda-forge
+      conda install -q pydm conda=4.6.8 -c conda-forge
       pip install -r dev-requirements.txt
     displayName: 'Anaconda - Install Dependencies'
 
