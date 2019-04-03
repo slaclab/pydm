@@ -94,7 +94,6 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
                 self.x_channel.disconnect()
 
             config = parse_channel_config(new_address, force_dict=True)
-            print('x_address - config = ', config)
             if len(config) == 0:
                 return
             self._x_address = new_address

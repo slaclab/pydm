@@ -1,12 +1,15 @@
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Slot, Property
 import numpy as np
+from .base import generic_callback
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
 import itertools
 import json
 from collections import OrderedDict
-from ..utilities import remove_protocol
+from ..data_store import DataKeys
+from .. utilities import remove_protocol
+from ..utilities.channel import parse_channel_config
 
 
 class WaveformCurveItem(BasePlotCurveItem):
@@ -65,6 +68,8 @@ class WaveformCurveItem(BasePlotCurveItem):
         self.needs_new_y = True
         self.x_channel = None
         self.y_channel = None
+        self._x_address = ""
+        self._y_address = ""
         self.x_address = x_addr
         self.y_address = y_addr
         #The data in x_waveform and y_waveform are what actually get plotted.
@@ -95,62 +100,110 @@ class WaveformCurveItem(BasePlotCurveItem):
     @property
     def x_address(self):
         """
-        The address of the channel used to get the x axis waveform data.
+        The address of the channel used to get the x axis data.
 
         Returns
         -------
         str
         """
-        if self.x_channel is None:
-            return None
-        return self.x_channel.address
+        return self._x_address
 
     @x_address.setter
     def x_address(self, new_address):
         """
-        The address of the channel used to get the x axis waveform data.
+        The address of the channel used to get the x axis data.
 
         Parameters
         -------
         new_address: str
         """
-        if new_address is None or len(str(new_address)) < 1:
-            self.x_channel = None
+        if new_address is None or len(new_address) == 0:
+            if self.x_channel:
+                self.x_channel.disconnect()
             return
-        self.x_channel = PyDMChannel(
-                            address=new_address,
-                            connection_slot=self.xConnectionStateChanged,
-                            value_slot=self.receiveXWaveform)
+        if self._x_address != new_address:
+            # Disconnect old channel
+            if self.x_channel:
+                self.x_channel.disconnect()
+
+            config = parse_channel_config(new_address, force_dict=True)
+            if len(config) == 0:
+                return
+            self._x_address = new_address
+            address = None
+            self.x_channel = PyDMChannel(parent=None,
+                                         address=address,
+                                         callback=self._receive_x_data,
+                                         config=config
+                                         )
+
+            # Connect the channel...
+            self.x_channel.connect()
+            # Force initial data fill...
+            self.x_channel.notified()
+
+    def _receive_x_data(self, data=None, introspection=None,
+                        *args, **kwargs):
+        if data is None or introspection is None:
+            return
+        generic_callback(self, data, introspection, {
+            DataKeys.CONNECTION: 'xConnectionStateChanged',
+            DataKeys.VALUE: 'receiveXWaveform'})
+
 
     @property
     def y_address(self):
         """
-        The address of the channel used to get the y axis waveform data.
+        The address of the channel used to get the y axis data.
 
         Returns
         -------
         str
         """
-        if self.y_channel is None:
-            return None
-        return self.y_channel.address
+        return self._y_address
 
-    @y_address.setter
+    @x_address.setter
     def y_address(self, new_address):
         """
-        The address of the channel used to get the y axis waveform data.
+        The address of the channel used to get the y axis data.
 
         Parameters
         -------
         new_address: str
         """
-        if new_address is None or len(str(new_address)) < 1:
-            self.y_channel = None
+        if new_address is None or len(new_address) == 0:
+            if self.y_channel:
+                self.y_channel.disconnect()
             return
-        self.y_channel = PyDMChannel(
-                            address=new_address,
-                            connection_slot=self.yConnectionStateChanged,
-                            value_slot=self.receiveYWaveform)
+
+        if self._y_address != new_address:
+            # Disconnect old channel
+            if self.y_channel:
+                self.y_channel.disconnect()
+
+            config = parse_channel_config(new_address, force_dict=True)
+            if len(config) == 0:
+                return
+            self._y_address = new_address
+            address = None
+            self.y_channel = PyDMChannel(parent=None,
+                                         address=address,
+                                         callback=self._receive_y_data,
+                                         config=config
+                                         )
+
+            # Connect the channel...
+            self.y_channel.connect()
+            # Force initial data fill...
+            self.y_channel.notified()
+
+    def _receive_y_data(self, data=None, introspection=None,
+                        *args, **kwargs):
+        if data is None or introspection is None:
+            return
+        generic_callback(self, data, introspection, {
+            DataKeys.CONNECTION: 'yConnectionStateChanged',
+            DataKeys.VALUE: 'receiveYWaveform'})
 
     def update_waveforms_if_ready(self):
         """
