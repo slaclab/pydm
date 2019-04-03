@@ -111,6 +111,8 @@ class PyDMChannel(object):
         """
         Connect a PyDMChannel to the proper PyDMPlugin
         """
+        if not self.address:
+            return
         if is_qt_designer() and not config.DESIGNER_ONLINE:
             return
         logger.debug("Connecting %r", self.address)
