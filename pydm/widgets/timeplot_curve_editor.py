@@ -1,6 +1,7 @@
 from qtpy.QtCore import QModelIndex, QVariant
 from .baseplot_table_model import BasePlotCurvesModel
-from .baseplot_curve_editor import BasePlotCurveEditorDialog
+from .baseplot_curve_editor import (BasePlotCurveEditorDialog,
+                                    ChannelColumnDelegate)
 
 
 class PyDMTimePlotCurvesModel(BasePlotCurvesModel):
@@ -49,4 +50,6 @@ class TimePlotCurveEditorDialog(BasePlotCurveEditorDialog):
 
     def __init__(self, plot, parent=None):
         super(TimePlotCurveEditorDialog, self).__init__(plot, parent)
+        channel_delegate = ChannelColumnDelegate(self)
+        self.table_view.setItemDelegateForColumn(0, channel_delegate)
         self.setup_delegate_columns(index=2)

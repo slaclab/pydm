@@ -1,13 +1,17 @@
+from functools import partial
+from collections import OrderedDict
+
 from qtpy.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QTableView,
                             QAbstractItemView, QSpacerItem, QSizePolicy,
                             QDialogButtonBox, QPushButton,
-                            QComboBox, QStyledItemDelegate, QColorDialog)
+                            QComboBox, QStyledItemDelegate, QColorDialog,
+                            QLineEdit, QFrame)
 from qtpy.QtCore import Qt, Slot, QModelIndex, QItemSelection
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .baseplot import BasePlotCurveItem
 from .baseplot_table_model import BasePlotCurvesModel
-from collections import OrderedDict
-
+from .channel_editor import ChannelEditor
+from ..utilities.iconfont import IconFont
 
 class BasePlotCurveEditorDialog(QDialog):
     """QDialog that is used in Qt Designer to edit the properties of the
@@ -45,9 +49,9 @@ class BasePlotCurveEditorDialog(QDialog):
         self.table_view.setSortingEnabled(False)
         self.table_view.horizontalHeader().setStretchLastSection(True)
         self.table_view.verticalHeader().setVisible(False)
-        self.table_view.setColumnWidth(0, 160)
-        self.table_view.setColumnWidth(1, 160)
-        self.table_view.setColumnWidth(2, 160)
+        self.table_view.setColumnWidth(0, 200)
+        self.table_view.setColumnWidth(1, 200)
+        self.table_view.setColumnWidth(2, 200)
         self.vertical_layout.addWidget(self.table_view)
         self.add_remove_layout = QHBoxLayout()
         spacer = QSpacerItem(40, 20, QSizePolicy.Expanding,
@@ -181,6 +185,63 @@ class RedrawModeColumnDelegate(QStyledItemDelegate):
     def setModelData(self, editor, model, index):
         val = self.choices[editor.currentText()]
         model.setData(index, val, Qt.EditRole)
+
+    def updateEditorGeometry(self, editor, option, index):
+        editor.setGeometry(option.rect)
+
+
+class ChannelColumnDelegate(QStyledItemDelegate):
+    """ChannelColumnDelegate draws a LineEdit and a button for the channel
+    editor interface so that users can easily configure a new channel."""
+
+    @staticmethod
+    def _get_channel_edit(editor):
+        channel_edit = editor.findChild(QLineEdit, 'channel_edit')
+        return channel_edit
+
+    def edit_channel(self, editor, index):
+        channel_edit = self._get_channel_edit(editor)
+        config = [['channel', 'Channel', channel_edit.text()]]
+        ch_editor = ChannelEditor(config, parent=editor.parent())
+        ch_editor.exec_()
+
+        if len(ch_editor.return_value) > 0:
+            prop, _, value = ch_editor.return_value[0]
+            channel_edit.setText(value)
+            index.model().setData(index, str(value), Qt.EditRole)
+
+    def createEditor(self, parent, option, index):
+        editor = QFrame(parent)
+        editor.setLayout(QHBoxLayout())
+        editor.layout().setSpacing(0)
+        editor.layout().setContentsMargins(0, 0, 0, 0)
+
+        channel_edit = QLineEdit(parent)
+        channel_edit.setObjectName('channel_edit')
+        channel_edit.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+
+        btn = QPushButton(parent)
+        btn.setIcon(IconFont().icon('edit'))
+        btn.clicked.connect(partial(self.edit_channel, editor, index))
+        btn.setMaximumWidth(32)
+        btn.setMaximumHeight(32)
+
+        editor.layout().addWidget(channel_edit)
+        editor.layout().addWidget(btn)
+
+        return editor
+
+    def setEditorData(self, editor, index):
+        val = str(index.model().data(index, Qt.EditRole))
+        channel_edit = self._get_channel_edit(editor)
+        if channel_edit:
+            channel_edit.setText(val)
+
+    def setModelData(self, editor, model, index):
+        channel_edit = self._get_channel_edit(editor)
+        if channel_edit:
+            val = channel_edit.text()
+            model.setData(index, val, Qt.EditRole)
 
     def updateEditorGeometry(self, editor, option, index):
         editor.setGeometry(option.rect)

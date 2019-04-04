@@ -1,7 +1,8 @@
 from qtpy.QtCore import QModelIndex, QVariant
 from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import (BasePlotCurveEditorDialog,
-                                    RedrawModeColumnDelegate)
+                                    RedrawModeColumnDelegate,
+                                    ChannelColumnDelegate)
 
 
 class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
@@ -69,7 +70,9 @@ class ScatterPlotCurveEditorDialog(BasePlotCurveEditorDialog):
 
     def __init__(self, plot, parent=None):
         super(ScatterPlotCurveEditorDialog, self).__init__(plot, parent)
-
+        for col in [0, 1]:
+            channel_delegate = ChannelColumnDelegate(self)
+            self.table_view.setItemDelegateForColumn(col, channel_delegate)
         self.setup_delegate_columns(index=3)
         redraw_mode_delegate = RedrawModeColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(8, redraw_mode_delegate)

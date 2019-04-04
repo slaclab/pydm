@@ -129,7 +129,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         """
         return self._y_address
 
-    @x_address.setter
+    @y_address.setter
     def y_address(self, new_address):
         """
         The address of the channel used to get the y axis data.

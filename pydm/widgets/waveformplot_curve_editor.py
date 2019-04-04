@@ -1,7 +1,8 @@
 from qtpy.QtCore import QModelIndex, QVariant
 from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import (BasePlotCurveEditorDialog,
-                                    RedrawModeColumnDelegate)
+                                    RedrawModeColumnDelegate,
+                                    ChannelColumnDelegate)
 
 
 class PyDMWaveformPlotCurvesModel(BasePlotCurvesModel):
@@ -18,11 +19,11 @@ class PyDMWaveformPlotCurvesModel(BasePlotCurvesModel):
     def get_data(self, column_name, curve):
         if column_name == "Y Channel":
             if curve.y_address is None:
-                return QVariant()
+                return ""
             return str(curve.y_address)
         elif column_name == "X Channel":
             if curve.x_address is None:
-                return QVariant()
+                return ""
             return str(curve.x_address)
         elif column_name == "Redraw Mode":
             return curve.redraw_mode
@@ -65,7 +66,9 @@ class WaveformPlotCurveEditorDialog(BasePlotCurveEditorDialog):
 
     def __init__(self, plot, parent=None):
         super(WaveformPlotCurveEditorDialog, self).__init__(plot, parent)
-
+        for col in [0, 1]:
+            channel_delegate = ChannelColumnDelegate(self)
+            self.table_view.setItemDelegateForColumn(col, channel_delegate)
         self.setup_delegate_columns(index=3)
         redraw_mode_delegate = RedrawModeColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(8, redraw_mode_delegate)
