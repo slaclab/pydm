@@ -5,7 +5,7 @@ from pyqtgraph import ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Signal, Slot, Property, QTimer
-from .base import generic_callback
+from .base import data_callback
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..data_store import DataKeys
@@ -70,8 +70,11 @@ class TimePlotCurveItem(BasePlotCurveItem):
             like 'symbol' and 'symbolSize'.
         """
         if "name" not in kws or not kws["name"]:
-            name = remove_protocol(channel_address)
-            kws["name"] = name
+            if channel_address:
+                name = remove_protocol(channel_address)
+                kws["name"] = name
+            else:
+                kws["name"] = ""
 
         # Keep the x-axis moving with latest timestamps as ticks
         self._plot_by_timestamps = plot_by_timestamps
@@ -90,7 +93,6 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.channel_address = ""
         self.address = channel_address
         super(TimePlotCurveItem, self).__init__(**kws)
-
 
     def to_dict(self):
         dic_ = OrderedDict([("channel", self.address), ])
@@ -134,7 +136,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
                       *args, **kwargs):
         if data is None or introspection is None:
             return
-        generic_callback(self, data, introspection, {
+        data_callback(self, data, introspection, {
             DataKeys.CONNECTION: 'connectionStateChanged',
             DataKeys.VALUE: 'receiveNewValue'})
 
@@ -196,6 +198,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         new_value : float
             The new y-value just available.
         """
+
         self.update_min_max_y_values(new_value)
 
         if self._update_mode == PyDMTimePlot.SynchronousMode:

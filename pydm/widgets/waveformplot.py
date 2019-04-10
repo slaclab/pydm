@@ -1,7 +1,7 @@
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Slot, Property
 import numpy as np
-from .base import generic_callback
+from .base import data_callback
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
 import itertools
@@ -146,7 +146,7 @@ class WaveformCurveItem(BasePlotCurveItem):
                         *args, **kwargs):
         if data is None or introspection is None:
             return
-        generic_callback(self, data, introspection, {
+        data_callback(self, data, introspection, {
             DataKeys.CONNECTION: 'xConnectionStateChanged',
             DataKeys.VALUE: 'receiveXWaveform'})
 
@@ -201,7 +201,7 @@ class WaveformCurveItem(BasePlotCurveItem):
                         *args, **kwargs):
         if data is None or introspection is None:
             return
-        generic_callback(self, data, introspection, {
+        data_callback(self, data, introspection, {
             DataKeys.CONNECTION: 'yConnectionStateChanged',
             DataKeys.VALUE: 'receiveYWaveform'})
 

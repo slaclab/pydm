@@ -15,7 +15,7 @@ from .rules import RulesDispatcher
 from .. import data_plugins
 from .. import tools
 from ..data_store import DataKeys
-from ..utilities import (is_qt_designer, remove_protocol, generic_callback)
+from ..utilities import (is_qt_designer, remove_protocol, data_callback)
 from ..utilities.channel import parse_channel_config
 
 try:
@@ -852,7 +852,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
     def _receive_data(self, data=None, introspection=None, *args, **kwargs):
         if data is None or introspection is None:
             return
-        generic_callback(self, data, introspection, self._DATA_METHOD_MAPPING)
+        data_callback(self, data, introspection, self._DATA_METHOD_MAPPING)
 
     def restore_original_tooltip(self):
         if self._tooltip is None:

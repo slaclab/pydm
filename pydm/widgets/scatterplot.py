@@ -4,7 +4,7 @@ from collections import OrderedDict
 import numpy as np
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Slot, Property, Qt
-from .base import generic_callback
+from .base import data_callback
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..data_store import DataKeys
@@ -113,7 +113,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
                         *args, **kwargs):
         if data is None or introspection is None:
             return
-        generic_callback(self, data, introspection, {
+        data_callback(self, data, introspection, {
             DataKeys.CONNECTION: 'xConnectionStateChanged',
             DataKeys.VALUE: 'receiveXValue'})
 
@@ -168,7 +168,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
                         *args, **kwargs):
         if data is None or introspection is None:
             return
-        generic_callback(self, data, introspection, {
+        data_callback(self, data, introspection, {
             DataKeys.CONNECTION: 'yConnectionStateChanged',
             DataKeys.VALUE: 'receiveYValue'})
 

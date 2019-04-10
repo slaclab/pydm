@@ -80,7 +80,6 @@ class Connection(PyDMConnection):
 
     @Slot(dict)
     def receive_from_channel(self, payload):
-        print('PyEPICS - Receive From Channel: ', payload)
         new_val = payload.get(DataKeys.VALUE, None)
 
         if self.pv.write_access and new_val is not None:

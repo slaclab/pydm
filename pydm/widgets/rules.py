@@ -6,7 +6,7 @@ from qtpy.QtCore import QThread, QMutex, Signal, QMutexLocker
 from qtpy.QtWidgets import QWidget
 
 from .channel import PyDMChannel
-from ..utilities import generic_callback
+from ..utilities import data_callback
 from ..utilities.channel import parse_channel_config
 from ..data_store import DataKeys
 
@@ -182,7 +182,7 @@ class RulesEngine(QThread):
             DataKeys.CONNECTION: conn_cb,
             DataKeys.VALUE: value_cb
         }
-        generic_callback(self, data, introspection, mapping=mapping)
+        data_callback(self, data, introspection, mapping=mapping)
 
     def unregister(self, widget_ref):
         with QMutexLocker(self.map_lock):

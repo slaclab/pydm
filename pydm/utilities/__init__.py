@@ -1,8 +1,10 @@
 import os
+import re
 import sys
 import platform
 import ntpath
 import shlex
+import numpy as np
 
 from .units import find_unittype, convert, find_unit_options
 from . import macro
@@ -179,16 +181,23 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None, pathext=None):
 def nested_dict_get(input_dict, nested_key):
     internal_dict_value = input_dict
     for k in nested_key:
-        if isinstance(internal_dict_value, list):
-            internal_dict_value = internal_dict_value[int(k)]
-        else:
-            internal_dict_value = internal_dict_value.get(k, None)
+        try:
+            result = list(filter(None, re.split("(\[.+])", k)))
+            if len(result) > 1:
+                internal_dict_value = internal_dict_value.get(result[0], None)
+                internal_dict_value = eval(
+                    "internal_dict_value{}".format(''.join(result[1:]))
+                )
+            else:
+                internal_dict_value = internal_dict_value.get(k, None)
+        except:
+            internal_dict_value = None
         if internal_dict_value is None:
             return None
     return internal_dict_value
 
 
-def generic_callback(widget, data, introspection, mapping):
+def data_callback(widget, data, introspection, mapping):
     """
     This callback executes the methods mapped at `mapping` with the data
     from the channel following the introspection definition.

@@ -9,7 +9,7 @@ from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QThread
 from qtpy.QtWidgets import QActionGroup
 
-from .base import PyDMWidget, generic_callback
+from .base import PyDMWidget, data_callback
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
 from ..data_store import DataKeys
@@ -574,7 +574,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
                             *args, **kwargs):
         if data is None or introspection is None:
             return
-        generic_callback(self, data, introspection, {
+        data_callback(self, data, introspection, {
             DataKeys.CONNECTION: 'image_connection_state_changed',
             DataKeys.VALUE: 'image_value_changed',
             DataKeys.SEVERITY: 'alarm_severity_changed'})
@@ -627,7 +627,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
                             *args, **kwargs):
         if data is None or introspection is None:
             return
-        generic_callback(self, data, introspection, {
+        data_callback(self, data, introspection, {
             DataKeys.CONNECTION: 'connection_state_changed',
             DataKeys.VALUE: 'image_width_changed',
             DataKeys.SEVERITY: 'alarm_severity_changed'})
