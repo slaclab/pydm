@@ -59,22 +59,9 @@ nt_introspection = {
 }
 
 
-def adjust_color(structure):
-    color_index = 0
-    attr = structure.get('attribute')
-
-    if attr is not None and len(attr) > 0:
-        color_info = attr[0].get('value')
-        if color_info == 2:
-            shape = structure['value'].shape
-            new_shape = (shape[1], shape[2], shape[0])
-            structure['value'] = structure['value'].reshape(new_shape)
-
-
 def pre_process(structure, nt_id):
     if 'NTNDArray' in nt_id:
         try:
             decompress(structure)
-            # adjust_color(structure)
         except Exception:
             logger.exception('Failed to pre-process NTNDArray.')

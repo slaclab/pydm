@@ -21,13 +21,12 @@ def decompress(structure):
     codec = structure.get('codec', {})
     data_type = codec.get('parameters')
     if data_type is None:
-        return
-    dtype = ScalarType[data_type]
+        # Assuming data type from data
+        dtype = data.dtype
+    else:
+        dtype = ScalarType[data_type]
     codec_name = codec.get('name')
     uncompressed_size = structure.get('uncompressedSize')
-
-    if codec_name is None:
-        return
 
     if not codec_name:
         structure['value'] = none_decompress(data, shape, dtype,
