@@ -94,6 +94,7 @@ jobs:
       source activate base
       conda install -q pydm conda=4.6.8 -c conda-forge
       pip install -r dev-requirements.txt
+      pip install pytest-azurepipelines
     displayName: 'Anaconda - Install Dependencies'
 
   # Windows Only

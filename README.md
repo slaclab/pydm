@@ -44,6 +44,22 @@ as the abstraction layer for the Qt Python wrappers (PyQt5/PyQt4/PySide2/PySide)
 Python package requirements are listed in the requirements.txt file, which can
 be used to install all requirements from pip: 'pip install -r requirements.txt'
 
+# Running the Tests
+In order to run the tests you will need to install some dependencies that are
+not part of the runtime dependencies of PyDM.
+
+Assuming that you have cloned this repository do:
+
+```bash
+pip install -r dev-requirements.txt
+
+python run_tests.py
+```
+
+If you want to see the coverage report do:
+```bash
+python run_tests.py --show-cov
+```
 
 # Running the Examples
 There are various examples of some of the features of the display manager.
@@ -54,6 +70,24 @@ the examples:
 ```python
 python scripts/pydm examples/home.ui
 ```
+
+# Building the Documentation Locally
+In order to build the documentation you will need to instll some dependencies
+that are not part of the runtime dependencies of PyDM.
+
+Assuming that you have cloned this repository do:
+
+```bash
+pip install -r docs-requirements.txt
+
+cd docs
+make html
+```
+
+This will generate the HTML documentation for PyDM at the `<>/docs/build/html`
+folder. Look for the `index.html` file and open it with your browser.
+
+# Online Documentation
 
 Documentation is available at http://slaclab.github.io/pydm/.  Documentation is
 somewhat sparse right now, unfortunately.
