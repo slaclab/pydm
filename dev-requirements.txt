@@ -1,5 +1,4 @@
 codecov
-pytest
+pytest>=3.6
 pytest-qt
 pytest-cov<2.6.0
-pytest-azurepipelines
