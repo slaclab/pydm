@@ -5,6 +5,7 @@ from pydm.data_plugins import (plugin_modules, load_plugins_from_path,
                                plugin_for_address)
 from pydm import config
 
+
 def test_data_plugin_add(qapp, test_plugin):
     # Check that adding this after import will be reflected in PyDMApp
     assert isinstance(plugin_modules['tst'], test_plugin)

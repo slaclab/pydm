@@ -217,7 +217,7 @@ def data_callback(widget, data, introspection, mapping):
         return
     try:
         for data_key, real_key in introspection.items():
-            if real_key is None or real_key == '':
+            if real_key is None or real_key == '' or not isinstance(real_key, str):
                 continue
             try:
                 method_name = mapping[data_key]
