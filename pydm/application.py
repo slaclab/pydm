@@ -360,7 +360,7 @@ class PyDMApplication(QApplication):
             kwargs['macros'] = macros
         return cls(**kwargs)
 
-    def open_file(self, ui_file, macros=None, command_line_args=None, **kwargs):
+    def open_file(self, ui_file, macros=None, command_line_args=None, defer_connections=False, **kwargs):
         """
         Open a .ui or .py file, and return a widget from the loaded file.
         This method is the entry point for all opening of new displays,
@@ -401,7 +401,7 @@ class PyDMApplication(QApplication):
         merged_macros = self.macro_stack[-1].copy()
         merged_macros.update(macros)
         self.macro_stack.append(merged_macros)
-        with data_plugins.connection_queue():
+        with data_plugins.connection_queue(defer_connections=defer_connections):
             if extension == '.ui':
                 widget = self.load_ui_file(filepath, merged_macros)
             elif extension == '.py':
