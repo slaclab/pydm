@@ -10,7 +10,8 @@ import logging
 
 from qtpy.QtCore import QObject, Signal, Slot
 from pydm.application import PyDMApplication
-from pydm.data_plugins import PyDMPlugin, add_plugin
+from pydm import data_plugins
+from pydm.data_plugins import PyDMPlugin, add_plugin, PyDMConnection
 
 logger = logging.getLogger(__name__)
 _, file_path = tempfile.mkstemp(suffix=".log")
@@ -105,10 +106,31 @@ def qapp(qapp_args):
         yield app  # pragma: no cover
 
 
-@pytest.fixture(scope='session')
+class TestPluginConnection(PyDMConnection):
+    def __init__(self, *args, **kwargs):
+        super(TestPluginConnection, self).__init__(*args, **kwargs)
+        self.payload_received = None
+
+    def receive_from_channel(self, payload):
+        self.payload_received = payload
+
+    def write_introspection(self, intro):
+        self.introspection = intro
+
+    def write_data(self, payload):
+        self.data = payload
+        self.send_to_channel()
+
+
+class TestPlugin(PyDMPlugin):
+    protocol = "tst"
+    connection_class = TestPluginConnection
+
+
+@pytest.fixture(scope='function')
 def test_plugin():
     # Create test PyDMPlugin with mock protocol
-    test_plug = PyDMPlugin
-    test_plug.protocol = 'tst'
+    test_plug = TestPlugin
     add_plugin(test_plug)
-    return test_plug
+    return data_plugins.plugin_modules['tst']
+

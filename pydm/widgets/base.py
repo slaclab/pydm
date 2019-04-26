@@ -211,7 +211,8 @@ class PyDMPrimitiveWidget(object):
 
 
 class TextFormatter(object):
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super(TextFormatter, self).__init__(*args, **kwargs)
         self._show_units = False
         self.format_string = "{}"
         self._precision_from_pv = True
@@ -596,8 +597,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
             The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
             and 3 = INVALID
         """
-        if self._alarm_state == new_alarm_severity:
-            return
         # 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR, 3 = INVALID
         if new_alarm_severity == self._alarm_state:
             return
@@ -825,12 +824,15 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         if self._channel != value:
             if self._channel is not None:
-                config = parse_channel_config(self._channel)
+                config = parse_channel_config(self._channel, force_dict=True)
 
                 # Remove old connections
                 for channel in [c for c in self._channels if
                                 c._config == config]:
-                    channel.disconnect()
+                    try:
+                        channel.disconnect()
+                    except Exception:
+                        logger.exception("Failed to disconnect channel %r", channel)
                     self._channels.remove(channel)
 
             # Load new channel
@@ -843,11 +845,14 @@ class PyDMWidget(PyDMPrimitiveWidget):
                                   callback=self._receive_data,
                                   config=config
                                   )
+            self._channels.append(channel)
+            self._connected = False
+            self.alarm_severity_changed(self.ALARM_DISCONNECTED)
+            self.check_enable_state()
             # Connect the channel...
             channel.connect()
             # Force initial data fill...
             channel.notified()
-            self._channels.append(channel)
 
     def _receive_data(self, data=None, introspection=None, *args, **kwargs):
         if data is None or introspection is None:

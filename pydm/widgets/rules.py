@@ -134,7 +134,6 @@ class RulesEngine(QThread):
         self.unregister(ref)
 
     def register(self, widget, rules):
-        print('Invoked register for: ', rules)
         widget_ref = weakref.ref(widget, self.widget_destroyed)
         if widget_ref in self.widget_map:
             self.unregister(widget_ref)

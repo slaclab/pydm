@@ -1,6 +1,7 @@
 import logging
 import json
 
+from functools import partial
 from qtpy.QtCore import QObject, Signal, Slot
 
 from .. import data_plugins
@@ -64,8 +65,8 @@ class PyDMChannel(QObject):
     """
     transmit = Signal([dict])
 
-    def __init__(self, parent=None, address=None, callback=None,
-                 config=None,
+    def __init__(self, address=None, callback=None,
+                 config=None, parent=None,
                  *args, **kwargs):
         super(PyDMChannel, self).__init__(parent=parent)
         if config is None:
@@ -78,9 +79,11 @@ class PyDMChannel(QObject):
         self._introspection = config.get('introspection', {})
         self._monitors = set()  # Convert to list of WeakMethod in the future
         self._busy = False
+        self._connected = False
         self.address = address
         if callback:
             self.subscribe(callback)
+        self.destroyed.connect(partial(self.disconnect, destroying=True))
 
     @Slot()
     def notified(self):
@@ -104,12 +107,18 @@ class PyDMChannel(QObject):
     @address.setter
     def address(self, address):
         if address is None:
-            conn = self._config.get('connection', {})
-            self._protocol = conn.get('protocol')
-            self._parameters = conn.get('parameters')
-            self._address = json.dumps(conn)
+            conn = self._config.get('connection', None)
+            if conn is not None:
+                self._protocol = conn.get('protocol')
+                self._parameters = conn.get('parameters')
+                self._address = json.dumps(conn)
+            else:
+                self._address = None
         else:
             self._address = clear_channel_address(address)
+
+    def connected(self):
+        return self._connected
 
     def connect(self):
         """
@@ -123,6 +132,7 @@ class PyDMChannel(QObject):
         # Connect to proper PyDMPlugin
         try:
             data_plugins.establish_connection(self)
+            self._connected = True
         except Exception:
             logger.exception("Unable to make proper connection for %r", self)
 
@@ -139,6 +149,7 @@ class PyDMChannel(QObject):
             plugin.remove_connection(self, destroying=destroying)
         except Exception as exc:
             logger.exception("Unable to remove connection for %r", self)
+        self._connected = False
 
     def get_introspection(self):
         if self._use_introspection:

@@ -131,8 +131,8 @@ class DataStore(object):
         introspection : dict
             Returned only if `with_introspection` is `True`
         """
-        data = self._data.get(address, None)
-        intro = self._introspection.get(address, None)
+        data = self._data.get(address, {})
+        intro = self._introspection.get(address, {})
         if with_introspection:
             return data, intro
         return data

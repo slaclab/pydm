@@ -22,7 +22,8 @@ class Connection(PyDMConnection):
         monitor_mask = dbr.DBE_VALUE | dbr.DBE_ALARM | dbr.DBE_PROPERTY
         self.pv = epics.PV(address, connection_callback=self.send_connection_state,
                            form='ctrl', auto_monitor=monitor_mask,
-                           access_callback=self.send_access_state)
+                           access_callback=self.send_access_state,
+                           connection_timeout=0.001)
         self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
 
     def send_new_value(self, value=None, **kws):

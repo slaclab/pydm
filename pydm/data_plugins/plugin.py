@@ -8,6 +8,15 @@ from ..data_store import DataStore, DataKeys, DEFAULT_INTROSPECTION
 from ..utilities.remove_protocol import protocol_and_address
 
 
+def safe_disconnect_signal(signal, slot):
+    try:
+        if slot is not None:
+            signal.disconnect(slot)
+        else:
+            signal.disconnect()
+    except TypeError:
+        pass
+
 class BaseParameterEditor(QtWidgets.QWidget):
     def __init__(self, parent=None, *args, **kwargs):
         super(BaseParameterEditor, self).__init__(parent, *args, **kwargs)
@@ -41,7 +50,6 @@ class DefaultParameterEditor(BaseParameterEditor):
 
     @parameters.setter
     def parameters(self, params):
-        print("Loading params: ", params)
         address = params.get('address', '')
         self.edit_address.setText(address)
 
@@ -74,9 +82,11 @@ class PyDMConnection(QObject):
                                  Qt.QueuedConnection)
 
     def remove_listener(self, channel, destroying=False):
+        if not channel.connected():
+            return
         if not destroying:
-            self.notify.disconnect(channel.notified)
-            self.channel.transmit.disconnect(self._validate_data_from_channel)
+            safe_disconnect_signal(self.notify, channel.notified)
+            safe_disconnect_signal(self.channel.transmit, self._validate_data_from_channel)
 
         self.listener_count = self.listener_count - 1
         if self.listener_count < 1:

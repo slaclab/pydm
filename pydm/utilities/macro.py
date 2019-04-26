@@ -36,13 +36,17 @@ def template_for_file(file_path):
         text = Template(orig_file.read())
     return text
 
-def find_base_macros(widget):
+def find_base_macros(widget, debug=False):
     '''
     Find and return the first set of defined base_macros from this widget or
     its ancestors.
     '''
     while widget is not None:
+        if debug:
+            print('Looking for macros at widget: ', widget)
         if hasattr(widget, 'base_macros'):
+            if debug:
+                print('Widget has base macros: ', widget.base_macros)
             return widget.base_macros
         widget = widget.parent()
     return {}
