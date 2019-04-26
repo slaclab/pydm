@@ -29,7 +29,10 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         """A channel to use for this tab's alarm indicator."""
         if self.currentIndex() < 0:
             return
-        return str(self.tab_channels.get(self.currentIndex(), "")["address"])
+        try:
+            return str(self.tab_channels[self.currentIndex()]["address"])
+        except KeyError:
+            return ''
 
     @currentTabAlarmChannel.setter
     def currentTabAlarmChannel(self, new_alarm_channel):
@@ -101,7 +104,7 @@ class PyDMTabBar(QTabBar, PyDMWidget):
     def tabInserted(self, index):
         super(PyDMTabBar, self).tabInserted(index)
         if index not in self.tab_channels:
-            self.tab_channels[index]["address"] = ""
+            self.tab_channels[index] = {"address": ""}
         self.set_initial_icon_for_tab(index)
 
     @Property(QColor)
