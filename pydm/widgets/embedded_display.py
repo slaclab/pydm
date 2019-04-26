@@ -29,7 +29,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         self._embedded_widget = None
         self._disconnect_when_hidden = True
         self._is_connected = False
-        self._only_load_when_shown = False
+        self._only_load_when_shown = True
         self._needs_load = True
         self.layout = QVBoxLayout(self)
         self.err_label = QLabel(self)
