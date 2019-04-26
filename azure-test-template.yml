@@ -65,8 +65,8 @@ jobs:
     displayName: 'Anaconda - Create'
     inputs:
       environmentName: 'test-environment-$(python.version)'
-      packageSpecs: 'python=$(python.version) conda=4.6.8 conda-build anaconda-client'
-      updateConda: false
+      packageSpecs: 'python=$(python.version) conda-build anaconda-client'
+      updateConda: true
 
   - bash: |
      conda info --envs
@@ -75,13 +75,13 @@ jobs:
   - bash: |
       source activate base
       conda config --set always_yes yes
-      conda config --append channels conda-forge
+      conda config --add channels conda-forge
       conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
     displayName: 'Anaconda - Configure - Add local bld-dir'
 
   - bash: |
       source activate base
-      conda build -q conda-recipe --python=$(python.version) --output-folder bld-dir
+      conda build conda-recipe --python=$(python.version) --output-folder bld-dir
     displayName: 'Anaconda - Build PyDM Package'
 
   - task: PublishBuildArtifacts@1
@@ -92,10 +92,17 @@ jobs:
 
   - bash: |
       source activate base
-      conda install -q pydm conda=4.6.8 -c conda-forge
-      pip install -r dev-requirements.txt
+      conda install -q -c conda-forge pydm --file dev-requirements.txt
       pip install pytest-azurepipelines
-    displayName: 'Anaconda - Install Dependencies'
+    displayName: 'Anaconda - Install Dependencies (Linux & MacOS)'
+    condition: ne(variables['agent.os'], 'Windows_NT' )
+
+  - bash: |
+      source activate base
+      conda install -q -c conda-forge pydm qt=5 pyqt=5.6 --file dev-requirements.txt
+      pip install pytest-azurepipelines
+    displayName: 'Anaconda - Install Dependencies (Windows)'
+    condition: eq(variables['agent.os'], 'Windows_NT' )
 
   # Windows Only
   - powershell: |
@@ -104,6 +111,17 @@ jobs:
       REPEATER: $(CONDA_PREFIX)\Lib\site-packages\epics\clibs\win64\caRepeater.exe
     displayName: 'Windows - Start CaRepeater'
     condition: eq(variables['agent.os'], 'Windows_NT' )
+
+  - bash: |
+      source activate base
+      # debug of conda environment
+      conda info
+      conda list
+      echo python location: `which python`
+      echo pytest location: `which pytest`
+      python -c "from PyQt5 import QtCore; print(QtCore)"
+    displayName: 'Debug - Conda List'
+    continueOnError: false
 
   - bash: |
       source activate base

@@ -389,6 +389,8 @@ class RulesEditor(QtWidgets.QDialog):
 
     def name_changed(self):
         """Callback executed when the rule name is changed."""
+        if not self.lst_rule_item:
+            return
         self.lst_rule_item.setText(self.txt_name.text())
         self.change_entry("name", self.txt_name.text())
 
