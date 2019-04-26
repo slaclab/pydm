@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.slider &mdash; PyDM v1.6.5+106.g5a5cbc6c documentation</title>
+  <title>pydm.widgets.slider &mdash; PyDM v1.6.5+120.gfeade1a7 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.6.5+106.g5a5cbc6c
+                v1.6.5+120.gfeade1a7
               </div>
             
           
@@ -209,7 +209,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">alarmSensitiveContent</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alarmSensitiveBorder</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="c1"># Internal values for properties</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_enable_state</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_limit_labels</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_value_label</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_limits</span> <span class="o">=</span> <span class="kc">False</span>
@@ -445,7 +444,12 @@
 <span class="sd">        Determines wether or not the widget must be enabled or not depending</span>
 <span class="sd">        on the write access, connection state and presence of limits information</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_write_access</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_needs_limit_info</span><span class="p">)</span></div>
+        <span class="c1"># Even though by documentation disabling parent QFrame (self), should disable internal</span>
+        <span class="c1"># slider, in practice it still remains interactive (PyQt 5.12.1). Disabling explicitly, solves</span>
+        <span class="c1"># the problem.</span>
+        <span class="n">should_enable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_access</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_needs_limit_info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">should_enable</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">should_enable</span><span class="p">)</span></div>
 
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">internal_slider_action_triggered</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
@@ -460,6 +464,9 @@
 <span class="sd">        ----------</span>
 <span class="sd">        val : float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Avoid potential crash if limits are undefined</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="c1"># The user has moved the slider, we need to update our value.</span>
         <span class="c1"># Only update the underlying value, not the self.value property,</span>
         <span class="c1"># because we don&#39;t need to reset the slider position.    If we change</span>

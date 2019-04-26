@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.tab_bar &mdash; PyDM v1.6.5+106.g5a5cbc6c documentation</title>
+  <title>pydm.widgets.tab_bar &mdash; PyDM v1.6.5+120.gfeade1a7 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.6.5+106.g5a5cbc6c
+                v1.6.5+120.gfeade1a7
               </div>
             
           
@@ -207,7 +207,10 @@
         <span class="sd">&quot;&quot;&quot;A channel to use for this tab&#39;s alarm indicator.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">(),</span> <span class="s2">&quot;&quot;</span><span class="p">)[</span><span class="s2">&quot;address&quot;</span><span class="p">])</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()][</span><span class="s2">&quot;address&quot;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
 
     <span class="nd">@currentTabAlarmChannel</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">currentTabAlarmChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_channel</span><span class="p">):</span>
@@ -279,7 +282,7 @@
     <span class="k">def</span> <span class="nf">tabInserted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMTabBar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">tabInserted</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">index</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s2">&quot;address&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_initial_icon_for_tab</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
