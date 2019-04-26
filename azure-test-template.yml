@@ -92,8 +92,7 @@ jobs:
 
   - bash: |
       source activate base
-      conda install -q pydm conda=4.6.8 -c conda-forge
-      pip install -r dev-requirements.txt
+      conda install -q -c conda-forge pydm --file dev-requirements.txt
       pip install pytest-azurepipelines
     displayName: 'Anaconda - Install Dependencies'
 
@@ -104,6 +103,14 @@ jobs:
       REPEATER: $(CONDA_PREFIX)\Lib\site-packages\epics\clibs\win64\caRepeater.exe
     displayName: 'Windows - Start CaRepeater'
     condition: eq(variables['agent.os'], 'Windows_NT' )
+
+  - bash: |
+      source activate base
+      # debug of conda environment
+      conda info
+      conda list
+    displayName: 'Debug - Conda List'
+    continueOnError: false
 
   - bash: |
       source activate base
