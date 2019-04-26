@@ -31,7 +31,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.alarmSensitiveContent = True
         self.alarmSensitiveBorder = False
         # Internal values for properties
-        self.set_enable_state()
         self._show_limit_labels = True
         self._show_value_label = True
         self._user_defined_limits = False
@@ -267,7 +266,12 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         Determines wether or not the widget must be enabled or not depending
         on the write access, connection state and presence of limits information
         """
-        self.setEnabled(self._write_access and self._connected and not self._needs_limit_info)
+        # Even though by documentation disabling parent QFrame (self), should disable internal
+        # slider, in practice it still remains interactive (PyQt 5.12.1). Disabling explicitly, solves
+        # the problem.
+        should_enable = self._write_access and self._connected and not self._needs_limit_info
+        self.setEnabled(should_enable)
+        self._slider.setEnabled(should_enable)
 
     @Slot(int)
     def internal_slider_action_triggered(self, action):
@@ -282,6 +286,9 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         ----------
         val : float
         """
+        # Avoid potential crash if limits are undefined
+        if self._slider_position_to_value_map is None:
+            return
         # The user has moved the slider, we need to update our value.
         # Only update the underlying value, not the self.value property,
         # because we don't need to reset the slider position.    If we change
