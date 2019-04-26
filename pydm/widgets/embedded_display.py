@@ -214,7 +214,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         close_widget_connections(self.embedded_widget)
 
     @Property(bool)
-    def onlyLoadWhenShown(self):
+    def loadWhenShown(self):
         """
         If True, only load and display the file once the
         PyDMEmbeddedDisplayWidget is visible on screen.  This is very useful
@@ -231,8 +231,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         return self._only_load_when_shown
         
-    @onlyLoadWhenShown.setter
-    def onlyLoadWhenShown(self, val):
+    @loadWhenShown.setter
+    def loadWhenShown(self, val):
         self._only_load_when_shown = val
         if val is False and self._needs_load:
             self.embedded_widget = self.open_file()
