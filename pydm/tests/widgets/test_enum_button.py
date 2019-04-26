@@ -84,8 +84,10 @@ def test_widget_orientation(qtbot, orientation):
         col = 0
 
     item = widget.layout().itemAtPosition(row, col)
+    qtbot.addWidget(item)
     assert item is not None
     w = item.widget()
+    qtbot.addWidget(w)
     assert w is not None
     assert isinstance(w, class_for_type[widget.widgetType])
 
@@ -115,7 +117,7 @@ def test_widget_orientation(qtbot, orientation):
     (False, False, False, True),
     (False, False, False, False),
 ])
-def test_check_enable_state(qtbot, signals, connected, write_access, has_enum,
+def test_check_enable_state(qtbot, connected, write_access, has_enum,
                             is_app_read_only):
     """
     Test the tooltip generated depending on the channel connection, write access,
@@ -133,8 +135,6 @@ def test_check_enable_state(qtbot, signals, connected, write_access, has_enum,
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     connected : bool
         True if the channel is connected; False otherwise
     write_access : bool
@@ -147,21 +147,19 @@ def test_check_enable_state(qtbot, signals, connected, write_access, has_enum,
     widget = PyDMEnumButton()
     qtbot.addWidget(widget)
 
-    signals.write_access_signal[bool].connect(widget.writeAccessChanged)
-    signals.write_access_signal[bool].emit(write_access)
+    original_tooltip = "Original Tooltip"
+    widget.setToolTip(original_tooltip)
 
-    signals.connection_state_signal[bool].connect(widget.connectionStateChanged)
-    signals.connection_state_signal[bool].emit(connected)
+    widget.write_access_changed(write_access)
+
+    widget.connection_changed(connected)
 
     if has_enum:
-        signals.enum_strings_signal[tuple].connect(widget.enumStringsChanged)
-        signals.enum_strings_signal[tuple].emit(("START", "STOP", "PAUSE"))
+        widget.enum_strings_changed(("START", "STOP", "PAUSE"))
         assert widget._has_enums
 
     data_plugins.set_read_only(is_app_read_only)
 
-    original_tooltip = "Original Tooltip"
-    widget.setToolTip(original_tooltip)
     widget.check_enable_state()
 
     actual_tooltip = widget.toolTip()
