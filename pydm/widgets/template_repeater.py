@@ -328,7 +328,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
                 QWidget().setLayout(self.layout())
             l = layout_class(self)
             self.setLayout(l)
-        with pydm.data_plugins.connection_queue():
+        with pydm.data_plugins.connection_queue(defer_connections=True):
             for i, variables in enumerate(self.data):
                 if is_qt_designer() and i > self.countShownInDesigner - 1:
                     break
@@ -339,6 +339,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
                 w.setParent(self)
                 self.layout().addWidget(w)
         self.setUpdatesEnabled(True)
+        pydm.data_plugins.establish_queued_connections()
     
     def clear(self):
         """ Clear out any existing instances of the template inside
