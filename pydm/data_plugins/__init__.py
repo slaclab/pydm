@@ -39,7 +39,7 @@ def connection_queue():
         
 def establish_connection(channel):
     global __CONNECTION_QUEUE__
-    if __CONNECTION_QUEUE__:
+    if __CONNECTION_QUEUE__ is not None:
         __CONNECTION_QUEUE__.append(channel)
     else:
         establish_connection_immediately(channel)
