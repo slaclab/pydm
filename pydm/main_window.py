@@ -140,7 +140,7 @@ class PyDMMainWindow(QMainWindow):
         if command_line_args is None:
             command_line_args = []
         merged_macros = self.merge_with_current_macros(macros)
-        widget = self.app.open_file(filename, merged_macros, command_line_args)
+        widget = self.app.open_file(filename, merged_macros, command_line_args, defer_connections=True)
         if (len(self.back_stack) == 0) or (self.current_file() != filename):
             self.back_stack.append((filename, merged_macros, command_line_args))
         self.set_display_widget(widget)
@@ -160,6 +160,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionEdit_in_Designer.setText(edit_in_text)
         if self.designer_path:
             self.ui.actionEdit_in_Designer.setEnabled(True)
+        data_plugins.establish_queued_connections()
 
     def new_window(self, ui_file, macros=None, command_line_args=None):
         filename = self.join_to_current_file_path(ui_file)
