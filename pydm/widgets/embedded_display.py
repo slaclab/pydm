@@ -31,6 +31,9 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         self._is_connected = False
         self._only_load_when_shown = True
         self._needs_load = True
+        self.base_path = ""
+        if is_pydm_app():
+          self.base_path = self.app.directory_stack[-1]
         self.layout = QVBoxLayout(self)
         self.err_label = QLabel(self)
         self.err_label.setAlignment(Qt.AlignHCenter)
@@ -41,6 +44,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             self.setFrameShape(QFrame.Box)
         else:
             self.setFrameShape(QFrame.NoFrame)
+        
 
     def minimumSizeHint(self):
         """
@@ -143,6 +147,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             return
         try:
             fname = os.path.expanduser(os.path.expandvars(self.filename))
+            if self.base_path:
+                fname = os.path.join(self.base_path, fname)
             if os.path.isabs(fname):
                 w = self.app.open_file(fname, macros=self.parsed_macros())
             else:
