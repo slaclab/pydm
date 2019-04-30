@@ -124,7 +124,7 @@ def test_pydmdrawing_sizeHint(qtbot):
     True,
     False,
 ])
-def test_pydmdrawing_paintEvent(qtbot, signals, alarm_sensitive_content):
+def test_pydmdrawing_paintEvent(qtbot, alarm_sensitive_content):
     """
     Test the paintEvent handling of the widget. This test method will also execute PyDMDrawing alarm_severity_changed
     and draw_item().
@@ -138,8 +138,6 @@ def test_pydmdrawing_paintEvent(qtbot, signals, alarm_sensitive_content):
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     alarm_sensitive_content : bool
         True if the widget will be redraw with a different color if an alarm is triggered; False otherwise.
     """
@@ -150,8 +148,7 @@ def test_pydmdrawing_paintEvent(qtbot, signals, alarm_sensitive_content):
     qtbot.addWidget(pydm_drawing)
     pydm_drawing.alarmSensitiveContent = alarm_sensitive_content
     brush_before = pydm_drawing.brush.color().name()
-    signals.new_severity_signal.connect(pydm_drawing.alarmSeverityChanged)
-    signals.new_severity_signal.emit(PyDMWidget.ALARM_MAJOR)
+    pydm_drawing.alarm_severity_changed(PyDMWidget.ALARM_MAJOR)
 
     brush_after = pydm_drawing.brush.color().name()
     if alarm_sensitive_content:
@@ -480,7 +477,7 @@ def test_pydmdrawing_properties_and_setters(qtbot):
     True,
     False,
 ])
-def test_pydmdrawingline_draw_item(qtbot, signals, alarm_sensitive_content):
+def test_pydmdrawingline_draw_item(qtbot, alarm_sensitive_content):
     """
     Test PyDMDrawingLine base class drawing handling.
 
@@ -491,18 +488,14 @@ def test_pydmdrawingline_draw_item(qtbot, signals, alarm_sensitive_content):
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        To emit the alarm severity change signal in order to make an appearance change for the widget, thus triggering
-        a redraw
     alarm_sensitive_content : bool
         True if the widget will be redraw with a different color if an alarm is triggered; False otherwise
     """
-    pydm_drawingline = PyDMDrawingLine(init_channel='fake://tst')
+    pydm_drawingline = PyDMDrawingLine()
     qtbot.addWidget(pydm_drawingline)
 
     pydm_drawingline.alarmSensitiveContent = alarm_sensitive_content
-    signals.new_severity_signal.connect(pydm_drawingline.alarmSeverityChanged)
-    signals.new_severity_signal.emit(PyDMWidget.ALARM_MAJOR)
+    pydm_drawingline.alarm_severity_changed(PyDMWidget.ALARM_MAJOR)
 
     with qtbot.waitExposed(pydm_drawingline):
         pydm_drawingline.show()
