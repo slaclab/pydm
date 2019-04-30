@@ -876,7 +876,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if not status:
             if tooltip != '':
                 tooltip += '\n'
-            tooltip += "PV is disconnected."
+            tooltip += "Channel is disconnected."
 
         self.setToolTip(tooltip)
         self.setEnabled(status)
@@ -963,14 +963,15 @@ class PyDMWritableWidget(PyDMWidget):
             return false.
         """
         channel = getattr(self, 'channel', None)
-        if is_channel_valid(channel):
+        if event.type() in [QEvent.Leave, QEvent.Enter] and is_channel_valid(channel):
             status = self._write_access and self._connected
-
             if event.type() == QEvent.Leave:
                 QApplication.restoreOverrideCursor()
+                return True
 
             if event.type() == QEvent.Enter and not status:
                 QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
+                return True
 
         return PyDMWidget.eventFilter(self, obj, event)
 
@@ -996,19 +997,19 @@ class PyDMWritableWidget(PyDMWidget):
         This method also disables the widget and add a Tool Tip
         with the reason why it is disabled.
         """
-        status = self._write_access and self._connected
+        status = self._write_access and self._connected and not data_plugins.is_read_only()
         tooltip = self.restore_original_tooltip()
         if not self._connected:
             if tooltip != '':
                 tooltip += '\n'
-            tooltip += "PV is disconnected."
-        elif not self._write_access:
+            tooltip += "Channel is disconnected."
+        elif not self._write_access or data_plugins.is_read_only():
             if tooltip != '':
                 tooltip += '\n'
             if data_plugins.is_read_only():
                 tooltip += "Running PyDM on Read-Only mode."
             else:
-                tooltip += "Access denied by Channel Access Security."
+                tooltip += "Access denied - No Write Access for Channel."
         self.setToolTip(tooltip)
         self.setEnabled(status)
 
@@ -1019,4 +1020,4 @@ class PyDMWritableWidget(PyDMWidget):
             self._channels[0].put({real_key: value})
         else:
             logger.error('Could not find real key in the introspection map'
-                         'for address: {}'.format(self.address))
+                         'for address: {}'.format(self._channels[0].address))

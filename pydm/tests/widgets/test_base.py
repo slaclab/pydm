@@ -8,9 +8,9 @@ import pytest
 
 logger = logging.getLogger(__name__)
 
-from qtpy.QtCore import Qt
-from qtpy.QtGui import QMouseEvent
-from qtpy.QtWidgets import QWidget, QMenu
+from qtpy.QtCore import Qt, QEvent
+from qtpy.QtGui import QMouseEvent, QCursor
+from qtpy.QtWidgets import QWidget, QMenu, QApplication
 from pydm.utilities import is_pydm_app
 from pydm.widgets.base import (is_channel_valid, PyDMPrimitiveWidget,
                                PyDMWidget, PyDMWritableWidget, TextFormatter)
@@ -275,7 +275,7 @@ def test_pydmwidget_connection_changed(qtbot):
     assert widget.alarmSeverity == widget.ALARM_DISCONNECTED
 
     assert widget.isEnabled() is False
-    assert 'PV is disconnected.' in widget.toolTip()
+    assert 'Channel is disconnected.' in widget.toolTip()
 
     widget.connection_changed(True)
     assert widget._connected is True
@@ -285,7 +285,7 @@ def test_pydmwidget_connection_changed(qtbot):
     widget.connection_changed(False)
     assert widget._connected is False
     assert widget.isEnabled() is False
-    assert 'PV is disconnected.' in widget.toolTip()
+    assert 'Channel is disconnected.' in widget.toolTip()
 
 
 @pytest.mark.parametrize(
@@ -389,7 +389,7 @@ def test_pydmwidget_show_address_tooltip(qapp, qtbot, caplog):
     caplog.clear()
     widget.channel = 'foo://bar'
     widget.show_address_tooltip(mouse_event)
-    assert clipboard.text() == 'bar'
+    assert 'bar' in clipboard.text()
 
 
 def test_pydmwidget_limits_changed(qtbot):
@@ -441,283 +441,142 @@ def test_pydmwidget_alarm_sensitive_flags(qtbot):
 
 
 def test_pydmwidget_channel(qtbot):
+    widget = Widget()
+    qtbot.addWidget(widget)
+    assert widget.channel is None
+    assert widget.channels() is None
+    assert widget.channels_for_tools() is None
+
+    widget.channel = "ca://MTEST:Float"
+    assert widget.channel == "ca://MTEST:Float"
+    assert len(widget.channels()) == 1
+    assert widget.channels_for_tools() == widget.channels()
+    addr = widget.channels()[0].address
+    widget.channel = "ca://outro"
+    assert addr != widget.channels()[0].address
 
 
-#
-# @pytest.mark.parametrize("which_limit, new_limit", [
-#     ("UPPER", 123.456),
-#     ("LOWER", 12.345),
-# ])
-# def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
-#     """
-#     Test the upper and lower limit settings.
-#
-#     Expectations:
-#         The upper or lower limit can be emitted and subsequently read correctly.
-#
-#     Parameters
-#     ----------
-#     qtbot : fixture
-#         pytest-qt window for widget test
-#     signals : fixture
-#         The signals fixture, which provides access signals to be bound to the
-#         appropriate slots
-#     which_limit : str
-#         "UPPER" if the new value is intended for the upper limit, "LOWER" for the lower limit
-#     new_limit : float
-#         The new limit value
-#     """
-#     pydm_label = PyDMLabel(init_channel="CA://MA_TEST")
-#     qtbot.addWidget(pydm_label)
-#
-#     if which_limit == "UPPER":
-#         signals.upper_ctrl_limit_signal[type(new_limit)].connect(
-#             pydm_label.upperCtrlLimitChanged)
-#         signals.upper_ctrl_limit_signal[type(new_limit)].emit(new_limit)
-#
-#         assert pydm_label.get_ctrl_limits()[1] == new_limit
-#     elif which_limit == "LOWER":
-#         signals.lower_ctrl_limit_signal[type(new_limit)].connect(
-#             pydm_label.lowerCtrlLimitChanged)
-#         signals.lower_ctrl_limit_signal[type(new_limit)].emit(new_limit)
-#
-#         assert pydm_label.get_ctrl_limits()[0] == new_limit
-#
-#
-# def test_force_redraw(qtbot, signals):
-#     """
-#     Test the forced redraw of a PyDMWidget object to ensure no exception will be raised.
-#
-#     Expectations:
-#     The signal connected to the force_redraw slot will respond to the emit without raising any exception.
-#
-#     Parameters
-#     ----------
-#     qtbot : fixture
-#         pytest-qt window for widget test
-#     signals : fixture
-#         The signals fixture, which provides access signals to be bound to the appropriate slots
-#     """
-#     pydm_label = PyDMLabel()
-#     qtbot.addWidget(pydm_label)
-#
-#     signals.send_value_signal[int].connect(pydm_label.force_redraw)
-#     signals.send_value_signal[int].emit(123)
-#
-#
-# def test_precision_from_pv(qtbot):
-#     """
-#     Test setting the flag whether the precision is set to the widget from the PV.
-#
-#     Expectations:
-#     The widget can retain the new precision source flag value.
-#
-#     Parameters
-#     ----------
-#     qtbot : fixture
-#         pytest-qt window for widget test
-#     """
-#     pydm_label = PyDMLabel()
-#     qtbot.addWidget(pydm_label)
-#
-#     is_precision_from_pv = pydm_label.precisionFromPV
-#
-#     # Flip the original flag value. Now the widget should contain the opposite value from before
-#     pydm_label.precisionFromPV = not is_precision_from_pv
-#
-#     assert pydm_label.precisionFromPV is not is_precision_from_pv
-#
-#
-# def test_precision(qtbot):
-#     """
-#     Test setting the precision is set to the widget.
-#
-#     Expectations:
-#     The widget can retain the new precision value.
-#
-#     Parameters
-#     ----------
-#     qtbot : fixture
-#        pytest-qt window for widget test
-#     """
-#     pydm_label = PyDMLabel()
-#     qtbot.addWidget(pydm_label)
-#
-#     pydm_label.precision = 3
-#     precision = pydm_label.precision
-#
-#     pydm_label.precision = precision * 4
-#     assert pydm_label.precision == precision * 4
-#
-#
-# def test_channels_for_tools(qtbot):
-#     """
-#     Test the channel exposure for external tools.
-#
-#     Expectations:
-#     The current default implementation is to provide the same channels via channel_for_tools as with channels(). This
-#     test ensures that will happen.
-#
-#     Parameters
-#     ----------
-#     qtbot : fixture
-#         Window for widget testing
-#     """
-#     pydm_label = PyDMLabel(init_channel='tst://This')
-#     qtbot.addWidget(pydm_label)
-#
-#     assert all(x == y for x, y in
-#                zip(pydm_label.channels(), pydm_label.channels_for_tools()))
-#
-#
-# def test_pydmwidget_channel_change(qtbot):
-#     """
-#     Test the channel property for changes and the effect on the channels() property.
-#
-#     Parameters
-#     ----------
-#     qtbot : fixture
-#         Window for widget testing
-#
-#     """
-#     pydm_label = PyDMLabel()
-#     qtbot.addWidget(pydm_label)
-#     assert pydm_label._channel is None
-#     assert pydm_label.channels() is None
-#
-#     pydm_label.channel = 'foo://bar'
-#     assert pydm_label._channel == 'foo://bar'
-#     assert pydm_label.channels()[0]._config == parse_channel_config('foo://bar', force_dict=True)
-#
-#     pydm_label.channel = 'abc://def'
-#     assert pydm_label._channel == 'abc://def'
-#     assert pydm_label.channels()[0]._config == parse_channel_config('abc://def', force_dict=True)
-#
-#
-# @pytest.mark.parametrize(
-#     "channel_address, connected, write_access, is_app_read_only", [
-#         ("CA://MA_TEST", True, True, True),
-#         ("CA://MA_TEST", True, False, True),
-#         ("CA://MA_TEST", True, True, False),
-#         ("CA://MA_TEST", True, False, False),
-#         ("CA://MA_TEST", False, True, True),
-#         ("CA://MA_TEST", False, False, True),
-#         ("CA://MA_TEST", False, True, False),
-#         ("CA://MA_TEST", False, False, False),
-#         ("", False, False, False),
-#         (None, False, False, False),
-#     ])
-# def test_pydmwritable_check_enable_state(qtbot, channel_address,
-#                                          connected, write_access,
-#                                          is_app_read_only):
-#     """
-#     Test the tooltip generated depending on the channel address validation, connection, write access, and whether the
-#     app is read-only. This test is for a widget whose base class is PyDMWritableWidget.
-#
-#     Expectations:
-#     1. The widget's tooltip will update only if the channel address is valid.
-#     2. If the data channel is disconnected, the widget's tooltip will  "PV is disconnected"
-#     3. If the data channel is connected, but it has no write access:
-#         a. If the app is read-only, the tooltip will read  "Running PyDM on Read-Only mode."
-#         b. If the app is not read-only, the tooltip will read "Access denied by Channel Access Security."
-#
-#     Parameters
-#     ----------
-#     qtbot : fixture
-#         Window for widget testing
-#     channel_address : str
-#         The channel address
-#     connected : bool
-#         True if the channel is connected; False otherwise
-#     write_access : bool
-#         True if the widget has write access to the channel; False otherwise
-#     is_app_read_only : bool
-#         True if the PyDM app is read-only; False otherwise
-#     """
-#     pydm_lineedit = PyDMLineEdit()
-#     qtbot.addWidget(pydm_lineedit)
-#
-#     pydm_lineedit.channel = channel_address
-#     pydm_lineedit._connected = connected
-#     pydm_lineedit._write_access = write_access
-#
-#     data_plugins.set_read_only(is_app_read_only)
-#
-#     original_tooltip = "Original Tooltip"
-#     pydm_lineedit.setToolTip(original_tooltip)
-#     pydm_lineedit.check_enable_state()
-#
-#     actual_tooltip = pydm_lineedit.toolTip()
-#     if is_channel_valid(channel_address):
-#         if not pydm_lineedit._connected:
-#             assert "PV is disconnected." in actual_tooltip
-#         elif not write_access:
-#             if data_plugins.is_read_only():
-#                 assert "Running PyDM on Read-Only mode." in actual_tooltip
-#             else:
-#                 assert "Access denied by Channel Access Security." in actual_tooltip
-#     else:
-#         assert actual_tooltip == original_tooltip
-#
-#
-# def test_pydmwidget_setx_sety(qtbot):
-#     """
-#     Test the setX and setY method.
-#
-#     Parameters
-#     ----------
-#     qtbot : fixture
-#         Window for widget testing
-#
-#     Returns
-#     -------
-#     None
-#     """
-#     pydm_label = PyDMLabel()
-#     qtbot.addWidget(pydm_label)
-#
-#     pydm_label.setX(456)
-#     pydm_label.setY(123)
-#     pos = pydm_label.pos()
-#     assert pos.x() == 456
-#     assert pos.y() == 123
-#
+def test_pydmwidget_receive_data(qtbot):
+    from pydm.data_store import DataKeys
 
-#
-# def test_pydmwidget_rule_evaluated(qtbot, caplog):
-#     """
-#     Test the rules mechanism.
-#
-#     Parameters
-#     ----------
-#     qtbot : fixture
-#         Window for widget testing
-#     caplog : fixture
-#         To capture the log messages
-#     """
-#     caplog.clear()
-#     widget = PyDMLineEdit()
-#     qtbot.addWidget(widget)
-#     widget.show()
-#
-#     payload = {
-#         'name': 'Test Rule 1',
-#         'property': 'Invalid Property',
-#         'value': 'foo'
-#     }
-#
-#     widget.rule_evaluated(payload)
-#     for record in caplog.records:
-#         assert record.levelno == logging.ERROR
-#     assert "is not part of this widget properties" in caplog.text
-#
-#     payload = {
-#         'name': 'Test Rule 1',
-#         'property': 'Visible',
-#         'value': False
-#     }
-#
-#     assert widget.isVisible()
-#     widget.rule_evaluated(payload)
-#     assert not widget.isVisible()
-#
+    widget = Widget()
+    qtbot.addWidget(widget)
+
+    data = None
+    introspection = {DataKeys.CONNECTION: 'conn',
+                     DataKeys.VALUE: 'val'}
+    widget._receive_data(data, introspection)
+    assert widget._connected is False
+    assert widget.value is None
+
+    data = {'conn': True, 'val': 1.2}
+    widget._receive_data(data, introspection)
+    assert widget._connected is True
+    assert widget.value == 1.2
+
+
+def test_pydmwritable_construct(qtbot):
+    widget = WritableWidget()
+    qtbot.addWidget(widget)
+    assert widget._write_access is False
+
+
+def test_pydmwritable_init_for_designer(qtbot):
+    widget = WritableWidget()
+    qtbot.addWidget(widget)
+    assert widget._write_access is False
+    widget.init_for_designer()
+    assert widget._write_access is True
+
+
+def test_pydmwritable_eventFilter(qapp, qtbot):
+    widget = WritableWidget()
+    qtbot.addWidget(widget)
+
+    QApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
+    cursor = QApplication.overrideCursor()
+    assert cursor.shape() == Qt.ArrowCursor
+
+    enter_event = QEvent(QEvent.Enter)
+    assert enter_event.type() == QEvent.Enter
+    leave_event = QEvent(QEvent.Leave)
+    assert leave_event.type() == QEvent.Leave
+
+    QApplication.sendEvent(widget, enter_event)
+    qapp.processEvents()
+    assert QApplication.overrideCursor() == cursor
+
+    widget.channel = "ca://TEST"
+    QApplication.sendEvent(widget, enter_event)
+    qapp.processEvents()
+    assert QApplication.overrideCursor().shape() == Qt.ForbiddenCursor
+
+    QApplication.sendEvent(widget, leave_event)
+    qapp.processEvents()
+    assert QApplication.overrideCursor() == cursor
+    qapp.processEvents()
+
+
+def test_pydmwritable_write_access_changed(qtbot):
+    widget = WritableWidget()
+    qtbot.addWidget(widget)
+    assert widget._write_access is False
+    widget.write_access_changed(True)
+    assert widget._write_access is True
+
+
+def test_pydmwritable_check_enable_state(qtbot):
+    from pydm import data_plugins
+    widget = WritableWidget()
+    qtbot.addWidget(widget)
+    widget.setToolTip("Initial Tooltip")
+    widget.channel = "ca://test"
+    assert widget._connected is False
+    assert widget._write_access is False
+    assert widget.isEnabled() is False
+    assert "disconnected" in widget.toolTip()
+
+    widget.connection_changed(True)
+    assert widget._connected is True
+    assert widget.isEnabled() is False
+    assert "No Write Access" in widget.toolTip()
+
+    widget.write_access_changed(True)
+    assert widget._write_access is True
+    assert widget.isEnabled() is True
+    assert widget.toolTip() == "Initial Tooltip"
+
+    data_plugins.set_read_only(True)
+    widget.check_enable_state()
+    assert widget.isEnabled() is False
+    assert "PyDM on Read-Only" in widget.toolTip()
+    data_plugins.set_read_only(False)
+
+
+def test_pydmwritable_write_to_channel(qapp, qtbot, test_plugin, caplog):
+    widget = WritableWidget(init_channel="tst://write")
+    qtbot.addWidget(widget)
+
+    connections = test_plugin.connections
+    tst_conn = connections[list(connections.keys())[0]]
+    assert tst_conn.payload_received is None
+
+    blocker = qtbot.waitSignal(tst_conn.notify)
+    intro = {"FOO": "foo", "BAR": "bar"}
+    data = {"DATA1": "data1", "DATA2": "data2"}
+    tst_conn.write_introspection(intro)
+    tst_conn.write_data(data)
+    blocker.wait()
+
+    caplog.clear()
+    with caplog.at_level(logging.ERROR):
+        widget.write_to_channel(value="Invalid Test Write", key="Invalid")
+        assert "Could not find real key" in caplog.text
+
+    put_blocker = qtbot.waitSignal(widget.channels()[0].transmit)
+
+    widget.write_to_channel(value="Test Write", key="BAR")
+    qapp.processEvents()
+
+    put_blocker.wait()
+    assert tst_conn.payload_received == {"bar": "Test Write"}
