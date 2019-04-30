@@ -5,10 +5,10 @@ import pytest
 import numpy as np
 import logging
 
-from ...utilities import is_pydm_app
-from ...widgets.label import PyDMLabel
-from ...widgets.base import PyDMWidget
-from ...widgets.display_format import parse_value_for_display, DisplayFormat
+from pydm.utilities import is_pydm_app
+from pydm.widgets.label import PyDMLabel
+from pydm.widgets.base import PyDMWidget
+from pydm.widgets.display_format import parse_value_for_display, DisplayFormat
 
 from qtpy.QtWidgets import QApplication, QStyleOption
 
@@ -70,7 +70,7 @@ def test_construct(qtbot):
     (0b100, DisplayFormat.Binary),
     (0x1FF, DisplayFormat.Binary),
 ])
-def test_value_changed(qtbot, signals, value, display_format):
+def test_value_changed(qtbot, value, display_format):
     """
     Test the widget's handling of the value changed event.
 
@@ -83,8 +83,6 @@ def test_value_changed(qtbot, signals, value, display_format):
     ----------
     qtbot : fixture
         pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     value : int, float, bin, hex, str
         The value to be displayed by the widget
     display_format : int
@@ -93,8 +91,7 @@ def test_value_changed(qtbot, signals, value, display_format):
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
 
-    signals.new_value_signal[type(value)].connect(pydm_label.channelValueChanged)
-    signals.new_value_signal[type(value)].emit(value)
+    pydm_label.value_changed(value)
     pydm_label.displayFormat = display_format
 
     displayed_value = parse_value_for_display(value=pydm_label.value, precision=1,
@@ -109,7 +106,7 @@ def test_value_changed(qtbot, signals, value, display_format):
     (("ON", "OFF"), 0, "ON"),
     (("ON", "OFF"), 1, "OFF"),
 ])
-def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
+def test_enum_strings_changed(qtbot, values, selected_index, expected):
     """
     Test the widget's handling of enum strings, which are choices presented to the user, and the widget's ability to
     update the selected enum string when the user provides a choice index.
@@ -121,8 +118,6 @@ def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     ----------
     qtbot : fixture
         pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     values : tuple
         A set of enum strings for the user to choose from
     selected_index : int
@@ -133,12 +128,10 @@ def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
 
-    signals.enum_strings_signal.connect(pydm_label.enumStringsChanged)
-    signals.enum_strings_signal.emit(values)
+    pydm_label.enum_strings_changed(values)
     pydm_label.displayFormat = DisplayFormat.String
 
-    signals.new_value_signal[type(selected_index)].connect(pydm_label.channelValueChanged)
-    signals.new_value_signal[type(selected_index)].emit(selected_index)
+    pydm_label.value_changed(selected_index)
 
     assert pydm_label.value == selected_index
     assert pydm_label.text() == expected
@@ -179,7 +172,7 @@ def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     (0b100, DisplayFormat.Binary, "light years", "0b100"),
     (0x1FF, DisplayFormat.Binary, "light years", "0b111111111"),
 ])
-def test_show_units(qtbot, signals, value, display_format, unit_name, expected):
+def test_show_units(qtbot, value, display_format, unit_name, expected):
     """
     Test the widget's capability to display a unit following a value if the user enables unit displaying.
 
@@ -205,17 +198,15 @@ def test_show_units(qtbot, signals, value, display_format, unit_name, expected):
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
 
-    signals.new_value_signal[type(value)].connect(pydm_label.channelValueChanged)
-    signals.new_value_signal[type(value)].emit(value)
+    pydm_label.value_changed(value)
     pydm_label.displayFormat = display_format
     pydm_label.showUnits = False
     assert pydm_label.value == value
 
     # showUnits must be set first for the unit change to take effect
     pydm_label.showUnits = True
-    signals.unit_signal[str].connect(pydm_label.unitChanged)
-    signals.unit_signal[str].emit(unit_name)
-    signals.new_value_signal[type(value)].emit(value)
+    pydm_label.unit_changed(unit_name)
+    pydm_label.value_changed(value)
 
     assert pydm_label.value == value
     assert pydm_label.text() == expected
@@ -223,7 +214,7 @@ def test_show_units(qtbot, signals, value, display_format, unit_name, expected):
 
     # Now, turn off showUnits
     pydm_label.showUnits = False
-    signals.new_value_signal[type(value)].emit(value)
+    pydm_label.value_changed(value)
     assert pydm_label.value == value
     if " " in expected:
         # We expect no unit to be displayed now, so the expected result must be adjusted to contain just the value
@@ -258,7 +249,7 @@ def test_show_units(qtbot, signals, value, display_format, unit_name, expected):
     (PyDMWidget.ALARM_DISCONNECTED, False, True),
     (PyDMWidget.ALARM_DISCONNECTED, False, False),
 ])
-def test_label_alarms(qtbot, signals, alarm_severity, alarm_sensitive_content, alarm_sensitive_border):
+def test_label_alarms(qtbot, alarm_severity, alarm_sensitive_content, alarm_sensitive_border):
     """
     Test the widget's appearance changes according to changes in alarm severity.
 
@@ -274,8 +265,6 @@ def test_label_alarms(qtbot, signals, alarm_severity, alarm_sensitive_content, a
     ----------
     qtbot : fixture
         pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     alarm_severity : int
         The severity of an alarm (NONE, MINOR, MAJOR, INVALID, or DISCONNECTED)
     alarm_sensitive_content : bool
@@ -292,15 +281,12 @@ def test_label_alarms(qtbot, signals, alarm_severity, alarm_sensitive_content, a
     pydm_label.alarmSensitiveContent = alarm_sensitive_content
     pydm_label.alarmSensitiveBorder = alarm_sensitive_border
 
-    signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
-    signals.connection_state_signal.emit(True)
-
-    signals.new_severity_signal.connect(pydm_label.alarmSeverityChanged)
+    pydm_label.connection_changed(True)
     initial_severity = pydm_label._alarm_state
     option = QStyleOption()
     option.initFrom(pydm_label)
     before_color = option.palette.text().color().name()
-    signals.new_severity_signal.emit(alarm_severity)
+    pydm_label.alarm_severity_changed(alarm_severity)
 
     assert pydm_label._alarm_state == alarm_severity
     option = QStyleOption()
@@ -324,7 +310,7 @@ TOOLTIP_TEXT = "Testing with Alarm State Changes, Channel Provided."
     (False, True, ""),
     (False, False, ""),
 ])
-def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensitive_content, alarm_sensitive_border,
+def test_label_channel_connection_changes_with_alarm(qtbot, alarm_sensitive_content, alarm_sensitive_border,
                                                tooltip):
     """
     Test the widget's appearance and tooltip changes if a data channel is provided, and the is disconnected,
@@ -337,7 +323,7 @@ def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensi
        solid, transparent, etc.
     3. The alarm color and border appearance will change only if each corresponding Boolean flag is set to True
     4. The connection state is correctly set for the widget
-    5. The tooltip will change when the channel is disconnected, having additional text, i.e. "PV is disconnected"
+    5. The tooltip will change when the channel is disconnected, having additional text, i.e. "Channel is disconnected"
        appended to the existing text, to inform the user about the channel disconnection status. This tooltip will be
        reverted to the original content when the data channel is re-connected.
     6. The widget will be disabled during the disconnection, and become enabled again at the reconnection.
@@ -346,8 +332,6 @@ def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensi
     ----------
     qtbot : fixture
         pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     alarm_sensitive_content : bool
         True if the widget will change color accordingly to the alarm's severity; False if not
     alarm_sensitive_border : bool
@@ -366,12 +350,10 @@ def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensi
     # Set the channel, and set the alarm severity to normal (NONE)
     pydm_label.channel = "CA://MTEST"
     alarm_severity = PyDMWidget.ALARM_NONE
-    signals.new_severity_signal.connect(pydm_label.alarmSeverityChanged)
-    signals.new_severity_signal.emit(alarm_severity)
+    pydm_label.alarm_severity_changed(alarm_severity)
 
     # Set the connection as enabled (True)
-    signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
-    signals.connection_state_signal.emit(True)
+    pydm_label.connection_changed(True)
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
     assert pydm_label._alarm_state == alarm_severity
@@ -383,14 +365,14 @@ def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensi
     # tooltip
     alarm_severity = PyDMWidget.ALARM_DISCONNECTED
 
-    signals.connection_state_signal.emit(False)
+    pydm_label.connection_changed(False)
     assert pydm_label._alarm_state == alarm_severity
     assert pydm_label._connected == False
-    assert all(i in pydm_label.toolTip() for i in (tooltip, "PV is disconnected."))
+    assert all(i in pydm_label.toolTip() for i in (tooltip, "Channel is disconnected."))
     assert pydm_label.isEnabled() == False
 
     # Finally, reconnect the alarm, and check for the same attributes
-    signals.connection_state_signal.emit(True)
+    pydm_label.connection_changed(True)
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
     # TODO Set alarm_severity back to NONE
@@ -411,7 +393,7 @@ def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensi
     (False, True, ""),
     (False, False, ""),
 ])
-def test_label_connection_changes_with_alarm_and_no_channel(qtbot, signals, alarm_sensitive_content, alarm_sensitive_border,
+def test_label_connection_changes_with_alarm_and_no_channel(qtbot, alarm_sensitive_content, alarm_sensitive_border,
                                                       tooltip):
     """
     Test the widget's appearance and tooltip changes if a data channel is not provided, and the connection is not
@@ -431,8 +413,6 @@ def test_label_connection_changes_with_alarm_and_no_channel(qtbot, signals, alar
     ----------
     qtbot : fixture
         pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     alarm_sensitive_content : bool
         True if the widget will change color accordingly to the alarm's severity; False if not
     alarm_sensitive_border : bool
@@ -449,15 +429,9 @@ def test_label_connection_changes_with_alarm_and_no_channel(qtbot, signals, alar
 
     # Do not the channel, but set the alarm severity to normal (NONE)
     pydm_label.channel = None
-    signals.new_severity_signal.connect(pydm_label.alarmSeverityChanged)
-    signals.new_severity_signal.emit(PyDMWidget.ALARM_NONE)
+    pydm_label.alarm_severity_changed(PyDMWidget.ALARM_NONE)
 
-    # Set the connection as enabled (True)
-    signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
-
-    blocker = qtbot.waitSignal(signals.connection_state_signal, timeout=1000)
-    signals.connection_state_signal.emit(True)
-    blocker.wait()
+    pydm_label.connection_changed(True)
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
     assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
@@ -467,8 +441,7 @@ def test_label_connection_changes_with_alarm_and_no_channel(qtbot, signals, alar
 
     # Next, disconnect the alarm, and check for the alarm severity, style, connection state, enabling state, and
     # tooltip
-    signals.connection_state_signal.emit(False)
-    blocker.wait()
+    pydm_label.connection_changed(False)
     assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
 
     assert pydm_label._connected == False
@@ -476,8 +449,7 @@ def test_label_connection_changes_with_alarm_and_no_channel(qtbot, signals, alar
     assert pydm_label.isEnabled() == True
 
     # Finally, reconnect the alarm, and check for the same attributes
-    signals.connection_state_signal.emit(True)
-    blocker.wait()
+    pydm_label.connection_changed(True)
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
     assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
@@ -497,7 +469,7 @@ def test_label_connection_changes_with_alarm_and_no_channel(qtbot, signals, alar
     ("zzz", DisplayFormat.Hex, "Could not display value 'zzz' using displayFormat 'Hex'"),
     ("zzz", DisplayFormat.Binary, "Could not display value 'zzz' using displayFormat 'Binary'"),
 ])
-def test_value_changed_incorrect_display_format(qtbot, signals, caplog, value, display_format, expected):
+def test_value_changed_incorrect_display_format(qtbot, caplog, value, display_format, expected):
     """
     Test the widget's handling of incorrect provided values.
 
@@ -522,8 +494,7 @@ def test_value_changed_incorrect_display_format(qtbot, signals, caplog, value, d
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
 
-    signals.new_value_signal[type(value)].connect(pydm_label.channelValueChanged)
-    signals.new_value_signal[type(value)].emit(value)
+    pydm_label.value_changed(value)
     pydm_label.displayFormat = display_format
 
     # Make sure logging capture the error, and have the correct error message
@@ -535,7 +506,7 @@ def test_value_changed_incorrect_display_format(qtbot, signals, caplog, value, d
 @pytest.mark.parametrize("value, selected_index, expected", [
     (("ON", "OFF"), 3, "**INVALID**"),
 ])
-def test_enum_strings_changed_incorrect_index(qtbot, signals, value, selected_index, expected):
+def test_enum_strings_changed_incorrect_index(qtbot, value, selected_index, expected):
     """
     Test the widget's handling of incorrect provided enum string index.
 
@@ -546,8 +517,6 @@ def test_enum_strings_changed_incorrect_index(qtbot, signals, value, selected_in
     ----------
     qtbot : fixture
         pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     value : tuple
         A set of enum strings for the user to choose from
     selected_index : int
@@ -558,11 +527,8 @@ def test_enum_strings_changed_incorrect_index(qtbot, signals, value, selected_in
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
 
-    signals.new_value_signal[type(selected_index)].connect(pydm_label.channelValueChanged)
-    signals.new_value_signal[type(selected_index)].emit(selected_index)
-
-    signals.enum_strings_signal.connect(pydm_label.enumStringsChanged)
-    signals.enum_strings_signal.emit(value)
+    pydm_label.value_changed(selected_index)
+    pydm_label.enum_strings_changed(value)
     pydm_label.displayFormat = DisplayFormat.String
 
     assert pydm_label.value == selected_index
