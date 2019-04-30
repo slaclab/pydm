@@ -165,11 +165,11 @@ def test_check_enable_state(qtbot, connected, write_access, has_enum,
     actual_tooltip = widget.toolTip()
     if not widget._connected:
         assert "Channel is disconnected." in actual_tooltip
-    elif not write_access:
+    elif not write_access or is_app_read_only:
         if data_plugins.is_read_only():
             assert "Running PyDM on Read-Only mode." in actual_tooltip
         else:
-            assert "Access denied by Channel Access Security." in actual_tooltip
+            assert "Access denied - No Write Access for Channel." in actual_tooltip
     elif not widget._has_enums:
         assert "Enums not available" in actual_tooltip
 
@@ -209,7 +209,7 @@ def test_items_defines_button_group(qtbot):
     assert widget._btn_group.button(0).text() == "STOP"
 
 
-def test_enum_strings_signal_alters_items_prop(qtbot, signals):
+def test_enum_strings_alters_items_prop(qtbot):
     """
     Test that receiving new enum_strings from the CS overrides predefined button items.
 
@@ -217,22 +217,19 @@ def test_enum_strings_signal_alters_items_prop(qtbot, signals):
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     """
     widget = PyDMEnumButton()
     qtbot.addWidget(widget)
-    signals.enum_strings_signal[tuple].connect(widget.enumStringsChanged)
     widget.items = ["PLAY", "PAUSE"]
     assert len(widget._btn_group.buttons()) == 2
     assert widget._btn_group.button(0).text() == "PLAY"
     assert widget._btn_group.button(1).text() == "PAUSE"
-    signals.enum_strings_signal[tuple].emit(("STOP", ))
+    widget.enum_strings_changed(("STOP", ))
     assert len(widget._btn_group.buttons()) == 1
     assert widget._btn_group.button(0).text() == "STOP"
 
 
-def test_send_receive_value(qtbot, signals):
+def test_send_receive_value(qtbot):
     """
     Test the widget for round-trip data transfer.
 
@@ -240,27 +237,22 @@ def test_send_receive_value(qtbot, signals):
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     """
     widget = PyDMEnumButton()
     qtbot.addWidget(widget)
 
-    signals.write_access_signal[bool].connect(widget.writeAccessChanged)
-    signals.connection_state_signal[bool].connect(widget.connectionStateChanged)
-    signals.new_value_signal[int].connect(widget.channelValueChanged)
-    signals.enum_strings_signal[tuple].connect(widget.enumStringsChanged)
+    def foo(val):
+        widget.test_write = val
+    widget.write_to_channel = foo
 
-    widget.send_value_signal[int].connect(signals.receiveValue)
+    widget.write_access_changed(True)
+    widget.connection_changed(True)
+    widget.enum_strings_changed(("START", "STOP", "PAUSE"))
 
-    signals.write_access_signal[bool].emit(True)
-    signals.connection_state_signal[bool].emit(True)
-    signals.enum_strings_signal[tuple].emit(("START", "STOP", "PAUSE"))
-
-    signals.new_value_signal[int].emit(1)
+    widget.value_changed(1)
     assert widget.value == 1
     assert widget._widgets[1].isChecked()
     widget._widgets[2].click()
     assert not widget._widgets[1].isChecked()
     assert widget._widgets[2].isChecked()
-    assert signals.value == 2
+    assert widget.test_write == 2

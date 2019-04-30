@@ -30,9 +30,9 @@ def test_send_value(qtbot, checked):
 
     def foo(val):
         widget.test_write = val
+    widget.write_to_channel = foo
 
     assert widget.checkState() == Qt.Unchecked
-    widget.write_to_channel = foo
     widget.send_value(checked)
     if checked:
         assert widget.test_write == 1
