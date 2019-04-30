@@ -3,15 +3,11 @@
 import pytest
 from logging import ERROR
 
-from qtpy.QtCore import Slot, Qt
+from qtpy.QtCore import Qt
 
-from ...widgets.enum_combo_box import PyDMEnumComboBox
-from ... import data_plugins
+from pydm.widgets.enum_combo_box import PyDMEnumComboBox
+from pydm import data_plugins
 
-
-# --------------------
-# POSITIVE TEST CASES
-# --------------------
 
 def test_construct(qtbot):
     """
@@ -89,7 +85,7 @@ def test_set_items(qtbot, enums):
     (False, False, False, True),
     (False, False, False, False),
 ])
-def test_check_enable_state(qtbot, signals, connected, write_access, has_enum, is_app_read_only):
+def test_check_enable_state(qtbot, connected, write_access, has_enum, is_app_read_only):
     """
     Test the tooltip generated depending on the channel connection, write access, whether the widget has enum strings,
     and whether the app is read-only.
@@ -105,8 +101,6 @@ def test_check_enable_state(qtbot, signals, connected, write_access, has_enum, i
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     connected : bool
         True if the channel is connected; False otherwise
     write_access : bool
@@ -119,15 +113,12 @@ def test_check_enable_state(qtbot, signals, connected, write_access, has_enum, i
     pydm_enumcombobox = PyDMEnumComboBox()
     qtbot.addWidget(pydm_enumcombobox)
 
-    signals.write_access_signal[bool].connect(pydm_enumcombobox.writeAccessChanged)
-    signals.write_access_signal[bool].emit(write_access)
+    pydm_enumcombobox.write_access_changed(write_access)
 
-    signals.connection_state_signal[bool].connect(pydm_enumcombobox.connectionStateChanged)
-    signals.connection_state_signal[bool].emit(connected)
+    pydm_enumcombobox.connection_changed(connected)
 
     if has_enum:
-        signals.enum_strings_signal[tuple].connect(pydm_enumcombobox.enumStringsChanged)
-        signals.enum_strings_signal[tuple].emit(("START", "STOP", "PAUSE"))
+        pydm_enumcombobox.enum_strings_changed(("START", "STOP", "PAUSE"))
         assert pydm_enumcombobox._has_enums
 
     data_plugins.set_read_only(is_app_read_only)
@@ -138,12 +129,12 @@ def test_check_enable_state(qtbot, signals, connected, write_access, has_enum, i
 
     actual_tooltip = pydm_enumcombobox.toolTip()
     if not pydm_enumcombobox._connected:
-        assert "PV is disconnected." in actual_tooltip
-    elif not write_access:
+        assert "Channel is disconnected." in actual_tooltip
+    elif not write_access or is_app_read_only:
         if data_plugins.is_read_only():
             assert "Running PyDM on Read-Only mode." in actual_tooltip
         else:
-            assert "Access denied by Channel Access Security." in actual_tooltip
+            assert "Access denied - No Write Access for Channel." in actual_tooltip
     elif not pydm_enumcombobox._has_enums:
         assert "Enums not available" in actual_tooltip
 
@@ -154,7 +145,7 @@ def test_check_enable_state(qtbot, signals, connected, write_access, has_enum, i
     (("RUN", "STOP"), "RUN", "RUN"),
     (("RUN", "STOP"), "STOP", "STOP"),
 ])
-def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
+def test_enum_strings_changed(qtbot, values, selected_index, expected):
     """
     Test the widget's handling of enum strings, which are choices presented to the user, and the widget's ability to
     update the selected enum string when the user provides a choice index.
@@ -168,8 +159,6 @@ def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     ----------
     qtbot : fixture
         pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     values : tuple
         A set of enum strings for the user to choose from
     selected_index : int
@@ -180,11 +169,9 @@ def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     pydm_enumcombobox = PyDMEnumComboBox()
     qtbot.addWidget(pydm_enumcombobox)
 
-    signals.enum_strings_signal.connect(pydm_enumcombobox.enumStringsChanged)
-    signals.enum_strings_signal.emit(values)
+    pydm_enumcombobox.enum_strings_changed(values)
 
-    signals.new_value_signal[type(selected_index)].connect(pydm_enumcombobox.channelValueChanged)
-    signals.new_value_signal[type(selected_index)].emit(selected_index)
+    pydm_enumcombobox.value_changed(selected_index)
 
     assert pydm_enumcombobox.value == selected_index
     assert pydm_enumcombobox.currentText() == expected
@@ -195,7 +182,7 @@ def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     1,
     -1,
 ])
-def test_internal_combo_box_activated_int(qtbot, signals, index):
+def test_internal_combo_box_activated_int(qtbot, index):
     """
     Test the the capability of the widget's activated slot in sending out a new enum string index value.
 
@@ -214,12 +201,15 @@ def test_internal_combo_box_activated_int(qtbot, signals, index):
     pydm_enumcombobox = PyDMEnumComboBox()
     qtbot.addWidget(pydm_enumcombobox)
 
+    def foo(val):
+        pydm_enumcombobox.test_write = val
+    pydm_enumcombobox.write_to_channel = foo
+
     # Connect the send_value_signal also to the conftest's receiveValue slot to intercept and verify that the correct
     # new index value is sent out
-    pydm_enumcombobox.send_value_signal[int].connect(signals.receiveValue)
     pydm_enumcombobox.activated[int].emit(index)
 
-    assert signals.value == index
+    assert pydm_enumcombobox.test_write == index
 
 
 # --------------------
@@ -265,9 +255,9 @@ def test_set_items_neg(qtbot, caplog, enums, expected_error_message):
 
 @pytest.mark.parametrize("values, selected_index, expected", [
     (("ON", "OFF"), 3, ""),
-    (("ON", "OFF"), -1, ""),
+    (("ON", "OFF"), -1, "")
 ])
-def test_enum_strings_changed_incorrect_index(qtbot, signals, values, selected_index, expected):
+def test_enum_strings_changed_incorrect_index(qtbot, values, selected_index, expected):
     """
     Test the widget's handling of incorrectly provided enum string index.
 
@@ -278,8 +268,6 @@ def test_enum_strings_changed_incorrect_index(qtbot, signals, values, selected_i
     ----------
     qtbot : fixture
         pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     value : tuple
         A set of enum strings for the user to choose from
     selected_index : int
@@ -290,11 +278,9 @@ def test_enum_strings_changed_incorrect_index(qtbot, signals, values, selected_i
     pydm_enumcombobox = PyDMEnumComboBox()
     qtbot.addWidget(pydm_enumcombobox)
 
-    signals.enum_strings_signal.connect(pydm_enumcombobox.enumStringsChanged)
-    signals.enum_strings_signal.emit(values)
+    pydm_enumcombobox.enum_strings_changed(values)
 
-    signals.new_value_signal[type(selected_index)].connect(pydm_enumcombobox.channelValueChanged)
-    signals.new_value_signal[type(selected_index)].emit(selected_index)
+    pydm_enumcombobox.value_changed(selected_index)
 
     assert pydm_enumcombobox.value == selected_index
     assert pydm_enumcombobox.currentText() == expected

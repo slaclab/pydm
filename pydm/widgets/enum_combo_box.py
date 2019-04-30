@@ -113,15 +113,15 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         with the reason why it is disabled.
 
         """
-        status = self._write_access and self._connected and self._has_enums
+        status = self._write_access and self._connected and self._has_enums and not data_plugins.is_read_only()
         tooltip = ""
         if not self._connected:
-            tooltip += "PV is disconnected."
-        elif not self._write_access:
+            tooltip += "Channel is disconnected."
+        elif not self._write_access or data_plugins.is_read_only():
             if data_plugins.is_read_only():
                 tooltip += "Running PyDM on Read-Only mode."
             else:
-                tooltip += "Access denied by Channel Access Security."
+                tooltip += "Access denied - No Write Access for Channel."
         elif not self._has_enums:
             tooltip += "Enums not available."
 
