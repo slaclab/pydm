@@ -10,14 +10,9 @@ import logging
 from qtpy.QtCore import QSize
 from qtpy.QtGui import QColor
 from qtpy.QtWidgets import QInputDialog, QMessageBox
-from ...widgets.base import PyDMWidget
-from ...widgets.pushbutton import PyDMPushButton
-from ...utilities.iconfont import IconFont
+from pydm.widgets.pushbutton import PyDMPushButton
+from pydm.utilities.iconfont import IconFont
 
-
-# --------------------
-# POSITIVE TEST CASES
-# --------------------
 
 @pytest.mark.parametrize("label, press_value, relative, init_channel, icon_font_name, icon_color", [
     # Testing different types of press value
@@ -303,7 +298,7 @@ def test_validate_password(qtbot, monkeypatch, is_widget_protected_with_password
     (None, "def", True, True, "", QMessageBox.Yes, False, False),
     (None, None, True, True, "", QMessageBox.Yes, False, False),
 ])
-def test_send_value(qtbot, monkeypatch, signals, initial_value, press_value, is_password_protected, show_confirm_dialog,
+def test_send_value(qtbot, monkeypatch, initial_value, press_value, is_password_protected, show_confirm_dialog,
                     confirm_message, confirm_dialog_response, is_password_validated, is_value_relative):
     """
     Test sending a new value to the channel.
@@ -323,8 +318,6 @@ def test_send_value(qtbot, monkeypatch, signals, initial_value, press_value, is_
         Window for widget testing
     monkeypatch : fixture
         To override dialog behaviors
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     initial_value : int, float, str
         The first value given to the button
     press_value : int, float, str
@@ -348,6 +341,11 @@ def test_send_value(qtbot, monkeypatch, signals, initial_value, press_value, is_
     pydm_pushbutton = PyDMPushButton()
     qtbot.addWidget(pydm_pushbutton)
 
+    def foo(val):
+        pydm_pushbutton.test_write = val
+    pydm_pushbutton.write_to_channel = foo
+    pydm_pushbutton.test_write = None
+
     pydm_pushbutton.showConfirmDialog = show_confirm_dialog
     pydm_pushbutton.confirmMessage = confirm_message
     pydm_pushbutton.relativeChange = is_value_relative
@@ -358,13 +356,9 @@ def test_send_value(qtbot, monkeypatch, signals, initial_value, press_value, is_
         # and continue the test to see if the widget can handle a None initial value
         channel_type = type(initial_value)
 
-        # Change the channel value, and make sure the signal is received
-        signals.new_value_signal[channel_type].connect(pydm_pushbutton.channelValueChanged)
-        signals.new_value_signal[channel_type].emit(initial_value)
+        # Change the channel value
+        pydm_pushbutton.value_changed(initial_value)
         assert pydm_pushbutton.value == initial_value
-
-        # Set up the conftest fixture to receive the value sent out to the channel
-        pydm_pushbutton.send_value_signal[channel_type].connect(signals.receiveValue)
 
     if show_confirm_dialog:
         # Monkeypatch the confirm dialog call if popping up the dialog is enabled for testing
@@ -384,7 +378,7 @@ def test_send_value(qtbot, monkeypatch, signals, initial_value, press_value, is_
         assert send_value is None
     else:
         if confirm_dialog_response == QMessageBox.No or not is_password_validated:
-            assert not signals.value
+            assert not pydm_pushbutton.test_write
         else:
             if pydm_pushbutton.showConfirmDialog:
                 if confirm_message and len(confirm_message):
@@ -393,9 +387,9 @@ def test_send_value(qtbot, monkeypatch, signals, initial_value, press_value, is_
                     assert pydm_pushbutton.confirmMessage == PyDMPushButton.DEFAULT_CONFIRM_MESSAGE
 
             if not is_value_relative or channel_type == str:
-                assert signals.value == pydm_pushbutton.channeltype(pydm_pushbutton.pressValue)
+                assert pydm_pushbutton.test_write == pydm_pushbutton.channeltype(pydm_pushbutton.pressValue)
             else:
-                assert signals.value == pydm_pushbutton.value + pydm_pushbutton.channeltype(pydm_pushbutton.pressValue)
+                assert pydm_pushbutton.test_write == pydm_pushbutton.value + pydm_pushbutton.channeltype(pydm_pushbutton.pressValue)
 
 
 @pytest.mark.parametrize("current_channel_value, updated_value", [
@@ -417,7 +411,7 @@ def test_send_value(qtbot, monkeypatch, signals, initial_value, press_value, is_
     ("Old str value", 42),
     ("Old str value", 10.10),
 ])
-def test_update_press_value(qtbot, signals, current_channel_value, updated_value):
+def test_update_press_value(qtbot, current_channel_value, updated_value):
     """
     Test the conversion of a new press value given the existing channel type.
 
@@ -428,8 +422,6 @@ def test_update_press_value(qtbot, signals, current_channel_value, updated_value
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     current_channel_value : int, float, str, ndarray
         The existing channel value, which will remain consistent with the type of the updated value, i.e. it must be
         possible to convert the updated value to the type of the existing channel value
@@ -439,13 +431,10 @@ def test_update_press_value(qtbot, signals, current_channel_value, updated_value
     pydm_pushbutton = PyDMPushButton()
     qtbot.addWidget(pydm_pushbutton)
 
-    # First, set the current channel type
-    signals.new_value_signal[type(current_channel_value)].connect(pydm_pushbutton.channelValueChanged)
-    signals.new_value_signal[type(current_channel_value)].emit(current_channel_value)
+    pydm_pushbutton.value_changed(current_channel_value)
 
     # Verify the new value can be converted/cast as long as the casting can be done
-    signals.new_value_signal[type(updated_value)].connect(pydm_pushbutton.updatePressValue)
-    signals.new_value_signal[type(updated_value)].emit(updated_value)
+    pydm_pushbutton.updatePressValue(updated_value)
 
     # Verify the new value is assigned to be the new pressValue as a str
     assert pydm_pushbutton.pressValue == str(type(current_channel_value)(updated_value))
@@ -461,7 +450,7 @@ def test_update_press_value(qtbot, signals, current_channel_value, updated_value
     (10, "New str value", "not a valid"),
     (10.10, "New str value", "not a valid"),
 ])
-def test_update_press_value_incompatible_update_value(qtbot, signals, caplog, current_channel_value, updated_value,
+def test_update_press_value_incompatible_update_value(qtbot, caplog, current_channel_value, updated_value,
                                                       expected_log_error):
     """
     Test if the widget will log the correct error message if the update value's type is incompatible with the current
@@ -471,8 +460,6 @@ def test_update_press_value_incompatible_update_value(qtbot, signals, caplog, cu
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     caplog : fixture
         The fixture to capture log outputs
     current_channel_value : int, float, str, ndarray
@@ -486,12 +473,10 @@ def test_update_press_value_incompatible_update_value(qtbot, signals, caplog, cu
     qtbot.addWidget(pydm_pushbutton)
 
     # First, set the current channel type
-    signals.new_value_signal[type(current_channel_value)].connect(pydm_pushbutton.channelValueChanged)
-    signals.new_value_signal[type(current_channel_value)].emit(current_channel_value)
+    pydm_pushbutton.value_changed(current_channel_value)
 
     # Verify the new value can be converted/cast as long as the casting can be done
-    signals.new_value_signal[type(updated_value)].connect(pydm_pushbutton.updatePressValue)
-    signals.new_value_signal[type(updated_value)].emit(updated_value)
+    pydm_pushbutton.updatePressValue(updated_value)
 
     # Make sure logging capture the error, and have the correct error message
     for record in caplog.records:
