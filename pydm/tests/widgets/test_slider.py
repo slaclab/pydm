@@ -90,8 +90,6 @@ def test_actions_triggered(qtbot):
 
     qtbot : fixture
         pytest-qt window for widget test
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
@@ -147,8 +145,7 @@ def test_internal_slider_value_changed(qtbot, new_value, mute_change):
         # The internal_slider_value_changed_slot emitted the send_value_signal
         assert pydm_slider.test_write == pydm_slider.value
     else:
-        # The internal_slider_value_changed_slot did NOT emit the send_value_signal. The signals fixture's value remains
-        # unchanged
+        # The internal_slider_value_changed_slot did NOT emit the send_value_signal.
         assert pydm_slider.test_write is None
 
 

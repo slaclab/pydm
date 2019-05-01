@@ -8,8 +8,9 @@ from pydm import config
 
 def test_data_plugin_add(qapp, test_plugin):
     # Check that adding this after import will be reflected in PyDMApp
-    assert isinstance(plugin_modules['tst'], test_plugin)
-    assert isinstance(qapp.plugins['tst'], test_plugin)
+    tpe = type(test_plugin)
+    assert isinstance(plugin_modules['tst'], tpe)
+    assert isinstance(qapp.plugins['tst'], tpe)
 
 
 def test_plugin_directory_loading(qapp):
@@ -26,14 +27,14 @@ def test_plugin_directory_loading(qapp):
 
 
 def test_plugin_for_address(test_plugin):
+    tpe = type(test_plugin)
+
     # Get by protocol
-    assert isinstance(plugin_for_address('tst://tst:this'),
-                      test_plugin)
+    assert isinstance(plugin_for_address('tst://tst:this'), tpe)
     assert plugin_for_address('tst:this') is None
     # Default protocol
     config.DEFAULT_PROTOCOL = 'tst'
-    assert isinstance(plugin_for_address('tst:this'),
-                      test_plugin)
+    assert isinstance(plugin_for_address('tst:this'), tpe)
 
 
 fake_file = """\

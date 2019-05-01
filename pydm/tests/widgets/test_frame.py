@@ -95,7 +95,7 @@ def test_disable_on_disconnect(qtbot, init_value, new_value):
     ("CA://MTEST", True, False, PyDMWidget.ALARM_DISCONNECTED),
     ("CA://MTEST", True, True, PyDMWidget.ALARM_DISCONNECTED),
 ])
-def test_alarm_severity_change(qtbot, signals, channel, alarm_sensitive_content, alarm_sensitive_border,
+def test_alarm_severity_change(qtbot, channel, alarm_sensitive_content, alarm_sensitive_border,
                                new_alarm_severity):
     """
     Test the style of the widget changing according to alarm sensitivity settings and alarm severity changes.
@@ -108,8 +108,6 @@ def test_alarm_severity_change(qtbot, signals, channel, alarm_sensitive_content,
     ----------
     qtbot : fixture
         pytest-qt window for widget test
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     channel : str
         The data channel address
     alarm_sensitive_content : bool
@@ -139,7 +137,7 @@ def test_alarm_severity_change(qtbot, signals, channel, alarm_sensitive_content,
     ("", False, False, False),
     (None, False, False, False),
 ])
-def test_check_enable_state(qtbot, signals, channel_address, connected, write_access, is_app_read_only):
+def test_check_enable_state(qtbot, channel_address, connected, write_access, is_app_read_only):
     """
     Test the tooltip generated depending on the channel address validation, connection, write access, and whether the
     app is read-only.
@@ -155,8 +153,6 @@ def test_check_enable_state(qtbot, signals, channel_address, connected, write_ac
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     channel_address : str
         The channel address
     connected : bool
@@ -174,12 +170,7 @@ def test_check_enable_state(qtbot, signals, channel_address, connected, write_ac
     if not pydm_frame._disable_on_disconnect:
         assert pydm_frame.isEnabled()
     else:
-        signals.write_access_signal[bool].connect(pydm_frame.writeAccessChanged)
-        signals.write_access_signal[bool].emit(write_access)
-
-        signals.connection_state_signal[bool].connect(pydm_frame.connectionStateChanged)
-        signals.connection_state_signal[bool].emit(connected)
-
+        pydm_frame.connection_changed(connected)
         data_plugins.set_read_only(is_app_read_only)
 
         original_tooltip = "Original Tooltip"

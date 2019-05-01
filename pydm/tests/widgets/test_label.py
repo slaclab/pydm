@@ -184,8 +184,6 @@ def test_show_units(qtbot, value, display_format, unit_name, expected):
     ----------
     qtbot : fixture
         pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     value : int, float, bin, hex, str
         The value to be displayed by the widget
     display_format : int
@@ -480,8 +478,6 @@ def test_value_changed_incorrect_display_format(qtbot, caplog, value, display_fo
     ----------
     qtbot : fixture
         pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     caplog : fixture
         The fixture to capture log outputs
     value : ndarray, str

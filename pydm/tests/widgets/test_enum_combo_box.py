@@ -193,8 +193,6 @@ def test_internal_combo_box_activated_int(qtbot, index):
     ----------
     qtbot : fixture
         pytest-qt window for widget test
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     index : int
         The new enum string index value
     """

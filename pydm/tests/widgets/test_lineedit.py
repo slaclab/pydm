@@ -356,8 +356,6 @@ def test_set_display(qtbot, qapp, value, has_focus, channel_type, display_format
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     has_focus : Boolean
         True if the widget has the focus; False otherwise
     channel_type : type
@@ -508,9 +506,7 @@ def test_apply_conversion_wrong_unit(qtbot, caplog, value, precision, initial_un
     caplog : fixture
         To capture the log messages
     value : int, float, bin, hex, numpy.array
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     precision : int
-        The
     unit : str
         The unit of the new value
     show_units : bool

@@ -8,8 +8,8 @@ from logging import ERROR
 from qtpy import QtCore
 from qtpy.QtCore import QSize
 
-from ...widgets.shell_command import PyDMShellCommand
-from ...utilities import IconFont
+from pydm.widgets.shell_command import PyDMShellCommand
+from pydm.utilities import IconFont
 
 
 # --------------------
@@ -222,7 +222,7 @@ def test_mouse_release_event(qtbot, caplog, cmd, val):
     ("", None),
     (None, None),
 ])
-def test_execute_command(qtbot, signals, caplog, cmd, val):
+def test_execute_command(qtbot, caplog, cmd, val):
     """
     Test to ensure the widget's ability to execute a shell command.
 
@@ -236,8 +236,6 @@ def test_execute_command(qtbot, signals, caplog, cmd, val):
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     caplog : fixture
         To capture the log messages
     cmd : str
@@ -249,8 +247,7 @@ def test_execute_command(qtbot, signals, caplog, cmd, val):
     qtbot.addWidget(pydm_shell_command)
 
     pydm_shell_command.command = cmd
-    signals.send_value_signal[str].connect(pydm_shell_command.execute_command)
-    signals.send_value_signal[str].emit(cmd)
+    pydm_shell_command.execute_command()
 
     if cmd:
         if "invalid" not in cmd:
@@ -268,7 +265,7 @@ def test_execute_command(qtbot, signals, caplog, cmd, val):
     True,
     False,
 ])
-def test_execute_multiple_commands(qtbot, signals, caplog, allow_multiple):
+def test_execute_multiple_commands(qtbot, caplog, allow_multiple):
     """
     Test the widget's ability to execute multiple shell commands when this setting is enabled.
 
@@ -281,8 +278,6 @@ def test_execute_multiple_commands(qtbot, signals, caplog, allow_multiple):
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     caplog : fixture
         To capture the log messages
     allow_multiple : bool
@@ -295,9 +290,9 @@ def test_execute_multiple_commands(qtbot, signals, caplog, allow_multiple):
 
     cmd = "choice /c yn /d y /t 1" if platform.system() == "Windows" else "sleep 0.1"
     pydm_shell_command.command = cmd
-    signals.send_value_signal[str].connect(pydm_shell_command.execute_command)
-    signals.send_value_signal[str].emit(cmd)
-    signals.send_value_signal[str].emit(cmd)
+    pydm_shell_command.execute_command()
+    pydm_shell_command.execute_command()
+    pydm_shell_command.execute_command()
 
     if not allow_multiple:
         for record in caplog.records:
