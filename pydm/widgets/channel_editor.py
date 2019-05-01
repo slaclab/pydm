@@ -11,6 +11,10 @@ from ..data_store import DEFAULT_INTROSPECTION
 from ..utilities import protocol_and_address
 from ..config import DEFAULT_PROTOCOL
 
+try:
+    from json.decoder import JSONDecodeError
+except ImportError:
+    JSONDecodeError = ValueError
 
 class ChannelEditor(QtWidgets.QDialog):
     """
@@ -65,7 +69,7 @@ class ChannelEditor(QtWidgets.QDialog):
             return {}
         try:
             configs = json.loads(address)
-        except json.JSONDecodeError:
+        except JSONDecodeError:
             # Kept here for backwards compatibility...
             protocol, addr = protocol_and_address(address)
             configs = {

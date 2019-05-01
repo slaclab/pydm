@@ -17,6 +17,11 @@ from .plugin import PyDMPlugin
 from ..utilities import protocol_and_address
 from .. import config
 
+try:
+    from json.decoder import JSONDecodeError
+except ImportError:
+    JSONDecodeError = ValueError
+
 logger = logging.getLogger(__name__)
 
 plugin_modules = {}
@@ -77,7 +82,7 @@ def plugin_for_address(address):
         conn = json.loads(address)
         protocol = conn.get('protocol', None)
         address = conn.get('parameters', '')
-    except json.JSONDecodeError:
+    except JSONDecodeError:
         protocol, addr = protocol_and_address(address)
 
     # Use default protocol

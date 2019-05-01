@@ -581,7 +581,9 @@ def test_pydmwritable_write_to_channel(qapp, qtbot, test_plugin, caplog):
     put_blocker.wait()
     assert tst_conn.payload_received == {"bar": "Test Write"}
 
-    widget._channels.clear()
+    # Life could be easier but Python 2.7 has no `clear` for lists...
+    # so we gotta improvise
+    del widget._channels[:]
     caplog.clear()
     with caplog.at_level(logging.ERROR):
         widget.write_to_channel(value="Invalid Test Write", key="Invalid")

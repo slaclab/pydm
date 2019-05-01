@@ -159,7 +159,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
             if isinstance(new_val, int):
                 idx = new_val
             # String values are valid as well, but we need to look up the index
-            elif isinstance(new_val, six.text_type):
+            elif isinstance(new_val, (six.text_type, six.string_types)):
                 idx = self.findText(new_val)
                 # findText return -1 when we can not find the text inside the
                 # QComboBox
