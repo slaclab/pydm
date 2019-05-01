@@ -7,8 +7,8 @@ from qtpy.QtWidgets import QApplication, QDoubleSpinBox
 from qtpy.QtGui import QKeyEvent
 from qtpy.QtCore import Property, QEvent, Qt
 
-from ...widgets.spinbox import PyDMSpinbox
-from ...tests.widgets.test_lineedit import find_action_from_menu
+from pydm.widgets.spinbox import PyDMSpinbox
+from pydm.tests.widgets.utils import find_action_from_menu
 
 
 # --------------------

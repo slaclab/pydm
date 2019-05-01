@@ -113,7 +113,8 @@ class PyDMPrimitiveWidget(object):
         'Opacity': ['set_opacity', float]
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
+        super(PyDMPrimitiveWidget, self).__init__(*args, **kwargs)
         self._rules = None
         self._opacity = 1.0
 
@@ -394,8 +395,8 @@ class TextFormatter(object):
         new_val : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
         """
-        self.update_format_string()
         super(TextFormatter, self).value_changed(new_val)
+        self.update_format_string()
 
 
 class PyDMWidget(PyDMPrimitiveWidget):
@@ -435,10 +436,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
         DataKeys.VALUE: 'value_changed'
     }
 
-    def __init__(self, init_channel=None):
+    def __init__(self, init_channel=None, *args, **kwargs):
         self._channel_use_introspection = True
 
-        super(PyDMWidget, self).__init__()
+        super(PyDMWidget, self).__init__(*args, **kwargs)
 
         if not all([prop in PyDMPrimitiveWidget.RULE_PROPERTIES for prop in
                     ['Position - X', 'Position - Y']]):
@@ -933,9 +934,9 @@ class PyDMWritableWidget(PyDMWidget):
         The channel to be used by the widget.
     """
 
-    def __init__(self, init_channel=None):
+    def __init__(self, init_channel=None, *args, **kwargs):
         self._write_access = False
-        super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
+        super(PyDMWritableWidget, self).__init__(init_channel=init_channel, *args, **kwargs)
 
     def init_for_designer(self):
         """

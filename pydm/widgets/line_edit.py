@@ -30,9 +30,8 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        QLineEdit.__init__(self, parent)
-        PyDMWritableWidget.__init__(self, init_channel=init_channel)
-        TextFormatter.__init__(self)
+        super(PyDMLineEdit, self).__init__(parent=parent, init_channel=init_channel)
+
         self.app = QApplication.instance()
         self._display = None
         self._scale = 1

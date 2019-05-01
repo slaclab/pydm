@@ -6,15 +6,12 @@ import numpy as np
 from logging import ERROR
 
 from qtpy.QtWidgets import QMenu
-from ...widgets.line_edit import PyDMLineEdit
-from ...data_plugins import set_read_only, is_read_only
-from ...utilities import is_pydm_app, find_unit_options
-from ...widgets.display_format import DisplayFormat, parse_value_for_display
+from pydm.widgets.line_edit import PyDMLineEdit
+from pydm.data_plugins import set_read_only
+from pydm.utilities import is_pydm_app, find_unit_options
+from pydm.widgets.display_format import DisplayFormat, parse_value_for_display
+from pydm.tests.widgets.utils import find_action_from_menu
 
-
-# --------------------
-# POSITIVE TEST CASES
-# --------------------
 
 @pytest.mark.parametrize("init_channel", [
     "CA://MTEST",
@@ -54,6 +51,24 @@ def test_construct(qtbot, init_channel):
     assert find_action_from_menu(pydm_lineedit.unitMenu, "No Unit Conversions found")
 
 
+def test_write_access_changed(qtbot):
+    pydm_lineedit = PyDMLineEdit(init_channel="ca://foo")
+    qtbot.addWidget(pydm_lineedit)
+    assert pydm_lineedit.isEnabled() is False
+    assert pydm_lineedit.isReadOnly() is False
+    assert pydm_lineedit._write_access is False
+
+    pydm_lineedit.connection_changed(True)
+
+    pydm_lineedit.write_access_changed(True)
+    assert pydm_lineedit.isEnabled() is True
+    assert pydm_lineedit.isReadOnly() is False
+
+    pydm_lineedit.write_access_changed(False)
+    assert pydm_lineedit.isEnabled() is False
+    assert pydm_lineedit.isReadOnly() is True
+
+
 @pytest.mark.parametrize("display_format", [
     (DisplayFormat.Default),
     (DisplayFormat.Exponential),
@@ -91,7 +106,7 @@ def test_change_display_format_type(qtbot, display_format):
     (0b100, DisplayFormat.Binary, 0, 1, "KB", True, "0b100 KB"),
     (np.array([123, 456]), DisplayFormat.Default, 3, 2, "light years", True, "[123 456] light years"),
 ])
-def test_value_change(qtbot, signals, value, display_format, precision, scale, unit, show_unit, expected_display):
+def test_value_change(qtbot, value, display_format, precision, scale, unit, show_unit, expected_display):
     """
     Test changing the value to be displayed by the widget, given the value's display format, precision, scale, and unit.
 
@@ -103,8 +118,6 @@ def test_value_change(qtbot, signals, value, display_format, precision, scale, u
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     value : int, float, bin, hex, numpy.array
         The value to be displayed by the widget
     display_format : DisplayFormat
@@ -124,14 +137,12 @@ def test_value_change(qtbot, signals, value, display_format, precision, scale, u
     qtbot.addWidget(pydm_lineedit)
 
     pydm_lineedit.displayFormat = display_format
-    pydm_lineedit._prec = precision
-    pydm_lineedit._scale = scale
+    pydm_lineedit.precision_changed(precision)
     pydm_lineedit.channeltype = type(value)
-    pydm_lineedit._unit = unit
+    pydm_lineedit.unit_changed(unit)
     pydm_lineedit.showUnits = show_unit
-
-    signals.new_value_signal[type(value)].connect(pydm_lineedit.channelValueChanged)
-    signals.new_value_signal[type(value)].emit(value)
+    pydm_lineedit._scale = scale
+    pydm_lineedit.value_changed(value)
 
     assert pydm_lineedit._display == expected_display
 
@@ -146,7 +157,7 @@ def test_value_change(qtbot, signals, value, display_format, precision, scale, u
     (np.array(["A", "B"]), np.array(["C", "D"]), DisplayFormat.String, 0, 10, "ms", True, "C   D    ", "C   D    ms"),
     (np.array(["A", "B"]), np.array(["C", "D"]), DisplayFormat.Default, 0, 10, "ms", True, "['C' 'D']", "['C' 'D'] ms"),
 ])
-def test_send_value(qtbot, signals, init_value, user_typed_value, display_format, precision, scale, unit,
+def test_send_value(qtbot, init_value, user_typed_value, display_format, precision, scale, unit,
                     show_units, expected_received_value, expected_display_value):
     """
     Test sending the value to the channel, and the displayed value by the widget.
@@ -160,8 +171,6 @@ def test_send_value(qtbot, signals, init_value, user_typed_value, display_format
     ----------
     qtbot : fixture
         pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     init_value : int, float, hex, bin, str, numpy.array
         The initial value currently assigned to the widget
     user_typed_value : str
@@ -184,6 +193,11 @@ def test_send_value(qtbot, signals, init_value, user_typed_value, display_format
     pydm_lineedit = PyDMLineEdit()
     qtbot.addWidget(pydm_lineedit)
 
+    def foo(val):
+        pydm_lineedit.test_write = val
+
+    pydm_lineedit.write_to_channel = foo
+
     pydm_lineedit.value = init_value
     pydm_lineedit.channeltype = type(init_value)
     pydm_lineedit.displayFormat = display_format
@@ -192,142 +206,17 @@ def test_send_value(qtbot, signals, init_value, user_typed_value, display_format
     pydm_lineedit._unit = unit
     pydm_lineedit.showUnits = show_units
 
-    signals.new_value_signal[type(user_typed_value)].connect(pydm_lineedit.channelValueChanged)
-    signals.new_value_signal[type(user_typed_value)].emit(user_typed_value)
-
-    # Besides receiving the new channel value, simulate the update of the new value to the widget by connecting the
-    # channelValueChanged slot to the same signal
-    signal_type = type(user_typed_value)
-    if signal_type == np.ndarray:
-        signal_type = str
-    pydm_lineedit.send_value_signal[signal_type].connect(signals.receiveValue)
-    pydm_lineedit.send_value_signal[signal_type].connect(pydm_lineedit.channelValueChanged)
+    pydm_lineedit.value_changed(user_typed_value)
     pydm_lineedit.send_value()
 
     # Python 2.7 produces the strings without the spaces, but Python 3.x does not. So, remove all the spaces, and
     # compare just the characters (in the right order)
     assert pydm_lineedit.displayText().replace(" ", "") == expected_display_value.replace(" ", "")
 
-    if all(x in (int, float) for x in (type(expected_received_value), type(signals.value))) :
+    if all(x in (int, float) for x in (type(expected_received_value), type(pydm_lineedit.test_write))) :
         # Testing the actual value sent to the data channel and the expected value using a tolerance due to floating
         # point arithmetic
-        assert abs(signals.value - expected_received_value) < 0.00001
-
-
-@pytest.mark.parametrize("new_write_access, is_channel_connected, tooltip, is_app_read_only", [
-    (True, True, "Write Access and Connected Channel", False),
-    (False, True, "Only Connected Channel", False),
-    (True, False, "Only Write Access", False),
-    (False, False, "No Write Access and No Connected Channel", False),
-
-    (True, True, "Write Access and Connected Channel", True),
-    (False, True, "Only Connected Channel", True),
-    (True, False, "Only Write Access", True),
-    (False, False, "No Write Access and No Connected Channel", True),
-
-    (True, True, "", False),
-    (True, True, "", True),
-])
-def test_write_access_changed(qapp, qtbot, signals, new_write_access, is_channel_connected, tooltip, is_app_read_only):
-    """
-    Test the widget's write access status and tooltip, which depends on the connection status of the data channel and
-    the app's read-only status.
-
-    Expectations:
-
-    1. If the write access is set to False, the widget is read-only.
-    2. If the data channel is disconnected, the widget's tooltip will  "PV is disconnected"
-    3. If the data channel is connected, but it has no write access:
-        a. If the app is read-only, the tooltip will read  "Running PyDM on Read-Only mode."
-        b. If the app is not read-only, the tooltip will read "Access denied by Channel Access Security."
-
-    Parameters
-    ----------
-    qapp : fixture
-        pytest-qt qapp instance.
-    qtbot : fixture
-        pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
-    new_write_access : bool
-        True if the widget has write access; False otherwise
-    is_channel_connected : bool
-        True if the data channel is connected; False otherwise
-    tooltip : str
-        The widget's tooltip
-    is_app_read_only : bool
-        True if the app is read-only; False otherwise
-    """
-    pydm_lineedit = PyDMLineEdit()
-    qtbot.addWidget(pydm_lineedit)
-    pydm_lineedit.show()
-
-    set_read_only(is_app_read_only)
-
-    pydm_lineedit.channel = "ca://MTEST"
-    pydm_lineedit.setToolTip(tooltip)
-
-    pydm_lineedit.connectionStateChanged(is_channel_connected)
-    pydm_lineedit.writeAccessChanged(new_write_access)
-    qapp.processEvents()
-
-    if new_write_access:
-        assert not pydm_lineedit.isReadOnly()
-    else:
-        assert pydm_lineedit.isReadOnly()
-
-    actual_tooltip = pydm_lineedit.toolTip()
-    if not pydm_lineedit._connected:
-        assert "PV is disconnected." in actual_tooltip
-    elif not new_write_access:
-        if is_app_read_only:
-            assert "Running PyDM on Read-Only mode." in actual_tooltip
-        else:
-            assert "Access denied by Channel Access Security." in actual_tooltip
-
-
-@pytest.mark.parametrize("is_precision_from_pv, pv_precision, non_pv_precision", [
-    (True, 1, 3),
-    (False, 5, 3),
-    (True, 6, 0),
-    (True, 3, None),
-    (False, 3, None),
-])
-def test_precision_change(qtbot, signals, is_precision_from_pv, pv_precision, non_pv_precision):
-    """
-    Test setting the precision for the widget's value.
-
-    Expectations:
-
-    1. If the precision comes from the PV, emit a prec_signal to change the widget's precision.
-    2. If this is a non-PV precision, set the widget's precision directly.
-
-    Parameters
-    ----------
-    qtbot : fixture
-        pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
-    is_precision_from_pv : bool
-        True if the precision value comes from the PV; False otherwise
-    pv_precision : int
-        The PV precision value to set to the widget
-    non_pv_precision : int
-        The non-PV precision value to set to the widget
-    """
-    pydm_lineedit = PyDMLineEdit()
-    qtbot.addWidget(pydm_lineedit)
-
-    pydm_lineedit.precisionFromPV = is_precision_from_pv
-    pydm_lineedit.precision = non_pv_precision
-
-    if is_precision_from_pv:
-        signals.prec_signal[type(pv_precision)].connect(pydm_lineedit.precisionChanged)
-        signals.prec_signal.emit(pv_precision)
-
-        assert pydm_lineedit._prec == pv_precision
-    else:
-        assert pydm_lineedit._prec == non_pv_precision if non_pv_precision else pydm_lineedit._prec == 0
+        assert abs(pydm_lineedit.test_write - expected_received_value) < 0.00001
 
 
 @pytest.mark.parametrize("new_unit", [
@@ -335,7 +224,7 @@ def test_precision_change(qtbot, signals, is_precision_from_pv, pv_precision, no
     "light years",
     "",
 ])
-def test_unit_change(qtbot, signals, new_unit):
+def test_unit_change(qtbot, new_unit):
     """
     Test setting the widget's unit.
 
@@ -343,43 +232,16 @@ def test_unit_change(qtbot, signals, new_unit):
     ----------
     qtbot : fixture
         pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     new_unit : str
         The new unit to set to the widget
     """
     pydm_lineedit = PyDMLineEdit()
     qtbot.addWidget(pydm_lineedit)
 
-    signals.unit_signal[str].connect(pydm_lineedit.unitChanged)
-    signals.unit_signal.emit(new_unit)
+    pydm_lineedit.unit_changed(new_unit)
 
     assert pydm_lineedit._unit == new_unit
-
-
-def find_action_from_menu(menu, action_name):
-    """
-    Verify if an action (a conversion unit) is available in a context menu.
-
-    Parameters
-    ----------
-    menu : QMenu
-        The context menu of a widget
-    action_name : str
-        A menu text item
-
-    Returns
-    -------
-    True if the action name is found in the menu; False otherwise
-    """
-    for action in menu.actions():
-        if action.menu():
-            # The action will always contain a menu, so the status will be created
-            status = find_action_from_menu(action.menu(), action_name)
-        if not action.isSeparator():
-            if action_name == action.text():
-                return True
-    return status
+    assert pydm_lineedit._scale == 1
 
 
 @pytest.mark.parametrize("unit, show_units", [
@@ -672,7 +534,7 @@ def test_apply_conversion_wrong_unit(qtbot, caplog, value, precision, initial_un
                          "show_units, expected_errors", [
     (123, 345.678, DisplayFormat.Default, 0, 1, "s", True, ("Error trying to set data ", "with type ", "int'>")),
 ])
-def test_send_value_neg(qtbot, caplog, signals, init_value, user_typed_value, display_format, precision, scale, unit,
+def test_send_value_neg(qtbot, caplog, init_value, user_typed_value, display_format, precision, scale, unit,
                         show_units, expected_errors):
     """
     Test sending the value to the channel error logging.
@@ -687,8 +549,6 @@ def test_send_value_neg(qtbot, caplog, signals, init_value, user_typed_value, di
         pytest-qt window for widget testing
     caplog : fixture
         To capture the log messages
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     init_value : int, float, hex, bin, str, numpy.array
         The initial value currently assigned to the widget
     user_typed_value : int, float, hex, bin, str, numpy.array
@@ -717,11 +577,6 @@ def test_send_value_neg(qtbot, caplog, signals, init_value, user_typed_value, di
     pydm_lineedit._unit = unit
     pydm_lineedit.showUnits = show_units
 
-    signal_type = type(user_typed_value)
-    if signal_type == np.ndarray:
-        signal_type = str
-    pydm_lineedit.send_value_signal[signal_type].connect(signals.receiveValue)
-    pydm_lineedit.send_value_signal[signal_type].connect(pydm_lineedit.channelValueChanged)
     pydm_lineedit.send_value()
 
     for record in caplog.records:
