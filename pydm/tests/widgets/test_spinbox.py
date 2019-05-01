@@ -43,7 +43,7 @@ def test_construct(qtbot):
     (Qt.Key_Left, Qt.Key_Right, (2, 1)),
     (Qt.Key_Right, Qt.Key_Left, (-2, -1)),
 ])
-def test_key_press_event(qtbot, signals, monkeypatch, first_key_pressed, second_key_pressed,
+def test_key_press_event(qtbot, monkeypatch, first_key_pressed, second_key_pressed,
                          keys_pressed_expected_results):
     """
     Test the widget's handling of the key press events.
@@ -55,8 +55,6 @@ def test_key_press_event(qtbot, signals, monkeypatch, first_key_pressed, second_
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     monkeypatch : fixture
         To override default behaviors
     first_key_pressed : Qt.Key
@@ -74,12 +72,10 @@ def test_key_press_event(qtbot, signals, monkeypatch, first_key_pressed, second_
 
     pydm_spinbox.step_exponent = 0
     pydm_spinbox._precision_from_pv = True
-    signals.prec_signal[int].connect(pydm_spinbox.precisionChanged)
-    signals.prec_signal[int].emit(3)
+    pydm_spinbox.precision_changed(3)
 
     INIT_SPINBOX_VALUE = 1.2
-    signals.new_value_signal[float].connect(pydm_spinbox.channelValueChanged)
-    signals.new_value_signal[float].emit(INIT_SPINBOX_VALUE)
+    pydm_spinbox.value_changed(INIT_SPINBOX_VALUE)
 
     pydm_spinbox.setFocus()
 
@@ -97,9 +93,6 @@ def test_key_press_event(qtbot, signals, monkeypatch, first_key_pressed, second_
         for i in range(0, key_press_count):
             pydm_spinbox.keyPressEvent(QKeyEvent(QEvent.KeyPress, key_pressed, key_mod))
         assert pydm_spinbox.step_exponent == expected_exp
-
-        signals.send_value_signal[float].connect(signals.receiveValue)
-        signals.send_value_signal[float].connect(pydm_spinbox.channelValueChanged)
 
         # Send out the key event to update the value based on the step exponent change
         pydm_spinbox.keyPressEvent(QKeyEvent(QEvent.KeyPress, Qt.Key_Return, Qt.NoModifier))
@@ -180,7 +173,7 @@ def test_update_step_size(qtbot, step_exp):
     (False, "ns", 0.01, True),
     (False, "light years", 1, False),
 ])
-def test_update_format_string(qtbot, signals, show_unit, new_unit, step_exp, show_step_exp):
+def test_update_format_string(qtbot, show_unit, new_unit, step_exp, show_step_exp):
     """
     Test the widget's capability of updating the format string when various unit and step exponent paramaters are
     updated. This method also test showStepExponent property and setter.
@@ -192,8 +185,6 @@ def test_update_format_string(qtbot, signals, show_unit, new_unit, step_exp, sho
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     show_unit : bool
         True if the unit is to be displayed on the widget; False if otherwise
     new_unit : str
@@ -211,14 +202,12 @@ def test_update_format_string(qtbot, signals, show_unit, new_unit, step_exp, sho
     assert pydm_spinbox.showStepExponent == show_step_exp
 
     INIT_SPINBOX_VALUE = 1.2
-    signals.new_value_signal[float].connect(pydm_spinbox.channelValueChanged)
-    signals.new_value_signal[float].emit(INIT_SPINBOX_VALUE)
+    pydm_spinbox.value_changed(INIT_SPINBOX_VALUE)
 
     units = ""
     pydm_spinbox.showUnits = show_unit
     if show_unit:
-        signals.unit_signal[str].connect(pydm_spinbox.unitChanged)
-        signals.unit_signal.emit(new_unit)
+        pydm_spinbox.unit_changed(new_unit)
         units = " {}".format(pydm_spinbox._unit)
 
         assert pydm_spinbox._unit == new_unit
@@ -245,7 +234,7 @@ def test_update_format_string(qtbot, signals, show_unit, new_unit, step_exp, sho
     (0, 12.3, 2),
     (-1.23, 4.6, 1)
 ])
-def test_send_value(qtbot, signals, init_value, user_typed_value, precision):
+def test_send_value(qtbot, init_value, user_typed_value, precision):
     """
     Test sending the value from the widget to the channel. This method tests value_changed() and precision_changed().
 
@@ -256,8 +245,6 @@ def test_send_value(qtbot, signals, init_value, user_typed_value, precision):
     ----------
     qtbot : fixture
         pytest-qt window for widget test
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     init_value : float
         The initial value assigned to the spinbox
     user_typed_value : float
@@ -268,30 +255,39 @@ def test_send_value(qtbot, signals, init_value, user_typed_value, precision):
     pydm_spinbox = PyDMSpinbox()
     qtbot.addWidget(pydm_spinbox)
 
+    def foo(val):
+        pydm_spinbox.test_write = val
+    pydm_spinbox.write_to_channel = foo
+
     pydm_spinbox.setValue(init_value)
 
     pydm_spinbox._precision_from_pv = True
-    signals.prec_signal[type(precision)].connect(pydm_spinbox.precisionChanged)
-    signals.prec_signal[type(precision)].emit(precision)
+    pydm_spinbox.precision_changed(precision)
+    pydm_spinbox.upper_limit_changed(100000)
+    pydm_spinbox.lower_limit_changed(-100000)
 
-    signal_type = type(user_typed_value)
-    signals.new_value_signal[signal_type].connect(pydm_spinbox.channelValueChanged)
-    signals.new_value_signal[signal_type].emit(user_typed_value)
-
-    # Besides receiving the new channel value, simulate the update of the new value to the widget by connecting the
-    # channelValueChanged slot to the same signal
-    signals.send_value_signal[signal_type].connect(signals.receiveValue)
-    signals.send_value_signal[signal_type].connect(pydm_spinbox.channelValueChanged)
+    pydm_spinbox.value_changed(user_typed_value)
     pydm_spinbox.send_value()
+    assert pydm_spinbox.test_write == user_typed_value
 
-    assert pydm_spinbox.value == user_typed_value
 
+def test_precision_changed(qtbot):
+    pydm_spinbox = PyDMSpinbox()
+    qtbot.addWidget(pydm_spinbox)
+    assert pydm_spinbox.precision == 0
+    assert pydm_spinbox.precisionFromPV is True
+    pydm_spinbox.precision = 10
+    assert pydm_spinbox.precision == 0
+    
+    pydm_spinbox.precisionFromPV = False
+    pydm_spinbox.precision = 2
+    assert pydm_spinbox.precision == 2
 
 @pytest.mark.parametrize("which_limit, new_limit", [
     ("UPPER", 123.456),
     ("LOWER", 12.345)
 ])
-def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
+def test_ctrl_limit_changed(qtbot, which_limit, new_limit):
     """
     Test the upper and lower limit settings.
 
@@ -302,8 +298,6 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
     ----------
     qtbot : fixture
         pytest-qt window for widget test
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     which_limit : str
         "UPPER" if the new value is intended for the upper limit, "LOWER" for the lower limit
     new_limit : float
@@ -311,14 +305,15 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
     """
     pydm_spinbox = PyDMSpinbox()
     qtbot.addWidget(pydm_spinbox)
+    pydm_spinbox.precisionFromPV = False
+    pydm_spinbox.precision = 3
+    assert pydm_spinbox.decimals() == 3
 
     if which_limit == "UPPER":
-        signals.upper_ctrl_limit_signal[type(new_limit)].connect(pydm_spinbox.upperCtrlLimitChanged)
-        signals.upper_ctrl_limit_signal[type(new_limit)].emit(new_limit)
-
+        pydm_spinbox.upper_limit_changed(new_limit)
         assert pydm_spinbox.get_ctrl_limits()[1] == new_limit
+        assert pydm_spinbox.maximum() == new_limit
     elif which_limit == "LOWER":
-        signals.lower_ctrl_limit_signal[type(new_limit)].connect(pydm_spinbox.lowerCtrlLimitChanged)
-        signals.lower_ctrl_limit_signal[type(new_limit)].emit(new_limit)
-
+        pydm_spinbox.lower_limit_changed(new_limit)
         assert pydm_spinbox.get_ctrl_limits()[0] == new_limit
+        assert pydm_spinbox.minimum() == new_limit
