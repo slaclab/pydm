@@ -42,6 +42,8 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self._user_maximum = 10.0
         self._num_steps = 101
         self._orientation = Qt.Horizontal
+        self._slider = QSlider(parent=self)
+
         self.set_enable_state()
         # Set up all the internal widgets that make up a PyDMSlider.
         # We'll add all these things to layouts when we call setup_widgets_for_orientation
@@ -57,7 +59,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.high_lim_label.setObjectName("highLimLabel")
         self.high_lim_label.setSizePolicy(label_size_policy)
         self.high_lim_label.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
-        self._slider = QSlider(parent=self)
         self._slider.setOrientation(Qt.Horizontal)
         self._slider.sliderMoved.connect(self.internal_slider_moved)
         self._slider.sliderPressed.connect(self.internal_slider_pressed)

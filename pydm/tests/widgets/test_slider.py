@@ -5,10 +5,10 @@ from logging import ERROR
 import numpy as np
 
 from qtpy.QtWidgets import QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy
-from qtpy.QtCore import Qt, Signal, Property, QMargins
+from qtpy.QtCore import Qt, Property, QMargins
 
-from ...widgets.slider import PyDMSlider
-from ...widgets.base import PyDMWidget
+from pydm.widgets.slider import PyDMSlider
+from pydm.widgets.base import PyDMWidget
 
 
 # --------------------
@@ -81,7 +81,7 @@ def test_init_for_designer(qtbot):
     assert pydm_slider.value == 0.0
 
 
-def test_actions_triggered(qtbot, signals):
+def test_actions_triggered(qtbot):
     """
     Test emitting values via the widget's action slots.
 
@@ -96,21 +96,18 @@ def test_actions_triggered(qtbot, signals):
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
 
-    signals.internal_slider_moved.connect(pydm_slider.internal_slider_action_triggered)
-    signals.internal_slider_moved.emit(1)
+    pydm_slider.internal_slider_action_triggered(1)
 
-    signals.internal_slider_clicked.connect(pydm_slider.internal_slider_pressed)
-    signals.internal_slider_clicked.emit()
+    pydm_slider.internal_slider_pressed()
 
-    signals.internal_slider_clicked.connect(pydm_slider.internal_slider_released)
-    signals.internal_slider_clicked.emit()
+    pydm_slider.internal_slider_released()
 
 
 @pytest.mark.parametrize("new_value, mute_change", [
     (100.50, False),
     (-100, True),
 ])
-def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
+def test_internal_slider_value_changed(qtbot, new_value, mute_change):
     """
     Test widget's change of its text value if its internal value has changed.
 
@@ -122,8 +119,6 @@ def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
     ----------
     qtbot : fixture
         pytest-qt window for widget test
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     new_value : int
         The new value from changing the slider widget.
     mute_change : bool
@@ -131,6 +126,11 @@ def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
     """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
+
+    def foo(val):
+        pydm_slider.test_write = val
+    pydm_slider.write_to_channel = foo
+    pydm_slider.test_write = None
 
     pydm_slider.userDefinedLimits = True
     pydm_slider.userMinimum = 10
@@ -141,18 +141,15 @@ def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
 
     # If the slider emits the new value, the fixture's receiveValue should get it. This should happen if the slider's
     # internal changes are not muted, and should NOT if it IS muted
-    pydm_slider.send_value_signal[float].connect(signals.receiveValue)
-
-    signals.new_value_signal[int].connect(pydm_slider.internal_slider_value_changed)
-    signals.new_value_signal[int].emit(new_value)
+    pydm_slider.internal_slider_value_changed(new_value)
 
     if not mute_change:
         # The internal_slider_value_changed_slot emitted the send_value_signal
-        assert signals.value == pydm_slider.value
+        assert pydm_slider.test_write == pydm_slider.value
     else:
         # The internal_slider_value_changed_slot did NOT emit the send_value_signal. The signals fixture's value remains
         # unchanged
-        assert signals.value is None
+        assert pydm_slider.test_write is None
 
 
 @pytest.mark.parametrize("show_labels, tick_position", [
@@ -262,7 +259,7 @@ def test_setup_widgets_for_orientation(qtbot, new_orientation):
     (10, 20, 30),
     (-10, 20.5, -5),
 ])
-def test_update_labels(qtbot, signals, minimum, maximum, current_value):
+def test_update_labels(qtbot, minimum, maximum, current_value):
     """
     Test the changes in the user minimum, user maximum, and the current value labels as the widget's slider component
     moves.
@@ -274,8 +271,6 @@ def test_update_labels(qtbot, signals, minimum, maximum, current_value):
     ----------
     qtbot : fixture
         pytest-qt window for widget test
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     minimum : int
         The slider's minimum value as set by the user
     maximum : int
@@ -296,8 +291,7 @@ def test_update_labels(qtbot, signals, minimum, maximum, current_value):
     pydm_slider.userMinimum = minimum
     pydm_slider.userMaximum = maximum
 
-    signals.internal_slider_moved[int].connect(pydm_slider.internal_slider_moved)
-    signals.internal_slider_moved[int].emit(current_value)
+    pydm_slider.internal_slider_moved(current_value)
 
     pydm_slider.update_labels()
 
@@ -318,7 +312,7 @@ def test_update_labels(qtbot, signals, minimum, maximum, current_value):
     (10, 20, False, True),
     (10, 20, False, False),
 ])
-def test_reset_slider_limits(qtbot, signals, minimum, maximum, write_access, connected):
+def test_reset_slider_limits(qtbot, minimum, maximum, write_access, connected):
     """
     Test the updating of the limits when the silder is reset.
 
@@ -329,8 +323,6 @@ def test_reset_slider_limits(qtbot, signals, minimum, maximum, write_access, con
     ----------
     qtbot : fixture
         pytest-qt window for widget test
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     minimum : int
         The user-defined minimum value for the slider
     maximum : int
@@ -347,11 +339,9 @@ def test_reset_slider_limits(qtbot, signals, minimum, maximum, write_access, con
     pydm_slider.userMinimum = minimum
     pydm_slider.userMaximum = maximum
 
-    signals.write_access_signal[bool].connect(pydm_slider.writeAccessChanged)
-    signals.write_access_signal[bool].emit(write_access)
+    pydm_slider.write_access_changed(write_access)
 
-    signals.connection_state_signal[bool].connect(pydm_slider.connectionStateChanged)
-    signals.connection_state_signal[bool].emit(connected)
+    pydm_slider.connection_changed(connected)
 
     pydm_slider.reset_slider_limits()
 
@@ -421,7 +411,7 @@ def test_set_slider_to_closest_value(qtbot, new_value, minimum, maximum):
     (15, False),
     (15, True),
 ])
-def test_value_changed(qtbot, signals, monkeypatch, new_channel_value, is_slider_down):
+def test_value_changed(qtbot, monkeypatch, new_channel_value, is_slider_down):
     """
     Test the updating of the widget's slider component value when the channel value has changed.
 
@@ -433,8 +423,6 @@ def test_value_changed(qtbot, signals, monkeypatch, new_channel_value, is_slider
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     monkeypatch : fixture
         To override the default behavior of isSliderDown while simulating whether the widget's slider is being held down
         by the user or not
@@ -454,8 +442,7 @@ def test_value_changed(qtbot, signals, monkeypatch, new_channel_value, is_slider
     assert pydm_slider._slider.value() == 0
 
     monkeypatch.setattr(QSlider, "isSliderDown", lambda *args: is_slider_down)
-    signals.new_value_signal.connect(pydm_slider.channelValueChanged)
-    signals.new_value_signal.emit(new_channel_value)
+    pydm_slider.value_changed(new_channel_value)
 
     assert pydm_slider.value_label.text() == pydm_slider.format_string.format(pydm_slider.value)
     if not is_slider_down:
@@ -465,89 +452,13 @@ def test_value_changed(qtbot, signals, monkeypatch, new_channel_value, is_slider
         assert pydm_slider._slider.value() == 0
 
 
-@pytest.mark.parametrize("channel, alarm_sensitive_content, alarm_sensitive_border, new_alarm_severity", [
-    (None, False, False, PyDMWidget.ALARM_NONE),
-    (None, False, True, PyDMWidget.ALARM_NONE),
-    (None, True, False, PyDMWidget.ALARM_NONE),
-    (None, True, True, PyDMWidget.ALARM_NONE),
-
-    (None, False, False, PyDMWidget.ALARM_MAJOR),
-    (None, False, True, PyDMWidget.ALARM_MAJOR),
-    (None, True, False, PyDMWidget.ALARM_MAJOR),
-    (None, True, True, PyDMWidget.ALARM_MAJOR),
-
-    ("", False, False, PyDMWidget.ALARM_NONE),
-    ("", False, True, PyDMWidget.ALARM_NONE),
-    ("", True, False, PyDMWidget.ALARM_NONE),
-    ("", True, True, PyDMWidget.ALARM_NONE),
-
-    ("", False, False, PyDMWidget.ALARM_MAJOR),
-    ("", False, True, PyDMWidget.ALARM_MAJOR),
-    ("", True, False, PyDMWidget.ALARM_MAJOR),
-    ("", True, True, PyDMWidget.ALARM_MAJOR),
-
-    ("CA://MTEST", False, False, PyDMWidget.ALARM_NONE),
-    ("CA://MTEST", False, True, PyDMWidget.ALARM_NONE),
-    ("CA://MTEST", True, False, PyDMWidget.ALARM_NONE),
-    ("CA://MTEST", True, True, PyDMWidget.ALARM_NONE),
-
-    ("CA://MTEST", False, False, PyDMWidget.ALARM_MINOR),
-    ("CA://MTEST", False, True, PyDMWidget.ALARM_MINOR),
-    ("CA://MTEST", True, False, PyDMWidget.ALARM_MINOR),
-    ("CA://MTEST", True, True, PyDMWidget.ALARM_MINOR),
-
-    ("CA://MTEST", False, False, PyDMWidget.ALARM_MAJOR),
-    ("CA://MTEST", False, True, PyDMWidget.ALARM_MAJOR),
-    ("CA://MTEST", True, False, PyDMWidget.ALARM_MAJOR),
-    ("CA://MTEST", True, True, PyDMWidget.ALARM_MAJOR),
-
-    ("CA://MTEST", False, False, PyDMWidget.ALARM_DISCONNECTED),
-    ("CA://MTEST", False, True, PyDMWidget.ALARM_DISCONNECTED),
-    ("CA://MTEST", True, False, PyDMWidget.ALARM_DISCONNECTED),
-    ("CA://MTEST", True, True, PyDMWidget.ALARM_DISCONNECTED),
-])
-def test_alarm_severity_change(qtbot, signals, channel, alarm_sensitive_content, alarm_sensitive_border,
-                               new_alarm_severity):
-    """
-    Test the style of the widget changing according to alarm sensitivity settings and alarm severity changes.
-
-    Expectations:
-    Depending on the initial widget's settings on whether the widget should change its content area and borders when
-    there's an alarm event, the widget's style should reflect changes when there's an alarm event other than ALARM_NONE.
-
-    Parameters
-    ----------
-    qtbot : fixture
-        pytest-qt window for widget test
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
-    channel : str
-        The data channel address
-    alarm_sensitive_content : bool
-        True if the content area of the widget will change its color when an alarm happens; False if not
-    alarm_sensitive_border : bool
-        True if the borders of the widget will change its color when an alarm happens; False if not
-    new_alarm_severity : PyDMWidget alarm type
-        The new alarm severity that may prompt the widget to change its content area and/or border colors.
-    """
-    pydm_slider = PyDMSlider()
-    qtbot.addWidget(pydm_slider)
-
-    pydm_slider._channel = channel
-    pydm_slider.alarmSensitiveContent = alarm_sensitive_content
-    pydm_slider.alarmSensitiveBorder = alarm_sensitive_border
-
-    signals.new_severity_signal.connect(pydm_slider.alarmSeverityChanged)
-    signals.new_severity_signal.emit(new_alarm_severity)
-
-
 @pytest.mark.parametrize("which_limit, new_limit, user_defined_limits", [
     ("UPPER", 10.5, True),
     ("UPPER", 10.123, False),
     ("LOWER", -10.5, True),
     ("LOWER", -10.123, False),
 ])
-def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit, user_defined_limits):
+def test_ctrl_limit_changed(qtbot, which_limit, new_limit, user_defined_limits):
     """
     Test the widget's handling of the upper and lower limit changes.
 
@@ -558,8 +469,6 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit, user_defined
     ----------
     qtbot : fixture
         Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     which_limit : str
         Indicator whether this limit to be updated an Upper or Lower limit.
     new_limit : float
@@ -573,14 +482,10 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit, user_defined
     pydm_slider.userDefinedLimits = user_defined_limits
 
     if which_limit == "UPPER":
-        signals.upper_ctrl_limit_signal[type(new_limit)].connect(pydm_slider.upperCtrlLimitChanged)
-        signals.upper_ctrl_limit_signal[type(new_limit)].emit(new_limit)
-
+        pydm_slider.upper_limit_changed(new_limit)
         assert pydm_slider.get_ctrl_limits()[1] == new_limit
     elif which_limit == "LOWER":
-        signals.lower_ctrl_limit_signal[type(new_limit)].connect(pydm_slider.lowerCtrlLimitChanged)
-        signals.lower_ctrl_limit_signal[type(new_limit)].emit(new_limit)
-
+        pydm_slider.lower_limit_changed(new_limit)
         assert pydm_slider.get_ctrl_limits()[0] == new_limit
 
 
