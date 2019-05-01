@@ -1015,6 +1015,9 @@ class PyDMWritableWidget(PyDMWidget):
         self.setEnabled(status)
 
     def write_to_channel(self, value, key=DataKeys.VALUE):
+        if len(self._channels) < 1:
+            logger.error('No channel configured for widget. Write to channel cancelled.')
+            return
         intro = self._channels[0].get_introspection()
         real_key = intro.get(key)
         if real_key:
