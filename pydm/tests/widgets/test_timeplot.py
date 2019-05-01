@@ -1,14 +1,16 @@
 import pytest
 from pyqtgraph import AxisItem
-from ...widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem, MINIMUM_BUFFER_SIZE, DEFAULT_BUFFER_SIZE
 
+import json
 import logging
 logger = logging.getLogger(__name__)
 
 import numpy as np
 from collections import OrderedDict
-from ...widgets.channel import PyDMChannel
-from ...utilities import remove_protocol
+from pydm.widgets.channel import PyDMChannel
+from pydm.utilities import remove_protocol
+from pydm.utilities.channel import parse_channel_config
+from pydm.widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem, MINIMUM_BUFFER_SIZE, DEFAULT_BUFFER_SIZE
 
 
 @pytest.mark.parametrize("channel_address, name", [
@@ -71,19 +73,19 @@ def test_timeplotcurveitem_properties_and_setters(qtbot, new_address):
 
     pydm_timeplot_curve_item.address = new_address
     if new_address:
+        addr = json.dumps(parse_channel_config(new_address, force_dict=True)['connection'])
         assert isinstance(pydm_timeplot_curve_item.channel, PyDMChannel)
-        assert pydm_timeplot_curve_item.channel.address == new_address
+        assert pydm_timeplot_curve_item.channel.address == addr
     else:
         assert pydm_timeplot_curve_item.channel is None
 
 
-def test_timeplotcurveitem_connection_state_changed(qtbot, signals):
+def test_timeplotcurveitem_connection_state_changed(qtbot):
     pydm_timeplot_curve_item = TimePlotCurveItem()
     qtbot.addWidget(pydm_timeplot_curve_item)
     assert pydm_timeplot_curve_item.connected is False
 
-    signals.connection_state_signal.connect(pydm_timeplot_curve_item.connectionStateChanged)
-    signals.connection_state_signal.emit(True)
+    pydm_timeplot_curve_item.connectionStateChanged(True)
     assert pydm_timeplot_curve_item.connected
 
 
@@ -93,17 +95,9 @@ def test_timeplotcurveitem_connection_state_changed(qtbot, signals):
     (True, 100),
     (True, -123.456)
 ])
-def test_timeplotcurveitem_receive_value(qtbot, signals, async_update, new_data):
+def test_timeplotcurveitem_receive_value(qtbot, async_update, new_data):
     """
     Also testing setUpdatesAsynchronously, resetUpdatesAsynchronously, and initialize_buffer
-    Parameters
-    ----------
-    qtbot
-    async_update
-
-    Returns
-    -------
-
     """
     pydm_timeplot_curve_item = TimePlotCurveItem()
     qtbot.addWidget(pydm_timeplot_curve_item)
@@ -119,8 +113,7 @@ def test_timeplotcurveitem_receive_value(qtbot, signals, async_update, new_data)
     expected_data_buffer[0] = pydm_timeplot_curve_item.data_buffer[0]
     assert np.array_equal(expected_data_buffer, pydm_timeplot_curve_item.data_buffer)
 
-    signals.new_value_signal[type(new_data)].connect(pydm_timeplot_curve_item.receiveNewValue)
-    signals.new_value_signal[type(new_data)].emit(new_data)
+    pydm_timeplot_curve_item.receiveNewValue(new_data)
 
     if async_update:
         assert np.array_equal(pydm_timeplot_curve_item.latest_value, new_data)
@@ -139,7 +132,7 @@ def test_timeplotcurveitem_receive_value(qtbot, signals, async_update, new_data)
     (True, 100),
     (True, -123.456)
 ])
-def test_timeplotcurveitem_async_update(qtbot, signals, async_update, new_data):
+def test_timeplotcurveitem_async_update(qtbot, async_update, new_data):
     pydm_timeplot_curve_item = TimePlotCurveItem()
     qtbot.addWidget(pydm_timeplot_curve_item)
 
@@ -147,11 +140,10 @@ def test_timeplotcurveitem_async_update(qtbot, signals, async_update, new_data):
 
     pydm_timeplot_curve_item.setUpdatesAsynchronously(async_update)
 
-    signals.new_value_signal[type(new_data)].connect(pydm_timeplot_curve_item.receiveNewValue)
-    signals.new_value_signal[type(new_data)].emit(new_data)
+    pydm_timeplot_curve_item.receiveNewValue(new_data)
 
-    signals.new_value_signal[type(new_data)].connect(pydm_timeplot_curve_item.asyncUpdate)
-    signals.new_value_signal[type(new_data)].emit(new_data)
+    pydm_timeplot_curve_item.asyncUpdate()
+    pydm_timeplot_curve_item.receiveNewValue(new_data)
 
     if async_update:
         assert np.array_equal(pydm_timeplot_curve_item.data_buffer[1, pydm_timeplot_curve_item._bufferSize - 1],
