@@ -80,10 +80,11 @@ def plugin_for_address(address):
     # Check for a configured protocol
     try:
         conn = json.loads(address)
-        protocol = conn.get('protocol', None)
-        address = conn.get('parameters', '')
     except JSONDecodeError:
         protocol, addr = protocol_and_address(address)
+    else:
+        protocol = conn.get('protocol', None)
+        address = conn.get('parameters', '')
 
     # Use default protocol
     if protocol is None and config.DEFAULT_PROTOCOL is not None:
@@ -97,7 +98,7 @@ def plugin_for_address(address):
         try:
             return plugin_modules[str(protocol)]
         except KeyError as exc:
-            logger.exception("Could not find protocol %r for parameters: %r",
+            logger.error("Could not find protocol %r for parameters: %r",
                              protocol, address)
     # Catch all in case of improper plugin specification
     logger.error("Channel {addr} did not specify a valid protocol "
