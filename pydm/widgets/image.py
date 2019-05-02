@@ -177,7 +177,8 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
 
     @channel.setter
     def channel(self, ch):
-        logger.info("Use the imageChannel property with the ImageView widget.")
+        if ch:
+            logger.info("Use the imageChannel property with the ImageView widget.")
         return
 
     def widget_ctx_menu(self):
@@ -337,8 +338,12 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             The new connection state.
         """
         if conn:
+            if self.redraw_timer.isActive():
+                return
+            logger.debug('ImageView - Redraw Timer start')
             self.redraw_timer.start()
         else:
+            logger.debug('ImageView - Redraw Timer stop')
             self.redraw_timer.stop()
 
     @Slot(np.ndarray)
@@ -605,6 +610,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             # Disconnect old channel
             if self._widthchannel:
                 self._widthchannel.disconnect()
+                self._widthchannel = None
 
             config = parse_channel_config(value, force_dict=True)
             if len(config) == 0:
