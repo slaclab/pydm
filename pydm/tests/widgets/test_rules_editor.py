@@ -34,7 +34,8 @@ def test_rules_editor(qtbot, monkeypatch):
     empty = RulesEditor(widget)
     qtbot.addWidget(empty)
 
-    empty.show()
+    with qtbot.waitExposed(empty):
+        empty.show()
 
     # Abort the changes
     empty.cancelChanges()
@@ -51,13 +52,16 @@ def test_rules_editor(qtbot, monkeypatch):
     # Create a new Editor Window
     re = RulesEditor(widget)
     qtbot.addWidget(re)
-    re.show()
+
+    with qtbot.waitExposed(re):
+        re.show()
 
     assert re.lst_rules.count() == 1
     assert not re.frm_edit.isEnabled()
 
     re.lst_rules.setCurrentRow(0)
-    assert re.frm_edit.isEnabled()
+    re.load_from_list()
+    assert re.frm_edit.isEnabled() is True
     assert re.txt_name.text() == 'Rule #1'
     assert re.cmb_property.currentText() == 'Enable'
     assert re.tbl_channels.rowCount() == 1
