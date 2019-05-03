@@ -71,7 +71,7 @@ def test_rules_editor(qtbot, monkeypatch):
     assert re.txt_name.text() == 'Rule #1-Test'
     assert re.rules[0]['name'] == 'Rule #1-Test'
 
-    qtbot.mouseClick(re.btn_add_channel, QtCore.Qt.LeftButton)
+    re.btn_add_channel.click()
     re.tbl_channels.item(1, 0).setText("ca://TEST")
     assert re.rules[0]['channels'][1]['channel'] == 'ca://TEST'
     assert re.rules[0]['channels'][1]['trigger'] is False
@@ -86,24 +86,24 @@ def test_rules_editor(qtbot, monkeypatch):
     assert re.tbl_channels.rowCount() == 2
     re.tbl_channels.setRangeSelected(QTableWidgetSelectionRange(1, 0, 1, 1), True)
     monkeypatch.setattr(QMessageBox, 'question', lambda *args: QMessageBox.No)
-    qtbot.mouseClick(re.btn_del_channel, QtCore.Qt.LeftButton)
+    re.btn_del_channel.click()
     assert re.tbl_channels.rowCount() == 2
 
     # Test Delete with Confirm - YES
     re.tbl_channels.setRangeSelected(QTableWidgetSelectionRange(1, 0, 1, 1), True)
     monkeypatch.setattr(QMessageBox, 'question', lambda *args: QMessageBox.Yes)
-    qtbot.mouseClick(re.btn_del_channel, QtCore.Qt.LeftButton)
+    re.btn_del_channel.click()
     assert re.tbl_channels.rowCount() == 1
     assert len(re.rules[0]['channels']) == 1
 
     # Test Delete with Invalid Selection
     re.tbl_channels.setRangeSelected(QTableWidgetSelectionRange(1, 0, 1, 1), True)
     monkeypatch.setattr(QMessageBox, 'question', lambda *args: QMessageBox.Yes)
-    qtbot.mouseClick(re.btn_del_channel, QtCore.Qt.LeftButton)
+    re.btn_del_channel.click()
     assert re.tbl_channels.rowCount() == 1
     assert len(re.rules[0]['channels']) == 1
 
-    qtbot.mouseClick(re.btn_add_rule, QtCore.Qt.LeftButton)
+    re.btn_add_rule.click()
     assert re.lst_rules.count() == 2
     assert re.frm_edit.isEnabled()
     assert re.txt_name.text() == 'New Rule'
@@ -111,11 +111,11 @@ def test_rules_editor(qtbot, monkeypatch):
     assert re.tbl_channels.rowCount() == 0
     assert re.txt_expression.text() == ''
 
-    qtbot.mouseClick(re.btn_add_channel, QtCore.Qt.LeftButton)
+    re.btn_add_channel.click()
     assert re.tbl_channels.item(0, 0).text() == ''
     assert re.tbl_channels.item(0, 2).checkState() == QtCore.Qt.Checked
 
-    qtbot.mouseClick(re.btn_add_channel, QtCore.Qt.LeftButton)
+    re.btn_add_channel.click()
     assert re.tbl_channels.item(1, 0).text() == ''
     assert re.tbl_channels.item(1, 2).checkState() == QtCore.Qt.Unchecked
 
@@ -125,24 +125,24 @@ def test_rules_editor(qtbot, monkeypatch):
 
     # Delete Rule 1 - Confirm - NO
     monkeypatch.setattr(QMessageBox, 'question', lambda *args: QMessageBox.No)
-    qtbot.mouseClick(re.btn_del_rule, QtCore.Qt.LeftButton)
+    re.btn_del_rule.click()
     assert re.lst_rules.count() == 2
 
     # Delete Rule 1 - Confirm - YES
     monkeypatch.setattr(QMessageBox, 'question', lambda *args: QMessageBox.Yes)
-    qtbot.mouseClick(re.btn_del_rule, QtCore.Qt.LeftButton)
+    re.btn_del_rule.click()
     assert re.frm_edit.isEnabled() is False
     assert re.lst_rules.count() == 1
 
     re.lst_rules.setCurrentRow(0)
     monkeypatch.setattr(QMessageBox, 'question', lambda *args: QMessageBox.Yes)
-    qtbot.mouseClick(re.btn_del_rule, QtCore.Qt.LeftButton)
+    re.btn_del_rule.click()
     assert re.frm_edit.isEnabled() is False
     assert re.lst_rules.count() == 0
 
     # Delete Empty List - Confirm - YES
     monkeypatch.setattr(QMessageBox, 'question', lambda *args: QMessageBox.Yes)
-    qtbot.mouseClick(re.btn_del_rule, QtCore.Qt.LeftButton)
+    re.btn_del_rule.click()
     assert re.frm_edit.isEnabled() is False
     assert re.lst_rules.count() == 0
 
