@@ -113,7 +113,7 @@ class DataStore(object):
         """
         return self._introspection.get(address, None)
 
-    def fetch(self, address, with_introspection=False):
+    def fetch(self, address):
         """
         Fetch the data associated with an address.
 
@@ -121,21 +121,34 @@ class DataStore(object):
         ----------
         address : str
             The address identifier
-        with_introspection : bool
-            If True, returns also the introspection dictionary
 
         Returns
         -------
-        data : dict or None
-            If no information is found this method returns None
-        introspection : dict
-            Returned only if `with_introspection` is `True`
+        data : dict
+            If no information is found this method returns and empty dictionary
         """
         data = self._data.get(address, {})
-        intro = self._introspection.get(address, {})
-        if with_introspection:
-            return data, intro
         return data
+
+    def fetch_with_introspection(self, address):
+        """
+        Fetch the data associated with an address and its introspection.
+
+        Parameters
+        ----------
+        address : str
+            The address identifier
+
+        Returns
+        -------
+        data : dict
+            If no information is found this returns an empty dictionary
+        introspection : dict
+            If no information is found this returns an empty dictionary
+        """
+        data = self.fetch(address)
+        intro = self._introspection.get(address, {})
+        return data, intro
 
     def update(self, address, data, introspection=None):
         """

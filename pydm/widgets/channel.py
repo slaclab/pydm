@@ -90,9 +90,7 @@ class PyDMChannel(QObject):
         if self._busy:
             return
         self._busy = True
-        data, intro = self.get(with_introspection=True)
-        if not self._use_introspection:
-            intro = self._introspection
+        data, intro = self.get_with_introspection()
         for mon in self._monitors:
             try:
                 mon(data=data, introspection=intro)
@@ -156,15 +154,16 @@ class PyDMChannel(QObject):
             return DataStore().introspect(self.address)
         return self._introspection
 
-    def get(self, with_introspection=False):
-        ret = DataStore().fetch(self.address, with_introspection)
-        if not with_introspection:
-            return ret
-        data, intro = ret
+    def get_with_introspection(self):
+        data, intro = DataStore().fetch_with_introspection(self.address)
         # In case of user-defined introspection for inner fields
         if not self._use_introspection:
             intro = self._introspection
         return data, intro
+
+    def get(self):
+        data = DataStore().fetch(self.address)
+        return data
 
     def put(self, data):
         self.transmit.emit(data)
