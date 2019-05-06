@@ -68,7 +68,7 @@ class Connection(PyDMConnection):
             PVAContext().context.put(self.monitor.name, payload)
         except Exception as e:
             logger.exception("Unable to put %s to %s.  Exception: %s",
-                             payload, self.monitor.name, str(e))
+                             payload, self.monitor.name, e)
 
     def close(self):
         self.monitor.close()
