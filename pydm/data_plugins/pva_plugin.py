@@ -1,17 +1,22 @@
+import logging
 import os
+
+logger = logging.getLogger(__name__)
+
 PVA_LIB = os.getenv("PYDM_PVA_LIB", "").upper()
-if PVA_LIB == "P4P":
-    from pydm.data_plugins.pva_plugins.p4p_plugin_component import P4PPlugin
-    PVAPlugin = P4PPlugin
-elif PVA_LIB == "PVAPY":
-    PVAPlugin = None
-else:
-    try:
-        from pydm.data_plugins.pva_plugins.p4p_plugin_component import P4PPlugin
+
+try:
+    if PVA_LIB == "P4P" or not PVA_LIB:
+        from pydm.data_plugins.pva_plugins.p4p_plugin_component import \
+            P4PPlugin
+
         PVAPlugin = P4PPlugin
-    except ImportError:
-        #from pydm.data_plugins.pva_plugins.p4p_plugin_component import P4PPlugin
+    elif PVA_LIB == "PVAPY":
+        logger.error("PVAPY is not currently supported by PyDM")
         PVAPlugin = None
+except ImportError:
+    PVAPlugin = None
+    logger.exception("Error import Python PVA library")
 
 if PVAPlugin:
     PVAPlugin.protocol = "pva"
