@@ -76,25 +76,11 @@ DEFAULT_INTROSPECTION = {k: v for k, v in DataKeys.__dict__.items()
                          if isinstance(v, str) and not k.startswith('_')}
 
 
-class DataStore(object):
-    """
-    Singleton class responsible for holding the data and instrospection tables
-    for the channels.
-    """
-    __instance = None
+class _DataStore(object):
 
     def __init__(self):
-        if self.__initialized:
-            return
-        self.__initialized = True
         self._data = {}
         self._introspection = {}
-
-    def __new__(cls, *args, **kwargs):
-        if cls.__instance is None:
-            cls.__instance = object.__new__(DataStore)
-            cls.__instance.__initialized = False
-        return cls.__instance
 
     def introspect(self, address):
         """
@@ -193,3 +179,5 @@ class DataStore(object):
             self.update(key, value)
         else:
             raise ValueError("Invalid value.")
+
+DataStore = _DataStore()

@@ -93,7 +93,7 @@ class PyDMConnection(QObject):
             self.close()
 
     def close(self):
-        DataStore().remove(self.address)
+        DataStore.remove(self.address)
 
     @Slot(dict)
     def _validate_data_from_channel(self, payload):
@@ -107,7 +107,7 @@ class PyDMConnection(QObject):
     def send_to_channel(self):
         self.introspection.get(DataKeys.CONNECTION, 'CONNECTION')
         self.connected = self.data.get('CONNECTION', False)
-        DataStore()[self.channel.address] = (self.data, self.introspection)
+        DataStore[self.channel.address] = (self.data, self.introspection)
         self.notify.emit()
 
 

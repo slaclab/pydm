@@ -151,18 +151,18 @@ class PyDMChannel(QObject):
 
     def get_introspection(self):
         if self._use_introspection:
-            return DataStore().introspect(self.address)
+            return DataStore.introspect(self.address)
         return self._introspection
 
     def get_with_introspection(self):
-        data, intro = DataStore().fetch_with_introspection(self.address)
+        data, intro = DataStore.fetch_with_introspection(self.address)
         # In case of user-defined introspection for inner fields
         if not self._use_introspection:
             intro = self._introspection
         return data, intro
 
     def get(self):
-        data = DataStore().fetch(self.address)
+        data = DataStore.fetch(self.address)
         return data
 
     def put(self, data):
