@@ -113,7 +113,7 @@ class _DataStore(object):
         data : dict
             If no information is found this method returns and empty dictionary
         """
-        data = self._data.get(address, {})
+        data = self._data.get(address, None)
         return data
 
     def fetch_with_introspection(self, address):
@@ -133,7 +133,7 @@ class _DataStore(object):
             If no information is found this returns an empty dictionary
         """
         data = self.fetch(address)
-        intro = self._introspection.get(address, {})
+        intro = self.introspect(address)
         return data, intro
 
     def update(self, address, data, introspection=None):
