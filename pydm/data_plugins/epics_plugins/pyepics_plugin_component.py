@@ -81,13 +81,22 @@ class Connection(PyDMConnection):
     @Slot(dict)
     def receive_from_channel(self, payload):
         new_val = payload.get(DataKeys.VALUE, None)
+        if new_val is None:
+            logger.warning("Could not write to PV. No new value for key %s."
+                           "PV: %s",
+                           DataKeys.VALUE, self.pv.pvname)
+            return
 
-        if self.pv.write_access and new_val is not None:
-            try:
-                self.pv.put(new_val)
-            except Exception as e:
-                logger.exception("Unable to put %s to %s.  Exception: %s",
-                                 new_val, self.pv.pvname, str(e))
+        if not self.pv.write_access:
+            logger.warning("Could not write to PV. Write access denied for "
+                           "PV: %s", self.pv.pvname)
+            return
+
+        try:
+            self.pv.put(new_val)
+        except Exception as e:
+            logger.exception("Unable to put %s to %s.  Exception: %s",
+                             new_val, self.pv.pvname, str(e))
 
     def close(self):
         self.pv.disconnect()
