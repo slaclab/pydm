@@ -40,13 +40,13 @@ class PyDMBitIndicator(QWidget):
         self._painter.setBrush(self._brush)
         self._painter.setPen(self._pen)
         if self.circle:
-            rect = event.rect()
+            rect = self.rect()
             w = rect.width()
             h = rect.height()
             r = min(w, h) / 2.0 - 2.0 * max(self._pen.widthF(), 1.0)
             self._painter.drawEllipse(QPoint(w / 2.0, h / 2.0), r, r)
         else:
-            self._painter.drawRect(event.rect())
+            self._painter.drawRect(self.rect())
         self._painter.end()
 
     def setColor(self, color):
