@@ -20,10 +20,9 @@ class Connection(PyDMConnection):
         conn = parse_channel_config(address, force_dict=True)
         address = conn.get('parameters', {}).get('address')
         monitor_mask = dbr.DBE_VALUE | dbr.DBE_ALARM | dbr.DBE_PROPERTY
-        self.pv = epics.PV(address, connection_callback=self.send_connection_state,
-                           form='ctrl', auto_monitor=monitor_mask,
+        self.pv = epics.PV(address, form='ctrl', auto_monitor=monitor_mask,
                            access_callback=self.send_access_state,
-                           connection_timeout=0.001)
+                           connection_callback=self.send_connection_state)
         self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
 
     def send_new_value(self, value=None, **kws):
@@ -96,8 +95,9 @@ class Connection(PyDMConnection):
 
 
 class PyEPICSPlugin(PyDMPlugin):
-    # NOTE: protocol is intentionally "None" to keep this plugin from getting directly imported.
-    # If this plugin is chosen as the One True EPICS Plugin in epics_plugin.py, the protocol will
-    # be properly set before it is used.
+    # NOTE: protocol is intentionally "None" to keep this plugin from getting
+    # directly imported.
+    # If this plugin is chosen as the One True EPICS Plugin in epics_plugin.py,
+    # the protocol will be properly set before it is used.
     protocol = None
     connection_class = Connection
