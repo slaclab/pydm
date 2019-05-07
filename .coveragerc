@@ -9,3 +9,4 @@ omit =
     #versioning
     .*version.*
     *_version.py
+    pydm/PyQt/*
