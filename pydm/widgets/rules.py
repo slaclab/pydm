@@ -1,8 +1,9 @@
 import logging
 import functools
 import weakref
+from threading import Lock
 
-from qtpy.QtCore import QThread, QMutex, Signal, QMutexLocker
+from qtpy.QtCore import QThread, Signal
 from qtpy.QtWidgets import QWidget
 
 from .channel import PyDMChannel
@@ -127,7 +128,7 @@ class RulesEngine(QThread):
 
     def __init__(self):
         QThread.__init__(self)
-        self.map_lock = QMutex()
+        self.map_lock = Lock()
         self.widget_map = dict()
 
     def widget_destroyed(self, ref):
@@ -138,7 +139,7 @@ class RulesEngine(QThread):
         if widget_ref in self.widget_map:
             self.unregister(widget_ref)
 
-        with QMutexLocker(self.map_lock):
+        with self.map_lock:
             self.widget_map[widget_ref] = []
             for idx, rule in enumerate(rules):
                 channels_list = rule.get('channels', [])
@@ -162,8 +163,7 @@ class RulesEngine(QThread):
                     config = parse_channel_config(ch['channel'],
                                                   force_dict=True)
                     address = None
-                    channel = PyDMChannel(parent=self,
-                                          address=address,
+                    channel = PyDMChannel(address=address,
                                           callback=callback,
                                           config=config
                                           )
@@ -184,7 +184,7 @@ class RulesEngine(QThread):
         data_callback(self, data, introspection, mapping=mapping)
 
     def unregister(self, widget_ref):
-        with QMutexLocker(self.map_lock):
+        with self.map_lock:
             # If hash() is called the first time only after the object was
             # deleted, the call will raise TypeError.
             # We should just ignore it.
@@ -192,7 +192,7 @@ class RulesEngine(QThread):
             try:
                 w_data = self.widget_map.pop(widget_ref, None)
             except TypeError:
-                pass
+                return
 
         if not w_data:
             return
@@ -205,7 +205,7 @@ class RulesEngine(QThread):
 
     def run(self):
         while not self.isInterruptionRequested():
-            with QMutexLocker(self.map_lock):
+            with self.map_lock:
                 for widget_ref in self.widget_map:
                     for rule in self.widget_map[widget_ref]:
                         if rule['calculate']:
@@ -234,7 +234,7 @@ class RulesEngine(QThread):
         -------
         None
         """
-        with QMutexLocker(self.map_lock):
+        with self.map_lock:
             self.widget_map[widget_ref][index]['values'][ch_index] = value
             if trigger:
                 if not all(self.widget_map[widget_ref][index]['conn']):
@@ -261,7 +261,7 @@ class RulesEngine(QThread):
         -------
         None
         """
-        with QMutexLocker(self.map_lock):
+        with self.map_lock:
             self.widget_map[widget_ref][index]['conn'][ch_index] = value
 
     def warn_unconnected_channels(self, widget_ref, index):

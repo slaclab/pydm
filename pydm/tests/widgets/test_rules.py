@@ -107,7 +107,7 @@ def test_rules_full(qtbot, caplog):
     re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value='a')
 
     # Wait for rule to execute but keep app responsive
-    qtbot.wait(100)
+    qtbot.wait(1000)
 
     for record in caplog.records:
         assert record.levelno == logging.ERROR

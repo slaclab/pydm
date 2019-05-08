@@ -47,7 +47,7 @@ def test_rules_editor(qtbot, monkeypatch):
                        {'channel': 'ca://MTEST:Float', 'trigger': True}]}]
 
     # Add the rules to the widget
-    widget.rules = json.dumps(rules_list)
+    widget._rules = json.dumps(rules_list)
 
     # Create a new Editor Window
     re = RulesEditor(widget)
@@ -175,7 +175,7 @@ def test_rules_editor_data_valid(qtbot):
                        {'channel': 'ca://MTEST:Float', 'trigger': True}]}]
 
     # Add the rules to the widget
-    widget.rules = json.dumps(rules_list)
+    widget._rules = json.dumps(rules_list)
 
     # Ensure that no rules are set
     assert widget.rules is not None
@@ -208,6 +208,7 @@ def test_rules_editor_data_valid(qtbot):
     validate(False, 'Ch. #0 has no channel.')
     re.rules[0]['channels'][0]['channel'] = ''
     validate(False, 'Ch. #0 has no channel.')
+    re.cancelChanges()
 
 
 def test_rules_editor_open_help(qtbot, monkeypatch):
