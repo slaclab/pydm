@@ -6,7 +6,7 @@ from .base import PyDMWidget
 
 class PyDMTreeView(QtWidgets.QWidget, PyDMWidget):
 
-    def __init__(self, parent, init_channel=None, data={}):
+    def __init__(self, parent=None, init_channel=None):
         QtWidgets.QWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel)
         self._items = {}
@@ -34,10 +34,7 @@ class PyDMTreeView(QtWidgets.QWidget, PyDMWidget):
                 self._items[parent].setText(1, str(item))
                 return
             for k, v in item.items():
-                if index is not None:
-                    name = "{}_{}_{}".format(parent, index, k)
-                else:
-                    name = "{}_{}".format(parent, k)
+                name = "{}_{}".format(parent, k)
                 display = k
 
                 self._visited_items.add(name)
