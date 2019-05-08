@@ -9,14 +9,19 @@ def test_construct(qtbot):
     assert 'root' in tree._items
     assert 'root' in tree._visited_items
 
+
 def test_parse_data(qtbot):
+    tree = PyDMTreeView()
+    qtbot.addWidget(tree)
+
+    arr = np.ones((10, 20))
     first_data = {
         'node1': 'val1',
         'node2': {
             'subnode1': [0, 1, 2, 3],
             'subnode2': False,
             'subnode3': 123.45,
-            'subnode4': np.ones((10, 20)),
+            'subnode4': arr,
         },
         'node3': [
             {'subnode1': {
@@ -27,8 +32,6 @@ def test_parse_data(qtbot):
             {'subnode3': None}
         ]
     }
-    tree = PyDMTreeView()
-    qtbot.addWidget(tree)
     tree._receive_data(first_data)
 
     assert 'root_node1' in tree._items
@@ -38,12 +41,13 @@ def test_parse_data(qtbot):
     map = [
         ('root_node1', 'val1'),
         ('root_node2_subnode1_2', '2'),
-        ('root_node2_subnode4', 'Array of shape: (10, 20)'),
+        ('root_node2_subnode4', 'Array of shape: {}'.format(arr.shape)),
         ('root_node3_0_subnode1_subsubnode1', 'foo'),
         ('root_node3_1_subnode2', '43')
     ]
     for itm, val in map:
         tree_item = tree._items[itm]
+        qtbot.addWidget(tree_item)
         assert tree_item.text(1) == val
 
     new_data = {
@@ -59,10 +63,11 @@ def test_parse_data(qtbot):
             {'subnode3': 1}
         ]
     }
-
     tree._receive_data(new_data)
+
     assert 'root_node1' in tree._items
     assert 'root_node3_1_subnode2' not in tree._items
+
     map = [
         ('root_node1', 'val2'),
         ('root_node2_subnode1_2', '6'),
@@ -71,6 +76,7 @@ def test_parse_data(qtbot):
     ]
     for itm, val in map:
         tree_item = tree._items[itm]
+        qtbot.addWidget(tree_item)
         assert tree_item.text(1) == val
 
     tree._receive_data({})
