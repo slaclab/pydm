@@ -170,8 +170,6 @@ class RulesEngine(QThread):
                     item['channels'].append(channel)
                     # Connect the channel...
                     channel.connect()
-                    # Force initial data fill...
-                    channel.notified()
 
                 self.widget_map[widget_ref].append(item)
 
