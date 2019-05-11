@@ -1,7 +1,8 @@
-from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
-from qtpy.QtCore import QTimer
 import random
+from qtpy.QtCore import QTimer
 
+from pydm.data_store import DataKeys
+from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
 class Connection(PyDMConnection):
 
@@ -14,17 +15,14 @@ class Connection(PyDMConnection):
         self.timer.timeout.connect(self.send_new_value)
         self.timer.start(1000)
         self.connected = True
+        self.data[DataKeys.CONNECTION] = True
+        self.send_to_channel()
+
 
     def send_new_value(self):
         val_to_send = "{0}-{1}".format(self.value, random.randint(0, 9))
-        self.new_value_signal[str].emit(str(val_to_send))
-
-    def send_connection_state(self, conn):
-        self.connection_state_signal.emit(conn)
-
-    def add_listener(self, widget):
-        super(Connection, self).add_listener(widget)
-        self.send_connection_state(True)
+        self.data[DataKeys.VALUE] = (str(val_to_send))
+        self.send_to_channel()
 
 
 class FakePlugin(PyDMPlugin):
