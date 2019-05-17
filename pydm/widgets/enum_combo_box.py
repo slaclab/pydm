@@ -74,8 +74,10 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         if self._new_item_added:
             self._new_item_added = False
             # Recalculate the enums
-            self.enum_strings_changed(tuple(self.itemText(i) for i in range(self.count())))
-
+            super(PyDMEnumComboBox, self).enum_strings_changed(tuple(self.itemText(i) for i in range(self.count())))
+            self._has_enums = True
+            self.check_enable_state()
+                
     # Internal methods
     def set_items(self, enums):
         """
