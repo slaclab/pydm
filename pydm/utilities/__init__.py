@@ -4,7 +4,6 @@ import sys
 import platform
 import ntpath
 import shlex
-import numpy as np
 
 from .units import find_unittype, convert, find_unit_options
 from . import macro

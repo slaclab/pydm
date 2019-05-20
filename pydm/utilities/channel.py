@@ -1,7 +1,6 @@
 import json
 
 from . import protocol_and_address
-from .. import data_plugins
 
 try:
     from json.decoder import JSONDecodeError
@@ -27,6 +26,8 @@ def parse_channel_config(value, force_dict=False):
 
 
 def get_plugin_repr(address):
+    from .. import data_plugins
+
     plugin = data_plugins.plugin_for_address(address)
     plugin_repr = plugin.get_repr(address)
     return plugin_repr
