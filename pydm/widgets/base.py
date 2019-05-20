@@ -825,11 +825,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         if self._channel != value:
             if self._channel is not None:
-                config = parse_channel_config(self._channel, force_dict=True)
-
                 # Remove old connections
                 for channel in [c for c in self._channels if
-                                c._config == config]:
+                                c.address == self._channel]:
                     try:
                         channel.disconnect()
                     except Exception:
@@ -839,12 +837,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
             # Load new channel
             self._channel = str(value)
 
-            config = parse_channel_config(value, force_dict=True)
-            address = None
             channel = PyDMChannel(parent=self,
-                                  address=address,
-                                  callback=self._receive_data,
-                                  config=config
+                                  address=value,
+                                  callback=self._receive_data
                                   )
             self._channels.append(channel)
             self._connected = False

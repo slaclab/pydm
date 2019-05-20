@@ -6,6 +6,7 @@ from qtpy import QtWidgets
 
 from ..data_store import DataStore, DataKeys, DEFAULT_INTROSPECTION
 from ..utilities.remove_protocol import protocol_and_address
+from ..utilities.channel import parse_channel_config
 
 
 def safe_disconnect_signal(signal, slot):
@@ -58,6 +59,10 @@ class DefaultParameterEditor(BaseParameterEditor):
 
     def clear(self):
         self.edit_address.setText('')
+
+    @staticmethod
+    def get_repr(parameters):
+        return parameters.get('address', '')
 
 
 class PyDMConnection(QObject):
@@ -149,3 +154,10 @@ class PyDMPlugin(object):
                 self.channels.remove(channel)
                 if self.connections[address].listener_count < 1:
                     del self.connections[address]
+
+    def get_repr(self, channel):
+        config = parse_channel_config(channel, force_dict=True)
+        conn = config.get('connection', {})
+        params = conn.get('parameters', {})
+        suffix = self.param_editor.get_repr(params)
+        return '{}://{}'.format(self.protocol, suffix)

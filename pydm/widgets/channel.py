@@ -1,13 +1,13 @@
 import logging
-import json
-
 from functools import partial
+
 from qtpy.QtCore import QObject, Signal, Slot
 
-from .. import data_plugins
 from .. import config as PYDM_CONFIG
-from ..utilities import is_qt_designer
-from ..data_store import DataStore
+from .. import data_plugins
+from ..data_store import DataStore, DataKeys
+from ..utilities import is_qt_designer, data_callback
+from ..utilities.channel import parse_channel_config, get_plugin_repr
 
 logger = logging.getLogger(__name__)
 
@@ -65,25 +65,42 @@ class PyDMChannel(QObject):
     """
     transmit = Signal([dict])
 
-    def __init__(self, address=None, callback=None,
-                 config=None, parent=None,
-                 *args, **kwargs):
+    def __init__(self, address=None, connection_slot=None, value_slot=None,
+                 severity_slot=None, write_access_slot=None,
+                 enum_strings_slot=None, unit_slot=None, prec_slot=None,
+                 upper_ctrl_limit_slot=None, lower_ctrl_limit_slot=None,
+                 value_signal=None, callback=None, parent=None):
         super(PyDMChannel, self).__init__(parent=parent)
-        if config is None:
-            config = {}
-        self._config = config
         self._address = None
         self._protocol = None
+        self._use_introspection = True
+        self._introspection = {}
         self._parameters = None
-        self._use_introspection = config.get('use_introspection', True)
-        self._introspection = config.get('introspection', {})
         self._monitors = set()  # Convert to list of WeakMethod in the future
         self._busy = False
         self._connected = False
-        self.address = address
+        if address:
+            self.address = address
         if callback:
             self.subscribe(callback)
         self.destroyed.connect(partial(self.disconnect, destroying=True))
+
+        slots = {DataKeys.CONNECTION: connection_slot,
+                 DataKeys.VALUE: value_slot,
+                 DataKeys.SEVERITY: severity_slot,
+                 DataKeys.WRITE_ACCESS: write_access_slot,
+                 DataKeys.ENUM_STRINGS: enum_strings_slot,
+                 DataKeys.UNIT: unit_slot,
+                 DataKeys.PRECISION: prec_slot,
+                 DataKeys.UPPER_LIMIT:  upper_ctrl_limit_slot,
+                 DataKeys.LOWER_LIMIT: lower_ctrl_limit_slot}
+
+        if any([x is not None for x in slots.values()]):
+            default_cb = self._make_callback(slots)
+            self.subscribe(default_cb)
+
+        if value_signal is not None:
+            value_signal.connect(self._handle_value_signal)
 
     @Slot()
     def notified(self):
@@ -105,15 +122,12 @@ class PyDMChannel(QObject):
     @address.setter
     def address(self, address):
         if address is None:
-            conn = self._config.get('connection', None)
-            if conn is not None:
-                self._protocol = conn.get('protocol')
-                self._parameters = conn.get('parameters')
-                self._address = json.dumps(conn)
-            else:
-                self._address = None
-        else:
-            self._address = clear_channel_address(address)
+            return
+        address = clear_channel_address(address)
+        config = parse_channel_config(address, force_dict=True)
+        self._use_introspection = config.get('use_introspection', True)
+        self._introspection = config.get('introspection', {})
+        self._address = address
 
     def connected(self):
         return self._connected
@@ -138,6 +152,8 @@ class PyDMChannel(QObject):
         """
         Disconnect a PyDMChannel
         """
+        if not self.address:
+            return
         if is_qt_designer() and not PYDM_CONFIG.DESIGNER_ONLINE:
             return
         try:
@@ -180,9 +196,25 @@ class PyDMChannel(QObject):
     def clear_subscriptions(self):
         self._monitors = set()
 
+    def _handle_value_signal(self, value):
+        intro = self.get_introspection()
+        key = intro.get(DataKeys.VALUE, DataKeys.VALUE)
+        self.put({key: value})
+
+    def _make_callback(self, slots):
+        def cb(data=None, introspection=None, *args, **kwargs):
+            if data is None or introspection is None:
+                return
+            data_callback(self, data, introspection, slots)
+
+        return cb
+
     def __eq__(self, other):
         if isinstance(self, other.__class__):
-            return self.address == other.address
+            return (self.address == other.address
+                    and self._use_introspection == other._use_introspection
+                    and self._introspection == other._introspection)
+
         return NotImplemented
 
     def __ne__(self, other):
@@ -195,4 +227,5 @@ class PyDMChannel(QObject):
         return id(self)
 
     def __repr__(self):
-        return '<PyDMChannel ({:})>'.format(self.address)
+        repr = get_plugin_repr(self.address)
+        return '<PyDMChannel ({:})>'.format(repr)

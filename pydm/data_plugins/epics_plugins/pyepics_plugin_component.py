@@ -17,7 +17,7 @@ class Connection(PyDMConnection):
 
     def __init__(self, channel, address, protocol=None, parent=None):
         super(Connection, self).__init__(channel, address, protocol, parent)
-        conn = parse_channel_config(address, force_dict=True)
+        conn = parse_channel_config(address, force_dict=True)['connection']
         address = conn.get('parameters', {}).get('address')
         monitor_mask = dbr.DBE_VALUE | dbr.DBE_ALARM | dbr.DBE_PROPERTY
         self.pv = epics.PV(address, form='ctrl', auto_monitor=monitor_mask,

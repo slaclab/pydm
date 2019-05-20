@@ -3,7 +3,8 @@ import re
 
 def remove_protocol(addr):
     """
-    Removes the first occurrence of the protocol string ('://') from the string `addr`
+    Removes the first occurrence of the protocol string ('://') from the string
+    `addr`
 
     Parameters
     ----------

@@ -73,9 +73,8 @@ def test_timeplotcurveitem_properties_and_setters(qtbot, new_address):
 
     pydm_timeplot_curve_item.address = new_address
     if new_address:
-        addr = json.dumps(parse_channel_config(new_address, force_dict=True)['connection'])
         assert isinstance(pydm_timeplot_curve_item.channel, PyDMChannel)
-        assert pydm_timeplot_curve_item.channel.address == addr
+        assert pydm_timeplot_curve_item.channel.address == new_address
     else:
         assert pydm_timeplot_curve_item.channel is None
 

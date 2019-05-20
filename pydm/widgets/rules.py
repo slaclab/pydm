@@ -160,12 +160,8 @@ class RulesEngine(QThread):
                     callback = functools.partial(self._receive_data, conn_cb,
                                                  value_cb)
 
-                    config = parse_channel_config(ch['channel'],
-                                                  force_dict=True)
-                    address = None
-                    channel = PyDMChannel(address=address,
-                                          callback=callback,
-                                          config=config
+                    channel = PyDMChannel(address=ch['channel'],
+                                          callback=callback
                                           )
                     item['channels'].append(channel)
                     # Connect the channel...

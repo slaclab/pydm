@@ -15,6 +15,7 @@ from contextlib import contextmanager
 from qtpy.QtWidgets import QApplication
 from .plugin import PyDMPlugin
 from ..utilities import protocol_and_address
+from ..utilities.channel import parse_channel_config
 from .. import config
 
 try:
@@ -78,13 +79,8 @@ def plugin_for_address(address):
     Find the correct PyDMPlugin for a channel
     """
     # Check for a configured protocol
-    try:
-        conn = json.loads(address)
-    except JSONDecodeError:
-        protocol, addr = protocol_and_address(address)
-    else:
-        protocol = conn.get('protocol', None)
-        address = conn.get('parameters', '')
+    conn = parse_channel_config(address, force_dict=True).get('connection', {})
+    protocol = conn.get('protocol', None)
 
     # Use default protocol
     if protocol is None and config.DEFAULT_PROTOCOL is not None:

@@ -126,15 +126,10 @@ class WaveformCurveItem(BasePlotCurveItem):
             if self.x_channel:
                 self.x_channel.disconnect()
 
-            config = parse_channel_config(new_address, force_dict=True)
-            if len(config) == 0:
-                return
             self._x_address = new_address
-            address = None
             self.x_channel = PyDMChannel(parent=None,
-                                         address=address,
-                                         callback=self._receive_x_data,
-                                         config=config
+                                         address=new_address,
+                                         callback=self._receive_x_data
                                          )
 
             # Connect the channel...
@@ -181,15 +176,10 @@ class WaveformCurveItem(BasePlotCurveItem):
             if self.y_channel:
                 self.y_channel.disconnect()
 
-            config = parse_channel_config(new_address, force_dict=True)
-            if len(config) == 0:
-                return
             self._y_address = new_address
-            address = None
             self.y_channel = PyDMChannel(parent=None,
-                                         address=address,
-                                         callback=self._receive_y_data,
-                                         config=config
+                                         address=new_address,
+                                         callback=self._receive_y_data
                                          )
 
             # Connect the channel...

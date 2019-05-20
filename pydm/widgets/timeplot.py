@@ -117,15 +117,10 @@ class TimePlotCurveItem(BasePlotCurveItem):
             if self.channel:
                 self.channel.disconnect()
 
-            config = parse_channel_config(new_address, force_dict=True)
-            if len(config) == 0:
-                return
             self.channel_address = new_address
-            address = None
             self.channel = PyDMChannel(parent=None,
-                                       address=address,
-                                       callback=self._receive_data,
-                                       config=config
+                                       address=new_address,
+                                       callback=self._receive_data
                                        )
             # Connect the channel...
             self.channel.connect()

@@ -36,7 +36,6 @@ def test_construct(qapp):
 
     ch = PyDMChannel()
 
-    assert ch._config == {}
     assert ch.address is None
     assert len(ch._monitors) == 0
     assert ch._use_introspection is True

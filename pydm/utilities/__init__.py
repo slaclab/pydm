@@ -216,13 +216,7 @@ def data_callback(widget, data, introspection, mapping):
     if data is None:
         return
     try:
-        for data_key, real_key in introspection.items():
-            if real_key is None or real_key == '' or not isinstance(real_key, str):
-                continue
-            try:
-                method_name = mapping[data_key]
-            except KeyError:
-                continue
+        for data_key, method_name in mapping.items():
             if isinstance(method_name, str):
                 method = getattr(widget, method_name, None)
             elif callable(method_name):
@@ -230,6 +224,9 @@ def data_callback(widget, data, introspection, mapping):
             else:
                 method = None
             if not method:
+                continue
+            real_key = introspection.get(data_key)
+            if real_key is None:
                 continue
             new_value = nested_dict_get(data, real_key.split('.'))
             if new_value is not None:

@@ -558,15 +558,11 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             if self._imagechannel:
                 self._imagechannel.disconnect()
 
-            config = parse_channel_config(value, force_dict=True)
-            if len(config) == 0:
-                return
             self._imagechannel_address = value
             address = None
             self._imagechannel = PyDMChannel(parent=self,
-                                             address=address,
-                                             callback=self._receive_image_data,
-                                             config=config
+                                             address=value,
+                                             callback=self._receive_image_data
                                              )
             self._channels[0] = self._imagechannel
 
@@ -612,15 +608,11 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
                 self._widthchannel.disconnect()
                 self._widthchannel = None
 
-            config = parse_channel_config(value, force_dict=True)
-            if len(config) == 0:
-                return
             self._widthchannel_address = value
             address = None
             self._widthchannel = PyDMChannel(parent=self,
-                                             address=address,
-                                             callback=self._receive_width_data,
-                                             config=config
+                                             address=value,
+                                             callback=self._receive_width_data
                                              )
             self._channels[1] = self._widthchannel
 

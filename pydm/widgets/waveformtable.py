@@ -1,9 +1,13 @@
-from qtpy.QtWidgets import QTableWidget, QTableWidgetItem, QApplication
-from qtpy.QtGui import QCursor
-from qtpy.QtCore import Slot, Property, Qt, QEvent
+import logging
+
 import numpy as np
+from qtpy.QtCore import Slot, Property, Qt, QEvent
+from qtpy.QtGui import QCursor
+from qtpy.QtWidgets import QTableWidget, QTableWidgetItem, QApplication
+
 from .base import PyDMWritableWidget
 
+logger = logging.getLogger(__name__)
 
 class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
     """
@@ -75,10 +79,15 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
             return
         item = self.item(row, column)
         if item and self.subtype:
-            new_val = self.subtype(item.text())
-            ind = row*self.columnCount() + column
-            self.waveform[ind] = new_val
-            self.write_to_channel(self.waveform)
+            try:
+                new_val = self.subtype(item.text())
+                ind = row*self.columnCount() + column
+                self.waveform[ind] = new_val
+                self.write_to_channel(self.waveform)
+            except ValueError:
+                logger.error('Failed to convert value %s to type %s.',
+                             item.text(), self.subtype)
+                self.value_changed(self.value)
 
     def check_enable_state(self):
         """
