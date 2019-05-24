@@ -22,19 +22,20 @@ def clear_channel_address(channel):
 
 class PyDMChannel(QObject):
     """
-    Object to hold signals and slots for a PyDM Widget interface to an
-    external plugin
+    QObject to hold signals and slots for a PyDM Widget interface to an
+    external plugin.
 
     The purpose of this class is to create a templated slot and signals
     list that can be sent to an external plugin. The type of plugin is
-    determined by the PyDMApplication based on the identifier placed at
-    the beginning of the :attr:`.address` attribute. This allows a generic
-    way to connect slots and signals to functionality within your PyDM
-    Widget. Slots should be connected to functions on your created widget
-    that perform actions upon changes. For instance, the :attr:`.value_slot`
-    will be automatically called every time a new value is found by the
-    plugin. This should probably linked to a function that updates the
-    display to report the new value. Signals perform the reverse operation.
+    determined based on the identifier placed at the beginning of the
+    :attr:`.address` attribute. This allows a generic  way to connect slots
+    and signals to functionality within your PyDM Widget.
+
+    Slots should be connected to functions on your created widget that perform
+    actions upon changes. For instance, the :attr:`.value_slot` will be
+    automatically called every time a new value is found by the plugin.
+    This should probably linked to a function that updates the display to
+    report the new value. Signals perform the reverse operation.
     These should be used to send new values back to the plugin to update
     the source.
 
@@ -51,17 +52,42 @@ class PyDMChannel(QObject):
 
     Parameters
     ----------
-    parent : QObject, optional
-        The parent of this PyDMChannel. Defaults to None.
-
     address : str, optional
         The name of the address to be used by the plugin. This
         should usually be a user inputted field when a specific
         PyDM widget is initialized
 
+    connection_slot : Slot, optional
+        A function to be run when the connection state
+        changes
+
+    value_slot : Slot, optional
+        A function to be run when the value updates
+
+    severity_slot : Slot, optional
+        A function to be run when the severity changes
+
+    write_access_slot : Slot, optional
+        A function to be run when the write access changes
+
+    enum_strings_slot : Slot, optional
+        A function to be run when the enum_strings change
+
+    unit_slot : Slot, optional
+        A function to be run when the unit changes
+
+    prec_slot : Slot, optional
+        A function to be run when the precision value changes
+
+    value_signal : Signal, optional
+        Attach a signal here that emits a desired value to be sent
+        through the plugin
+
     callback : callable, optional
         The function or method to be invoked when data changes for this channel
 
+    parent : QObject, optional
+        The parent of this PyDMChannel. Defaults to None.
     """
     transmit = Signal([dict])
 

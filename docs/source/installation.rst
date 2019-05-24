@@ -74,6 +74,8 @@ where it looks for certain types of files.  To ensure these variables are always
 set, you probably want to add them to your shell startup file (like ~/.bashrc, if you
 are using bash).
 
+.. _designer_plugin_path:
+
 Designer Plugin Path
 ++++++++++++++++++++
 
