@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.6.5+129.gbd5cddaf documentation</title>
+  <title>pydm.application &mdash; PyDM v1.6.5+136.gad54a15a documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.6.5+129.gbd5cddaf
+                v1.6.5+136.gad54a15a
               </div>
             
           
@@ -538,7 +538,7 @@
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;macros&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">macros</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMApplication.open_file"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.open_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication.open_file"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.open_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">defer_connections</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Open a .ui or .py file, and return a widget from the loaded file.</span>
 <span class="sd">        This method is the entry point for all opening of new displays,</span>
@@ -579,7 +579,7 @@
         <span class="n">merged_macros</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">macro_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">merged_macros</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">macros</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">macro_stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">merged_macros</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">connection_queue</span><span class="p">():</span>
+        <span class="k">with</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">connection_queue</span><span class="p">(</span><span class="n">defer_connections</span><span class="o">=</span><span class="n">defer_connections</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;.ui&#39;</span><span class="p">:</span>
                 <span class="n">widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_ui_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">merged_macros</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;.py&#39;</span><span class="p">:</span>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.data_plugins &mdash; PyDM v1.6.5+129.gbd5cddaf documentation</title>
+  <title>pydm.data_plugins &mdash; PyDM v1.6.5+136.gad54a15a documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.6.5+129.gbd5cddaf
+                v1.6.5+136.gad54a15a
               </div>
             
           
@@ -189,7 +189,7 @@
 <span class="kn">import</span> <span class="nn">uuid</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
-
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QApplication</span>
 <span class="kn">from</span> <span class="nn">.plugin</span> <span class="k">import</span> <span class="n">PyDMPlugin</span>
 <span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">protocol_and_address</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">config</span>
@@ -199,25 +199,39 @@
 <span class="n">__read_only</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="k">global</span> <span class="n">__CONNECTION_QUEUE__</span>
 <span class="n">__CONNECTION_QUEUE__</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">global</span> <span class="n">__DEFER_CONNECTIONS__</span>
+<span class="n">__DEFER_CONNECTIONS__</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="nd">@contextmanager</span>
-<span class="k">def</span> <span class="nf">connection_queue</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">connection_queue</span><span class="p">(</span><span class="n">defer_connections</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="k">global</span> <span class="n">__CONNECTION_QUEUE__</span>
+    <span class="k">global</span> <span class="n">__DEFER_CONNECTIONS__</span>
     <span class="k">if</span> <span class="n">__CONNECTION_QUEUE__</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">__CONNECTION_QUEUE__</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+        <span class="n">__DEFER_CONNECTIONS__</span> <span class="o">=</span> <span class="n">defer_connections</span>
+    <span class="k">yield</span>
+    <span class="k">if</span> <span class="n">__DEFER_CONNECTIONS__</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">establish_queued_connections</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">establish_queued_connections</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">__DEFER_CONNECTIONS__</span>
+    <span class="k">global</span> <span class="n">__CONNECTION_QUEUE__</span>
+    <span class="k">if</span> <span class="n">__CONNECTION_QUEUE__</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">yield</span>
-        <span class="k">if</span> <span class="n">__CONNECTION_QUEUE__</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span>
         <span class="k">while</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">__CONNECTION_QUEUE__</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">channel</span> <span class="o">=</span> <span class="n">__CONNECTION_QUEUE__</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">channel</span> <span class="o">=</span> <span class="n">__CONNECTION_QUEUE__</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
             <span class="n">establish_connection_immediately</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">processEvents</span><span class="p">()</span>
     <span class="k">finally</span><span class="p">:</span>
         <span class="n">__CONNECTION_QUEUE__</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">__DEFER_CONNECTIONS__</span> <span class="o">=</span> <span class="kc">False</span>
+    
         
 <span class="k">def</span> <span class="nf">establish_connection</span><span class="p">(</span><span class="n">channel</span><span class="p">):</span>
     <span class="k">global</span> <span class="n">__CONNECTION_QUEUE__</span>
-    <span class="k">if</span> <span class="n">__CONNECTION_QUEUE__</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">__CONNECTION_QUEUE__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">__CONNECTION_QUEUE__</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">establish_connection_immediately</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
