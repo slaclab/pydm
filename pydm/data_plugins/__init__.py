@@ -11,7 +11,7 @@ import imp
 import uuid
 from collections import deque
 from contextlib import contextmanager
-
+from qtpy.QtWidgets import QApplication
 from .plugin import PyDMPlugin
 from ..utilities import protocol_and_address
 from .. import config
@@ -21,25 +21,39 @@ plugin_modules = {}
 __read_only = False
 global __CONNECTION_QUEUE__
 __CONNECTION_QUEUE__ = None
+global __DEFER_CONNECTIONS__
+__DEFER_CONNECTIONS__ = False
 
 @contextmanager
-def connection_queue():
+def connection_queue(defer_connections=False):
     global __CONNECTION_QUEUE__
+    global __DEFER_CONNECTIONS__
     if __CONNECTION_QUEUE__ is None:
         __CONNECTION_QUEUE__ = deque()
+        __DEFER_CONNECTIONS__ = defer_connections
+    yield
+    if __DEFER_CONNECTIONS__:
+        return
+    establish_queued_connections()
+
+def establish_queued_connections():
+    global __DEFER_CONNECTIONS__
+    global __CONNECTION_QUEUE__
+    if __CONNECTION_QUEUE__ is None:
+        return
     try:
-        yield
-        if __CONNECTION_QUEUE__ is None:
-            return
         while not len(__CONNECTION_QUEUE__) == 0:
-            channel = __CONNECTION_QUEUE__.pop()
+            channel = __CONNECTION_QUEUE__.popleft()
             establish_connection_immediately(channel)
+            QApplication.instance().processEvents()
     finally:
         __CONNECTION_QUEUE__ = None
+        __DEFER_CONNECTIONS__ = False
+    
         
 def establish_connection(channel):
     global __CONNECTION_QUEUE__
-    if __CONNECTION_QUEUE__:
+    if __CONNECTION_QUEUE__ is not None:
         __CONNECTION_QUEUE__.append(channel)
     else:
         establish_connection_immediately(channel)
