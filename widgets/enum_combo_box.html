@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMEnumComboBox &mdash; PyDM v1.6.5+122.g293968cf documentation</title>
+  <title>PyDMEnumComboBox &mdash; PyDM v1.6.5+129.gbd5cddaf documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.6.5+122.g293968cf
+                v1.6.5+129.gbd5cddaf
               </div>
             
           
@@ -221,6 +221,21 @@ by the user.</p></li>
 </dd>
 </dl>
 <dl class="method">
+<dt id="pydm.widgets.enum_combo_box.PyDMEnumComboBox.addItem">
+<code class="descname">addItem</code><span class="sig-paren">(</span><em>text</em>, <em>userData=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.addItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.addItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an item to the combobox.
+The item is appended to the list of existing items.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>str</em>) – Title of the item</p></li>
+<li><p><strong>userData</strong> (<em>QVariant</em>) – Arbitrary user data that is stored in the Qt.UserRole</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydm.widgets.enum_combo_box.PyDMEnumComboBox.check_enable_state">
 <code class="descname">check_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.check_enable_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.check_enable_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether or not the widget should be disable.
@@ -248,6 +263,20 @@ new enum values to be broadcasted</p>
 This slot triggers the <code class="docutils literal notranslate"><span class="pre">`send_value_signal`</span></code>.
 :param index:
 :type index: int</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.enum_combo_box.PyDMEnumComboBox.setItemText">
+<code class="descname">setItemText</code><span class="sig-paren">(</span><em>index</em>, <em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.setItemText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.setItemText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the text for the item on the given index in the combobox.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>int</em>) – Position in the dropdown list</p></li>
+<li><p><strong>text</strong> (<em>str</em>) – Title for the item</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">

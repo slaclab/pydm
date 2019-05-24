@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.6.5+122.g293968cf documentation</title>
+  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.6.5+129.gbd5cddaf documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.6.5+122.g293968cf
+                v1.6.5+129.gbd5cddaf
               </div>
             
           
@@ -217,6 +217,45 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">DefaultContextMenu</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">contextMenuEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_context_menu</span>
 
+        <span class="c1"># Because of the way PyQt5 UI parser enumerates combobox items (first adding an item with an empty title</span>
+        <span class="c1"># and then resetting that title to the actual text), we can&#39;t distinguish it from the regular title change.</span>
+        <span class="c1"># This flag helps tracking title change followed immediately after adding a new item.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_new_item_added</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="PyDMEnumComboBox.addItem"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.addItem">[docs]</a>    <span class="k">def</span> <span class="nf">addItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">userData</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds an item to the combobox.</span>
+<span class="sd">        The item is appended to the list of existing items.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        text : str</span>
+<span class="sd">            Title of the item</span>
+<span class="sd">        userData : QVariant</span>
+<span class="sd">            Arbitrary user data that is stored in the Qt.UserRole</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">userData</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_new_item_added</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="PyDMEnumComboBox.setItemText"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.setItemText">[docs]</a>    <span class="k">def</span> <span class="nf">setItemText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the text for the item on the given index in the combobox.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        index : int</span>
+<span class="sd">            Position in the dropdown list</span>
+<span class="sd">        text : str</span>
+<span class="sd">            Title for the item</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setItemText</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_item_added</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_new_item_added</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="c1"># Recalculate the enums</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">enum_strings_changed</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">itemText</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">())))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_has_enums</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span></div>
+                
     <span class="c1"># Internal methods</span>
 <div class="viewcode-block" id="PyDMEnumComboBox.set_items"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.set_items">[docs]</a>    <span class="k">def</span> <span class="nf">set_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enums</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
