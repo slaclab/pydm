@@ -115,12 +115,6 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         filename = str(filename)
         if filename != self._filename:
             self._filename = filename
-            # If we aren't in a PyDMApplication (usually that means we are in Qt Designer),
-            # don't try to load the file, just show text with the filename.
-            #if not is_pydm_app():
-            #    self.err_label.setText(self._filename)
-            #    self.err_label.show()
-            #    return
             if self._only_load_when_shown and (not is_qt_designer()):
                 self._needs_load = True
             else:
