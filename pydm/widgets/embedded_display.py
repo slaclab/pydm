@@ -147,7 +147,6 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         display : QWidget
         """
         if (not force) and (not self._needs_load):
-            print("Not loading.")
             return
             
         if not self.filename:
@@ -163,13 +162,11 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             elif extension == ".py":
                 loadfunc = load_py_file
             try:
-                print("Loading {} with macros {}".format(fname, self.parsed_macros()))
                 w = loadfunc(fname, macros=self.parsed_macros())
                 self._needs_load = False
                 self.clear_error_text()
                 return w
             except Exception as e:
-                print(e)
                 logger.exception("Exception while opening embedded display file.")
                 self.display_error_text(e)
             return None
