@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMWaveformPlot &mdash; PyDM v1.6.5+136.gad54a15a documentation</title>
+  <title>PyDMWaveformPlot &mdash; PyDM v1.6.5+146.g7bfb9dcd documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.6.5+136.gad54a15a
+                v1.6.5+146.g7bfb9dcd
               </div>
             
           
@@ -197,7 +197,7 @@
 <h1>PyDMWaveformPlot<a class="headerlink" href="#pydmwaveformplot" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot">
-<em class="property">class </em><code class="descclassname">pydm.widgets.waveformplot.</code><code class="descname">PyDMWaveformPlot</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_x_channels=[]</em>, <em>init_y_channels=[]</em>, <em>background='default'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.waveformplot.</code><code class="sig-name descname">PyDMWaveformPlot</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">init_x_channels=[]</em>, <em class="sig-param">init_y_channels=[]</em>, <em class="sig-param">background='default'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyDMWaveformPlot is a widget to plot one or more waveforms.</p>
 <p>Each curve can plot either a Y-axis waveform vs. its indices,
 or a Y-axis waveform against an X-axis waveform.</p>
@@ -225,7 +225,7 @@ pyqtgraph.mkColor will accept.</p></li>
 </dl>
 <dl class="method">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.addChannel">
-<code class="descname">addChannel</code><span class="sig-paren">(</span><em>y_channel=None</em>, <em>x_channel=None</em>, <em>name=None</em>, <em>color=None</em>, <em>lineStyle=None</em>, <em>lineWidth=None</em>, <em>symbol=None</em>, <em>symbolSize=None</em>, <em>redraw_mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.addChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.addChannel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">addChannel</code><span class="sig-paren">(</span><em class="sig-param">y_channel=None</em>, <em class="sig-param">x_channel=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">color=None</em>, <em class="sig-param">lineStyle=None</em>, <em class="sig-param">lineWidth=None</em>, <em class="sig-param">symbol=None</em>, <em class="sig-param">symbolSize=None</em>, <em class="sig-param">redraw_mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.addChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.addChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new curve to the plot.  In addition to the arguments below,
 all other keyword arguments are passed to the underlying
 pyqtgraph.PlotDataItem used to draw the curve.</p>
@@ -260,21 +260,21 @@ automatically assign a unique color from a set of default colors.</p></li>
 
 <dl class="attribute">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.autoRangeX">
-<code class="descname">autoRangeX</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.autoRangeX" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">autoRangeX</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.autoRangeX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the X-axis automatically rescales to fit the data.
 If true, the values in minXRange and maxXRange are ignored.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.autoRangeY">
-<code class="descname">autoRangeY</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.autoRangeY" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">autoRangeY</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.autoRangeY" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the Y-axis automatically rescales to fit the data.
 If true, the values in minYRange and maxYRange are ignored.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.channels">
-<code class="descname">channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.channels" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.channels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of channels used by all curves in the plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -288,56 +288,56 @@ If true, the values in minYRange and maxYRange are ignored.</p>
 
 <dl class="method">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.clearCurves">
-<code class="descname">clearCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.clearCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.clearCurves" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">clearCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.clearCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.clearCurves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all curves from the plot.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.curves">
-<code class="descname">curves</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.curves" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">curves</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.curves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of json representations for each curve.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.getCurves">
-<code class="descname">getCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.getCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.getCurves" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">getCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.getCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.getCurves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of json representations for each curve.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.maxXRange">
-<code class="descname">maxXRange</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.maxXRange" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">maxXRange</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.maxXRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximum X-axis value visible on the plot.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.maxYRange">
-<code class="descname">maxYRange</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.maxYRange" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">maxYRange</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.maxYRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximum Y-axis value visible on the plot.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.minXRange">
-<code class="descname">minXRange</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.minXRange" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">minXRange</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.minXRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Minimum X-axis value visible on the plot.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.minYRange">
-<code class="descname">minYRange</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.minYRange" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">minYRange</code><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.minYRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Minimum Y-axis value visible on the plot.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.redrawPlot">
-<code class="descname">redrawPlot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.redrawPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.redrawPlot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">redrawPlot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.redrawPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.redrawPlot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Request a redraw from each curve in the plot.
 Called by curves when they get new data.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannel">
-<code class="descname">removeChannel</code><span class="sig-paren">(</span><em>curve</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.removeChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">removeChannel</code><span class="sig-paren">(</span><em class="sig-param">curve</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.removeChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a curve from the plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -348,7 +348,7 @@ Called by curves when they get new data.</p>
 
 <dl class="method">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannelAtIndex">
-<code class="descname">removeChannelAtIndex</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.removeChannelAtIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannelAtIndex" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">removeChannelAtIndex</code><span class="sig-paren">(</span><em class="sig-param">index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.removeChannelAtIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannelAtIndex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a curve from the plot, given an index
 for a curve.</p>
 <dl class="field-list simple">
@@ -360,7 +360,7 @@ for a curve.</p>
 
 <dl class="method">
 <dt id="pydm.widgets.waveformplot.PyDMWaveformPlot.setCurves">
-<code class="descname">setCurves</code><span class="sig-paren">(</span><em>new_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.setCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.setCurves" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">setCurves</code><span class="sig-paren">(</span><em class="sig-param">new_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot.setCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.setCurves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace all existing curves with new ones.  This function
 is mostly used as a way to load curves from a .ui file, and
 almost all users will want to add curves through addChannel,

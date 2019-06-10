@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.embedded_display &mdash; PyDM v1.6.5+136.gad54a15a documentation</title>
+  <title>pydm.widgets.embedded_display &mdash; PyDM v1.6.5+146.g7bfb9dcd documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.6.5+136.gad54a15a
+                v1.6.5+146.g7bfb9dcd
               </div>
             
           
@@ -181,11 +181,13 @@
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Property</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMPrimitiveWidget</span>
 <span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="p">(</span><span class="n">is_pydm_app</span><span class="p">,</span> <span class="n">establish_widget_connections</span><span class="p">,</span>
-                         <span class="n">close_widget_connections</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..utilities.macro</span> <span class="k">import</span> <span class="n">parse_macro_string</span>
+                         <span class="n">close_widget_connections</span><span class="p">,</span> <span class="n">macro</span><span class="p">,</span> <span class="n">is_qt_designer</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..utilities.display_loading</span> <span class="k">import</span> <span class="p">(</span><span class="n">load_ui_file</span><span class="p">,</span> <span class="n">load_py_file</span><span class="p">)</span>
 
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMEmbeddedDisplay"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay">[docs]</a><span class="k">class</span> <span class="nc">PyDMEmbeddedDisplay</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -207,6 +209,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_when_hidden</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_connected</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_only_load_when_shown</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_needs_load</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_macros</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">():</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">directory_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">base_macros</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">macro_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignHCenter</span><span class="p">)</span>
@@ -217,6 +226,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">Box</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">NoFrame</span><span class="p">)</span>
+        
 
 <div class="viewcode-block" id="PyDMEmbeddedDisplay.minimumSizeHint"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.minimumSizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">minimumSizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -283,23 +293,10 @@
         <span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">filename</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">filename</span>
-            <span class="c1"># If we aren&#39;t in a PyDMApplication (usually that means we are in Qt Designer),</span>
-            <span class="c1"># don&#39;t try to load the file, just show text with the filename.</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_pydm_app</span><span class="p">():</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-                <span class="k">return</span>
-            <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_only_load_when_shown</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_needs_load</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">embedded_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_file</span><span class="p">()</span>
-            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
-                    <span class="s2">&quot;Could not parse macro string.</span><span class="se">\n</span><span class="s2">Error: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-            <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
-                    <span class="s2">&quot;Could not open </span><span class="si">{filename}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">Error: </span><span class="si">{err}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="n">e</span><span class="p">))</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMEmbeddedDisplay.parsed_macros"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.parsed_macros">[docs]</a>    <span class="k">def</span> <span class="nf">parsed_macros</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -309,9 +306,11 @@
 <span class="sd">        --------</span>
 <span class="sd">        dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">parse_macro_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">macros</span><span class="p">)</span></div>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">macro</span><span class="o">.</span><span class="n">find_base_macros</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">macro</span><span class="o">.</span><span class="n">parse_macro_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">macros</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">m</span></div>
 
-<div class="viewcode-block" id="PyDMEmbeddedDisplay.open_file"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.open_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.open_file"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.open_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Opens the widget specified in the widget&#39;s filename property.</span>
 
@@ -319,13 +318,54 @@
 <span class="sd">        -------</span>
 <span class="sd">        display : QWidget</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">force</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_needs_load</span><span class="p">):</span>
+            <span class="k">return</span>
+            
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="c1"># Expand user (~ or ~user) and environment variables.</span>
         <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expandvars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parsed_macros</span><span class="p">())</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">open_relative</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
-                                          <span class="n">macros</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parsed_macros</span><span class="p">())</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span><span class="p">:</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_path</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_pydm_app</span><span class="p">():</span>
+            <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;.ui&quot;</span><span class="p">:</span>
+                <span class="n">loadfunc</span> <span class="o">=</span> <span class="n">load_ui_file</span>
+            <span class="k">elif</span> <span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;.py&quot;</span><span class="p">:</span>
+                <span class="n">loadfunc</span> <span class="o">=</span> <span class="n">load_py_file</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="n">loadfunc</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parsed_macros</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_needs_load</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear_error_text</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">w</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception while opening embedded display file.&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">display_error_text</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="c1"># If you get this far, you are running inside a PyDMApplication, load</span>
+        <span class="c1"># using that system.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parsed_macros</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">open_relative</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
+                                              <span class="n">macros</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parsed_macros</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_needs_load</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_error_text</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">w</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">IOError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_error_text</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">clear_error_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">display_error_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="s2">&quot;Could not open </span><span class="si">{filename}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">Error: </span><span class="si">{err}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="n">e</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">embedded_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -354,16 +394,17 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">removeWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span> <span class="o">=</span> <span class="n">new_widget</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_is_connected</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">new_widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span> <span class="o">=</span> <span class="n">new_widget</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_connected</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="PyDMEmbeddedDisplay.connect"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Establish the connection between the embedded widget widgets and</span>
+<span class="sd">        Establish the connection between the embedded widget and</span>
 <span class="sd">        the channels associated with it.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_connected</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedded_widget</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -372,12 +413,36 @@
 
 <div class="viewcode-block" id="PyDMEmbeddedDisplay.disconnect"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Disconnects the embedded widget widgets from the channels</span>
+<span class="sd">        Disconnects the embedded widget from the channels</span>
 <span class="sd">        associated with it.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_connected</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedded_widget</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="n">close_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedded_widget</span><span class="p">)</span></div>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">loadWhenShown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If True, only load and display the file once the</span>
+<span class="sd">        PyDMEmbeddedDisplayWidget is visible on screen.  This is very useful</span>
+<span class="sd">        if you have many different PyDMEmbeddedWidgets in different tabs of a</span>
+<span class="sd">        QTabBar or PyDMTabBar: only the tab that the user is looking at will</span>
+<span class="sd">        be loaded, which can greatly speed up the launch time of a display.</span>
+<span class="sd">        </span>
+<span class="sd">        If this property is changed from &#39;True&#39; to &#39;False&#39;, and the file has</span>
+<span class="sd">        not been loaded yet, it will be loaded immediately.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_only_load_when_shown</span>
+        
+    <span class="nd">@loadWhenShown</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">loadWhenShown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_only_load_when_shown</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_needs_load</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">embedded_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_file</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">disconnectWhenHidden</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -409,6 +474,10 @@
 <span class="sd">        ----------</span>
 <span class="sd">        event : QShowEvent</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_only_load_when_shown</span><span class="p">:</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_file</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">w</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">embedded_widget</span> <span class="o">=</span> <span class="n">w</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">disconnectWhenHidden</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span></div>
 

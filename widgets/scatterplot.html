@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMScatterPlot &mdash; PyDM v1.6.5+136.gad54a15a documentation</title>
+  <title>PyDMScatterPlot &mdash; PyDM v1.6.5+146.g7bfb9dcd documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.6.5+136.gad54a15a
+                v1.6.5+146.g7bfb9dcd
               </div>
             
           
@@ -197,7 +197,7 @@
 <h1>PyDMScatterPlot<a class="headerlink" href="#pydmscatterplot" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot">
-<em class="property">class </em><code class="descclassname">pydm.widgets.scatterplot.</code><code class="descname">PyDMScatterPlot</code><span class="sig-paren">(</span><em>parent=None</em>, <em>init_x_channels=[]</em>, <em>init_y_channels=[]</em>, <em>background='default'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.scatterplot.</code><code class="sig-name descname">PyDMScatterPlot</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">init_x_channels=[]</em>, <em class="sig-param">init_y_channels=[]</em>, <em class="sig-param">background='default'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyDMScatterPlot is a widget to plot one scalar value against another.
 Multiple scalar pairs can be plotted on the same plot.  Each pair has
 a buffer which stores previous values.  All values in the buffer are
@@ -226,7 +226,7 @@ pyqtgraph.mkColor will accept.</p></li>
 </dl>
 <dl class="method">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.addChannel">
-<code class="descname">addChannel</code><span class="sig-paren">(</span><em>y_channel=None</em>, <em>x_channel=None</em>, <em>name=None</em>, <em>color=None</em>, <em>lineStyle=None</em>, <em>lineWidth=None</em>, <em>symbol=None</em>, <em>symbolSize=None</em>, <em>redraw_mode=None</em>, <em>buffer_size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.addChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.addChannel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">addChannel</code><span class="sig-paren">(</span><em class="sig-param">y_channel=None</em>, <em class="sig-param">x_channel=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">color=None</em>, <em class="sig-param">lineStyle=None</em>, <em class="sig-param">lineWidth=None</em>, <em class="sig-param">symbol=None</em>, <em class="sig-param">symbolSize=None</em>, <em class="sig-param">redraw_mode=None</em>, <em class="sig-param">buffer_size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.addChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.addChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new curve to the plot.  In addition to the arguments below,
 all other keyword arguments are passed to the underlying
 pyqtgraph.PlotDataItem used to draw the curve.</p>
@@ -262,21 +262,21 @@ automatically assign a unique color from a set of default colors.</p></li>
 
 <dl class="attribute">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.autoRangeX">
-<code class="descname">autoRangeX</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.autoRangeX" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">autoRangeX</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.autoRangeX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the X-axis automatically rescales to fit the data.
 If true, the values in minXRange and maxXRange are ignored.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.autoRangeY">
-<code class="descname">autoRangeY</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.autoRangeY" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">autoRangeY</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.autoRangeY" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the Y-axis automatically rescales to fit the data.
 If true, the values in minYRange and maxYRange are ignored.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.channels">
-<code class="descname">channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.channels" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.channels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of channels used by all curves in the plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -290,56 +290,56 @@ If true, the values in minYRange and maxYRange are ignored.</p>
 
 <dl class="method">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.clearCurves">
-<code class="descname">clearCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.clearCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.clearCurves" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">clearCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.clearCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.clearCurves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all curves from the plot.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.curves">
-<code class="descname">curves</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.curves" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">curves</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.curves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of json representations for each curve.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.getCurves">
-<code class="descname">getCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.getCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.getCurves" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">getCurves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.getCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.getCurves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of json representations for each curve.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.maxXRange">
-<code class="descname">maxXRange</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.maxXRange" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">maxXRange</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.maxXRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximum X-axis value visible on the plot.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.maxYRange">
-<code class="descname">maxYRange</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.maxYRange" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">maxYRange</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.maxYRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximum Y-axis value visible on the plot.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.minXRange">
-<code class="descname">minXRange</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.minXRange" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">minXRange</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.minXRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Minimum X-axis value visible on the plot.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.minYRange">
-<code class="descname">minYRange</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.minYRange" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">minYRange</code><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.minYRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Minimum Y-axis value visible on the plot.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.redrawPlot">
-<code class="descname">redrawPlot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.redrawPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.redrawPlot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">redrawPlot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.redrawPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.redrawPlot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Request a redraw from each curve in the plot.
 Called by curves when they get new data.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.removeChannel">
-<code class="descname">removeChannel</code><span class="sig-paren">(</span><em>curve</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.removeChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.removeChannel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">removeChannel</code><span class="sig-paren">(</span><em class="sig-param">curve</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.removeChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.removeChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a curve from the plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -350,7 +350,7 @@ Called by curves when they get new data.</p>
 
 <dl class="method">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.removeChannelAtIndex">
-<code class="descname">removeChannelAtIndex</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.removeChannelAtIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.removeChannelAtIndex" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">removeChannelAtIndex</code><span class="sig-paren">(</span><em class="sig-param">index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.removeChannelAtIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.removeChannelAtIndex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a curve from the plot, given an index
 for a curve.</p>
 <dl class="field-list simple">
@@ -362,7 +362,7 @@ for a curve.</p>
 
 <dl class="method">
 <dt id="pydm.widgets.scatterplot.PyDMScatterPlot.setCurves">
-<code class="descname">setCurves</code><span class="sig-paren">(</span><em>new_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.setCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.setCurves" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">setCurves</code><span class="sig-paren">(</span><em class="sig-param">new_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scatterplot.html#PyDMScatterPlot.setCurves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.setCurves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace all existing curves with new ones.  This function
 is mostly used as a way to load curves from a .ui file, and
 almost all users will want to add curves through addChannel,

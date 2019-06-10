@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utilities &mdash; PyDM v1.6.5+136.gad54a15a documentation</title>
+  <title>Utilities &mdash; PyDM v1.6.5+146.g7bfb9dcd documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.6.5+136.gad54a15a
+                v1.6.5+146.g7bfb9dcd
               </div>
             
           
@@ -194,7 +194,7 @@ of protocol in a string, handling macro substitution in files, etc.</p>
 <span id="general"></span><h2>General<a class="headerlink" href="#module-pydm.utilities" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pydm.utilities.find_display_in_path">
-<code class="descclassname">pydm.utilities.</code><code class="descname">find_display_in_path</code><span class="sig-paren">(</span><em>file</em>, <em>mode=None</em>, <em>path=None</em>, <em>pathext=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#find_display_in_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.find_display_in_path" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.</code><code class="sig-name descname">find_display_in_path</code><span class="sig-paren">(</span><em class="sig-param">file</em>, <em class="sig-param">mode=None</em>, <em class="sig-param">path=None</em>, <em class="sig-param">pathext=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#find_display_in_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.find_display_in_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Look for a display file in a given path.
 This is basically a wrapper on top of the <code class="docutils literal notranslate"><span class="pre">which</span></code>
 command defined below so we don’t need to keep redefining
@@ -219,7 +219,7 @@ Which ensure that the file exists and we can read it.</p></li>
 
 <dl class="function">
 <dt id="pydm.utilities.is_pydm_app">
-<code class="descclassname">pydm.utilities.</code><code class="descname">is_pydm_app</code><span class="sig-paren">(</span><em>app=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#is_pydm_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.is_pydm_app" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.</code><code class="sig-name descname">is_pydm_app</code><span class="sig-paren">(</span><em class="sig-param">app=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#is_pydm_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.is_pydm_app" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether or not <cite>QApplication.instance()</cite> is a PyDMApplication.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -236,7 +236,7 @@ Which ensure that the file exists and we can read it.</p></li>
 
 <dl class="function">
 <dt id="pydm.utilities.is_qt_designer">
-<code class="descclassname">pydm.utilities.</code><code class="descname">is_qt_designer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#is_qt_designer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.is_qt_designer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.</code><code class="sig-name descname">is_qt_designer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#is_qt_designer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.is_qt_designer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether or not running inside Qt Designer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -250,7 +250,7 @@ Which ensure that the file exists and we can read it.</p></li>
 
 <dl class="function">
 <dt id="pydm.utilities.path_info">
-<code class="descclassname">pydm.utilities.</code><code class="descname">path_info</code><span class="sig-paren">(</span><em>path_str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#path_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.path_info" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.</code><code class="sig-name descname">path_info</code><span class="sig-paren">(</span><em class="sig-param">path_str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#path_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.path_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve basic information about the given path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -267,7 +267,7 @@ Which ensure that the file exists and we can read it.</p></li>
 
 <dl class="function">
 <dt id="pydm.utilities.which">
-<code class="descclassname">pydm.utilities.</code><code class="descname">which</code><span class="sig-paren">(</span><em>cmd</em>, <em>mode=1</em>, <em>path=None</em>, <em>pathext=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#which"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.which" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.</code><code class="sig-name descname">which</code><span class="sig-paren">(</span><em class="sig-param">cmd</em>, <em class="sig-param">mode=1</em>, <em class="sig-param">path=None</em>, <em class="sig-param">pathext=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#which"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.which" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a command, mode, and a PATH string, return the path which
 conforms to the given mode on the PATH, or None if there is no such
 file.
@@ -281,7 +281,7 @@ path.</p>
 
 <span class="target" id="module-pydm.utilities.remove_protocol"></span><dl class="function">
 <dt id="pydm.utilities.remove_protocol.protocol_and_address">
-<code class="descclassname">pydm.utilities.remove_protocol.</code><code class="descname">protocol_and_address</code><span class="sig-paren">(</span><em>address</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/remove_protocol.html#protocol_and_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.remove_protocol.protocol_and_address" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.remove_protocol.</code><code class="sig-name descname">protocol_and_address</code><span class="sig-paren">(</span><em class="sig-param">address</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/remove_protocol.html#protocol_and_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.remove_protocol.protocol_and_address" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the Protocol and Address pieces of a Channel Address</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -299,7 +299,7 @@ path.</p>
 
 <dl class="function">
 <dt id="pydm.utilities.remove_protocol.remove_protocol">
-<code class="descclassname">pydm.utilities.remove_protocol.</code><code class="descname">remove_protocol</code><span class="sig-paren">(</span><em>addr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/remove_protocol.html#remove_protocol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.remove_protocol.remove_protocol" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.remove_protocol.</code><code class="sig-name descname">remove_protocol</code><span class="sig-paren">(</span><em class="sig-param">addr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/remove_protocol.html#remove_protocol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.remove_protocol.remove_protocol" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes the first occurrence of the protocol string (‘://’) from the string <cite>addr</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -319,12 +319,12 @@ path.</p>
 <h2>Icons<a class="headerlink" href="#icons" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pydm.utilities.iconfont.IconFont">
-<em class="property">class </em><code class="descclassname">pydm.utilities.iconfont.</code><code class="descname">IconFont</code><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydm.utilities.iconfont.</code><code class="sig-name descname">IconFont</code><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont" title="Permalink to this definition">¶</a></dt>
 <dd><p>IconFont represents an icon font.  Users will generally want
 to use IconFont.icon() to get a QIcon object for the character they want.</p>
 <dl class="method">
 <dt id="pydm.utilities.iconfont.IconFont.icon">
-<code class="descname">icon</code><span class="sig-paren">(</span><em>name</em>, <em>color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont.icon" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">icon</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont.icon" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve the icon given a name and color.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -350,14 +350,14 @@ Icon strings can be found at: <a class="reference external" href="https://fontaw
 <span id="macro"></span><h2>Macro<a class="headerlink" href="#module-pydm.utilities.macro" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pydm.utilities.macro.find_base_macros">
-<code class="descclassname">pydm.utilities.macro.</code><code class="descname">find_base_macros</code><span class="sig-paren">(</span><em>widget</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/macro.html#find_base_macros"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.macro.find_base_macros" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.macro.</code><code class="sig-name descname">find_base_macros</code><span class="sig-paren">(</span><em class="sig-param">widget</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/macro.html#find_base_macros"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.macro.find_base_macros" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find and return the first set of defined base_macros from this widget or
 its ancestors.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="pydm.utilities.macro.parse_macro_string">
-<code class="descclassname">pydm.utilities.macro.</code><code class="descname">parse_macro_string</code><span class="sig-paren">(</span><em>macro_string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/macro.html#parse_macro_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.macro.parse_macro_string" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.macro.</code><code class="sig-name descname">parse_macro_string</code><span class="sig-paren">(</span><em class="sig-param">macro_string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/macro.html#parse_macro_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.macro.parse_macro_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parses a macro string and returns a dictionary.
 First, this method attempts to parse the string as JSON.
 If that fails, it attempts to parse it as an EPICS-style
@@ -367,7 +367,7 @@ closely based on macParseDefns in libCom/macUtil.c</p>
 
 <dl class="function">
 <dt id="pydm.utilities.macro.substitute_in_file">
-<code class="descclassname">pydm.utilities.macro.</code><code class="descname">substitute_in_file</code><span class="sig-paren">(</span><em>file_path</em>, <em>macros</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/macro.html#substitute_in_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.macro.substitute_in_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.macro.</code><code class="sig-name descname">substitute_in_file</code><span class="sig-paren">(</span><em class="sig-param">file_path</em>, <em class="sig-param">macros</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/macro.html#substitute_in_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.macro.substitute_in_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Substitute the macros given by ${name} at the given file with the entries on the <cite>macros</cite> dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -390,7 +390,7 @@ closely based on macParseDefns in libCom/macUtil.c</p>
 <span id="colors"></span><h2>Colors<a class="headerlink" href="#module-pydm.utilities.colors" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pydm.utilities.colors.hex_from_svg_color">
-<code class="descclassname">pydm.utilities.colors.</code><code class="descname">hex_from_svg_color</code><span class="sig-paren">(</span><em>color_string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/colors.html#hex_from_svg_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.colors.hex_from_svg_color" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.colors.</code><code class="sig-name descname">hex_from_svg_color</code><span class="sig-paren">(</span><em class="sig-param">color_string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/colors.html#hex_from_svg_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.colors.hex_from_svg_color" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the HEX color based on its SVG equivalent.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -407,7 +407,7 @@ closely based on macParseDefns in libCom/macUtil.c</p>
 
 <dl class="function">
 <dt id="pydm.utilities.colors.svg_color_from_hex">
-<code class="descclassname">pydm.utilities.colors.</code><code class="descname">svg_color_from_hex</code><span class="sig-paren">(</span><em>hex_string</em>, <em>hex_on_fail=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/colors.html#svg_color_from_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.colors.svg_color_from_hex" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.colors.</code><code class="sig-name descname">svg_color_from_hex</code><span class="sig-paren">(</span><em class="sig-param">hex_string</em>, <em class="sig-param">hex_on_fail=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/colors.html#svg_color_from_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.colors.svg_color_from_hex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the SVG color based on its HEX equivalent.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -431,7 +431,7 @@ Default is False.</p></li>
 <span id="units"></span><h2>Units<a class="headerlink" href="#module-pydm.utilities.units" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pydm.utilities.units.convert">
-<code class="descclassname">pydm.utilities.units.</code><code class="descname">convert</code><span class="sig-paren">(</span><em>unit</em>, <em>desired</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.convert" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.units.</code><code class="sig-name descname">convert</code><span class="sig-paren">(</span><em class="sig-param">unit</em>, <em class="sig-param">desired</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.convert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the conversion rate of two different unit strings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -451,7 +451,7 @@ Default is False.</p></li>
 
 <dl class="function">
 <dt id="pydm.utilities.units.find_unit">
-<code class="descclassname">pydm.utilities.units.</code><code class="descname">find_unit</code><span class="sig-paren">(</span><em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#find_unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.find_unit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.units.</code><code class="sig-name descname">find_unit</code><span class="sig-paren">(</span><em class="sig-param">unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#find_unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.find_unit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the conversion of a unit string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -468,7 +468,7 @@ Default is False.</p></li>
 
 <dl class="function">
 <dt id="pydm.utilities.units.find_unit_options">
-<code class="descclassname">pydm.utilities.units.</code><code class="descname">find_unit_options</code><span class="sig-paren">(</span><em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#find_unit_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.find_unit_options" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.units.</code><code class="sig-name descname">find_unit_options</code><span class="sig-paren">(</span><em class="sig-param">unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#find_unit_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.find_unit_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the options for a given unit.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -485,7 +485,7 @@ Default is False.</p></li>
 
 <dl class="function">
 <dt id="pydm.utilities.units.find_unittype">
-<code class="descclassname">pydm.utilities.units.</code><code class="descname">find_unittype</code><span class="sig-paren">(</span><em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#find_unittype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.find_unittype" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.units.</code><code class="sig-name descname">find_unittype</code><span class="sig-paren">(</span><em class="sig-param">unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#find_unittype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.units.find_unittype" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the type of a unit string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
