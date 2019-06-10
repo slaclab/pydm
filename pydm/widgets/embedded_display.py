@@ -3,11 +3,13 @@ from qtpy.QtCore import Qt, QSize
 from qtpy.QtCore import Property
 import json
 import os.path
+import logging
 from .base import PyDMPrimitiveWidget
 from ..utilities import (is_pydm_app, establish_widget_connections,
-                         close_widget_connections)
-from ..utilities.macro import parse_macro_string
+                         close_widget_connections, macro, is_qt_designer)
+from ..utilities.display_loading import (load_ui_file, load_py_file)
 
+logger = logging.getLogger(__name__)
 
 class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     """
@@ -29,6 +31,13 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         self._embedded_widget = None
         self._disconnect_when_hidden = True
         self._is_connected = False
+        self._only_load_when_shown = True
+        self._needs_load = True
+        self.base_path = ""
+        self.base_macros = {}
+        if is_pydm_app():
+          self.base_path = self.app.directory_stack[-1]
+          self.base_macros = self.app.macro_stack[-1]
         self.layout = QVBoxLayout(self)
         self.err_label = QLabel(self)
         self.err_label.setAlignment(Qt.AlignHCenter)
@@ -39,6 +48,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             self.setFrameShape(QFrame.Box)
         else:
             self.setFrameShape(QFrame.NoFrame)
+        
 
     def minimumSizeHint(self):
         """
@@ -105,23 +115,10 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         filename = str(filename)
         if filename != self._filename:
             self._filename = filename
-            # If we aren't in a PyDMApplication (usually that means we are in Qt Designer),
-            # don't try to load the file, just show text with the filename.
-            if not is_pydm_app():
-                self.err_label.setText(self._filename)
-                self.err_label.show()
-                return
-            try:
+            if self._only_load_when_shown and (not is_qt_designer()):
+                self._needs_load = True
+            else:
                 self.embedded_widget = self.open_file()
-            except ValueError as e:
-                self.err_label.setText(
-                    "Could not parse macro string.\nError: {}".format(e))
-                self.err_label.show()
-            except IOError as e:
-                self.err_label.setText(
-                    "Could not open {filename}.\nError: {err}".format(
-                        filename=self._filename, err=e))
-                self.err_label.show()
 
     def parsed_macros(self):
         """
@@ -131,9 +128,11 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         --------
         dict
         """
-        return parse_macro_string(self.macros)
+        m = macro.find_base_macros(self)
+        m.update(macro.parse_macro_string(self.macros))
+        return m
 
-    def open_file(self):
+    def open_file(self, force=False):
         """
         Opens the widget specified in the widget's filename property.
 
@@ -141,13 +140,54 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         -------
         display : QWidget
         """
+        if (not force) and (not self._needs_load):
+            return
+            
+        if not self.filename:
+            return
         # Expand user (~ or ~user) and environment variables.
         fname = os.path.expanduser(os.path.expandvars(self.filename))
-        if os.path.isabs(fname):
-            return self.app.open_file(fname, macros=self.parsed_macros())
-        else:
-            return self.app.open_relative(fname, self,
-                                          macros=self.parsed_macros())
+        if self.base_path:
+            fname = os.path.join(self.base_path, fname)
+        if not is_pydm_app():
+            (filename, extension) = os.path.splitext(fname)
+            if extension == ".ui":
+                loadfunc = load_ui_file
+            elif extension == ".py":
+                loadfunc = load_py_file
+            try:
+                w = loadfunc(fname, macros=self.parsed_macros())
+                self._needs_load = False
+                self.clear_error_text()
+                return w
+            except Exception as e:
+                logger.exception("Exception while opening embedded display file.")
+                self.display_error_text(e)
+            return None
+        
+        # If you get this far, you are running inside a PyDMApplication, load
+        # using that system.
+        try:
+            if os.path.isabs(fname):
+                w = self.app.open_file(fname, macros=self.parsed_macros())
+            else:
+                w = self.app.open_relative(fname, self,
+                                              macros=self.parsed_macros())
+            self._needs_load = False
+            self.clear_error_text()
+            return w
+        except (ValueError, IOError) as e:
+            self.display_error_text(e)
+
+    def clear_error_text(self):
+        self.err_label.clear()
+        self.err_label.hide()
+
+    def display_error_text(self, e):
+        self.err_label.setText(
+            "Could not open {filename}.\nError: {err}".format(
+                filename=self._filename, err=e))
+        self.err_label.show()
 
     @property
     def embedded_widget(self):
@@ -176,16 +216,17 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             self.layout.removeWidget(self._embedded_widget)
             self._embedded_widget.deleteLater()
             self._embedded_widget = None
-        self._embedded_widget = new_widget
-        self._embedded_widget.setParent(self)
-        self.layout.addWidget(self._embedded_widget)
-        self.err_label.hide()
-        self._embedded_widget.show()
-        self._is_connected = True
+        if new_widget is not None:
+            self._embedded_widget = new_widget
+            self._embedded_widget.setParent(self)
+            self.layout.addWidget(self._embedded_widget)
+            self.err_label.hide()
+            self._embedded_widget.show()
+            self._is_connected = True
 
     def connect(self):
         """
-        Establish the connection between the embedded widget widgets and
+        Establish the connection between the embedded widget and
         the channels associated with it.
         """
         if self._is_connected or self.embedded_widget is None:
@@ -194,12 +235,36 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
 
     def disconnect(self):
         """
-        Disconnects the embedded widget widgets from the channels
+        Disconnects the embedded widget from the channels
         associated with it.
         """
         if not self._is_connected or self.embedded_widget is None:
             return
         close_widget_connections(self.embedded_widget)
+
+    @Property(bool)
+    def loadWhenShown(self):
+        """
+        If True, only load and display the file once the
+        PyDMEmbeddedDisplayWidget is visible on screen.  This is very useful
+        if you have many different PyDMEmbeddedWidgets in different tabs of a
+        QTabBar or PyDMTabBar: only the tab that the user is looking at will
+        be loaded, which can greatly speed up the launch time of a display.
+        
+        If this property is changed from 'True' to 'False', and the file has
+        not been loaded yet, it will be loaded immediately.
+        
+        Returns
+        -------
+        bool
+        """
+        return self._only_load_when_shown
+        
+    @loadWhenShown.setter
+    def loadWhenShown(self, val):
+        self._only_load_when_shown = val
+        if val is False and self._needs_load:
+            self.embedded_widget = self.open_file()
 
     @Property(bool)
     def disconnectWhenHidden(self):
@@ -231,6 +296,10 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         ----------
         event : QShowEvent
         """
+        if self._only_load_when_shown:
+            w = self.open_file()
+            if w:
+                self.embedded_widget = w
         if self.disconnectWhenHidden:
             self.connect()
 
