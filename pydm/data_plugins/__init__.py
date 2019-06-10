@@ -13,7 +13,7 @@ import json
 from collections import deque
 from contextlib import contextmanager
 from qtpy.QtWidgets import QApplication
-from .plugin import PyDMPlugin
+from .plugin import PyDMPlugin, PyDMConnection
 from ..utilities import protocol_and_address
 from ..utilities.channel import parse_channel_config
 from .. import config
