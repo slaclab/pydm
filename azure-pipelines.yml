@@ -166,7 +166,7 @@ jobs:
       displayName: Artifact Download - PyPI Package
 
     - bash: |
-        twine upload --config-file $(PYPIRC_PATH) $(Build.Repository.LocalPath)/artifacts/dist/
+        twine upload --config-file $(PYPIRC_PATH) $(Build.Repository.LocalPath)/artifacts/dist/*
       condition: contains(variables['Build.SourceBranch'], 'tags')
       displayName: PyPI - Upload
 
