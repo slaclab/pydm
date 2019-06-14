@@ -13,7 +13,7 @@ ACTIVATE=$PREFIX/etc/conda/activate.d/pydm.sh
 DEACTIVATE=$PREFIX/etc/conda/deactivate.d/pydm.sh
 
 echo "from pydm.widgets.qtplugins import *" >> $DESIGNER_PLUGIN
-echo "export PYQTDESIGNERPATH="$DESIGNER_PLUGIN_PATH":$PYQTDESIGNERPATH" >> $ACTIVATE
+echo "export PYQTDESIGNERPATH="$DESIGNER_PLUGIN_PATH":\$PYQTDESIGNERPATH" >> $ACTIVATE
 echo "unset PYQTDESIGNERPATH" >> $DEACTIVATE
 
 unset DESIGNER_PLUGIN_PATH
