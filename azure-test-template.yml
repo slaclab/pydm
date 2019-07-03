@@ -19,10 +19,6 @@ jobs:
         python.version: '3.7'
 
   steps:
-  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
-    displayName: 'Windows - Add conda to PATH'
-    condition: eq(variables['agent.os'], 'Windows_NT' )
-
   - bash: echo "##vso[task.prependpath]$CONDA/bin"
     displayName: 'MacOS - Add conda to PATH'
     condition: eq(variables['agent.os'], 'Darwin' )
@@ -69,15 +65,17 @@ jobs:
       updateConda: true
 
   - bash: |
-     conda info --envs
-    displayName: Debug
-
-  - bash: |
       source activate base
       conda config --set always_yes yes
       conda config --add channels conda-forge
       conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
     displayName: 'Anaconda - Configure - Add local bld-dir'
+
+  - bash: |
+      conda info
+      conda info --envs
+      conda config --show channels
+    displayName: Debug
 
   - bash: |
       source activate base
@@ -95,14 +93,6 @@ jobs:
       conda install -q -c conda-forge pydm --file dev-requirements.txt
       pip install pytest-azurepipelines
     displayName: 'Anaconda - Install Dependencies'
-
-  # Windows Only
-  - powershell: |
-      $MyProcess = Start-Process $Env:REPEATER -PassThru
-    env:
-      REPEATER: $(CONDA_PREFIX)\Lib\site-packages\epics\clibs\win64\caRepeater.exe
-    displayName: 'Windows - Start CaRepeater'
-    condition: eq(variables['agent.os'], 'Windows_NT' )
 
   - bash: |
       source activate base

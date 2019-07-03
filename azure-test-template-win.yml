@@ -1,0 +1,86 @@
+# Azure Pipelines CI job template for PyDM Tests
+
+parameters:
+  name: ''
+  vmImage: ''
+
+jobs:
+- job: ${{ parameters.name }}
+  pool:
+    vmImage: ${{ parameters.vmImage }}
+  strategy:
+    matrix:
+      Python27:
+        python.version: '2.7'
+        python.name: '2_7'
+      Python36:
+        python.version: '3.6'
+        python.name: '3_6'
+        BUILD_DOCS: ${{ parameters.build_docs }}
+      Python37:
+        python.version: '3.7'
+        python.name: '3_7'
+
+  steps:
+  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+    displayName: 'Windows - Add conda to PATH'
+    condition: eq(variables['agent.os'], 'Windows_NT' )
+
+  - script: |
+      conda create --yes --quiet --name test-environment-$(python.name) python=$(python.version) conda-build anaconda-client
+    displayName: 'Anaconda - Create'
+
+  - bash: |
+      conda config --set always_yes yes
+      conda config --add channels conda-forge
+      conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
+    displayName: 'Anaconda - Configure - Add local bld-dir'
+
+  - script: |
+      conda info
+      conda info --envs
+      conda config --show channels
+    displayName: Debug
+
+  - script: |
+      call activate test-environment-$(python.name)
+      conda build conda-recipe -c conda-forge --python=$(python.version) --output-folder bld-dir
+    displayName: 'Anaconda - Build PyDM Package'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish - Anaconda Package'
+    inputs:
+      PathtoPublish: 'bld-dir'
+      ArtifactName: 'anaconda_package'
+
+  - script: |
+      call activate test-environment-$(python.name)
+      conda install -q -c conda-forge pytest-azurepipelines pydm --file dev-requirements.txt
+    displayName: 'Anaconda - Install Dependencies'
+
+  # Windows Only
+  - powershell: |
+      $MyProcess = Start-Process $Env:REPEATER -PassThru
+    env:
+      REPEATER: C:\Miniconda\envs\test-environment-$(python.name)\Lib\site-packages\epics\clibs\win64\caRepeater.exe
+    displayName: 'Windows - Start CaRepeater'
+    condition: eq(variables['agent.os'], 'Windows_NT' )
+
+  - script: |
+      call activate test-environment-$(python.name)
+      # debug of conda environment
+      conda info
+      conda list
+      python -c "from PyQt5 import QtCore; print(QtCore)"
+    displayName: 'Debug - Conda List'
+    continueOnError: false
+
+  - script: |
+      call activate test-environment-$(python.name)
+      python run_tests.py --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python.version)" --napoleon-docstrings
+    displayName: 'Tests - Run'
+    continueOnError: false
+
+  - bash: |
+      bash <(curl -s https://codecov.io/bash) -t $(CODECOV_TOKEN) || echo 'Codecov failed to upload.'
+    displayName: 'Publish - Codecov.io'
