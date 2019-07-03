@@ -174,11 +174,17 @@ def test_check_enable_state(qtbot, connected, write_access, has_enum,
         assert "Enums not available" in actual_tooltip
 
 
-def test_items_is_not_none():
+def test_items_is_not_none(qtbot):
     """
     Test that items property is not None, as QStringList definition meant for Qt Designer cannot handle that.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
     """
     widget = PyDMEnumButton()
+    qtbot.addWidget(widget)
     assert widget.items is not None
     assert isinstance(widget.items, list)
 
