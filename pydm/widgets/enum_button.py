@@ -60,6 +60,24 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         # This is totally arbitrary, I just want *some* visible nonzero size
         return QSize(50, 100)
 
+    @Property("QStringList")
+    def items(self):
+        """
+        Items to be displayed in the button group.
+
+        This property can be overridden by the items coming from the control system.
+        Because C++ QStringList expects a list type, we need to make sure that None is never returned.
+
+        Returns
+        -------
+        List[str]
+        """
+        return self.enum_strings or []
+
+    @items.setter
+    def items(self, value):
+        self.enum_strings_changed(value)
+
     @Property(WidgetType)
     def widgetType(self):
         """

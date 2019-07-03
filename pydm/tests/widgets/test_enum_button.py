@@ -174,6 +174,64 @@ def test_check_enable_state(qtbot, connected, write_access, has_enum,
         assert "Enums not available" in actual_tooltip
 
 
+def test_items_is_not_none(qtbot):
+    """
+    Test that items property is not None, as QStringList definition meant for Qt Designer cannot handle that.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
+    widget = PyDMEnumButton()
+    qtbot.addWidget(widget)
+    assert widget.items is not None
+    assert isinstance(widget.items, list)
+
+
+def test_items_defines_button_group(qtbot):
+    """
+    Test that defining items via the property actually alters buttons.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
+    widget = PyDMEnumButton()
+    qtbot.addWidget(widget)
+    widget.items = ["PLAY", "PAUSE"]
+    assert len(widget._btn_group.buttons()) == 2
+    assert widget._btn_group.button(0).text() == "PLAY"
+    assert widget._btn_group.button(1).text() == "PAUSE"
+    widget.items = ["STOP"]
+    assert len(widget._btn_group.buttons()) == 1
+    assert widget._btn_group.button(0).text() == "STOP"
+
+
+def test_enum_strings_signal_alters_items_prop(qtbot, signals):
+    """
+    Test that receiving new enum_strings from the CS overrides predefined button items.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    """
+    widget = PyDMEnumButton()
+    qtbot.addWidget(widget)
+    signals.enum_strings_signal[tuple].connect(widget.enumStringsChanged)
+    widget.items = ["PLAY", "PAUSE"]
+    assert len(widget._btn_group.buttons()) == 2
+    assert widget._btn_group.button(0).text() == "PLAY"
+    assert widget._btn_group.button(1).text() == "PAUSE"
+    signals.enum_strings_signal[tuple].emit(("STOP", ))
+    assert len(widget._btn_group.buttons()) == 1
+    assert widget._btn_group.button(0).text() == "STOP"
+
+
 def test_send_receive_value(qtbot, signals):
     """
     Test the widget for round-trip data transfer.
