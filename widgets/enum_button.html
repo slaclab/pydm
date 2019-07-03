@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMEnumButton &mdash; PyDM v1.7.1+2.gf9132cd0 documentation</title>
+  <title>PyDMEnumButton &mdash; PyDM v1.7.1+9.g59bb68a1 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.7.1+2.gf9132cd0
+                v1.7.1+9.g59bb68a1
               </div>
             
           
@@ -253,6 +253,22 @@ new enum values to be broadcasted.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – The clicked button id.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.items">
+<code class="sig-name descname">items</code><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Items to be displayed in the button group.</p>
+<p>This property can be overridden by the items coming from the control system.
+Because C++ QStringList expects a list type, we need to make sure that None is never returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[str]</p>
 </dd>
 </dl>
 </dd></dl>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.enum_button &mdash; PyDM v1.7.1+2.gf9132cd0 documentation</title>
+  <title>pydm.widgets.enum_button &mdash; PyDM v1.7.1+9.g59bb68a1 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.7.1+2.gf9132cd0
+                v1.7.1+9.g59bb68a1
               </div>
             
           
@@ -237,6 +237,24 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># This is totally arbitrary, I just want *some* visible nonzero size</span>
         <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></div>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Items to be displayed in the button group.</span>
+
+<span class="sd">        This property can be overridden by the items coming from the control system.</span>
+<span class="sd">        Because C++ QStringList expects a list type, we need to make sure that None is never returned.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        List[str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enum_strings</span> <span class="ow">or</span> <span class="p">[]</span>
+
+    <span class="nd">@items</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enum_strings_changed</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">WidgetType</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">widgetType</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
