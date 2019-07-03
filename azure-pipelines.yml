@@ -48,7 +48,7 @@ jobs:
       vmImage: 'Ubuntu 16.04'
       build_docs: 1
 
-  - template: azure-test-template.yml
+  - template: azure-test-template-win.yml
     parameters:
       name: Windows
       vmImage: 'vs2017-win2016'
