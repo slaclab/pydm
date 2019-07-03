@@ -16,7 +16,7 @@ from ...widgets.byte import PyDMByteIndicator
     (-1, 1, (False, True, False)),
     (-1, -5, (False, False, False)),
 ])
-def test_value_shift(qtbot, signals, shift, value, expected):
+def test_value_shift(qtbot, shift, value, expected):
     """
     Test the widget's handling of the value changed event affected by predefined shift.
 
@@ -28,8 +28,6 @@ def test_value_shift(qtbot, signals, shift, value, expected):
     ----------
     qtbot : fixture
         pytest-qt window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
     value : int
         The value to be displayed by the widget
     shift : int
@@ -44,8 +42,7 @@ def test_value_shift(qtbot, signals, shift, value, expected):
     pydm_byte.shift = shift
     pydm_byte._connected = True
 
-    signals.new_value_signal[type(value)].connect(pydm_byte.channelValueChanged)
-    signals.new_value_signal[type(value)].emit(value)
+    pydm_byte.value_changed(value)
 
     for i, bit, indicator in zip(range(num_bits), expected, pydm_byte._indicators):
         expected_color = pydm_byte.onColor if bit else pydm_byte.offColor
