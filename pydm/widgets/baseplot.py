@@ -728,4 +728,11 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             if self.horizontal_crosshair_line:
                 self.plotItem.removeItem(self.horizontal_crosshair_line)
             if self.crosshair_movement_proxy:
-                self.crosshair_movement_proxy.disconnect()
+                # self.crosshair_movement_proxy.disconnect()
+                proxy = self.crosshair_movement_proxy
+                proxy.block = True
+                try:
+                    proxy.signal.disconnect(proxy.signalReceived)
+                    proxy.sigDelayed.disconnect(proxy.slot)
+                except:
+                    pass
