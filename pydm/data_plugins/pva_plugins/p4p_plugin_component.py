@@ -37,7 +37,7 @@ class Connection(PyDMConnection):
 
     def __init__(self, channel, address, protocol=None, parent=None):
         super(Connection, self).__init__(channel, address, protocol, parent)
-        conn = parse_channel_config(address, force_dict=True)
+        conn = parse_channel_config(address, force_dict=True)['connection']
         address = conn.get('parameters', {}).get('address')
         self.nt_id = None
         self.monitor = PVAContext().context.monitor(name=address,
