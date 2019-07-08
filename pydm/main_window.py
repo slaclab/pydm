@@ -141,7 +141,7 @@ class PyDMMainWindow(QMainWindow):
             command_line_args = []
         merged_macros = self.merge_with_current_macros(macros)
         widget = self.app.open_file(filename, merged_macros, command_line_args, defer_connections=True)
-        if (len(self.back_stack) == 0) or (self.current_file() != filename):
+        if (len(self.back_stack) == 0) or (self.current_file() != filename) or (macros != self.current_macros()):
             self.back_stack.append((filename, merged_macros, command_line_args))
         self.set_display_widget(widget)
         self.ui.actionForward.setEnabled(len(self.forward_stack) > 0)
