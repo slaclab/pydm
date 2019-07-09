@@ -14,7 +14,11 @@ codecs = {}
 
 
 def decompress(structure):
+    if structure is None:
+        return
     data = structure.get('value')
+    if data is None:
+        return
     shape = []
     for dim in structure.get('dimension', []):
         shape.append(dim.get('size'))

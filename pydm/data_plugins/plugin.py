@@ -1,3 +1,4 @@
+import json
 import threading
 import weakref
 
@@ -17,6 +18,7 @@ def safe_disconnect_signal(signal, slot):
             signal.disconnect()
     except TypeError:
         pass
+
 
 class BaseParameterEditor(QtWidgets.QWidget):
     def __init__(self, parent=None, *args, **kwargs):
@@ -79,6 +81,7 @@ class PyDMConnection(QObject):
         self.listener_count = 0
         self.app = QtWidgets.QApplication.instance()
         self.add_listener(channel)
+        self.connection = self.channel._connection
 
     def add_listener(self, channel):
         self.listener_count = self.listener_count + 1
@@ -112,7 +115,7 @@ class PyDMConnection(QObject):
     def send_to_channel(self):
         self.introspection.get(DataKeys.CONNECTION, 'CONNECTION')
         self.connected = self.data.get('CONNECTION', False)
-        DataStore[self.channel.address] = (self.data, self.introspection)
+        DataStore[self.connection] = (self.data, self.introspection)
         self.notify.emit()
 
 
@@ -132,15 +135,16 @@ class PyDMPlugin(object):
 
     def add_connection(self, channel):
         with self.lock:
-            address = self.get_address(channel)
+            address = channel.address
+            connection = channel._connection
             # If this channel is already connected to this plugin lets ignore
             if channel in self.channels:
                 return
             self.channels.add(channel)
-            if address in self.connections:
-                self.connections[address].add_listener(channel)
+            if connection in self.connections:
+                self.connections[connection].add_listener(channel)
             else:
-                self.connections[address] = self.connection_class(
+                self.connections[connection] = self.connection_class(
                     channel, address, self.protocol
                 )
 

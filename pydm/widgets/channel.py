@@ -1,3 +1,4 @@
+import json
 import logging
 from functools import partial
 
@@ -97,6 +98,7 @@ class PyDMChannel(QObject):
                  upper_ctrl_limit_slot=None, lower_ctrl_limit_slot=None,
                  value_signal=None, callback=None, parent=None):
         super(PyDMChannel, self).__init__(parent=parent)
+        self._connection = ""
         self._address = None
         self._protocol = None
         self._use_introspection = True
@@ -151,6 +153,7 @@ class PyDMChannel(QObject):
             return
         address = clear_channel_address(address)
         config = parse_channel_config(address, force_dict=True)
+        self._connection = json.dumps(config.get('connection', {}))
         self._use_introspection = config.get('use_introspection', True)
         self._introspection = config.get('introspection', {})
         self._address = address
@@ -193,18 +196,18 @@ class PyDMChannel(QObject):
 
     def get_introspection(self):
         if self._use_introspection:
-            return DataStore.introspect(self.address)
+            return DataStore.introspect(self._connection)
         return self._introspection
 
     def get_with_introspection(self):
-        data, intro = DataStore.fetch_with_introspection(self.address)
+        data, intro = DataStore.fetch_with_introspection(self._connection)
         # In case of user-defined introspection for inner fields
         if not self._use_introspection:
             intro = self._introspection
         return data, intro
 
     def get(self):
-        data = DataStore.fetch(self.address)
+        data = DataStore.fetch(self._connection)
         return data
 
     def put(self, data):
