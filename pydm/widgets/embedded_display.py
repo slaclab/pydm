@@ -115,9 +115,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         filename = str(filename)
         if filename != self._filename:
             self._filename = filename
-            if self._only_load_when_shown and (not is_qt_designer()):
-                self._needs_load = True
-            else:
+            self._needs_load = True
+            if (not self._only_load_when_shown) or is_qt_designer():
                 self.embedded_widget = self.open_file()
 
     def parsed_macros(self):
