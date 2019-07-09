@@ -88,7 +88,12 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         ----------
         new_macros : str
         """
-        self._macros = str(new_macros)
+        new_macros = str(new_macros)
+        if new_macros != self._macros:
+            self._macros = new_macros
+            self._needs_load = True
+            self.load_if_needed()
+        
 
     @Property(str)
     def filename(self):
@@ -115,10 +120,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         filename = str(filename)
         if filename != self._filename:
             self._filename = filename
-            if self._only_load_when_shown and (not is_qt_designer()):
-                self._needs_load = True
-            else:
-                self.embedded_widget = self.open_file()
+            self._needs_load = True
+            self.load_if_needed()
 
     def parsed_macros(self):
         """
@@ -131,6 +134,10 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         m = macro.find_base_macros(self)
         m.update(macro.parse_macro_string(self.macros))
         return m
+
+    def load_if_needed(self):
+        if (not self._only_load_when_shown) or self.isVisible() or is_qt_designer():
+            self.embedded_widget = self.open_file()
 
     def open_file(self, force=False):
         """
@@ -148,15 +155,15 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         # Expand user (~ or ~user) and environment variables.
         fname = os.path.expanduser(os.path.expandvars(self.filename))
         if self.base_path:
-            fname = os.path.join(self.base_path, fname)
+            full_fname = os.path.join(self.base_path, fname)
         if not is_pydm_app():
-            (filename, extension) = os.path.splitext(fname)
+            (filename, extension) = os.path.splitext(full_fname)
             if extension == ".ui":
                 loadfunc = load_ui_file
             elif extension == ".py":
                 loadfunc = load_py_file
             try:
-                w = loadfunc(fname, macros=self.parsed_macros())
+                w = loadfunc(full_fname, macros=self.parsed_macros())
                 self._needs_load = False
                 self.clear_error_text()
                 return w
@@ -168,8 +175,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         # If you get this far, you are running inside a PyDMApplication, load
         # using that system.
         try:
-            if os.path.isabs(fname):
-                w = self.app.open_file(fname, macros=self.parsed_macros())
+            if os.path.isabs(full_fname) and os.path.exists(full_fname):
+                w = self.app.open_file(full_fname, macros=self.parsed_macros())
             else:
                 w = self.app.open_relative(fname, self,
                                               macros=self.parsed_macros())
@@ -263,8 +270,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     @loadWhenShown.setter
     def loadWhenShown(self, val):
         self._only_load_when_shown = val
-        if val is False and self._needs_load:
-            self.embedded_widget = self.open_file()
+        self.load_if_needed()
 
     @Property(bool)
     def disconnectWhenHidden(self):
