@@ -64,6 +64,8 @@ class PyDMTreeView(QtWidgets.QWidget, PyDMWidget):
             return parse(data, parent)
 
     def _receive_data(self, data=None, introspection=None, *args, **kwargs):
+        super(PyDMTreeView, self)._receive_data(data, introspection, *args,
+                                                **kwargs)
         self._visited_items = set(['root'])
         self._parse_data(data)
         # Cleanup routine
