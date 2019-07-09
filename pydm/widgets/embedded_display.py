@@ -88,7 +88,12 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         ----------
         new_macros : str
         """
-        self._macros = str(new_macros)
+        new_macros = str(new_macros)
+        if new_macros != self._macros:
+            self._macros = new_macros
+            self._needs_load = True
+            self.load_if_needed()
+        
 
     @Property(str)
     def filename(self):
@@ -116,8 +121,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         if filename != self._filename:
             self._filename = filename
             self._needs_load = True
-            if (not self._only_load_when_shown) or is_qt_designer():
-                self.embedded_widget = self.open_file()
+            self.load_if_needed()
 
     def parsed_macros(self):
         """
@@ -130,6 +134,10 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         m = macro.find_base_macros(self)
         m.update(macro.parse_macro_string(self.macros))
         return m
+
+    def load_if_needed(self):
+        if (not self._only_load_when_shown) or self.isVisible() or is_qt_designer():
+            self.embedded_widget = self.open_file()
 
     def open_file(self, force=False):
         """
@@ -262,8 +270,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     @loadWhenShown.setter
     def loadWhenShown(self, val):
         self._only_load_when_shown = val
-        if val is False and self._needs_load:
-            self.embedded_widget = self.open_file()
+        self.load_if_needed()
 
     @Property(bool)
     def disconnectWhenHidden(self):
