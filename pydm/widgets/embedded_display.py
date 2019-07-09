@@ -147,15 +147,15 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         # Expand user (~ or ~user) and environment variables.
         fname = os.path.expanduser(os.path.expandvars(self.filename))
         if self.base_path:
-            fname = os.path.join(self.base_path, fname)
+            full_fname = os.path.join(self.base_path, fname)
         if not is_pydm_app():
-            (filename, extension) = os.path.splitext(fname)
+            (filename, extension) = os.path.splitext(full_fname)
             if extension == ".ui":
                 loadfunc = load_ui_file
             elif extension == ".py":
                 loadfunc = load_py_file
             try:
-                w = loadfunc(fname, macros=self.parsed_macros())
+                w = loadfunc(full_fname, macros=self.parsed_macros())
                 self._needs_load = False
                 self.clear_error_text()
                 return w
@@ -167,8 +167,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         # If you get this far, you are running inside a PyDMApplication, load
         # using that system.
         try:
-            if os.path.isabs(fname):
-                w = self.app.open_file(fname, macros=self.parsed_macros())
+            if os.path.isabs(full_fname) and os.path.exists(full_fname):
+                w = self.app.open_file(full_fname, macros=self.parsed_macros())
             else:
                 w = self.app.open_relative(fname, self,
                                               macros=self.parsed_macros())
