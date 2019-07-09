@@ -215,6 +215,34 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self._slider.setValue(self.find_closest_slider_position_to_value(val))
         self._mute_internal_slider_changes = False
 
+    def connection_changed(self, connected):
+        """
+        Callback invoked when the connection state of the Channel is changed.
+        This callback acts on the connection state to enable/disable the widget
+        and also trigger the change on alarm severity to ALARM_DISCONNECTED.
+
+        Parameters
+        ----------
+        connected : int
+            When this value is 0 the channel is disconnected, 1 otherwise.
+        """
+        super(PyDMSlider, self).connection_changed(connected)
+        self.set_enable_state()
+
+    def write_access_changed(self, new_write_access):
+        """
+        Callback invoked when the Channel has new write access value.
+        This callback calls check_enable_state so it can act on the widget
+        enabling or disabling it accordingly
+
+        Parameters
+        ----------
+        new_write_access : bool
+            True if write operations to the channel are allowed.
+        """
+        super(PyDMSlider, self).write_access_changed(new_write_access)
+        self.set_enable_state()
+
     def value_changed(self, new_val):
         """
         Callback invoked when the Channel value is changed.
