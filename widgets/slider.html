@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMSlider &mdash; PyDM v1.7.1+19.g1a9a77d3 documentation</title>
+  <title>PyDMSlider &mdash; PyDM v1.7.1+21.gc5592792 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.7.1+19.g1a9a77d3
+                v1.7.1+21.gc5592792
               </div>
             
           
@@ -213,6 +213,19 @@
 </ul>
 </dd>
 </dl>
+<dl class="method">
+<dt id="pydm.widgets.slider.PyDMSlider.connection_changed">
+<code class="sig-name descname">connection_changed</code><span class="sig-paren">(</span><em class="sig-param">connected</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.connection_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.connection_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the connection state of the Channel is changed.
+This callback acts on the connection state to enable/disable the widget
+and also trigger the change on alarm severity to ALARM_DISCONNECTED.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>connected</strong> (<em>int</em>) – When this value is 0 the channel is disconnected, 1 otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydm.widgets.slider.PyDMSlider.ctrl_limit_changed">
 <code class="sig-name descname">ctrl_limit_changed</code><span class="sig-paren">(</span><em class="sig-param">which</em>, <em class="sig-param">new_limit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.ctrl_limit_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.ctrl_limit_changed" title="Permalink to this definition">¶</a></dt>
@@ -494,6 +507,19 @@ channel</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_val</strong> (<em>int</em><em> or </em><em>float</em>) – The new value from the channel.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.slider.PyDMSlider.write_access_changed">
+<code class="sig-name descname">write_access_changed</code><span class="sig-paren">(</span><em class="sig-param">new_write_access</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.write_access_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.write_access_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel has new write access value.
+This callback calls check_enable_state so it can act on the widget
+enabling or disabling it accordingly</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_write_access</strong> (<em>bool</em>) – True if write operations to the channel are allowed.</p>
 </dd>
 </dl>
 </dd></dl>
