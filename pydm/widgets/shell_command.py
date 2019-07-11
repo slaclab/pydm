@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QPushButton
 from qtpy.QtGui import QCursor, QIcon
-from qtpy.QtCore import Slot, Property, QSize
+from qtpy.QtCore import Slot, Property, QSize, Qt
 import shlex
 import subprocess
 from .base import PyDMPrimitiveWidget
@@ -118,8 +118,8 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         ----------
         mouse_event :
         """
-
-        self.execute_command()
+        if mouse_event.button() == Qt.LeftButton:
+            self.execute_command()
         super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
 
     @Slot()
