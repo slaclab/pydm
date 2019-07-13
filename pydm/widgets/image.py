@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QActionGroup
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QThread
-from pyqtgraph import ImageView
+from pyqtgraph import ImageView, PlotItem
 from pyqtgraph import ColorMap
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
 import numpy as np
@@ -105,7 +105,8 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
 
     def __init__(self, parent=None, image_channel=None, width_channel=None):
         """Initialize widget."""
-        ImageView.__init__(self, parent)
+        plot_item = PlotItem()
+        ImageView.__init__(self, parent, view=plot_item)
         PyDMWidget.__init__(self)
         self._channels = [None, None]
         self.thread = None
@@ -116,6 +117,8 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self._image_width = 0
         self._normalize_data = False
         self._auto_downsample = True
+        self._show_axes = False
+        self.showAxes = self._show_axes
 
         # Hide some itens of the widget.
         self.ui.histogram.hide()
@@ -178,7 +181,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             If the return of this method is None a new QMenu will be created by
             `assemble_tools_menu`.
         """
-        self.menu = ViewBoxMenu(self.getView())
+        self.menu = ViewBoxMenu(self.getView().getViewBox())
         cm_menu = self.menu.addMenu("Color Map")
         for act in self.cmap_for_action.keys():
             cm_menu.addAction(act)
@@ -308,7 +311,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             # Take default values
             pos = np.linspace(0.0, 1.0, num=len(self._cm_colors))
             cmap = ColorMap(pos, self._cm_colors)
-        self.getView().setBackgroundColor(cmap.map(0))
+        self.getView().getViewBox().setBackgroundColor(cmap.map(0))
         lut = cmap.getLookupTable(0.0, 1.0, alpha=False)
         self.getImageItem().setLookupTable(lut)
 
@@ -630,3 +633,45 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """
         self._redraw_rate = redraw_rate
         self.redraw_timer.setInterval(int((1.0 / self._redraw_rate) * 1000))
+
+    @Property(bool)
+    def showAxes(self):
+        """
+        Whether or not axes should be shown on the widget.
+        """
+        return self._show_axes
+    
+    @showAxes.setter
+    def showAxes(self, show):
+        self._show_axes = show
+        self.getView().showAxis('left', show=show)
+        self.getView().showAxis('bottom', show=show)
+        
+    @Property(float)
+    def scaleXAxis(self):
+        """
+        Sets the scale for the X Axis.
+    
+        For example, if your image has 100 pixels per millimeter, you can set
+        xAxisScale to 1/100 = 0.01 to make the X Axis report in millimeter units.
+        """
+        return self.getView().getAxis('bottom').scale
+    
+    @scaleXAxis.setter
+    def scaleXAxis(self, new_scale):
+        self.getView().getAxis('bottom').setScale(new_scale)
+    
+    @Property(float)
+    def scaleYAxis(self):
+        """
+        Sets the scale for the Y Axis.
+    
+        For example, if your image has 100 pixels per millimeter, you can set
+        yAxisScale to 1/100 = 0.01 to make the Y Axis report in millimeter units.
+        """
+        return self.getView().getAxis('left').scale
+    
+    @scaleYAxis.setter
+    def scaleYAxis(self, new_scale):
+        self.getView().getAxis('left').setScale(new_scale)
+        
