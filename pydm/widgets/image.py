@@ -119,8 +119,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self._auto_downsample = True
         self._show_axes = False
         self.showAxes = self._show_axes
-        self._x_scale = 1.0
-        self._y_scale = 1.0
 
         # Hide some itens of the widget.
         self.ui.histogram.hide()
