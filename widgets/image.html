@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMImageView &mdash; PyDM v1.7.2+2.g8bab91ce documentation</title>
+  <title>PyDMImageView &mdash; PyDM v1.7.2+5.gc4d03abb documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.7.2+2.g8bab91ce
+                v1.7.2+5.gc4d03abb
               </div>
             
           
@@ -448,6 +448,22 @@ to QWidgets.</p>
 <p>If necessary, reshape the image to 2D first.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pydm.widgets.image.PyDMImageView.scaleXAxis">
+<code class="sig-name descname">scaleXAxis</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.scaleXAxis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the scale for the X Axis.</p>
+<p>For example, if your image has 100 pixels per millimeter, you can set
+xAxisScale to 1/100 = 0.01 to make the X Axis report in millimeter units.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.image.PyDMImageView.scaleYAxis">
+<code class="sig-name descname">scaleYAxis</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.scaleYAxis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the scale for the Y Axis.</p>
+<p>For example, if your image has 100 pixels per millimeter, you can set
+yAxisScale to 1/100 = 0.01 to make the Y Axis report in millimeter units.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydm.widgets.image.PyDMImageView.setColorMap">
 <code class="sig-name descname">setColorMap</code><span class="sig-paren">(</span><em class="sig-param">cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.setColorMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setColorMap" title="Permalink to this definition">¶</a></dt>
@@ -471,6 +487,12 @@ to QWidgets.</p>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.image.PyDMImageView.showAxes">
+<code class="sig-name descname">showAxes</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.showAxes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not axes should be shown on the widget.</p>
 </dd></dl>
 
 <dl class="method">

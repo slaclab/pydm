@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.image &mdash; PyDM v1.7.2+2.g8bab91ce documentation</title>
+  <title>pydm.widgets.image &mdash; PyDM v1.7.2+5.gc4d03abb documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.7.2+2.g8bab91ce
+                v1.7.2+5.gc4d03abb
               </div>
             
           
@@ -178,7 +178,7 @@
   <h1>Source code for pydm.widgets.image</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QActionGroup</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Q_ENUMS</span><span class="p">,</span> <span class="n">QThread</span>
-<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="k">import</span> <span class="n">ImageView</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="k">import</span> <span class="n">ImageView</span><span class="p">,</span> <span class="n">PlotItem</span>
 <span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="k">import</span> <span class="n">ColorMap</span>
 <span class="kn">from</span> <span class="nn">pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu</span> <span class="k">import</span> <span class="n">ViewBoxMenu</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -283,7 +283,8 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">image_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize widget.&quot;&quot;&quot;</span>
-        <span class="n">ImageView</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="n">plot_item</span> <span class="o">=</span> <span class="n">PlotItem</span><span class="p">()</span>
+        <span class="n">ImageView</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="n">plot_item</span><span class="p">)</span>
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">=</span> <span class="kc">None</span>
@@ -294,6 +295,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_image_width</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_data</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_auto_downsample</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_axes</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">showAxes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_axes</span>
 
         <span class="c1"># Hide some itens of the widget.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">histogram</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
@@ -356,7 +359,7 @@
 <span class="sd">            If the return of this method is None a new QMenu will be created by</span>
 <span class="sd">            `assemble_tools_menu`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="n">ViewBoxMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="n">ViewBoxMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">()</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">())</span>
         <span class="n">cm_menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s2">&quot;Color Map&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">act</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmap_for_action</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">cm_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">act</span><span class="p">)</span>
@@ -486,7 +489,7 @@
             <span class="c1"># Take default values</span>
             <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cm_colors</span><span class="p">))</span>
             <span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cm_colors</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">()</span><span class="o">.</span><span class="n">setBackgroundColor</span><span class="p">(</span><span class="n">cmap</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">()</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">setBackgroundColor</span><span class="p">(</span><span class="n">cmap</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
         <span class="n">lut</span> <span class="o">=</span> <span class="n">cmap</span><span class="o">.</span><span class="n">getLookupTable</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">setLookupTable</span><span class="p">(</span><span class="n">lut</span><span class="p">)</span></div>
 
@@ -807,7 +810,49 @@
 <span class="sd">        redraw_rate : int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span> <span class="o">=</span> <span class="n">redraw_rate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">setInterval</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">setInterval</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">showAxes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not axes should be shown on the widget.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_axes</span>
+    
+    <span class="nd">@showAxes</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">showAxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_axes</span> <span class="o">=</span> <span class="n">show</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">()</span><span class="o">.</span><span class="n">showAxis</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="n">show</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">()</span><span class="o">.</span><span class="n">showAxis</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="n">show</span><span class="p">)</span>
+        
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">scaleXAxis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the scale for the X Axis.</span>
+<span class="sd">    </span>
+<span class="sd">        For example, if your image has 100 pixels per millimeter, you can set</span>
+<span class="sd">        xAxisScale to 1/100 = 0.01 to make the X Axis report in millimeter units.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">()</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">scale</span>
+    
+    <span class="nd">@scaleXAxis</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">scaleXAxis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_scale</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">()</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setScale</span><span class="p">(</span><span class="n">new_scale</span><span class="p">)</span>
+    
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">scaleYAxis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the scale for the Y Axis.</span>
+<span class="sd">    </span>
+<span class="sd">        For example, if your image has 100 pixels per millimeter, you can set</span>
+<span class="sd">        yAxisScale to 1/100 = 0.01 to make the Y Axis report in millimeter units.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">()</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">scale</span>
+    
+    <span class="nd">@scaleYAxis</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">scaleYAxis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_scale</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getView</span><span class="p">()</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setScale</span><span class="p">(</span><span class="n">new_scale</span><span class="p">)</span></div>
+        
 </pre></div>
 
            </div>
