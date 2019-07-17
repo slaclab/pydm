@@ -343,6 +343,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         legend_items = [label.text for (sample, label) in self._legend.items]
         for item in legend_items:
             self._legend.removeItem(item)
+        for curve in self._curves:
+            curve.deleteLater()
         self.plotItem.clear()
         self._curves = []
 
