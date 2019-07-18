@@ -65,7 +65,7 @@ def main():
                     version='PyDM {version}'.format(version=pydm.__version__),
                     help="Show PyDM's version number and exit.")
     parser.add_argument(
-        '-m', '--macro',
+        '-m', '--macro', action='append',
         help='Specify macro replacements to use, in JSON object format.' +
              '    Reminder: JSON requires double quotes for strings, ' +
              'so you should wrap this whole argument in single quotes.' +
@@ -94,7 +94,9 @@ def main():
     pydm_args = parser.parse_args()
     macros = None
     if pydm_args.macro is not None:
-        macros = parse_macro_string(pydm_args.macro)
+        macros = {}
+        for macro in pydm_args.macro:
+            macros.update(parse_macro_string(macro))
 
     if pydm_args.log_level:
         logger.setLevel(pydm_args.log_level)
