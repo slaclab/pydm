@@ -135,7 +135,7 @@ class PyDMPlugin(object):
 
     def add_connection(self, channel):
         with self.lock:
-            address = channel.address
+            address = self.get_address(channel)
             connection = channel._connection
             # If this channel is already connected to this plugin lets ignore
             if channel in self.channels:
@@ -147,17 +147,18 @@ class PyDMPlugin(object):
                 self.connections[connection] = self.connection_class(
                     channel, address, self.protocol
                 )
+            channel.notified()
 
     def remove_connection(self, channel, destroying=False):
         with self.lock:
-            address = self.get_address(channel)
-            if address in self.connections and channel in self.channels:
-                self.connections[address].remove_listener(
+            connection = channel._connection
+            if connection in self.connections and channel in self.channels:
+                self.connections[connection].remove_listener(
                     channel,
                     destroying=destroying)
                 self.channels.remove(channel)
-                if self.connections[address].listener_count < 1:
-                    del self.connections[address]
+                if self.connections[connection].listener_count < 1:
+                    del self.connections[connection]
 
     def get_repr(self, channel):
         config = parse_channel_config(channel, force_dict=True)
