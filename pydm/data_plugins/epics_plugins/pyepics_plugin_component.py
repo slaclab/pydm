@@ -2,7 +2,6 @@ import logging
 
 import epics
 from epics import dbr
-from qtpy.QtCore import Slot
 
 from pydm.utilities.channel import parse_channel_config
 
@@ -78,7 +77,6 @@ class Connection(PyDMConnection):
                 self.pv.run_callbacks()
         self.send_to_channel()
 
-    @Slot(dict)
     def receive_from_channel(self, payload):
         new_val = payload.get(DataKeys.VALUE, None)
         if new_val is None:

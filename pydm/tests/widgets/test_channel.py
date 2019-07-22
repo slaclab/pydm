@@ -76,7 +76,7 @@ def test_channel_data_flow(qtbot, test_plugin):
     ch.connect()
     assert len(test_plugin.connections) == 1
     connections = test_plugin.connections
-    tst_conn = connections['foo']
+    tst_conn = connections[ch._connection]
     assert tst_conn.payload_received is None
 
     #
