@@ -460,6 +460,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
+        self._write_access = False
 
         self.enum_strings = None
 
