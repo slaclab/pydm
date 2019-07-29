@@ -325,9 +325,9 @@ def test_precision_change(qtbot, signals, is_precision_from_pv, pv_precision, no
         signals.prec_signal[type(pv_precision)].connect(pydm_lineedit.precisionChanged)
         signals.prec_signal.emit(pv_precision)
 
-        assert pydm_lineedit._prec == pv_precision
+        assert pydm_lineedit.precision == pv_precision
     else:
-        assert pydm_lineedit._prec == non_pv_precision if non_pv_precision else pydm_lineedit._prec == 0
+        assert pydm_lineedit.precision == (non_pv_precision if non_pv_precision is not None else 0)
 
 
 @pytest.mark.parametrize("new_unit", [

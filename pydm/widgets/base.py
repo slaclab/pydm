@@ -202,10 +202,13 @@ class PyDMPrimitiveWidget(object):
                 logger.exception('Invalid format for Rules')
 
 class TextFormatter(object):
+
+    default_precision_from_pv = True
+
     def __init__(self):
         self._show_units = False
         self.format_string = "{}"
-        self._precision_from_pv = True
+        self._precision_from_pv = None
         self._prec = 0
         self._unit = ""
     
@@ -238,7 +241,7 @@ class TextFormatter(object):
         new_precison : int or float
             The new precision value
         """
-        if self._precision_from_pv and new_precision != self._prec:
+        if self.precisionFromPV and new_precision != self._prec:
             self._prec = new_precision
             if self.value is not None:
                 self.value_changed(self.value)
@@ -282,7 +285,7 @@ class TextFormatter(object):
         """
         # Only allow one to change the property if not getting the precision
         # from the PV
-        if self._precision_from_pv:
+        if self._precision_from_pv is not None and self._precision_from_pv:
             return
         if new_prec and self._prec != int(new_prec) and new_prec >= 0:
             self._prec = int(new_prec)
@@ -376,7 +379,9 @@ class TextFormatter(object):
             True means that the widget will use the precision information
             from the Channel if available.
         """
-        return self._precision_from_pv
+        return (self._precision_from_pv
+                if self._precision_from_pv is not None
+                else self.default_precision_from_pv)
 
     @precisionFromPV.setter
     def precisionFromPV(self, value):
@@ -400,7 +405,7 @@ class TextFormatter(object):
             True means that the widget will use the precision information
             from the PV if available.
         """
-        if self._precision_from_pv != bool(value):
+        if self._precision_from_pv is None or self._precision_from_pv != bool(value):
             self._precision_from_pv = value
     
     def value_changed(self, new_val):
