@@ -16,7 +16,6 @@ from .. import data_plugins
 from .. import tools
 from ..data_store import DataKeys
 from ..utilities import (is_qt_designer, remove_protocol, data_callback)
-from ..utilities.channel import parse_channel_config
 
 try:
     from json.decoder import JSONDecodeError
@@ -471,7 +470,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         # the disconnected state.
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.contextMenuEvent = self.open_context_menu
-        self.channel = init_channel
         if not is_qt_designer():
             # We should  install the Event Filter only if we are running
             # and not at the Designer
@@ -479,6 +477,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self._connected = False
             self.alarm_severity_changed(self.ALARM_DISCONNECTED)
             self.check_enable_state()
+
+        self.channel = init_channel
 
         self.destroyed.connect(
             functools.partial(widget_destroyed, self.channels,
@@ -836,15 +836,14 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
             # Load new channel
             self._channel = str(value)
-
+            self._connected = False
+            self.alarm_severity_changed(self.ALARM_DISCONNECTED)
+            self.check_enable_state()
             channel = PyDMChannel(parent=self,
                                   address=value,
                                   callback=self._receive_data
                                   )
             self._channels.append(channel)
-            self._connected = False
-            self.alarm_severity_changed(self.ALARM_DISCONNECTED)
-            self.check_enable_state()
             # Connect the channel...
             channel.connect()
             # Force initial data fill...

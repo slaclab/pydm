@@ -35,7 +35,8 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
         self.app = QApplication.instance()
         self.setTextFormat(Qt.PlainText)
         self.setTextInteractionFlags(Qt.NoTextInteraction)
-        self.setText("PyDMLabel")
+        if init_channel is None:
+            self.setText("PyDMLabel")
         if is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
 
