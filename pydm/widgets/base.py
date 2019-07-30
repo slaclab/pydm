@@ -213,12 +213,12 @@ class PyDMPrimitiveWidget(object):
 
 class TextFormatter(object):
     def __init__(self, *args, **kwargs):
-        super(TextFormatter, self).__init__(*args, **kwargs)
         self._show_units = False
         self.format_string = "{}"
         self._precision_from_pv = True
         self._prec = 0
         self._unit = ""
+        super(TextFormatter, self).__init__(*args, **kwargs)
 
     def update_format_string(self):
         """

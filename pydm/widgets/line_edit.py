@@ -30,17 +30,18 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
     """
 
     def __init__(self, parent=None, init_channel=None):
+        self._display = None
+        self._scale = 1
+        self._display_format_type = self.DisplayFormat.Default
+        self._string_encoding = "utf_8"
+
         super(PyDMLineEdit, self).__init__(parent=parent, init_channel=init_channel)
 
         self.app = QApplication.instance()
-        self._display = None
-        self._scale = 1
 
         self.returnPressed.connect(self.send_value)
         self.unitMenu = QMenu('Convert Units', self)
         self.create_unit_options()
-        self._display_format_type = self.DisplayFormat.Default
-        self._string_encoding = "utf_8"
         if utilities.is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
 
