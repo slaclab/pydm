@@ -73,7 +73,7 @@ def test_key_press_event(qtbot, signals, monkeypatch, first_key_pressed, second_
         pydm_spinbox.show()
 
     pydm_spinbox.step_exponent = 0
-    pydm_spinbox._precision_from_pv = True
+    pydm_spinbox.precisionFromPV = True
     signals.prec_signal[int].connect(pydm_spinbox.precisionChanged)
     signals.prec_signal[int].emit(3)
 
@@ -270,7 +270,7 @@ def test_send_value(qtbot, signals, init_value, user_typed_value, precision):
 
     pydm_spinbox.setValue(init_value)
 
-    pydm_spinbox._precision_from_pv = True
+    pydm_spinbox.precisionFromPV = True
     signals.prec_signal[type(precision)].connect(pydm_spinbox.precisionChanged)
     signals.prec_signal[type(precision)].emit(precision)
 
