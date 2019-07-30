@@ -10,9 +10,6 @@ jobs:
     vmImage: ${{ parameters.vmImage }}
   strategy:
     matrix:
-      Python27:
-        python.version: '2.7'
-        python.name: '2_7'
       Python36:
         python.version: '3.6'
         python.name: '3_6'

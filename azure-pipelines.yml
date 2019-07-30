@@ -37,6 +37,7 @@ pr:
   branches:
     include:
       - master
+      - 2.0
 
 variables:
   OFFICIAL_REPO: 'slaclab/pydm'
