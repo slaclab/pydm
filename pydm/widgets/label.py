@@ -25,8 +25,9 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        QLabel.__init__(self, parent)
-        PyDMWidget.__init__(self, init_channel=init_channel)
+        self._display_format_type = self.DisplayFormat.Default
+        self._string_encoding = "utf_8"
+        super(PyDMLabel, self).__init__(parent=parent, init_channel=init_channel)
         if 'Text' not in PyDMLabel.RULE_PROPERTIES:
             PyDMLabel.RULE_PROPERTIES = PyDMWidget.RULE_PROPERTIES.copy()
             PyDMLabel.RULE_PROPERTIES.update(
@@ -35,8 +36,6 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
         self.setTextFormat(Qt.PlainText)
         self.setTextInteractionFlags(Qt.NoTextInteraction)
         self.setText("PyDMLabel")
-        self._display_format_type = self.DisplayFormat.Default
-        self._string_encoding = "utf_8"
         if is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
 
