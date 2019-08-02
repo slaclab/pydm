@@ -90,7 +90,7 @@ jobs:
 
   - bash: |
       source activate base
-      conda install -q -c conda-forge pydm --file dev-requirements.txt
+      conda install -q -c conda-forge epics-base pydm --file dev-requirements.txt
       pip install pytest-azurepipelines
     displayName: 'Anaconda - Install Dependencies'
 

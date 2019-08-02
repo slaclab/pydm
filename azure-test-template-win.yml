@@ -52,7 +52,7 @@ jobs:
 
   - script: |
       call activate test-environment-$(python.name)
-      conda install -q -c conda-forge pytest-azurepipelines pydm --file dev-requirements.txt
+      conda install -q -c conda-forge pytest-azurepipelines epics-base pydm --file dev-requirements.txt
     displayName: 'Anaconda - Install Dependencies'
 
   # Windows Only
