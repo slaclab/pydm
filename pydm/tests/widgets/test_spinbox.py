@@ -3,7 +3,7 @@
 
 import pytest
 
-from qtpy.QtWidgets import QApplication, QDoubleSpinBox
+from qtpy.QtWidgets import QApplication
 from qtpy.QtGui import QKeyEvent
 from qtpy.QtCore import Property, QEvent, Qt
 
@@ -71,7 +71,7 @@ def test_key_press_event(qtbot, monkeypatch, first_key_pressed, second_key_press
         pydm_spinbox.show()
 
     pydm_spinbox.step_exponent = 0
-    pydm_spinbox._precision_from_pv = True
+    pydm_spinbox.precisionFromPV = True
     pydm_spinbox.precision_changed(3)
 
     INIT_SPINBOX_VALUE = 1.2
@@ -261,7 +261,7 @@ def test_send_value(qtbot, init_value, user_typed_value, precision):
 
     pydm_spinbox.setValue(init_value)
 
-    pydm_spinbox._precision_from_pv = True
+    pydm_spinbox.precisionFromPV = True
     pydm_spinbox.precision_changed(precision)
     pydm_spinbox.upper_limit_changed(100000)
     pydm_spinbox.lower_limit_changed(-100000)

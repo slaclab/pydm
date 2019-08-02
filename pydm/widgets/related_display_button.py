@@ -42,14 +42,14 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         self.setIconSize(QSize(16, 16))
         self.setIcon(self._icon)
 
-        self._filenames = []
+        self._filenames = [filename] if filename is not None else []
         self._titles = []
         self._macros = []
         self.num_additional_items = 0
         self._shift_key_was_down = False
         self.setCursor(QCursor(self._icon.pixmap(16, 16)))
         self._display_menu_items = None
-        self._display_filename = filename if filename is not None else ""
+        self._display_filename = ""
         self._macro_string = None
         self._open_in_new_window = False
         self.open_in_new_window_action = QAction("Open in New Window", self)

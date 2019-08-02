@@ -117,8 +117,8 @@ def test_pydmtextformatter_construct(qtbot):
     qtbot.addWidget(widget)
     assert widget._show_units is False
     assert widget.format_string == "{}"
-    assert widget._precision_from_pv is True
-    assert widget._prec == 0
+    assert widget.precisionFromPV is True
+    assert widget.precision == 0
     assert widget._unit == ""
 
 
@@ -127,12 +127,12 @@ def test_pydmtextformatter_precision(qtbot):
     qtbot.addWidget(widget)
     widget.value = 10
     assert widget.precisionFromPV is True
-    assert widget._prec == 0
+    assert widget.precision == 0
     widget.precision = 10
-    assert widget._prec == 0
+    assert widget.precision == 0
     widget.precisionFromPV = False
     widget.precision = 2
-    assert widget._prec == 2
+    assert widget.precision == 2
 
     widget.precision == 2
     widget.precisionFromPV = False
@@ -159,10 +159,11 @@ def test_pydmtextformatter_update_format_string(qtbot):
     widget = TextFormatWidget()
     qtbot.addWidget(widget)
     assert widget.value is None
-    assert widget._prec == 0
+    assert widget.precision == 0
 
     widget.value = 1.0
-    widget._prec = 2
+    widget.precisionFromPV = False
+    widget.precision = 2
     widget.show
     fmt = widget.update_format_string()
     assert fmt == "{:.2f}"
