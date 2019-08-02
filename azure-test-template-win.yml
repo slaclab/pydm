@@ -59,7 +59,7 @@ jobs:
   - powershell: |
       $MyProcess = Start-Process $Env:REPEATER -PassThru
     env:
-      REPEATER: C:\Miniconda\envs\test-environment-$(python.name)\Lib\site-packages\epics\clibs\win64\caRepeater.exe
+      REPEATER: C:\Miniconda\envs\test-environment-$(python.name)\epics\bin\windows-x64\caRepeater.exe
     displayName: 'Windows - Start CaRepeater'
     condition: eq(variables['agent.os'], 'Windows_NT' )
 
