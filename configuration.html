@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Configuration &mdash; PyDM v1.7.3+4.gf76a321c documentation</title>
+  <title>Configuration &mdash; PyDM v1.7.3+9.ga7c5c0bd documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.7.3+4.gf76a321c
+                v1.7.3+9.ga7c5c0bd
               </div>
             
           
@@ -229,32 +229,56 @@ default values.</p>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><p>PYDM_DISPLAYS_PATH</p></td>
+<tr class="row-even"><td><p>PYDM_PATH</p></td>
+<td><div class="line-block">
+<div class="line">Path to <cite>pydm</cite> executable for child processes, such as new windows.</div>
+<div class="line">It will only be used if <cite>pydm</cite> is not found in the standard <cite>$PATH</cite>.</div>
+<div class="line"><strong>Default:</strong> None</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>PYDM_DISPLAYS_PATH</p></td>
 <td><div class="line-block">
 <div class="line">Path in which PyDM should look for <code class="docutils literal notranslate"><span class="pre">.ui</span></code> and <code class="docutils literal notranslate"><span class="pre">.py</span></code> files when</div>
 <div class="line">they are not found. <strong>Note: This is not a recursive search.</strong></div>
-<div class="line"><strong>Default:</strong> None.</div>
+<div class="line"><strong>Default:</strong> None</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><p>PYDM_DATA_PLUGINS_PATH</p></td>
+<tr class="row-even"><td><p>PYDM_DATA_PLUGINS_PATH</p></td>
 <td><div class="line-block">
 <div class="line">Path in which PyDM should look for Data Plugins to be loaded.</div>
-<div class="line"><strong>Default:</strong> None.</div>
+<div class="line"><strong>Default:</strong> None</div>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><p>PYDM_TOOLS_PATH</p></td>
+<tr class="row-odd"><td><p>PYDM_TOOLS_PATH</p></td>
 <td><div class="line-block">
 <div class="line">Path in which PyDM should look for External Tools to be loaded.</div>
-<div class="line"><strong>Default:</strong> None.</div>
+<div class="line"><strong>Default:</strong> None</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><p>PYDM_STRING_ENCODING</p></td>
+<tr class="row-even"><td><p>PYDM_STRING_ENCODING</p></td>
 <td><div class="line-block">
 <div class="line">The string encoding to be used when converting arrays to strings.</div>
 <div class="line"><strong>Default:</strong> utf-8</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>PYDM_STYLESHEET</p></td>
+<td><div class="line-block">
+<div class="line">Path to the QSS file defining the global stylesheet for the</div>
+<div class="line">PyDM application. When used, it will override the default look.</div>
+<div class="line"><strong>Default:</strong> None</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>PYDM_DESIGNER_ONLINE</p></td>
+<td><div class="line-block">
+<div class="line">This flag enables receiving live data in Qt Designer. If disabled,</div>
+<div class="line">channels will not be connected to in Qt Designer.</div>
+<div class="line"><strong>Default:</strong> None</div>
 </div>
 </td>
 </tr>
