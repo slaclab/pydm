@@ -10,9 +10,6 @@ jobs:
     vmImage: ${{ parameters.vmImage }}
   strategy:
     matrix:
-      Python27:
-        python.version: '2.7'
-        python.name: '2_7'
       Python36:
         python.version: '3.6'
         python.name: '3_6'
@@ -20,6 +17,7 @@ jobs:
       Python37:
         python.version: '3.7'
         python.name: '3_7'
+  continueOnError: true
 
   steps:
   - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
@@ -55,14 +53,14 @@ jobs:
 
   - script: |
       call activate test-environment-$(python.name)
-      conda install -q -c conda-forge pytest-azurepipelines pydm --file dev-requirements.txt
+      conda install -q -c conda-forge epics-base pytest-azurepipelines pydm --file dev-requirements.txt
     displayName: 'Anaconda - Install Dependencies'
 
   # Windows Only
   - powershell: |
       $MyProcess = Start-Process $Env:REPEATER -PassThru
     env:
-      REPEATER: C:\Miniconda\envs\test-environment-$(python.name)\Lib\site-packages\epics\clibs\win64\caRepeater.exe
+      REPEATER: C:\Miniconda\envs\test-environment-$(python.name)\epics\bin\windows-x64\caRepeater.exe
     displayName: 'Windows - Start CaRepeater'
     condition: eq(variables['agent.os'], 'Windows_NT' )
 
@@ -78,6 +76,9 @@ jobs:
   - script: |
       call activate test-environment-$(python.name)
       python run_tests.py --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python.version)" --napoleon-docstrings
+    env:
+      PYEPICS_LIBCA: C:\Miniconda\envs\test-environment-$(python.name)\epics\lib\ca.lib
+      PATH: C:\Miniconda\envs\test-environment-$(python.name)\epics\lib:C:\Miniconda\envs\test-environment-$(python.name)\epics\bin:$(PATH)
     displayName: 'Tests - Run'
     continueOnError: false
 
