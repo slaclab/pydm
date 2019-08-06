@@ -78,7 +78,11 @@ jobs:
     condition: |
       and
       (
-        succeeded(),
+        and(
+          succeeded('Linux'),
+          succeeded('MacOS'),
+          succeededOrFailed('Windows')
+        ),
         eq(dependencies.DeployControl.outputs['var.build_ok'], true),
         or
         (
@@ -121,7 +125,11 @@ jobs:
     condition: |
       and
       (
-        succeeded(),
+        and(
+          succeeded('Linux'),
+          succeeded('MacOS'),
+          succeededOrFailed('Windows')
+        ),
         eq(dependencies.DeployControl.outputs['var.build_ok'], true),
         contains(variables['Build.SourceBranch'],'refs/tags')
       )
@@ -175,7 +183,11 @@ jobs:
     condition: |
       and
       (
-        succeeded(),
+        and(
+          succeeded('Linux'),
+          succeeded('MacOS'),
+          succeededOrFailed('Windows')
+        ),
         eq(dependencies.DeployControl.outputs['var.build_ok'], true),
         or
         (
