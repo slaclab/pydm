@@ -80,6 +80,21 @@ class RulesExtension(PyDMExtension):
         return [self.edit_rules_action]
 
 
+class SymbolExtension(PyDMExtension):
+    def __init__(self, widget):
+        super(SymbolExtension, self).__init__(widget)
+        self.widget = widget
+        self.edit_symbols_action = QtWidgets.QAction("Edit Symbols...", self.widget)
+        self.edit_symbols_action.triggered.connect(self.edit_symbols)
+
+    def edit_symbols(self, state):
+        edit_symbols_dialog = SymbolEditor(self.widget, parent=None)
+        edit_symbols_dialog.exec_()
+
+    def actions(self):
+        return [self.edit_symbols_action]
+
+
 class BasePlotExtension(PyDMExtension):
     def __init__(self, widget, curve_editor_class):
         super(BasePlotExtension, self).__init__(widget)
