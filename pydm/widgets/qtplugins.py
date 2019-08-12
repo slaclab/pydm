@@ -4,7 +4,7 @@ logger = logging.getLogger(__name__)
 from .qtplugin_base import qtplugin_factory, WidgetCategory
 from .qtplugin_extensions import (RulesExtension, WaveformCurveEditorExtension,
                                   TimeCurveEditorExtension,
-                                  ScatterCurveEditorExtension)
+                                  ScatterCurveEditorExtension, SymbolExtension)
 from .tab_bar_qtplugin import TabWidgetPlugin
 from .byte import PyDMByteIndicator
 
@@ -167,7 +167,7 @@ PyDMScaleIndicatorPlugin = qtplugin_factory(PyDMScaleIndicator,
 
 # Symbol plugin
 PyDMSymbolPlugin = qtplugin_factory(PyDMSymbol, group=WidgetCategory.DISPLAY,
-                                    extensions=BASE_EXTENSIONS)
+                                    extensions=[SymbolExtension, RulesExtension])
 
 # Waveform Table plugin
 PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable,
