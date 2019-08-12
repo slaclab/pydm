@@ -7,6 +7,7 @@ from ..widgets.rules_editor import RulesEditor
 from ..widgets.waveformplot_curve_editor import WaveformPlotCurveEditorDialog
 from ..widgets.timeplot_curve_editor import TimePlotCurveEditorDialog
 from ..widgets.scatterplot_curve_editor import ScatterPlotCurveEditorDialog
+from ..widgets.symbol_editor import SymbolEditor
 
 
 class PyDMExtensionFactory(QExtensionFactory):
