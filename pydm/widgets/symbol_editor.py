@@ -6,8 +6,9 @@ from qtpy.QtWidgets import QApplication, QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QPainter, QPixmap
 from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from qtpy.QtSvg import QSvgRenderer
-from ..utilities import is_pydm_app, is_qt_designer, IconFont
+from ..utilities import is_pydm_app, is_qt_designer
 from .base import PyDMWidget
+
 
 class SymbolEditor(QtWidgets.QDialog):
     """
@@ -49,7 +50,6 @@ class SymbolEditor(QtWidgets.QDialog):
         -------
         None
         """
-        iconfont = IconFont()
 
         self.setWindowTitle("PyDM Symbol Widget Editor")
         vlayout = QtWidgets.QVBoxLayout()
@@ -198,7 +198,6 @@ class SymbolEditor(QtWidgets.QDialog):
         self.frm_edit.setEnabled(True)
         self.update()
 
-
     def add_symbol(self):
         """Add a new rule to the list of rules."""
         default_state = "New State"
@@ -236,7 +235,7 @@ class SymbolEditor(QtWidgets.QDialog):
                 if not state_item:
                     continue
                 state = state_item.text()
-                self.symbols.pop(state, None) # troubleshoot by taking out None?
+                self.symbols.pop(state, None)
                 self.tbl_symbols.removeRow(row)
                 self.tbl_symbols.clearSelection()
             self.clear_form()
@@ -351,15 +350,15 @@ class SymbolEditor(QtWidgets.QDialog):
         if svg.load(abs_path):
             file_type = svg
             qInstallMessageHandler(None)
-            return (error, file_type)
+            return error, file_type
         qInstallMessageHandler(None)
         # SVG didn't work, lets try QPixmap
         image = QPixmap(abs_path)
         if not image.isNull():
             file_type = image
-            return (error, file_type)
+            return error, file_type
         # If we get this far, the file specified could not be loaded at all.
-        return (error, file_type)
+        return error, file_type
 
     def get_designer_window(self):  # pragma: no cover
         # Internal function to find the designer window that owns this widget.
