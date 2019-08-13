@@ -15,7 +15,7 @@ jobs:
         python.name: '3_6'
         BUILD_DOCS: ${{ parameters.build_docs }}
       Python37:
-        python.version: '3.7'
+        python.version: '3.7.3'
         python.name: '3_7'
   continueOnError: true
 
