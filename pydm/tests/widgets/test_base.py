@@ -85,8 +85,8 @@ def test_pydmwidget_construct(qtbot, init_channel):
     else:
         assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
 
-    assert pydm_label._precision_from_pv is True
-    assert pydm_label._prec == 0
+    assert pydm_label.precisionFromPV is True
+    assert pydm_label.precision == 0
     assert pydm_label._unit == ""
 
     assert pydm_label._upper_ctrl_limit is None
