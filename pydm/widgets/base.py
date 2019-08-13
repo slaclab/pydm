@@ -211,7 +211,7 @@ class TextFormatter(object):
         self._precision_from_pv = None
         self._prec = 0
         self._unit = ""
-    
+
     def update_format_string(self):
         """
         Reconstruct the format string to be used when representing the
@@ -229,7 +229,7 @@ class TextFormatter(object):
         if self._show_units and self._unit != "":
             self.format_string += " {}".format(self._unit)
         return self.format_string
-    
+
     def precision_changed(self, new_precision):
         """
         Callback invoked when the Channel has new precision value.
@@ -245,7 +245,7 @@ class TextFormatter(object):
             self._prec = new_precision
             if self.value is not None:
                 self.value_changed(self.value)
-    
+
     @Slot(int)
     @Slot(float)
     def precisionChanged(self, new_prec):
@@ -259,7 +259,7 @@ class TextFormatter(object):
         new_prec : int or float
         """
         self.precision_changed(new_prec)
-    
+
     @Property(int)
     def precision(self):
         """
@@ -290,7 +290,7 @@ class TextFormatter(object):
         if new_prec and self._prec != int(new_prec) and new_prec >= 0:
             self._prec = int(new_prec)
             self.value_changed(self.value)
-    
+
     @Slot(str)
     def unitChanged(self, new_unit):
         """
@@ -303,7 +303,7 @@ class TextFormatter(object):
         new_unit : str
         """
         self.unit_changed(new_unit)
-    
+
     def unit_changed(self, new_unit):
         """
         Callback invoked when the Channel has new unit value.
@@ -319,7 +319,7 @@ class TextFormatter(object):
             self._unit = new_unit
             if self.value is not None:
                 self.value_changed(self.value)
-    
+
 
     @Property(bool)
     def showUnits(self):
@@ -356,7 +356,7 @@ class TextFormatter(object):
         if self._show_units != show_units:
             self._show_units = show_units
             self.update_format_string()
-    
+
     @Property(bool)
     def precisionFromPV(self):
         """
@@ -407,7 +407,7 @@ class TextFormatter(object):
         """
         if self._precision_from_pv is None or self._precision_from_pv != bool(value):
             self._precision_from_pv = value
-    
+
     def value_changed(self, new_val):
         """
         Callback invoked when the Channel value is changed.
@@ -420,7 +420,7 @@ class TextFormatter(object):
         super(TextFormatter, self).value_changed(new_val)
         self.update_format_string()
 
-  
+
 class PyDMWidget(PyDMPrimitiveWidget):
     """
     PyDM base class for Read-Only widgets.
@@ -440,6 +440,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
     ALARM_INVALID = 3
     ALARM_DISCONNECTED = 4
 
+    MSG_DISCONNECTED = "PV is disconnected."
+    MSG_READONLY = "Running PyDM on Read-Only mode."
+    MSG_ACCESSRIGHT = "Access denied by Channel Access Security."
+
     def __init__(self, init_channel=None):
         super(PyDMWidget, self).__init__()
 
@@ -458,7 +462,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_sensitive_content = False
         self._alarm_sensitive_border = True
         self._alarm_state = self.ALARM_NONE
-        self._tooltip = None
 
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
@@ -913,10 +916,17 @@ class PyDMWidget(PyDMPrimitiveWidget):
             channel.connect()
             self._channels.append(channel)
 
-    def restore_original_tooltip(self):
-        if self._tooltip is None:
-            self._tooltip = self.toolTip()
-        return self._tooltip
+    def get_original_tooltip(self):
+        tooltip = self.toolTip()
+        msgs = (
+            PyDMWidget.MSG_DISCONNECTED,
+            PyDMWidget.MSG_READONLY,
+            PyDMWidget.MSG_ACCESSRIGHT)
+        if not tooltip.endswith(msgs):
+            return tooltip
+        tooltip = tooltip.splitlines()
+        tooltip = '\n'.join(tooltip[:-1])
+        return tooltip
 
     @only_if_channel_set
     def check_enable_state(self):
@@ -926,11 +936,11 @@ class PyDMWidget(PyDMPrimitiveWidget):
         with the reason why it is disabled.
         """
         status = self._connected
-        tooltip = self.restore_original_tooltip()
+        tooltip = self.get_original_tooltip()
         if not status:
             if tooltip != '':
                 tooltip += '\n'
-            tooltip += "PV is disconnected."
+            tooltip += PyDMWidget.MSG_DISCONNECTED
 
         self.setToolTip(tooltip)
         self.setEnabled(status)
@@ -1071,7 +1081,7 @@ class PyDMWritableWidget(PyDMWidget):
         with the reason why it is disabled.
         """
         status = self._write_access and self._connected
-        tooltip = self.restore_original_tooltip()
+        tooltip = self.get_original_tooltip()
         if not self._connected:
             if tooltip != '':
                 tooltip += '\n'
@@ -1080,8 +1090,8 @@ class PyDMWritableWidget(PyDMWidget):
             if tooltip != '':
                 tooltip += '\n'
             if data_plugins.is_read_only():
-                tooltip += "Running PyDM on Read-Only mode."
+                tooltip += PyDMWidget.MSG_READONLY
             else:
-                tooltip += "Access denied by Channel Access Security."
+                tooltip += PyDMWidget.MSG_ACCESSRIGHT
         self.setToolTip(tooltip)
         self.setEnabled(status)
