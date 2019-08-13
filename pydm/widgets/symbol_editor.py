@@ -1,21 +1,24 @@
 import os
 import json
-import functools
-import webbrowser
 
 from qtpy import QtWidgets, QtCore, QtDesigner
-from ..utilities.iconfont import IconFont
-
-
-import logging
 from qtpy.QtWidgets import QApplication, QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QPainter, QPixmap
 from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from qtpy.QtSvg import QSvgRenderer
-from ..utilities import is_qt_designer
+from ..utilities import is_pydm_app, is_qt_designer, IconFont
 from .base import PyDMWidget
 
 class SymbolEditor(QtWidgets.QDialog):
+    """
+    QDialog for user-friendly editing of the symbols in a widget inside the Qt
+    Designer.
+
+    Parameters
+    ----------
+    widget : PyDMWidget
+        The widget which we want to edit the 'imageFiles' property.
+    """
 
     def __init__(self, widget, parent=None):
         super(SymbolEditor, self).__init__(parent)
@@ -24,7 +27,7 @@ class SymbolEditor(QtWidgets.QDialog):
         self.lst_file_item = None
         self.lst_state_item = None
         self.preview = False
-        self.preview_file = ""
+        self.preview_file = None
         self.setup_ui()
 
         try:
@@ -59,8 +62,8 @@ class SymbolEditor(QtWidgets.QDialog):
         hlayout.setSpacing(5)
         vlayout.addLayout(hlayout)
 
-        # Creating the widgets for the String List and
-        # buttons to add and remove actions
+        # Creating the widgets for the buttons to add and
+        # remove symbols
         list_frame = QtWidgets.QFrame(parent=self)
         list_frame.setMinimumHeight(300)
         list_frame.setMinimumWidth(300)
@@ -91,8 +94,9 @@ class SymbolEditor(QtWidgets.QDialog):
 
         lf_layout.addLayout(lf_btn_layout)
 
+        # Table containing the state/filename pairs which
+        # will display the different symbols
         self.tbl_symbols = QtWidgets.QTableWidget()
-        #self.tbl_symbols.setMinimumWidth(350)
         self.tbl_symbols.setShowGrid(True)
         self.tbl_symbols.setCornerButtonEnabled(False)
         headers = ["State", "File"]
@@ -105,11 +109,12 @@ class SymbolEditor(QtWidgets.QDialog):
         self.tbl_symbols.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.tbl_symbols.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.tbl_symbols.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.tbl_symbols.verticalHeader().setVisible(False)
         lf_layout.addWidget(self.tbl_symbols)
-        # TODO: get rid of vertical header labels
 
         hlayout.addWidget(list_frame)
 
+        # Buttons to save or cancel changes made
         buttons_layout = QtWidgets.QHBoxLayout()
         save_btn = QtWidgets.QPushButton("Save", parent=self)
         save_btn.setAutoDefault(False)
@@ -156,6 +161,7 @@ class SymbolEditor(QtWidgets.QDialog):
         edit_name_layout.addRow(preview_btn)
 
         self.lbl_image = QtWidgets.QLabel()
+        self.lbl_image.setWordWrap(True)
         edit_name_layout.addRow(self.lbl_image)
 
         frm_edit_layout.addLayout(edit_name_layout)
@@ -189,9 +195,9 @@ class SymbolEditor(QtWidgets.QDialog):
         self.txt_state.setText(self.lst_state_item.text())
         self.txt_file.setText(self.lst_file_item.text())
         self.lbl_image.clear()
-
         self.frm_edit.setEnabled(True)
-        self.preview = False
+        self.update()
+
 
     def add_symbol(self):
         """Add a new rule to the list of rules."""
@@ -257,6 +263,7 @@ class SymbolEditor(QtWidgets.QDialog):
         self.symbols[state] = new_filename
 
     def preview_image(self):
+        """Shows a preview of the inputted image file"""
         filename = self.lst_file_item.text()
         error, self.preview_file = self.check_image(filename)
         if not error:
@@ -266,50 +273,73 @@ class SymbolEditor(QtWidgets.QDialog):
             self.lbl_image.setText(error)
 
     def paintEvent(self, event):
-        print("paint event called")
+        """
+        Paint events are sent to widgets that need to update themselves,
+        for instance when part of a widget is exposed because a covering
+        widget was moved.
 
+        At PyDMSymbolEditor this method handles the image preview.
+
+        Parameters
+        ----------
+        event : QPaintEvent
+        """
         if not self.preview:
             return
-        rect = QtCore.QRect(QtCore.QPoint(260, 100), QtCore.QSize(100, 150))
-        _painter = QPainter()
 
+        size = QSize(140, 140)
+        _painter = QPainter()
         _painter.begin(self)
         opt = QStyleOption()
         opt.initFrom(self)
         self.style().drawPrimitive(QStyle.PE_Widget, opt, _painter, self)
-        # _painter.setRenderHint(QPainter.Antialiasing)
         image_to_draw = self.preview_file
-        if image_to_draw is None:
-            _painter.end()
-            return
         if isinstance(image_to_draw, QPixmap):
             w = float(image_to_draw.width())
             h = float(image_to_draw.height())
-            # Keeping asepct ratio (Qt.KeepAspectRatio)
-            sf = min(rect.width() / w, rect.height() / h)
+            sf = min(size.width() / w, size.height() / h)
             scale = (sf, sf)
             _painter.scale(scale[0], scale[1])
-            print(rect.x(), rect.y())
-            #_painter.drawPixmap(rect.x(), rect.y(), image_to_draw)
-            _painter.drawPixmap(4500, 2500, image_to_draw)
+            _painter.drawPixmap(335/sf, 150/sf, image_to_draw)
         elif isinstance(image_to_draw, QSvgRenderer):
             draw_size = QSizeF(image_to_draw.defaultSize())
-            draw_size.scale(QSizeF(rect.size()), Qt.KeepAspectRatio)
-            image_to_draw.render(_painter, QRectF(0.0, 0.0, draw_size.width(), draw_size.height()))
+            draw_size.scale(QSizeF(size), Qt.KeepAspectRatio)
+            image_to_draw.render(_painter, QRectF(335, 150, draw_size.width(), draw_size.height()))
         _painter.end()
         self.preview = False
 
     def check_image(self, filename):
-        error = ("Could not load image: {}".format(filename))
+        """
+        Checks a filename to see if the image can be loaded.
+        Parameters
+        ----------
+        filename : (str)
+            Inputted filename by user
+
+        Returns
+        -------
+        tuple : (str, misc)
+            Error message and None if an error is present or None and a
+            QSvgRenderer/QPixmap (depending on file type).
+
+        """
+        error = None
         file_type = None
-        if is_qt_designer():
+
+        abs_path = os.path.expanduser(os.path.expandvars(filename))
+
+        if not os.path.isabs(abs_path):
             try:
-                file_path = self.widget.app.get_path(filename)
-            except Exception as e:
-                error = ("Couldn't get file with path %s" % filename)
-                file_path = filename
-        else:
-            file_path = filename
+                if is_pydm_app():
+                    abs_path = QApplication.instance().get_path(abs_path)
+                elif is_qt_designer():
+                    p = self.get_designer_window()
+                    if p is not None:
+                        ui_dir = p.absoluteDir().absolutePath()
+                        abs_path = os.path.join(ui_dir, abs_path)
+            except Exception:
+                error = ("Unable to find full filepath for %s and could not load image" % filename)
+                abs_path = filename
         # First, lets try SVG.  We have to try SVG first, otherwise
         # QPixmap will happily load the SVG and turn it into a raster image.
         # Really annoying: We have to try to load the file as SVG,
@@ -318,21 +348,27 @@ class SymbolEditor(QtWidgets.QDialog):
         # So we have to temporarily silence Qt warning messages here.
         qInstallMessageHandler(self.qt_message_handler)
         svg = QSvgRenderer()
-        #svg.repaintNeeded.connect(self.update) #TODO
-        if svg.load(file_path):
+        if svg.load(abs_path):
             file_type = svg
-            #self._sizeHint = self._sizeHint.expandedTo(svg.defaultSize())
             qInstallMessageHandler(None)
-            return (None, file_type)
+            return (error, file_type)
         qInstallMessageHandler(None)
         # SVG didn't work, lets try QPixmap
-        image = QPixmap(file_path)
+        image = QPixmap(abs_path)
         if not image.isNull():
             file_type = image
-            #self._sizeHint = self._sizeHint.expandedTo(image.size())
-            return (None, file_type)
+            return (error, file_type)
         # If we get this far, the file specified could not be loaded at all.
         return (error, file_type)
+
+    def get_designer_window(self):  # pragma: no cover
+        # Internal function to find the designer window that owns this widget.
+        p = self.widget.parent()
+        while p is not None:
+            if isinstance(p, QtDesigner.QDesignerFormWindowInterface):
+                return p
+            p = p.parent()
+        return None
 
     def is_data_valid(self):
         """
