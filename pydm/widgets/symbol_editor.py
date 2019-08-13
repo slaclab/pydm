@@ -12,7 +12,7 @@ from qtpy.QtWidgets import QApplication, QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QPainter, QPixmap
 from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from qtpy.QtSvg import QSvgRenderer
-from ..utilities import is_pydm_app
+from ..utilities import is_qt_designer
 from .base import PyDMWidget
 
 class SymbolEditor(QtWidgets.QDialog):
@@ -21,9 +21,10 @@ class SymbolEditor(QtWidgets.QDialog):
         super(SymbolEditor, self).__init__(parent)
         
         self.widget = widget
-        self.lst_symbol_item = None
-        self.loading_data = True
-
+        self.lst_file_item = None
+        self.lst_state_item = None
+        self.preview = False
+        self.preview_file = ""
         self.setup_ui()
 
         try:
@@ -31,14 +32,12 @@ class SymbolEditor(QtWidgets.QDialog):
         except:
             self.symbols = {}
 
-        for state, filename in self.symbols:
+        for state, filename in self.symbols.items():
             row = self.tbl_symbols.rowCount()
             self.tbl_symbols.insertRow(row)
             self.tbl_symbols.setItem(row, 0, QtWidgets.QTableWidgetItem(state))
             self.tbl_symbols.setItem(row, 1, QtWidgets.QTableWidgetItem(filename))
 
-        self._painter = QPainter()
-            
     def setup_ui(self):
         """
         Create the required UI elements for the form.
@@ -64,7 +63,7 @@ class SymbolEditor(QtWidgets.QDialog):
         # buttons to add and remove actions
         list_frame = QtWidgets.QFrame(parent=self)
         list_frame.setMinimumHeight(300)
-        list_frame.setMinimumWidth(240)
+        list_frame.setMinimumWidth(300)
         list_frame.setLineWidth(1)
         list_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         list_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -84,7 +83,7 @@ class SymbolEditor(QtWidgets.QDialog):
         btn_del_symbol = QtWidgets.QPushButton(parent=self)
         btn_del_symbol.setAutoDefault(False)
         btn_del_symbol.setDefault(False)
-        btn_del_symbol.setText("Remove symbol")
+        btn_del_symbol.setText("Remove Symbol")
         btn_del_symbol.clicked.connect(self.del_symbol)
 
         lf_btn_layout.addWidget(btn_add_symbol)
@@ -93,7 +92,7 @@ class SymbolEditor(QtWidgets.QDialog):
         lf_layout.addLayout(lf_btn_layout)
 
         self.tbl_symbols = QtWidgets.QTableWidget()
-        self.tbl_symbols.setMinimumWidth(350)
+        #self.tbl_symbols.setMinimumWidth(350)
         self.tbl_symbols.setShowGrid(True)
         self.tbl_symbols.setCornerButtonEnabled(False)
         headers = ["State", "File"]
@@ -107,6 +106,7 @@ class SymbolEditor(QtWidgets.QDialog):
         self.tbl_symbols.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.tbl_symbols.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         lf_layout.addWidget(self.tbl_symbols)
+        # TODO: get rid of vertical header labels
 
         hlayout.addWidget(list_frame)
 
@@ -149,16 +149,16 @@ class SymbolEditor(QtWidgets.QDialog):
         self.txt_file.editingFinished.connect(self.file_changed)
         edit_name_layout.addRow(lbl_file, self.txt_file)
 
-        frm_edit_layout.addLayout(edit_name_layout)
-
         preview_btn = QtWidgets.QPushButton("Preview Image", parent=self)
         preview_btn.setAutoDefault(False)
         preview_btn.setDefault(False)
         preview_btn.clicked.connect(self.preview_image)
-        frm_edit_layout.addWidget(preview_btn)
+        edit_name_layout.addRow(preview_btn)
 
         self.lbl_image = QtWidgets.QLabel()
-        frm_edit_layout.addWidget(frm_edit_layout)
+        edit_name_layout.addRow(self.lbl_image)
+
+        frm_edit_layout.addLayout(edit_name_layout)
 
     def clear_form(self):
         """Clear the form and reset the fields."""
@@ -188,8 +188,10 @@ class SymbolEditor(QtWidgets.QDialog):
         self.lst_file_item = self.tbl_symbols.item(row, 1)
         self.txt_state.setText(self.lst_state_item.text())
         self.txt_file.setText(self.lst_file_item.text())
+        self.lbl_image.clear()
 
         self.frm_edit.setEnabled(True)
+        self.preview = False
 
     def add_symbol(self):
         """Add a new rule to the list of rules."""
@@ -224,11 +226,14 @@ class SymbolEditor(QtWidgets.QDialog):
         if reply == QtWidgets.QMessageBox.Yes:
             for itm in reversed(items):
                 row = itm.row()
-                state = self.tbl_symbols.item(row, 0).text()
+                state_item = self.tbl_symbols.item(row, 0)
+                if not state_item:
+                    continue
+                state = state_item.text()
                 self.symbols.pop(state, None) # troubleshoot by taking out None?
                 self.tbl_symbols.removeRow(row)
                 self.tbl_symbols.clearSelection()
-                self.clear_form()
+            self.clear_form()
 
     def state_changed(self):
         """Callback executed when the state line edit is changed."""
@@ -252,11 +257,84 @@ class SymbolEditor(QtWidgets.QDialog):
         self.symbols[state] = new_filename
 
     def preview_image(self):
-        #TODO: POPULATE THIS
-        pass
+        filename = self.lst_file_item.text()
+        error, self.preview_file = self.check_image(filename)
+        if not error:
+            self.preview = True
+            self.update()
+        else:
+            self.lbl_image.setText(error)
+
+    def paintEvent(self, event):
+        print("paint event called")
+
+        if not self.preview:
+            return
+        rect = QtCore.QRect(QtCore.QPoint(260, 100), QtCore.QSize(100, 150))
+        _painter = QPainter()
+
+        _painter.begin(self)
+        opt = QStyleOption()
+        opt.initFrom(self)
+        self.style().drawPrimitive(QStyle.PE_Widget, opt, _painter, self)
+        # _painter.setRenderHint(QPainter.Antialiasing)
+        image_to_draw = self.preview_file
+        if image_to_draw is None:
+            _painter.end()
+            return
+        if isinstance(image_to_draw, QPixmap):
+            w = float(image_to_draw.width())
+            h = float(image_to_draw.height())
+            # Keeping asepct ratio (Qt.KeepAspectRatio)
+            sf = min(rect.width() / w, rect.height() / h)
+            scale = (sf, sf)
+            _painter.scale(scale[0], scale[1])
+            print(rect.x(), rect.y())
+            #_painter.drawPixmap(rect.x(), rect.y(), image_to_draw)
+            _painter.drawPixmap(4500, 2500, image_to_draw)
+        elif isinstance(image_to_draw, QSvgRenderer):
+            draw_size = QSizeF(image_to_draw.defaultSize())
+            draw_size.scale(QSizeF(rect.size()), Qt.KeepAspectRatio)
+            image_to_draw.render(_painter, QRectF(0.0, 0.0, draw_size.width(), draw_size.height()))
+        _painter.end()
+        self.preview = False
+
+    def check_image(self, filename):
+        error = ("Could not load image: {}".format(filename))
+        file_type = None
+        if is_qt_designer():
+            try:
+                file_path = self.widget.app.get_path(filename)
+            except Exception as e:
+                error = ("Couldn't get file with path %s" % filename)
+                file_path = filename
+        else:
+            file_path = filename
+        # First, lets try SVG.  We have to try SVG first, otherwise
+        # QPixmap will happily load the SVG and turn it into a raster image.
+        # Really annoying: We have to try to load the file as SVG,
+        # and we expect it will fail often (because many images aren't SVG).
+        # Qt prints a warning message to stdout any time SVG loading fails.
+        # So we have to temporarily silence Qt warning messages here.
+        qInstallMessageHandler(self.qt_message_handler)
+        svg = QSvgRenderer()
+        #svg.repaintNeeded.connect(self.update) #TODO
+        if svg.load(file_path):
+            file_type = svg
+            #self._sizeHint = self._sizeHint.expandedTo(svg.defaultSize())
+            qInstallMessageHandler(None)
+            return (None, file_type)
+        qInstallMessageHandler(None)
+        # SVG didn't work, lets try QPixmap
+        image = QPixmap(file_path)
+        if not image.isNull():
+            file_type = image
+            #self._sizeHint = self._sizeHint.expandedTo(image.size())
+            return (None, file_type)
+        # If we get this far, the file specified could not be loaded at all.
+        return (error, file_type)
 
     def is_data_valid(self):
-        #TODO: FIGURE OUT MESSAGE HANDLER
         """
         Sanity check the form data.
 
@@ -266,46 +344,23 @@ class SymbolEditor(QtWidgets.QDialog):
             True and "" in case there is no error or False and the error message
             otherwise.
         """
-        '''errors = []
-        for state, filename in self.symbols:
-            if is_pydm_app():
-                try:
-                    file_path = self.app.get_path(filename)
-                except Exception as e:
-                    errors.append("Couldn't get file with path %s", filename)
-                    file_path = filename
-            else:
-                file_path = filename
-            # First, lets try SVG.  We have to try SVG first, otherwise
-            # QPixmap will happily load the SVG and turn it into a raster image.
-            # Really annoying: We have to try to load the file as SVG,
-            # and we expect it will fail often (because many images aren't SVG).
-            # Qt prints a warning message to stdout any time SVG loading fails.
-            # So we have to temporarily silence Qt warning messages here.
-            qInstallMessageHandler(self.qt_message_handler)
-            svg = QSvgRenderer()
-            svg.repaintNeeded.connect(self.update)
-            if svg.load(file_path):
-                self._state_images[int(state)] = (filename, svg)
-                self._sizeHint = self._sizeHint.expandedTo(svg.defaultSize())
-                qInstallMessageHandler(None)
-                continue
-            qInstallMessageHandler(None)
-            # SVG didn't work, lets try QPixmap
-            image = QPixmap(file_path)
-            if not image.isNull():
-                self._state_images[int(state)] = (filename, image)
-                self._sizeHint = self._sizeHint.expandedTo(image.size())
-                continue
-            # If we get this far, the file specified could not be loaded at all.
-            errors.append("Could not load image: {}".format(filename))
-            self._state_images[int(state)] = (filename, None)
+        errors = []
+        for state, filename in self.symbols.items():
+            if state is None or state == "":
+                errors.append("Image: {} has no state".format(filename))
+            error, file_type = self.check_image(filename)
+            if error:
+                errors.append(error)
 
         if len(errors) > 0:
             error_msg = os.linesep.join(errors)
-            return False, error_msg'''
+            return False, error_msg
 
         return True, ""
+
+    def qt_message_handler(self, msg_type, *args):
+        # Intentionally suppress all qt messages.  Make sure not to leave this handler installed.
+        pass
 
     @QtCore.Slot()
     def saveChanges(self):
