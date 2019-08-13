@@ -36,8 +36,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         self.base_path = ""
         self.base_macros = {}
         if is_pydm_app():
-          self.base_path = self.app.directory_stack[-1]
-          self.base_macros = self.app.macro_stack[-1]
+            self.base_path = self.app.directory_stack[-1]
+            self.base_macros = self.app.macro_stack[-1]
         self.layout = QVBoxLayout(self)
         self.err_label = QLabel(self)
         self.err_label.setAlignment(Qt.AlignHCenter)
@@ -180,7 +180,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             if os.path.isabs(full_fname) and os.path.exists(full_fname):
                 w = self.app.open_file(full_fname, macros=self.parsed_macros())
             else:
-                w = self.app.open_relative(fname, self,
+                w = self.app.open_relative(full_fname, self,
                                               macros=self.parsed_macros())
             self._needs_load = False
             self.clear_error_text()
