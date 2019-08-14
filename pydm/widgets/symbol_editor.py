@@ -151,17 +151,13 @@ class SymbolEditor(QtWidgets.QDialog):
         edit_name_layout.addRow(lbl_state, self.txt_state)
         lbl_file = QtWidgets.QLabel("File:")
         self.txt_file = QtWidgets.QLineEdit()
-        self.txt_file.editingFinished.connect(self.file_changed)
+        self.txt_file.textEdited.connect(self.file_changed)
+        self.txt_file.returnPressed.connect(self.file_changed)
         edit_name_layout.addRow(lbl_file, self.txt_file)
-
-        preview_btn = QtWidgets.QPushButton("Preview Image", parent=self)
-        preview_btn.setAutoDefault(False)
-        preview_btn.setDefault(False)
-        preview_btn.clicked.connect(self.preview_image)
-        edit_name_layout.addRow(preview_btn)
 
         self.lbl_image = QtWidgets.QLabel()
         self.lbl_image.setWordWrap(True)
+        self.lbl_image.setAlignment(Qt.AlignCenter)
         edit_name_layout.addRow(self.lbl_image)
 
         frm_edit_layout.addLayout(edit_name_layout)
@@ -172,6 +168,7 @@ class SymbolEditor(QtWidgets.QDialog):
         self.lst_file_item = None
         self.txt_state.setText("")
         self.txt_file.setText("")
+        self.lbl_image.setText("")
         self.frm_edit.setEnabled(False)
 
     def load_from_list(self):
@@ -194,8 +191,15 @@ class SymbolEditor(QtWidgets.QDialog):
         self.lst_file_item = self.tbl_symbols.item(row, 1)
         self.txt_state.setText(self.lst_state_item.text())
         self.txt_file.setText(self.lst_file_item.text())
-        self.lbl_image.clear()
         self.frm_edit.setEnabled(True)
+
+        filename = self.lst_file_item.text()
+        error, self.preview_file = self.check_image(filename)
+        if not error:
+            self.lbl_image.setText("")
+            self.preview = True
+        else:
+            self.lbl_image.setText(error)
         self.update()
 
     def add_symbol(self):
@@ -261,15 +265,13 @@ class SymbolEditor(QtWidgets.QDialog):
         self.lst_file_item.setText(new_filename)
         self.symbols[state] = new_filename
 
-    def preview_image(self):
-        """Shows a preview of the inputted image file"""
-        filename = self.lst_file_item.text()
-        error, self.preview_file = self.check_image(filename)
+        error, self.preview_file = self.check_image(new_filename)
         if not error:
+            self.lbl_image.setText("")
             self.preview = True
-            self.update()
         else:
             self.lbl_image.setText(error)
+        self.update()
 
     def paintEvent(self, event):
         """
@@ -299,11 +301,11 @@ class SymbolEditor(QtWidgets.QDialog):
             sf = min(size.width() / w, size.height() / h)
             scale = (sf, sf)
             _painter.scale(scale[0], scale[1])
-            _painter.drawPixmap(335/sf, 150/sf, image_to_draw)
+            _painter.drawPixmap(335/sf, 120/sf, image_to_draw)
         elif isinstance(image_to_draw, QSvgRenderer):
             draw_size = QSizeF(image_to_draw.defaultSize())
             draw_size.scale(QSizeF(size), Qt.KeepAspectRatio)
-            image_to_draw.render(_painter, QRectF(335, 150, draw_size.width(), draw_size.height()))
+            image_to_draw.render(_painter, QRectF(335, 120, draw_size.width(), draw_size.height()))
         _painter.end()
         self.preview = False
 
@@ -337,7 +339,7 @@ class SymbolEditor(QtWidgets.QDialog):
                         ui_dir = p.absoluteDir().absolutePath()
                         abs_path = os.path.join(ui_dir, abs_path)
             except Exception:
-                error = ("Unable to find full filepath for %s and could not load image" % filename)
+                error = "Unable to find full filepath for {}".format(filename)
                 abs_path = filename
         # First, lets try SVG.  We have to try SVG first, otherwise
         # QPixmap will happily load the SVG and turn it into a raster image.
@@ -358,6 +360,8 @@ class SymbolEditor(QtWidgets.QDialog):
             file_type = image
             return error, file_type
         # If we get this far, the file specified could not be loaded at all.
+        if error is None:
+            error = "Could not load image \n{}".format(filename)
         return error, file_type
 
     def get_designer_window(self):  # pragma: no cover

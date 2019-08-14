@@ -1,3 +1,4 @@
+import os
 import json
 import logging
 from qtpy.QtWidgets import QApplication, QWidget, QStyle, QStyleOption
@@ -99,6 +100,8 @@ class PyDMSymbol(QWidget, PyDMWidget):
                     file_path = filename
             else:
                 file_path = filename
+            file_path = os.path.expanduser(os.path.expandvars(file_path))
+
             # First, lets try SVG.  We have to try SVG first, otherwise
             # QPixmap will happily load the SVG and turn it into a raster image.
             # Really annoying: We have to try to load the file as SVG,
