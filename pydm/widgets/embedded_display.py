@@ -136,7 +136,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         return m
 
     def load_if_needed(self):
-        if (not self._only_load_when_shown) or self.isVisible() or is_qt_designer():
+        if self._needs_load and (
+                not self._only_load_when_shown or self.isVisible() or is_qt_designer()):
             self.embedded_widget = self.open_file()
 
     def open_file(self, force=False):
