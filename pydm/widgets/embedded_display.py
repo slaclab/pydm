@@ -1,7 +1,5 @@
 from qtpy.QtWidgets import QFrame, QApplication, QLabel, QVBoxLayout, QWidget
-from qtpy.QtCore import Qt, QSize
-from qtpy.QtCore import Property
-import json
+from qtpy.QtCore import Qt, QSize, Property, QTimer
 import os.path
 import logging
 from .base import PyDMPrimitiveWidget
@@ -38,6 +36,9 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         if is_pydm_app():
             self.base_path = self.app.directory_stack[-1]
             self.base_macros = self.app.macro_stack[-1]
+        else:
+            self._load_error_timer = None
+            self._load_error = None
         self.layout = QVBoxLayout(self)
         self.err_label = QLabel(self)
         self.err_label.setAlignment(Qt.AlignHCenter)
@@ -121,6 +122,12 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         if filename != self._filename:
             self._filename = filename
             self._needs_load = True
+            if is_qt_designer():
+                if self._load_error_timer:
+                    # Kill the timer here. If new filename still causes the problem, it will be restarted
+                    self._load_error_timer.stop()
+                    self._load_error_timer = None
+                self.clear_error_text()
             self.load_if_needed()
 
     def parsed_macros(self):
@@ -171,8 +178,14 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
                 self.clear_error_text()
                 return w
             except Exception as e:
-                logger.exception("Exception while opening embedded display file.")
-                self.display_error_text(e)
+                self._load_error = e
+                if self._load_error_timer:
+                    self._load_error_timer.stop()
+                self._load_error_timer = QTimer(self)
+                self._load_error_timer.setSingleShot(True)
+                self._load_error_timer.setTimerType(Qt.VeryCoarseTimer)
+                self._load_error_timer.timeout.connect(self._display_designer_load_error)
+                self._load_error_timer.start(3000)
             return None
         
         # If you get this far, you are running inside a PyDMApplication, load
@@ -322,3 +335,9 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         if self.disconnectWhenHidden:
             self.disconnect()
+
+    def _display_designer_load_error(self):
+        self._load_error_timer = None
+        logger.exception("Exception while opening embedded display file.")
+        if self._load_error:
+            self.display_error_text(self._load_error)
