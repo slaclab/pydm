@@ -12,6 +12,7 @@ import pydm.data_plugins
 from ..utilities import macro, find_file
 from ..display import load_file
 logger = logging.getLogger(__name__)
+pydm.data_plugins.initialize_plugins_if_needed()
 
 
 class FlowLayout(QLayout):
