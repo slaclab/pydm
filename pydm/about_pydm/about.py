@@ -57,6 +57,7 @@ class AboutWindow(QWidget):
         self.ui.dataPluginsTableWidget.setHorizontalHeaderLabels(col_labels)
         self.ui.dataPluginsTableWidget.horizontalHeader().setStretchLastSection(True)
         self.ui.dataPluginsTableWidget.verticalHeader().setVisible(False)
+        pydm.data_plugins.initialize_plugins_if_needed()
         for (protocol, plugin) in pydm.data_plugins.plugin_modules.items():
             protocol_item = QTableWidgetItem(protocol)
             file_item = QTableWidgetItem(inspect.getfile(plugin.__class__))

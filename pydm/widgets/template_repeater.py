@@ -3,15 +3,15 @@ import json
 import logging
 from qtpy.QtWidgets import (QFrame, QApplication, QLabel, QVBoxLayout,
                            QHBoxLayout, QWidget, QStyle, QSizePolicy,
-                           QLayout, QListWidget, QListWidgetItem)
-from qtpy.QtCore import Qt, QSize, QRect, Slot, Property, QPoint, QUrl, Q_ENUMS
+                           QLayout)
+from qtpy.QtCore import Qt, QSize, QRect, Property, QPoint, Q_ENUMS
 from qtpy import uic
-from .base import PyDMPrimitiveWidget, PyDMWidget
-from .embedded_display import PyDMEmbeddedDisplay
+from .base import PyDMPrimitiveWidget
 from pydm.utilities import is_qt_designer, is_pydm_app
 import pydm.data_plugins
 from ..utilities import macro
 logger = logging.getLogger(__name__)
+pydm.data_plugins.initialize_plugins_if_needed()
 
 class FlowLayout(QLayout):
     def __init__(self, parent=None, margin=-1, h_spacing=-1, v_spacing=-1):
