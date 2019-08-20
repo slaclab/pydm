@@ -120,7 +120,7 @@ class PyDMConnection(QObject):
             diff_time = 1
         else:
             diff_time = (time - self.last_notify).total_seconds()
-        self.notify_freq = round(1.0/diff_time, 0)
+        self.notify_freq = round(1.0 / max(1e-6, diff_time), 0)
         self.last_notify = time
         self.introspection.get(DataKeys.CONNECTION, 'CONNECTION')
         self.connected = self.data.get('CONNECTION', False)
