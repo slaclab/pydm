@@ -2,7 +2,8 @@ from .base import PyDMWidget, TextFormatter
 from qtpy.QtWidgets import QLabel, QApplication
 from qtpy.QtCore import Qt, Property, Q_ENUMS
 from .display_format import DisplayFormat, parse_value_for_display
-from pydm.utilities import is_pydm_app
+from pydm.utilities import is_pydm_app, is_qt_designer
+from pydm import config
 
 
 class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
@@ -46,8 +47,10 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
 
     @displayFormat.setter
     def displayFormat(self, new_type):
-        if self._display_format_type != new_type:
-            self._display_format_type = new_type
+        if self._display_format_type == new_type:
+            return
+        self._display_format_type = new_type
+        if not is_qt_designer() or config.DESIGNER_ONLINE:
             # Trigger the update of display format
             self.value_changed(self.value)
 

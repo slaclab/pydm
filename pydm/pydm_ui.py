@@ -126,7 +126,6 @@ class Ui_MainWindow(object):
         self.navbar.addAction(self.actionHome)
 
         self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
