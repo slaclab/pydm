@@ -5,8 +5,8 @@ from operator import attrgetter
 class ConnectionTableModel(QAbstractTableModel):
     def __init__(self, connections=[], parent=None):
         super(ConnectionTableModel, self).__init__(parent=parent)
-        self._headers = ("protocol", "address", "connected")
-        self._column_names = ("protocol", "connection", "connected")
+        self._headers = ("protocol", "address", "connected", "last update", "frequency")
+        self._column_names = ("protocol", "connection", "connected", "last_notify", "notify_freq")
         self.update_timer = QTimer(self)
         self.update_timer.setInterval(1000)
         self.update_timer.timeout.connect(self.update_values)
