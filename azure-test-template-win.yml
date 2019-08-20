@@ -15,8 +15,9 @@ jobs:
         python.name: '3_6'
         BUILD_DOCS: ${{ parameters.build_docs }}
       Python37:
-        python.version: '3.7'
+        python.version: '3.7.3'
         python.name: '3_7'
+  continueOnError: true
 
   steps:
   - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
@@ -52,7 +53,7 @@ jobs:
 
   - script: |
       call activate test-environment-$(python.name)
-      conda install -q -c conda-forge pytest-azurepipelines epics-base pydm --file dev-requirements.txt
+      conda install -q -c conda-forge epics-base pytest-azurepipelines pydm --file dev-requirements.txt
     displayName: 'Anaconda - Install Dependencies'
 
   # Windows Only
@@ -75,6 +76,9 @@ jobs:
   - script: |
       call activate test-environment-$(python.name)
       python run_tests.py --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python.version)" --napoleon-docstrings
+    env:
+      PYEPICS_LIBCA: C:\Miniconda\envs\test-environment-$(python.name)\epics\lib\ca.lib
+      PATH: C:\Miniconda\envs\test-environment-$(python.name)\epics\lib:C:\Miniconda\envs\test-environment-$(python.name)\epics\bin:$(PATH)
     displayName: 'Tests - Run'
     continueOnError: false
 

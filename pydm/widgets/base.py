@@ -11,11 +11,12 @@ from qtpy.QtWidgets import (QApplication, QMenu, QGraphicsOpacityEffect,
                             QToolTip, QWidget)
 
 from .channel import PyDMChannel
-from .rules import RulesDispatcher
-from .. import data_plugins
-from .. import tools
+
+from .. import data_plugins, tools, config
 from ..data_store import DataKeys
 from ..utilities import (is_qt_designer, remove_protocol, data_callback)
+from .rules import RulesDispatcher
+
 
 try:
     from json.decoder import JSONDecodeError
@@ -285,7 +286,8 @@ class TextFormatter(object):
             return
         if new_prec and self._prec != int(new_prec) and new_prec >= 0:
             self._prec = int(new_prec)
-            self.value_changed(self.value)
+            if not is_qt_designer() or config.DESIGNER_ONLINE:
+                self.value_changed(self.value)
 
     def unit_changed(self, new_unit):
         """

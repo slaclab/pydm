@@ -16,7 +16,7 @@ jobs:
         python.version: '3.6'
         BUILD_DOCS: ${{ parameters.build_docs }}
       Python37:
-        python.version: '3.7'
+        python.version: '3.7.3'
 
   steps:
   - bash: echo "##vso[task.prependpath]$CONDA/bin"
