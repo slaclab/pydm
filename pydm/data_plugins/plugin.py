@@ -80,14 +80,15 @@ class PyDMConnection(QObject):
         self.address = address
         self.listener_count = 0
         self.app = QtWidgets.QApplication.instance()
-        self.add_listener(channel)
         self.connection = self.channel._connection
+        self.add_listener(channel)
 
     def add_listener(self, channel):
         self.listener_count = self.listener_count + 1
         self.notify.connect(channel.notified, Qt.QueuedConnection)
         channel.transmit.connect(self._validate_data_from_channel,
                                  Qt.QueuedConnection)
+        self.send_to_channel()
 
     def remove_listener(self, channel, destroying=False):
         if not channel.connected():
@@ -147,7 +148,6 @@ class PyDMPlugin(object):
                 self.connections[connection] = self.connection_class(
                     channel, address, self.protocol
                 )
-            channel.notified()
 
     def remove_connection(self, channel, destroying=False):
         with self.lock:
