@@ -79,8 +79,8 @@ class PyDMConnection(QObject):
         self.protocol = protocol
         self.address = address
         self.listener_count = 0
-        self.notify_freq = 0
-        self.last_notify = None
+        self._notify_freq = 0
+        self._last_notify = None
         self.app = QtWidgets.QApplication.instance()
         self.add_listener(channel)
         self.connection = self.channel._connection
@@ -116,12 +116,12 @@ class PyDMConnection(QObject):
 
     def send_to_channel(self):
         time = datetime.datetime.now()
-        if self.last_notify is None:
+        if self._last_notify is None:
             diff_time = 1
         else:
-            diff_time = (time - self.last_notify).total_seconds()
-        self.notify_freq = round(1.0 / max(1e-6, diff_time), 0)
-        self.last_notify = time
+            diff_time = (time - self._last_notify).total_seconds()
+        self._notify_freq = round(1.0 / max(1e-6, diff_time), 0)
+        self._last_notify = time
         self.introspection.get(DataKeys.CONNECTION, 'CONNECTION')
         self.connected = self.data.get('CONNECTION', False)
         DataStore[self.connection] = (self.data, self.introspection)
