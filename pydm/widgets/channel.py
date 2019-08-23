@@ -193,6 +193,10 @@ class PyDMChannel(QObject):
         except Exception as exc:
             logger.exception("Unable to remove connection for %r", self)
         self._connected = False
+        if destroying:
+            return
+        if self.parent() and hasattr(self.parent(), 'connection_changed'):
+            self.parent().connection_changed(False)
 
     def get_introspection(self):
         if self._use_introspection:
