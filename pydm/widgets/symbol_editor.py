@@ -77,20 +77,20 @@ class SymbolEditor(QtWidgets.QDialog):
         lf_btn_layout.setContentsMargins(0, 0, 0, 0)
         lf_btn_layout.setSpacing(5)
 
-        btn_add_symbol = QtWidgets.QPushButton(parent=self)
-        btn_add_symbol.setAutoDefault(False)
-        btn_add_symbol.setDefault(False)
-        btn_add_symbol.setText("Add Symbol")
-        btn_add_symbol.clicked.connect(self.add_symbol)
+        self.btn_add_symbol = QtWidgets.QPushButton(parent=self)
+        self.btn_add_symbol.setAutoDefault(False)
+        self.btn_add_symbol.setDefault(False)
+        self.btn_add_symbol.setText("Add Symbol")
+        self.btn_add_symbol.clicked.connect(self.add_symbol)
 
-        btn_del_symbol = QtWidgets.QPushButton(parent=self)
-        btn_del_symbol.setAutoDefault(False)
-        btn_del_symbol.setDefault(False)
-        btn_del_symbol.setText("Remove Symbol")
-        btn_del_symbol.clicked.connect(self.del_symbol)
+        self.btn_del_symbol = QtWidgets.QPushButton(parent=self)
+        self.btn_del_symbol.setAutoDefault(False)
+        self.btn_del_symbol.setDefault(False)
+        self.btn_del_symbol.setText("Remove Symbol")
+        self.btn_del_symbol.clicked.connect(self.del_symbol)
 
-        lf_btn_layout.addWidget(btn_add_symbol)
-        lf_btn_layout.addWidget(btn_del_symbol)
+        lf_btn_layout.addWidget(self.btn_add_symbol)
+        lf_btn_layout.addWidget(self.btn_del_symbol)
 
         lf_layout.addLayout(lf_btn_layout)
 
@@ -170,6 +170,8 @@ class SymbolEditor(QtWidgets.QDialog):
         self.txt_file.setText("")
         self.lbl_image.setText("")
         self.frm_edit.setEnabled(False)
+        self.tbl_symbols.clearSelection()
+        self.preview = False
 
     def load_from_list(self):
         """
@@ -179,14 +181,10 @@ class SymbolEditor(QtWidgets.QDialog):
         -------
         None
         """
-        item = self.tbl_symbols.currentItem()
-        idx = self.tbl_symbols.indexFromItem(item).row()
-
-        if idx < 0:
+        if not self.tbl_symbols.selectedRanges():
             return
 
         row = self.tbl_symbols.currentRow()
-        self.tbl_symbols.selectRow(row)
         self.lst_state_item = self.tbl_symbols.item(row, 0)
         self.lst_file_item = self.tbl_symbols.item(row, 1)
         self.txt_state.setText(self.lst_state_item.text())
@@ -221,27 +219,21 @@ class SymbolEditor(QtWidgets.QDialog):
 
     def del_symbol(self):
         """Delete the selected symbol at the table."""
-        items = self.tbl_symbols.selectedIndexes()
-        if len(items) == 0:
+        if not self.tbl_symbols.selectedRanges():
             return
 
-        s = "symbol(s)"
-        confirm_message = "Delete the selected {}?".format(s)
+        confirm_message = "Delete the selected symbol?"
         reply = QtWidgets.QMessageBox().question(self, 'Message',
                                                  confirm_message,
                                                  QtWidgets.QMessageBox.Yes,
                                                  QtWidgets.QMessageBox.No)
 
         if reply == QtWidgets.QMessageBox.Yes:
-            for itm in reversed(items):
-                row = itm.row()
-                state_item = self.tbl_symbols.item(row, 0)
-                if not state_item:
-                    continue
-                state = state_item.text()
-                self.symbols.pop(state, None)
-                self.tbl_symbols.removeRow(row)
-                self.tbl_symbols.clearSelection()
+            row = self.tbl_symbols.currentRow()
+            state_item = self.tbl_symbols.item(row, 0)
+            state = state_item.text()
+            self.symbols.pop(state, None)
+            self.tbl_symbols.removeRow(row)
             self.clear_form()
 
     def state_changed(self):
@@ -287,7 +279,6 @@ class SymbolEditor(QtWidgets.QDialog):
         """
         if not self.preview:
             return
-
         size = QSize(140, 140)
         _painter = QPainter()
         _painter.begin(self)
@@ -386,7 +377,7 @@ class SymbolEditor(QtWidgets.QDialog):
         errors = []
         for state, filename in self.symbols.items():
             if state is None or state == "":
-                errors.append("Image: {} has no state".format(filename))
+                errors.append("Image {} has no state".format(filename))
             error, file_type = self.check_image(filename)
             if error:
                 errors.append(error)
