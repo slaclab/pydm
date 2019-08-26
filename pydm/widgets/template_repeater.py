@@ -11,7 +11,6 @@ from pydm.utilities import is_qt_designer, is_pydm_app
 import pydm.data_plugins
 from ..utilities import macro
 logger = logging.getLogger(__name__)
-pydm.data_plugins.initialize_plugins_if_needed()
 
 class FlowLayout(QLayout):
     def __init__(self, parent=None, margin=-1, h_spacing=-1, v_spacing=-1):
@@ -139,6 +138,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
     Q_ENUMS(LayoutType)
     LayoutType = LayoutType
     def __init__(self, parent=None):
+        pydm.data_plugins.initialize_plugins_if_needed()
         QFrame.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
         self._template_filename = ""
