@@ -1,7 +1,9 @@
+import os
 import sys
 import argparse
-import json
 import logging
+
+from qtpy import QtCore, QtGui
 
 
 def main():
@@ -114,6 +116,20 @@ def main():
         macros=macros,
         stylesheet_path=pydm_args.stylesheet
         )
+
+    base_path = os.path.dirname(os.path.realpath(__file__))
+    icon_path_mask = os.path.join(base_path, "icons", "pydm_{}.png")
+
+    app_icon = QtGui.QIcon()
+    app_icon.addFile(icon_path_mask.format(16), QtCore.QSize(16, 16))
+    app_icon.addFile(icon_path_mask.format(24), QtCore.QSize(24, 24))
+    app_icon.addFile(icon_path_mask.format(32), QtCore.QSize(32, 32))
+    app_icon.addFile(icon_path_mask.format(64), QtCore.QSize(64, 64))
+    app_icon.addFile(icon_path_mask.format(128), QtCore.QSize(128, 128))
+    app_icon.addFile(icon_path_mask.format(256), QtCore.QSize(256, 256))
+
+    app.setWindowIcon(app_icon)
+    app.setApplicationName('PyDM')
 
     sys.exit(app.exec_())
 
