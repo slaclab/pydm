@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.spinbox &mdash; PyDM v1.7.3+18.gcf19e1d6 documentation</title>
+  <title>pydm.widgets.spinbox &mdash; PyDM v1.7.3+22.g6bc98403 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.7.3+18.gcf19e1d6
+                v1.7.3+22.g6bc98403
               </div>
             
           
@@ -285,6 +285,10 @@
 <span class="sd">        new_val : int or float</span>
 <span class="sd">            The new value from the channel.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># SpinBox is unable to work with None and</span>
+            <span class="c1"># but sometimes it can arrive as an initial value</span>
+            <span class="k">return</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">valueBeingSet</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
