@@ -202,7 +202,7 @@ class QScale(QFrame):
         """
         Calculate the position (pixel) in which the pointer should be drawn for a given value.
         """
-        if value < self._lower_limit or value > self._upper_limit or \
+        if value is None or value < self._lower_limit or value > self._upper_limit or \
            self._upper_limit - self._lower_limit == 0:
             proportion = -1 # Invalid
         else:
