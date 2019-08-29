@@ -65,7 +65,7 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
             The new value from the channel. The type depends on the channel.
         """
         super(PyDMLabel, self).value_changed(new_value)
-        new_value = parse_value_for_display(value=new_value, precision=self._prec,
+        new_value = parse_value_for_display(value=new_value, precision=self.precision,
                                             display_format_type=self._display_format_type,
                                             string_encoding=self._string_encoding,
                                             widget=self)
