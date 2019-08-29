@@ -219,6 +219,7 @@ class TextFormatter(object):
         self._show_units = False
         self.format_string = "{}"
         self._precision_from_pv = None
+        self._user_prec = 0
         self._prec = 0
         self._unit = ""
         super(TextFormatter, self).__init__(*args, **kwargs)
@@ -236,7 +237,7 @@ class TextFormatter(object):
         """
         self.format_string = "{}"
         if isinstance(self.value, (int, float)):
-            self.format_string = "{:." + str(self._prec) + "f}"
+            self.format_string = "{:." + str(self.precision) + "f}"
         if self._show_units and self._unit != "":
             self.format_string += " {}".format(self._unit)
         return self.format_string
@@ -267,7 +268,9 @@ class TextFormatter(object):
         prec : int
             The current precision value
         """
-        return self._prec
+        if self.precisionFromPV:
+            return self._prec
+        return self._user_prec
 
     @precision.setter
     def precision(self, new_prec):
@@ -285,7 +288,7 @@ class TextFormatter(object):
         if self.precisionFromPV:
             return
         if new_prec and self._prec != int(new_prec) and new_prec >= 0:
-            self._prec = int(new_prec)
+            self._user_prec = int(new_prec)
             if not is_qt_designer() or config.DESIGNER_ONLINE:
                 self.value_changed(self.value)
 
@@ -391,7 +394,8 @@ class TextFormatter(object):
         """
         if self._precision_from_pv is None or self._precision_from_pv != bool(value):
             self._precision_from_pv = value
-
+            self.update_format_string()
+    
     def value_changed(self, new_val):
         """
         Callback invoked when the Channel value is changed.
