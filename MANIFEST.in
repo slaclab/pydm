@@ -8,3 +8,4 @@ include requirements.txt
 include dev-requirements.txt
 include README.md
 include LICENSE.md
+include pydm_launcher/icons/*.png

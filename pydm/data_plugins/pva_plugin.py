@@ -16,7 +16,7 @@ try:
         PVAPlugin = None
 except ImportError:
     PVAPlugin = None
-    logger.exception("Error import Python PVA library")
+    logger.info("No PVAccess Python library available. Ignoring pva plugin.")
 
 if PVAPlugin:
     PVAPlugin.protocol = "pva"

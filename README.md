@@ -1,15 +1,19 @@
 [![Build Status](https://dev.azure.com/pydm/pydm/_apis/build/status/slaclab.pydm?branchName=master)](https://dev.azure.com/pydm/pydm/_build/latest?definitionId=1&branchName=master)
 [![codecov](https://codecov.io/gh/slaclab/pydm/branch/master/graph/badge.svg)](https://codecov.io/gh/slaclab/pydm)
 
-<p align="center">
-  <h1 align="center">PyDM: Python Display Manager</h1>
+  <p>
+    <img src="pydm_launcher/icons/pydm_128.png" width="128" height="128" align="right"/>
+    <h1>PyDM: Python Display Manager</h1>
+  </p>
 
-  <p align="center">
+  <p align="left">
     PyDM is a PyQt-based framework for building user interfaces for control systems.
     The goal is to provide a no-code, drag-and-drop system to make simple screens,
     as well as a straightforward Python framework to build complex applications.
     <br>
     <br>
+  </p>
+  <p align="center">
     <strong>« Explore PyDM <a href="https://slaclab.github.io/pydm/">docs</a> and <a href="https://slaclab.github.io/pydm-tutorial">tutorials</a> »</strong>
     <br>
     <br>
@@ -21,7 +25,6 @@
     ·
     <a href="https://github.com/slaclab/pydm/blob/master/.github/SUPPORT.md">Support</a>
   </p>
-</p>
 
 <br>
 
