@@ -236,7 +236,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                     logger.error("Cannot convert the value '{0}', for channel '{1}', to type '{2}'. ".format(
                         self._scale, self._channel, self.channeltype))
 
-        new_value = parse_value_for_display(value=new_value,  precision=self._prec,
+        new_value = parse_value_for_display(value=new_value,  precision=self.precision,
                                             display_format_type=self._display_format_type,
                                             string_encoding=self._string_encoding,
                                             widget=self)
