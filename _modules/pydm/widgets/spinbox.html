@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.spinbox &mdash; PyDM v1.7.3+22.g6bc98403 documentation</title>
+  <title>pydm.widgets.spinbox &mdash; PyDM v1.7.3+24.g0609c8d5 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.7.3+22.g6bc98403
+                v1.7.3+24.g0609c8d5
               </div>
             
           
@@ -334,6 +334,22 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">precision_changed</span><span class="p">(</span><span class="n">new_precision</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="n">new_precision</span><span class="p">)</span></div>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">precision</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">precisionFromPV</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_prec</span>
+
+    <span class="nd">@precision</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">precision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_prec</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">precisionFromPV</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">new_prec</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_prec</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_prec</span><span class="p">)</span> <span class="ow">and</span> <span class="n">new_prec</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_user_prec</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_prec</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="n">new_prec</span><span class="p">)</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">showStepExponent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
