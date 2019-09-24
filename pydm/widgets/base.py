@@ -516,7 +516,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
             menu = QMenu(parent=self)
 
         kwargs = {'channels': self.channels_for_tools(), 'sender': self}
-        tools.assemble_tools_menu(menu, widget_only=True, **kwargs)
+        tools.assemble_tools_menu(menu, widget_only=True, widget=self, **kwargs)
         return menu
 
     def open_context_menu(self, ev):
