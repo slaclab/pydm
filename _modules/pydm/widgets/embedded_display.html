@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.embedded_display &mdash; PyDM v1.7.3+24.g0609c8d5 documentation</title>
+  <title>pydm.widgets.embedded_display &mdash; PyDM v1.7.3+28.gea20288b documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.7.3+24.g0609c8d5
+                v1.7.3+28.gea20288b
               </div>
             
           
@@ -177,9 +177,7 @@
             
   <h1>Source code for pydm.widgets.embedded_display</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QWidget</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Property</span>
-<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QTimer</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMPrimitiveWidget</span>
@@ -216,6 +214,9 @@
         <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">directory_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">base_macros</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">macro_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_load_error</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignHCenter</span><span class="p">)</span>
@@ -299,6 +300,12 @@
         <span class="k">if</span> <span class="n">filename</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">filename</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_needs_load</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">is_qt_designer</span><span class="p">():</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span><span class="p">:</span>
+                    <span class="c1"># Kill the timer here. If new filename still causes the problem, it will be restarted</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear_error_text</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">load_if_needed</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMEmbeddedDisplay.parsed_macros"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.parsed_macros">[docs]</a>    <span class="k">def</span> <span class="nf">parsed_macros</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -349,8 +356,14 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">clear_error_text</span><span class="p">()</span>
                 <span class="k">return</span> <span class="n">w</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception while opening embedded display file.&quot;</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">display_error_text</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_load_error</span> <span class="o">=</span> <span class="n">e</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span><span class="o">.</span><span class="n">setSingleShot</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span><span class="o">.</span><span class="n">setTimerType</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">VeryCoarseTimer</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_display_designer_load_error</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">3000</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         
         <span class="c1"># If you get this far, you are running inside a PyDMApplication, load</span>
@@ -499,7 +512,13 @@
 <span class="sd">        event : QHideEvent</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">disconnectWhenHidden</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_display_designer_load_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception while opening embedded display file.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_error</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_error_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_load_error</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
