@@ -147,6 +147,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         self._data = []
         self._cached_template = None
         self._layout_type = LayoutType.Vertical
+        self._temp_layout_spacing = 4
         self.app = QApplication.instance()
         self.rebuild()
     
@@ -177,6 +178,18 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         if new_type != self._layout_type:
             self._layout_type = new_type
             self.rebuild()
+    
+    @Property(int)
+    def layoutSpacing(self):
+        if self.layout():
+            return self.layout().spacing()
+        return self._temp_layout_spacing
+    
+    @layoutSpacing.setter
+    def layoutSpacing(self, new_spacing):
+        self._temp_layout_spacing = new_spacing
+        if self.layout():
+            self.layout().setSpacing(new_spacing)
     
     @Property(int)
     def countShownInDesigner(self):
@@ -328,6 +341,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
                 QWidget().setLayout(self.layout())
             l = layout_class(self)
             self.setLayout(l)
+            self.layout().setSpacing(self._temp_layout_spacing)
         with pydm.data_plugins.connection_queue(defer_connections=True):
             for i, variables in enumerate(self.data):
                 if is_qt_designer() and i > self.countShownInDesigner - 1:
