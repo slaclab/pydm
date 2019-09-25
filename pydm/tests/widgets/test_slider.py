@@ -256,19 +256,18 @@ def test_setup_widgets_for_orientation(qtbot, new_orientation):
         assert pydm_slider._slider.orientation() == new_orientation
 
 
-@pytest.mark.parametrize("minimum, maximum, current_value", [
-    (10, 20.5, 11),
-    (10, 1, 5),
-    (10, 20, 30),
-    (-10, 20.5, -5),
+@pytest.mark.parametrize("minimum, maximum", [
+    (10, 20.5),
+    (10, 1),
+    (10, 20),
+    (-10, 20.5),
 ])
-def test_update_labels(qtbot, signals, minimum, maximum, current_value):
+def test_update_labels(qtbot, signals, minimum, maximum):
     """
-    Test the changes in the user minimum, user maximum, and the current value labels as the widget's slider component
-    moves.
+    Test that changes in the user minimum and user maximum update the limit labels.
 
     Expectations:
-    The widget's min, max, and current values are reflected correctly on the correponsiding labels.
+    The widget's min and max are reflected correctly on the correponsiding labels.
 
     Parameters
     ----------
@@ -280,8 +279,6 @@ def test_update_labels(qtbot, signals, minimum, maximum, current_value):
         The slider's minimum value as set by the user
     maximum : int
         The slider's maximum value as set by the user
-    current_value : int
-        The current slider's value as set by the user
     """
     def validate(value, widget):
         if value is None:
@@ -296,14 +293,10 @@ def test_update_labels(qtbot, signals, minimum, maximum, current_value):
     pydm_slider.userMinimum = minimum
     pydm_slider.userMaximum = maximum
 
-    signals.internal_slider_moved[int].connect(pydm_slider.internal_slider_moved)
-    signals.internal_slider_moved[int].emit(current_value)
-
     pydm_slider.update_labels()
 
     validate(minimum, pydm_slider.low_lim_label)
     validate(maximum, pydm_slider.high_lim_label)
-    validate(pydm_slider._slider_position_to_value_map[current_value], pydm_slider.value_label)
 
 
 @pytest.mark.parametrize("minimum, maximum, write_access, connected", [

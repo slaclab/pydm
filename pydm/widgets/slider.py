@@ -31,6 +31,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.alarmSensitiveContent = True
         self.alarmSensitiveBorder = False
         # Internal values for properties
+        self._ignore_mouse_wheel = False
         self._show_limit_labels = True
         self._show_value_label = True
         self._user_defined_limits = False
@@ -57,6 +58,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.high_lim_label.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
         self._slider = QSlider(parent=self)
         self._slider.setOrientation(Qt.Horizontal)
+        self._orig_wheel_event = self._slider.wheelEvent
         self._slider.sliderMoved.connect(self.internal_slider_moved)
         self._slider.sliderPressed.connect(self.internal_slider_pressed)
         self._slider.sliderReleased.connect(self.internal_slider_released)
@@ -67,6 +69,14 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self._mute_internal_slider_changes = False
         self.setup_widgets_for_orientation(self._orientation)
         self.reset_slider_limits()
+
+    def wheelEvent(self, e):
+        #We specifically want to ignore mouse wheel events.
+        if self._ignore_mouse_wheel:
+            e.ignore()
+        else:
+            super(PyDMSlider, self).wheelEvent(e)
+        return
 
     def init_for_designer(self):
         """
@@ -162,10 +172,13 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         Reset the limits and adjust the labels properly for the slider.
         """
+        logger.debug("Running reset_slider_limits.")
         if self.minimum is None or self.maximum is None:
             self._needs_limit_info = True
+            logger.debug("Need both limits before reset_slider_limits can work.")
             self.set_enable_state()
             return
+        logger.debug("Has both limits, proceeding.")
         self._needs_limit_info = False
         self._slider.setMinimum(0)
         self._slider.setMaximum(self._num_steps - 1)
@@ -191,6 +204,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         int
         """
         diff = abs(self._slider_position_to_value_map - float(val))
+        logger.debug("The closest value to %f is: %f", val, self._slider_position_to_value_map[np.argmin(diff)])
         return np.argmin(diff)
 
     def set_slider_to_closest_value(self, val):
@@ -202,6 +216,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         val : float
         """
         if val is None or self._needs_limit_info:
+            logger.debug("Not setting slider to closest value because we need limits.")
             return
         # When we set the slider to the closest value, it may end up at a slightly
         # different position than val (if val is not in self._slider_position_to_value_map)
@@ -211,6 +226,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         # it to where the slider gets set.  Therefore, we mute the internal slider changes
         # so that its valueChanged signal doesn't cause us to emit a signal to PyDM to change
         # the value of the channel.
+        logger.debug("Setting slider to closest value.")
         self._mute_internal_slider_changes = True
         self._slider.setValue(self.find_closest_slider_position_to_value(val))
         self._mute_internal_slider_changes = False
@@ -252,8 +268,10 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         new_val : int or float
             The new value from the channel.
         """
+        logger.debug("Slider got a new value = %f", float(new_val))
         PyDMWritableWidget.value_changed(self, new_val)
         if hasattr(self, "value_label"):
+            logger.debug("Setting text for value label.")
             self.value_label.setText(self.format_string.format(self.value))
         if not self._slider.isSliderDown():
             self.set_slider_to_closest_value(self.value)
@@ -270,6 +288,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         new_limit : float
             New value for the control limit
         """
+        logger.debug("%s limit changed to %f", which, new_limit)
         PyDMWritableWidget.ctrl_limit_changed(self, which, new_limit)
         if not self.userDefinedLimits:
             self.reset_slider_limits()
@@ -314,15 +333,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         ----------
         val : float
         """
-        # Avoid potential crash if limits are undefined
-        if self._slider_position_to_value_map is None:
-            return
-        # The user has moved the slider, we need to update our value.
-        # Only update the underlying value, not the self.value property,
-        # because we don't need to reset the slider position.    If we change
-        # self.value, we can get into a loop where the position changes, which
-        # updates the value, which changes the position again, etc etc.
-        self.value = self._slider_position_to_value_map[val]
         self.sliderMoved.emit(self.value)
 
     @Slot()
@@ -349,13 +359,61 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         Parameters
         ----------
         val : int
-        """
-        # At this point, our local copy of the value reflects the position of the
-        # slider, now all we need to do is emit a signal to PyDM so that the data
-        # plugin will send a put to the channel.  Don't update self.value or self._value
-        # in here, it is pointless at best, and could cause an infinite loop at worst.
+        """        
+        # Avoid potential crash if limits are undefined
+        if self._slider_position_to_value_map is None:
+            return
         if not self._mute_internal_slider_changes:
+            self.value = self._slider_position_to_value_map[val]
             self.send_value_signal[float].emit(self.value)
+
+    @Property(bool)
+    def tracking(self):
+        """
+        If tracking is enabled (the default), the slider emits new values
+        while the slider is being dragged.  If tracking is disabled, it will
+        only emit new values when the user releases the slider.  Tracking can
+        cause PyDM to rapidly send new values to the channel.  If you are using
+        the slider to control physical hardware, consider whether the device
+        you want to control can handle large amounts of changes in a short
+        timespan.
+        """
+        return self._slider.hasTracking()
+        
+    @tracking.setter
+    def tracking(self, checked):
+        self._slider.setTracking(checked)
+    
+    def hasTracking(self):
+        """
+        An alternative function to get the tracking property, to match what
+        Qt provides for QSlider.
+        """
+        return self.tracking
+    
+    def setTracking(self, checked):
+        """
+        An alternative function to set the tracking property, to match what
+        Qt provides for QSlider.
+        """
+        self.tracking = checked
+
+    @Property(bool)
+    def ignoreMouseWheel(self):
+        """
+        If true, the mouse wheel will not change the value of the slider.
+        This is useful if you want to put sliders inside a scroll view, and
+        don't want to accidentally change the slider as you are scrolling.
+        """
+        return self._ignore_mouse_wheel
+        
+    @ignoreMouseWheel.setter
+    def ignoreMouseWheel(self, checked):
+        self._ignore_mouse_wheel = checked
+        if checked:
+            self._slider.wheelEvent = self.wheelEvent
+        else:
+            self._slider.wheelEvent = self._orig_wheel_event
 
     @Property(bool)
     def showLimitLabels(self):
