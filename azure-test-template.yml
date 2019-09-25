@@ -66,9 +66,10 @@ jobs:
 
   - bash: |
       source activate base
+      conda update --all
       conda config --set always_yes yes
-      conda config --add channels conda-forge
       conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
+      conda config --add channels conda-forge
     displayName: 'Anaconda - Configure - Add local bld-dir'
 
   - bash: |
@@ -90,7 +91,7 @@ jobs:
 
   - bash: |
       source activate base
-      conda install -q -c conda-forge pydm --file dev-requirements.txt
+      conda install -q pydm --file dev-requirements.txt -c conda-forge
       pip install pytest-azurepipelines
     displayName: 'Anaconda - Install Dependencies'
 
