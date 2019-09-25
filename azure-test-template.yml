@@ -68,6 +68,7 @@ jobs:
       source activate base
       conda update --all
       conda config --set always_yes yes
+      conda config --set channel_priority strict
       conda config --add channels conda-forge
       conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
     displayName: 'Anaconda - Configure - Add local bld-dir'
