@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMSlider &mdash; PyDM v1.7.3+28.gea20288b documentation</title>
+  <title>PyDMSlider &mdash; PyDM v1.7.3+43.g6a834fc3 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.7.3+28.gea20288b
+                v1.7.3+43.g6a834fc3
               </div>
             
           
@@ -260,6 +260,21 @@ for a given value.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydm.widgets.slider.PyDMSlider.hasTracking">
+<code class="sig-name descname">hasTracking</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.hasTracking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.hasTracking" title="Permalink to this definition">¶</a></dt>
+<dd><p>An alternative function to get the tracking property, to match what
+Qt provides for QSlider.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.ignoreMouseWheel">
+<code class="sig-name descname">ignoreMouseWheel</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.ignoreMouseWheel" title="Permalink to this definition">¶</a></dt>
+<dd><p>If true, the mouse wheel will not change the value of the slider.
+This is useful if you want to put sliders inside a scroll view, and
+don’t want to accidentally change the slider as you are scrolling.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydm.widgets.slider.PyDMSlider.init_for_designer">
 <code class="sig-name descname">init_for_designer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.init_for_designer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.init_for_designer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method called after the constructor to tweak configurations for
@@ -365,6 +380,13 @@ unless <cite>mute_internal_slider_changes</cite> is True.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydm.widgets.slider.PyDMSlider.setTracking">
+<code class="sig-name descname">setTracking</code><span class="sig-paren">(</span><em class="sig-param">checked</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.setTracking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setTracking" title="Permalink to this definition">¶</a></dt>
+<dd><p>An alternative function to set the tracking property, to match what
+Qt provides for QSlider.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydm.widgets.slider.PyDMSlider.set_enable_state">
 <code class="sig-name descname">set_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.set_enable_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.set_enable_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines wether or not the widget must be enabled or not depending
@@ -433,6 +455,18 @@ on the write access, connection state and presence of limits information</p>
 <dd class="field-even"><p>QSlider.TickPosition</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.tracking">
+<code class="sig-name descname">tracking</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.tracking" title="Permalink to this definition">¶</a></dt>
+<dd><p>If tracking is enabled (the default), the slider emits new values
+while the slider is being dragged.  If tracking is disabled, it will
+only emit new values when the user releases the slider.  Tracking can
+cause PyDM to rapidly send new values to the channel.  If you are using
+the slider to control physical hardware, consider whether the device
+you want to control can handle large amounts of changes in a short
+timespan.</p>
 </dd></dl>
 
 <dl class="method">
@@ -510,6 +544,11 @@ channel</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.slider.PyDMSlider.wheelEvent">
+<code class="sig-name descname">wheelEvent</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QWheelEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.wheelEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.wheelEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.slider.PyDMSlider.write_access_changed">

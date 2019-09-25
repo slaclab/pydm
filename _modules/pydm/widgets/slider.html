@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.slider &mdash; PyDM v1.7.3+28.gea20288b documentation</title>
+  <title>pydm.widgets.slider &mdash; PyDM v1.7.3+43.g6a834fc3 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.7.3+28.gea20288b
+                v1.7.3+43.g6a834fc3
               </div>
             
           
@@ -209,6 +209,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">alarmSensitiveContent</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alarmSensitiveBorder</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="c1"># Internal values for properties</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ignore_mouse_wheel</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_limit_labels</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_value_label</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_limits</span> <span class="o">=</span> <span class="kc">False</span>
@@ -235,6 +236,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">high_lim_label</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignRight</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignTrailing</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span> <span class="o">=</span> <span class="n">QSlider</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setOrientation</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_orig_wheel_event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">wheelEvent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">sliderMoved</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">internal_slider_moved</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">sliderPressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">internal_slider_pressed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">sliderReleased</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">internal_slider_released</span><span class="p">)</span>
@@ -245,6 +247,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_mute_internal_slider_changes</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup_widgets_for_orientation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_slider_limits</span><span class="p">()</span>
+
+<div class="viewcode-block" id="PyDMSlider.wheelEvent"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.wheelEvent">[docs]</a>    <span class="k">def</span> <span class="nf">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="c1">#We specifically want to ignore mouse wheel events.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ignore_mouse_wheel</span><span class="p">:</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSlider</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">wheelEvent</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span></div>
 
 <div class="viewcode-block" id="PyDMSlider.init_for_designer"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.init_for_designer">[docs]</a>    <span class="k">def</span> <span class="nf">init_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -340,10 +350,13 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reset the limits and adjust the labels properly for the slider.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running reset_slider_limits.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_needs_limit_info</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Need both limits before reset_slider_limits can work.&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_enable_state</span><span class="p">()</span>
             <span class="k">return</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Has both limits, proceeding.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_needs_limit_info</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
@@ -369,6 +382,7 @@
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">diff</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;The closest value to </span><span class="si">%f</span><span class="s2"> is: </span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">diff</span><span class="p">)])</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMSlider.set_slider_to_closest_value"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.set_slider_to_closest_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_slider_to_closest_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
@@ -380,6 +394,7 @@
 <span class="sd">        val : float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_needs_limit_info</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Not setting slider to closest value because we need limits.&quot;</span><span class="p">)</span>
             <span class="k">return</span>
         <span class="c1"># When we set the slider to the closest value, it may end up at a slightly</span>
         <span class="c1"># different position than val (if val is not in self._slider_position_to_value_map)</span>
@@ -389,6 +404,7 @@
         <span class="c1"># it to where the slider gets set.  Therefore, we mute the internal slider changes</span>
         <span class="c1"># so that its valueChanged signal doesn&#39;t cause us to emit a signal to PyDM to change</span>
         <span class="c1"># the value of the channel.</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting slider to closest value.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mute_internal_slider_changes</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">find_closest_slider_position_to_value</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mute_internal_slider_changes</span> <span class="o">=</span> <span class="kc">False</span></div>
@@ -430,8 +446,10 @@
 <span class="sd">        new_val : int or float</span>
 <span class="sd">            The new value from the channel.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Slider got a new value = </span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">new_val</span><span class="p">))</span>
         <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value_label&quot;</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting text for value label.&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">isSliderDown</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_slider_to_closest_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
@@ -448,6 +466,7 @@
 <span class="sd">        new_limit : float</span>
 <span class="sd">            New value for the control limit</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> limit changed to </span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">)</span>
         <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="n">ctrl_limit_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">userDefinedLimits</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reset_slider_limits</span><span class="p">()</span></div>
@@ -492,15 +511,6 @@
 <span class="sd">        ----------</span>
 <span class="sd">        val : float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Avoid potential crash if limits are undefined</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span>
-        <span class="c1"># The user has moved the slider, we need to update our value.</span>
-        <span class="c1"># Only update the underlying value, not the self.value property,</span>
-        <span class="c1"># because we don&#39;t need to reset the slider position.    If we change</span>
-        <span class="c1"># self.value, we can get into a loop where the position changes, which</span>
-        <span class="c1"># updates the value, which changes the position again, etc etc.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span><span class="p">[</span><span class="n">val</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sliderMoved</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMSlider.internal_slider_pressed"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.internal_slider_pressed">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
@@ -527,13 +537,61 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        val : int</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># At this point, our local copy of the value reflects the position of the</span>
-        <span class="c1"># slider, now all we need to do is emit a signal to PyDM so that the data</span>
-        <span class="c1"># plugin will send a put to the channel.  Don&#39;t update self.value or self._value</span>
-        <span class="c1"># in here, it is pointless at best, and could cause an infinite loop at worst.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="c1"># Avoid potential crash if limits are undefined</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mute_internal_slider_changes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span><span class="p">[</span><span class="n">val</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">tracking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If tracking is enabled (the default), the slider emits new values</span>
+<span class="sd">        while the slider is being dragged.  If tracking is disabled, it will</span>
+<span class="sd">        only emit new values when the user releases the slider.  Tracking can</span>
+<span class="sd">        cause PyDM to rapidly send new values to the channel.  If you are using</span>
+<span class="sd">        the slider to control physical hardware, consider whether the device</span>
+<span class="sd">        you want to control can handle large amounts of changes in a short</span>
+<span class="sd">        timespan.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">hasTracking</span><span class="p">()</span>
+        
+    <span class="nd">@tracking</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">tracking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setTracking</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="PyDMSlider.hasTracking"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.hasTracking">[docs]</a>    <span class="k">def</span> <span class="nf">hasTracking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An alternative function to get the tracking property, to match what</span>
+<span class="sd">        Qt provides for QSlider.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracking</span></div>
+    
+<div class="viewcode-block" id="PyDMSlider.setTracking"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.setTracking">[docs]</a>    <span class="k">def</span> <span class="nf">setTracking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An alternative function to set the tracking property, to match what</span>
+<span class="sd">        Qt provides for QSlider.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracking</span> <span class="o">=</span> <span class="n">checked</span></div>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">ignoreMouseWheel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If true, the mouse wheel will not change the value of the slider.</span>
+<span class="sd">        This is useful if you want to put sliders inside a scroll view, and</span>
+<span class="sd">        don&#39;t want to accidentally change the slider as you are scrolling.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ignore_mouse_wheel</span>
+        
+    <span class="nd">@ignoreMouseWheel</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">ignoreMouseWheel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ignore_mouse_wheel</span> <span class="o">=</span> <span class="n">checked</span>
+        <span class="k">if</span> <span class="n">checked</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">wheelEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wheelEvent</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">wheelEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orig_wheel_event</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">showLimitLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
