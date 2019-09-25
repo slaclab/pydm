@@ -30,6 +30,8 @@ jobs:
 
   - bash: |
       conda config --set always_yes yes
+      conda config --set channel_priority strict
+      conda config --set show_channel_urls yes
       conda config --add channels conda-forge
       conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
     displayName: 'Anaconda - Configure - Add local bld-dir'
@@ -42,7 +44,7 @@ jobs:
 
   - script: |
       call activate test-environment-$(python.name)
-      conda build conda-recipe -c conda-forge --python=$(python.version) --output-folder bld-dir
+      conda build conda-recipe --python=$(python.version) --output-folder bld-dir
     displayName: 'Anaconda - Build PyDM Package'
 
   - task: PublishBuildArtifacts@1
@@ -53,16 +55,8 @@ jobs:
 
   - script: |
       call activate test-environment-$(python.name)
-      conda install -q -c conda-forge epics-base pytest-azurepipelines pydm --file dev-requirements.txt
+      conda install -q pytest-azurepipelines pydm --file dev-requirements.txt --update-deps
     displayName: 'Anaconda - Install Dependencies'
-
-  # Windows Only
-  - powershell: |
-      $MyProcess = Start-Process $Env:REPEATER -PassThru
-    env:
-      REPEATER: C:\Miniconda\envs\test-environment-$(python.name)\epics\bin\windows-x64\caRepeater.exe
-    displayName: 'Windows - Start CaRepeater'
-    condition: eq(variables['agent.os'], 'Windows_NT' )
 
   - script: |
       call activate test-environment-$(python.name)
@@ -76,9 +70,6 @@ jobs:
   - script: |
       call activate test-environment-$(python.name)
       python run_tests.py --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python.version)" --napoleon-docstrings
-    env:
-      PYEPICS_LIBCA: C:\Miniconda\envs\test-environment-$(python.name)\epics\lib\ca.lib
-      PATH: C:\Miniconda\envs\test-environment-$(python.name)\epics\lib:C:\Miniconda\envs\test-environment-$(python.name)\epics\bin:$(PATH)
     displayName: 'Tests - Run'
     continueOnError: false
 

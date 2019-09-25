@@ -67,6 +67,8 @@ jobs:
   - bash: |
       source activate base
       conda config --set always_yes yes
+      conda config --set channel_priority strict
+      conda config --set show_channel_urls yes
       conda config --add channels conda-forge
       conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
     displayName: 'Anaconda - Configure - Add local bld-dir'
@@ -79,7 +81,7 @@ jobs:
 
   - bash: |
       source activate base
-      conda build conda-recipe -c conda-forge --python=$(python.version) --output-folder bld-dir
+      conda build conda-recipe --python=$(python.version) --output-folder bld-dir
     displayName: 'Anaconda - Build PyDM Package'
 
   - task: PublishBuildArtifacts@1
@@ -90,7 +92,7 @@ jobs:
 
   - bash: |
       source activate base
-      conda install -q -c conda-forge epics-base pydm --file dev-requirements.txt
+      conda install -q pydm --file dev-requirements.txt --update-deps
       pip install pytest-azurepipelines
     displayName: 'Anaconda - Install Dependencies'
 
