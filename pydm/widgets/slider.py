@@ -333,15 +333,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         ----------
         val : float
         """
-        # Avoid potential crash if limits are undefined
-        if self._slider_position_to_value_map is None:
-            return
-        # The user has moved the slider, we need to update our value.
-        # Only update the underlying value, not the self.value property,
-        # because we don't need to reset the slider position.    If we change
-        # self.value, we can get into a loop where the position changes, which
-        # updates the value, which changes the position again, etc etc.
-        self.value = self._slider_position_to_value_map[val]
         self.sliderMoved.emit(self.value)
 
     @Slot()
@@ -368,12 +359,12 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         Parameters
         ----------
         val : int
-        """
-        # At this point, our local copy of the value reflects the position of the
-        # slider, now all we need to do is emit a signal to PyDM so that the data
-        # plugin will send a put to the channel.  Don't update self.value or self._value
-        # in here, it is pointless at best, and could cause an infinite loop at worst.
+        """        
+        # Avoid potential crash if limits are undefined
+        if self._slider_position_to_value_map is None:
+            return
         if not self._mute_internal_slider_changes:
+            self.value = self._slider_position_to_value_map[val]
             self.send_value_signal[float].emit(self.value)
 
     @Property(bool)
