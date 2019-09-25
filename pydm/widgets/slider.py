@@ -172,13 +172,13 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         Reset the limits and adjust the labels properly for the slider.
         """
-        print("{}: Running reset_slider_limits".format(self.channel))
+        logger.debug("Running reset_slider_limits.")
         if self.minimum is None or self.maximum is None:
             self._needs_limit_info = True
-            print("{}: Needs both limits before reset_slider_limits can work.".format(self.channel))
+            logger.debug("Need both limits before reset_slider_limits can work.")
             self.set_enable_state()
             return
-        print("{}: Has both limits, proceeding.".format(self.channel))
+        logger.debug("Has both limits, proceeding.")
         self._needs_limit_info = False
         self._slider.setMinimum(0)
         self._slider.setMaximum(self._num_steps - 1)
@@ -204,7 +204,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         int
         """
         diff = abs(self._slider_position_to_value_map - float(val))
-        print("{}: The closest value to {} is: {}".format(self.channel, val, self._slider_position_to_value_map[np.argmin(diff)]))
+        logger.debug("The closest value to %f is: %f", val, self._slider_position_to_value_map[np.argmin(diff)])
         return np.argmin(diff)
 
     def set_slider_to_closest_value(self, val):
@@ -216,7 +216,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         val : float
         """
         if val is None or self._needs_limit_info:
-            print("{}: Not setting slider to closest value because we need limits.".format(self.channel))
+            logger.debug("Not setting slider to closest value because we need limits.")
             return
         # When we set the slider to the closest value, it may end up at a slightly
         # different position than val (if val is not in self._slider_position_to_value_map)
@@ -226,7 +226,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         # it to where the slider gets set.  Therefore, we mute the internal slider changes
         # so that its valueChanged signal doesn't cause us to emit a signal to PyDM to change
         # the value of the channel.
-        print("{}: Setting slider to closest value.".format(self.channel))
+        logger.debug("Setting slider to closest value.")
         self._mute_internal_slider_changes = True
         self._slider.setValue(self.find_closest_slider_position_to_value(val))
         self._mute_internal_slider_changes = False
@@ -268,10 +268,10 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         new_val : int or float
             The new value from the channel.
         """
-        print("{}: Slider got a new value = {}".format(self.channel, new_val))
+        logger.debug("Slider got a new value = %f", float(new_val))
         PyDMWritableWidget.value_changed(self, new_val)
         if hasattr(self, "value_label"):
-            print("{}: Setting text for value label.".format(self.channel))
+            logger.debug("Setting text for value label.")
             self.value_label.setText(self.format_string.format(self.value))
         if not self._slider.isSliderDown():
             self.set_slider_to_closest_value(self.value)
@@ -288,7 +288,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         new_limit : float
             New value for the control limit
         """
-        print("{}: {} limit changed to {}".format(self.channel, which, new_limit))
+        logger.debug("%s limit changed to %f", which, new_limit)
         PyDMWritableWidget.ctrl_limit_changed(self, which, new_limit)
         if not self.userDefinedLimits:
             self.reset_slider_limits()
