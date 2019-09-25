@@ -66,7 +66,6 @@ jobs:
 
   - bash: |
       source activate base
-      conda update --all
       conda config --set always_yes yes
       conda config --set channel_priority strict
       conda config --set show_channel_urls yes
