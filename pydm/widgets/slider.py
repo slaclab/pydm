@@ -368,6 +368,37 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             self.send_value_signal[float].emit(self.value)
 
     @Property(bool)
+    def tracking(self):
+        """
+        If tracking is enabled (the default), the slider emits new values
+        while the slider is being dragged.  If tracking is disabled, it will
+        only emit new values when the user releases the slider.  Tracking can
+        cause PyDM to rapidly send new values to the channel.  If you are using
+        the slider to control physical hardware, consider whether the device
+        you want to control can handle large amounts of changes in a short
+        timespan.
+        """
+        return self._slider.hasTracking()
+        
+    @tracking.setter
+    def tracking(self, checked):
+        self._slider.setTracking(checked)
+    
+    def hasTracking(self):
+        """
+        An alternative function to get the tracking property, to match what
+        Qt provides for QSlider.
+        """
+        return self.tracking
+    
+    def setTracking(self, checked):
+        """
+        An alternative function to set the tracking property, to match what
+        Qt provides for QSlider.
+        """
+        self.tracking = checked
+
+    @Property(bool)
     def ignoreMouseWheel(self):
         """
         If true, the mouse wheel will not change the value of the slider.
