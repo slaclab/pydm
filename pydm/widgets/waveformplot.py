@@ -197,6 +197,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         # Don't redraw unless we already have Y data.
         if self.latest_y is not None:
             self.update_waveforms_if_ready()
+            self.data_changed.emit()
 
     @Slot(np.ndarray)
     def receiveYWaveform(self, new_waveform):
