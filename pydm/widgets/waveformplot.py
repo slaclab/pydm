@@ -162,18 +162,22 @@ class WaveformCurveItem(BasePlotCurveItem):
         if self.redraw_mode == WaveformCurveItem.REDRAW_ON_EITHER:
             self.x_waveform = self.latest_x
             self.y_waveform = self.latest_y
+            self.data_changed.emit()
         elif self.redraw_mode == WaveformCurveItem.REDRAW_ON_X:
             if not self.needs_new_x:
                 self.x_waveform = self.latest_x
                 self.y_waveform = self.latest_y
+                self.data_changed.emit()
         elif self.redraw_mode == WaveformCurveItem.REDRAW_ON_Y:
             if not self.needs_new_y:
                 self.x_waveform = self.latest_x
                 self.y_waveform = self.latest_y
+                self.data_changed.emit()
         elif self.redraw_mode == WaveformCurveItem.REDRAW_ON_BOTH:
             if not (self.needs_new_y or self.needs_new_x):
                 self.x_waveform = self.latest_x
                 self.y_waveform = self.latest_y
+                self.data_changed.emit()
 
     @Slot(bool)
     def xConnectionStateChanged(self, connected):
@@ -197,6 +201,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         # Don't redraw unless we already have Y data.
         if self.latest_y is not None:
             self.update_waveforms_if_ready()
+            
 
     @Slot(np.ndarray)
     def receiveYWaveform(self, new_waveform):
@@ -211,7 +216,6 @@ class WaveformCurveItem(BasePlotCurveItem):
         self.needs_new_y = False
         if self.x_channel is None or self.latest_x is not None:
             self.update_waveforms_if_ready()
-            self.data_changed.emit()
 
     def redrawCurve(self):
         """
