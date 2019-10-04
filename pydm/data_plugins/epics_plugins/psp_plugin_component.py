@@ -250,7 +250,7 @@ class Connection(PyDMConnection):
             units = self.pv.data['units']
             if self.units != units:
                 self.units = units
-                self.unit_signal.emit(self.units.decode(encoding='ascii'))
+                self.unit_signal.emit(self.units.decode(encoding='ascii') if isinstance(self.units, bytes) else self.units)
         except KeyError:
             pass
 
@@ -302,7 +302,9 @@ class Connection(PyDMConnection):
             except KeyError:
                 pass
         if self.units:
-            self.unit_signal.emit(self.units.decode(encoding='ascii'))
+            if isinstance(self.units, bytes):
+                self.units = self.units.decode(encoding='ascii')
+            self.unit_signal.emit(self.units)
 
         if self.ctrl_llim is None:
             try:
@@ -342,7 +344,7 @@ class Connection(PyDMConnection):
         """
         if self.epics_type == "DBF_ENUM":
             if self.enums is None:
-                self.enums = tuple(b.decode(encoding='ascii') for b in self.pv.data["enum_set"])
+                self.enums = tuple(b.decode(encoding='ascii') if isinstance(b, bytes) else b for b in self.pv.data["enum_set"])
             self.enum_strings_signal.emit(self.enums)
 
     @Slot(int)
