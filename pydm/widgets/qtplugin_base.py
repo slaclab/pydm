@@ -32,6 +32,7 @@ class WidgetCategory(object):
     INPUT = "PyDM Input Widgets"
     PLOT = "PyDM Plot Widgets"
     DRAWING = "PyDM Drawing Widgets"
+    MISC = "PyDM Misc. Widgets"
 
 
 def qtplugin_factory(cls, is_container=False, group='PyDM Widgets',
