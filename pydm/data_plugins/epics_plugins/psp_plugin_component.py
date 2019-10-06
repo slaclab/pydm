@@ -152,7 +152,8 @@ class Connection(PyDMConnection):
         self.prec = None
         self.count = None
         self.epics_type = None
-
+        self.read_access = False
+        self.write_access = False
         # Auxilliary info to help with throttling
         self.scan_pv = setup_pv(pv + ".SCAN", mon_cb=self.scan_pv_cb,
                                 mon_cb_once=True)
@@ -202,7 +203,9 @@ class Connection(PyDMConnection):
         :param read_access: Whether or not the PV is readable.
         :param write_access: Whether or not the PV is writeable.
         """
-        self.send_access_state(read_access, write_access)
+        self.read_access = read_access
+        self.write_access = write_access
+        self.send_access_state()
 
     def throttle_cb(self):
         """
@@ -331,11 +334,11 @@ class Connection(PyDMConnection):
         """
         self.connection_state_signal.emit(conn)
 
-    def send_access_state(self, read_access, write_access):
+    def send_access_state(self):
         if data_plugins.is_read_only():
             self.write_access_signal.emit(False)
             return
-        self.write_access_signal.emit(write_access)
+        self.write_access_signal.emit(self.write_access)
 
     def update_enums(self):
         """
@@ -432,7 +435,11 @@ class Connection(PyDMConnection):
         if self.pv.isconnected and self.pv.isinitialized:
             self.send_connection_state(conn=True)
             self.monitor_cb()
-            self.update_enums()
+            try:
+                self.update_enums()
+            except KeyError:
+                self.pv.get_enum_strings(-1.0)
+            self.send_access_state()
             self.send_ctrl_vars()
         if channel.value_signal is not None:
             try:

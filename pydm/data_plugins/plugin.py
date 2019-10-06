@@ -182,4 +182,5 @@ class PyDMPlugin(object):
                                                           destroying=destroying)
                 self.channels.remove(channel)
                 if self.connections[address].listener_count < 1:
+                    self.connections[address].deleteLater()
                     del self.connections[address]
