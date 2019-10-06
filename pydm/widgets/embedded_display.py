@@ -325,7 +325,6 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             if w:
                 self.embedded_widget = w
         if self.disconnectWhenHidden:
-            print("Embedded widget {} was shown".format(self))
             self.connect()
 
     def hideEvent(self, e):
@@ -337,7 +336,6 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         event : QHideEvent
         """
         if self.disconnectWhenHidden:
-            print("Embedded widget {} was hidden".format(self))
             self.disconnect()
 
     def _display_designer_load_error(self):
