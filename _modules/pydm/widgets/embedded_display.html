@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.embedded_display &mdash; PyDM v1.7.3+52.g0ab44e93 documentation</title>
+  <title>pydm.widgets.embedded_display &mdash; PyDM v1.7.3+57.g88c5a400 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.7.3+52.g0ab44e93
+                v1.7.3+57.g88c5a400
               </div>
             
           
@@ -432,7 +432,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_connected</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedded_widget</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">establish_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedded_widget</span><span class="p">)</span></div>
+        <span class="n">establish_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedded_widget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_connected</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="PyDMEmbeddedDisplay.disconnect"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -441,7 +442,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_connected</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedded_widget</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">close_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedded_widget</span><span class="p">)</span></div>
+        <span class="n">close_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedded_widget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_connected</span> <span class="o">=</span> <span class="kc">False</span></div>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">loadWhenShown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
