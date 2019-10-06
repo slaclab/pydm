@@ -255,6 +255,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         if self._is_connected or self.embedded_widget is None:
             return
         establish_widget_connections(self.embedded_widget)
+        self._is_connected = True
 
     def disconnect(self):
         """
@@ -264,6 +265,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         if not self._is_connected or self.embedded_widget is None:
             return
         close_widget_connections(self.embedded_widget)
+        self._is_connected = False
 
     @Property(bool)
     def loadWhenShown(self):
@@ -323,6 +325,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             if w:
                 self.embedded_widget = w
         if self.disconnectWhenHidden:
+            print("Embedded widget {} was shown".format(self))
             self.connect()
 
     def hideEvent(self, e):
@@ -334,6 +337,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         event : QHideEvent
         """
         if self.disconnectWhenHidden:
+            print("Embedded widget {} was hidden".format(self))
             self.disconnect()
 
     def _display_designer_load_error(self):
