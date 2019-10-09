@@ -50,6 +50,8 @@ class PyDMTerminator(QWidget, PyDMPrimitiveWidget):
         if self._hook_setup:
             logger.warning('Setup Hook Already there')
             return
+        if is_qt_designer():
+            return
         self._window = self._find_window()
         logger.warning('Install event filter at window')
         self._window.setMouseTracking(True)
@@ -67,6 +69,7 @@ class PyDMTerminator(QWidget, PyDMPrimitiveWidget):
 
     def start(self):
         if not self._timer.isActive():
+            print("Starting the Timer....")
             self._timer.start()
 
     def stop(self):
@@ -98,6 +101,6 @@ class PyDMTerminator(QWidget, PyDMPrimitiveWidget):
             return
         if self._window:
             logger.warning('Time to close the window')
-            # self._window.close()
+            self._window.close()
         else:
             logger.warning('No Window')
