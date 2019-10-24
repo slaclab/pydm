@@ -13,6 +13,7 @@ import pydm.data_plugins
 from ..utilities import macro
 logger = logging.getLogger(__name__)
 
+
 class FlowLayout(QLayout):
     def __init__(self, parent=None, margin=-1, h_spacing=-1, v_spacing=-1):
         QLayout.__init__(self, parent)
@@ -291,7 +292,11 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
                         # display (.ui or .py file).
                         fname = self.app.get_path(fname)
                     with open(fname) as f:
-                        self.data = json.load(f)
+                        try:
+                            self.data = json.load(f)
+                        except ValueError:
+                            logger.error('Failed to parse data source file for PyDMTemplateRepeater.')
+                            self.data = []
                 except IOError as e:
                     self.data = []
             else:
