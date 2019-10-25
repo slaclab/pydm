@@ -166,6 +166,10 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             full_fname = os.path.join(self.base_path, fname)
         else:
             full_fname = fname
+
+        if not full_fname:
+            return
+
         if not is_pydm_app():
             (filename, extension) = os.path.splitext(full_fname)
             if extension == ".ui":
