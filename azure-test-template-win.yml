@@ -29,12 +29,15 @@ jobs:
       conda config --set channel_priority strict
       conda config --set show_channel_urls yes
       conda config --add channels conda-forge
-      conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
-    displayName: 'Anaconda - Configure - Add local bld-dir'
+    displayName: 'Anaconda - Configure'
 
   - script: |
       conda create --yes --quiet --name test-environment-$(python.name) python=$(python.version) conda-build anaconda-client -c conda-forge
     displayName: 'Anaconda - Create'
+
+  - bash: |
+      conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
+    displayName: 'Anaconda - Configure - Add local bld-dir'
 
   - script: |
       conda info
