@@ -91,7 +91,7 @@ jobs:
 
   - bash: |
       source activate test-environment-$(python.version)
-      conda install -q pydm --file dev-requirements.txt --update-deps
+      conda install pydm --file dev-requirements.txt --update-deps
       pip install pytest-azurepipelines
     displayName: 'Anaconda - Install Dependencies'
 
