@@ -10,11 +10,11 @@ jobs:
     vmImage: ${{ parameters.vmImage }}
   strategy:
     matrix:
-      Python27:
-        python.version: '2.7'
-      Python36:
-        python.version: '3.6'
-        BUILD_DOCS: ${{ parameters.build_docs }}
+#      Python27:
+#        python.version: '2.7'
+#      Python36:
+#        python.version: '3.6'
+#        BUILD_DOCS: ${{ parameters.build_docs }}
       Python37:
         python.version: '3.7.3'
 
@@ -91,8 +91,7 @@ jobs:
 
   - bash: |
       source activate test-environment-$(python.version)
-      conda install pydm --file dev-requirements.txt --update-deps
-      pip install pytest-azurepipelines
+      conda install pytest-azurepipelines pydm --file dev-requirements.txt --update-deps
     displayName: 'Anaconda - Install Dependencies'
 
   - bash: |
