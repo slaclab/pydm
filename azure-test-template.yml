@@ -23,7 +23,7 @@ jobs:
     displayName: 'MacOS - Add conda to PATH'
     condition: eq(variables['agent.os'], 'Darwin' )
 
-  - bash: echo "##vso[task.prependpath]/usr/share/miniconda/bin"
+  - bash: echo "##vso[task.prependpath]$CONDA/bin"
     displayName: 'Linux - Add conda to PATH'
     condition: eq(variables['agent.os'], 'Linux' )
 
@@ -53,19 +53,16 @@ jobs:
   # MacOS
   - bash: |
      # Fix Anaconda permissions
-     sudo install -d -m 0777 /usr/local/miniconda/envs
+     sudo chown -R $USER $CONDA
     displayName: 'MacOS - Prepare OS'
     condition: eq(variables['agent.os'], 'Darwin' )
 
-  - task: CondaEnvironment@0
+  - bash: |
+     conda create --name test-environment-$(python.version) python=$(python.version) conda-build anaconda-client -c conda-forge
     displayName: 'Anaconda - Create'
-    inputs:
-      environmentName: 'test-environment-$(python.version)'
-      packageSpecs: 'python=$(python.version) conda-build anaconda-client'
-      updateConda: true
 
   - bash: |
-      source activate base
+      source activate test-environment-$(python.version)
       conda config --set always_yes yes
       conda config --set channel_priority strict
       conda config --set show_channel_urls yes
@@ -80,7 +77,7 @@ jobs:
     displayName: Debug
 
   - bash: |
-      source activate base
+      source activate test-environment-$(python.version)
       conda build conda-recipe --python=$(python.version) --output-folder bld-dir
     displayName: 'Anaconda - Build PyDM Package'
 
@@ -91,13 +88,13 @@ jobs:
       ArtifactName: 'anaconda_package'
 
   - bash: |
-      source activate base
+      source activate test-environment-$(python.version)
       conda install -q pydm --file dev-requirements.txt --update-deps
       pip install pytest-azurepipelines
     displayName: 'Anaconda - Install Dependencies'
 
   - bash: |
-      source activate base
+      source activate test-environment-$(python.version)
       # debug of conda environment
       conda info
       conda list
@@ -108,7 +105,7 @@ jobs:
     continueOnError: false
 
   - bash: |
-      source activate base
+      source activate test-environment-$(python.version)
       python run_tests.py --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python.version)" --napoleon-docstrings
     displayName: 'Tests - Run'
     continueOnError: false
@@ -120,7 +117,7 @@ jobs:
     displayName: 'Publish - Codecov.io'
 
   - bash: |
-      source activate base
+      source activate test-environment-$(python.version)
       pip install -r docs-requirements.txt
       pushd docs
       make html

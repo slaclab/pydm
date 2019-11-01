@@ -25,7 +25,7 @@ jobs:
     condition: eq(variables['agent.os'], 'Windows_NT' )
 
   - script: |
-      conda create --yes --quiet --name test-environment-$(python.name) python=$(python.version) conda-build anaconda-client
+      conda create --yes --quiet --name test-environment-$(python.name) python=$(python.version) conda-build anaconda-client -c conda-forge
     displayName: 'Anaconda - Create'
 
   - bash: |
