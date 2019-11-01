@@ -53,10 +53,10 @@ jobs:
 #      name: Windows
 #      vmImage: 'vs2017-win2016'
 #
-  - template: azure-test-template.yml
-    parameters:
-      name: MacOS
-      vmImage: 'macOS-10.14'
+#  - template: azure-test-template.yml
+#    parameters:
+#      name: MacOS
+#      vmImage: 'macOS-10.14'
 
 #  - job: 'DeployControl'
 #    pool:
