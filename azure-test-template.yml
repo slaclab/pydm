@@ -57,12 +57,8 @@ jobs:
     displayName: 'MacOS - Prepare OS'
     condition: eq(variables['agent.os'], 'Darwin' )
 
-  - bash: |
-     conda create --name test-environment-$(python.version) python=$(python.version) conda-build anaconda-client -c conda-forge
-    displayName: 'Anaconda - Create'
 
   - bash: |
-      source activate test-environment-$(python.version)
       conda config --set always_yes yes
       conda config --set channel_priority strict
       conda config --set show_channel_urls yes
@@ -71,10 +67,15 @@ jobs:
     displayName: 'Anaconda - Configure - Add local bld-dir'
 
   - bash: |
+     conda create --name test-environment-$(python.version) python=$(python.version) conda-build anaconda-client -c conda-forge
+    displayName: 'Anaconda - Create'
+
+  - bash: |
       conda info
       conda info --envs
       conda config --show channels
     displayName: Debug
+
 
   - bash: |
       source activate test-environment-$(python.version)

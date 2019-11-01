@@ -24,10 +24,6 @@ jobs:
     displayName: 'Windows - Add conda to PATH'
     condition: eq(variables['agent.os'], 'Windows_NT' )
 
-  - script: |
-      conda create --yes --quiet --name test-environment-$(python.name) python=$(python.version) conda-build anaconda-client -c conda-forge
-    displayName: 'Anaconda - Create'
-
   - bash: |
       conda config --set always_yes yes
       conda config --set channel_priority strict
@@ -35,6 +31,10 @@ jobs:
       conda config --add channels conda-forge
       conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
     displayName: 'Anaconda - Configure - Add local bld-dir'
+
+  - script: |
+      conda create --yes --quiet --name test-environment-$(python.name) python=$(python.version) conda-build anaconda-client -c conda-forge
+    displayName: 'Anaconda - Create'
 
   - script: |
       conda info
