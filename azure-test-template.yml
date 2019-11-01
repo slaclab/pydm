@@ -65,7 +65,7 @@ jobs:
     displayName: 'Anaconda - Configure'
 
   - bash: |
-     conda create --name test-environment-$(python.version) python=$(python.version) conda-build anaconda-client -c conda-forge
+     conda create --name test-environment-$(python.version) python=$(python.version) conda-build anaconda-client
     displayName: 'Anaconda - Create'
 
   - bash: |
@@ -91,7 +91,7 @@ jobs:
 
   - bash: |
       source activate test-environment-$(python.version)
-      conda install pytest-azurepipelines pydm --file dev-requirements.txt --update-deps
+      conda install -vvv pytest-azurepipelines pydm --file dev-requirements.txt --update-deps
     displayName: 'Anaconda - Install Dependencies'
 
   - bash: |
