@@ -69,7 +69,7 @@ jobs:
     displayName: 'Anaconda - Create'
 
   - bash: |
-      conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
+      conda config --add channels 'file:/$(Build.Repository.LocalPath)/bld-dir'
     displayName: 'Anaconda - Configure - Add local bld-dir'
 
   - bash: |
@@ -113,9 +113,10 @@ jobs:
     env:
       DISPLAY: :99.0
 
-  - bash: |
-      bash <(curl -s https://codecov.io/bash) -t $(CODECOV_TOKEN) || echo 'Codecov failed to upload.'
-    displayName: 'Publish - Codecov.io'
+# Lets not bother about codecov for the time being
+#  - bash: |
+#      bash <(curl -s https://codecov.io/bash) -t $(CODECOV_TOKEN) || echo 'Codecov failed to upload.'
+#    displayName: 'Publish - Codecov.io'
 
   - bash: |
       source activate test-environment-$(python.version)
