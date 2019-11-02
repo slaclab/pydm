@@ -17,6 +17,8 @@ jobs:
         python.version: '3.7.3'
         python.name: '3_7'
   continueOnError: true
+  dependsOn:
+    - Build
 
   steps:
   - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
