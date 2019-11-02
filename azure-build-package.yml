@@ -1,15 +1,11 @@
-parameters:
-  name: ''
-  vmImage: ''
-
-variables:
-  PYTHON: 3.7.3
-  BUILD_DOCS: 1
 
 jobs:
 - job: 'BuildPackage'
   pool:
     vmImage: 'Ubuntu 18.04'
+  variables:
+    PYTHON: 3.7.3
+    BUILD_DOCS: 1
 
   steps:
   - bash: echo "##vso[task.prependpath]$CONDA/bin"
