@@ -1,6 +1,6 @@
 
 jobs:
-- job: 'BuildPackage'
+- job: 'Build'
   pool:
     vmImage: 'Ubuntu 18.04'
   variables:
