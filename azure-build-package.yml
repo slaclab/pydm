@@ -43,6 +43,12 @@ jobs:
       ArtifactName: 'anaconda_package'
 
   - bash: |
+      conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
+      source activate build-environment
+      conda install pydm
+    displayName: 'Anaconda - Configure - Add local bld-dir'
+
+  - bash: |
       source activate build-environment
       pip install -r docs-requirements.txt
       pushd docs
