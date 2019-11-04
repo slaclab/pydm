@@ -63,6 +63,6 @@ jobs:
 
   - script: |
       call activate test-environment-$(python.name)
-      python run_tests.py --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python.version)" --napoleon-docstrings
+      python run_tests.py --timeout 30 --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python.version)" --napoleon-docstrings
     displayName: 'Tests - Run'
     continueOnError: false
