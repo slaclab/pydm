@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.embedded_display &mdash; PyDM v1.7.3+57.g88c5a400 documentation</title>
+  <title>pydm.widgets.embedded_display &mdash; PyDM v1.7.3+61.g5b6b342e documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.7.3+57.g88c5a400
+                v1.7.3+61.g5b6b342e
               </div>
             
           
@@ -344,6 +344,10 @@
             <span class="n">full_fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_path</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">full_fname</span> <span class="o">=</span> <span class="n">fname</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">full_fname</span><span class="p">:</span>
+            <span class="k">return</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_pydm_app</span><span class="p">():</span>
             <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">full_fname</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;.ui&quot;</span><span class="p">:</span>
