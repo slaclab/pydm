@@ -13,49 +13,43 @@ jobs:
       Python36:
         python.version: '3.6'
         python.name: '3_6'
-        BUILD_DOCS: ${{ parameters.build_docs }}
       Python37:
         python.version: '3.7.3'
         python.name: '3_7'
   continueOnError: true
+  dependsOn:
+    - Build
 
   steps:
   - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
     displayName: 'Windows - Add conda to PATH'
     condition: eq(variables['agent.os'], 'Windows_NT' )
 
-  - script: |
-      conda create --yes --quiet --name test-environment-$(python.name) python=$(python.version) conda-build anaconda-client
-    displayName: 'Anaconda - Create'
-
   - bash: |
       conda config --set always_yes yes
       conda config --set channel_priority strict
       conda config --set show_channel_urls yes
       conda config --add channels conda-forge
-      conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
+    displayName: 'Anaconda - Configure'
+
+  - script: |
+      conda create --yes --quiet --name test-environment-$(python.name) python=$(python.version)
+    displayName: 'Anaconda - Create'
+
+  - bash: |
+      conda config --add channels 'file:///$(Build.Repository.LocalPath)/anaconda_package'
     displayName: 'Anaconda - Configure - Add local bld-dir'
 
-  - script: |
-      conda info
-      conda info --envs
-      conda config --show channels
-    displayName: Debug
-
-  - script: |
-      call activate test-environment-$(python.name)
-      conda build conda-recipe --python=$(python.version) --output-folder bld-dir
-    displayName: 'Anaconda - Build PyDM Package'
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish - Anaconda Package'
+  - task: DownloadBuildArtifacts@0
     inputs:
-      PathtoPublish: 'bld-dir'
-      ArtifactName: 'anaconda_package'
+      buildType: 'current'
+      artifactName: 'anaconda_package'
+      downloadPath: $(Build.Repository.LocalPath)/
+    displayName: Artifact Download - Anaconda Packages
 
   - script: |
       call activate test-environment-$(python.name)
-      conda install -q pytest-azurepipelines pydm --file dev-requirements.txt --update-deps
+      conda install pytest-azurepipelines pydm --file dev-requirements.txt --update-deps
     displayName: 'Anaconda - Install Dependencies'
 
   - script: |
@@ -69,10 +63,6 @@ jobs:
 
   - script: |
       call activate test-environment-$(python.name)
-      python run_tests.py --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python.version)" --napoleon-docstrings
+      python run_tests.py --timeout 30 --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python.version)" --napoleon-docstrings
     displayName: 'Tests - Run'
     continueOnError: false
-
-  - bash: |
-      bash <(curl -s https://codecov.io/bash) -t $(CODECOV_TOKEN) || echo 'Codecov failed to upload.'
-    displayName: 'Publish - Codecov.io'

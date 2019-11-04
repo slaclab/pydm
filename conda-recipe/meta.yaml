@@ -7,39 +7,43 @@ package:
 source:
     path: ..
 
+build:
+  noarch: python
+
 requirements:
     build:
       - python
+      - pip
       - setuptools
-      - six
-      - numpy >=1.11.0
-      - scipy >=0.12.0
-      - pyepics >=3.2.7
-      - requests >=1.1.0
       - pyqt >=5
-      - pyqtgraph
       - qtpy
 
     run:
-      - six
       - python
+      - six
       - numpy >=1.11.0
       - scipy >=0.12.0
       - pyepics >=3.2.7
       - requests >=1.1.0
       - psutil
       - pyqt >=5
-      - qtpy
       - pyqtgraph
+      - qtpy
 
 test:
     imports:
       - pydm
 
-    requires:
-      - pytest
-
 about:
   home: https://github.com/slaclab/pydm
-  license: SLAC Open License
-  summary: Python Display Manager
+  license: SLAC Open
+  license_family: OTHER
+  license_file: LICENSE.md
+  summary: 'Python Display Manager'
+
+  description: |
+    PyDM is a PyQt-based framework for building user interfaces for control systems.
+    The goal is to provide a no-code, drag-and-drop system to make simple screens,
+    as well as a straightforward Python framework to build complex applications.
+  doc_url: https://slaclab.github.io/pydm/
+  dev_url: https://github.com/slaclab/pydm

@@ -2,7 +2,7 @@ import logging
 import time
 import weakref
 
-from ...widgets.rules import RulesEngine, RulesDispatcher
+from ...widgets.rules import RulesDispatcher
 from ...widgets.label import PyDMLabel
 
 
@@ -105,7 +105,10 @@ def test_rules_full(qtbot, caplog):
     assert len(re.widget_map[weakref.ref(widget)]) == 1
     re.callback_conn(weakref.ref(widget), 0, 0, value=True)
     re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value='a')
-    time.sleep(0.1)
+
+    # Wait for rule to execute but keep app responsive
+    qtbot.wait(1000)
+
     for record in caplog.records:
         assert record.levelno == logging.ERROR
     assert "Error while evaluating Rule" in caplog.text
