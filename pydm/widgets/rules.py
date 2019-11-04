@@ -3,7 +3,7 @@ import functools
 import weakref
 
 from qtpy.QtCore import QThread, QMutex, Signal, QMutexLocker
-from qtpy.QtWidgets import QWidget
+from qtpy.QtWidgets import QWidget, QApplication
 
 from .channel import PyDMChannel
 
@@ -124,6 +124,8 @@ class RulesEngine(QThread):
 
     def __init__(self):
         QThread.__init__(self)
+        self.app = QApplication.instance()
+        self.app.aboutToQuit.connect(self.requestInterruption)
         self.map_lock = QMutex()
         self.widget_map = dict()
 
