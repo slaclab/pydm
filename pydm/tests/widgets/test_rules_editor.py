@@ -61,7 +61,7 @@ def test_rules_editor(qtbot, monkeypatch):
     assert not re.frm_edit.isEnabled()
 
     re.lst_rules.setCurrentRow(0)
-    qtbot.wait(500)
+    re.load_from_list()
     assert re.frm_edit.isEnabled()
     assert re.txt_name.text() == 'Rule #1'
     assert re.cmb_property.currentText() == 'Enable'
@@ -151,7 +151,6 @@ def test_rules_editor(qtbot, monkeypatch):
     assert re.frm_edit.isEnabled() is False
     assert re.lst_rules.count() == 0
     re.cancelChanges()
-
 
 
 def test_rules_editor_data_valid(qtbot):
