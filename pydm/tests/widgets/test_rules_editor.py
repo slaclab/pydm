@@ -152,6 +152,7 @@ from ...widgets.rules_editor import RulesEditor
 #     re.cancelChanges()
 #
 
+
 def test_rules_editor_data_valid(qtbot):
     """
     Test the rules form validation.
@@ -161,55 +162,40 @@ def test_rules_editor_data_valid(qtbot):
     qtbot : fixture
         pytest-qt window for widget test
     """
-    def validate(expected_status, expected_msg):
-        status, msg = re.is_data_valid()
+    def validate(expected_status, expected_msg, definition):
+        status, msg = RulesEditor.is_data_valid(definition)
         assert status == expected_status
         assert expected_msg in msg
-
-    # Create the base widget
-    widget = PyDMLabel()
-    qtbot.addWidget(widget)
 
     rules_list = [{'name': 'Rule #1', 'property': 'Enable',
                    'expression': 'ch[0] > 1',
                    'channels': [
                        {'channel': 'ca://MTEST:Float', 'trigger': True}]}]
 
-    # Add the rules to the widget
-    widget.rules = json.dumps(rules_list)
+    validate(True, '', rules_list)
 
-    # Ensure that no rules are set
-    assert widget.rules is not None
+    rules_original = copy.deepcopy(rules_list)
 
-    # Create a rule editor for this widget
-    re = RulesEditor(widget)
-    qtbot.addWidget(re)
+    rules_original[0]['name'] = ''
+    validate(False, 'has no name', rules_original)
 
-    validate(True, '')
+    rules_original = copy.deepcopy(rules_list)
+    rules_original[0]['expression'] = ''
+    validate(False, 'has no expression', rules_original)
 
-    rules_original = copy.deepcopy(re.rules)
+    rules_original = copy.deepcopy(rules_list)
+    old_channels = rules_original[0]['channels']
+    rules_original[0]['channels'] = []
+    validate(False, 'has no channel', rules_original)
+    rules_original[0]['channels'] = old_channels
 
-    re.rules[0]['name'] = ''
-    validate(False, 'has no name')
+    rules_original[0]['channels'][0]['trigger'] = False
+    validate(False, 'has no channel for trigger', rules_original)
 
-    re.rules = copy.deepcopy(rules_original)
-    re.rules[0]['expression'] = ''
-    validate(False, 'has no expression')
-
-    re.rules = copy.deepcopy(rules_original)
-    old_channels = re.rules[0]['channels']
-    re.rules[0]['channels'] = []
-    validate(False, 'has no channel')
-    re.rules[0]['channels'] = old_channels
-
-    re.rules[0]['channels'][0]['trigger'] = False
-    validate(False, 'has no channel for trigger')
-
-    re.rules[0]['channels'][0]['channel'] = None
-    validate(False, 'Ch. #0 has no channel.')
-    re.rules[0]['channels'][0]['channel'] = ''
-    validate(False, 'Ch. #0 has no channel.')
-    re.cancelChanges()
+    rules_original[0]['channels'][0]['channel'] = None
+    validate(False, 'Ch. #0 has no channel.', rules_original)
+    rules_original[0]['channels'][0]['channel'] = ''
+    validate(False, 'Ch. #0 has no channel.', rules_original)
 
 
 def test_rules_editor_open_help(qtbot, monkeypatch):
