@@ -176,6 +176,10 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
                 loadfunc = load_ui_file
             elif extension == ".py":
                 loadfunc = load_py_file
+            else:
+                self.display_error_text('Invalid filename extension.')
+                return
+
             try:
                 w = loadfunc(full_fname, macros=self.parsed_macros())
                 self._needs_load = False
@@ -344,6 +348,6 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
 
     def _display_designer_load_error(self):
         self._load_error_timer = None
-        logger.exception("Exception while opening embedded display file.")
+        logger.exception("Exception while opening embedded display file.", exc_info=self._load_error)
         if self._load_error:
             self.display_error_text(self._load_error)
