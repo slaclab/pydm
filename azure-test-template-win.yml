@@ -66,3 +66,9 @@ jobs:
       python run_tests.py --timeout 30 --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python.version)" --napoleon-docstrings
     displayName: 'Tests - Run'
     continueOnError: false
+
+  - script: |
+      call activate test-environment-$(python.name)
+      codecov
+    displayName: 'Codecov - Upload'
+    continueOnError: true
