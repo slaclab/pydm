@@ -284,6 +284,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._redraw_rate = 30 # Redraw at 30 Hz by default.
         self.maxRedrawRate = self._redraw_rate
         self._curves = []
+        self._x_labels = []
+        self._y_labels = []
         self._title = None
         self._show_legend = False
         self._legend = self.addLegend()
@@ -444,6 +446,42 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.setTitle(self._title)
 
     title = Property(str, getPlotTitle, setPlotTitle, resetPlotTitle)
+
+    def getXLabels(self):
+        return self._x_labels
+
+    def setXLabels(self, labels):
+        if self._x_labels != labels:
+            self._x_labels = labels
+            label = ""
+            if len(self._x_labels) > 0:
+                # Hardcoded for now as we only have one axis
+                label = self._x_labels[0]
+            self.setLabel("bottom", text=label)
+
+    def resetXLabels(self):
+        self._x_labels = []
+        self.setLabel("bottom", text="")
+
+    xLabels = Property("QStringList", getXLabels, setXLabels, resetXLabels)
+
+    def getYLabels(self):
+        return self._y_labels
+
+    def setYLabels(self, labels):
+        if self._y_labels != labels:
+            self._y_labels = labels
+            label = ""
+            if len(self._y_labels) > 0:
+                # Hardcoded for now as we only have one axis
+                label = self._y_labels[0]
+            self.setLabel("left", text=label)
+
+    def resetYLabels(self):
+        self._y_labels = []
+        self.setLabel("left", text="")
+
+    yLabels = Property("QStringList", getYLabels, setYLabels, resetYLabels)
 
     def getShowLegend(self):
         """
