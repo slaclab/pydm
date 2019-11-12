@@ -48,9 +48,19 @@
         will accept.
     </string>
      </property>
+     <property name="xLabels">
+      <stringlist>
+       <string>Cos Val</string>
+      </stringlist>
+     </property>
+     <property name="yLabels">
+      <stringlist>
+       <string>Sin Val</string>
+      </stringlist>
+     </property>
      <property name="curves">
       <stringlist>
-       <string>{&quot;y_channel&quot;: &quot;ca://MTEST:SinVal&quot;, &quot;x_channel&quot;: &quot;ca://MTEST:CosVal&quot;, &quot;name&quot;: &quot;CircularData&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 0, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: &quot;o&quot;, &quot;symbolSize&quot;: 10, &quot;redraw_mode&quot;: 3}</string>
+       <string>{&quot;y_channel&quot;: &quot;ca://MTEST:SinVal&quot;, &quot;x_channel&quot;: &quot;ca://MTEST:CosVal&quot;, &quot;name&quot;: &quot;CircularData&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 0, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: &quot;o&quot;, &quot;symbolSize&quot;: 10, &quot;redraw_mode&quot;: 3, &quot;buffer_size&quot;: 1200}</string>
       </stringlist>
      </property>
     </widget>

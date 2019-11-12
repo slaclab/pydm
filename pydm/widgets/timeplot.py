@@ -842,6 +842,10 @@ class TimeAxisItem(AxisItem):
     """
     TimeAxisItem formats a unix time axis into a human-readable format.
     """
+    def __init__(self, *args, **kwargs):
+        super(TimeAxisItem, self).__init__(*args, **kwargs)
+        self.enableAutoSIPrefix(False)
+
     def tickStrings(self, values, scale, spacing):
         strings = []
         for val in values:
