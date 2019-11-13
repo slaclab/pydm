@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMFrame &mdash; PyDM v1.7.3+76.g317b0112 documentation</title>
+  <title>Plot Curve Editor &mdash; PyDM v1.7.3+76.g317b0112 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="PyDMTabWidget" href="tab_widget.html" />
-    <link rel="prev" title="PyDMEmbeddedDisplay" href="embedded_display.html" /> 
+    <link rel="next" title="PyDMScatterPlot" href="scatterplot.html" />
+    <link rel="prev" title="PyDMWaveformTable" href="waveformtable.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -101,14 +101,14 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Widgets</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="index.html#display-widgets">Display Widgets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#input-widgets">Input Widgets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#plot-widgets">Plot Widgets</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html#container-widgets">Container Widgets</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="embedded_display.html">PyDMEmbeddedDisplay</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">PyDMFrame</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tab_widget.html">PyDMTabWidget</a></li>
-<li class="toctree-l3"><a class="reference internal" href="template_repeater.html">PyDMTemplateRepeater</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#plot-widgets">Plot Widgets</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Plot Curve Editor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scatterplot.html">PyDMScatterPlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="timeplot.html">PyDMTimePlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="waveformplot.html">PyDMWaveformPlot</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#container-widgets">Container Widgets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#drawing-widgets">Drawing Widgets</a></li>
 </ul>
 </li>
@@ -175,13 +175,13 @@
         
           <li><a href="index.html">Widgets</a> &raquo;</li>
         
-      <li>PyDMFrame</li>
+      <li>Plot Curve Editor</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/widgets/frame.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/widgets/curve_editor.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -194,46 +194,26 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pydmframe">
-<h1>PyDMFrame<a class="headerlink" href="#pydmframe" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pydm.widgets.frame.PyDMFrame">
-<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.frame.</code><code class="sig-name descname">PyDMFrame</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/frame.html#PyDMFrame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.frame.PyDMFrame" title="Permalink to this definition">¶</a></dt>
-<dd><p>QFrame with support for alarms
-This class inherits from QFrame and PyDMWidget.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
-<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="method">
-<dt id="pydm.widgets.frame.PyDMFrame.check_enable_state">
-<code class="sig-name descname">check_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/frame.html#PyDMFrame.check_enable_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.frame.PyDMFrame.check_enable_state" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks whether or not the widget should be disable.
-This method also disables the widget and add a Tool Tip
-with the reason why it is disabled.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydm.widgets.frame.PyDMFrame.disableOnDisconnect">
-<code class="sig-name descname">disableOnDisconnect</code><a class="headerlink" href="#pydm.widgets.frame.PyDMFrame.disableOnDisconnect" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether or not the PyDMFrame should be disabled in case the
-channel is disconnected.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>disable</strong> – The configured value</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="plot-curve-editor">
+<h1>Plot Curve Editor<a class="headerlink" href="#plot-curve-editor" title="Permalink to this headline">¶</a></h1>
+<p>PyDM plot widgets keep the inventory of curves in the <code class="docutils literal notranslate"><span class="pre">curves</span></code> property which
+is a list of JSON strings containing the definition of parameters for each of
+the curves in a plot.</p>
+<p>Since editing a list of JSON strings via Qt Designer is very unfriendly and
+error prone, PyDM offers the Plot Curve Editor extension which can be invoked
+via a Right-click and selecting the “Edit Curves…” item in the context menu
+that pops-up.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/curve_editor.gif"><img alt="Curve Editor in Action" src="../_images/curve_editor.gif" style="width: 844.0px; height: 560.0px;" /></a>
+<p class="caption"><span class="caption-text">This animation demonstrates how to use the Curve Editor that is common to
+all the PyDM plot widgets.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is not applicable for users interacting with widgets via Python code.
+In this case you will need to serialize the list of JSON strings and use the
+<code class="docutils literal notranslate"><span class="pre">setCurves</span></code> property to configure the plot properly.</p>
+</div>
 </div>
 
 
@@ -244,10 +224,10 @@ channel is disconnected.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tab_widget.html" class="btn btn-neutral float-right" title="PyDMTabWidget" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="scatterplot.html" class="btn btn-neutral float-right" title="PyDMScatterPlot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="embedded_display.html" class="btn btn-neutral float-left" title="PyDMEmbeddedDisplay" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="waveformtable.html" class="btn btn-neutral float-left" title="PyDMWaveformTable" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
