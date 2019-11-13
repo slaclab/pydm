@@ -1,6 +1,7 @@
 import functools
 from qtpy.QtGui import QColor, QBrush
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt
+from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QRect
+from qtpy.QtWidgets import QToolTip
 from .. import utilities
 from pyqtgraph import PlotWidget, PlotDataItem, mkPen, ViewBox, InfiniteLine, SignalProxy, CurvePoint, TextItem
 from collections import OrderedDict
@@ -295,6 +296,21 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.vertical_crosshair_line = None
         self.horizontal_crosshair_line = None
         self.crosshair_movement_proxy = None
+        if utilities.is_qt_designer():
+            self.installEventFilter(self)
+
+    def eventFilter(self, obj, event):
+        ret = super(BasePlot, self).eventFilter(obj, event)
+        if utilities.is_qt_designer():
+            if event.type() == QEvent.Enter:
+                QToolTip.showText(
+                    self.mapToGlobal(self.rect().center()),
+                    'Edit plot curves via Right-Click and select "Edit Curves..."',
+                    self,
+                    QRect(0, 0, 200, 100),
+                    4000)
+        return ret
+
 
     def addCurve(self, plot_item, curve_color=None):
         if curve_color is None:
