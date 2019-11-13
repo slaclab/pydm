@@ -439,7 +439,7 @@ class PyDMScatterPlot(BasePlot):
                             redraw_mode=d.get('redraw_mode'),
                             buffer_size=d.get('buffer_size'))
 
-    curves = Property("QStringList", getCurves, setCurves)
+    curves = Property("QStringList", getCurves, setCurves, designable=False)
 
     def channels(self):
         """

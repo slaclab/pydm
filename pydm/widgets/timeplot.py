@@ -557,7 +557,7 @@ class PyDMTimePlot(BasePlot):
                              symbol=d.get('symbol'),
                              symbolSize=d.get('symbolSize'))
 
-    curves = Property("QStringList", getCurves, setCurves)
+    curves = Property("QStringList", getCurves, setCurves, designable=False)
 
     def findCurve(self, pv_name):
         """

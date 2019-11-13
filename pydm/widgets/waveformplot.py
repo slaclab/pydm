@@ -463,7 +463,7 @@ class PyDMWaveformPlot(BasePlot):
                             symbolSize=d.get('symbolSize'),
                             redraw_mode=d.get('redraw_mode'))
 
-    curves = Property("QStringList", getCurves, setCurves)
+    curves = Property("QStringList", getCurves, setCurves, designable=False)
 
     def channels(self):
         """
