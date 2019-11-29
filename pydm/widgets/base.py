@@ -287,7 +287,7 @@ class TextFormatter(object):
         """
         # Only allow one to change the property if not getting the precision
         # from the PV
-        if self.precisionFromPV:
+        if self._precision_from_pv is not None and self._precision_from_pv:
             return
         if new_prec and self._prec != int(new_prec) and new_prec >= 0:
             self._user_prec = int(new_prec)
