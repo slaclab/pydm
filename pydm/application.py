@@ -100,6 +100,8 @@ class PyDMApplication(QApplication):
         self.hide_menu_bar = hide_menu_bar
         self.hide_status_bar = hide_status_bar
         self.fullscreen = fullscreen
+        self.stylesheet_path = stylesheet_path
+        self.perfmon = perfmon
 
         # Open a window if required.
         if ui_file is not None:
@@ -190,8 +192,15 @@ class PyDMApplication(QApplication):
             args.extend(["--hide-status-bar"])
         if self.fullscreen:
             args.extend(["--fullscreen"])
+        if self.perfmon:
+            args.extend(["--perfmon"])
+        if data_plugins.is_read_only():
+            args.append("--read-only")
+        if self.stylesheet_path:
+            args.extend(["--stylesheet", self.stylesheet_path])
         if macros is not None:
             args.extend(["-m", json.dumps(macros)])
+        args.extend(["--log_level", logging.getLevelName(logging.getLogger("").getEffectiveLevel())])
         args.append(filepath)
         args.extend(self.display_args)
         args.extend(filepath_args)
