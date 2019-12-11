@@ -44,9 +44,6 @@
      <property name="allowMultipleExecutions" stdset="0">
       <bool>false</bool>
      </property>
-     <property name="command" stdset="0">
-      <string>echo &quot;Hello World!&quot;</string>
-     </property>
     </widget>
    </item>
    <item>
