@@ -6,8 +6,8 @@ import logging
 import warnings
 
 from qtpy.QtWidgets import QPushButton, QMenu
-from qtpy.QtGui import QCursor, QIcon
-from qtpy.QtCore import Property, QSize, Qt
+from qtpy.QtGui import QCursor, QIcon, QColor
+from qtpy.QtCore import Property, QSize, Qt, QTimer
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
 
@@ -23,6 +23,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         PyDMPrimitiveWidget.__init__(self)
         self.iconFont = IconFont()
         self._icon = self.iconFont.icon("cog")
+        self._warning_icon = self.iconFont.icon('exclamation-circle')
         self.setIconSize(QSize(16, 16))
         self.setIcon(self._icon)
         self.setCursor(QCursor(self._icon.pixmap(16, 16)))
@@ -200,6 +201,20 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         self.execute_command(self.commands[0])
         super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
 
+    def show_warning_icon(self):
+        """ Show the warning icon.  This is called when a shell command fails
+        (i.e. exits with nonzero status) """
+        self.setIcon(self._warning_icon)
+        QTimer.singleShot(5000, self.hide_warning_icon)
+        
+    def hide_warning_icon(self):
+        """ Hide the warning icon.  This is called on a timer after the warning
+        icon is shown."""
+        if self._show_icon:
+            self.setIcon(self._icon)
+        else:
+            self.setIcon(QIcon())
+
     def execute_command(self, command):
         """
         Execute the shell command given by ```command```.
@@ -215,6 +230,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
                 logger.debug("Launching process: %s", repr(args))
                 self.process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             except Exception as exc:
+                self.show_warning_icon()
                 logger.error("Error in shell command: %s", exc)
         else:
             logger.error("Command '%s' already active.", command)
