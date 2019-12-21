@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.label &mdash; PyDM v1.8.0 documentation</title>
+  <title>pydm.widgets.label &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0
+                v1.8.0+6.ge101536f
               </div>
             
           
@@ -176,12 +176,12 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.label</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">TextFormatter</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QApplication</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
-<span class="kn">from</span> <span class="nn">.display_format</span> <span class="k">import</span> <span class="n">DisplayFormat</span><span class="p">,</span> <span class="n">parse_value_for_display</span>
-<span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="k">import</span> <span class="n">is_pydm_app</span><span class="p">,</span> <span class="n">is_qt_designer</span>
-<span class="kn">from</span> <span class="nn">pydm</span> <span class="k">import</span> <span class="n">config</span>
+<span></span><span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">TextFormatter</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QApplication</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
+<span class="kn">from</span> <span class="nn">.display_format</span> <span class="kn">import</span> <span class="n">DisplayFormat</span><span class="p">,</span> <span class="n">parse_value_for_display</span>
+<span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="kn">import</span> <span class="n">is_pydm_app</span><span class="p">,</span> <span class="n">is_qt_designer</span>
+<span class="kn">from</span> <span class="nn">pydm</span> <span class="kn">import</span> <span class="n">config</span>
 
 
 <div class="viewcode-block" id="PyDMLabel"><a class="viewcode-back" href="../../../widgets/label.html#pydm.widgets.label.PyDMLabel">[docs]</a><span class="k">class</span> <span class="nc">PyDMLabel</span><span class="p">(</span><span class="n">QLabel</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">DisplayFormat</span><span class="p">):</span>
@@ -203,7 +203,7 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QLabel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
         <span class="k">if</span> <span class="s1">&#39;Text&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PyDMLabel</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="p">:</span>

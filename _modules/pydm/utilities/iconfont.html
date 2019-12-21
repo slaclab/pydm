@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.utilities.iconfont &mdash; PyDM v1.8.0 documentation</title>
+  <title>pydm.utilities.iconfont &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0
+                v1.8.0+6.ge101536f
               </div>
             
           
@@ -186,8 +186,8 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="k">import</span> <span class="n">QFontDatabase</span><span class="p">,</span> <span class="n">QIconEngine</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QFont</span><span class="p">,</span> <span class="n">QIcon</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">qRound</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QFontDatabase</span><span class="p">,</span> <span class="n">QIconEngine</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QFont</span><span class="p">,</span> <span class="n">QIcon</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">qRound</span>
 
 <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
     <span class="n">unichr</span> <span class="o">=</span> <span class="nb">chr</span>
@@ -198,7 +198,7 @@
 <span class="sd">    to use IconFont.icon() to get a QIcon object for the character they want.&quot;&quot;&quot;</span>
     <span class="n">__instance</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__initialized</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">font_file</span> <span class="o">=</span> <span class="s2">&quot;fontawesome.ttf&quot;</span>  <span class="c1"># specify these relative to this file.</span>
@@ -209,7 +209,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">load_font</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">charmap_file</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__initialized</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">__instance</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">IconFont</span><span class="p">)</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">__instance</span><span class="o">.</span><span class="n">__initialized</span> <span class="o">=</span> <span class="kc">False</span>
@@ -282,7 +282,7 @@
 <span class="k">class</span> <span class="nc">CharIconEngine</span><span class="p">(</span><span class="n">QIconEngine</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Subclass of QIconEngine that is designed to draw characters from icon fonts.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon_font</span><span class="p">,</span> <span class="n">char</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon_font</span><span class="p">,</span> <span class="n">char</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">CharIconEngine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">icon_font</span> <span class="o">=</span> <span class="n">icon_font</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">char</span> <span class="o">=</span> <span class="n">char</span>

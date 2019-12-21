@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.template_repeater &mdash; PyDM v1.8.0 documentation</title>
+  <title>pydm.widgets.template_repeater &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0
+                v1.8.0+6.ge101536f
               </div>
             
           
@@ -179,21 +179,21 @@
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span>
                            <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span>
                            <span class="n">QLayout</span><span class="p">,</span> <span class="n">QListWidget</span><span class="p">,</span> <span class="n">QListWidgetItem</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QUrl</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
-<span class="kn">from</span> <span class="nn">qtpy</span> <span class="k">import</span> <span class="n">uic</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span>
-<span class="kn">from</span> <span class="nn">.embedded_display</span> <span class="k">import</span> <span class="n">PyDMEmbeddedDisplay</span>
-<span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="k">import</span> <span class="n">is_qt_designer</span><span class="p">,</span> <span class="n">is_pydm_app</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QUrl</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
+<span class="kn">from</span> <span class="nn">qtpy</span> <span class="kn">import</span> <span class="n">uic</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span>
+<span class="kn">from</span> <span class="nn">.embedded_display</span> <span class="kn">import</span> <span class="n">PyDMEmbeddedDisplay</span>
+<span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="kn">import</span> <span class="n">is_qt_designer</span><span class="p">,</span> <span class="n">is_pydm_app</span>
 <span class="kn">import</span> <span class="nn">pydm.data_plugins</span>
-<span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">macro</span>
+<span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="n">macro</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">FlowLayout</span><span class="p">(</span><span class="n">QLayout</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">margin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">h_spacing</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">v_spacing</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">margin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">h_spacing</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">v_spacing</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
         <span class="n">QLayout</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="n">margin</span><span class="p">,</span> <span class="n">margin</span><span class="p">,</span> <span class="n">margin</span><span class="p">,</span> <span class="n">margin</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">m_h_space</span> <span class="o">=</span> <span class="n">h_spacing</span>
@@ -317,7 +317,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">LayoutType</span><span class="p">)</span>
     <span class="n">LayoutType</span> <span class="o">=</span> <span class="n">LayoutType</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMPrimitiveWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_template_filename</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>

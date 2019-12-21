@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.symbol &mdash; PyDM v1.8.0 documentation</title>
+  <title>pydm.widgets.symbol &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0
+                v1.8.0+6.ge101536f
               </div>
             
           
@@ -178,12 +178,12 @@
   <h1>Source code for pydm.widgets.symbol</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="k">import</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QPixmap</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">,</span> <span class="n">QRectF</span><span class="p">,</span> <span class="n">qInstallMessageHandler</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtSvg</span> <span class="k">import</span> <span class="n">QSvgRenderer</span>
-<span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">is_pydm_app</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QPixmap</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">,</span> <span class="n">QRectF</span><span class="p">,</span> <span class="n">qInstallMessageHandler</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtSvg</span> <span class="kn">import</span> <span class="n">QSvgRenderer</span>
+<span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="n">is_pydm_app</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMWidget</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -199,7 +199,7 @@
 <span class="sd">    init_channel : str, optional</span>
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
         <span class="k">if</span> <span class="s1">&#39;Index&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PyDMSymbol</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="p">:</span>

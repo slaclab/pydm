@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.image &mdash; PyDM v1.8.0 documentation</title>
+  <title>pydm.widgets.image &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0
+                v1.8.0+6.ge101536f
               </div>
             
           
@@ -176,17 +176,17 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.image</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QActionGroup</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Q_ENUMS</span><span class="p">,</span> <span class="n">QThread</span>
-<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="k">import</span> <span class="n">ImageView</span><span class="p">,</span> <span class="n">PlotItem</span>
-<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="k">import</span> <span class="n">ColorMap</span>
-<span class="kn">from</span> <span class="nn">pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu</span> <span class="k">import</span> <span class="n">ViewBoxMenu</span>
+<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QActionGroup</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Q_ENUMS</span><span class="p">,</span> <span class="n">QThread</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="kn">import</span> <span class="n">ImageView</span><span class="p">,</span> <span class="n">PlotItem</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="kn">import</span> <span class="n">ColorMap</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu</span> <span class="kn">import</span> <span class="n">ViewBoxMenu</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">.channel</span> <span class="k">import</span> <span class="n">PyDMChannel</span>
-<span class="kn">from</span> <span class="nn">.colormaps</span> <span class="k">import</span> <span class="n">cmaps</span><span class="p">,</span> <span class="n">cmap_names</span><span class="p">,</span> <span class="n">PyDMColorMap</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWidget</span>
+<span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">PyDMChannel</span>
+<span class="kn">from</span> <span class="nn">.colormaps</span> <span class="kn">import</span> <span class="n">cmaps</span><span class="p">,</span> <span class="n">cmap_names</span><span class="p">,</span> <span class="n">PyDMColorMap</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMWidget</span>
 <span class="kn">import</span> <span class="nn">pyqtgraph</span>
 <span class="n">pyqtgraph</span><span class="o">.</span><span class="n">setConfigOption</span><span class="p">(</span><span class="s1">&#39;imageAxisOrder&#39;</span><span class="p">,</span> <span class="s1">&#39;row-major&#39;</span><span class="p">)</span>
 
@@ -202,7 +202,7 @@
 <span class="k">class</span> <span class="nc">ImageUpdateThread</span><span class="p">(</span><span class="n">QThread</span><span class="p">):</span>
     <span class="n">updateSignal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_view</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_view</span><span class="p">):</span>
         <span class="n">QThread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_view</span> <span class="o">=</span> <span class="n">image_view</span>
 
@@ -281,7 +281,7 @@
 
     <span class="n">color_maps</span> <span class="o">=</span> <span class="n">cmaps</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">image_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">image_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize widget.&quot;&quot;&quot;</span>
         <span class="n">plot_item</span> <span class="o">=</span> <span class="n">PlotItem</span><span class="p">()</span>
         <span class="n">ImageView</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="n">plot_item</span><span class="p">)</span>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.enum_button &mdash; PyDM v1.8.0 documentation</title>
+  <title>pydm.widgets.enum_button &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0
+                v1.8.0+6.ge101536f
               </div>
             
           
@@ -176,12 +176,12 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.enum_button</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="p">(</span><span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Q_ENUMS</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">QButtonGroup</span><span class="p">,</span> <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span>
+<span></span><span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Q_ENUMS</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">QButtonGroup</span><span class="p">,</span> <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span>
                             <span class="n">QRadioButton</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">PyDMWritableWidget</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">data_plugins</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMWritableWidget</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">data_plugins</span>
 
 
 <span class="k">class</span> <span class="nc">WidgetType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -214,7 +214,7 @@
     <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">WidgetType</span><span class="p">)</span>
     <span class="n">WidgetType</span> <span class="o">=</span> <span class="n">WidgetType</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_has_enums</span> <span class="o">=</span> <span class="kc">False</span>

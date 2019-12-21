@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.display_format &mdash; PyDM v1.8.0 documentation</title>
+  <title>pydm.widgets.display_format &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0
+                v1.8.0+6.ge101536f
               </div>
             
           
@@ -195,6 +195,8 @@
 
 
 <span class="k">def</span> <span class="nf">parse_value_for_display</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">precision</span><span class="p">,</span> <span class="n">display_format_type</span><span class="o">=</span><span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Default</span><span class="p">,</span> <span class="n">string_encoding</span><span class="o">=</span><span class="s2">&quot;utf_8&quot;</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">widget_name</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">objectName</span><span class="p">()</span>
     <span class="k">except</span><span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>

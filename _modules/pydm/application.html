@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.application &mdash; PyDM v1.8.0 documentation</title>
+  <title>pydm.application &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0
+                v1.8.0+6.ge101536f
               </div>
             
           
@@ -190,17 +190,17 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Slot</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="k">import</span> <span class="n">QColor</span>
-<span class="kn">from</span> <span class="nn">.main_window</span> <span class="k">import</span> <span class="n">PyDMMainWindow</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Slot</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QColor</span>
+<span class="kn">from</span> <span class="nn">.main_window</span> <span class="kn">import</span> <span class="n">PyDMMainWindow</span>
 
-<span class="kn">from</span> <span class="nn">.utilities</span> <span class="k">import</span> <span class="n">macro</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">path_info</span><span class="p">,</span> <span class="n">find_display_in_path</span>
-<span class="kn">from</span> <span class="nn">.utilities.stylesheet</span> <span class="k">import</span> <span class="n">apply_stylesheet</span>
-<span class="kn">from</span> <span class="nn">.utilities.display_loading</span> <span class="k">import</span> <span class="n">load_ui_file</span><span class="p">,</span> <span class="n">load_py_file</span>
-<span class="kn">from</span> <span class="nn">.utilities</span> <span class="k">import</span> <span class="n">connection</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">data_plugins</span>
-<span class="kn">from</span> <span class="nn">.widgets.rules</span> <span class="k">import</span> <span class="n">RulesDispatcher</span>
+<span class="kn">from</span> <span class="nn">.utilities</span> <span class="kn">import</span> <span class="n">macro</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">path_info</span><span class="p">,</span> <span class="n">find_display_in_path</span>
+<span class="kn">from</span> <span class="nn">.utilities.stylesheet</span> <span class="kn">import</span> <span class="n">apply_stylesheet</span>
+<span class="kn">from</span> <span class="nn">.utilities.display_loading</span> <span class="kn">import</span> <span class="n">load_ui_file</span><span class="p">,</span> <span class="n">load_py_file</span>
+<span class="kn">from</span> <span class="nn">.utilities</span> <span class="kn">import</span> <span class="n">connection</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">data_plugins</span>
+<span class="kn">from</span> <span class="nn">.widgets.rules</span> <span class="kn">import</span> <span class="n">RulesDispatcher</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -252,7 +252,7 @@
     <span class="c1"># Instantiate our plugins.</span>
     <span class="n">plugins</span> <span class="o">=</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">plugin_modules</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="p">[],</span> <span class="n">display_args</span><span class="o">=</span><span class="p">[],</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="p">[],</span> <span class="n">display_args</span><span class="o">=</span><span class="p">[],</span>
                  <span class="n">perfmon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_nav_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_menu_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">hide_status_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">use_main_window</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stylesheet_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fullscreen</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -278,6 +278,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">hide_menu_bar</span> <span class="o">=</span> <span class="n">hide_menu_bar</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span> <span class="o">=</span> <span class="n">hide_status_bar</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fullscreen</span> <span class="o">=</span> <span class="n">fullscreen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stylesheet_path</span> <span class="o">=</span> <span class="n">stylesheet_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">perfmon</span> <span class="o">=</span> <span class="n">perfmon</span>
 
         <span class="c1"># Open a window if required.</span>
         <span class="k">if</span> <span class="n">ui_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -368,8 +370,15 @@
             <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--hide-status-bar&quot;</span><span class="p">])</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fullscreen</span><span class="p">:</span>
             <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--fullscreen&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">perfmon</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--perfmon&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">is_read_only</span><span class="p">():</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--read-only&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stylesheet_path</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--stylesheet&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stylesheet_path</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">macros</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">macros</span><span class="p">)])</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--log_level&quot;</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLevelName</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getEffectiveLevel</span><span class="p">())])</span>
         <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display_args</span><span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">filepath_args</span><span class="p">)</span>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>channel &mdash; PyDM v1.8.0 documentation</title>
+  <title>channel &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0
+                v1.8.0+6.ge101536f
               </div>
             
           
@@ -179,8 +179,8 @@
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">import</span> <span class="nn">pydm.data_plugins</span>
-<span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="k">import</span> <span class="n">is_qt_designer</span>
-<span class="kn">from</span> <span class="nn">pydm</span> <span class="k">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="kn">import</span> <span class="n">is_qt_designer</span>
+<span class="kn">from</span> <span class="nn">pydm</span> <span class="kn">import</span> <span class="n">config</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -256,7 +256,7 @@
 <span class="sd">        through the plugin</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">connection_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">connection_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">severity_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">write_access_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">enum_strings_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prec_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">upper_ctrl_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lower_ctrl_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -316,7 +316,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Unable to remove connection &quot;</span>
                              <span class="s2">&quot;for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="n">address_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">address</span>
             <span class="n">connection_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">connection_slot</span>
@@ -347,16 +347,16 @@
 
         <span class="k">return</span> <span class="bp">NotImplemented</span>
 
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="n">equality_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">equality_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">NotImplemented</span><span class="p">:</span>
             <span class="k">return</span> <span class="ow">not</span> <span class="n">equality_result</span>
         <span class="k">return</span> <span class="bp">NotImplemented</span>
 
-    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;&lt;PyDMChannel (</span><span class="si">{:}</span><span class="s1">)&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div>
 </pre></div>
 

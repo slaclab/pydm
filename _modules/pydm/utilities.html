@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.utilities &mdash; PyDM v1.8.0 documentation</title>
+  <title>pydm.utilities &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0
+                v1.8.0+6.ge101536f
               </div>
             
           
@@ -176,13 +176,13 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.utilities</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.units</span> <span class="k">import</span> <span class="n">find_unittype</span><span class="p">,</span> <span class="n">convert</span><span class="p">,</span> <span class="n">find_unit_options</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">macro</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">colors</span>
-<span class="kn">from</span> <span class="nn">.remove_protocol</span> <span class="k">import</span> <span class="n">remove_protocol</span><span class="p">,</span> <span class="n">protocol_and_address</span>
-<span class="kn">from</span> <span class="nn">.connection</span> <span class="k">import</span> <span class="n">establish_widget_connections</span><span class="p">,</span> <span class="n">close_widget_connections</span>
-<span class="kn">from</span> <span class="nn">.iconfont</span> <span class="k">import</span> <span class="n">IconFont</span>
-<span class="kn">from</span> <span class="nn">..qtdesigner</span> <span class="k">import</span> <span class="n">DesignerHooks</span>
+<span></span><span class="kn">from</span> <span class="nn">.units</span> <span class="kn">import</span> <span class="n">find_unittype</span><span class="p">,</span> <span class="n">convert</span><span class="p">,</span> <span class="n">find_unit_options</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">macro</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">colors</span>
+<span class="kn">from</span> <span class="nn">.remove_protocol</span> <span class="kn">import</span> <span class="n">remove_protocol</span><span class="p">,</span> <span class="n">protocol_and_address</span>
+<span class="kn">from</span> <span class="nn">.connection</span> <span class="kn">import</span> <span class="n">establish_widget_connections</span><span class="p">,</span> <span class="n">close_widget_connections</span>
+<span class="kn">from</span> <span class="nn">.iconfont</span> <span class="kn">import</span> <span class="n">IconFont</span>
+<span class="kn">from</span> <span class="nn">..qtdesigner</span> <span class="kn">import</span> <span class="n">DesignerHooks</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -205,8 +205,8 @@
 <span class="sd">    bool</span>
 <span class="sd">        True if it is a PyDMApplication, False otherwise.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">..application</span> <span class="k">import</span> <span class="n">PyDMApplication</span>
-    <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QApplication</span>
+    <span class="kn">from</span> <span class="nn">..application</span> <span class="kn">import</span> <span class="n">PyDMApplication</span>
+    <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
     <span class="k">if</span> <span class="n">app</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">PyDMApplication</span><span class="p">):</span>

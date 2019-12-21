@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.timeplot &mdash; PyDM v1.8.0 documentation</title>
+  <title>pydm.widgets.timeplot &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0
+                v1.8.0+6.ge101536f
               </div>
             
           
@@ -178,14 +178,14 @@
   <h1>Source code for pydm.widgets.timeplot</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="k">import</span> <span class="n">ViewBox</span><span class="p">,</span> <span class="n">AxisItem</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="kn">import</span> <span class="n">ViewBox</span><span class="p">,</span> <span class="n">AxisItem</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="k">import</span> <span class="n">QColor</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QTimer</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="n">QAction</span>
-<span class="kn">from</span> <span class="nn">.baseplot</span> <span class="k">import</span> <span class="n">BasePlot</span><span class="p">,</span> <span class="n">BasePlotCurveItem</span>
-<span class="kn">from</span> <span class="nn">.channel</span> <span class="k">import</span> <span class="n">PyDMChannel</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QColor</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QTimer</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QAction</span>
+<span class="kn">from</span> <span class="nn">.baseplot</span> <span class="kn">import</span> <span class="n">BasePlot</span><span class="p">,</span> <span class="n">BasePlotCurveItem</span>
+<span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">PyDMChannel</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="n">utilities</span> <span class="kn">import</span> <span class="nn">remove_protocol</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -231,7 +231,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_channels</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;channel&#39;</span><span class="p">,)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel_address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel_address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -494,7 +494,7 @@
 
     <span class="n">plot_redrawn_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="n">TimePlotCurveItem</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_y_channels</span><span class="o">=</span><span class="p">[],</span> <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_y_channels</span><span class="o">=</span><span class="p">[],</span> <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1020,7 +1020,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    TimeAxisItem formats a unix time axis into a human-readable format.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TimeAxisItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">enableAutoSIPrefix</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 
