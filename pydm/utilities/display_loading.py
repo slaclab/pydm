@@ -8,6 +8,7 @@ from ..display_module import Display
 from qtpy import uic
 from . import macro
 
+
 def load_ui_file(uifile, macros=None):
     """
     Load a .ui file, perform macro substitution, then return the resulting QWidget.
@@ -31,6 +32,7 @@ def load_ui_file(uifile, macros=None):
     else:
         f = uifile
     return uic.loadUi(f)
+
 
 def load_py_file(pyfile, args=None, macros=None):
     """

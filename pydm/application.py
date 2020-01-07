@@ -284,8 +284,6 @@ class PyDMApplication(QApplication):
             # it means that we already closed it.
             pass
 
-    
-
     def open_file(self, ui_file, macros=None, command_line_args=None, defer_connections=False, **kwargs):
         """
         Open a .ui or .py file, and return a widget from the loaded file.

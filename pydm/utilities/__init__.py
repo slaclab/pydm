@@ -9,6 +9,7 @@ from ..qtdesigner import DesignerHooks
 import os
 import sys
 import platform
+import pathlib
 import ntpath
 import shlex
 
@@ -49,6 +50,29 @@ def is_qt_designer():
     return DesignerHooks().form_editor is not None
 
 
+def get_designer_current_path():
+    """
+    Fetch the absolute path for the current active form at Qt Designer.
+
+    Returns
+    -------
+    path : str, None
+        The absolute path for the current active form or None in case not
+        available
+    """
+    if not is_qt_designer():
+        return None
+    form_editor = DesignerHooks().form_editor
+    win_manager = form_editor.formWindowManager()
+    form_window = win_manager.activeFormWindow()
+    if form_window is not None:
+        dir = form_window.absoluteDir()
+        if dir:
+            return dir.absolutePath()
+
+    return None
+
+
 def path_info(path_str):
     """
     Retrieve basic information about the given path.
@@ -74,6 +98,64 @@ def path_info(path_str):
     args = split
 
     return dir_name, file_name, args
+
+
+def find_file(fname, mode=None, extra_path=None):
+    """
+    Look for files at the search paths common to PyDM.
+
+    Search Order
+    ------------
+    - Current Dir
+    - Dirs in extra_path
+    - Dir for current display - app or designer
+    - Dirs in PYDM_DISPLAYS_PATH
+
+    Parameters
+    ----------
+    fname : str
+        The file name
+    mode : int
+        The mode required for the file, defaults to os.F_OK.
+        Which ensure that the file exists and we can read it.
+    extra_path : list
+        Additional paths to look for file.
+
+    Returns
+    -------
+    file_path : str
+        Returns the file path or None in case the file was not found
+    """
+    from qtpy.QtWidgets import QApplication
+
+    if mode is None:
+        mode = os.F_OK | os.R_OK
+
+    x_path = []
+    x_path.extend([os.getcwd()])
+    if extra_path:
+        if not isinstance(extra_path, (list, tuple)):
+            extra_path = [extra_path]
+        extra_path = [os.path.expanduser(os.path.expandvars(x)) for x in extra_path]
+        x_path.extend(extra_path)
+
+    curr_path = None
+    if is_pydm_app():
+        app = QApplication.instance()
+        curr_path = app.get_path("")  # Send empty string as we just want the path
+    elif is_qt_designer():
+        curr_path = get_designer_current_path()
+    if curr_path:
+        x_path.extend([curr_path])
+
+    pydm_search_path = os.getenv("PYDM_DISPLAYS_PATH", None)
+    if pydm_search_path:
+        x_path.extend(pydm_search_path)
+
+    f_ext = ''.join(pathlib.Path(fname).suffixes)
+
+    file_path = which(fname, mode=mode, pathext=f_ext, extra_path=x_path)
+    return file_path
 
 
 def find_display_in_path(file, mode=None, path=None, pathext=None):
@@ -108,7 +190,7 @@ def find_display_in_path(file, mode=None, path=None, pathext=None):
     return which(file, mode, path, pathext=pathext)
 
 
-def which(cmd, mode=os.F_OK | os.X_OK, path=None, pathext=None):
+def which(cmd, mode=os.F_OK | os.X_OK, path=None, pathext=None, extra_path=None):
     """Given a command, mode, and a PATH string, return the path which
     conforms to the given mode on the PATH, or None if there is no such
     file.
@@ -140,6 +222,9 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None, pathext=None):
     if not path:
         return None
     path = path.split(os.pathsep)
+
+    if extra_path is not None:
+        path = extra_path + path
 
     if sys.platform == "win32":
         # The current directory takes precedence on Windows.
