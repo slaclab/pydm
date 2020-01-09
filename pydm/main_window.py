@@ -2,7 +2,7 @@ import os
 from os import path
 from qtpy.QtWidgets import QApplication, QMainWindow, QFileDialog, QWidget, QAction
 from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
-from .utilities import IconFont, find_display_in_path
+from .utilities import IconFont, find_file
 from .pydm_ui import Ui_MainWindow
 from .display_module import Display
 from .connection_inspector import ConnectionInspector
@@ -126,7 +126,7 @@ class PyDMMainWindow(QMainWindow):
         filename = self.join_to_current_file_path(ui_file)
         try:
             if not os.path.exists(filename):
-                new_fname = find_display_in_path(ui_file)
+                new_fname = find_file(ui_file)
                 if new_fname is None or new_fname == "":
                     raise IOError("File {} not found".format(filename))
                 filename = new_fname
@@ -166,7 +166,7 @@ class PyDMMainWindow(QMainWindow):
         filename = self.join_to_current_file_path(ui_file)
         try:
             if not os.path.exists(filename):
-                new_fname = find_display_in_path(ui_file)
+                new_fname = find_file(ui_file)
                 if new_fname is None or new_fname == "":
                     raise IOError("File {} not found".format(filename))
                 filename = new_fname

@@ -318,6 +318,7 @@ class PyDMApplication(QApplication):
         dir_name, file_name, extra_args = path_info(ui_file)
         args.extend(extra_args)
         filepath = os.path.join(dir_name, file_name)
+        print('Will append to directory_stack: ', dir_name)
         self.directory_stack.append(dir_name)
         (filename, extension) = os.path.splitext(file_name)
         if macros is None:
@@ -337,7 +338,8 @@ class PyDMApplication(QApplication):
         # Add on the macros to the widget after initialization. This is
         # done for both ui files and python files.
         widget.base_macros = merged_macros
-        self.directory_stack.pop()
+        # print('Pop from directory_stack')
+        # self.directory_stack.pop()
         self.macro_stack.pop()
         return widget
 

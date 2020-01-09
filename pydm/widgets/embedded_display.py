@@ -1,11 +1,13 @@
 from qtpy.QtWidgets import QFrame, QApplication, QLabel, QVBoxLayout, QWidget
 from qtpy.QtCore import Qt, QSize, Property, QTimer
+
 import os.path
 import logging
 from .base import PyDMPrimitiveWidget
 from ..utilities import (is_pydm_app, establish_widget_connections,
-                         close_widget_connections, macro, is_qt_designer)
-from ..utilities.display_loading import (load_ui_file, load_py_file)
+                         close_widget_connections, macro, is_qt_designer,
+                         find_file)
+from ..utilities.display_loading import (load_file, load_ui_file, load_py_file)
 
 logger = logging.getLogger(__name__)
 
@@ -160,6 +162,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             
         if not self.filename:
             return
+
         # Expand user (~ or ~user) and environment variables.
         fname = os.path.expanduser(os.path.expandvars(self.filename))
         if self.base_path:
@@ -199,16 +202,20 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         # If you get this far, you are running inside a PyDMApplication, load
         # using that system.
         try:
-            if os.path.isabs(full_fname) and os.path.exists(full_fname):
-                w = self.app.open_file(full_fname, macros=self.parsed_macros())
-            else:
-                w = self.app.open_relative(full_fname, self,
-                                              macros=self.parsed_macros())
+            w = load_file(self.filename, macros=self.parsed_macros())
             self._needs_load = False
             self.clear_error_text()
             return w
-        except (ValueError, IOError) as e:
-            self.display_error_text(e)
+        except Exception as e:
+            self._load_error = e
+            if self._load_error_timer:
+                self._load_error_timer.stop()
+            self._load_error_timer = QTimer(self)
+            self._load_error_timer.setSingleShot(True)
+            self._load_error_timer.setTimerType(Qt.VeryCoarseTimer)
+            self._load_error_timer.timeout.connect(self._display_designer_load_error)
+            self._load_error_timer.start(3000)
+        return None
 
     def clear_error_text(self):
         self.err_label.clear()

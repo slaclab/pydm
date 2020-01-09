@@ -100,23 +100,42 @@ def path_info(path_str):
     return dir_name, file_name, args
 
 
-def find_file(fname, mode=None, extra_path=None):
+def get_current_path():
+    from qtpy.QtWidgets import QApplication
+
+    # Current open file
+    curr_path = None
+    if is_pydm_app():
+        app = QApplication.instance()
+        curr_path = app.get_path("")  # Send empty string as we just want the path
+    elif is_qt_designer():
+        curr_path = get_designer_current_path()
+
+    print('Get Current Path: ', curr_path, 'stack: ', app.directory_stack)
+    return curr_path
+
+
+def find_file(fname, base_path=None, mode=None, extra_path=None):
     """
     Look for files at the search paths common to PyDM.
 
     Search Order
     ------------
+    - base_path
     - Current Dir
     - Dirs in extra_path
-    - Dir for current display - app or designer
     - Dirs in PYDM_DISPLAYS_PATH
 
     Parameters
     ----------
     fname : str
-        The file name
+        The file name. Environment variables, ~ and ~user constructs before
+        search.
+    base_path : str
+        If None, it defaults to the current open display path or Qt Designer
+        path
     mode : int
-        The mode required for the file, defaults to os.F_OK.
+        The mode required for the file, defaults to os.F_OK | os.R_OK.
         Which ensure that the file exists and we can read it.
     extra_path : list
         Additional paths to look for file.
@@ -126,12 +145,18 @@ def find_file(fname, mode=None, extra_path=None):
     file_path : str
         Returns the file path or None in case the file was not found
     """
-    from qtpy.QtWidgets import QApplication
+    fname = os.path.expanduser(os.path.expandvars(fname))
 
     if mode is None:
         mode = os.F_OK | os.R_OK
 
     x_path = []
+
+    if not base_path:
+        base_path = get_current_path()
+    x_path.extend([base_path])
+
+    # Current working directory
     x_path.extend([os.getcwd()])
     if extra_path:
         if not isinstance(extra_path, (list, tuple)):
@@ -139,21 +164,13 @@ def find_file(fname, mode=None, extra_path=None):
         extra_path = [os.path.expanduser(os.path.expandvars(x)) for x in extra_path]
         x_path.extend(extra_path)
 
-    curr_path = None
-    if is_pydm_app():
-        app = QApplication.instance()
-        curr_path = app.get_path("")  # Send empty string as we just want the path
-    elif is_qt_designer():
-        curr_path = get_designer_current_path()
-    if curr_path:
-        x_path.extend([curr_path])
-
     pydm_search_path = os.getenv("PYDM_DISPLAYS_PATH", None)
     if pydm_search_path:
         x_path.extend(pydm_search_path)
 
     f_ext = ''.join(pathlib.Path(fname).suffixes)
 
+    print('Find File called: ', fname, 'ext: ', f_ext, ' extra_path: ', x_path)
     file_path = which(fname, mode=mode, pathext=f_ext, extra_path=x_path)
     return file_path
 

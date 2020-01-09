@@ -8,13 +8,6 @@ test_ui_path = os.path.join(
     "test_data", "test.ui")
 
 
-def test_display_raises_without_filename(qtbot):
-    """If you don't specify a ui_filename argument, or don't reimplement
-    ui_filename(), make sure you get a NotImplementedError."""
-    with pytest.raises(NotImplementedError):
-        my_display = Display(parent=None)
-
-
 def test_ui_filename_arg(qtbot):
     """If you supply a valid filename argument, you shouldn't get any exceptions."""
     my_display = Display(parent=None, ui_filename=test_ui_path)
@@ -32,13 +25,20 @@ def test_reimplemented_ui_filename(qtbot):
 
 
 def test_nonexistant_ui_file_raises(qtbot):
-    with pytest.raises(IOError):
+    try:
         my_display = Display(parent=None, ui_filename="this_doesnt_exist.ui")
+    except IOError:
+        assert True
+    else:
+        assert False
 
     class TestDisplay(Display):
         def ui_filename(self):
             return "this_doesnt_exist.ui"
 
-    with pytest.raises(IOError):
+    try:
         my_display = TestDisplay(parent=None)
-
+    except IOError:
+        assert True
+    else:
+        assert False

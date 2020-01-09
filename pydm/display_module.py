@@ -1,7 +1,9 @@
 import sys
 from os import path
+
 from qtpy import uic
 from qtpy.QtWidgets import QWidget
+
 from .utilities import macro
 
 
@@ -10,7 +12,13 @@ class Display(QWidget):
         super(Display, self).__init__(parent=parent)
         self.ui = None
         self._ui_filename = ui_filename
-        self.load_ui(parent=parent, macros=macros)
+        self._args = args
+        self._macros = macros
+        if ui_filename or self.ui_filename():
+            self.load_ui(parent=parent, macros=macros)
+
+    def macros(self):
+        return self._macros
 
     def ui_filepath(self):
         """ Returns the path to the ui file relative to the file of the class
@@ -18,14 +26,15 @@ class Display(QWidget):
         if not self.ui_filename():
             return None
         path_to_class = sys.modules[self.__module__].__file__
-        return path.join(path.dirname(path.realpath(path_to_class)), self.ui_filename())
+        return path.join(path.dirname(path.realpath(path_to_class)),
+                         self.ui_filename())
 
     def ui_filename(self):
         """ Returns the name of the ui file.  In modern PyDM, it is preferable
         specify this via the ui_filename argument in Display's constructor,
         rather than reimplementing this in Display subclasses."""
         if self._ui_filename is None:
-            raise NotImplementedError
+            return None
         else:
             return self._ui_filename
 

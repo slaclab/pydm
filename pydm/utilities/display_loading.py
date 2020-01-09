@@ -9,6 +9,31 @@ from qtpy import uic
 from . import macro
 
 
+def load_file(file, args, macros):
+    """
+    Load .ui or .py file, perform macro substitution, then return the resulting
+    QWidget.
+
+    Parameters
+    ----------
+    file : str
+        The path to a .ui file to load
+    args : list, optional
+        A list of command-line arguments to pass to the
+        loaded display subclass.
+    macros : dict, optional
+        A dictionary of macro variables to supply to the
+        loaded display subclass.
+
+    Returns
+    -------
+    pydm.Display
+    """
+    if file.endswith('.ui'):
+        return load_ui_file(file, macros=macros)
+    return load_py_file(file, args=args, macros=macros)
+
+
 def load_ui_file(uifile, macros=None):
     """
     Load a .ui file, perform macro substitution, then return the resulting QWidget.
@@ -27,11 +52,14 @@ def load_ui_file(uifile, macros=None):
     -------
     QWidget
     """
+    d = Display(macros=macros)
     if macros is not None and len(macros) > 0:
         f = macro.substitute_in_file(uifile, macros)
     else:
         f = uifile
-    return uic.loadUi(f)
+    uic.loadUi(f, baseinstance=d)
+    d.ui = d
+    return d
 
 
 def load_py_file(pyfile, args=None, macros=None):
@@ -57,7 +85,10 @@ def load_py_file(pyfile, args=None, macros=None):
     -------
     pydm.Display
     """
-    # Add the intelligence module directory to the python path, so that submodules can be loaded.    Eventually, this should go away, and intelligence modules should behave as real python modules.
+    # Add the intelligence module directory to the python path, so that
+    # submodules can be loaded.
+    # Eventually, this should go away, and intelligence modules should behave
+    # as real python modules.
     module_dir = os.path.dirname(os.path.abspath(pyfile))
     sys.path.append(module_dir)
     temp_name = str(uuid.uuid4())

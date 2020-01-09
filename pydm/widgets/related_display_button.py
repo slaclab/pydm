@@ -7,7 +7,7 @@ import logging
 import warnings
 from functools import partial
 from .base import PyDMPrimitiveWidget
-from ..utilities import IconFont
+from ..utilities import IconFont, find_file
 from ..utilities.macro import find_base_macros, parse_macro_string
 
 logger = logging.getLogger(__name__)
@@ -266,7 +266,10 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         # Check for None and ""
         if not filename:
             return
-        
+
+        print('Called open_display: ', filename)
+        filename = find_file(filename)
+        print('After find_file: ', filename)
         macros = parse_macro_string(macro_string)
         base_macros = find_base_macros(self)
         merged_macros = base_macros.copy()
