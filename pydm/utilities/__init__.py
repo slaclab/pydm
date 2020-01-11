@@ -111,7 +111,6 @@ def get_current_path():
     elif is_qt_designer():
         curr_path = get_designer_current_path()
 
-    print('Get Current Path: ', curr_path, 'stack: ', app.directory_stack)
     return curr_path
 
 
@@ -152,9 +151,8 @@ def find_file(fname, base_path=None, mode=None, extra_path=None):
 
     x_path = []
 
-    if not base_path:
-        base_path = get_current_path()
-    x_path.extend([base_path])
+    if base_path:
+       x_path.extend([base_path])
 
     # Current working directory
     x_path.extend([os.getcwd()])

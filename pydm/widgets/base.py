@@ -10,6 +10,7 @@ from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
 from .. import data_plugins, tools, config
 from ..utilities import is_qt_designer, remove_protocol
+from ..display_module import Display
 from .rules import RulesDispatcher
 
 try:
@@ -199,6 +200,15 @@ class PyDMPrimitiveWidget(object):
                 RulesDispatcher().register(self, rules_list)
             except JSONDecodeError as ex:
                 logger.exception('Invalid format for Rules')
+
+    def find_parent_display(self):
+        widget = self.parent()
+        while widget is not None:
+            if isinstance(widget, Display):
+                return widget
+            widget = widget.parent()
+        return None
+
 
 class TextFormatter(object):
 

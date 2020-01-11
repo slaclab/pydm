@@ -42,8 +42,8 @@ def find_base_macros(widget):
     its ancestors.
     '''
     while widget is not None:
-        if hasattr(widget, 'base_macros'):
-            return widget.base_macros
+        if hasattr(widget, 'macros'):
+            return widget.macros()
         widget = widget.parent()
     return {}
 

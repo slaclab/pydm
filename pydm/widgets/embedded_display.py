@@ -1,15 +1,17 @@
 from qtpy.QtWidgets import QFrame, QApplication, QLabel, QVBoxLayout, QWidget
 from qtpy.QtCore import Qt, QSize, Property, QTimer
 
+import copy
 import os.path
 import logging
 from .base import PyDMPrimitiveWidget
 from ..utilities import (is_pydm_app, establish_widget_connections,
                          close_widget_connections, macro, is_qt_designer,
                          find_file)
-from ..utilities.display_loading import (load_file, load_ui_file, load_py_file)
+from ..display_module import (load_file)
 
 logger = logging.getLogger(__name__)
+
 
 class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     """
@@ -35,12 +37,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         self._needs_load = True
         self.base_path = ""
         self.base_macros = {}
-        if is_pydm_app():
-            self.base_path = self.app.directory_stack[-1]
-            self.base_macros = self.app.macro_stack[-1]
-        else:
-            self._load_error_timer = None
-            self._load_error = None
+        self._load_error_timer = None
+        self._load_error = None
         self.layout = QVBoxLayout(self)
         self.err_label = QLabel(self)
         self.err_label.setAlignment(Qt.AlignHCenter)
@@ -140,9 +138,13 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         --------
         dict
         """
-        m = macro.find_base_macros(self)
-        m.update(macro.parse_macro_string(self.macros))
-        return m
+        parent_display = self.find_parent_display()
+        if parent_display:
+            parent_macros = copy.copy(parent_display.macros())
+        widget_macros = macro.parse_macro_string(self.macros)
+        print('Parent Macros: ', parent_macros, ' | My Macros: ', widget_macros)
+        parent_macros.update(widget_macros)
+        return parent_macros
 
     def load_if_needed(self):
         if self._needs_load and (
@@ -173,36 +175,43 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         if not full_fname:
             return
 
-        if not is_pydm_app():
-            (filename, extension) = os.path.splitext(full_fname)
-            if extension == ".ui":
-                loadfunc = load_ui_file
-            elif extension == ".py":
-                loadfunc = load_py_file
-            else:
-                self.display_error_text('Invalid filename extension.')
-                return
-
-            try:
-                w = loadfunc(full_fname, macros=self.parsed_macros())
-                self._needs_load = False
-                self.clear_error_text()
-                return w
-            except Exception as e:
-                self._load_error = e
-                if self._load_error_timer:
-                    self._load_error_timer.stop()
-                self._load_error_timer = QTimer(self)
-                self._load_error_timer.setSingleShot(True)
-                self._load_error_timer.setTimerType(Qt.VeryCoarseTimer)
-                self._load_error_timer.timeout.connect(self._display_designer_load_error)
-                self._load_error_timer.start(3000)
-            return None
-        
+        # TODO: Verify if we really need this
+        # if not is_pydm_app():
+        #     (filename, extension) = os.path.splitext(full_fname)
+        #     if extension == ".ui":
+        #         loadfunc = load_ui_file
+        #     elif extension == ".py":
+        #         loadfunc = load_py_file
+        #     else:
+        #         self.display_error_text('Invalid filename extension.')
+        #         return
+        #
+        #     try:
+        #         w = loadfunc(full_fname, macros=self.parsed_macros())
+        #         self._needs_load = False
+        #         self.clear_error_text()
+        #         return w
+        #     except Exception as e:
+        #         self._load_error = e
+        #         if self._load_error_timer:
+        #             self._load_error_timer.stop()
+        #         self._load_error_timer = QTimer(self)
+        #         self._load_error_timer.setSingleShot(True)
+        #         self._load_error_timer.setTimerType(Qt.VeryCoarseTimer)
+        #         self._load_error_timer.timeout.connect(self._display_designer_load_error)
+        #         self._load_error_timer.start(3000)
+        #     return None
+        #
         # If you get this far, you are running inside a PyDMApplication, load
         # using that system.
         try:
-            w = load_file(self.filename, macros=self.parsed_macros())
+            parent_display = self.find_parent_display()
+            base_path = ""
+            if parent_display:
+                base_path = os.path.dirname(parent_display.loaded_file())
+
+            fname = find_file(self.filename, base_path=base_path)
+            w = load_file(fname, macros=self.parsed_macros(), target=None)
             self._needs_load = False
             self.clear_error_text()
             return w
