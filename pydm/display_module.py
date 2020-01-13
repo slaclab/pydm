@@ -22,8 +22,7 @@ class ScreenTarget:
 logger = logging.getLogger(__file__)
 
 
-def load_file(file, macros=None, args=None, current_display=None,
-              target=ScreenTarget.NEW_PROCESS):
+def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     """
     Load .ui or .py file, perform macro substitution, then return the resulting
     QWidget.
@@ -39,11 +38,6 @@ def load_file(file, macros=None, args=None, current_display=None,
     args : list, optional
         A list of command-line arguments to pass to the
         loaded display subclass.
-    # current_display : QWidget, optional
-    #     If passed, this display will be added to the navigation stack of the
-    #     display to be opened.
-    #     This parameter is also important for the ScreenTarget.REPLACE in which
-    #     PyDM query the current_display for its parent so it can be replaced.
     target : int
         One of the ScreenTarget targets. PROCESS is only available when used
         with PyDM Application for now.
@@ -52,12 +46,6 @@ def load_file(file, macros=None, args=None, current_display=None,
     -------
     pydm.Display
     """
-    w = None
-    if file.endswith('.ui'):
-        w = load_ui_file(file, macros=macros)
-    else:
-        w = load_py_file(file, args=args, macros=macros)
-
     if not is_pydm_app() and target == ScreenTarget.NEW_PROCESS:
         logger.error('New Process is only valid with PyDM Application.' +
                      'Falling back to ScreenTarget.DIALOG.')
@@ -68,10 +56,17 @@ def load_file(file, macros=None, args=None, current_display=None,
         app = QApplication.instance()
         app.new_pydm_process(file, macros=macros, command_line_args=args)
         return None
-    elif target == ScreenTarget.DIALOG:
-        w.show()
+    else:
+        w = None
+        if file.endswith('.ui'):
+            w = load_ui_file(file, macros=macros)
+        else:
+            w = load_py_file(file, args=args, macros=macros)
 
-    return w
+        if target == ScreenTarget.DIALOG:
+            w.show()
+
+        return w
 
 
 def load_ui_file(uifile, macros=None):
@@ -101,9 +96,10 @@ def load_ui_file(uifile, macros=None):
     klass, _ = uic.loadUiType(f)
     # Add retranslateUi to Display class
     d.retranslateUi = functools.partial(klass.retranslateUi, d)
+    d._loaded_file = uifile
     klass.setupUi(d, d)
     d.ui = d
-    d._loaded_file = uifile
+    print('load_ui_file will set loaded_file to: ', uifile)
 
     return d
 

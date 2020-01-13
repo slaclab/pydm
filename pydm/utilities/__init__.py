@@ -100,20 +100,6 @@ def path_info(path_str):
     return dir_name, file_name, args
 
 
-def get_current_path():
-    from qtpy.QtWidgets import QApplication
-
-    # Current open file
-    curr_path = None
-    if is_pydm_app():
-        app = QApplication.instance()
-        curr_path = app.get_path("")  # Send empty string as we just want the path
-    elif is_qt_designer():
-        curr_path = get_designer_current_path()
-
-    return curr_path
-
-
 def find_file(fname, base_path=None, mode=None, extra_path=None):
     """
     Look for files at the search paths common to PyDM.
@@ -152,7 +138,12 @@ def find_file(fname, base_path=None, mode=None, extra_path=None):
     x_path = []
 
     if base_path:
-       x_path.extend([base_path])
+        x_path.extend([os.path.abspath(base_path)])
+
+    if is_qt_designer():
+        designer_path = get_designer_current_path()
+        if designer_path:
+            x_path.extend([designer_path])
 
     # Current working directory
     x_path.extend([os.getcwd()])

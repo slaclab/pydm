@@ -139,6 +139,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         dict
         """
         parent_display = self.find_parent_display()
+        parent_macros = {}
         if parent_display:
             parent_macros = copy.copy(parent_display.macros())
         widget_macros = macro.parse_macro_string(self.macros)
@@ -149,6 +150,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     def load_if_needed(self):
         if self._needs_load and (
                 not self._only_load_when_shown or self.isVisible() or is_qt_designer()):
+            print('load_if_needed: ', self._needs_load)
             self.embedded_widget = self.open_file()
 
     def open_file(self, force=False):
@@ -164,16 +166,16 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             
         if not self.filename:
             return
-
-        # Expand user (~ or ~user) and environment variables.
-        fname = os.path.expanduser(os.path.expandvars(self.filename))
-        if self.base_path:
-            full_fname = os.path.join(self.base_path, fname)
-        else:
-            full_fname = fname
-
-        if not full_fname:
-            return
+        #
+        # # Expand user (~ or ~user) and environment variables.
+        # fname = os.path.expanduser(os.path.expandvars(self.filename))
+        # if self.base_path:
+        #     full_fname = os.path.join(self.base_path, fname)
+        # else:
+        #     full_fname = fname
+        #
+        # if not full_fname:
+        #     return
 
         # TODO: Verify if we really need this
         # if not is_pydm_app():
@@ -211,11 +213,14 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
                 base_path = os.path.dirname(parent_display.loaded_file())
 
             fname = find_file(self.filename, base_path=base_path)
+            print('fname: ', fname)
             w = load_file(fname, macros=self.parsed_macros(), target=None)
             self._needs_load = False
             self.clear_error_text()
+            print('Loaded Ok...')
             return w
         except Exception as e:
+            print('Something bad happened while loading')
             self._load_error = e
             if self._load_error_timer:
                 self._load_error_timer.stop()
@@ -223,10 +228,12 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             self._load_error_timer.setSingleShot(True)
             self._load_error_timer.setTimerType(Qt.VeryCoarseTimer)
             self._load_error_timer.timeout.connect(self._display_designer_load_error)
-            self._load_error_timer.start(3000)
+            self._load_error_timer.start(1000)
         return None
 
     def clear_error_text(self):
+        if self._load_error_timer:
+            self._load_error_timer.stop()
         self.err_label.clear()
         self.err_label.hide()
 

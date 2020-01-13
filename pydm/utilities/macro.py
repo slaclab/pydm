@@ -28,7 +28,15 @@ def substitute_in_file(file_path, macros):
     return replace_macros_in_template(template, macros)
 
 def replace_macros_in_template(template, macros):
-    expanded_text = template.safe_substitute(macros)
+    curr_template = template
+    prev_template = Template("")
+    expanded_text = ""
+    for i in range(100):
+        expanded_text = curr_template.safe_substitute(macros)
+        if curr_template.template == prev_template.template:
+            break
+        prev_template = curr_template
+        curr_template = Template(expanded_text)
     return io.StringIO(six.text_type(expanded_text))
 
 def template_for_file(file_path):
