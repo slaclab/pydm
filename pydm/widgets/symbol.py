@@ -94,9 +94,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
         parent_display = self.find_parent_display()
         base_path = os.path.dirname(parent_display.loaded_file())
         for (state, filename) in new_file_dict.items():
-            print('parent_display - path: ', parent_display.loaded_file())
             file_path = find_file(filename, base_path=base_path)
-            print('Load Symbol Image: ', file_path)
             # First, lets try SVG.  We have to try SVG first, otherwise
             # QPixmap will happily load the SVG and turn it into a raster image.
             # Really annoying: We have to try to load the file as SVG,

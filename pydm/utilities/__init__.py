@@ -66,9 +66,9 @@ def get_designer_current_path():
     win_manager = form_editor.formWindowManager()
     form_window = win_manager.activeFormWindow()
     if form_window is not None:
-        dir = form_window.absoluteDir()
-        if dir:
-            return dir.absolutePath()
+        abs_dir = form_window.absoluteDir()
+        if abs_dir:
+            return abs_dir.absolutePath()
 
     return None
 
@@ -107,6 +107,7 @@ def find_file(fname, base_path=None, mode=None, extra_path=None):
     Search Order
     ------------
     - base_path
+    - Qt Designer Path
     - Current Dir
     - Dirs in extra_path
     - Dirs in PYDM_DISPLAYS_PATH
@@ -159,7 +160,6 @@ def find_file(fname, base_path=None, mode=None, extra_path=None):
 
     f_ext = ''.join(pathlib.Path(fname).suffixes)
 
-    print('Find File called: ', fname, 'ext: ', f_ext, ' extra_path: ', x_path)
     file_path = which(fname, mode=mode, pathext=f_ext, extra_path=x_path)
     return file_path
 

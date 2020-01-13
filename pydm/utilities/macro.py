@@ -27,6 +27,7 @@ def substitute_in_file(file_path, macros):
     template = template_for_file(file_path)
     return replace_macros_in_template(template, macros)
 
+
 def replace_macros_in_template(template, macros):
     curr_template = template
     prev_template = Template("")
@@ -38,6 +39,7 @@ def replace_macros_in_template(template, macros):
         prev_template = curr_template
         curr_template = Template(expanded_text)
     return io.StringIO(six.text_type(expanded_text))
+
 
 def template_for_file(file_path):
     with open(file_path) as orig_file:
