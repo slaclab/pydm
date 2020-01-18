@@ -9,6 +9,7 @@ IN_NAME = 1
 PRE_VAL = 2
 IN_VAL = 3
 
+
 def substitute_in_file(file_path, macros):
     """
     Substitute the macros given by ${name} at the given file with the entries on the `macros` dictionary.
@@ -45,6 +46,7 @@ def template_for_file(file_path):
     with open(file_path) as orig_file:
         text = Template(orig_file.read())
     return text
+
 
 def find_base_macros(widget):
     '''

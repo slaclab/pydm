@@ -47,8 +47,8 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     pydm.Display
     """
     if not is_pydm_app() and target == ScreenTarget.NEW_PROCESS:
-        logger.error('New Process is only valid with PyDM Application.' +
-                     'Falling back to ScreenTarget.DIALOG.')
+        logger.warning('New Process is only valid with PyDM Application. ' +
+                       'Falling back to ScreenTarget.DIALOG.')
         target = ScreenTarget.DIALOG
 
     if target == ScreenTarget.NEW_PROCESS:
@@ -99,7 +99,6 @@ def load_ui_file(uifile, macros=None):
     d._loaded_file = uifile
     klass.setupUi(d, d)
     d.ui = d
-    print('load_ui_file will set loaded_file to: ', uifile)
 
     return d
 
@@ -187,7 +186,7 @@ class Display(QWidget):
         self._previous_display = None
         self._next_display = None
         if ui_filename or self.ui_filename():
-            self.load_ui(parent=parent, macros=macros)
+            self.load_ui(macros=macros)
 
     def loaded_file(self):
         return self._loaded_file
@@ -236,7 +235,7 @@ class Display(QWidget):
         else:
             return self._ui_filename
 
-    def load_ui(self, parent=None, macros=None):
+    def load_ui(self, macros=None):
         """ Load and parse the ui file, and make the file's widgets available
         in self.ui.  Called by the initializer."""
         if self.ui:

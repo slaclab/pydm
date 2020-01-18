@@ -278,6 +278,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
 
         fname = find_file(filename, base_path=base_path)
 
+        macros = {}
         parent_display = self.find_parent_display()
         if parent_display:
             macros = copy.copy(parent_display.macros())

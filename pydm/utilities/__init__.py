@@ -161,6 +161,7 @@ def find_file(fname, base_path=None, mode=None, extra_path=None):
     f_ext = ''.join(pathlib.Path(fname).suffixes)
 
     file_path = which(fname, mode=mode, pathext=f_ext, extra_path=x_path)
+
     return file_path
 
 
