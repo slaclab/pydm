@@ -131,7 +131,8 @@ def load_py_file(pyfile, args=None, macros=None):
     # Eventually, this should go away, and intelligence modules should behave
     # as real python modules.
     module_dir = os.path.dirname(os.path.abspath(pyfile))
-    sys.path.append(module_dir)
+    if module_dir not in sys.path:
+        sys.path.append(module_dir)
     temp_name = str(uuid.uuid4())
 
     # Now load the intelligence module.
