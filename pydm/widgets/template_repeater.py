@@ -338,7 +338,11 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
 
         parent_macros = copy.copy(self._parent_macros)
         parent_macros.update(variables)
-        return load_file(fname, macros=parent_macros, target=None)
+        try:
+            w = load_file(fname, macros=parent_macros, target=None)
+        except Exception as ex:
+            w = QLabel('Error: could not load template: ' + str(ex))
+        return w
 
     def rebuild(self):
         """ Clear out all existing widgets, and populate the list using the
