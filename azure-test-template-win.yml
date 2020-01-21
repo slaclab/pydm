@@ -33,6 +33,7 @@ jobs:
     displayName: 'Anaconda - Configure'
 
   - script: |
+      echo Python Version $(python.version)
       conda create --yes --quiet --name test-environment-$(python.name) python=$(python.version)
     displayName: 'Anaconda - Create'
 
@@ -54,7 +55,6 @@ jobs:
 
   - script: |
       call activate test-environment-$(python.name)
-      # debug of conda environment
       conda info
       conda list
       python -c "from PyQt5 import QtCore; print(QtCore)"
