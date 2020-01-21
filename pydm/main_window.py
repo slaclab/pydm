@@ -118,7 +118,7 @@ class PyDMMainWindow(QMainWindow):
         curr_display = self.display_widget()
         prev_display = None
         if curr_display:
-            prev_display = curr_display.previous_display()
+            prev_display = curr_display.previous_display
 
         if not prev_display:
             logger.error('No display history to execute back navigation.')
@@ -130,7 +130,7 @@ class PyDMMainWindow(QMainWindow):
                       args=prev_display.args,
                       target=ScreenTarget.NEW_PROCESS)
         else:
-            prev_display.set_next_display(curr_display)
+            prev_display.next_display = curr_display
             establish_widget_connections(prev_display)
             register_widget_rules(prev_display)
             self.set_display_widget(prev_display)
@@ -139,7 +139,7 @@ class PyDMMainWindow(QMainWindow):
         curr_display = self.display_widget()
         next_display = None
         if curr_display:
-            next_display = curr_display.next_display()
+            next_display = curr_display.next_display
 
         if not next_display:
             logger.error('No display history to execute forward navigation.')
@@ -153,7 +153,7 @@ class PyDMMainWindow(QMainWindow):
         else:
             establish_widget_connections(next_display)
             register_widget_rules(next_display)
-            next_display.set_previous_display(curr_display)
+            next_display.previous_display = curr_display
             self.set_display_widget(next_display)
 
     def home(self):
@@ -300,7 +300,7 @@ class PyDMMainWindow(QMainWindow):
                 self.home_widget = new_widget
             display_widget = self.display_widget()
             if display_widget:
-                new_widget.set_previous_display(display_widget)
+                new_widget.previous_display = display_widget
             self.set_display_widget(new_widget)
         return new_widget
 
@@ -337,8 +337,8 @@ class PyDMMainWindow(QMainWindow):
             logger.error("The display manager does not have a display loaded.")
             return
 
-        prev_display = curr_display.previous_display()
-        next_display = curr_display.next_display()
+        prev_display = curr_display.previous_display
+        next_display = curr_display.next_display
 
         macros = curr_display.macros()
         args = curr_display.args()
@@ -347,8 +347,8 @@ class PyDMMainWindow(QMainWindow):
         self.statusBar().showMessage(
             "Reloading '{0}'...".format(self.current_file()), 5000)
         new_widget = self.open(loaded_file, macros=macros, args=args)
-        new_widget.set_previous_display(prev_display)
-        new_widget.set_next_display(next_display)
+        new_widget.previous_display = prev_display
+        new_widget.next_display = next_display
 
     @Slot(bool)
     def increase_font_size(self, checked):

@@ -57,7 +57,6 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
         app.new_pydm_process(file, macros=macros, command_line_args=args)
         return None
     else:
-        w = None
         if file.endswith('.ui'):
             w = load_ui_file(file, macros=macros)
         else:
@@ -192,16 +191,20 @@ class Display(QWidget):
     def loaded_file(self):
         return self._loaded_file
 
+    @property
     def previous_display(self):
         return self._previous_display
 
-    def set_previous_display(self, display):
+    @previous_display.setter
+    def previous_display(self, display):
         self._previous_display = display
 
+    @property
     def next_display(self):
         return self._next_display
 
-    def set_next_display(self, display):
+    @next_display.setter
+    def next_display(self, display):
         self._next_display = display
 
     def navigate_back(self):
