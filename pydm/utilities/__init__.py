@@ -9,7 +9,6 @@ from ..qtdesigner import DesignerHooks
 import os
 import sys
 import platform
-import pathlib
 import ntpath
 import shlex
 
@@ -102,6 +101,19 @@ def path_info(path_str):
     return dir_name, file_name, args
 
 
+def _extensions(fname):
+    name = os.path.basename(fname)
+    MAX_ITER = 10
+    exts = []
+    for i in range(MAX_ITER):
+        new_name, ext = os.path.splitext(name)
+        if ext:
+            exts.insert(0, ext)
+        if name == new_name:
+            break
+        name = new_name
+    return exts
+
 def find_file(fname, base_path=None, mode=None, extra_path=None):
     """
     Look for files at the search paths common to PyDM.
@@ -160,7 +172,7 @@ def find_file(fname, base_path=None, mode=None, extra_path=None):
     if pydm_search_path:
         x_path.extend(pydm_search_path)
 
-    f_ext = ''.join(pathlib.Path(fname).suffixes)
+    f_ext = ''.join(_extensions(fname))
 
     file_path = which(fname, mode=mode, pathext=f_ext, extra_path=x_path)
 

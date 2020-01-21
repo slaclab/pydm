@@ -404,7 +404,7 @@ class RulesEditor(QtWidgets.QDialog):
         except:
             self.lbl_expected_type.setText("")
 
-    def tbl_channels_changed(self, *args, **kwargs):
+    def tbl_channels_changed(self, topleft=None, bottomright=None, roles=None):
         """Callback executed when the channels in the table are modified."""
         if self.loading_data:
             return

@@ -1,5 +1,6 @@
 import functools
 import imp
+import six
 import inspect
 import logging
 import os
@@ -86,6 +87,7 @@ def load_ui_file(uifile, macros=None):
     -------
     QWidget
     """
+
     d = Display(macros=macros)
     if macros:
         f = macro.substitute_in_file(uifile, macros)
@@ -93,10 +95,18 @@ def load_ui_file(uifile, macros=None):
         f = uifile
 
     klass, _ = uic.loadUiType(f)
+
+    # Python 2.7 compatibility. More info at the following links:
+    # https://github.com/universe-proton/universe-topology/issues/3
+    # https://stackoverflow.com/questions/3296993/python-how-to-call-unbound-method-with-other-type-parameter
+    retranslateUi = six.get_unbound_function(klass.retranslateUi)
+    setupUi = six.get_unbound_function(klass.setupUi)
+
     # Add retranslateUi to Display class
-    d.retranslateUi = functools.partial(klass.retranslateUi, d)
+    d.retranslateUi = functools.partial(retranslateUi, d)
     d._loaded_file = uifile
-    klass.setupUi(d, d)
+    setupUi(d, d)
+
     d.ui = d
 
     return d
