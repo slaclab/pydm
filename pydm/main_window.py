@@ -32,13 +32,13 @@ class PyDMMainWindow(QMainWindow):
         self.default_font_size = QApplication.instance().font().pointSizeF()
         self.ui.navbar.setIconSize(QSize(24, 24))
         self.ui.navbar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-        self.ui.actionHome.triggered.connect(self.home)
+        self.ui.actionHome.triggered.connect(self.home_triggered)
         self.ui.actionHome.setIcon(self.iconFont.icon("home"))
         self.home_file = None
         self.home_widget = None
-        self.ui.actionBack.triggered.connect(self.back)
+        self.ui.actionBack.triggered.connect(self.back_triggered)
         self.ui.actionBack.setIcon(self.iconFont.icon("angle-left"))
-        self.ui.actionForward.triggered.connect(self.forward)
+        self.ui.actionForward.triggered.connect(self.forward_triggered)
         self.ui.actionForward.setIcon(self.iconFont.icon("angle-right"))
         self.ui.actionEdit_in_Designer.triggered.connect(self.edit_in_designer)
         self.ui.actionOpen_File.triggered.connect(self.open_file_action)
@@ -83,6 +83,7 @@ class PyDMMainWindow(QMainWindow):
                 break
 
         self.update_tools_menu()
+        self.enable_disable_navigation()
 
     def display_widget(self):
         return self._display_widget
@@ -97,6 +98,7 @@ class PyDMMainWindow(QMainWindow):
         new_widget.setVisible(True)
         self._display_widget = new_widget
         self.setCentralWidget(self._display_widget)
+        self.enable_disable_navigation()
         self.update_window_title()
         # Resizing to the new widget's dimensions needs to be
         # done on the event loop for some reason - you can't
@@ -114,7 +116,11 @@ class PyDMMainWindow(QMainWindow):
     def handle_open_file_error(self, filename, error):
         self.statusBar().showMessage("Cannot open file: '{0}', reason: '{1}'...".format(filename, error), 5000)
 
-    def back(self):
+    def back_triggered(self):
+        new_process = QApplication.keyboardModifiers() == Qt.ShiftModifier
+        self.back(open_in_new_process=new_process)
+
+    def back(self, open_in_new_process=False):
         curr_display = self.display_widget()
         prev_display = None
         if curr_display:
@@ -124,7 +130,7 @@ class PyDMMainWindow(QMainWindow):
             logger.error('No display history to execute back navigation.')
             return
 
-        if QApplication.keyboardModifiers() == Qt.ShiftModifier:
+        if open_in_new_process:
             load_file(prev_display.loaded_file(),
                       macros=prev_display.macros,
                       args=prev_display.args,
@@ -135,7 +141,11 @@ class PyDMMainWindow(QMainWindow):
             register_widget_rules(prev_display)
             self.set_display_widget(prev_display)
 
-    def forward(self):
+    def forward_triggered(self):
+        new_process = QApplication.keyboardModifiers() == Qt.ShiftModifier
+        self.forward(open_in_new_process=new_process)
+
+    def forward(self, open_in_new_process=False):
         curr_display = self.display_widget()
         next_display = None
         if curr_display:
@@ -145,7 +155,7 @@ class PyDMMainWindow(QMainWindow):
             logger.error('No display history to execute forward navigation.')
             return
 
-        if QApplication.keyboardModifiers() == Qt.ShiftModifier:
+        if open_in_new_process:
             load_file(next_display.loaded_file(),
                       macros=next_display.macros,
                       args=next_display.args,
@@ -156,11 +166,15 @@ class PyDMMainWindow(QMainWindow):
             next_display.previous_display = curr_display
             self.set_display_widget(next_display)
 
-    def home(self):
+    def home_triggered(self):
+        new_process = QApplication.keyboardModifiers() == Qt.ShiftModifier
+        self.home(open_in_new_process=new_process)
+
+    def home(self, open_in_new_process=False):
         if self.home_widget is None:
             return
 
-        if QApplication.keyboardModifiers() == Qt.ShiftModifier:
+        if open_in_new_process:
             fname = self.home_widget.loaded_file()
             macros = self.home_widget.macros()
             args = self.home_widget.args()
@@ -170,6 +184,15 @@ class PyDMMainWindow(QMainWindow):
                       target=ScreenTarget.NEW_PROCESS)
         else:
             self.set_display_widget(self.home_widget)
+
+    def enable_disable_navigation(self):
+        w = self.display_widget()
+        if not w:
+            self.ui.actionBack.setDisabled(True)
+            self.ui.actionForward.setDisabled(True)
+            return
+        self.ui.actionBack.setDisabled(w.previous_display is None)
+        self.ui.actionForward.setDisabled(w.next_display is None)
 
     def current_file(self):
         return self.display_widget().loaded_file()
