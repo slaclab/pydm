@@ -65,6 +65,8 @@ def get_designer_current_path():
     form_editor = DesignerHooks().form_editor
     win_manager = form_editor.formWindowManager()
     form_window = win_manager.activeFormWindow()
+    if form_window is None and win_manager.formWindowCount() > 0:
+        form_window = win_manager.formWindow(0)
     if form_window is not None:
         abs_dir = form_window.absoluteDir()
         if abs_dir:
