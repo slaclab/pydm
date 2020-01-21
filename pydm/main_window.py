@@ -187,6 +187,14 @@ class PyDMMainWindow(QMainWindow):
 
     def enable_disable_navigation(self):
         w = self.display_widget()
+        if not isinstance(w, Display):
+            # We can't do much if it is not a Display and we don't have the
+            # previous_display and next_display properties since we don't
+            # have the navigation stack set.
+            nav_stack_methods = hasattr(w, 'previous_display') \
+                                and hasattr(w, 'next_display')
+            if not nav_stack_methods:
+                return
         if not w:
             self.ui.actionBack.setDisabled(True)
             self.ui.actionForward.setDisabled(True)
