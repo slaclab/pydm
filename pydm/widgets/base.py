@@ -10,7 +10,7 @@ from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
 from .. import data_plugins, tools, config
 from ..utilities import is_qt_designer, remove_protocol
-from ..display_module import Display
+from ..display import Display
 from .rules import RulesDispatcher
 
 try:

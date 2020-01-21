@@ -10,7 +10,7 @@ from .base import PyDMPrimitiveWidget
 from pydm.utilities import is_qt_designer
 import pydm.data_plugins
 from ..utilities import macro, find_file
-from ..display_module import load_file
+from ..display import load_file
 logger = logging.getLogger(__name__)
 
 

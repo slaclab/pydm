@@ -11,7 +11,7 @@ from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont, find_file, is_pydm_app
 from ..utilities.macro import find_base_macros, parse_macro_string
-from ..display_module import (load_file, ScreenTarget)
+from ..display import (load_file, ScreenTarget)
 
 
 logger = logging.getLogger(__name__)

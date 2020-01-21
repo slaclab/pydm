@@ -5,7 +5,7 @@ from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
 from .utilities import (IconFont, find_file, establish_widget_connections,
                         close_widget_connections)
 from .pydm_ui import Ui_MainWindow
-from .display_module import Display, ScreenTarget, load_file
+from .display import Display, ScreenTarget, load_file
 from .connection_inspector import ConnectionInspector
 from .about_pydm import AboutWindow
 from . import data_plugins

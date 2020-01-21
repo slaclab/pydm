@@ -15,7 +15,7 @@ from qtpy.QtCore import Qt, QTimer, Slot
 from qtpy.QtWidgets import QApplication, QWidget
 from .main_window import PyDMMainWindow
 
-from .display_module import load_file
+from .display import load_file
 from .utilities import macro, which, path_info, find_display_in_path
 from .utilities.stylesheet import apply_stylesheet
 from .utilities import connection

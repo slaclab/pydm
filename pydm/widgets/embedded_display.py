@@ -8,7 +8,7 @@ from .base import PyDMPrimitiveWidget
 from ..utilities import (is_pydm_app, establish_widget_connections,
                          close_widget_connections, macro, is_qt_designer,
                          find_file)
-from ..display_module import (load_file)
+from ..display import (load_file)
 
 logger = logging.getLogger(__name__)
 
