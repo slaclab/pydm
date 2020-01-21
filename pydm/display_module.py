@@ -88,7 +88,7 @@ def load_ui_file(uifile, macros=None):
     QWidget
     """
     d = Display(macros=macros)
-    if macros is not None and len(macros) > 0:
+    if macros:
         f = macro.substitute_in_file(uifile, macros)
     else:
         f = uifile
