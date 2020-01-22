@@ -94,7 +94,6 @@ class PyDMApplication(QApplication):
         if ui_file is not None:
             self.make_main_window(stylesheet_path=stylesheet_path)
             self.main_window.open(ui_file, macros, command_line_args)
-            # self.make_window(ui_file, macros, command_line_args)
         elif use_main_window:
             self.make_main_window(stylesheet_path=stylesheet_path)
 
