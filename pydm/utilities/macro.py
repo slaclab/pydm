@@ -48,18 +48,6 @@ def template_for_file(file_path):
     return text
 
 
-def find_base_macros(widget):
-    '''
-    Find and return the first set of defined base_macros from this widget or
-    its ancestors.
-    '''
-    while widget is not None:
-        if hasattr(widget, 'macros'):
-            return widget.macros()
-        widget = widget.parent()
-    return {}
-
-
 def parse_macro_string(macro_string):
     """Parses a macro string and returns a dictionary.
     First, this method attempts to parse the string as JSON.
