@@ -92,7 +92,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             self._macros = new_macros
             self._needs_load = True
             self.load_if_needed()
-        
+
     @Property(str)
     def filename(self):
         """

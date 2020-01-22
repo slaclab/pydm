@@ -305,13 +305,8 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
                             try:
                                 self.data = json.load(f)
                             except ValueError:
-                                logger.error('Failed to parse data source file for PyDMTemplateRepeater.')
+                                logger.error('Failed to parse data source file {} for PyDMTemplateRepeater.'.format(fname))
                                 self.data = []
-                        try:
-                            self.data = json.load(f)
-                        except ValueError:
-                            logger.error('Failed to parse data source file for PyDMTemplateRepeater.')
-                            self.data = []
                 except IOError as e:
                     self.data = []
             else:
