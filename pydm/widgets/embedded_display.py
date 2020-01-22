@@ -35,8 +35,6 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         self._is_connected = False
         self._only_load_when_shown = True
         self._needs_load = True
-        self.base_path = ""
-        self.base_macros = {}
         self._load_error_timer = None
         self._load_error = None
         self.layout = QVBoxLayout(self)
@@ -95,7 +93,6 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             self._needs_load = True
             self.load_if_needed()
         
-
     @Property(str)
     def filename(self):
         """
