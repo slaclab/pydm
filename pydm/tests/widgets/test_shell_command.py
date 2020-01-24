@@ -135,7 +135,7 @@ def test_mouse_release_event(qtbot, caplog, cmd, retcode, stdout):
         if "invalid" not in command:
             stdout, stderr = pydm_shell_command.process.communicate()
             assert pydm_shell_command.process.returncode == expected_retcode
-            assert str(stdout, 'utf-8').strip() == expected_stdout
+            assert expected_stdout in str(stdout)
         else:
             for record in caplog.records:
                 assert record.levelno == ERROR
