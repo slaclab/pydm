@@ -33,6 +33,26 @@ def unregister_widget_rules(widget):
             pass
 
 
+def register_widget_rules(widget):
+    """
+    Given a widget to start from, traverse the tree of child widgets,
+    and try to unregister rules to any widgets.
+
+    Parameters
+    ----------
+    widget : QWidget
+    """
+    widgets = [widget]
+    widgets.extend(widget.findChildren(QWidget))
+    for child_widget in widgets:
+        try:
+            if hasattr(child_widget, 'rules'):
+                if child_widget.rules:
+                    RulesDispatcher().register(child_widget, child_widget.rules)
+        except Exception:
+            pass
+
+
 class RulesDispatcher(object):
     """
     Singleton class responsible for handling all the interactions with the
