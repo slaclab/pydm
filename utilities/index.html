@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utilities &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
+  <title>Utilities &mdash; PyDM v1.8.0+38.geaeef41f documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.8.0+6.ge101536f
+                v1.8.0+38.geaeef41f
               </div>
             
           
@@ -218,6 +218,53 @@ Which ensure that the file exists and we can read it.</p></li>
 </dd></dl>
 
 <dl class="function">
+<dt id="pydm.utilities.find_file">
+<code class="sig-prename descclassname">pydm.utilities.</code><code class="sig-name descname">find_file</code><span class="sig-paren">(</span><em class="sig-param">fname</em>, <em class="sig-param">base_path=None</em>, <em class="sig-param">mode=None</em>, <em class="sig-param">extra_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#find_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.find_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look for files at the search paths common to PyDM.</p>
+<ul class="simple">
+<li><p>base_path</p></li>
+<li><p>Qt Designer Path</p></li>
+<li><p>Current Dir</p></li>
+<li><p>Dirs in extra_path</p></li>
+<li><p>Dirs in PYDM_DISPLAYS_PATH</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fname</strong> (<em>str</em>) – The file name. Environment variables, ~ and ~user constructs before
+search.</p></li>
+<li><p><strong>base_path</strong> (<em>str</em>) – If None, it defaults to the current open display path or Qt Designer
+path</p></li>
+<li><p><strong>mode</strong> (<em>int</em>) – The mode required for the file, defaults to os.F_OK | os.R_OK.
+Which ensure that the file exists and we can read it.</p></li>
+<li><p><strong>extra_path</strong> (<em>list</em>) – Additional paths to look for file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>file_path</strong> – Returns the file path or None in case the file was not found</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydm.utilities.get_designer_current_path">
+<code class="sig-prename descclassname">pydm.utilities.</code><code class="sig-name descname">get_designer_current_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#get_designer_current_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.get_designer_current_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch the absolute path for the current active form at Qt Designer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>path</strong> – The absolute path for the current active form or None in case not
+available</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str, None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="pydm.utilities.is_pydm_app">
 <code class="sig-prename descclassname">pydm.utilities.</code><code class="sig-name descname">is_pydm_app</code><span class="sig-paren">(</span><em class="sig-param">app=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#is_pydm_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.is_pydm_app" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether or not <cite>QApplication.instance()</cite> is a PyDMApplication.</p>
@@ -267,7 +314,7 @@ Which ensure that the file exists and we can read it.</p></li>
 
 <dl class="function">
 <dt id="pydm.utilities.which">
-<code class="sig-prename descclassname">pydm.utilities.</code><code class="sig-name descname">which</code><span class="sig-paren">(</span><em class="sig-param">cmd</em>, <em class="sig-param">mode=1</em>, <em class="sig-param">path=None</em>, <em class="sig-param">pathext=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#which"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.which" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.utilities.</code><code class="sig-name descname">which</code><span class="sig-paren">(</span><em class="sig-param">cmd</em>, <em class="sig-param">mode=1</em>, <em class="sig-param">path=None</em>, <em class="sig-param">pathext=None</em>, <em class="sig-param">extra_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#which"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.which" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a command, mode, and a PATH string, return the path which
 conforms to the given mode on the PATH, or None if there is no such
 file.
@@ -348,13 +395,6 @@ Icon strings can be found at: <a class="reference external" href="https://fontaw
 </div>
 <div class="section" id="module-pydm.utilities.macro">
 <span id="macro"></span><h2>Macro<a class="headerlink" href="#module-pydm.utilities.macro" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="pydm.utilities.macro.find_base_macros">
-<code class="sig-prename descclassname">pydm.utilities.macro.</code><code class="sig-name descname">find_base_macros</code><span class="sig-paren">(</span><em class="sig-param">widget</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/macro.html#find_base_macros"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.macro.find_base_macros" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find and return the first set of defined base_macros from this widget or
-its ancestors.</p>
-</dd></dl>
-
 <dl class="function">
 <dt id="pydm.utilities.macro.parse_macro_string">
 <code class="sig-prename descclassname">pydm.utilities.macro.</code><code class="sig-name descname">parse_macro_string</code><span class="sig-paren">(</span><em class="sig-param">macro_string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/macro.html#parse_macro_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.macro.parse_macro_string" title="Permalink to this definition">¶</a></dt>

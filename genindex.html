@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
+  <title>Index &mdash; PyDM v1.8.0+38.geaeef41f documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.8.0+6.ge101536f
+                v1.8.0+38.geaeef41f
               </div>
             
           
@@ -466,11 +466,11 @@
         <li><a href="widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.filename">(pydm.widgets.embedded_display.PyDMEmbeddedDisplay attribute)</a>
 </li>
       </ul></li>
-      <li><a href="utilities/index.html#pydm.utilities.macro.find_base_macros">find_base_macros() (in module pydm.utilities.macro)</a>
-</li>
       <li><a href="widgets/slider.html#pydm.widgets.slider.PyDMSlider.find_closest_slider_position_to_value">find_closest_slider_position_to_value() (pydm.widgets.slider.PyDMSlider method)</a>
 </li>
       <li><a href="utilities/index.html#pydm.utilities.find_display_in_path">find_display_in_path() (in module pydm.utilities)</a>
+</li>
+      <li><a href="utilities/index.html#pydm.utilities.find_file">find_file() (in module pydm.utilities)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -498,9 +498,9 @@
 </li>
       <li><a href="application.html#pydm.PyDMApplication.get_CPU_usage">get_CPU_usage() (pydm.PyDMApplication method)</a>
 </li>
-      <li><a href="widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.get_inner_max">get_inner_max() (pydm.widgets.drawing.PyDMDrawing method)</a>
+      <li><a href="utilities/index.html#pydm.utilities.get_designer_current_path">get_designer_current_path() (in module pydm.utilities)</a>
 </li>
-      <li><a href="application.html#pydm.PyDMApplication.get_path">get_path() (pydm.PyDMApplication method)</a>
+      <li><a href="widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.get_inner_max">get_inner_max() (pydm.widgets.drawing.PyDMDrawing method)</a>
 </li>
       <li><a href="widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.getAlarmChannels">getAlarmChannels() (pydm.widgets.tab_bar.PyDMTabWidget method)</a>
 </li>
@@ -530,11 +530,13 @@
 </li>
       <li><a href="widgets/drawing.html#pydm.widgets.drawing.PyDMDrawing.has_border">has_border() (pydm.widgets.drawing.PyDMDrawing method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/slider.html#pydm.widgets.slider.PyDMSlider.hasTracking">hasTracking() (pydm.widgets.slider.PyDMSlider method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="utilities/index.html#pydm.utilities.colors.hex_from_svg_color">hex_from_svg_color() (in module pydm.utilities.colors)</a>
+</li>
+      <li><a href="widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.hide_warning_icon">hide_warning_icon() (pydm.widgets.shell_command.PyDMShellCommand method)</a>
 </li>
       <li><a href="widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hideEvent">hideEvent() (pydm.widgets.embedded_display.PyDMEmbeddedDisplay method)</a>
 </li>
@@ -650,8 +652,6 @@
 </li>
       <li><a href="application.html#pydm.PyDMApplication.make_main_window">make_main_window() (pydm.PyDMApplication method)</a>
 </li>
-      <li><a href="application.html#pydm.PyDMApplication.make_window">make_window() (pydm.PyDMApplication method)</a>
-</li>
       <li><a href="widgets/slider.html#pydm.widgets.slider.PyDMSlider.maximum">maximum() (pydm.widgets.slider.PyDMSlider property)</a>
 </li>
       <li><a href="widgets/image.html#pydm.widgets.image.PyDMImageView.maxRedrawRate">maxRedrawRate (pydm.widgets.image.PyDMImageView attribute)</a>
@@ -672,8 +672,6 @@
       </ul></li>
       <li><a href="widgets/slider.html#pydm.widgets.slider.PyDMSlider.minimum">minimum() (pydm.widgets.slider.PyDMSlider property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.minimumSizeHint">minimumSizeHint() (pydm.widgets.embedded_display.PyDMEmbeddedDisplay method)</a>
 
       <ul>
@@ -682,6 +680,8 @@
         <li><a href="widgets/symbol.html#pydm.widgets.symbol.PyDMSymbol.minimumSizeHint">(pydm.widgets.symbol.PyDMSymbol method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.minorAlarmIconColor">minorAlarmIconColor (pydm.widgets.tab_bar.PyDMTabWidget attribute)</a>
 </li>
       <li><a href="widgets/scatterplot.html#pydm.widgets.scatterplot.PyDMScatterPlot.minXRange">minXRange (pydm.widgets.scatterplot.PyDMScatterPlot attribute)</a>
@@ -699,7 +699,11 @@
 </li>
       </ul></li>
       <li><a href="widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.mousePressEvent">mousePressEvent() (pydm.widgets.related_display_button.PyDMRelatedDisplayButton method)</a>
+
+      <ul>
+        <li><a href="widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.mousePressEvent">(pydm.widgets.shell_command.PyDMShellCommand method)</a>
 </li>
+      </ul></li>
       <li><a href="widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.mouseReleaseEvent">mouseReleaseEvent() (pydm.widgets.shell_command.PyDMShellCommand method)</a>
 </li>
       <li><a href="widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.movie_finished">movie_finished() (pydm.widgets.drawing.PyDMDrawingImage method)</a>
@@ -714,16 +718,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="application.html#pydm.PyDMApplication.new_pydm_process">new_pydm_process() (pydm.PyDMApplication method)</a>
 </li>
-      <li><a href="application.html#pydm.PyDMApplication.new_window">new_window() (pydm.PyDMApplication method)</a>
-</li>
       <li><a href="widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.noAlarmIconColor">noAlarmIconColor (pydm.widgets.tab_bar.PyDMTabWidget attribute)</a>
 </li>
       <li><a href="widgets/image.html#pydm.widgets.image.PyDMImageView.normalizeData">normalizeData (pydm.widgets.image.PyDMImageView attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.null_color">null_color (pydm.widgets.drawing.PyDMDrawingImage attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/slider.html#pydm.widgets.slider.PyDMSlider.num_steps">num_steps (pydm.widgets.slider.PyDMSlider attribute)</a>
 </li>
       <li><a href="widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPolygon.numberOfPoints">numberOfPoints (pydm.widgets.drawing.PyDMDrawingPolygon attribute)</a>
@@ -744,18 +746,12 @@
 </li>
       <li><a href="widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.open_display">open_display() (pydm.widgets.related_display_button.PyDMRelatedDisplayButton method)</a>
 </li>
-      <li><a href="application.html#pydm.PyDMApplication.open_file">open_file() (pydm.PyDMApplication method)</a>
-
-      <ul>
-        <li><a href="widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.open_file">(pydm.widgets.embedded_display.PyDMEmbeddedDisplay method)</a>
+      <li><a href="widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.open_file">open_file() (pydm.widgets.embedded_display.PyDMEmbeddedDisplay method)</a>
 </li>
-      </ul></li>
-      <li><a href="application.html#pydm.PyDMApplication.open_relative">open_relative() (pydm.PyDMApplication method)</a>
+      <li><a href="widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.open_template_file">open_template_file() (pydm.widgets.template_repeater.PyDMTemplateRepeater method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.open_template_file">open_template_file() (pydm.widgets.template_repeater.PyDMTemplateRepeater method)</a>
-</li>
       <li><a href="widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.openInNewWindow">openInNewWindow (pydm.widgets.related_display_button.PyDMRelatedDisplayButton attribute)</a>
 </li>
       <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.orientation">orientation (pydm.widgets.byte.PyDMByteIndicator attribute)</a>
@@ -1032,10 +1028,10 @@
 </li>
       <li><a href="widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.setTimeSpan">setTimeSpan() (pydm.widgets.timeplot.PyDMTimePlot method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/slider.html#pydm.widgets.slider.PyDMSlider.setTracking">setTracking() (pydm.widgets.slider.PyDMSlider method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setup_widgets_for_orientation">setup_widgets_for_orientation() (pydm.widgets.scale.PyDMScaleIndicator method)</a>
 
       <ul>
@@ -1045,6 +1041,8 @@
       <li><a href="widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.setUpdateInterval">setUpdateInterval() (pydm.widgets.timeplot.PyDMTimePlot method)</a>
 </li>
       <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.shift">shift (pydm.widgets.byte.PyDMByteIndicator attribute)</a>
+</li>
+      <li><a href="widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.show_warning_icon">show_warning_icon() (pydm.widgets.shell_command.PyDMShellCommand method)</a>
 </li>
       <li><a href="widgets/image.html#pydm.widgets.image.PyDMImageView.showAxes">showAxes (pydm.widgets.image.PyDMImageView attribute)</a>
 </li>

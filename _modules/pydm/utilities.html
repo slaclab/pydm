@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.utilities &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
+  <title>pydm.utilities &mdash; PyDM v1.8.0+38.geaeef41f documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0+6.ge101536f
+                v1.8.0+38.geaeef41f
               </div>
             
           
@@ -227,6 +227,31 @@
     <span class="k">return</span> <span class="n">DesignerHooks</span><span class="p">()</span><span class="o">.</span><span class="n">form_editor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
 
 
+<div class="viewcode-block" id="get_designer_current_path"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.get_designer_current_path">[docs]</a><span class="k">def</span> <span class="nf">get_designer_current_path</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetch the absolute path for the current active form at Qt Designer.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    path : str, None</span>
+<span class="sd">        The absolute path for the current active form or None in case not</span>
+<span class="sd">        available</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">form_editor</span> <span class="o">=</span> <span class="n">DesignerHooks</span><span class="p">()</span><span class="o">.</span><span class="n">form_editor</span>
+    <span class="n">win_manager</span> <span class="o">=</span> <span class="n">form_editor</span><span class="o">.</span><span class="n">formWindowManager</span><span class="p">()</span>
+    <span class="n">form_window</span> <span class="o">=</span> <span class="n">win_manager</span><span class="o">.</span><span class="n">activeFormWindow</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">form_window</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">win_manager</span><span class="o">.</span><span class="n">formWindowCount</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">form_window</span> <span class="o">=</span> <span class="n">win_manager</span><span class="o">.</span><span class="n">formWindow</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">form_window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">abs_dir</span> <span class="o">=</span> <span class="n">form_window</span><span class="o">.</span><span class="n">absoluteDir</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">abs_dir</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">abs_dir</span><span class="o">.</span><span class="n">absolutePath</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
 <div class="viewcode-block" id="path_info"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.path_info">[docs]</a><span class="k">def</span> <span class="nf">path_info</span><span class="p">(</span><span class="n">path_str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieve basic information about the given path.</span>
@@ -252,6 +277,84 @@
     <span class="n">args</span> <span class="o">=</span> <span class="n">split</span>
 
     <span class="k">return</span> <span class="n">dir_name</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">args</span></div>
+
+
+<span class="k">def</span> <span class="nf">_extensions</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="n">MAX_ITER</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">exts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MAX_ITER</span><span class="p">):</span>
+        <span class="n">new_name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ext</span><span class="p">:</span>
+            <span class="n">exts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">new_name</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">new_name</span>
+    <span class="k">return</span> <span class="n">exts</span>
+
+<div class="viewcode-block" id="find_file"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.find_file">[docs]</a><span class="k">def</span> <span class="nf">find_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Look for files at the search paths common to PyDM.</span>
+
+<span class="sd">    Search Order</span>
+<span class="sd">    ------------</span>
+<span class="sd">    - base_path</span>
+<span class="sd">    - Qt Designer Path</span>
+<span class="sd">    - Current Dir</span>
+<span class="sd">    - Dirs in extra_path</span>
+<span class="sd">    - Dirs in PYDM_DISPLAYS_PATH</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fname : str</span>
+<span class="sd">        The file name. Environment variables, ~ and ~user constructs before</span>
+<span class="sd">        search.</span>
+<span class="sd">    base_path : str</span>
+<span class="sd">        If None, it defaults to the current open display path or Qt Designer</span>
+<span class="sd">        path</span>
+<span class="sd">    mode : int</span>
+<span class="sd">        The mode required for the file, defaults to os.F_OK | os.R_OK.</span>
+<span class="sd">        Which ensure that the file exists and we can read it.</span>
+<span class="sd">    extra_path : list</span>
+<span class="sd">        Additional paths to look for file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    file_path : str</span>
+<span class="sd">        Returns the file path or None in case the file was not found</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expandvars</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">F_OK</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">R_OK</span>
+
+    <span class="n">x_path</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">base_path</span><span class="p">:</span>
+        <span class="n">x_path</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">base_path</span><span class="p">)])</span>
+
+    <span class="k">if</span> <span class="n">is_qt_designer</span><span class="p">():</span>
+        <span class="n">designer_path</span> <span class="o">=</span> <span class="n">get_designer_current_path</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">designer_path</span><span class="p">:</span>
+            <span class="n">x_path</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">designer_path</span><span class="p">])</span>
+
+    <span class="c1"># Current working directory</span>
+    <span class="n">x_path</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()])</span>
+    <span class="k">if</span> <span class="n">extra_path</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">extra_path</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="n">extra_path</span> <span class="o">=</span> <span class="p">[</span><span class="n">extra_path</span><span class="p">]</span>
+        <span class="n">extra_path</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expandvars</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">extra_path</span><span class="p">]</span>
+        <span class="n">x_path</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">extra_path</span><span class="p">)</span>
+
+    <span class="n">pydm_search_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYDM_DISPLAYS_PATH&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pydm_search_path</span><span class="p">:</span>
+        <span class="n">x_path</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">pydm_search_path</span><span class="p">)</span>
+
+    <span class="n">f_ext</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_extensions</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
+
+    <span class="n">file_path</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">pathext</span><span class="o">=</span><span class="n">f_ext</span><span class="p">,</span> <span class="n">extra_path</span><span class="o">=</span><span class="n">x_path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">file_path</span></div>
 
 
 <div class="viewcode-block" id="find_display_in_path"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.find_display_in_path">[docs]</a><span class="k">def</span> <span class="nf">find_display_in_path</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pathext</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -286,7 +389,7 @@
     <span class="k">return</span> <span class="n">which</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">pathext</span><span class="o">=</span><span class="n">pathext</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="which"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.which">[docs]</a><span class="k">def</span> <span class="nf">which</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">F_OK</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">X_OK</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pathext</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="which"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.which">[docs]</a><span class="k">def</span> <span class="nf">which</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">F_OK</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">X_OK</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pathext</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Given a command, mode, and a PATH string, return the path which</span>
 <span class="sd">    conforms to the given mode on the PATH, or None if there is no such</span>
 <span class="sd">    file.</span>
@@ -318,6 +421,9 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">extra_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">extra_path</span> <span class="o">+</span> <span class="n">path</span>
 
     <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
         <span class="c1"># The current directory takes precedence on Windows.</span>

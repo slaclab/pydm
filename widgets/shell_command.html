@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMShellCommand &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
+  <title>PyDMShellCommand &mdash; PyDM v1.8.0+38.geaeef41f documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.8.0+6.ge101536f
+                v1.8.0+38.geaeef41f
               </div>
             
           
@@ -203,7 +203,7 @@
 <h1>PyDMShellCommand<a class="headerlink" href="#pydmshellcommand" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pydm.widgets.shell_command.PyDMShellCommand">
-<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.shell_command.</code><code class="sig-name descname">PyDMShellCommand</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">command=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.shell_command.</code><code class="sig-name descname">PyDMShellCommand</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">command=None</em>, <em class="sig-param">title=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand" title="Permalink to this definition">¶</a></dt>
 <dd><p>A QPushButton capable of execute shell commands.</p>
 <dl class="attribute">
 <dt id="pydm.widgets.shell_command.PyDMShellCommand.allowMultipleExecutions">
@@ -223,7 +223,10 @@ to be executed even if it is still running.</p>
 <dl class="attribute">
 <dt id="pydm.widgets.shell_command.PyDMShellCommand.command">
 <code class="sig-name descname">command</code><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.command" title="Permalink to this definition">¶</a></dt>
-<dd><p>The Shell Command to be executed</p>
+<dd><p>use the ‘commands’ property.
+This property simply returns the first command from the ‘commands’
+property.
+The shell command to run.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p></p>
@@ -231,15 +234,30 @@ to be executed even if it is still running.</p>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>str</p>
 </dd>
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>DEPRECATED</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.shell_command.PyDMShellCommand.execute_command">
-<code class="sig-name descname">execute_command</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.execute_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.execute_command" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">execute_command</code><span class="sig-paren">(</span><em class="sig-param">command</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.execute_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.execute_command" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the shell command given by <code class="docutils literal notranslate"><span class="pre">`command`</span></code>.
 The process is available through the <code class="docutils literal notranslate"><span class="pre">`process`</span></code> member.</p>
 </dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.shell_command.PyDMShellCommand.hide_warning_icon">
+<code class="sig-name descname">hide_warning_icon</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.hide_warning_icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.hide_warning_icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hide the warning icon.  This is called on a timer after the warning
+icon is shown.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.shell_command.PyDMShellCommand.mousePressEvent">
+<code class="sig-name descname">mousePressEvent</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QMouseEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.mousePressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="pydm.widgets.shell_command.PyDMShellCommand.mouseReleaseEvent">
@@ -267,6 +285,13 @@ button, your widget receives the release event.</p>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.shell_command.PyDMShellCommand.show_warning_icon">
+<code class="sig-name descname">show_warning_icon</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.show_warning_icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.show_warning_icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the warning icon.  This is called when a shell command fails
+(i.e. exits with nonzero status)</p>
 </dd></dl>
 
 </dd></dl>

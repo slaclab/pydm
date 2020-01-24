@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.template_repeater &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
+  <title>pydm.widgets.template_repeater &mdash; PyDM v1.8.0+38.geaeef41f documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0+6.ge101536f
+                v1.8.0+38.geaeef41f
               </div>
             
           
@@ -178,17 +178,17 @@
   <h1>Source code for pydm.widgets.template_repeater</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span>
                            <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span>
-                           <span class="n">QLayout</span><span class="p">,</span> <span class="n">QListWidget</span><span class="p">,</span> <span class="n">QListWidgetItem</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QUrl</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
-<span class="kn">from</span> <span class="nn">qtpy</span> <span class="kn">import</span> <span class="n">uic</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span>
-<span class="kn">from</span> <span class="nn">.embedded_display</span> <span class="kn">import</span> <span class="n">PyDMEmbeddedDisplay</span>
-<span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="kn">import</span> <span class="n">is_qt_designer</span><span class="p">,</span> <span class="n">is_pydm_app</span>
+                           <span class="n">QLayout</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMPrimitiveWidget</span>
+<span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="kn">import</span> <span class="n">is_qt_designer</span>
 <span class="kn">import</span> <span class="nn">pydm.data_plugins</span>
-<span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="n">macro</span>
+<span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="n">macro</span><span class="p">,</span> <span class="n">find_file</span>
+<span class="kn">from</span> <span class="nn">..display</span> <span class="kn">import</span> <span class="n">load_file</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
@@ -289,12 +289,15 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">spacing</span><span class="p">()</span>
 
+
 <span class="k">class</span> <span class="nc">LayoutType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="n">Vertical</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">Horizontal</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">Flow</span> <span class="o">=</span> <span class="mi">2</span>
 
+
 <span class="n">layout_class_for_type</span> <span class="o">=</span> <span class="p">(</span><span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">FlowLayout</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="PyDMTemplateRepeater"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater">[docs]</a><span class="k">class</span> <span class="nc">PyDMTemplateRepeater</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">,</span> <span class="n">LayoutType</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -317,6 +320,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">LayoutType</span><span class="p">)</span>
     <span class="n">LayoutType</span> <span class="o">=</span> <span class="n">LayoutType</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMPrimitiveWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -325,6 +329,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cached_template</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent_macros</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_layout_type</span> <span class="o">=</span> <span class="n">LayoutType</span><span class="o">.</span><span class="n">Vertical</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_temp_layout_spacing</span> <span class="o">=</span> <span class="mi">4</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
@@ -357,7 +362,7 @@
         <span class="k">if</span> <span class="n">new_type</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_type</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_layout_type</span> <span class="o">=</span> <span class="n">new_type</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
-    
+
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">layoutSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">():</span>
@@ -462,24 +467,29 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span> <span class="o">=</span> <span class="n">data_source</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="c1"># Expand user (~ or ~user) and environment variables.</span>
-                    <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expandvars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span><span class="p">))</span>
-                    <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">():</span>
-                        <span class="c1"># If we&#39;re running this inside the PyDM app, we can</span>
-                        <span class="c1"># make sure the path is relative to the currently loaded</span>
-                        <span class="c1"># display (.ui or .py file).</span>
-                        <span class="n">fname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                        <span class="k">try</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-                        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to parse data source file for PyDMTemplateRepeater.&#39;</span><span class="p">)</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">parent_display</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_parent_display</span><span class="p">()</span>
+                    <span class="n">base_path</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">if</span> <span class="n">parent_display</span><span class="p">:</span>
+                        <span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span>
+                            <span class="n">parent_display</span><span class="o">.</span><span class="n">loaded_file</span><span class="p">())</span>
+                    <span class="n">fname</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">fname</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">():</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Cannot locate data source file </span><span class="si">{}</span><span class="s1"> for PyDMTemplateRepeater.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to parse data source file </span><span class="si">{}</span><span class="s1"> for PyDMTemplateRepeater.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        
+
 <div class="viewcode-block" id="PyDMTemplateRepeater.open_template_file"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.open_template_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_template_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Opens the widget specified in the templateFilename property.</span>
@@ -495,20 +505,27 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">variables</span><span class="p">:</span>
             <span class="n">variables</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1"># Expand user (~ or ~user) and environment variables.</span>
-        <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expandvars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">templateFilename</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">():</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_template</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_cached_template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">open_template</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">widget_from_template</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cached_template</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">f</span> <span class="o">=</span> <span class="n">macro</span><span class="o">.</span><span class="n">substitute_in_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">uic</span><span class="o">.</span><span class="n">loadUi</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception while opening template file.&quot;</span><span class="p">)</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
-       
+
+        <span class="n">parent_display</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_parent_display</span><span class="p">()</span>
+        <span class="n">base_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">parent_display</span><span class="p">:</span>
+            <span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span>
+                <span class="n">parent_display</span><span class="o">.</span><span class="n">loaded_file</span><span class="p">())</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">templateFilename</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_macros</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parent_macros</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">parent_display</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_parent_macros</span> <span class="o">=</span> <span class="n">parent_display</span><span class="o">.</span><span class="n">macros</span><span class="p">()</span>
+
+        <span class="n">parent_macros</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent_macros</span><span class="p">)</span>
+        <span class="n">parent_macros</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">parent_macros</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Error: could not load template: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">w</span></div>
+
 <div class="viewcode-block" id="PyDMTemplateRepeater.rebuild"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.rebuild">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Clear out all existing widgets, and populate the list using the</span>
 <span class="sd">        template file and data source.&quot;&quot;&quot;</span>
@@ -572,8 +589,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">new_data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span></div>
-
-    
 </pre></div>
 
            </div>

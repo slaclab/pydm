@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Application &mdash; PyDM v1.8.0+6.ge101536f documentation</title>
+  <title>Application &mdash; PyDM v1.8.0+38.geaeef41f documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.8.0+6.ge101536f
+                v1.8.0+38.geaeef41f
               </div>
             
           
@@ -272,53 +272,12 @@ use this method.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydm.PyDMApplication.get_path">
-<code class="sig-name descname">get_path</code><span class="sig-paren">(</span><em class="sig-param">ui_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.get_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.get_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gives you the path to ui_file relative to where you are running pydm from.</p>
-<p>Many widgets handle file paths (related display, embedded display,
-and drawing image come to mind) and the standard is that they expect
-paths to be given relative to the .ui or .py file in which the widget
-lives.  But, python and Qt want the file path relative to the directory
-you are running pydm from.  This function does that translation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>ui_file</strong> (<em>str</em>) – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydm.PyDMApplication.make_main_window">
 <code class="sig-name descname">make_main_window</code><span class="sig-paren">(</span><em class="sig-param">stylesheet_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.make_main_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.make_main_window" title="Permalink to this definition">¶</a></dt>
 <dd><p>Instantiate a new PyDMMainWindow, add it to the application’s
 list of windows. Typically, this function is only called as part
 of starting up a new process, because PyDMApplications only have
 one window per process.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydm.PyDMApplication.make_window">
-<code class="sig-name descname">make_window</code><span class="sig-paren">(</span><em class="sig-param">ui_file</em>, <em class="sig-param">macros=None</em>, <em class="sig-param">command_line_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.make_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.make_window" title="Permalink to this definition">¶</a></dt>
-<dd><p>Open the ui_file in the window.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ui_file</strong> (<em>str</em>) – The path to a .ui or .py file to open in the new process.</p></li>
-<li><p><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the display file
-to be opened.</p></li>
-<li><p><strong>command_line_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command line arguments to pass to the new process.
-Typically, this argument is used by related display buttons
-to pass in extra arguments.  It is probably rare that code you
-write needs to use this argument.</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
@@ -341,62 +300,6 @@ write needs to use this argument.</p></li>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydm.PyDMApplication.new_window">
-<code class="sig-name descname">new_window</code><span class="sig-paren">(</span><em class="sig-param">ui_file</em>, <em class="sig-param">macros=None</em>, <em class="sig-param">command_line_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.new_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.new_window" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a new window and open the supplied file.
-Currently, this method just calls <cite>new_pydm_process</cite>.</p>
-<p>This is an internal method that typically will not be needed by users.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ui_file</strong> (<em>str</em>) – The path to a .ui or .py file to open in the new process.</p></li>
-<li><p><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the display file
-to be opened.</p></li>
-<li><p><strong>command_line_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command line arguments to pass to the new process.
-Typically, this argument is used by related display buttons
-to pass in extra arguments.  It is probably rare that code you
-write needs to use this argument.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydm.PyDMApplication.open_file">
-<code class="sig-name descname">open_file</code><span class="sig-paren">(</span><em class="sig-param">ui_file</em>, <em class="sig-param">macros=None</em>, <em class="sig-param">command_line_args=None</em>, <em class="sig-param">defer_connections=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.open_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.open_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Open a .ui or .py file, and return a widget from the loaded file.
-This method is the entry point for all opening of new displays,
-and manages handling macros and relative file paths when opening
-nested displays.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ui_file</strong> (<em>str</em>) – The path to a .ui or .py file to open in the new process.</p></li>
-<li><p><strong>macros</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of macro variables to supply to the display file
-to be opened.</p></li>
-<li><p><strong>command_line_args</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of command line arguments to pass to the new process.
-Typically, this argument is used by related display buttons
-to pass in extra arguments.  It is probably rare that code you
-write needs to use this argument.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>QWidget</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydm.PyDMApplication.open_relative">
-<code class="sig-name descname">open_relative</code><span class="sig-paren">(</span><em class="sig-param">ui_file</em>, <em class="sig-param">widget</em>, <em class="sig-param">macros=None</em>, <em class="sig-param">command_line_args=[]</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.open_relative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.open_relative" title="Permalink to this definition">¶</a></dt>
-<dd><p>open_relative opens a ui file with a relative path.  This is
-really only used by embedded displays.</p>
 </dd></dl>
 
 <dl class="method">
