@@ -265,6 +265,3 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         opt.initFrom(self)
         self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
         painter.setRenderHint(QPainter.Antialiasing)
-
-        painter.setBrush(self._brush)
-        painter.setPen(self._pen)
