@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.enum_button &mdash; PyDM v1.8.0+38.geaeef41f documentation</title>
+  <title>pydm.widgets.enum_button &mdash; PyDM v1.8.0+43.g578552d5 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0+38.geaeef41f
+                v1.8.0+43.g578552d5
               </div>
             
           
@@ -178,7 +178,8 @@
   <h1>Source code for pydm.widgets.enum_button</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Q_ENUMS</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">QButtonGroup</span><span class="p">,</span> <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span>
-                            <span class="n">QRadioButton</span><span class="p">)</span>
+                            <span class="n">QRadioButton</span><span class="p">,</span> <span class="n">QStyleOption</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QPainter</span>
 
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMWritableWidget</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">data_plugins</span>
@@ -421,7 +422,27 @@
             <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">enum_strings_changed</span><span class="p">(</span><span class="n">new_enum_strings</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_has_enums</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_widgets</span><span class="p">()</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_widgets</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyDMEnumButton.paintEvent"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.paintEvent">[docs]</a>    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Paint events are sent to widgets that need to update themselves,</span>
+<span class="sd">        for instance when part of a widget is exposed because a covering</span>
+<span class="sd">        widget was moved.</span>
+
+<span class="sd">        At PyDMDrawing this method handles the alarm painting with parameters</span>
+<span class="sd">        from the stylesheet, configures the brush, pen and calls ```draw_item```</span>
+<span class="sd">        so the specifics can be performed for each of the drawing classes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        event : QPaintEvent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">painter</span> <span class="o">=</span> <span class="n">QPainter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">opt</span> <span class="o">=</span> <span class="n">QStyleOption</span><span class="p">()</span>
+        <span class="n">opt</span><span class="o">.</span><span class="n">initFrom</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">drawPrimitive</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">PE_Widget</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">painter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">painter</span><span class="o">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

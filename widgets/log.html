@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMLogDisplay &mdash; PyDM v1.8.0+38.geaeef41f documentation</title>
+  <title>PyDMLogDisplay &mdash; PyDM v1.8.0+43.g578552d5 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.8.0+38.geaeef41f
+                v1.8.0+43.g578552d5
               </div>
             
           
@@ -232,6 +232,22 @@ inside the widget itself, allowing users to select from any of the
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay.logName">
 <code class="sig-name descname">logName</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.logName" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name of associated log</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.paintEvent">
+<code class="sig-name descname">paintEvent</code><span class="sig-paren">(</span><em class="sig-param">_</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.paintEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.paintEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Paint events are sent to widgets that need to update themselves,
+for instance when part of a widget is exposed because a covering
+widget was moved.</p>
+<p>At PyDMDrawing this method handles the alarm painting with parameters
+from the stylesheet, configures the brush, pen and calls <code class="docutils literal notranslate"><span class="pre">`draw_item`</span></code>
+so the specifics can be performed for each of the drawing classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>event</strong> (<em>QPaintEvent</em>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">

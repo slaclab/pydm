@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.byte &mdash; PyDM v1.8.0+38.geaeef41f documentation</title>
+  <title>pydm.widgets.byte &mdash; PyDM v1.8.0+43.g578552d5 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0+38.geaeef41f
+                v1.8.0+43.g578552d5
               </div>
             
           
@@ -681,7 +681,27 @@
             <span class="nb">int</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="k">pass</span></div></div>
+            <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="PyDMByteIndicator.paintEvent"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.paintEvent">[docs]</a>    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Paint events are sent to widgets that need to update themselves,</span>
+<span class="sd">        for instance when part of a widget is exposed because a covering</span>
+<span class="sd">        widget was moved.</span>
+
+<span class="sd">        At PyDMDrawing this method handles the alarm painting with parameters</span>
+<span class="sd">        from the stylesheet, configures the brush, pen and calls ```draw_item```</span>
+<span class="sd">        so the specifics can be performed for each of the drawing classes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        event : QPaintEvent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">painter</span> <span class="o">=</span> <span class="n">QPainter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">opt</span> <span class="o">=</span> <span class="n">QStyleOption</span><span class="p">()</span>
+        <span class="n">opt</span><span class="o">.</span><span class="n">initFrom</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">drawPrimitive</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">PE_Widget</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">painter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">painter</span><span class="o">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
