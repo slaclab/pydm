@@ -170,9 +170,12 @@ def find_file(fname, base_path=None, mode=None, extra_path=None):
 
     pydm_search_path = os.getenv("PYDM_DISPLAYS_PATH", None)
     if pydm_search_path:
-        x_path.extend(pydm_search_path)
+        x_path.extend(pydm_search_path.split(os.pathsep))
 
     f_ext = ''.join(_extensions(fname))
+
+    for idx, path in enumerate(x_path):
+        x_path[idx] = os.path.expanduser(os.path.expandvars(path))
 
     file_path = which(fname, mode=mode, pathext=f_ext, extra_path=x_path)
 
