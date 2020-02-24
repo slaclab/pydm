@@ -151,33 +151,31 @@ def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     (0b100, DisplayFormat.Default, "", "4"),
     (0x1FF, DisplayFormat.Default, "", "511"),
 
-    ("abc", DisplayFormat.String, "s", "abc"),
+    ("abc", DisplayFormat.String, "s", "abc s"),
     (123, DisplayFormat.String, "s", "123 s"),
     (0b100, DisplayFormat.String, "s", "4 s"),
     (0x1FF, DisplayFormat.String, "s", "511 s"),
 
-    ("abc", DisplayFormat.Decimal, "light years", "abc"), # This setting is acceptable. The displayed value will be "abc"
+    ("abc", DisplayFormat.Decimal, "light years", "abc light years"),
     (123, DisplayFormat.Decimal, "light years", "123 light years"),
     (123.45, DisplayFormat.Decimal, "light years", "123 light years"), # Using default precision of 0
     (0b100, DisplayFormat.Decimal, "light years", "4 light years"),
     (0x1FF, DisplayFormat.Decimal, "light years", "511 light years"),
 
-    # TODO: When parse_value_for_display returns a string, it should still contain the unit.
-    # Right now, value_changed just returns a string as-is, without appending the unit to it.
-    (123, DisplayFormat.Exponential, "ms", "1e+02"),
-    (3.000e-02, DisplayFormat.Exponential, "ms", "3e-02"),
-    (0b100, DisplayFormat.Exponential, "ms", "4e+00"),
-    (0x1FF, DisplayFormat.Exponential, "ms", "5e+02"),
+    (123, DisplayFormat.Exponential, "ms", "1e+02 ms"),
+    (3.000e-02, DisplayFormat.Exponential, "ms", "3e-02 ms"),
+    (0b100, DisplayFormat.Exponential, "ms", "4e+00 ms"),
+    (0x1FF, DisplayFormat.Exponential, "ms", "5e+02 ms"),
 
-    (123, DisplayFormat.Hex, "ns", "0x7b"),
-    (3.000e-02, DisplayFormat.Hex, "ns", "0x0"),
-    (0b100, DisplayFormat.Hex, "ns", "0x4"),
-    (0x1FF, DisplayFormat.Hex, "ns", "0x1ff"),
+    (123, DisplayFormat.Hex, "ns", "0x7b ns"),
+    (3.000e-02, DisplayFormat.Hex, "ns", "0x0 ns"),
+    (0b100, DisplayFormat.Hex, "ns", "0x4 ns"),
+    (0x1FF, DisplayFormat.Hex, "ns", "0x1ff ns"),
 
-    (123, DisplayFormat.Binary, "light years", "0b1111011"),
-    (3.000e-02, DisplayFormat.Binary, "light years", "0b0"),
-    (0b100, DisplayFormat.Binary, "light years", "0b100"),
-    (0x1FF, DisplayFormat.Binary, "light years", "0b111111111"),
+    (123, DisplayFormat.Binary, "light years", "0b1111011 light years"),
+    (3.000e-02, DisplayFormat.Binary, "light years", "0b0 light years"),
+    (0b100, DisplayFormat.Binary, "light years", "0b100 light years"),
+    (0x1FF, DisplayFormat.Binary, "light years", "0b111111111 light years"),
 ])
 def test_show_units(qtbot, signals, value, display_format, unit_name, expected):
     """
