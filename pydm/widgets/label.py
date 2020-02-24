@@ -72,6 +72,8 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
         # If the value is a string, just display it as-is, no formatting
         # needed.
         if isinstance(new_value, str):
+            if self._show_units and self._unit != "":
+                new_value = "{} {}".format(new_value, self._unit)
             self.setText(new_value)
             return
         # If the value is an enum, display the appropriate enum string for
