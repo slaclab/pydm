@@ -6,7 +6,7 @@ from qtpy import QtWidgets
 
 
 class QtExceptionHandler:
-    """Utilitary class to handle exception hook and to show exception to
+    """Utility class which installs an exception hook and displays any global uncaught exception to
     operators.
 
     excepthook is based on https://fman.io/blog/pyqt-excepthook/
