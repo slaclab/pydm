@@ -72,7 +72,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         self.is_container = is_container
         self.cls = cls
         self._group = group
-        self._icon = icon
+        self._icon = icon or QtGui.QIcon()
         self.extensions = extensions
         self.manager = None
 
@@ -159,8 +159,6 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         """
         Return a QIcon to represent this widget in Qt Designer.
         """
-        if not self._icon:
-            return QtGui.QIcon()
         return self._icon
 
     def domXml(self):
