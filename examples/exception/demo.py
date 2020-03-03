@@ -1,7 +1,7 @@
 import sys
 import functools
 from qtpy import QtCore, QtGui, QtWidgets
-from pydm.exception import QtExceptionHandler
+from pydm import exception
 
 
 class Screen(QtWidgets.QFrame):
@@ -29,9 +29,9 @@ class Screen(QtWidgets.QFrame):
 
     def setup_handler(self, install=True):
         if install:
-            QtExceptionHandler.install(use_dialog=True)
+            exception.install(use_dialog=True)
         else:
-            QtExceptionHandler.uninstall()
+            exception.uninstall()
 
     def raise_exception(self):
         raise Exception("This is an exception being raised...")
