@@ -35,7 +35,7 @@ class WidgetCategory(object):
 
 
 def qtplugin_factory(cls, is_container=False, group='PyDM Widgets',
-                     extensions=None):
+                     extensions=None, icon=None):
     """
     Helper function to create a generic PyDMDesignerPlugin class.
 
@@ -47,7 +47,8 @@ def qtplugin_factory(cls, is_container=False, group='PyDM Widgets',
         __doc__ = "PyDMDesigner Plugin for {}".format(cls.__name__)
 
         def __init__(self):
-            super(Plugin, self).__init__(cls, is_container, group, extensions)
+            super(Plugin, self).__init__(cls, is_container, group, extensions,
+                                         icon)
 
     return Plugin
 
@@ -59,7 +60,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
     """
 
     def __init__(self, cls, is_container=False, group='PyDM Widgets',
-                 extensions=None):
+                 extensions=None, icon=None):
         """
         Set up the plugin using the class info in cls
 
@@ -71,6 +72,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         self.is_container = is_container
         self.cls = cls
         self._group = group
+        self._icon = icon or QtGui.QIcon()
         self.extensions = extensions
         self.manager = None
 
@@ -157,7 +159,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         """
         Return a QIcon to represent this widget in Qt Designer.
         """
-        return QtGui.QIcon()
+        return self._icon
 
     def domXml(self):
         """
