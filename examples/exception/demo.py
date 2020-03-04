@@ -29,7 +29,7 @@ class Screen(QtWidgets.QFrame):
 
     def setup_handler(self, install=True):
         if install:
-            exception.install(use_dialog=True)
+            exception.install(use_default_handler=True)
         else:
             exception.uninstall()
 
