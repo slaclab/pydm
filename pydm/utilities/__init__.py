@@ -291,6 +291,22 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None, pathext=None, extra_path=None)
 
 
 def only_main_thread(func):
+    """
+    Decorator that wraps a function which should only be executed at the Qt
+    main thread.
+
+    The decorator will log an error message and raise a RuntimeError if the
+    decorated function is invoked from a thread other than the Qt main one.
+
+    Parameters
+    ----------
+    func : callable
+        The function to wrap
+
+    Returns
+    -------
+    wrapper
+    """
     def wrapper(*args, **kwargs):
         main_t = QtWidgets.QApplication.instance().thread()
         curr_t = QtCore.QThread.currentThread()
@@ -301,4 +317,8 @@ def only_main_thread(func):
             logger.error(msg)
             raise RuntimeError(msg)
         return func(*args, **kwargs)
+
+    if not callable(func):
+        raise ValueError("Parameter must be a callable.")
+
     return wrapper

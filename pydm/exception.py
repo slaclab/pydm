@@ -42,7 +42,7 @@ class ExceptionDispatcher(QtCore.QThread):
         self.app.aboutToQuit.connect(self.requestInterruption)
         self._queue = queue.Queue()
 
-    def add(self, exc_type, exc_value, exc_tb ):
+    def add(self, exc_type, exc_value, exc_tb):
         """
         Add an uncaught exception into the Queue.
 
@@ -82,6 +82,8 @@ class DefaultExceptionNotifier(QtCore.QObject):
         if self.__initialized:
             return
         super(DefaultExceptionNotifier, self).__init__(*args, **kwargs)
+        self.__initialized = True
+        ExceptionDispatcher().newException.connect(self.receiveException)
 
     @QtCore.Slot(tuple)
     def receiveException(self, exception_data):
@@ -149,7 +151,6 @@ def install(use_default_handler=True):
         return
     if use_default_handler:
         handler = DefaultExceptionNotifier()
-        dispatcher.newException.connect(handler.receiveException)
     dispatcher.start()
     sys.excepthook = excepthook
 
