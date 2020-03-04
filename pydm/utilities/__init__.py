@@ -311,8 +311,8 @@ def only_main_thread(func):
         main_t = QtWidgets.QApplication.instance().thread()
         curr_t = QtCore.QThread.currentThread()
         if curr_t != main_t:
-            msg = "{} can only be invoked from the main Qt thread.".format(
-                func.__name__
+            msg = "{}.{} can only be invoked from the main Qt thread.".format(
+                func.__module__, func.__name__
             )
             logger.error(msg)
             raise RuntimeError(msg)
