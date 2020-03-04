@@ -1,9 +1,12 @@
 import io
 import sys
 import traceback
+import queue
 from collections import namedtuple
 
-from qtpy import QtWidgets
+from qtpy import QtWidgets, QtCore
+
+from .utilities import only_main_thread
 
 """
 Utility functions which installs an exception hook and displays any global 
@@ -14,7 +17,79 @@ raise_to_operator is based on https://github.com/pcdshub/typhos/blob/0837405e8d8
 """
 
 
-_use_dialog = True
+class ExceptionDispatcher(QtCore.QThread):
+    """
+    Singleton QTread class that receives and dispatch uncaught exceptions via
+    the `newException` signal.
+    """
+    newException = QtCore.Signal(object)
+
+    __instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            cls.__instance = QtCore.QThread.__new__(ExceptionDispatcher,
+                                                    *args, **kwargs)
+            cls.__instance.__initialized = False
+        return cls.__instance
+
+    def __init__(self, *args, **kwargs):
+        if self.__initialized:
+            return
+        super(ExceptionDispatcher, self).__init__(*args, **kwargs)
+        self.__initialized = True
+        self.app = QtWidgets.QApplication.instance()
+        self.app.aboutToQuit.connect(self.requestInterruption)
+        self._queue = queue.Queue()
+
+    def add(self, exc_type, exc_value, exc_tb ):
+        """
+        Add an uncaught exception into the Queue.
+
+        Parameters
+        ----------
+        exc_type : type
+            The exception type
+        exc_value : Exception
+            The exception object
+        exc_tb : traceback
+            The traceback namedtuple.
+        """
+        self._queue.put((exc_type, exc_value, exc_tb))
+
+    def run(self):
+        while not self.isInterruptionRequested():
+            data = self._queue.get(block=True, timeout=None)
+            self.newException.emit(data)
+
+
+class DefaultExceptionNotifier(QtCore.QObject):
+    """
+    Default handler for exceptions which prints at the shell the exception
+    and also calls `raise_to_operator` to display a dialog with the exception
+    information.
+    """
+    __instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            cls.__instance = QtCore.QObject.__new__(DefaultExceptionNotifier,
+                                                    *args, **kwargs)
+            cls.__instance.__initialized = False
+        return cls.__instance
+
+    def __init__(self, *args, **kwargs):
+        if self.__initialized:
+            return
+        super(DefaultExceptionNotifier, self).__init__(*args, **kwargs)
+
+    @QtCore.Slot(tuple)
+    def receiveException(self, exception_data):
+        exc_type, exc_value, enriched_tb = exception_data
+        traceback.print_exception(exc_type, exc_value, enriched_tb)
+        raise_to_operator(exc_value)
+
+
 _old_excepthook = None
 
 fake_tb = namedtuple(
@@ -23,15 +98,8 @@ fake_tb = namedtuple(
 
 
 def excepthook(exc_type, exc_value, exc_tb):
-    global _use_dialog
-
     enriched_tb = _add_missing_frames(exc_tb) if exc_tb else exc_tb
-
-    # Note: sys.__excepthook__(...) would not work here.
-    # We need to use print_exception(...):
-    traceback.print_exception(exc_type, exc_value, enriched_tb)
-    if _use_dialog:
-        raise_to_operator(exc_value)
+    ExceptionDispatcher().add(exc_type, exc_value, enriched_tb)
 
 
 def _add_missing_frames(tb):
@@ -60,24 +128,31 @@ def _add_missing_frames(tb):
     return result
 
 
-def install(use_dialog=True):
+def install(use_default_handler=True):
     """
     Install the exception hook handler.
     If use_dialog is specified, a QMessageBox will also be presented.
 
     Parameters
     ----------
-    use_dialog : bool
-        Wether or not to display a QMessageBox to the operator.
+    use_default_handler : bool
+        Whether or not to use the default handler. If not using it, users
+        must connect to the `ExceptionDispatcher.newException` signal.
     """
     global _old_excepthook
-    global _use_dialog
 
     if _old_excepthook is None:
         _old_excepthook = sys.excepthook
 
-    _use_dialog = use_dialog
+    dispatcher = ExceptionDispatcher()
+    if dispatcher.isRunning():
+        return
+    if use_default_handler:
+        handler = DefaultExceptionNotifier()
+        dispatcher.newException.connect(handler.receiveException)
+    dispatcher.start()
     sys.excepthook = excepthook
+
 
 def uninstall():
     """
@@ -88,9 +163,11 @@ def uninstall():
     if _old_excepthook is None:
         return
     sys.excepthook = _old_excepthook
+    ExceptionDispatcher().requestInterruption()
     _old_excepthook = None
 
 
+@only_main_thread
 def raise_to_operator(exc):
     """Utility function to show an Exception to the operator"""
     err_msg = QtWidgets.QMessageBox()

@@ -1,3 +1,12 @@
+import os
+import sys
+import logging
+import platform
+import ntpath
+import shlex
+
+from qtpy import QtWidgets, QtCore
+
 from .units import find_unittype, convert, find_unit_options
 from . import macro
 from . import colors
@@ -6,11 +15,8 @@ from .connection import establish_widget_connections, close_widget_connections
 from .iconfont import IconFont
 from ..qtdesigner import DesignerHooks
 
-import os
-import sys
-import platform
-import ntpath
-import shlex
+
+logger = logging.getLogger(__name__)
 
 
 def is_pydm_app(app=None):
@@ -282,3 +288,17 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None, pathext=None, extra_path=None)
                 if _access_check(name, mode):
                     return name
     return None
+
+
+def only_main_thread(func):
+    def wrapper(*args, **kwargs):
+        main_t = QtWidgets.QApplication.instance().thread()
+        curr_t = QtCore.QThread.currentThread()
+        if curr_t != main_t:
+            msg = "{} can only be invoked from the main Qt thread.".format(
+                func.__name__
+            )
+            logger.error(msg)
+            raise RuntimeError(msg)
+        return func(*args, **kwargs)
+    return wrapper
