@@ -151,7 +151,7 @@ class PyDMChannel(object):
             lower_ctrl_slot_matched = self.lower_ctrl_limit_slot == other.lower_ctrl_limit_slot
             write_access_slot_matched = self.write_access_slot == other.write_access_slot
 
-            value_signal_matched = True
+            value_signal_matched = self.value_signal is None and other.value_signal is None
             if self.value_signal and other.value_signal:
                 value_signal_matched = self.value_signal.signal == other.value_signal.signal
 
