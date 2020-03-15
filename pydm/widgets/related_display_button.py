@@ -1,14 +1,18 @@
-from qtpy.QtWidgets import QPushButton, QMenu, QAction
-from qtpy.QtGui import QCursor, QIcon
-from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
+import copy
 import os
-import json
 import logging
 import warnings
 from functools import partial
+
+from qtpy.QtWidgets import QPushButton, QMenu, QAction
+from qtpy.QtGui import QCursor, QIcon
+from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
+
 from .base import PyDMPrimitiveWidget
-from ..utilities import IconFont
-from ..utilities.macro import find_base_macros, parse_macro_string
+from ..utilities import IconFont, find_file, is_pydm_app
+from ..utilities.macro import parse_macro_string
+from ..display import (load_file, ScreenTarget)
+
 
 logger = logging.getLogger(__name__)
 
@@ -266,24 +270,38 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         # Check for None and ""
         if not filename:
             return
-        
-        macros = parse_macro_string(macro_string)
-        base_macros = find_base_macros(self)
-        merged_macros = base_macros.copy()
-        merged_macros.update(macros)
-        
+
+        parent_display = self.find_parent_display()
+        base_path = ""
+        macros = {}
+        if parent_display:
+            base_path = os.path.dirname(parent_display.loaded_file())
+            macros = copy.copy(parent_display.macros())
+
+        fname = find_file(filename, base_path=base_path)
+        widget_macros = parse_macro_string(macro_string)
+        macros.update(widget_macros)
+
+        screen_target = None
         if self._shift_key_was_down:
             target = self.NEW_WINDOW
+            screen_target = ScreenTarget.NEW_PROCESS
         if target is None:
             if self._open_in_new_window:
                 target = self.NEW_WINDOW
+                screen_target = ScreenTarget.NEW_PROCESS
             else:
                 target = self.EXISTING_WINDOW
-        if target == self.EXISTING_WINDOW:
-            self.window().go(filename, macros=merged_macros)
-        if target == self.NEW_WINDOW:
-            self.window().new_window(filename,
-                                     macros=merged_macros)
+                screen_target = None
+
+        if is_pydm_app():
+            if target == self.NEW_WINDOW:
+                load_file(fname, macros=macros, target=screen_target)
+            else:
+                self.window().open(fname, macros=macros)
+        else:
+            w = load_file(fname, macros=macros, target=ScreenTarget.DIALOG)
+
 
     def context_menu(self):
         try:

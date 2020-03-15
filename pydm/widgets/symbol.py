@@ -1,10 +1,11 @@
+import os
 import json
 import logging
 from qtpy.QtWidgets import QApplication, QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QPainter, QPixmap
 from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from qtpy.QtSvg import QSvgRenderer
-from ..utilities import is_pydm_app
+from ..utilities import is_pydm_app, find_file
 from .base import PyDMWidget
 
 logger = logging.getLogger(__name__)
@@ -90,15 +91,10 @@ class PyDMSymbol(QWidget, PyDMWidget):
             self._state_images = {}
             return
         self._sizeHint = QSize(0, 0)
+        parent_display = self.find_parent_display()
+        base_path = os.path.dirname(parent_display.loaded_file())
         for (state, filename) in new_file_dict.items():
-            if is_pydm_app():
-                try:
-                    file_path = self.app.get_path(filename)
-                except Exception as e:
-                    logger.exception("Couldn't get file with path %s", filename)
-                    file_path = filename
-            else:
-                file_path = filename
+            file_path = find_file(filename, base_path=base_path)
             # First, lets try SVG.  We have to try SVG first, otherwise
             # QPixmap will happily load the SVG and turn it into a raster image.
             # Really annoying: We have to try to load the file as SVG,

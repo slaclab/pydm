@@ -1,6 +1,7 @@
 from qtpy.QtCore import (Qt, QSize, Property, Slot, Q_ENUMS)
 from qtpy.QtWidgets import (QWidget, QButtonGroup, QGridLayout, QPushButton,
-                            QRadioButton)
+                            QRadioButton, QStyleOption, QStyle)
+from qtpy.QtGui import QPainter
 
 from .base import PyDMWritableWidget
 from .. import data_plugins
@@ -244,3 +245,23 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
             self._has_enums = True
             self.check_enable_state()
             self.rebuild_widgets()
+
+    def paintEvent(self, _):
+        """
+        Paint events are sent to widgets that need to update themselves,
+        for instance when part of a widget is exposed because a covering
+        widget was moved.
+
+        At PyDMDrawing this method handles the alarm painting with parameters
+        from the stylesheet, configures the brush, pen and calls ```draw_item```
+        so the specifics can be performed for each of the drawing classes.
+
+        Parameters
+        ----------
+        event : QPaintEvent
+        """
+        painter = QPainter(self)
+        opt = QStyleOption()
+        opt.initFrom(self)
+        self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
+        painter.setRenderHint(QPainter.Antialiasing)

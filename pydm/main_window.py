@@ -2,14 +2,15 @@ import os
 from os import path
 from qtpy.QtWidgets import QApplication, QMainWindow, QFileDialog, QWidget, QAction
 from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
-from .utilities import IconFont, find_display_in_path
+from .utilities import (IconFont, find_file, establish_widget_connections,
+                        close_widget_connections)
 from .pydm_ui import Ui_MainWindow
-from .display_module import Display
+from .display import Display, ScreenTarget, load_file
 from .connection_inspector import ConnectionInspector
 from .about_pydm import AboutWindow
-from .widgets import rules
 from . import data_plugins
 from . import tools
+from .widgets.rules import register_widget_rules, unregister_widget_rules
 import subprocess
 import platform
 import logging
@@ -31,21 +32,14 @@ class PyDMMainWindow(QMainWindow):
         self.default_font_size = QApplication.instance().font().pointSizeF()
         self.ui.navbar.setIconSize(QSize(24, 24))
         self.ui.navbar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-        # No search bar for now, since there isn't really any capability to search yet.
-        # self.searchBar = QLineEdit(self)
-        # self.searchBar.setPlaceholderText("Search")
-        # self.searchBar.setMinimumWidth(150)
-        # self.searchAction = self.ui.navbar.insertWidget(self.ui.actionHome, self.searchBar)
-        self.ui.actionHome.triggered.connect(self.home)
+        self.ui.actionHome.triggered.connect(self.home_triggered)
         self.ui.actionHome.setIcon(self.iconFont.icon("home"))
         self.home_file = None
-        self.back_stack = []
-        self.forward_stack = []
-        self.ui.actionBack.triggered.connect(self.back)
+        self.home_widget = None
+        self.ui.actionBack.triggered.connect(self.back_triggered)
         self.ui.actionBack.setIcon(self.iconFont.icon("angle-left"))
-        self.ui.actionForward.triggered.connect(self.forward)
+        self.ui.actionForward.triggered.connect(self.forward_triggered)
         self.ui.actionForward.setIcon(self.iconFont.icon("angle-right"))
-        # self.ui.goButton.clicked.connect(self.go_button_pressed)
         self.ui.actionEdit_in_Designer.triggered.connect(self.edit_in_designer)
         self.ui.actionOpen_File.triggered.connect(self.open_file_action)
         self.ui.actionReload_Display.triggered.connect(self.reload_display)
@@ -89,6 +83,10 @@ class PyDMMainWindow(QMainWindow):
                 break
 
         self.update_tools_menu()
+        self.enable_disable_navigation()
+
+    def display_widget(self):
+        return self._display_widget
 
     def set_display_widget(self, new_widget):
         if new_widget == self._display_widget:
@@ -97,8 +95,10 @@ class PyDMMainWindow(QMainWindow):
         if not new_widget.layout():
             new_widget.setMinimumSize(new_widget.size())
         self._new_widget_size = new_widget.size()
+        new_widget.setVisible(True)
         self._display_widget = new_widget
         self.setCentralWidget(self._display_widget)
+        self.enable_disable_navigation()
         self.update_window_title()
         # Resizing to the new widget's dimensions needs to be
         # done on the event loop for some reason - you can't
@@ -107,166 +107,109 @@ class PyDMMainWindow(QMainWindow):
 
     def clear_display_widget(self):
         if self._display_widget is not None:
-            self.setCentralWidget(QWidget())
-            rules.unregister_widget_rules(self._display_widget)
-            self._display_widget.deleteLater()
-            self._display_widget = None
+            close_widget_connections(self._display_widget)
+            unregister_widget_rules(self._display_widget)
+            self._display_widget.setVisible(False)
+            self._display_widget.setParent(None)
             self.ui.actionEdit_in_Designer.setEnabled(False)
-
-    def join_to_current_file_path(self, ui_file):
-        ui_file = str(ui_file)
-        # Expand user (~ or ~user) and environment variables.
-        ui_file = os.path.expanduser(os.path.expandvars(ui_file))
-        if path.isabs(ui_file) or len(self.back_stack) == 0:
-            return str(ui_file)
-        else:
-            return path.join(path.dirname(self.current_file()), ui_file)
-
-    def open_file(self, ui_file, macros=None, command_line_args=None):
-        filename = self.join_to_current_file_path(ui_file)
-        try:
-            if not os.path.exists(filename):
-                new_fname = find_display_in_path(ui_file)
-                if new_fname is None or new_fname == "":
-                    raise IOError("File {} not found".format(filename))
-                filename = new_fname
-            self.open_abs_file(filename, macros, command_line_args)
-        except (IOError, OSError, ValueError, ImportError) as e:
-            error_msg = "Cannot open file: '{0}'. Reason: '{1}'.".format(filename, e)
-            logger.error(error_msg)
-            self.statusBar().showMessage(error_msg, 5000)
-
-    def open_abs_file(self, filename, macros=None, command_line_args=None):
-        if command_line_args is None:
-            command_line_args = []
-        merged_macros = self.merge_with_current_macros(macros)
-        widget = self.app.open_file(filename, merged_macros, command_line_args, defer_connections=True)
-        if (len(self.back_stack) == 0) or (self.current_file() != filename) or (macros != self.current_macros()):
-            self.back_stack.append((filename, merged_macros, command_line_args))
-        self.set_display_widget(widget)
-        self.ui.actionForward.setEnabled(len(self.forward_stack) > 0)
-        self.ui.actionBack.setEnabled(len(self.back_stack) > 1)
-        if self.home_file is None:
-            self.home_file = (filename, merged_macros, command_line_args)
-        # Update here the Menu Editor text...
-        ui_file, py_file = self.get_files_in_display()
-        edit_in_text = "Open in "
-        editors = []
-        if ui_file is not None and ui_file != "":
-            editors.append("Designer")
-        if py_file is not None and py_file != "":
-            editors.append("Text Editor")
-        edit_in_text += ' and '.join(editors)
-        self.ui.actionEdit_in_Designer.setText(edit_in_text)
-        if self.designer_path:
-            self.ui.actionEdit_in_Designer.setEnabled(True)
-        data_plugins.establish_queued_connections()
-
-    def new_window(self, ui_file, macros=None, command_line_args=None):
-        filename = self.join_to_current_file_path(ui_file)
-        try:
-            if not os.path.exists(filename):
-                new_fname = find_display_in_path(ui_file)
-                if new_fname is None or new_fname == "":
-                    raise IOError("File {} not found".format(filename))
-                filename = new_fname
-            self.new_abs_window(filename, macros, command_line_args)
-        except (IOError, OSError, ValueError, ImportError) as e:
-            error_msg = "Cannot open file: '{0}'. Reason: '{1}'.".format(filename, e)
-            logger.error(error_msg)
-            self.statusBar().showMessage(error_msg, 5000)
-
-    def new_abs_window(self, filename, macros=None, command_line_args=None):
-        merged_macros = self.merge_with_current_macros(macros)
-        self.app.new_window(filename, merged_macros, command_line_args)
-
-    def go_button_pressed(self):
-        filename = str(self.ui.panelSearchLineEdit.text())
-        if not filename:
-            return
-        try:
-            if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-                self.app.new_window(filename)
-            else:
-                self.go(filename)
-        except (IOError, OSError, ValueError, ImportError) as e:
-            self.handle_open_file_error(filename, e)
 
     def handle_open_file_error(self, filename, error):
         self.statusBar().showMessage("Cannot open file: '{0}', reason: '{1}'...".format(filename, error), 5000)
 
-    # Note: in go(), back(), and forward(), always do history stack manipulation *before* opening the file.
-    # That way, the navigation button enable/disable state will work correctly.  This is stupid, and will be fixed eventually.
-    def go(self, ui_file, macros=None, command_line_args=None):
-        self.forward_stack = []
-        self.open_file(ui_file, macros, command_line_args)
+    def back_triggered(self):
+        new_process = QApplication.keyboardModifiers() == Qt.ShiftModifier
+        self.back(open_in_new_process=new_process)
 
-    def go_abs(self, ui_file, macros=None, command_line_args=None):
-        self.forward_stack = []
-        self.open_abs_file(filename=ui_file, macros=macros, command_line_args=command_line_args)
+    def back(self, open_in_new_process=False):
+        curr_display = self.display_widget()
+        prev_display = None
+        if curr_display:
+            prev_display = curr_display.previous_display
 
-    def back(self):
-        if len(self.back_stack) > 1:
-            if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-                stack_item = self.back_stack[-2]
-                self.new_abs_window(filename=stack_item[0], macros=stack_item[1], command_line_args=stack_item[2])
-            else:
-                self.forward_stack.append(self.back_stack.pop())
-                stack_item = self.back_stack[-1]
-                self.open_abs_file(filename=stack_item[0], macros=stack_item[1], command_line_args=stack_item[2])
-
-    def forward(self):
-        if len(self.forward_stack) > 0:
-            if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-                stack_item = self.forward_stack[-1]
-                self.new_abs_window(filename=stack_item[0], macros=stack_item[1], command_line_args=stack_item[2])
-            else:
-                stack_item = self.forward_stack.pop()
-                self.open_abs_file(filename=stack_item[0], macros=stack_item[1], command_line_args=stack_item[2])
-
-    def home(self):
-        if self.home_file is None:
+        if not prev_display:
+            logger.error('No display history to execute back navigation.')
             return
 
-        if QApplication.keyboardModifiers() == Qt.ShiftModifier:
-            self.new_abs_window(filename=self.home_file[0], macros=self.home_file[1], command_line_args=self.home_file[2])
+        if open_in_new_process:
+            load_file(prev_display.loaded_file(),
+                      macros=prev_display.macros,
+                      args=prev_display.args,
+                      target=ScreenTarget.NEW_PROCESS)
         else:
-            self.go_abs(self.home_file[0], macros=self.home_file[1], command_line_args=self.home_file[2])
+            prev_display.next_display = curr_display
+            establish_widget_connections(prev_display)
+            register_widget_rules(prev_display)
+            self.set_display_widget(prev_display)
 
-    def current_stack_item(self):
-        if len(self.back_stack) == 0:
-            raise IndexError("The display manager does not have a display loaded.")
-        return self.back_stack[-1]
+    def forward_triggered(self):
+        new_process = QApplication.keyboardModifiers() == Qt.ShiftModifier
+        self.forward(open_in_new_process=new_process)
+
+    def forward(self, open_in_new_process=False):
+        curr_display = self.display_widget()
+        next_display = None
+        if curr_display:
+            next_display = curr_display.next_display
+
+        if not next_display:
+            logger.error('No display history to execute forward navigation.')
+            return
+
+        if open_in_new_process:
+            load_file(next_display.loaded_file(),
+                      macros=next_display.macros,
+                      args=next_display.args,
+                      target=ScreenTarget.NEW_PROCESS)
+        else:
+            establish_widget_connections(next_display)
+            register_widget_rules(next_display)
+            next_display.previous_display = curr_display
+            self.set_display_widget(next_display)
+
+    def home_triggered(self):
+        new_process = QApplication.keyboardModifiers() == Qt.ShiftModifier
+        self.home(open_in_new_process=new_process)
+
+    def home(self, open_in_new_process=False):
+        if self.home_widget is None:
+            return
+
+        if open_in_new_process:
+            fname = self.home_widget.loaded_file()
+            macros = self.home_widget.macros()
+            args = self.home_widget.args()
+            load_file(fname,
+                      macros=macros,
+                      args=args,
+                      target=ScreenTarget.NEW_PROCESS)
+        else:
+            self.set_display_widget(self.home_widget)
+
+    def enable_disable_navigation(self):
+        w = self.display_widget()
+        if not isinstance(w, Display):
+            # We can't do much if it is not a Display and we don't have the
+            # previous_display and next_display properties since we don't
+            # have the navigation stack set.
+            nav_stack_methods = hasattr(w, 'previous_display') \
+                                and hasattr(w, 'next_display')
+            if not nav_stack_methods:
+                return
+        if not w:
+            self.ui.actionBack.setDisabled(True)
+            self.ui.actionForward.setDisabled(True)
+            return
+        self.ui.actionBack.setDisabled(w.previous_display is None)
+        self.ui.actionForward.setDisabled(w.next_display is None)
 
     def current_file(self):
-        return self.current_stack_item()[0]
-
-    def current_macros(self):
-        try:
-            return self.current_stack_item()[1]
-        except IndexError:
-            return None
-
-    def current_args(self):
-        try:
-            return self.current_stack_item()[2]
-        except IndexError:
-            return None
-
-    def merge_with_current_macros(self, macros_to_merge):
-        if self.current_macros() is None:
-            return macros_to_merge
-        if macros_to_merge is None:
-            return self.current_macros()
-        m = self.current_macros().copy()
-        m.update(macros_to_merge)
-        return m
+        return self.display_widget().loaded_file()
 
     def update_window_title(self):
         if self.showing_file_path_in_title_bar:
             title = self.current_file()
         else:
-            title = self._display_widget.windowTitle()
+            title = self.display_widget().windowTitle()
         title += " - PyDM"
         if data_plugins.is_read_only():
             title += " [Read Only Mode]"
@@ -354,7 +297,7 @@ class PyDMMainWindow(QMainWindow):
         try:
             curr_file = self.current_file()
             folder = os.path.dirname(curr_file)
-        except IndexError:
+        except Exception:
             folder = os.getcwd()
 
         filename = QFileDialog.getOpenFileName(self, 'Open File...', folder, 'PyDM Display Files (*.ui *.py)')
@@ -364,18 +307,40 @@ class PyDMMainWindow(QMainWindow):
             filename = str(filename)
             try:
                 if modifiers == Qt.ShiftModifier:
-                    self.app.new_window(filename)
+                    target = ScreenTarget.NEW_PROCESS
                 else:
-                    self.open_file(filename)
+                    target = None
+                self.open(filename, target=target)
+
             except (IOError, OSError, ValueError, ImportError) as e:
                 self.handle_open_file_error(filename, e)
+
+    def open(self, filename, macros=None, args=None, target=None):
+        if not os.path.isabs(filename):
+            base_path = None
+            curr_display = self.display_widget()
+            if curr_display:
+                base_path = os.path.dirname(curr_display.loaded_file())
+            filename = find_file(filename, base_path=base_path)
+        new_widget = load_file(filename,
+                               macros=macros,
+                               args=args,
+                               target=target)
+        if new_widget:
+            if self.home_widget is None:
+                self.home_widget = new_widget
+            display_widget = self.display_widget()
+            if display_widget:
+                new_widget.previous_display = display_widget
+            self.set_display_widget(new_widget)
+        return new_widget
 
     def load_tool(self, checked):
         try:
             curr_dir = os.path.dirname(self.current_file())
-        except IndexError:
-            logger.error("The display manager does not have a display loaded. Suggesting current work directory.")
+        except Exception:
             curr_dir = os.getcwd()
+            logger.error("The display manager does not have a display loaded. Suggesting current work directory.")
         filename = QFileDialog.getOpenFileName(self, 'Load tool...', curr_dir, 'PyDM External Tool Files (*_tool.py)')
         filename = filename[0] if isinstance(filename, (list, tuple)) else filename
 
@@ -398,13 +363,23 @@ class PyDMMainWindow(QMainWindow):
 
     @Slot(bool)
     def reload_display(self, checked):
-        try:
-            curr_file = self.current_file()
-        except IndexError:
+        curr_display = self.display_widget()
+        if not curr_display:
             logger.error("The display manager does not have a display loaded.")
             return
-        self.statusBar().showMessage("Reloading '{0}'...".format(self.current_file()), 5000)
-        self.go_abs(self.current_file())
+
+        prev_display = curr_display.previous_display
+        next_display = curr_display.next_display
+
+        macros = curr_display.macros()
+        args = curr_display.args()
+        loaded_file = curr_display.loaded_file()
+
+        self.statusBar().showMessage(
+            "Reloading '{0}'...".format(self.current_file()), 5000)
+        new_widget = self.open(loaded_file, macros=macros, args=args)
+        new_widget.previous_display = prev_display
+        new_widget.next_display = next_display
 
     @Slot(bool)
     def increase_font_size(self, checked):
@@ -459,4 +434,3 @@ class PyDMMainWindow(QMainWindow):
 
     def closeEvent(self, event):
         self.clear_display_widget()
-        self.app.close_window(self)

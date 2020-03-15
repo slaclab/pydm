@@ -17,7 +17,6 @@ def test_template_file(qtbot):
     test_data = [{"devname": "test_device"}]
     template_repeater.data = test_data
     assert template_repeater.count() == len(test_data)
-    print(template_repeater.children())
     slider = template_repeater.findChild(PyDMSlider, "bCtrlSlider")
     assert slider is not None
     assert slider.channel == "ca://{}:BCTRL".format(test_data[0]["devname"])

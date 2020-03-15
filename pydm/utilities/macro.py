@@ -9,6 +9,7 @@ IN_NAME = 1
 PRE_VAL = 2
 IN_VAL = 3
 
+
 def substitute_in_file(file_path, macros):
     """
     Substitute the macros given by ${name} at the given file with the entries on the `macros` dictionary.
@@ -27,25 +28,24 @@ def substitute_in_file(file_path, macros):
     template = template_for_file(file_path)
     return replace_macros_in_template(template, macros)
 
+
 def replace_macros_in_template(template, macros):
-    expanded_text = template.safe_substitute(macros)
+    curr_template = template
+    prev_template = Template("")
+    expanded_text = ""
+    for i in range(100):
+        expanded_text = curr_template.safe_substitute(macros)
+        if curr_template.template == prev_template.template:
+            break
+        prev_template = curr_template
+        curr_template = Template(expanded_text)
     return io.StringIO(six.text_type(expanded_text))
+
 
 def template_for_file(file_path):
     with open(file_path) as orig_file:
         text = Template(orig_file.read())
     return text
-
-def find_base_macros(widget):
-    '''
-    Find and return the first set of defined base_macros from this widget or
-    its ancestors.
-    '''
-    while widget is not None:
-        if hasattr(widget, 'base_macros'):
-            return widget.base_macros
-        widget = widget.parent()
-    return {}
 
 
 def parse_macro_string(macro_string):

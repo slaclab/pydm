@@ -6,7 +6,9 @@ from collections import OrderedDict
 from qtpy.QtCore import (QObject, Slot, Signal, Property,
                          Q_ENUMS, QSize)
 from qtpy.QtWidgets import (QWidget, QPlainTextEdit, QComboBox, QLabel,
-                            QPushButton, QHBoxLayout, QVBoxLayout)
+                            QPushButton, QHBoxLayout, QVBoxLayout,
+                            QStyleOption, QStyle)
+from qtpy.QtGui import QPainter
 
 logger = logging.getLogger(__name__)
 
@@ -222,3 +224,23 @@ class PyDMLogDisplay(QWidget, LogLevels):
             self.handler.setLevel(level)
             if self.log.level > self.handler.level or self.log.level == logging.NOTSET:
                 self.log.setLevel(self.handler.level)
+
+    def paintEvent(self, _):
+        """
+        Paint events are sent to widgets that need to update themselves,
+        for instance when part of a widget is exposed because a covering
+        widget was moved.
+
+        At PyDMDrawing this method handles the alarm painting with parameters
+        from the stylesheet, configures the brush, pen and calls ```draw_item```
+        so the specifics can be performed for each of the drawing classes.
+
+        Parameters
+        ----------
+        event : QPaintEvent
+        """
+        painter = QPainter(self)
+        opt = QStyleOption()
+        opt.initFrom(self)
+        self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
+        painter.setRenderHint(QPainter.Antialiasing)

@@ -5,7 +5,6 @@ Contains our PyDMApplication class with core connection and loading logic and
 our PyDMMainWindow class with navigation logic.
 """
 import os
-import sys
 import signal
 import subprocess
 import json
@@ -14,15 +13,13 @@ import warnings
 
 from qtpy.QtCore import Qt, QTimer, Slot
 from qtpy.QtWidgets import QApplication, QWidget
-from qtpy.QtGui import QColor
 from .main_window import PyDMMainWindow
 
+from .display import load_file
 from .utilities import macro, which, path_info, find_display_in_path
 from .utilities.stylesheet import apply_stylesheet
-from .utilities.display_loading import load_ui_file, load_py_file
 from .utilities import connection
 from . import data_plugins
-from .widgets.rules import RulesDispatcher
 
 logger = logging.getLogger(__name__)
 
@@ -82,29 +79,21 @@ class PyDMApplication(QApplication):
         # Enable High DPI display, if available.
         if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
             self.setAttribute(Qt.AA_UseHighDpiPixmaps)
-        # The macro and directory stacks are needed for nested displays (usually PyDMEmbeddedDisplays).
-        # During the process of loading a display (whether from a .ui file, or a .py file), the application's
-        # 'open_file' method will be called recursively.    Inside open_file, the last item on the stack represents
-        # the parent widget's file path and macro variables.    Any file paths are joined to the end of the parent's
-        # file path, and any macros are merged with the parent's macros.    This system depends on open_file always
-        # being called hierarchially (i.e., parent calls it first, then on down the ancestor tree, with no unrelated
-        # calls in between).    If something crazy happens and PyDM somehow gains the ability to open files in a
-        # multi-threaded way, for example, this system will fail.
+
         data_plugins.set_read_only(read_only)
         self.main_window = None
-        self.directory_stack = ['']
-        self.macro_stack = [{}]
-        self.windows = {}
         self.display_args = display_args
         self.hide_nav_bar = hide_nav_bar
         self.hide_menu_bar = hide_menu_bar
         self.hide_status_bar = hide_status_bar
         self.fullscreen = fullscreen
+        self.stylesheet_path = stylesheet_path
+        self.perfmon = perfmon
 
         # Open a window if required.
         if ui_file is not None:
             self.make_main_window(stylesheet_path=stylesheet_path)
-            self.make_window(ui_file, macros, command_line_args)
+            self.main_window.open(ui_file, macros, command_line_args)
         elif use_main_window:
             self.make_main_window(stylesheet_path=stylesheet_path)
 
@@ -179,7 +168,7 @@ class PyDMApplication(QApplication):
             else:
                 # Not in the PATH and no ENV VAR pointing to it...
                 # Let's try the script folder...
-                pydm_display_app_path = os.path.join(os.path.split(os.path.realpath(__file__))[0], "..", "scripts", "pydm")
+                pydm_display_app_path = os.path.join(os.path.split(os.path.realpath(__file__))[0], "..", "pydm_launcher", "main.py")
 
         args = [pydm_display_app_path]
         if self.hide_nav_bar:
@@ -190,37 +179,21 @@ class PyDMApplication(QApplication):
             args.extend(["--hide-status-bar"])
         if self.fullscreen:
             args.extend(["--fullscreen"])
+        if self.perfmon:
+            args.extend(["--perfmon"])
+        if data_plugins.is_read_only():
+            args.append("--read-only")
+        if self.stylesheet_path:
+            args.extend(["--stylesheet", self.stylesheet_path])
         if macros is not None:
             args.extend(["-m", json.dumps(macros)])
+        args.extend(["--log_level", logging.getLevelName(logging.getLogger("").getEffectiveLevel())])
         args.append(filepath)
         args.extend(self.display_args)
         args.extend(filepath_args)
         if command_line_args is not None:
             args.extend(command_line_args)
         subprocess.Popen(args, shell=False)
-
-    def new_window(self, ui_file, macros=None, command_line_args=None):
-        """
-        Make a new window and open the supplied file.
-        Currently, this method just calls `new_pydm_process`.
-
-        This is an internal method that typically will not be needed by users.
-
-        Parameters
-        ----------
-        ui_file : str
-            The path to a .ui or .py file to open in the new process.
-        macros : dict, optional
-            A dictionary of macro variables to supply to the display file
-            to be opened.
-        command_line_args : list, optional
-            A list of command line arguments to pass to the new process.
-            Typically, this argument is used by related display buttons
-            to pass in extra arguments.  It is probably rare that code you
-            write needs to use this argument.
-        """
-        # All new windows are spawned as new processes.
-        self.new_pydm_process(ui_file, macros, command_line_args)
 
     def make_main_window(self, stylesheet_path=None):
         """
@@ -241,144 +214,6 @@ class PyDMApplication(QApplication):
             main_window.enter_fullscreen()
         else:
             main_window.show()
-
-        # If we are launching a new window, we don't want it to sit right on top of an existing window.
-        if len(self.windows) > 1:
-            main_window.move(main_window.x() + 10, main_window.y() + 10)
-
-    def make_window(self, ui_file, macros=None, command_line_args=None):
-        """
-        Open the ui_file in the window.
-
-        Parameters
-        ----------
-        ui_file : str
-            The path to a .ui or .py file to open in the new process.
-        macros : dict, optional
-            A dictionary of macro variables to supply to the display file
-            to be opened.
-        command_line_args : list, optional
-            A list of command line arguments to pass to the new process.
-            Typically, this argument is used by related display buttons
-            to pass in extra arguments.  It is probably rare that code you
-            write needs to use this argument.
-        """
-        if ui_file is not None:
-            self.main_window.open_file(ui_file, macros, command_line_args)
-            self.windows[self.main_window] = path_info(ui_file)[0]
-
-    def close_window(self, window):
-        try:
-            del self.windows[window]
-        except KeyError:
-            # If window is no longer at self.windows
-            # it means that we already closed it.
-            pass
-
-    
-
-    def open_file(self, ui_file, macros=None, command_line_args=None, defer_connections=False, **kwargs):
-        """
-        Open a .ui or .py file, and return a widget from the loaded file.
-        This method is the entry point for all opening of new displays,
-        and manages handling macros and relative file paths when opening
-        nested displays.
-
-        Parameters
-        ----------
-        ui_file : str
-            The path to a .ui or .py file to open in the new process.
-        macros : dict, optional
-            A dictionary of macro variables to supply to the display file
-            to be opened.
-        command_line_args : list, optional
-            A list of command line arguments to pass to the new process.
-            Typically, this argument is used by related display buttons
-            to pass in extra arguments.  It is probably rare that code you
-            write needs to use this argument.
-
-        Returns
-        -------
-        QWidget
-        """
-        if 'establish_connection' in kwargs:
-            logger.warning("Ignoring 'establish_connection' parameter at "
-                           "open_relative. The connection is now handled by the"
-                           " widgets.")
-
-        # First split the ui_file string into a filepath and arguments
-        args = command_line_args if command_line_args is not None else []
-        dir_name, file_name, extra_args = path_info(ui_file)
-        args.extend(extra_args)
-        filepath = os.path.join(dir_name, file_name)
-        self.directory_stack.append(dir_name)
-        (filename, extension) = os.path.splitext(file_name)
-        if macros is None:
-            macros = {}
-        merged_macros = self.macro_stack[-1].copy()
-        merged_macros.update(macros)
-        self.macro_stack.append(merged_macros)
-        with data_plugins.connection_queue(defer_connections=defer_connections):
-            if extension == '.ui':
-                widget = load_ui_file(filepath, merged_macros)
-            elif extension == '.py':
-                widget = load_py_file(filepath, args, merged_macros)
-            else:
-                self.directory_stack.pop()
-                self.macro_stack.pop()
-                raise ValueError("Invalid file type: {}".format(extension))
-        # Add on the macros to the widget after initialization. This is
-        # done for both ui files and python files.
-        widget.base_macros = merged_macros
-        self.directory_stack.pop()
-        self.macro_stack.pop()
-        return widget
-
-    # get_path gives you the path to ui_file relative to where you are running pydm from.
-    # Many widgets handle file paths (related display, embedded display, and drawing image come to mind)
-    # and the standard is that they expect paths to be given relative to the .ui or .py file in which the
-    # widget lives.  But, python and Qt want the file path relative to the directory you are running
-    # pydm from.  This function does that translation.
-    def get_path(self, ui_file):
-        """
-        Gives you the path to ui_file relative to where you are running pydm from.
-
-        Many widgets handle file paths (related display, embedded display,
-        and drawing image come to mind) and the standard is that they expect
-        paths to be given relative to the .ui or .py file in which the widget
-        lives.  But, python and Qt want the file path relative to the directory
-        you are running pydm from.  This function does that translation.
-
-        Parameters
-        ----------
-        ui_file : str
-
-        Returns
-        -------
-        str
-        """
-        dirname = self.directory_stack[-1]
-        full_path = os.path.join(dirname, str(ui_file))
-        return full_path
-
-    def open_relative(self, ui_file, widget, macros=None, command_line_args=[],
-                      **kwargs):
-        """
-        open_relative opens a ui file with a relative path.  This is
-        really only used by embedded displays.
-        """
-        if 'establish_connection' in kwargs:
-            logger.warning("Ignoring 'establish_connection' parameter at "
-                           "open_relative. The connection is now handled by the"
-                           " widgets.")
-        full_path = self.get_path(ui_file)
-
-        if not os.path.exists(full_path):
-            new_fname = find_display_in_path(ui_file)
-            if new_fname is not None and new_fname != "":
-                full_path = new_fname
-        return self.open_file(full_path, macros=macros,
-                              command_line_args=command_line_args)
 
     def plugin_for_channel(self, channel):
         """
@@ -461,27 +296,3 @@ class PyDMApplication(QApplication):
             "'PyDMApplication.close_widget_connections' is deprecated, "
             "this function is now found on `utilities.close_widget_connections`.")
         connection.close_widget_connections(widget)
-
-    
-    def open_template(self, template_filename):
-        fname = os.path.expanduser(os.path.expandvars(template_filename))
-        if os.path.isabs(fname):
-            full_path=fname
-        else:
-            full_path = self.get_path(template_filename)
-            if not os.path.exists(full_path):
-                new_fname = find_display_in_path(template_filename)
-                if new_fname is not None and new_fname != "":
-                    full_path = new_fname
-        template = macro.template_for_file(full_path)
-        return template
-
-    def widget_from_template(self, template, macros):
-        if macros is None:
-            macros = {}
-        merged_macros = self.macro_stack[-1].copy()
-        merged_macros.update(macros)
-        f = macro.replace_macros_in_template(template, merged_macros)
-        w = load_ui_file(f)
-        w.base_macros = merged_macros
-        return w

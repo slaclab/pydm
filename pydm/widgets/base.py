@@ -10,6 +10,7 @@ from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
 from .. import data_plugins, tools, config
 from ..utilities import is_qt_designer, remove_protocol
+from ..display import Display
 from .rules import RulesDispatcher
 
 try:
@@ -200,6 +201,15 @@ class PyDMPrimitiveWidget(object):
             except JSONDecodeError as ex:
                 logger.exception('Invalid format for Rules')
 
+    def find_parent_display(self):
+        widget = self.parent()
+        while widget is not None:
+            if isinstance(widget, Display):
+                return widget
+            widget = widget.parent()
+        return None
+
+
 class TextFormatter(object):
 
     default_precision_from_pv = True
@@ -287,7 +297,7 @@ class TextFormatter(object):
         """
         # Only allow one to change the property if not getting the precision
         # from the PV
-        if self.precisionFromPV:
+        if self._precision_from_pv is not None and self._precision_from_pv:
             return
         if new_prec and self._prec != int(new_prec) and new_prec >= 0:
             self._user_prec = int(new_prec)

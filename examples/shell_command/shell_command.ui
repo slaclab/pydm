@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>375</width>
-    <height>206</height>
+    <width>379</width>
+    <height>358</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,19 +31,6 @@
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
     <widget class="PyDMShellCommand" name="PyDMShellCommand">
      <property name="toolTip">
       <string/>
@@ -54,8 +41,8 @@
      <property name="text">
       <string>Run Shell Command</string>
      </property>
-     <property name="command" stdset="0">
-      <string>echo &quot;Hello World!&quot;</string>
+     <property name="allowMultipleExecutions" stdset="0">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -71,6 +58,38 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>You can also specify multiple commands for a single button.  If you do, you'll get a menu to pick one of them when you click the button.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMShellCommand" name="PyDMShellCommand_2">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Multiple Shell Command Menu</string>
+     </property>
+     <property name="titles" stdset="0">
+      <stringlist>
+       <string>Print &quot;Hello, World!&quot; to terminal</string>
+       <string>Print current working directory to terminal</string>
+      </stringlist>
+     </property>
+     <property name="commands" stdset="0">
+      <stringlist>
+       <string>echo &quot;Hello, World!&quot;</string>
+       <string>echo `pwd`</string>
+      </stringlist>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
