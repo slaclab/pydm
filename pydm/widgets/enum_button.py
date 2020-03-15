@@ -1,4 +1,4 @@
-from qtpy.QtCore import (Qt, QSize, Property, Slot, Q_ENUMS)
+from qtpy.QtCore import (Qt, QSize, Property, Slot, Q_ENUMS, QMargins)
 from qtpy.QtWidgets import (QWidget, QButtonGroup, QGridLayout, QPushButton,
                             QRadioButton, QStyleOption, QStyle)
 from qtpy.QtGui import QPainter
@@ -42,6 +42,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self._has_enums = False
         self.setLayout(QGridLayout(self))
+        self._layout_spacing_horizontal = 6
+        self._layout_spacing_vertical = 6
+        self._layout_margins = QMargins(9, 9, 9, 9)
         self._btn_group = QButtonGroup()
         self._btn_group.setExclusive(True)
         self._btn_group.buttonClicked[int].connect(self.handle_button_clicked)
@@ -125,6 +128,158 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         """
         if new_orientation != self._orientation:
             self._orientation = new_orientation
+            self.rebuild_layout()
+
+    @Property(int)
+    def margin_top(self):
+        """
+        The top margin of the QGridLayout of buttons.
+
+        Returns
+        -------
+        int
+        """
+        return self._layout_margins.top()
+
+    @margin_top.setter
+    def margin_top(self, new_margin):
+        """
+        Set the top margin of the QGridLayout of buttons.
+
+        Parameters
+        -------
+        int
+        """
+        new_margin = max(0, int(new_margin))
+        self._layout_margins.setTop(new_margin)
+        self.layout().setContentsMargins(self._layout_margins)
+        self.rebuild_layout()
+
+    @Property(int)
+    def margin_bottom(self):
+        """
+        The bottom margin of the QGridLayout of buttons.
+
+        Returns
+        -------
+        int
+        """
+        return self._layout_margins.bottom()
+
+    @margin_bottom.setter
+    def margin_bottom(self, new_margin):
+        """
+        Set the bottom margin of the QGridLayout of buttons.
+
+        Parameters
+        -------
+        int
+        """
+        new_margin = max(0, int(new_margin))
+        self._layout_margins.setBottom(new_margin)
+        self.layout().setContentsMargins(self._layout_margins)
+        self.rebuild_layout()
+
+    @Property(int)
+    def margin_left(self):
+        """
+        The left margin of the QGridLayout of buttons.
+
+        Returns
+        -------
+        int
+        """
+        return self._layout_margins.left()
+
+    @margin_left.setter
+    def margin_left(self, new_margin):
+        """
+        Set the left margin of the QGridLayout of buttons.
+
+        Parameters
+        -------
+        int
+        """
+        new_margin = max(0, int(new_margin))
+        self._layout_margins.setLeft(new_margin)
+        self.layout().setContentsMargins(self._layout_margins)
+        self.rebuild_layout()
+
+    @Property(int)
+    def margin_right(self):
+        """
+        The right margin of the QGridLayout of buttons.
+
+        Returns
+        -------
+        int
+        """
+        return self._layout_margins.right()
+
+    @margin_right.setter
+    def margin_right(self, new_margin):
+        """
+        Set the right margin of the QGridLayout of buttons.
+
+        Parameters
+        -------
+        int
+        """
+        new_margin = max(0, int(new_margin))
+        self._layout_margins.setRight(new_margin)
+        self.layout().setContentsMargins(self._layout_margins)
+        self.rebuild_layout()
+
+    @Property(int)
+    def horizontalSpacing(self):
+        """
+        The horizontal gap of the QGridLayout containing the QButtonGroup.
+
+        Returns
+        -------
+        int
+        """
+        return self._layout_spacing_horizontal
+
+    @horizontalSpacing.setter
+    def horizontalSpacing(self, new_spacing):
+        """
+        Set the layout horizontal gap between buttons.
+
+        Parameters
+        -------
+        new_spacing : int
+        """
+        new_spacing = max(0, int(new_spacing))
+        if new_spacing != self._layout_spacing_horizontal:
+            self._layout_spacing_horizontal = new_spacing
+            self.layout().setHorizontalSpacing(new_spacing)
+            self.rebuild_layout()
+
+    @Property(int)
+    def verticalSpacing(self):
+        """
+        The vertical gap of the QGridLayout containing the QButtonGroup.
+
+        Returns
+        -------
+        int
+        """
+        return self._layout_spacing_vertical
+
+    @verticalSpacing.setter
+    def verticalSpacing(self, new_spacing):
+        """
+        Set the layout vertical gap between buttons.
+
+        Parameters
+        -------
+        new_spacing : int
+        """
+        new_spacing = max(0, int(new_spacing))
+        if new_spacing != self._layout_spacing_vertical:
+            self._layout_spacing_vertical = new_spacing
+            self.layout().setVerticalSpacing(new_spacing)
             self.rebuild_layout()
 
     @Slot(int)
