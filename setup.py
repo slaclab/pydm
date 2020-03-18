@@ -1,5 +1,6 @@
 import versioneer
 from setuptools import setup, find_packages
+import platform
 
 # To use a consistent encoding
 from codecs import open
@@ -49,6 +50,10 @@ extras_require['all'] = sorted(set(sum(extras_require.values(), [])))
 # Preference for PyQt5 if you select ALL...
 extras_require['all'].remove('PySide')
 
+entry_style = "gui_scripts"
+if platform.system() == "Windows":
+    entry_style = "console_script"
+
 setup(
     name='pydm',
     version=versioneer.get_version(),
@@ -63,7 +68,7 @@ setup(
     long_description_content_type='text/markdown',
     url='https://github.com/slaclab/pydm',
     entry_points={
-        'gui_scripts': [
+        entry_style: [
             'pydm=pydm_launcher.main:main'
         ]
     },
