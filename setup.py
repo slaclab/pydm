@@ -52,7 +52,7 @@ extras_require['all'].remove('PySide')
 
 entry_style = "gui_scripts"
 if platform.system() == "Windows":
-    entry_style = "console_script"
+    entry_style = "console_scripts"
 
 setup(
     name='pydm',
