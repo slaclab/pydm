@@ -3,20 +3,19 @@
 parameters:
   name: ''
   vmImage: ''
+  python.version: ''
+  python.name: ''
+  allowFailure: false
+
 
 jobs:
 - job: ${{ parameters.name }}
   pool:
     vmImage: ${{ parameters.vmImage }}
-  strategy:
-    matrix:
-      Python36:
-        python.version: '3.6'
-        python.name: '3_6'
-      Python37:
-        python.version: '3.7.3'
-        python.name: '3_7'
-  continueOnError: true
+  variables:
+    python.version: ${{ parameters.python.version }}
+    python.name: ${{ parameters.python.name }}
+  continueOnError: ${{ parameters.allowFailure }}
 
   steps:
   - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
