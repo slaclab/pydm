@@ -5,22 +5,22 @@ jobs:
       name: Windows_3_6
       vmImage: 'vs2017-win2016'
       build_docs: 1
-      python.version: '3.6'
-      python.name: '3_8'
+      python: '3.6'
+      python_name: '3_6'
       allowFailure: true
   - template: azure-test-template-win.yml
     parameters:
       name: Windows_3_7
       vmImage: 'vs2017-win2016'
       build_docs: 1
-      python.version: '3.7.3'
-      python.name: '3_7'
+      python: '3.7.3'
+      python_name: '3_7'
       allowFailure: true
   - template: azure-test-template-win.yml
     parameters:
       name: Windows_3_8
       vmImage: 'vs2017-win2016'
       build_docs: 1
-      python.version: '3.8'
-      python.name: '3_8'
+      python: '3.8'
+      python_name: '3_8'
       allowFailure: true

@@ -3,13 +3,15 @@
 parameters:
   name: ''
   vmImage: ''
-  python.version: ''
+  python: ''
   allowFailure: false
 
 jobs:
   - job: ${{ parameters.name }}
     pool:
       vmImage: ${{ parameters.vmImage }}
+    variables:
+      python: ${{ parameters.python }}
     continueOnError: ${{ parameters.allowFailure }}
 
     steps:
@@ -59,7 +61,7 @@ jobs:
       displayName: 'Anaconda - Configure'
 
     - bash: |
-       conda create --name test-environment-$(python.version) python=$(python.version)
+       conda create --name test-environment-$(python) python=$(python)
       displayName: 'Anaconda - Create'
 
     - bash: |
@@ -80,12 +82,12 @@ jobs:
       displayName: Artifact Download - Anaconda Packages
 
     - bash: |
-        source activate test-environment-$(python.version)
-        conda install python=$(python.version) pytest-azurepipelines pydm --file dev-requirements.txt
+        source activate test-environment-$(python)
+        conda install python=$(python) pytest-azurepipelines pydm --file dev-requirements.txt
       displayName: 'Anaconda - Install Dependencies'
 
     - bash: |
-        source activate test-environment-$(python.version)
+        source activate test-environment-$(python)
         # debug of conda environment
         conda info
         conda list
@@ -96,15 +98,15 @@ jobs:
       continueOnError: false
 
     - bash: |
-        source activate test-environment-$(python.version)
-        python run_tests.py --timeout 30 --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python.version)" --napoleon-docstrings
+        source activate test-environment-$(python)
+        python run_tests.py --timeout 30 --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python)" --napoleon-docstrings
       displayName: 'Tests - Run'
       continueOnError: false
       env:
         DISPLAY: :99.0
 
     - bash: |
-        source activate test-environmnet-$(python.version)
+        source activate test-environmnet-$(python)
         bash <(curl -s https://codecov.io/bash)
       displayName: 'Codecov - Upload'
       continueOnError: true

@@ -4,20 +4,17 @@ jobs:
     parameters:
       name: MacOS_3_6
       vmImage: 'macOS-10.14'
-      build_docs: 1
-      python.version: '3.6'
+      python: '3.6'
       allowFailure: false
   - template: azure-test-template.yml
     parameters:
       name: MacOS_3_7
       vmImage: 'macOS-10.14'
-      build_docs: 1
-      python.version: '3.7.3'
+      python: '3.7.3'
       allowFailure: false
   - template: azure-test-template.yml
     parameters:
       name: MacOS_3_8
       vmImage: 'macOS-10.14'
-      build_docs: 1
-      python.version: '3.8'
+      python: '3.8'
       allowFailure: true
