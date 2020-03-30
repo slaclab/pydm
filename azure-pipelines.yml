@@ -73,11 +73,6 @@ stages:
         condition: |
           and
           (
-            and(
-              succeeded('Linux'),
-              succeeded('MacOS'),
-              succeededOrFailed('Windows')
-            ),
             eq(dependencies.DeployControl.outputs['var.build_ok'], true),
             or
             (
@@ -115,11 +110,6 @@ stages:
         condition: |
           and
           (
-            and(
-              succeeded('Linux'),
-              succeeded('MacOS'),
-              succeededOrFailed('Windows')
-            ),
             eq(dependencies.DeployControl.outputs['var.build_ok'], true),
             contains(variables['Build.SourceBranch'],'refs/tags')
           )
@@ -168,11 +158,6 @@ stages:
         condition: |
           and
           (
-            and(
-              succeeded('Linux'),
-              succeeded('MacOS'),
-              succeededOrFailed('Windows')
-            ),
             eq(dependencies.DeployControl.outputs['var.build_ok'], true),
             or
             (
