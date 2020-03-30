@@ -211,9 +211,8 @@ def test_show_units(qtbot, signals, value, display_format, unit_name, expected):
 
     # showUnits must be set first for the unit change to take effect
     pydm_label.showUnits = True
-    signals.unit_signal[str].connect(pydm_label.unitChanged)
-    signals.unit_signal[str].emit(unit_name)
-    signals.new_value_signal[type(value)].emit(value)
+    pydm_label.unit_changed(unit_name)
+    pydm_label.value_changed(value)
 
     assert pydm_label.value == value
     assert pydm_label.text() == expected

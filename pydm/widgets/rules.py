@@ -7,6 +7,8 @@ from qtpy.QtWidgets import QWidget, QApplication
 
 from .channel import PyDMChannel
 
+import pydm.data_plugins
+
 import numpy as np
 import math
 
@@ -157,29 +159,30 @@ class RulesEngine(QThread):
         if widget_ref in self.widget_map:
             self.unregister(widget_ref)
 
-        with QMutexLocker(self.map_lock):
-            self.widget_map[widget_ref] = []
-            for idx, rule in enumerate(rules):
-                channels_list = rule.get('channels', [])
+        with pydm.data_plugins.connection_queue(defer_connections=False):
+            with QMutexLocker(self.map_lock):
+                self.widget_map[widget_ref] = []
+                for idx, rule in enumerate(rules):
+                    channels_list = rule.get('channels', [])
 
-                item = dict()
-                item['rule'] = rule
-                item['calculate'] = False
-                item['values'] = [None] * len(channels_list)
-                item['conn'] = [False] * len(channels_list)
-                item['channels'] = []
+                    item = dict()
+                    item['rule'] = rule
+                    item['calculate'] = False
+                    item['values'] = [None] * len(channels_list)
+                    item['conn'] = [False] * len(channels_list)
+                    item['channels'] = []
 
-                for ch_idx, ch in enumerate(channels_list):
-                    conn_cb = functools.partial(self.callback_conn, widget_ref,
-                                                idx, ch_idx)
-                    value_cb = functools.partial(self.callback_value, widget_ref,
-                                                 idx, ch_idx, ch['trigger'])
-                    c = PyDMChannel(ch['channel'], connection_slot=conn_cb,
-                                    value_slot=value_cb)
-                    item['channels'].append(c)
-                    c.connect()
+                    for ch_idx, ch in enumerate(channels_list):
+                        conn_cb = functools.partial(self.callback_conn, widget_ref,
+                                                    idx, ch_idx)
+                        value_cb = functools.partial(self.callback_value, widget_ref,
+                                                     idx, ch_idx, ch['trigger'])
+                        c = PyDMChannel(ch['channel'], connection_slot=conn_cb,
+                                        value_slot=value_cb)
+                        item['channels'].append(c)
+                        c.connect()
 
-                self.widget_map[widget_ref].append(item)
+                    self.widget_map[widget_ref].append(item)
 
     def unregister(self, widget_ref):
         with QMutexLocker(self.map_lock):
@@ -203,10 +206,10 @@ class RulesEngine(QThread):
 
     def run(self):
         while not self.isInterruptionRequested():
-            with QMutexLocker(self.map_lock):
-                for widget_ref in self.widget_map:
-                    for rule in self.widget_map[widget_ref]:
-                        if rule['calculate']:
+            for widget_ref in self.widget_map:
+                for rule in self.widget_map[widget_ref]:
+                    if rule['calculate']:
+                        with QMutexLocker(self.map_lock):
                             self.calculate_expression(widget_ref, rule)
             self.msleep(33)  # 30Hz
 
