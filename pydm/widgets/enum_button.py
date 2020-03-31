@@ -41,6 +41,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         QWidget.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self._has_enums = False
+        self._checkable = True
         self.setLayout(QGridLayout(self))
         self._btn_group = QButtonGroup()
         self._btn_group.setExclusive(True)
@@ -127,6 +128,24 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
             self._orientation = new_orientation
             self.rebuild_layout()
 
+    @Property(bool)
+    def checkable(self):
+        """
+        Whether or not the button should be checkable.
+
+        Returns
+        -------
+        bool
+        """
+        return self._checkable
+
+    @checkable.setter
+    def checkable(self, value):
+        if value != self._checkable:
+            self._checkable = value
+            for widget in self._widgets:
+                widget.setCheckable(value)
+
     @Slot(int)
     def handle_button_clicked(self, id):
         """
@@ -165,7 +184,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
 
             for idx, entry in enumerate(items):
                 w = class_for_type[self._widget_type](parent=self)
-                w.setCheckable(True)
+                w.setCheckable(self.checkable)
                 w.setText(entry)
                 self._widgets.append(w)
                 self._btn_group.addButton(w, idx)
