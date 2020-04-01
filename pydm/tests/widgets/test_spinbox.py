@@ -69,8 +69,8 @@ def test_key_press_event(qtbot, signals, monkeypatch, first_key_pressed, second_
     pydm_spinbox = PyDMSpinbox()
     qtbot.addWidget(pydm_spinbox)
 
-    with qtbot.waitExposed(pydm_spinbox):
-        pydm_spinbox.show()
+    pydm_spinbox.show()
+    qtbot.waitUntil(pydm_spinbox.isVisible, timeout=None)
 
     pydm_spinbox.step_exponent = 0
     pydm_spinbox.precisionFromPV = True
@@ -85,7 +85,7 @@ def test_key_press_event(qtbot, signals, monkeypatch, first_key_pressed, second_
 
     def wait_focus():
         return pydm_spinbox.hasFocus()
-    qtbot.waitUntil(wait_focus, timeout=5000)
+    qtbot.waitUntil(wait_focus, timeout=None)
 
     def press_key_and_verify(key_pressed, key_mod, key_press_count, expected_exp, expected_value):
         if key_mod != Qt.NoModifier:

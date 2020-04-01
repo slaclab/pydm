@@ -452,7 +452,7 @@ def test_label_connection_changes_with_alarm_and_no_channel(qtbot, signals, alar
     # Set the connection as enabled (True)
     signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
 
-    blocker = qtbot.waitSignal(signals.connection_state_signal, timeout=1000)
+    blocker = qtbot.waitSignal(signals.connection_state_signal, timeout=None)
     signals.connection_state_signal.emit(True)
     blocker.wait()
 
