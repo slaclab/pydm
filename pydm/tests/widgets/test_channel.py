@@ -71,11 +71,21 @@ def test_construct(qtbot):
 
 def test_pydm_connection(test_plugin):
     # Plugin, Channel and Registry
-    chan = PyDMChannel('tst://Tst:this')
+    chan = PyDMChannel('tst://Tst:this3')
     plugin = plugin_for_address(chan.address)
     plugin_no = len(plugin.connections)
+
+    print('Connections Before:')
+    for k, v in plugin.connections.items():
+        print('\t', k, ' - ', v)
+
     # Make a connection
     chan.connect()
+
+    print('Connections After:')
+    for k, v in plugin.connections.items():
+        print('\t', k, ' - ', v)
+
     assert len(plugin.connections) == plugin_no + 1
     # Remove connections
     chan.disconnect()
