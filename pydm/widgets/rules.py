@@ -67,7 +67,6 @@ class RulesDispatcher(object):
             return
         self.rules_engine = RulesEngine()
         self.rules_engine.rule_signal.connect(self.dispatch)
-        self.rules_engine.setTerminationEnabled(True)
         self.rules_engine.start()
         self.__initialized = True
 
@@ -145,8 +144,8 @@ class RulesEngine(QThread):
     """
     rule_signal = Signal(dict)
 
-    def __init__(self, *args, **kwargs):
-        QThread.__init__(self, *args, **kwargs)
+    def __init__(self):
+        QThread.__init__(self)
         self.app = QApplication.instance()
         self.app.aboutToQuit.connect(self.requestInterruption)
         self.map_lock = QMutex()

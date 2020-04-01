@@ -88,7 +88,7 @@ def test_rules_full(qtbot, caplog):
         assert record.levelno == logging.ERROR
     assert "Not all channels are connected" in caplog.text
 
-    blocker = qtbot.waitSignal(re.rule_signal, timeout=None)
+    blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
 
     re.callback_conn(weakref.ref(widget), 0, 0, value=True)
     re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=5)

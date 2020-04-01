@@ -35,7 +35,8 @@ def test_rules_editor(qtbot, monkeypatch):
     qtbot.addWidget(empty)
 
     empty.show()
-    qtbot.waitUntil(empty.isVisible, timeout=None)
+
+    qtbot.waitExposed(empty, timeout=5000)
 
     # Abort the changes
     empty.cancelChanges()
@@ -54,8 +55,7 @@ def test_rules_editor(qtbot, monkeypatch):
     qtbot.addWidget(re)
     re.show()
 
-    re.show()
-    qtbot.waitUntil(re.isVisible, timeout=None)
+    qtbot.waitExposed(re, timeout=5000)
 
     assert re.lst_rules.count() == 1
     assert not re.frm_edit.isEnabled()
@@ -216,9 +216,9 @@ def test_rules_editor_open_help(qtbot, monkeypatch):
     # Create a new Editor Window
     re = RulesEditor(widget)
     qtbot.addWidget(re)
-
     re.show()
-    qtbot.waitUntil(re.isVisible, timeout=None)
+
+    qtbot.waitExposed(re, timeout=5000)
 
     re.lst_rules.setCurrentRow(0)
 

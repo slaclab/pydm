@@ -25,7 +25,7 @@ def test_old_display_filename_property(qtbot):
     qtbot.mouseRelease(button, Qt.LeftButton)
     def check_title():
         assert "Form" in QApplication.instance().main_window.windowTitle()
-    qtbot.waitUntil(check_title, timeout=None)
+    qtbot.waitUntil(check_title)
 
 def test_press_with_filename(qtbot):
     QApplication.instance().make_main_window()
@@ -39,9 +39,9 @@ def test_press_with_filename(qtbot):
     qtbot.mouseRelease(button, Qt.LeftButton)
     def check_title():
         assert "Form" in QApplication.instance().main_window.windowTitle()
-    qtbot.waitUntil(check_title, timeout=None)
+    qtbot.waitUntil(check_title)
 
-def test_press_without_filename(qapp, qtbot):
+def test_press_without_filename(qtbot):
     QApplication.instance().make_main_window()
     main_window = QApplication.instance().main_window
     main_window.setWindowTitle("Related Display Button Test")
@@ -50,7 +50,7 @@ def test_press_without_filename(qapp, qtbot):
     qtbot.addWidget(button)
     button._rebuild_menu()
     qtbot.mouseRelease(button, Qt.LeftButton)
-    qapp.processEvents()
+    qtbot.wait(250)
     assert "Form" not in QApplication.instance().main_window.windowTitle()
 
 def test_no_menu_with_one_file(qtbot):
@@ -77,11 +77,12 @@ def test_menu_with_additional_files(qtbot):
     button._rebuild_menu()
     assert button.menu() is not None
     qtbot.mouseRelease(button, Qt.LeftButton)
+    qtbot.waitExposed(button.menu())
     qtbot.mouseClick(button.menu(), Qt.LeftButton)
     button.menu().actions()[0].trigger()
     def check_title():
         assert "Form" in QApplication.instance().main_window.windowTitle()
-    qtbot.waitUntil(check_title, timeout=None)
+    qtbot.waitUntil(check_title)
 
 def test_menu_goes_away_when_files_removed(qtbot):
     QApplication.instance().make_main_window()

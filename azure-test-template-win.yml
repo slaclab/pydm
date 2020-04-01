@@ -48,8 +48,6 @@ jobs:
   - script: |
       call activate test-environment-$(python_name)
       conda install python=$(python) pytest-azurepipelines pydm --file dev-requirements.txt --update-deps
-      # Install pytest-qt from master
-      pip install git+https://github.com/pytest-dev/pytest-qt
     displayName: 'Anaconda - Install Dependencies'
 
   - script: |

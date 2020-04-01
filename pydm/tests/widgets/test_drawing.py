@@ -480,7 +480,7 @@ def test_pydmdrawing_properties_and_setters(qtbot):
     True,
     False,
 ])
-def test_pydmdrawingline_draw_item(qapp, qtbot, signals, alarm_sensitive_content):
+def test_pydmdrawingline_draw_item(qtbot, signals, alarm_sensitive_content):
     """
     Test PyDMDrawingLine base class drawing handling.
 
@@ -489,8 +489,6 @@ def test_pydmdrawingline_draw_item(qapp, qtbot, signals, alarm_sensitive_content
 
     Parameters
     ----------
-    qapp : fixture
-        QApplication instance
     qtbot : fixture
         Window for widget testing
     signals : fixture
@@ -503,11 +501,18 @@ def test_pydmdrawingline_draw_item(qapp, qtbot, signals, alarm_sensitive_content
     qtbot.addWidget(pydm_drawingline)
 
     pydm_drawingline.alarmSensitiveContent = alarm_sensitive_content
-    pydm_drawingline.alarm_severity_changed(PyDMWidget.ALARM_MAJOR)
+    signals.new_severity_signal.connect(pydm_drawingline.alarmSeverityChanged)
+    signals.new_severity_signal.emit(PyDMWidget.ALARM_MAJOR)
 
-    pydm_drawingline.show()
-    qtbot.waitUntil(lambda: pydm_drawingline.isVisible(), timeout=0)
+    with qtbot.waitExposed(pydm_drawingline):
+        pydm_drawingline.show()
+    qtbot.waitUntil(lambda: pydm_drawingline.isEnabled(), timeout=5000)
+    pydm_drawingline.setFocus()
 
+    def wait_focus():
+        return pydm_drawingline.hasFocus()
+
+    qtbot.waitUntil(wait_focus, timeout=5000)
 
 
 # # -----------------
