@@ -103,6 +103,7 @@ stages:
           displayName: Documentation - Upload
 
       - job: 'Publish_PyPI'
+        dependsOn: Control
         displayName: Publish - PyPI
         condition: |
           and (
@@ -151,6 +152,7 @@ stages:
           displayName: PyPI - Upload
 
       - job: 'Publish_Anaconda'
+        dependsOn: Control
         displayName: Publish - Anaconda
         condition: |
           and (
