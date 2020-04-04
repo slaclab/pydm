@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utilities &mdash; PyDM v1.8.0+43.g578552d5 documentation</title>
+  <title>Utilities &mdash; PyDM v1.9.0+19.g1d00f53b documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.8.0+43.g578552d5
+                v1.9.0+19.g1d00f53b
               </div>
             
           
@@ -291,6 +291,26 @@ available</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydm.utilities.only_main_thread">
+<code class="sig-prename descclassname">pydm.utilities.</code><code class="sig-name descname">only_main_thread</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#only_main_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.utilities.only_main_thread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator that wraps a function which should only be executed at the Qt
+main thread.</p>
+<p>The decorator will log an error message and raise a RuntimeError if the
+decorated function is invoked from a thread other than the Qt main one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>callable</em>) – The function to wrap</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>wrapper</p>
 </dd>
 </dl>
 </dd></dl>

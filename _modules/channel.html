@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>channel &mdash; PyDM v1.8.0+43.g578552d5 documentation</title>
+  <title>channel &mdash; PyDM v1.9.0+19.g1d00f53b documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.8.0+43.g578552d5
+                v1.9.0+19.g1d00f53b
               </div>
             
           
@@ -329,7 +329,7 @@
             <span class="n">lower_ctrl_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_ctrl_limit_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">lower_ctrl_limit_slot</span>
             <span class="n">write_access_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_access_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">write_access_slot</span>
 
-            <span class="n">value_signal_matched</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">value_signal_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">value_signal</span> <span class="ow">is</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">value_signal</span><span class="p">:</span>
                 <span class="n">value_signal_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span><span class="o">.</span><span class="n">signal</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value_signal</span><span class="o">.</span><span class="n">signal</span>
 
