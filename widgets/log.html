@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMLogDisplay &mdash; PyDM v1.9.0+19.g1d00f53b documentation</title>
+  <title>PyDMLogDisplay &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+19.g1d00f53b
+                v1.9.0+22.gf66189f2
               </div>
             
           
@@ -199,9 +199,9 @@
             
   <div class="section" id="pydmlogdisplay">
 <h1>PyDMLogDisplay<a class="headerlink" href="#pydmlogdisplay" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay">
-<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.logdisplay.</code><code class="sig-name descname">PyDMLogDisplay</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">logname=None</em>, <em class="sig-param">level=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.logdisplay.</code><code class="sig-name descname">PyDMLogDisplay</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">logname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">level</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard display for Log Output</p>
 <p>This widget handles instantating a <code class="docutils literal notranslate"><span class="pre">GuiHandler</span></code> and displaying log
 messages to a <code class="docutils literal notranslate"><span class="pre">QPlainTextEdit</span></code>. The level of the log can be changed from
@@ -216,27 +216,27 @@ inside the widget itself, allowing users to select from any of the
 </ul>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay.clear">
 <code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.clear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear the text area.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay.logFormat">
 <code class="sig-name descname">logFormat</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.logFormat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format for log messages</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay.logName">
 <code class="sig-name descname">logName</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.logName" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name of associated log</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay.paintEvent">
-<code class="sig-name descname">paintEvent</code><span class="sig-paren">(</span><em class="sig-param">_</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.paintEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.paintEvent" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">paintEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">_</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.paintEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.paintEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Paint events are sent to widgets that need to update themselves,
 for instance when part of a widget is exposed because a covering
 widget was moved.</p>
@@ -250,20 +250,20 @@ so the specifics can be performed for each of the drawing classes.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setLevel">
-<code class="sig-name descname">setLevel</code><span class="sig-paren">(</span><em class="sig-param">level</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.setLevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setLevel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">setLevel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">level</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.setLevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setLevel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the level of the contained logger</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay.sizeHint">
-<code class="sig-name descname">sizeHint</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span> &#x2192; QSize<a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.sizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.sizeHint" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">sizeHint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.sizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.sizeHint" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay.write">
-<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param">message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.write" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write a message to the log display</p>
 </dd></dl>
 

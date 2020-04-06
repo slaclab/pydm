@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMTemplateRepeater &mdash; PyDM v1.9.0+19.g1d00f53b documentation</title>
+  <title>PyDMTemplateRepeater &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+19.g1d00f53b
+                v1.9.0+22.gf66189f2
               </div>
             
           
@@ -196,9 +196,9 @@
             
   <div class="section" id="pydmtemplaterepeater">
 <h1>PyDMTemplateRepeater<a class="headerlink" href="#pydmtemplaterepeater" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater">
-<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.template_repeater.</code><code class="sig-name descname">PyDMTemplateRepeater</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/template_repeater.html#PyDMTemplateRepeater"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.template_repeater.</code><code class="sig-name descname">PyDMTemplateRepeater</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/template_repeater.html#PyDMTemplateRepeater"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyDMTemplateRepeater takes a .ui file with macro variables as a template, and a JSON
 file (or a list of dictionaries) with a list of values to use to fill in
 the macro variables, then creates a layout with one instance of the
@@ -214,14 +214,14 @@ with the data that describes all of the magnets.</p>
 <dd class="field-odd"><p><strong>parent</strong> (<em>optional</em>) – The parent of this widget.</p>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.clear">
 <code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/template_repeater.html#PyDMTemplateRepeater.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.clear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear out any existing instances of the template inside
 the widget.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.countShownInDesigner">
 <code class="sig-name descname">countShownInDesigner</code><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.countShownInDesigner" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of instances to show in Qt Designer.  This property has no
@@ -236,7 +236,7 @@ effect outside of Designer.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.data">
 <em class="property">property </em><code class="sig-name descname">data</code><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>The dictionary used by the widget to fill in each instance of the template.
@@ -244,7 +244,7 @@ This property will be overwritten if the user changes the dataSource
 property.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.dataSource">
 <code class="sig-name descname">dataSource</code><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.dataSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>The path to the JSON file to fill in each instance of the template.</p>
@@ -258,7 +258,7 @@ property.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.layoutType">
 <code class="sig-name descname">layoutType</code><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.layoutType" title="Permalink to this definition">¶</a></dt>
 <dd><p>The layout type to use.</p>
@@ -272,9 +272,9 @@ property.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.open_template_file">
-<code class="sig-name descname">open_template_file</code><span class="sig-paren">(</span><em class="sig-param">variables=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/template_repeater.html#PyDMTemplateRepeater.open_template_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.open_template_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_template_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">variables</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/template_repeater.html#PyDMTemplateRepeater.open_template_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.open_template_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Opens the widget specified in the templateFilename property.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -290,14 +290,14 @@ to all the macros specified on the template repeater widget.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.rebuild">
 <code class="sig-name descname">rebuild</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/template_repeater.html#PyDMTemplateRepeater.rebuild"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.rebuild" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear out all existing widgets, and populate the list using the
 template file and data source.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.template_repeater.PyDMTemplateRepeater.templateFilename">
 <code class="sig-name descname">templateFilename</code><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.templateFilename" title="Permalink to this definition">¶</a></dt>
 <dd><p>The path to the .ui file to use as a template.</p>

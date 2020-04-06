@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMEnumButton &mdash; PyDM v1.9.0+19.g1d00f53b documentation</title>
+  <title>PyDMEnumButton &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+19.g1d00f53b
+                v1.9.0+22.gf66189f2
               </div>
             
           
@@ -201,9 +201,9 @@
             
   <div class="section" id="pydmenumbutton">
 <h1>PyDMEnumButton<a class="headerlink" href="#pydmenumbutton" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton">
-<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.enum_button.</code><code class="sig-name descname">PyDMEnumButton</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.enum_button.</code><code class="sig-name descname">PyDMEnumButton</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_channel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton" title="Permalink to this definition">¶</a></dt>
 <dd><p>A QWidget that renders buttons for every option of Enum Items.
 For now three types of buttons can be rendered:
 - Push Button
@@ -219,7 +219,7 @@ For now three types of buttons can be rendered:
 </ul>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton.check_enable_state">
 <code class="sig-name descname">check_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.check_enable_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.check_enable_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether or not the widget should be disable.
@@ -227,7 +227,7 @@ This method also disables the widget and add a Tool Tip
 with the reason why it is disabled.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton.checkable">
 <code class="sig-name descname">checkable</code><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.checkable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the button should be checkable.</p>
@@ -241,15 +241,15 @@ with the reason why it is disabled.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton.clear">
 <code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.clear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all inner widgets from the layout</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton.enum_strings_changed">
-<code class="sig-name descname">enum_strings_changed</code><span class="sig-paren">(</span><em class="sig-param">new_enum_strings</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.enum_strings_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.enum_strings_changed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">enum_strings_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_enum_strings</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.enum_strings_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.enum_strings_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel has new enum values.
 This callback also triggers a value_changed call so the
 new enum values to be broadcasted.</p>
@@ -260,9 +260,9 @@ new enum values to be broadcasted.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton.handle_button_clicked">
-<code class="sig-name descname">handle_button_clicked</code><span class="sig-paren">(</span><em class="sig-param">id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.handle_button_clicked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.handle_button_clicked" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">handle_button_clicked</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.handle_button_clicked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.handle_button_clicked" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles the event of a button being clicked.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -271,7 +271,7 @@ new enum values to be broadcasted.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton.items">
 <code class="sig-name descname">items</code><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Items to be displayed in the button group.</p>
@@ -287,7 +287,7 @@ Because C++ QStringList expects a list type, we need to make sure that None is n
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton.minimumSizeHint">
 <code class="sig-name descname">minimumSizeHint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.minimumSizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.minimumSizeHint" title="Permalink to this definition">¶</a></dt>
 <dd><p>This property holds the recommended minimum size for the widget.</p>
@@ -301,7 +301,7 @@ Because C++ QStringList expects a list type, we need to make sure that None is n
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton.orientation">
 <code class="sig-name descname">orientation</code><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.orientation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to lay out the bit indicators vertically or horizontally.</p>
@@ -315,9 +315,9 @@ Because C++ QStringList expects a list type, we need to make sure that None is n
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton.paintEvent">
-<code class="sig-name descname">paintEvent</code><span class="sig-paren">(</span><em class="sig-param">_</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.paintEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.paintEvent" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">paintEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">_</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.paintEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.paintEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Paint events are sent to widgets that need to update themselves,
 for instance when part of a widget is exposed because a covering
 widget was moved.</p>
@@ -331,23 +331,23 @@ so the specifics can be performed for each of the drawing classes.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton.rebuild_layout">
 <code class="sig-name descname">rebuild_layout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.rebuild_layout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.rebuild_layout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to reorganize the top-level widget and its contents
 according to the layout property values.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton.rebuild_widgets">
 <code class="sig-name descname">rebuild_widgets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.rebuild_widgets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.rebuild_widgets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rebuild the list of widgets based on a new enum or generates a default
 list of fake strings so we can see something at Designer.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton.value_changed">
-<code class="sig-name descname">value_changed</code><span class="sig-paren">(</span><em class="sig-param">new_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.value_changed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">value_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_val</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.value_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel value is changed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -356,7 +356,7 @@ list of fake strings so we can see something at Designer.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton.widgetType">
 <code class="sig-name descname">widgetType</code><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.widgetType" title="Permalink to this definition">¶</a></dt>
 <dd><p>The widget type to be used when composing the group.</p>

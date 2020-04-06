@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Application &mdash; PyDM v1.9.0+19.g1d00f53b documentation</title>
+  <title>Application &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+19.g1d00f53b
+                v1.9.0+22.gf66189f2
               </div>
             
           
@@ -181,9 +181,9 @@
             
   <div class="section" id="application">
 <h1>Application<a class="headerlink" href="#application" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pydm.PyDMApplication">
-<em class="property">class </em><code class="sig-prename descclassname">pydm.</code><code class="sig-name descname">PyDMApplication</code><span class="sig-paren">(</span><em class="sig-param">ui_file=None</em>, <em class="sig-param">command_line_args=[]</em>, <em class="sig-param">display_args=[]</em>, <em class="sig-param">perfmon=False</em>, <em class="sig-param">hide_nav_bar=False</em>, <em class="sig-param">hide_menu_bar=False</em>, <em class="sig-param">hide_status_bar=False</em>, <em class="sig-param">read_only=False</em>, <em class="sig-param">macros=None</em>, <em class="sig-param">use_main_window=True</em>, <em class="sig-param">stylesheet_path=None</em>, <em class="sig-param">fullscreen=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydm.</code><code class="sig-name descname">PyDMApplication</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ui_file</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">command_line_args</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">display_args</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">perfmon</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">hide_nav_bar</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">hide_menu_bar</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">hide_status_bar</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">read_only</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">macros</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_main_window</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">stylesheet_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fullscreen</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyDMApplication handles loading PyDM display files, opening
 new windows, and most importantly, establishing and managing
 connections to channels via data plugins.</p>
@@ -217,9 +217,9 @@ create a PyDMMainWindow in the initialization (Default is True).</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.PyDMApplication.add_connection">
-<code class="sig-name descname">add_connection</code><span class="sig-paren">(</span><em class="sig-param">channel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.add_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.add_connection" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_connection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">channel</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.add_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.add_connection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new connection to a channel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -228,9 +228,9 @@ create a PyDMMainWindow in the initialization (Default is True).</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.PyDMApplication.close_widget_connections">
-<code class="sig-name descname">close_widget_connections</code><span class="sig-paren">(</span><em class="sig-param">widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.close_widget_connections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.close_widget_connections" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">close_widget_connections</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">widget</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.close_widget_connections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.close_widget_connections" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a widget to start from, traverse the tree of child widgets,
 and try to close connections to any widgets with channels.</p>
 <dl class="field-list simple">
@@ -240,9 +240,9 @@ and try to close connections to any widgets with channels.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.PyDMApplication.establish_widget_connections">
-<code class="sig-name descname">establish_widget_connections</code><span class="sig-paren">(</span><em class="sig-param">widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.establish_widget_connections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.establish_widget_connections" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">establish_widget_connections</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">widget</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.establish_widget_connections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.establish_widget_connections" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a widget to start from, traverse the tree of child widgets,
 and try to establish connections to any widgets with channels.</p>
 <p>Display subclasses which dynamically create widgets may need to
@@ -254,35 +254,35 @@ use this method.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.PyDMApplication.eventFilter">
-<code class="sig-name descname">eventFilter</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QObject</em>, <em class="sig-param">QEvent</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.eventFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.eventFilter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">eventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.eventFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.eventFilter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.PyDMApplication.exec_">
 <code class="sig-name descname">exec_</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.exec_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.exec_" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the QApplication.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.PyDMApplication.get_CPU_usage">
 <code class="sig-name descname">get_CPU_usage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.get_CPU_usage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.get_CPU_usage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints total CPU usage (in percent), as well as per-thread usage, to the terminal.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.PyDMApplication.make_main_window">
-<code class="sig-name descname">make_main_window</code><span class="sig-paren">(</span><em class="sig-param">stylesheet_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.make_main_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.make_main_window" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">make_main_window</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stylesheet_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.make_main_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.make_main_window" title="Permalink to this definition">¶</a></dt>
 <dd><p>Instantiate a new PyDMMainWindow, add it to the application’s
 list of windows. Typically, this function is only called as part
 of starting up a new process, because PyDMApplications only have
 one window per process.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.PyDMApplication.new_pydm_process">
-<code class="sig-name descname">new_pydm_process</code><span class="sig-paren">(</span><em class="sig-param">ui_file</em>, <em class="sig-param">macros=None</em>, <em class="sig-param">command_line_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.new_pydm_process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.new_pydm_process" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">new_pydm_process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ui_file</span></em>, <em class="sig-param"><span class="n">macros</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">command_line_args</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.new_pydm_process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.new_pydm_process" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn a new PyDM process and open the supplied file.  Commands to open
 new windows in PyDM typically actually spawn an entirely new PyDM process.
 This keeps each window isolated, so that one window cannot slow
@@ -302,9 +302,9 @@ write needs to use this argument.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.PyDMApplication.plugin_for_channel">
-<code class="sig-name descname">plugin_for_channel</code><span class="sig-paren">(</span><em class="sig-param">channel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.plugin_for_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.plugin_for_channel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plugin_for_channel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">channel</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.plugin_for_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.plugin_for_channel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a PyDMChannel object, determine the appropriate plugin to use.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -319,9 +319,9 @@ write needs to use this argument.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.PyDMApplication.remove_connection">
-<code class="sig-name descname">remove_connection</code><span class="sig-paren">(</span><em class="sig-param">channel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.remove_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.remove_connection" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">remove_connection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">channel</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.remove_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.PyDMApplication.remove_connection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a connection to a channel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMWaveformTable &mdash; PyDM v1.9.0+19.g1d00f53b documentation</title>
+  <title>PyDMWaveformTable &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+19.g1d00f53b
+                v1.9.0+22.gf66189f2
               </div>
             
           
@@ -201,9 +201,9 @@
             
   <div class="section" id="pydmwaveformtable">
 <h1>PyDMWaveformTable<a class="headerlink" href="#pydmwaveformtable" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pydm.widgets.waveformtable.PyDMWaveformTable">
-<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.waveformtable.</code><code class="sig-name descname">PyDMWaveformTable</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.waveformtable.</code><code class="sig-name descname">PyDMWaveformTable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_channel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable" title="Permalink to this definition">¶</a></dt>
 <dd><p>A QTableWidget with support for Channels and more from PyDM.</p>
 <p>Values of the array are displayed in the selected number of columns.
 The number of rows is determined by the size of the waveform.
@@ -216,14 +216,14 @@ It is possible to define the labels of each row and column.</p>
 </ul>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.waveformtable.PyDMWaveformTable.check_enable_state">
 <code class="sig-name descname">check_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.check_enable_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.check_enable_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>For PyDMWaveformTable, we want to make the individual cells
 editable when we have write access.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.waveformtable.PyDMWaveformTable.columnHeaderLabels">
 <code class="sig-name descname">columnHeaderLabels</code><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.columnHeaderLabels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the list of labels for the columns of the Table.</p>
@@ -237,12 +237,12 @@ editable when we have write access.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.waveformtable.PyDMWaveformTable.eventFilter">
-<code class="sig-name descname">eventFilter</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QObject</em>, <em class="sig-param">QEvent</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.eventFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.eventFilter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">eventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.eventFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.eventFilter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.waveformtable.PyDMWaveformTable.rowHeaderLabels">
 <code class="sig-name descname">rowHeaderLabels</code><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.rowHeaderLabels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the list of labels for the rows of the Table.</p>
@@ -256,9 +256,9 @@ editable when we have write access.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.waveformtable.PyDMWaveformTable.send_waveform">
-<code class="sig-name descname">send_waveform</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.send_waveform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.send_waveform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_waveform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">row</span></em>, <em class="sig-param"><span class="n">column</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.send_waveform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.send_waveform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update Channel value when cell value is changed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -270,9 +270,9 @@ editable when we have write access.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.waveformtable.PyDMWaveformTable.value_changed">
-<code class="sig-name descname">value_changed</code><span class="sig-paren">(</span><em class="sig-param">new_waveform</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.value_changed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">value_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_waveform</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.value_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel value is changed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

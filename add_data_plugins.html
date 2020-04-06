@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Including Data Plugins &mdash; PyDM v1.9.0+19.g1d00f53b documentation</title>
+  <title>Including Data Plugins &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+19.g1d00f53b
+                v1.9.0+22.gf66189f2
               </div>
             
           
@@ -198,9 +198,9 @@ these files should contain a single <code class="docutils literal notranslate"><
 more programmatic approach the API is documented below. Take note that all
 plugins should be registered before the <code class="docutils literal notranslate"><span class="pre">PyDMApplication</span></code> is launched,
 otherwise they will not be registered in time for connections to be made.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="pydm.data_plugins.add_plugin">
-<code class="sig-prename descclassname">pydm.data_plugins.</code><code class="sig-name descname">add_plugin</code><span class="sig-paren">(</span><em class="sig-param">plugin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/data_plugins.html#add_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.data_plugins.add_plugin" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.data_plugins.</code><code class="sig-name descname">add_plugin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plugin</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/data_plugins.html#add_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.data_plugins.add_plugin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a PyDM plugin to the global registry of protocol vs. plugins</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -209,9 +209,9 @@ otherwise they will not be registered in time for connections to be made.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="pydm.data_plugins.load_plugins_from_path">
-<code class="sig-prename descclassname">pydm.data_plugins.</code><code class="sig-name descname">load_plugins_from_path</code><span class="sig-paren">(</span><em class="sig-param">locations</em>, <em class="sig-param">token</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/data_plugins.html#load_plugins_from_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.data_plugins.load_plugins_from_path" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pydm.data_plugins.</code><code class="sig-name descname">load_plugins_from_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">locations</span></em>, <em class="sig-param"><span class="n">token</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/data_plugins.html#load_plugins_from_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.data_plugins.load_plugins_from_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load plugins from file locations that match a specific token</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

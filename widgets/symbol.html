@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMSymbol &mdash; PyDM v1.9.0+19.g1d00f53b documentation</title>
+  <title>PyDMSymbol &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+19.g1d00f53b
+                v1.9.0+22.gf66189f2
               </div>
             
           
@@ -199,9 +199,9 @@
             
   <div class="section" id="pydmsymbol">
 <h1>PyDMSymbol<a class="headerlink" href="#pydmsymbol" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pydm.widgets.symbol.PyDMSymbol">
-<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.symbol.</code><code class="sig-name descname">PyDMSymbol</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.symbol.</code><code class="sig-name descname">PyDMSymbol</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_channel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyDMSymbol will render an image (symbol) for each value of a channel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -211,7 +211,7 @@
 </ul>
 </dd>
 </dl>
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.symbol.PyDMSymbol.aspectRatioMode">
 <code class="sig-name descname">aspectRatioMode</code><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.aspectRatioMode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Which aspect ratio mode to use.</p>
@@ -225,9 +225,9 @@
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.symbol.PyDMSymbol.connection_changed">
-<code class="sig-name descname">connection_changed</code><span class="sig-paren">(</span><em class="sig-param">connected</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.connection_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.connection_changed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">connection_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">connected</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.connection_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.connection_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the connection state of the Channel is changed.
 This callback acts on the connection state to enable/disable the widget
 and also trigger the change on alarm severity to ALARM_DISCONNECTED.</p>
@@ -238,7 +238,7 @@ and also trigger the change on alarm severity to ALARM_DISCONNECTED.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.symbol.PyDMSymbol.imageFiles">
 <code class="sig-name descname">imageFiles</code><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.imageFiles" title="Permalink to this definition">¶</a></dt>
 <dd><p>JSON-formatted dictionary keyed on states (integers), with filenames
@@ -253,14 +253,14 @@ of the image file to display for the state.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.symbol.PyDMSymbol.init_for_designer">
 <code class="sig-name descname">init_for_designer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.init_for_designer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.init_for_designer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method called after the constructor to tweak configurations for
 when using the widget with the Qt Designer</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.symbol.PyDMSymbol.minimumSizeHint">
 <code class="sig-name descname">minimumSizeHint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.minimumSizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.minimumSizeHint" title="Permalink to this definition">¶</a></dt>
 <dd><p>This property holds the recommended minimum size for the widget.</p>
@@ -274,9 +274,9 @@ when using the widget with the Qt Designer</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.symbol.PyDMSymbol.paintEvent">
-<code class="sig-name descname">paintEvent</code><span class="sig-paren">(</span><em class="sig-param">event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.paintEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.paintEvent" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">paintEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.paintEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.paintEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Paint events are sent to widgets that need to update themselves,
 for instance when part of a widget is exposed because a covering
 widget was moved.</p>
@@ -289,9 +289,9 @@ from the stylesheet and draws the proper image.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.symbol.PyDMSymbol.set_current_key">
-<code class="sig-name descname">set_current_key</code><span class="sig-paren">(</span><em class="sig-param">current_key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.set_current_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.set_current_key" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_current_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">current_key</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.set_current_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.set_current_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change the image being displayed for the one given by <cite>current_key</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -301,7 +301,7 @@ the type used as key for the imageFiles dictionary.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.symbol.PyDMSymbol.sizeHint">
 <code class="sig-name descname">sizeHint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.sizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.sizeHint" title="Permalink to this definition">¶</a></dt>
 <dd><p>This property holds the recommended size for the widget.</p>
@@ -315,9 +315,9 @@ the type used as key for the imageFiles dictionary.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.symbol.PyDMSymbol.value_changed">
-<code class="sig-name descname">value_changed</code><span class="sig-paren">(</span><em class="sig-param">new_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.value_changed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">value_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_val</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.value_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel value is changed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

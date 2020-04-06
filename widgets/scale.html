@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMScaleIndicator &mdash; PyDM v1.9.0+19.g1d00f53b documentation</title>
+  <title>PyDMScaleIndicator &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+19.g1d00f53b
+                v1.9.0+22.gf66189f2
               </div>
             
           
@@ -199,9 +199,9 @@
             
   <div class="section" id="pydmscaleindicator">
 <h1>PyDMScaleIndicator<a class="headerlink" href="#pydmscaleindicator" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator">
-<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.scale.</code><code class="sig-name descname">PyDMScaleIndicator</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.scale.</code><code class="sig-name descname">PyDMScaleIndicator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_channel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator" title="Permalink to this definition">¶</a></dt>
 <dd><p>A bar-shaped indicator for scalar value with support for Channels and
 more from PyDM.
 Configurable features include indicator type (bar/pointer), scale tick
@@ -214,7 +214,7 @@ marks and orientation (horizontal/vertical).</p>
 </ul>
 </dd>
 </dl>
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.backgroundColor">
 <code class="sig-name descname">backgroundColor</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.backgroundColor" title="Permalink to this definition">¶</a></dt>
 <dd><p>The color of the scale background.</p>
@@ -228,7 +228,7 @@ marks and orientation (horizontal/vertical).</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.backgroundSizeRate">
 <code class="sig-name descname">backgroundSizeRate</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.backgroundSizeRate" title="Permalink to this definition">¶</a></dt>
 <dd><p>The rate of background height size (from top to bottom).</p>
@@ -242,7 +242,7 @@ marks and orientation (horizontal/vertical).</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.barIndicator">
 <code class="sig-name descname">barIndicator</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.barIndicator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the scale indicator should be a bar instead of a pointer.</p>
@@ -256,7 +256,7 @@ marks and orientation (horizontal/vertical).</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.flipScale">
 <code class="sig-name descname">flipScale</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.flipScale" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the scale should be flipped.</p>
@@ -270,7 +270,7 @@ marks and orientation (horizontal/vertical).</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.indicatorColor">
 <code class="sig-name descname">indicatorColor</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.indicatorColor" title="Permalink to this definition">¶</a></dt>
 <dd><p>The color of the scale indicator.</p>
@@ -284,7 +284,7 @@ marks and orientation (horizontal/vertical).</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.invertedAppearance">
 <code class="sig-name descname">invertedAppearance</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.invertedAppearance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the scale appearence should be inverted.</p>
@@ -298,7 +298,7 @@ marks and orientation (horizontal/vertical).</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.limitsFromChannel">
 <code class="sig-name descname">limitsFromChannel</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.limitsFromChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the scale indicator should use the limits information
@@ -313,9 +313,9 @@ from the channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.lowerCtrlLimitChanged">
-<code class="sig-name descname">lowerCtrlLimitChanged</code><span class="sig-paren">(</span><em class="sig-param">new_limit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.lowerCtrlLimitChanged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.lowerCtrlLimitChanged" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">lowerCtrlLimitChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_limit</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.lowerCtrlLimitChanged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.lowerCtrlLimitChanged" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyQT Slot for changes on the lower control limit value of the Channel
 This slot sends the new limit value to the
 <code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
@@ -326,7 +326,7 @@ This slot sends the new limit value to the
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.numDivisions">
 <code class="sig-name descname">numDivisions</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.numDivisions" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number in which the scale is divided.</p>
@@ -340,7 +340,7 @@ This slot sends the new limit value to the
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.orientation">
 <code class="sig-name descname">orientation</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.orientation" title="Permalink to this definition">¶</a></dt>
 <dd><p>The scale orientation (Horizontal or Vertical)</p>
@@ -354,7 +354,7 @@ This slot sends the new limit value to the
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.originAtZero">
 <code class="sig-name descname">originAtZero</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.originAtZero" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the scale indicator should start at zero value.
@@ -369,7 +369,7 @@ Applies only for bar indicator.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.scaleHeight">
 <code class="sig-name descname">scaleHeight</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.scaleHeight" title="Permalink to this definition">¶</a></dt>
 <dd><p>The scale height, fixed so it do not wiggle when value label resizes.</p>
@@ -383,9 +383,9 @@ Applies only for bar indicator.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.setup_widgets_for_orientation">
-<code class="sig-name descname">setup_widgets_for_orientation</code><span class="sig-paren">(</span><em class="sig-param">new_orientation</em>, <em class="sig-param">flipped</em>, <em class="sig-param">inverted</em>, <em class="sig-param">value_position</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.setup_widgets_for_orientation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.setup_widgets_for_orientation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">setup_widgets_for_orientation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_orientation</span></em>, <em class="sig-param"><span class="n">flipped</span></em>, <em class="sig-param"><span class="n">inverted</span></em>, <em class="sig-param"><span class="n">value_position</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.setup_widgets_for_orientation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.setup_widgets_for_orientation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reconstruct the widget given the orientation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -398,7 +398,7 @@ Applies only for bar indicator.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.showLimits">
 <code class="sig-name descname">showLimits</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.showLimits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the high and low limits should be displayed on the scale.</p>
@@ -412,7 +412,7 @@ Applies only for bar indicator.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.showTicks">
 <code class="sig-name descname">showTicks</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.showTicks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the tick marks should be displayed on the scale.</p>
@@ -426,7 +426,7 @@ Applies only for bar indicator.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.showValue">
 <code class="sig-name descname">showValue</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.showValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not the current value should be displayed on the scale.</p>
@@ -440,7 +440,7 @@ Applies only for bar indicator.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.tickColor">
 <code class="sig-name descname">tickColor</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.tickColor" title="Permalink to this definition">¶</a></dt>
 <dd><p>The color of the scale tick marks.</p>
@@ -454,7 +454,7 @@ Applies only for bar indicator.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.tickSizeRate">
 <code class="sig-name descname">tickSizeRate</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.tickSizeRate" title="Permalink to this definition">¶</a></dt>
 <dd><p>The rate of tick marks height size (from bottom to top).</p>
@@ -468,15 +468,15 @@ Applies only for bar indicator.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.update_labels">
 <code class="sig-name descname">update_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.update_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.update_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the limits and value labels with the correct values.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.upperCtrlLimitChanged">
-<code class="sig-name descname">upperCtrlLimitChanged</code><span class="sig-paren">(</span><em class="sig-param">new_limit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.upperCtrlLimitChanged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.upperCtrlLimitChanged" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">upperCtrlLimitChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_limit</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.upperCtrlLimitChanged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.upperCtrlLimitChanged" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyQT Slot for changes on the upper control limit value of the Channel
 This slot sends the new limit value to the
 <code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
@@ -487,7 +487,7 @@ This slot sends the new limit value to the
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.userLowerLimit">
 <code class="sig-name descname">userLowerLimit</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.userLowerLimit" title="Permalink to this definition">¶</a></dt>
 <dd><p>The user-defined lower limit for the scale.</p>
@@ -501,7 +501,7 @@ This slot sends the new limit value to the
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.userUpperLimit">
 <code class="sig-name descname">userUpperLimit</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.userUpperLimit" title="Permalink to this definition">¶</a></dt>
 <dd><p>The user-defined upper limit for the scale.</p>
@@ -515,7 +515,7 @@ This slot sends the new limit value to the
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.valuePosition">
 <code class="sig-name descname">valuePosition</code><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.valuePosition" title="Permalink to this definition">¶</a></dt>
 <dd><p>The position of the value label (Top, Bottom, Left or Right).</p>
@@ -529,9 +529,9 @@ This slot sends the new limit value to the
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.scale.PyDMScaleIndicator.value_changed">
-<code class="sig-name descname">value_changed</code><span class="sig-paren">(</span><em class="sig-param">new_value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.value_changed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">value_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.value_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel value is changed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

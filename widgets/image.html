@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMImageView &mdash; PyDM v1.9.0+19.g1d00f53b documentation</title>
+  <title>PyDMImageView &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+19.g1d00f53b
+                v1.9.0+22.gf66189f2
               </div>
             
           
@@ -199,9 +199,9 @@
             
   <div class="section" id="pydmimageview">
 <h1>PyDMImageView<a class="headerlink" href="#pydmimageview" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pydm.widgets.image.PyDMImageView">
-<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.image.</code><code class="sig-name descname">PyDMImageView</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">image_channel=None</em>, <em class="sig-param">width_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.image.</code><code class="sig-name descname">PyDMImageView</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">image_channel</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">width_channel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView" title="Permalink to this definition">¶</a></dt>
 <dd><p>A PyQtGraph ImageView with support for Channels and more from PyDM.</p>
 <p>If there is no <code class="xref py py-attr docutils literal notranslate"><span class="pre">channelWidth</span></code> it is possible to define the width of
 the image with the <code class="xref py py-attr docutils literal notranslate"><span class="pre">width</span></code> property.</p>
@@ -220,13 +220,13 @@ information</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="class">
+<dl class="py class">
 <dt id="pydm.widgets.image.PyDMImageView.ReadingOrder">
 <em class="property">class </em><code class="sig-name descname">ReadingOrder</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.ReadingOrder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class to build ReadingOrder ENUM property.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.image.PyDMImageView.autoDownsample">
 <code class="sig-name descname">autoDownsample</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.autoDownsample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return if we should or not apply the
@@ -241,7 +241,7 @@ autoDownsample option to PyQtGraph.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.image.PyDMImageView.channels">
 <code class="sig-name descname">channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.channels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the channels being used for this Widget.</p>
@@ -255,13 +255,13 @@ autoDownsample option to PyQtGraph.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.image.PyDMImageView.channels_for_tools">
 <code class="sig-name descname">channels_for_tools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.channels_for_tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.channels_for_tools" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return channels for tools.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.image.PyDMImageView.colorMap">
 <code class="sig-name descname">colorMap</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.colorMap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the color map used by the ImageView.</p>
@@ -275,7 +275,7 @@ autoDownsample option to PyQtGraph.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.image.PyDMImageView.colorMapMax">
 <code class="sig-name descname">colorMapMax</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.colorMapMax" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximum value for the colormap.</p>
@@ -289,7 +289,7 @@ autoDownsample option to PyQtGraph.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.image.PyDMImageView.colorMapMin">
 <code class="sig-name descname">colorMapMin</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.colorMapMin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Minimum value for the colormap.</p>
@@ -303,7 +303,7 @@ autoDownsample option to PyQtGraph.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.image.PyDMImageView.imageChannel">
 <code class="sig-name descname">imageChannel</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.imageChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>The channel address in use for the image data .</p>
@@ -317,7 +317,7 @@ autoDownsample option to PyQtGraph.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.image.PyDMImageView.imageWidth">
 <code class="sig-name descname">imageWidth</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.imageWidth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the width of the image.</p>
@@ -331,9 +331,9 @@ autoDownsample option to PyQtGraph.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.image.PyDMImageView.image_connection_state_changed">
-<code class="sig-name descname">image_connection_state_changed</code><span class="sig-paren">(</span><em class="sig-param">conn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.image_connection_state_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.image_connection_state_changed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">image_connection_state_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">conn</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.image_connection_state_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.image_connection_state_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Image Channel connection state is changed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -342,9 +342,9 @@ autoDownsample option to PyQtGraph.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.image.PyDMImageView.image_value_changed">
-<code class="sig-name descname">image_value_changed</code><span class="sig-paren">(</span><em class="sig-param">new_image</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.image_value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.image_value_changed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">image_value_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_image</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.image_value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.image_value_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Image Channel value is changed.</p>
 <p>We try to do as little as possible in this method, because it
 gets called every time the image channel updates, which might
@@ -357,9 +357,9 @@ a flag requesting that the image be redrawn.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.image.PyDMImageView.image_width_changed">
-<code class="sig-name descname">image_width_changed</code><span class="sig-paren">(</span><em class="sig-param">new_width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.image_width_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.image_width_changed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">image_width_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_width</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.image_width_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.image_width_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Image Width Channel value is changed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -368,13 +368,13 @@ a flag requesting that the image be redrawn.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.image.PyDMImageView.keyPressEvent">
-<code class="sig-name descname">keyPressEvent</code><span class="sig-paren">(</span><em class="sig-param">ev</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">keyPressEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ev</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.keyPressEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handle keypress events.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.image.PyDMImageView.maxRedrawRate">
 <code class="sig-name descname">maxRedrawRate</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.maxRedrawRate" title="Permalink to this definition">¶</a></dt>
 <dd><p>The maximum rate (in Hz) at which the plot will be redrawn.</p>
@@ -389,7 +389,7 @@ a flag requesting that the image be redrawn.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.image.PyDMImageView.normalizeData">
 <code class="sig-name descname">normalizeData</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.normalizeData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if the colors are relative to data maximum and minimum.</p>
@@ -403,9 +403,9 @@ a flag requesting that the image be redrawn.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.image.PyDMImageView.process_image">
-<code class="sig-name descname">process_image</code><span class="sig-paren">(</span><em class="sig-param">image</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.process_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.process_image" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">process_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.process_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.process_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Boilerplate method to be used by applications in order to
 add calculations and also modify the image before it is
 displayed at the widget.</p>
@@ -427,7 +427,7 @@ to QWidgets.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.image.PyDMImageView.readingOrder">
 <code class="sig-name descname">readingOrder</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.readingOrder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the reading order of the <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.imageChannel" title="pydm.widgets.image.PyDMImageView.imageChannel"><code class="xref py py-attr docutils literal notranslate"><span class="pre">imageChannel</span></code></a> array.</p>
@@ -441,14 +441,14 @@ to QWidgets.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.image.PyDMImageView.redrawImage">
 <code class="sig-name descname">redrawImage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.redrawImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.redrawImage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the image data into the ImageItem, if needed.</p>
 <p>If necessary, reshape the image to 2D first.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.image.PyDMImageView.scaleXAxis">
 <code class="sig-name descname">scaleXAxis</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.scaleXAxis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the scale for the X Axis.</p>
@@ -456,7 +456,7 @@ to QWidgets.</p>
 xAxisScale to 1/100 = 0.01 to make the X Axis report in millimeter units.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.image.PyDMImageView.scaleYAxis">
 <code class="sig-name descname">scaleYAxis</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.scaleYAxis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the scale for the Y Axis.</p>
@@ -464,9 +464,9 @@ xAxisScale to 1/100 = 0.01 to make the X Axis report in millimeter units.</p>
 yAxisScale to 1/100 = 0.01 to make the Y Axis report in millimeter units.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.image.PyDMImageView.setColorMap">
-<code class="sig-name descname">setColorMap</code><span class="sig-paren">(</span><em class="sig-param">cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.setColorMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setColorMap" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">setColorMap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.setColorMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setColorMap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the image colormap.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -475,9 +475,9 @@ yAxisScale to 1/100 = 0.01 to make the Y Axis report in millimeter units.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.image.PyDMImageView.setColorMapLimits">
-<code class="sig-name descname">setColorMapLimits</code><span class="sig-paren">(</span><em class="sig-param">mn</em>, <em class="sig-param">mx</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.setColorMapLimits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setColorMapLimits" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">setColorMapLimits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mn</span></em>, <em class="sig-param"><span class="n">mx</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.setColorMapLimits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setColorMapLimits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the limit values for the colormap.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -489,13 +489,13 @@ yAxisScale to 1/100 = 0.01 to make the Y Axis report in millimeter units.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.image.PyDMImageView.showAxes">
 <code class="sig-name descname">showAxes</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.showAxes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether or not axes should be shown on the widget.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.image.PyDMImageView.widget_ctx_menu">
 <code class="sig-name descname">widget_ctx_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.widget_ctx_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.widget_ctx_menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch the Widget specific context menu.</p>
@@ -511,7 +511,7 @@ yAxisScale to 1/100 = 0.01 to make the Y Axis report in millimeter units.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="pydm.widgets.image.PyDMImageView.widthChannel">
 <code class="sig-name descname">widthChannel</code><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.widthChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>The channel address in use for the image width .</p>

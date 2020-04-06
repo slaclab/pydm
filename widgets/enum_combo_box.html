@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMEnumComboBox &mdash; PyDM v1.9.0+19.g1d00f53b documentation</title>
+  <title>PyDMEnumComboBox &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+19.g1d00f53b
+                v1.9.0+22.gf66189f2
               </div>
             
           
@@ -201,9 +201,9 @@
             
   <div class="section" id="pydmenumcombobox">
 <h1>PyDMEnumComboBox<a class="headerlink" href="#pydmenumcombobox" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pydm.widgets.enum_combo_box.PyDMEnumComboBox">
-<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.enum_combo_box.</code><code class="sig-name descname">PyDMEnumComboBox</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.enum_combo_box.</code><code class="sig-name descname">PyDMEnumComboBox</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_channel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox" title="Permalink to this definition">¶</a></dt>
 <dd><p>A QComboBox with support for Channels and more from PyDM</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -220,9 +220,9 @@ by the user.</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_combo_box.PyDMEnumComboBox.addItem">
-<code class="sig-name descname">addItem</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">userData=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.addItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.addItem" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">addItem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">userData</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.addItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.addItem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds an item to the combobox.
 The item is appended to the list of existing items.</p>
 <dl class="field-list simple">
@@ -235,7 +235,7 @@ The item is appended to the list of existing items.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_combo_box.PyDMEnumComboBox.check_enable_state">
 <code class="sig-name descname">check_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.check_enable_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.check_enable_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether or not the widget should be disable.
@@ -243,9 +243,9 @@ This method also disables the widget and add a Tool Tip
 with the reason why it is disabled.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_combo_box.PyDMEnumComboBox.enum_strings_changed">
-<code class="sig-name descname">enum_strings_changed</code><span class="sig-paren">(</span><em class="sig-param">new_enum_strings</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.enum_strings_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.enum_strings_changed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">enum_strings_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_enum_strings</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.enum_strings_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.enum_strings_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel has new enum values.
 This callback also triggers a value_changed call so the
 new enum values to be broadcasted</p>
@@ -256,18 +256,18 @@ new enum values to be broadcasted</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_combo_box.PyDMEnumComboBox.internal_combo_box_activated_int">
-<code class="sig-name descname">internal_combo_box_activated_int</code><span class="sig-paren">(</span><em class="sig-param">index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.internal_combo_box_activated_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.internal_combo_box_activated_int" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">internal_combo_box_activated_int</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.internal_combo_box_activated_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.internal_combo_box_activated_int" title="Permalink to this definition">¶</a></dt>
 <dd><p>PyQT Slot for when the user chooses an item in the combobox.
 This slot triggers the <code class="docutils literal notranslate"><span class="pre">`send_value_signal`</span></code>.
 :param index:
 :type index: int</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_combo_box.PyDMEnumComboBox.setItemText">
-<code class="sig-name descname">setItemText</code><span class="sig-paren">(</span><em class="sig-param">index</em>, <em class="sig-param">text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.setItemText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.setItemText" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">setItemText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.setItemText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.setItemText" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the text for the item on the given index in the combobox.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -279,9 +279,9 @@ This slot triggers the <code class="docutils literal notranslate"><span class="p
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_combo_box.PyDMEnumComboBox.set_items">
-<code class="sig-name descname">set_items</code><span class="sig-paren">(</span><em class="sig-param">enums</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.set_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.set_items" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_items</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">enums</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.set_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.set_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Internal method to fill the ComboBox items based on a list
 of strings.</p>
 <dl class="field-list simple">
@@ -291,9 +291,9 @@ of strings.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.enum_combo_box.PyDMEnumComboBox.value_changed">
-<code class="sig-name descname">value_changed</code><span class="sig-paren">(</span><em class="sig-param">new_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.value_changed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">value_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_val</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_combo_box.html#PyDMEnumComboBox.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_combo_box.PyDMEnumComboBox.value_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel value is changed.
 Sets the value of new_value accordingly at the ComboBox.</p>
 <dl class="field-list simple">

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMLineEdit &mdash; PyDM v1.9.0+19.g1d00f53b documentation</title>
+  <title>PyDMLineEdit &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+19.g1d00f53b
+                v1.9.0+22.gf66189f2
               </div>
             
           
@@ -201,17 +201,17 @@
             
   <div class="section" id="pydmlineedit">
 <h1>PyDMLineEdit<a class="headerlink" href="#pydmlineedit" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pydm.widgets.line_edit.PyDMLineEdit">
-<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.line_edit.</code><code class="sig-name descname">PyDMLineEdit</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">init_channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="class">
+<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.line_edit.</code><code class="sig-name descname">PyDMLineEdit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_channel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py class">
 <dt id="pydm.widgets.line_edit.PyDMLineEdit.DisplayFormat">
 <em class="property">class </em><code class="sig-name descname">DisplayFormat</code><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.DisplayFormat" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.line_edit.PyDMLineEdit.apply_conversion">
-<code class="sig-name descname">apply_conversion</code><span class="sig-paren">(</span><em class="sig-param">unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.apply_conversion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.apply_conversion" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">apply_conversion</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">unit</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.apply_conversion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.apply_conversion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the current unit to a different one</p>
 <p>This function will attempt to find a scalar to convert the current
 unit type to the desired one and reset the display with the new
@@ -223,7 +223,7 @@ conversion.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.line_edit.PyDMLineEdit.create_unit_options">
 <code class="sig-name descname">create_unit_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.create_unit_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.create_unit_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the menu for displaying possible unit values</p>
@@ -234,15 +234,15 @@ the <code class="xref py py-func docutils literal notranslate"><span class="pre"
 the user that there are no available conversions</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.line_edit.PyDMLineEdit.focusOutEvent">
-<code class="sig-name descname">focusOutEvent</code><span class="sig-paren">(</span><em class="sig-param">event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.focusOutEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.focusOutEvent" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">focusOutEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.focusOutEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.focusOutEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overwrites the function called when a user leaves a PyDMLineEdit
 without pressing return.  Resets the value of the text field to the
 current channel value.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.line_edit.PyDMLineEdit.send_value">
 <code class="sig-name descname">send_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.send_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.send_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Emit a <code class="xref py py-attr docutils literal notranslate"><span class="pre">send_value_signal</span></code> to update channel value.</p>
@@ -251,7 +251,7 @@ before being sent back to the channel. This function is attached the
 ReturnPressed signal of the PyDMLineEdit</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.line_edit.PyDMLineEdit.set_display">
 <code class="sig-name descname">set_display</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.set_display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.set_display" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the text display of the PyDMLineEdit.</p>
@@ -261,18 +261,18 @@ format, and the current units. If the user is currently entering a
 value in the PyDMLineEdit the text will not be changed.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.line_edit.PyDMLineEdit.unit_changed">
-<code class="sig-name descname">unit_changed</code><span class="sig-paren">(</span><em class="sig-param">new_unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.unit_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.unit_changed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">unit_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_unit</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.unit_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.unit_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accept a unit to display with a channel’s value</p>
 <p>The unit may or may not be displayed based on the <code class="xref py py-attr docutils literal notranslate"><span class="pre">showUnits</span></code>
 attribute. Receiving a new value for the unit causes the display to
 reset.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.line_edit.PyDMLineEdit.value_changed">
-<code class="sig-name descname">value_changed</code><span class="sig-paren">(</span><em class="sig-param">new_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.value_changed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">value_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_val</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.value_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Receive and update the PyDMLineEdit for a new channel value</p>
 <p>The actual value of the input is saved as well as the type received.
 This also resets the PyDMLineEdit display text using
@@ -284,7 +284,7 @@ This also resets the PyDMLineEdit display text using
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.line_edit.PyDMLineEdit.widget_ctx_menu">
 <code class="sig-name descname">widget_ctx_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.widget_ctx_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.widget_ctx_menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch the Widget specific context menu which will be populated with additional tools by <cite>assemble_tools_menu</cite>.</p>
@@ -298,9 +298,9 @@ This also resets the PyDMLineEdit display text using
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pydm.widgets.line_edit.PyDMLineEdit.write_access_changed">
-<code class="sig-name descname">write_access_changed</code><span class="sig-paren">(</span><em class="sig-param">new_write_access</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.write_access_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.write_access_changed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_access_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_write_access</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.write_access_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.write_access_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change the PyDMLineEdit to read only if write access is denied</p>
 </dd></dl>
 
