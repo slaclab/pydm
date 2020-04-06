@@ -19,7 +19,7 @@ echo "unset PYQTDESIGNERPATH" >> $DEACTIVATE.sh
 
 echo '@echo OFF' >> $ACTIVATE.bat
 echo 'IF "%PYQTDESIGNERPATH%" == "" (' >> $ACTIVATE.bat
-echo 'set PYQTDESIGNERPATH=%CONDA_PREFIX%\etc\pydm;' >> $ACTIVATE.bat
+echo 'set PYQTDESIGNERPATH=%CONDA_PREFIX%\etc\pydm' >> $ACTIVATE.bat
 echo ')ELSE (' >> $ACTIVATE.bat
 echo 'set PYQTDESIGNERPATH=%CONDA_PREFIX%\etc\pydm;%PYQTDESIGNERPATH%' >> $ACTIVATE.bat
 echo ')' >> $ACTIVATE.bat
