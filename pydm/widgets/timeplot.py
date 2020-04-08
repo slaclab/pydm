@@ -124,9 +124,10 @@ class TimePlotCurveItem(BasePlotCurveItem):
         Get the minimum y-value so far in the same plot. This is useful to
         scale the y-axis for a selected curve.
 
-        Returns : float
+        Returns
         -------
-        The minimum y-value collected so far for this current curve.
+        float
+            The minimum y-value collected so far for this current curve.
         """
         return self._min_y_value
 
