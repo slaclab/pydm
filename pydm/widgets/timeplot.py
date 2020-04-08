@@ -162,11 +162,14 @@ class TimePlotCurveItem(BasePlotCurveItem):
         For Asynchronous, write the new value into a temporary (buffered)
         variable, which will be written to the data buffer when asyncUpdate
         is called.
+        
+        This method is usually called by a PyDMChannel when it updates.  You
+        can call it yourself to inject data into the curve.
 
         Parameters
         ----------
         new_value : float
-            The new y-value just available.
+            The new y-value.
         """
         self.update_min_max_y_values(new_value)
 

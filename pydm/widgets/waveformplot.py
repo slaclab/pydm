@@ -187,7 +187,14 @@ class WaveformCurveItem(BasePlotCurveItem):
     @Slot(np.ndarray)
     def receiveXWaveform(self, new_waveform):
         """
-        Handler for new x waveform data.
+        Handler for new x waveform data.  This method is usually called by a
+        PyDMChannel when it updates.  You can call this yourself to inject data
+        into the curve.
+        
+        Parameters
+        ----------
+        new_waveform: numpy.ndarray
+            A new array values for the X axis.
         """
         if new_waveform is None:
             return
@@ -203,7 +210,14 @@ class WaveformCurveItem(BasePlotCurveItem):
     @Slot(np.ndarray)
     def receiveYWaveform(self, new_waveform):
         """
-        Handler for new y waveform data.
+        Handler for new y waveform data.  This method is usually called by a
+        PyDMChannel when it updates.  You can call this yourself to inject data
+        into the curve.
+        
+        Parameters
+        ----------
+        new_waveform: numpy.ndarray
+            A new array values for the Y axis.
         """
         if new_waveform is None:
             return
