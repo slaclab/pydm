@@ -20,13 +20,13 @@ class WaveformCurveItem(BasePlotCurveItem):
 
     Parameters
     ----------
-    y_addr : str, optional
+    y_addr: str, optional
         The address to waveform data for the Y axis.
         Curves must have Y data to plot.
-    x_addr : str, optional
+    x_addr: str, optional
         The address to waveform data for the X axis.
         If None, the curve will plot Y data vs. the Y index.
-    color : QColor, optional
+    color: QColor, optional
         The color used to draw the curve line and the symbols.
     lineStyle: int, optional
         Style of the line connecting the data points.
@@ -36,14 +36,11 @@ class WaveformCurveItem(BasePlotCurveItem):
         Width of the line connecting the data points.
     redraw_mode: int, optional
         Must be one four values:
-        WaveformCurveItem.REDRAW_ON_EITHER: (Default)
-            Redraw after either X or Y receives new data.
-        WaveformCurveItem.REDRAW_ON_X:
-            Redraw after X receives new data.
-        WaveformCurveItem.REDRAW_ON_Y:
-            Redraw after Y receives new data.
-        WaveformCurveItem.REDRAW_ON_BOTH:
-            Redraw after both X and Y receive new data.
+        
+        - WaveformCurveItem.REDRAW_ON_EITHER: (Default) Redraw after either X or Y receives new data.
+        - WaveformCurveItem.REDRAW_ON_X: Redraw after X receives new data.
+        - WaveformCurveItem.REDRAW_ON_Y: Redraw after Y receives new data.
+        - WaveformCurveItem.REDRAW_ON_BOTH: Redraw after both X and Y receive new data.
     **kargs: optional
         PlotDataItem keyword arguments, such as symbol and symbolSize.
     """
@@ -190,7 +187,14 @@ class WaveformCurveItem(BasePlotCurveItem):
     @Slot(np.ndarray)
     def receiveXWaveform(self, new_waveform):
         """
-        Handler for new x waveform data.
+        Handler for new x waveform data.  This method is usually called by a
+        PyDMChannel when it updates.  You can call this yourself to inject data
+        into the curve.
+        
+        Parameters
+        ----------
+        new_waveform: numpy.ndarray
+            A new array values for the X axis.
         """
         if new_waveform is None:
             return
@@ -206,7 +210,14 @@ class WaveformCurveItem(BasePlotCurveItem):
     @Slot(np.ndarray)
     def receiveYWaveform(self, new_waveform):
         """
-        Handler for new y waveform data.
+        Handler for new y waveform data.  This method is usually called by a
+        PyDMChannel when it updates.  You can call this yourself to inject data
+        into the curve.
+        
+        Parameters
+        ----------
+        new_waveform: numpy.ndarray
+            A new array values for the Y axis.
         """
         if new_waveform is None:
             return
