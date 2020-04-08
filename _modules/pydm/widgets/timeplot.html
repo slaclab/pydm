@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.timeplot &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
+  <title>pydm.widgets.timeplot &mdash; PyDM v1.9.0+27.gd5b082fd documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.9.0+22.gf66189f2
+                v1.9.0+27.gd5b082fd
               </div>
             
           
@@ -201,7 +201,7 @@
 <span class="n">DEFAULT_UPDATE_INTERVAL</span> <span class="o">=</span> <span class="mi">100</span>
 
 
-<span class="k">class</span> <span class="nc">TimePlotCurveItem</span><span class="p">(</span><span class="n">BasePlotCurveItem</span><span class="p">):</span>
+<div class="viewcode-block" id="TimePlotCurveItem"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem">[docs]</a><span class="k">class</span> <span class="nc">TimePlotCurveItem</span><span class="p">(</span><span class="n">BasePlotCurveItem</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    TimePlotCurveItem represents a single curve in a time plot.</span>
 
@@ -267,10 +267,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">channel_address</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TimePlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TimePlotCurveItem.to_dict"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dic_</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s2">&quot;channel&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">),</span> <span class="p">])</span>
         <span class="n">dic_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">TimePlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">dic_</span>
+        <span class="k">return</span> <span class="n">dic_</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -302,9 +302,10 @@
 <span class="sd">        Get the minimum y-value so far in the same plot. This is useful to</span>
 <span class="sd">        scale the y-axis for a selected curve.</span>
 
-<span class="sd">        Returns : float</span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        The minimum y-value collected so far for this current curve.</span>
+<span class="sd">        float</span>
+<span class="sd">            The minimum y-value collected so far for this current curve.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_y_value</span>
 
@@ -328,7 +329,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">latest_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<div class="viewcode-block" id="TimePlotCurveItem.receiveNewValue"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem.receiveNewValue">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">receiveNewValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -339,11 +340,14 @@
 <span class="sd">        For Asynchronous, write the new value into a temporary (buffered)</span>
 <span class="sd">        variable, which will be written to the data buffer when asyncUpdate</span>
 <span class="sd">        is called.</span>
+<span class="sd">        </span>
+<span class="sd">        This method is usually called by a PyDMChannel when it updates.  You</span>
+<span class="sd">        can call it yourself to inject data into the curve.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        new_value : float</span>
-<span class="sd">            The new y-value just available.</span>
+<span class="sd">            The new y-value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_min_max_y_values</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span>
 
@@ -358,9 +362,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_mode</span> <span class="o">==</span> <span class="n">PyDMTimePlot</span><span class="o">.</span><span class="n">AsynchronousMode</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">latest_value</span> <span class="o">=</span> <span class="n">new_value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latest_value</span> <span class="o">=</span> <span class="n">new_value</span></div>
 
-    <span class="nd">@Slot</span><span class="p">()</span>
+<div class="viewcode-block" id="TimePlotCurveItem.asyncUpdate"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem.asyncUpdate">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">asyncUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates the latest data read from the buffered variable into the data</span>
@@ -374,9 +378,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_value</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">update_min_max_y_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+<div class="viewcode-block" id="TimePlotCurveItem.update_min_max_y_values"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem.update_min_max_y_values">[docs]</a>    <span class="k">def</span> <span class="nf">update_min_max_y_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updte the min and max y-value as a new value is available. This is</span>
 <span class="sd">        useful for auto-scaling to a specific curve.</span>
@@ -391,9 +395,9 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_y_value</span> <span class="o">&gt;</span> <span class="n">new_value</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_min_y_value</span> <span class="o">=</span> <span class="n">new_value</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_y_value</span> <span class="o">&lt;</span> <span class="n">new_value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_max_y_value</span> <span class="o">=</span> <span class="n">new_value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max_y_value</span> <span class="o">=</span> <span class="n">new_value</span></div>
 
-    <span class="k">def</span> <span class="nf">initialize_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TimePlotCurveItem.initialize_buffer"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem.initialize_buffer">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the data buffer used to plot the current curve.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -403,7 +407,7 @@
         <span class="c1"># resolution for the timestamp data.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">),</span>
                                     <span class="n">order</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span></div>
 
     <span class="k">def</span> <span class="nf">getBufferSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">)</span>
@@ -418,7 +422,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">=</span> <span class="n">DEFAULT_BUFFER_SIZE</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">initialize_buffer</span><span class="p">()</span>
 
-    <span class="nd">@Slot</span><span class="p">()</span>
+<div class="viewcode-block" id="TimePlotCurveItem.redrawCurve"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem.redrawCurve">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">redrawCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Redraw the curve with the new data.</span>
@@ -439,7 +443,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">ZeroDivisionError</span><span class="p">,</span> <span class="ne">OverflowError</span><span class="p">):</span>
             <span class="c1"># Solve an issue with pyqtgraph and initial downsampling</span>
-            <span class="k">pass</span>
+            <span class="k">pass</span></div>
 
     <span class="k">def</span> <span class="nf">setUpdatesAsynchronously</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
@@ -452,7 +456,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_mode</span> <span class="o">=</span> <span class="n">PyDMTimePlot</span><span class="o">.</span><span class="n">SynchronousMode</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initialize_buffer</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">max_x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TimePlotCurveItem.max_x"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem.max_x">[docs]</a>    <span class="k">def</span> <span class="nf">max_x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Provide the the most recent timestamp accumulated from the data buffer.</span>
 <span class="sd">        This is useful for scaling the x-axis.</span>
@@ -462,10 +466,10 @@
 <span class="sd">        float</span>
 <span class="sd">            The timestamp of the most recent data point recorded into the data buffer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
     <span class="k">def</span> <span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="PyDMTimePlot"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot">[docs]</a><span class="k">class</span> <span class="nc">PyDMTimePlot</span><span class="p">(</span><span class="n">BasePlot</span><span class="p">):</span>

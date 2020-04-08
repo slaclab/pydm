@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMWaveformPlot &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
+  <title>PyDMWaveformPlot &mdash; PyDM v1.9.0+27.gd5b082fd documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+22.gf66189f2
+                v1.9.0+27.gd5b082fd
               </div>
             
           
@@ -342,7 +342,7 @@ Called by curves when they get new data.</p>
 <dd><p>Remove a curve from the plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>curve</strong> (<em>WaveformCurveItem</em>) – The curve to remove.</p>
+<dd class="field-odd"><p><strong>curve</strong> (<a class="reference internal" href="#pydm.widgets.waveformplot.WaveformCurveItem" title="pydm.widgets.waveformplot.WaveformCurveItem"><em>WaveformCurveItem</em></a>) – The curve to remove.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -369,6 +369,140 @@ not this method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_list</strong> (<em>list</em>) – A list of json strings representing each curve in the plot.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.waveformplot.WaveformCurveItem">
+<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.waveformplot.</code><code class="sig-name descname">WaveformCurveItem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_addr</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x_addr</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">redraw_mode</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kws</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#WaveformCurveItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>WaveformCurveItem represents a single curve in a waveform plot.</p>
+<p>It can be used to plot one waveform vs. its indices, or one waveform
+vs. another.  In addition to the parameters listed below,
+WaveformCurveItem accepts keyword arguments for all plot options that
+pyqtgraph.PlotDataItem accepts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_addr</strong> (<em>str</em><em>, </em><em>optional</em>) – The address to waveform data for the Y axis.
+Curves must have Y data to plot.</p></li>
+<li><p><strong>x_addr</strong> (<em>str</em><em>, </em><em>optional</em>) – The address to waveform data for the X axis.
+If None, the curve will plot Y data vs. the Y index.</p></li>
+<li><p><strong>color</strong> (<em>QColor</em><em>, </em><em>optional</em>) – The color used to draw the curve line and the symbols.</p></li>
+<li><p><strong>lineStyle</strong> (<em>int</em><em>, </em><em>optional</em>) – Style of the line connecting the data points.
+Must be a value from the Qt::PenStyle enum
+(see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).</p></li>
+<li><p><strong>lineWidth</strong> (<em>int</em><em>, </em><em>optional</em>) – Width of the line connecting the data points.</p></li>
+<li><p><strong>redraw_mode</strong> (<em>int</em><em>, </em><em>optional</em>) – <p>Must be one four values:</p>
+<ul>
+<li><p>WaveformCurveItem.REDRAW_ON_EITHER: (Default) Redraw after either X or Y receives new data.</p></li>
+<li><p>WaveformCurveItem.REDRAW_ON_X: Redraw after X receives new data.</p></li>
+<li><p>WaveformCurveItem.REDRAW_ON_Y: Redraw after Y receives new data.</p></li>
+<li><p>WaveformCurveItem.REDRAW_ON_BOTH: Redraw after both X and Y receive new data.</p></li>
+</ul>
+</p></li>
+<li><p><strong>**kargs</strong> (<em>optional</em>) – PlotDataItem keyword arguments, such as symbol and symbolSize.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pydm.widgets.waveformplot.WaveformCurveItem.limits">
+<code class="sig-name descname">limits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#WaveformCurveItem.limits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem.limits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Limits of the data for this curve.
+Returns a nested tuple of limits: ((xmin, xmax), (ymin, ymax))</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.waveformplot.WaveformCurveItem.receiveXWaveform">
+<code class="sig-name descname">receiveXWaveform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_waveform</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#WaveformCurveItem.receiveXWaveform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem.receiveXWaveform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for new x waveform data.  This method is usually called by a
+PyDMChannel when it updates.  You can call this yourself to inject data
+into the curve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_waveform</strong> (<em>numpy.ndarray</em>) – A new array values for the X axis.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.waveformplot.WaveformCurveItem.receiveYWaveform">
+<code class="sig-name descname">receiveYWaveform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_waveform</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#WaveformCurveItem.receiveYWaveform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem.receiveYWaveform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for new y waveform data.  This method is usually called by a
+PyDMChannel when it updates.  You can call this yourself to inject data
+into the curve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_waveform</strong> (<em>numpy.ndarray</em>) – A new array values for the Y axis.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.waveformplot.WaveformCurveItem.redrawCurve">
+<code class="sig-name descname">redrawCurve</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#WaveformCurveItem.redrawCurve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem.redrawCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called by the curve’s parent plot whenever the curve needs to be
+re-drawn with new data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.waveformplot.WaveformCurveItem.to_dict">
+<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#WaveformCurveItem.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an OrderedDict representation with values for all properties
+needed to recreate this curve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>OrderedDict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.waveformplot.WaveformCurveItem.update_waveforms_if_ready">
+<code class="sig-name descname">update_waveforms_if_ready</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#WaveformCurveItem.update_waveforms_if_ready"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem.update_waveforms_if_ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is called whenever new waveform data is received for X or Y.
+Based on the value of the redraw_mode attribute, it decides whether
+the data_changed signal will be emitted.  The data_changed signal
+is used by the plot that owns this curve to request a redraw.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.waveformplot.WaveformCurveItem.x_address">
+<em class="property">property </em><code class="sig-name descname">x_address</code><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem.x_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>The address of the channel used to get the x axis waveform data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.waveformplot.WaveformCurveItem.y_address">
+<em class="property">property </em><code class="sig-name descname">y_address</code><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem.y_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>The address of the channel used to get the y axis waveform data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>

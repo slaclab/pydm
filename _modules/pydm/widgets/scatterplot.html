@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.scatterplot &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
+  <title>pydm.widgets.scatterplot &mdash; PyDM v1.9.0+27.gd5b082fd documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.9.0+22.gf66189f2
+                v1.9.0+27.gd5b082fd
               </div>
             
           
@@ -186,7 +186,7 @@
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">PyDMChannel</span>
 <span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="n">remove_protocol</span>
 
-<span class="k">class</span> <span class="nc">ScatterPlotCurveItem</span><span class="p">(</span><span class="n">BasePlotCurveItem</span><span class="p">):</span>
+<div class="viewcode-block" id="ScatterPlotCurveItem"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.ScatterPlotCurveItem">[docs]</a><span class="k">class</span> <span class="nc">ScatterPlotCurveItem</span><span class="p">(</span><span class="n">BasePlotCurveItem</span><span class="p">):</span>
     <span class="n">_channels</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;x_channel&#39;</span><span class="p">,</span> <span class="s1">&#39;y_channel&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_addr</span><span class="p">,</span> <span class="n">x_addr</span><span class="p">,</span> <span class="n">redraw_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
@@ -220,21 +220,22 @@
             <span class="n">kws</span><span class="p">[</span><span class="s1">&#39;lineStyle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">NoPen</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ScatterPlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ScatterPlotCurveItem.to_dict"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.ScatterPlotCurveItem.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns an OrderedDict representation with values for all properties</span>
-<span class="sd">        needed to recreate this curve.</span>
+<span class="sd">        Serialize this curve into a dictionary.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        OrderedDict</span>
+<span class="sd">            Representation with values for all properties</span>
+<span class="sd">            needed to recreate this curve.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dic_</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s2">&quot;y_channel&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_address</span><span class="p">),</span>
                             <span class="p">(</span><span class="s2">&quot;x_channel&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_address</span><span class="p">)])</span>
         <span class="n">dic_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">ScatterPlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
         <span class="n">dic_</span><span class="p">[</span><span class="s2">&quot;redraw_mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_mode</span>
         <span class="n">dic_</span><span class="p">[</span><span class="s1">&#39;buffer_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getBufferSize</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">dic_</span>
+        <span class="k">return</span> <span class="n">dic_</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">x_address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -244,6 +245,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
+<span class="sd">            The address of the channel used to get the x axis data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -274,6 +276,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
+<span class="sd">            The address of the channel used to get the y axis data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -304,31 +307,43 @@
     <span class="k">def</span> <span class="nf">yConnectionStateChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_connected</span> <span class="o">=</span> <span class="n">connected</span>
 
-    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<div class="viewcode-block" id="ScatterPlotCurveItem.receiveXValue"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.ScatterPlotCurveItem.receiveXValue">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">receiveXValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_x</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handler for new x data.</span>
+<span class="sd">        Handler for new x data.  This method is usually called by a PyDMChannel</span>
+<span class="sd">        when it updates.  You can call this yourself to inject data into the curve.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_x: numpy.ndarray</span>
+<span class="sd">            A new array values for the X axis.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">latest_x_value</span> <span class="o">=</span> <span class="n">new_x</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_x</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_buffer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_buffer</span><span class="p">()</span></div>
 
-    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<div class="viewcode-block" id="ScatterPlotCurveItem.receiveYValue"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.ScatterPlotCurveItem.receiveYValue">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">receiveYValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_y</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handler for new y data.</span>
+<span class="sd">        Handler for new y data.  This method is usually called by a PyDMChannel</span>
+<span class="sd">        when it updates.  You can call this yourself to inject data into the curve.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_y: numpy.ndarray</span>
+<span class="sd">            A new array values for the Y axis.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">latest_y_value</span> <span class="o">=</span> <span class="n">new_y</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_y</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_buffer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_buffer</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">update_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ScatterPlotCurveItem.update_buffer"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.ScatterPlotCurveItem.update_buffer">[docs]</a>    <span class="k">def</span> <span class="nf">update_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called whenever new data is received for X or Y.</span>
 <span class="sd">        Based on the value of the redraw_mode attribute, it decides whether</span>
@@ -363,7 +378,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_y_value</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">initialize_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">=</span> <span class="mi">0</span>
@@ -383,7 +398,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">=</span> <span class="mi">1200</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">initialize_buffer</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">redrawCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ScatterPlotCurveItem.redrawCurve"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.ScatterPlotCurveItem.redrawCurve">[docs]</a>    <span class="k">def</span> <span class="nf">redrawCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called by the curve&#39;s parent plot whenever the curve needs to be</span>
 <span class="sd">        re-drawn with new data.</span>
@@ -391,26 +406,26 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">),</span>
                      <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_x</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_y</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_y</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-    <span class="k">def</span> <span class="nf">limits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ScatterPlotCurveItem.limits"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.ScatterPlotCurveItem.limits">[docs]</a>    <span class="k">def</span> <span class="nf">limits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Limits of the data for this curve.</span>
-<span class="sd">        Returns a nested tuple of limits: ((xmin, xmax), (ymin, ymax))</span>
+<span class="sd">        Get the limits of the data for this curve.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        tuple</span>
+<span class="sd">            A nested tuple of limits: ((xmin, xmax), (ymin, ymax))</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">NoDataError</span><span class="p">(</span><span class="s2">&quot;Curve has no data, cannot determine limits.&quot;</span><span class="p">)</span>
         <span class="n">x_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span>
         <span class="n">y_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span>
         <span class="k">return</span> <span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">x_data</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">x_data</span><span class="p">))),</span>
-                <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">y_data</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">y_data</span><span class="p">))))</span>
+                <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">y_data</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">y_data</span><span class="p">))))</span></div>
 
     <span class="k">def</span> <span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">y_channel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_channel</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">y_channel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_channel</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="PyDMScatterPlot"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.PyDMScatterPlot">[docs]</a><span class="k">class</span> <span class="nc">PyDMScatterPlot</span><span class="p">(</span><span class="n">BasePlot</span><span class="p">):</span>

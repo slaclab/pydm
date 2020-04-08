@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMTimePlot &mdash; PyDM v1.9.0+22.gf66189f2 documentation</title>
+  <title>PyDMTimePlot &mdash; PyDM v1.9.0+27.gd5b082fd documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+22.gf66189f2
+                v1.9.0+27.gd5b082fd
               </div>
             
           
@@ -222,7 +222,7 @@ pyqtgraph.mkColor will accept.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>item</strong> (<em>TimePlotCurveItem</em>) – A curve being plotted in the graph</p></li>
+<li><p><strong>item</strong> (<a class="reference internal" href="#pydm.widgets.timeplot.TimePlotCurveItem" title="pydm.widgets.timeplot.TimePlotCurveItem"><em>TimePlotCurveItem</em></a>) – A curve being plotted in the graph</p></li>
 <li><p><strong>pv_name</strong> (<em>str</em>) – The PV channel</p></li>
 <li><p><strong>force_show_legend</strong> (<em>bool</em>) – True to make the legend to be displayed; False to just add the
 item, but do not display the legend.</p></li>
@@ -252,7 +252,7 @@ triangle, star, etc.</p></li>
 <dd class="field-even"><p><strong>new_curve</strong> – The newly created curve.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>TimePlotCurveItem</p>
+<dd class="field-odd"><p><a class="reference internal" href="#pydm.widgets.timeplot.TimePlotCurveItem" title="pydm.widgets.timeplot.TimePlotCurveItem">TimePlotCurveItem</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -331,7 +331,7 @@ settings</p>
 <dd class="field-even"><p><strong>curve</strong> – The found curve, or None.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>TimePlotCurveItem</p>
+<dd class="field-odd"><p><a class="reference internal" href="#pydm.widgets.timeplot.TimePlotCurveItem" title="pydm.widgets.timeplot.TimePlotCurveItem">TimePlotCurveItem</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -422,7 +422,7 @@ that curve, which could have been updated with a new symbol, line
 style, line width, etc.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>curve</strong> (<em>TimePlotCurveItem</em>) – The curve to be re-added.</p>
+<dd class="field-odd"><p><strong>curve</strong> (<a class="reference internal" href="#pydm.widgets.timeplot.TimePlotCurveItem" title="pydm.widgets.timeplot.TimePlotCurveItem"><em>TimePlotCurveItem</em></a>) – The curve to be re-added.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -445,7 +445,7 @@ style, line width, etc.</p>
 associated with the curve.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>curve</strong> (<em>TimePlotCurveItem</em>) – The curve to be removed.</p>
+<dd class="field-odd"><p><strong>curve</strong> (<a class="reference internal" href="#pydm.widgets.timeplot.TimePlotCurveItem" title="pydm.widgets.timeplot.TimePlotCurveItem"><em>TimePlotCurveItem</em></a>) – The curve to be removed.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -570,6 +570,146 @@ edge.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>update_immediately</strong> (<em>bool</em>) – Update the axis range(s) immediately if True, or defer until the
 next rendering.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.timeplot.TimePlotCurveItem">
+<em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.timeplot.</code><code class="sig-name descname">TimePlotCurveItem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">channel_address</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plot_by_timestamps</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kws</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#TimePlotCurveItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>TimePlotCurveItem represents a single curve in a time plot.</p>
+<p>It is used to plot a scalar value vs. time.  In addition to the parameters
+listed below, TimePlotCurveItem accepts keyword arguments for all plot
+options that pyqtgraph.PlotDataItem accepts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>channel_address</strong> (<em>str</em>) – The address to of the scalar data to plot.</p></li>
+<li><p><strong>plot_by_timestamps</strong> (<em>bool</em>) – If True, the x-axis shows timestamps as ticks, and those timestamps
+scroll to the left as time progresses.  If False, the x-axis tick marks
+show time relative to the current time.</p></li>
+<li><p><strong>color</strong> (<em>QColor</em><em>, </em><em>optional</em>) – The color used to draw the curve line and the symbols.</p></li>
+<li><p><strong>lineStyle</strong> (<em>int</em><em>, </em><em>optional</em>) – Style of the line connecting the data points.
+Must be a value from the Qt::PenStyle enum
+(see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).</p></li>
+<li><p><strong>lineWidth</strong> (<em>int</em><em>, </em><em>optional</em>) – Width of the line connecting the data points.</p></li>
+<li><p><strong>**kws</strong> (<em>dict</em>) – Additional parameters supported by pyqtgraph.PlotDataItem,
+like ‘symbol’ and ‘symbolSize’.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pydm.widgets.timeplot.TimePlotCurveItem.asyncUpdate">
+<code class="sig-name descname">asyncUpdate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#TimePlotCurveItem.asyncUpdate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.asyncUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the latest data read from the buffered variable into the data
+buffer, together with the timestamp when this happens. Also increments
+the accumulated point counter.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.timeplot.TimePlotCurveItem.initialize_buffer">
+<code class="sig-name descname">initialize_buffer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#TimePlotCurveItem.initialize_buffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.initialize_buffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the data buffer used to plot the current curve.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.timeplot.TimePlotCurveItem.maxY">
+<em class="property">property </em><code class="sig-name descname">maxY</code><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.maxY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the maximum y-value so far in the same plot. This is useful to
+scale the y-axis for a selected curve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The maximum y-value collected so far for this current curve.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.timeplot.TimePlotCurveItem.max_x">
+<code class="sig-name descname">max_x</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#TimePlotCurveItem.max_x"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.max_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide the the most recent timestamp accumulated from the data buffer.
+This is useful for scaling the x-axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The timestamp of the most recent data point recorded into the data buffer.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.timeplot.TimePlotCurveItem.minY">
+<em class="property">property </em><code class="sig-name descname">minY</code><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.minY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the minimum y-value so far in the same plot. This is useful to
+scale the y-axis for a selected curve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The minimum y-value collected so far for this current curve.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.timeplot.TimePlotCurveItem.receiveNewValue">
+<code class="sig-name descname">receiveNewValue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#TimePlotCurveItem.receiveNewValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.receiveNewValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate and fill the data buffer when a new value is available.</p>
+<p>For Synchronous mode, write the new value into the data buffer
+immediately, and increment the accumulated point counter.
+For Asynchronous, write the new value into a temporary (buffered)
+variable, which will be written to the data buffer when asyncUpdate
+is called.</p>
+<p>This method is usually called by a PyDMChannel when it updates.  You
+can call it yourself to inject data into the curve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_value</strong> (<em>float</em>) – The new y-value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.timeplot.TimePlotCurveItem.redrawCurve">
+<code class="sig-name descname">redrawCurve</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#TimePlotCurveItem.redrawCurve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.redrawCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Redraw the curve with the new data.</p>
+<p>If plot by timestamps, plot the x-axis with the timestamps as the ticks.</p>
+<p>On the other hand, if plot by relative time, take the time diff from
+the starting time of the curve, and plot the data to the time diff
+position on the x-axis.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.timeplot.TimePlotCurveItem.to_dict">
+<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#TimePlotCurveItem.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an OrderedDict representation with values for all properties
+needed to recreate this curve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>OrderedDict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.timeplot.TimePlotCurveItem.update_min_max_y_values">
+<code class="sig-name descname">update_min_max_y_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#TimePlotCurveItem.update_min_max_y_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.update_min_max_y_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updte the min and max y-value as a new value is available. This is
+useful for auto-scaling to a specific curve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_value</strong> (<em>float</em>) – The new y-value just available.</p>
 </dd>
 </dl>
 </dd></dl>
