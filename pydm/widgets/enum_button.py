@@ -131,7 +131,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
             self.rebuild_layout()
 
     @Property(int)
-    def margin_top(self):
+    def marginTop(self):
         """
         The top margin of the QGridLayout of buttons.
 
@@ -141,8 +141,8 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         """
         return self._layout_margins.top()
 
-    @margin_top.setter
-    def margin_top(self, new_margin):
+    @marginTop.setter
+    def marginTop(self, new_margin):
         """
         Set the top margin of the QGridLayout of buttons.
 
