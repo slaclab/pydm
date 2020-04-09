@@ -251,7 +251,6 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         if new_spacing != self._layout_spacing_horizontal:
             self._layout_spacing_horizontal = new_spacing
             self.layout().setHorizontalSpacing(new_spacing)
-            self.rebuild_layout()
 
     @Property(int)
     def verticalSpacing(self):
@@ -277,7 +276,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         if new_spacing != self._layout_spacing_vertical:
             self._layout_spacing_vertical = new_spacing
             self.layout().setVerticalSpacing(new_spacing)
-            self.rebuild_layout()
+
     @Property(bool)
     def checkable(self):
         """
