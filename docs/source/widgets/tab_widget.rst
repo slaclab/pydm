@@ -33,3 +33,5 @@ API Documentation
 
 .. autoclass:: pydm.widgets.tab_bar.PyDMTabWidget
    :members:
+   :inherited-members:
+   :show-inheritance:
