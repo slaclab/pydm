@@ -197,7 +197,8 @@ class PyDMPrimitiveWidget(object):
             self._rules = new_rules
             try:
                 rules_list = json.loads(self._rules)
-                RulesDispatcher().register(self, rules_list)
+                if rules_list:
+                    RulesDispatcher().register(self, rules_list)
             except JSONDecodeError as ex:
                 logger.exception('Invalid format for Rules')
 

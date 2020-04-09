@@ -1,0 +1,30 @@
+jobs:
+  # Linux
+  - template: azure-test-template.yml
+    parameters:
+      name: Linux_2_7
+      vmImage: 'Ubuntu 18.04'
+      build_docs: 1
+      python: '2.7'
+      allowFailure: true
+  - template: azure-test-template.yml
+    parameters:
+      name: Linux_3_6
+      vmImage: 'Ubuntu 18.04'
+      build_docs: 1
+      python: '3.6'
+      allowFailure: false
+  - template: azure-test-template.yml
+    parameters:
+      name: Linux_3_7
+      vmImage: 'Ubuntu 18.04'
+      build_docs: 1
+      python: '3.7.3'
+      allowFailure: false
+  - template: azure-test-template.yml
+    parameters:
+      name: Linux_3_8
+      vmImage: 'Ubuntu 18.04'
+      build_docs: 1
+      python: '3.8'
+      allowFailure: true

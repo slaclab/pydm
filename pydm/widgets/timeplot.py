@@ -124,9 +124,10 @@ class TimePlotCurveItem(BasePlotCurveItem):
         Get the minimum y-value so far in the same plot. This is useful to
         scale the y-axis for a selected curve.
 
-        Returns : float
+        Returns
         -------
-        The minimum y-value collected so far for this current curve.
+        float
+            The minimum y-value collected so far for this current curve.
         """
         return self._min_y_value
 
@@ -161,11 +162,14 @@ class TimePlotCurveItem(BasePlotCurveItem):
         For Asynchronous, write the new value into a temporary (buffered)
         variable, which will be written to the data buffer when asyncUpdate
         is called.
+        
+        This method is usually called by a PyDMChannel when it updates.  You
+        can call it yourself to inject data into the curve.
 
         Parameters
         ----------
         new_value : float
-            The new y-value just available.
+            The new y-value.
         """
         self.update_min_max_y_values(new_value)
 
