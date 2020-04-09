@@ -3,70 +3,55 @@
 parameters:
   name: ''
   vmImage: ''
+  python: ''
+  python_name: ''
+  allowFailure: false
+
 
 jobs:
 - job: ${{ parameters.name }}
   pool:
     vmImage: ${{ parameters.vmImage }}
-  strategy:
-    matrix:
-      Python36:
-        python.version: '3.6'
-        python.name: '3_6'
-        BUILD_DOCS: ${{ parameters.build_docs }}
-      Python37:
-        python.version: '3.7.3'
-        python.name: '3_7'
-  continueOnError: true
+  variables:
+    python: ${{ parameters.python }}
+    python_name: ${{ parameters.python_name }}
+  continueOnError: ${{ parameters.allowFailure }}
 
   steps:
   - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
     displayName: 'Windows - Add conda to PATH'
     condition: eq(variables['agent.os'], 'Windows_NT' )
 
+  - bash: |
+      conda config --set always_yes yes
+      conda config --set channel_priority strict
+      conda config --set show_channel_urls yes
+      conda config --add channels conda-forge
+    displayName: 'Anaconda - Configure'
+
   - script: |
-      conda create --yes --quiet --name test-environment-$(python.name) python=$(python.version) conda-build anaconda-client
+      echo Python Version $(python)
+      conda create --yes --quiet --name test-environment-$(python_name) python=$(python)
     displayName: 'Anaconda - Create'
 
   - bash: |
-      conda config --set always_yes yes
-      conda config --add channels conda-forge
-      conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
+      conda config --add channels 'file:///$(Build.Repository.LocalPath)/anaconda_package'
     displayName: 'Anaconda - Configure - Add local bld-dir'
 
-  - script: |
-      conda info
-      conda info --envs
-      conda config --show channels
-    displayName: Debug
-
-  - script: |
-      call activate test-environment-$(python.name)
-      conda build conda-recipe -c conda-forge --python=$(python.version) --output-folder bld-dir
-    displayName: 'Anaconda - Build PyDM Package'
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish - Anaconda Package'
+  - task: DownloadBuildArtifacts@0
     inputs:
-      PathtoPublish: 'bld-dir'
-      ArtifactName: 'anaconda_package'
+      buildType: 'current'
+      artifactName: 'anaconda_package'
+      downloadPath: $(Build.Repository.LocalPath)/
+    displayName: Artifact Download - Anaconda Packages
 
   - script: |
-      call activate test-environment-$(python.name)
-      conda install -q -c conda-forge epics-base pytest-azurepipelines pydm --file dev-requirements.txt
+      call activate test-environment-$(python_name)
+      conda install python=$(python) pytest-azurepipelines pydm --file dev-requirements.txt --update-deps
     displayName: 'Anaconda - Install Dependencies'
 
-  # Windows Only
-  - powershell: |
-      $MyProcess = Start-Process $Env:REPEATER -PassThru
-    env:
-      REPEATER: C:\Miniconda\envs\test-environment-$(python.name)\epics\bin\windows-x64\caRepeater.exe
-    displayName: 'Windows - Start CaRepeater'
-    condition: eq(variables['agent.os'], 'Windows_NT' )
-
   - script: |
-      call activate test-environment-$(python.name)
-      # debug of conda environment
+      call activate test-environment-$(python_name)
       conda info
       conda list
       python -c "from PyQt5 import QtCore; print(QtCore)"
@@ -74,14 +59,13 @@ jobs:
     continueOnError: false
 
   - script: |
-      call activate test-environment-$(python.name)
-      python run_tests.py --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python.version)" --napoleon-docstrings
-    env:
-      PYEPICS_LIBCA: C:\Miniconda\envs\test-environment-$(python.name)\epics\lib\ca.lib
-      PATH: C:\Miniconda\envs\test-environment-$(python.name)\epics\lib:C:\Miniconda\envs\test-environment-$(python.name)\epics\bin:$(PATH)
+      call activate test-environment-$(python_name)
+      python run_tests.py --timeout 30 --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python)" --napoleon-docstrings
     displayName: 'Tests - Run'
     continueOnError: false
 
-  - bash: |
-      bash <(curl -s https://codecov.io/bash) -t $(CODECOV_TOKEN) || echo 'Codecov failed to upload.'
-    displayName: 'Publish - Codecov.io'
+  - script: |
+      call activate test-environment-$(python_name)
+      codecov
+    displayName: 'Codecov - Upload'
+    continueOnError: true

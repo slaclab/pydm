@@ -2,7 +2,7 @@ import logging
 import time
 import weakref
 
-from ...widgets.rules import RulesEngine, RulesDispatcher
+from ...widgets.rules import RulesDispatcher
 from ...widgets.label import PyDMLabel
 
 

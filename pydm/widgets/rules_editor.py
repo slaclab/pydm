@@ -436,7 +436,7 @@ class RulesEditor(QtWidgets.QDialog):
         except:
             self.lbl_expected_type.setText("")
 
-    def tbl_channels_changed(self, *args, **kwargs):
+    def tbl_channels_changed(self, topleft=None, bottomright=None, roles=None):
         """Callback executed when the channels in the table are modified."""
         if self.loading_data:
             return
@@ -455,9 +455,15 @@ class RulesEditor(QtWidgets.QDialog):
         """Callback executed when the expression is modified."""
         self.change_entry("expression", self.txt_expression.text())
 
-    def is_data_valid(self):
+    @staticmethod
+    def is_data_valid(rules):
         """
         Sanity check the form data.
+
+        Parameters
+        ----------
+        rules : dict
+            Dictionary with the rule defintions.
 
         Returns
         -------
@@ -466,7 +472,7 @@ class RulesEditor(QtWidgets.QDialog):
             otherwise.
         """
         errors = []
-        for idx, rule in enumerate(self.rules):
+        for idx, rule in enumerate(rules):
             name = rule.get("name")
             expression = rule.get("expression")
             channels = rule.get("channels", [])
@@ -509,7 +515,7 @@ class RulesEditor(QtWidgets.QDialog):
             self.expression_changed()
             self.name_changed()
             self.tbl_channels_changed()
-        status, message = self.is_data_valid()
+        status, message = RulesEditor.is_data_valid(self.rules)
         if status:
             data = json.dumps(self.rules)
             formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self.widget)

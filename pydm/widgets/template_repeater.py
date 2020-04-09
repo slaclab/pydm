@@ -1,17 +1,18 @@
 import os
 import json
+import copy
 import logging
 from qtpy.QtWidgets import (QFrame, QApplication, QLabel, QVBoxLayout,
                            QHBoxLayout, QWidget, QStyle, QSizePolicy,
-                           QLayout, QListWidget, QListWidgetItem)
-from qtpy.QtCore import Qt, QSize, QRect, Slot, Property, QPoint, QUrl, Q_ENUMS
-from qtpy import uic
-from .base import PyDMPrimitiveWidget, PyDMWidget
-from .embedded_display import PyDMEmbeddedDisplay
-from pydm.utilities import is_qt_designer, is_pydm_app
+                           QLayout)
+from qtpy.QtCore import Qt, QSize, QRect, Property, QPoint, Q_ENUMS
+from .base import PyDMPrimitiveWidget
+from pydm.utilities import is_qt_designer
 import pydm.data_plugins
-from ..utilities import macro
+from ..utilities import macro, find_file
+from ..display import load_file
 logger = logging.getLogger(__name__)
+
 
 class FlowLayout(QLayout):
     def __init__(self, parent=None, margin=-1, h_spacing=-1, v_spacing=-1):
@@ -110,12 +111,15 @@ class FlowLayout(QLayout):
         else:
             return parent.spacing()
 
+
 class LayoutType(object):
     Vertical = 0
     Horizontal = 1
     Flow = 2
 
+
 layout_class_for_type = (QVBoxLayout, QHBoxLayout, FlowLayout)
+
 
 class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
     """
@@ -138,6 +142,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
     """
     Q_ENUMS(LayoutType)
     LayoutType = LayoutType
+
     def __init__(self, parent=None):
         QFrame.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
@@ -146,7 +151,9 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         self._data_source = ""
         self._data = []
         self._cached_template = None
+        self._parent_macros = None
         self._layout_type = LayoutType.Vertical
+        self._temp_layout_spacing = 4
         self.app = QApplication.instance()
         self.rebuild()
     
@@ -177,6 +184,18 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         if new_type != self._layout_type:
             self._layout_type = new_type
             self.rebuild()
+
+    @Property(int)
+    def layoutSpacing(self):
+        if self.layout():
+            return self.layout().spacing()
+        return self._temp_layout_spacing
+    
+    @layoutSpacing.setter
+    def layoutSpacing(self, new_spacing):
+        self._temp_layout_spacing = new_spacing
+        if self.layout():
+            self.layout().setSpacing(new_spacing)
     
     @Property(int)
     def countShownInDesigner(self):
@@ -270,20 +289,29 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
             self._data_source = data_source
             if self._data_source:
                 try:
-                    # Expand user (~ or ~user) and environment variables.
-                    fname = os.path.expanduser(os.path.expandvars(self._data_source))
-                    if is_pydm_app():
-                        # If we're running this inside the PyDM app, we can
-                        # make sure the path is relative to the currently loaded
-                        # display (.ui or .py file).
-                        fname = self.app.get_path(fname)
-                    with open(fname) as f:
-                        self.data = json.load(f)
+                    parent_display = self.find_parent_display()
+                    base_path = None
+                    if parent_display:
+                        base_path = os.path.dirname(
+                            parent_display.loaded_file())
+                    fname = find_file(self._data_source, base_path=base_path)
+
+                    if not fname:
+                        if not is_qt_designer():
+                            logger.error('Cannot locate data source file {} for PyDMTemplateRepeater.'.format(fname))
+                        self.data = []
+                    else:
+                        with open(fname) as f:
+                            try:
+                                self.data = json.load(f)
+                            except ValueError:
+                                logger.error('Failed to parse data source file {} for PyDMTemplateRepeater.'.format(fname))
+                                self.data = []
                 except IOError as e:
                     self.data = []
             else:
                 self.clear()
-        
+
     def open_template_file(self, variables=None):
         """
         Opens the widget specified in the templateFilename property.
@@ -299,20 +327,27 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         """
         if not variables:
             variables = {}
-        # Expand user (~ or ~user) and environment variables.
-        fname = os.path.expanduser(os.path.expandvars(self.templateFilename))
-        if is_pydm_app():
-            if not self._cached_template:
-                self._cached_template = self.app.open_template(fname)
-            return self.app.widget_from_template(self._cached_template, variables)
-        else:
-            try:
-                f = macro.substitute_in_file(fname, variables)
-                return uic.loadUi(f)
-            except Exception as e:
-                logger.exception("Exception while opening template file.")
-                return None
-       
+
+        parent_display = self.find_parent_display()
+        base_path = None
+        if parent_display:
+            base_path = os.path.dirname(
+                parent_display.loaded_file())
+        fname = find_file(self.templateFilename, base_path=base_path)
+
+        if self._parent_macros is None:
+            self._parent_macros = {}
+            if parent_display:
+                self._parent_macros = parent_display.macros()
+
+        parent_macros = copy.copy(self._parent_macros)
+        parent_macros.update(variables)
+        try:
+            w = load_file(fname, macros=parent_macros, target=None)
+        except Exception as ex:
+            w = QLabel('Error: could not load template: ' + str(ex))
+        return w
+
     def rebuild(self):
         """ Clear out all existing widgets, and populate the list using the
         template file and data source."""
@@ -328,18 +363,28 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
                 QWidget().setLayout(self.layout())
             l = layout_class(self)
             self.setLayout(l)
-        with pydm.data_plugins.connection_queue(defer_connections=True):
-            for i, variables in enumerate(self.data):
-                if is_qt_designer() and i > self.countShownInDesigner - 1:
-                    break
-                w = self.open_template_file(variables)
-                if w is None:
-                    w = QLabel()
-                    w.setText("No Template Loaded.  Data: {}".format(variables))
-                w.setParent(self)
-                self.layout().addWidget(w)
-        self.setUpdatesEnabled(True)
-        pydm.data_plugins.establish_queued_connections()
+            self.layout().setSpacing(self._temp_layout_spacing)
+        try:
+            with pydm.data_plugins.connection_queue(defer_connections=True):
+                for i, variables in enumerate(self.data):
+                    if is_qt_designer() and i > self.countShownInDesigner - 1:
+                        break
+                    w = self.open_template_file(variables)
+                    if w is None:
+                        w = QLabel()
+                        w.setText("No Template Loaded.  Data: {}".format(variables))
+                    w.setParent(self)
+                    self.layout().addWidget(w)
+        except:
+            logger.exception('Template repeater failed to rebuild.')
+        finally:
+            # If issues happen during the rebuild we should still enable
+            # updates and establish connection for the widgets added.
+            # Moreover, if we dont call establish_queued_connections
+            # the queue will never be emptied and new connections will be
+            # staled.
+            self.setUpdatesEnabled(True)
+            pydm.data_plugins.establish_queued_connections()
     
     def clear(self):
         """ Clear out any existing instances of the template inside
@@ -375,5 +420,3 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         """
         self._data = new_data
         self.rebuild()
-
-    

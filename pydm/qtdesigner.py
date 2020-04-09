@@ -1,3 +1,5 @@
+import sys
+import traceback
 from qtpy.QtCore import QTimer
 from .utilities import stylesheet
 from . import data_plugins
@@ -39,6 +41,7 @@ class DesignerHooks(object):
         self.setup_hooks()
 
     def setup_hooks(self):
+        sys.excepthook = self.__handle_exceptions
         # Set PyDM to be read-only
         data_plugins.set_read_only(True)
 
@@ -62,6 +65,11 @@ class DesignerHooks(object):
             widget = fwman.activeFormWindow()
             if widget:
                 widget.update()
+
+    def __handle_exceptions(self, exc_type, value, trace):
+        print("Exception occurred while running Qt Designer.")
+        msg = ''.join(traceback.format_exception(exc_type, value, trace))
+        print(msg)
 
     def __start_kicker(self):
         self.__timer = QTimer()

@@ -35,7 +35,6 @@ def test_path_info():
 def test_find_display_in_path():
     temp, file_path = tempfile.mkstemp(suffix=".ui", prefix="display_")
     direc, fname, _ = path_info(file_path)
-
     # Try to find the file as is... is should not find it.
     assert(find_display_in_path(fname) is None)
 

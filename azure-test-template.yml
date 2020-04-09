@@ -3,146 +3,110 @@
 parameters:
   name: ''
   vmImage: ''
+  python: ''
+  allowFailure: false
 
 jobs:
-- job: ${{ parameters.name }}
-  pool:
-    vmImage: ${{ parameters.vmImage }}
-  strategy:
-    matrix:
-      Python27:
-        python.version: '2.7'
-      Python36:
-        python.version: '3.6'
-        BUILD_DOCS: ${{ parameters.build_docs }}
-      Python37:
-        python.version: '3.7.3'
+  - job: ${{ parameters.name }}
+    pool:
+      vmImage: ${{ parameters.vmImage }}
+    variables:
+      python: ${{ parameters.python }}
+    continueOnError: ${{ parameters.allowFailure }}
 
-  steps:
-  - bash: echo "##vso[task.prependpath]$CONDA/bin"
-    displayName: 'MacOS - Add conda to PATH'
-    condition: eq(variables['agent.os'], 'Darwin' )
+    steps:
+    - bash: echo "##vso[task.prependpath]$CONDA/bin"
+      displayName: 'MacOS - Add conda to PATH'
+      condition: eq(variables['agent.os'], 'Darwin' )
 
-  - bash: echo "##vso[task.prependpath]/usr/share/miniconda/bin"
-    displayName: 'Linux - Add conda to PATH'
-    condition: eq(variables['agent.os'], 'Linux' )
+    - bash: echo "##vso[task.prependpath]$CONDA/bin"
+      displayName: 'Linux - Add conda to PATH'
+      condition: eq(variables['agent.os'], 'Linux' )
 
-  # Linux
-  - bash: |
-      # Install & Start Windows Manager for Linux
-      sudo apt-get install -y xvfb herbstluftwm
-      sudo /sbin/start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1024x768x24 -ac +extension GLX +render -noreset
-      sleep 3
+    # Linux
+    - bash: |
+        # Install & Start Windows Manager for Linux
+        sudo apt-get install -y xvfb herbstluftwm
+        sudo /sbin/start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1024x768x24 -ac +extension GLX +render -noreset
+        sleep 3
 
-      # Fix Anaconda permissions
-      sudo install -d -m 0777 /usr/share/miniconda/
-      sudo install -d -m 0777 /usr/share/miniconda/envs
+        # Fix Anaconda permissions
+        sudo install -d -m 0777 /usr/share/miniconda/
+        sudo install -d -m 0777 /usr/share/miniconda/envs
 
-    displayName: 'Linux - Prepare OS'
-    condition: eq(variables['agent.os'], 'Linux' )
+      displayName: 'Linux - Prepare OS'
+      condition: eq(variables['agent.os'], 'Linux' )
 
-  # Linux
-  - bash: |
-      sudo /sbin/start-stop-daemon --start --pidfile /tmp/custom_herbstluftwm_99.pid --make-pidfile --background --exec /usr/bin/herbstluftwm
-      sleep 1
-    env:
-      DISPLAY: :99.0
-    displayName: 'Linux - Start herbstluftwm'
-    condition: eq(variables['agent.os'], 'Linux' )
+    # Linux
+    - bash: |
+        sudo /sbin/start-stop-daemon --start --pidfile /tmp/custom_herbstluftwm_99.pid --make-pidfile --background --exec /usr/bin/herbstluftwm
+        sleep 1
+      env:
+        DISPLAY: :99.0
+      displayName: 'Linux - Start herbstluftwm'
+      condition: eq(variables['agent.os'], 'Linux' )
 
-  # MacOS
-  - bash: |
-     # Fix Anaconda permissions
-     sudo install -d -m 0777 /usr/local/miniconda/envs
-    displayName: 'MacOS - Prepare OS'
-    condition: eq(variables['agent.os'], 'Darwin' )
+    # MacOS
+    - bash: |
+       # Fix Anaconda permissions
+       sudo chown -R $USER $CONDA
+      displayName: 'MacOS - Prepare OS'
+      condition: eq(variables['agent.os'], 'Darwin' )
 
-  - task: CondaEnvironment@0
-    displayName: 'Anaconda - Create'
-    inputs:
-      environmentName: 'test-environment-$(python.version)'
-      packageSpecs: 'python=$(python.version) conda-build anaconda-client'
-      updateConda: true
+    - bash: |
+        conda config --set always_yes yes
+        conda config --set channel_priority strict
+        conda config --set show_channel_urls yes
+        conda config --add channels conda-forge
+      displayName: 'Anaconda - Configure'
 
-  - bash: |
-      source activate base
-      conda config --set always_yes yes
-      conda config --add channels conda-forge
-      conda config --add channels 'file:///$(Build.Repository.LocalPath)/bld-dir'
-    displayName: 'Anaconda - Configure - Add local bld-dir'
+    - bash: |
+       conda create --name test-environment-$(python) python=$(python)
+      displayName: 'Anaconda - Create'
 
-  - bash: |
-      conda info
-      conda info --envs
-      conda config --show channels
-    displayName: Debug
+    - bash: |
+        conda config --add channels 'file:///$(Build.Repository.LocalPath)/anaconda_package'
+      displayName: 'Anaconda - Configure - Add local bld-dir'
 
-  - bash: |
-      source activate base
-      conda build conda-recipe -c conda-forge --python=$(python.version) --output-folder bld-dir
-    displayName: 'Anaconda - Build PyDM Package'
+    - bash: |
+        conda info
+        conda info --envs
+        conda config --show channels
+      displayName: Debug
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish - Anaconda Package'
-    inputs:
-      PathtoPublish: 'bld-dir'
-      ArtifactName: 'anaconda_package'
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        buildType: 'current'
+        artifactName: 'anaconda_package'
+        downloadPath: $(Build.Repository.LocalPath)/
+      displayName: Artifact Download - Anaconda Packages
 
-  - bash: |
-      source activate base
-      conda install -q -c conda-forge epics-base pydm --file dev-requirements.txt
-      pip install pytest-azurepipelines
-    displayName: 'Anaconda - Install Dependencies'
+    - bash: |
+        source activate test-environment-$(python)
+        conda install python=$(python) pytest-azurepipelines pydm --file dev-requirements.txt
+      displayName: 'Anaconda - Install Dependencies'
 
-  - bash: |
-      source activate base
-      # debug of conda environment
-      conda info
-      conda list
-      echo python location: `which python`
-      echo pytest location: `which pytest`
-      python -c "from PyQt5 import QtCore; print(QtCore)"
-    displayName: 'Debug - Conda List'
-    continueOnError: false
+    - bash: |
+        source activate test-environment-$(python)
+        # debug of conda environment
+        conda info
+        conda list
+        echo python location: `which python`
+        echo pytest location: `which pytest`
+        python -c "from PyQt5 import QtCore; print(QtCore)"
+      displayName: 'Debug - Conda List'
+      continueOnError: false
 
-  - bash: |
-      source activate base
-      python run_tests.py --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python.version)" --napoleon-docstrings
-    displayName: 'Tests - Run'
-    continueOnError: false
-    env:
-      DISPLAY: :99.0
+    - bash: |
+        source activate test-environment-$(python)
+        python run_tests.py --timeout 30 --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python)" --napoleon-docstrings
+      displayName: 'Tests - Run'
+      continueOnError: false
+      env:
+        DISPLAY: :99.0
 
-  - bash: |
-      bash <(curl -s https://codecov.io/bash) -t $(CODECOV_TOKEN) || echo 'Codecov failed to upload.'
-    displayName: 'Publish - Codecov.io'
-
-  - bash: |
-      source activate base
-      pip install -r docs-requirements.txt
-      pushd docs
-      make html
-      popd
-    displayName: 'Documentation - Build HTML'
-    condition: |
-      and(
-        and(
-          eq(variables['agent.os'], 'Linux' ),
-          eq(variables['BUILD_DOCS'], 1)
-        ),
-        succeeded()
-      )
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish - Documentation'
-    inputs:
-      PathtoPublish: 'docs/build/html/'
-      ArtifactName: 'docs_html'
-    condition: |
-      and(
-        and(
-          eq(variables['agent.os'], 'Linux' ),
-          eq(variables['BUILD_DOCS'], 1)
-        ),
-        succeeded()
-      )
+    - bash: |
+        source activate test-environmnet-$(python)
+        bash <(curl -s https://codecov.io/bash)
+      displayName: 'Codecov - Upload'
+      continueOnError: true
