@@ -3,13 +3,15 @@ import functools
 import weakref
 from threading import Lock
 
-from qtpy.QtCore import QThread, Signal
-from qtpy.QtWidgets import QWidget
+from qtpy.QtCore import QThread, QMutex, Signal, QMutexLocker
+from qtpy.QtWidgets import QWidget, QApplication
 
 from .channel import PyDMChannel
 from ..utilities import data_callback
 from ..utilities.channel import parse_channel_config
 from ..data_store import DataKeys
+
+import pydm.data_plugins
 
 import numpy as np
 import math
@@ -33,6 +35,26 @@ def unregister_widget_rules(widget):
             if hasattr(child_widget, 'rules'):
                 if child_widget.rules:
                     RulesDispatcher().unregister(weakref.ref(child_widget))
+        except Exception:
+            pass
+
+
+def register_widget_rules(widget):
+    """
+    Given a widget to start from, traverse the tree of child widgets,
+    and try to unregister rules to any widgets.
+
+    Parameters
+    ----------
+    widget : QWidget
+    """
+    widgets = [widget]
+    widgets.extend(widget.findChildren(QWidget))
+    for child_widget in widgets:
+        try:
+            if hasattr(child_widget, 'rules'):
+                if child_widget.rules:
+                    RulesDispatcher().register(child_widget, child_widget.rules)
         except Exception:
             pass
 
@@ -129,6 +151,8 @@ class RulesEngine(QThread):
     def __init__(self):
         QThread.__init__(self)
         self.map_lock = Lock()
+        self.app = QApplication.instance()
+        self.app.aboutToQuit.connect(self.requestInterruption)
         self.widget_map = dict()
 
     def widget_destroyed(self, ref):
@@ -139,35 +163,36 @@ class RulesEngine(QThread):
         if widget_ref in self.widget_map:
             self.unregister(widget_ref)
 
-        with self.map_lock:
-            self.widget_map[widget_ref] = []
-            for idx, rule in enumerate(rules):
-                channels_list = rule.get('channels', [])
+        with pydm.data_plugins.connection_queue(defer_connections=False):
+            with self.map_lock:
+                self.widget_map[widget_ref] = []
+                for idx, rule in enumerate(rules):
+                    channels_list = rule.get('channels', [])
 
-                item = dict()
-                item['rule'] = rule
-                item['calculate'] = False
-                item['values'] = [None] * len(channels_list)
-                item['conn'] = [False] * len(channels_list)
-                item['channels'] = []
+                    item = dict()
+                    item['rule'] = rule
+                    item['calculate'] = False
+                    item['values'] = [None] * len(channels_list)
+                    item['conn'] = [False] * len(channels_list)
+                    item['channels'] = []
 
-                for ch_idx, ch in enumerate(channels_list):
-                    conn_cb = functools.partial(self.callback_conn, widget_ref,
-                                                idx, ch_idx)
-                    value_cb = functools.partial(self.callback_value, widget_ref,
-                                                 idx, ch_idx, ch['trigger'])
+                    for ch_idx, ch in enumerate(channels_list):
+                        conn_cb = functools.partial(self.callback_conn, widget_ref,
+                                                    idx, ch_idx)
+                        value_cb = functools.partial(self.callback_value, widget_ref,
+                                                     idx, ch_idx, ch['trigger'])
 
-                    callback = functools.partial(self._receive_data, conn_cb,
-                                                 value_cb)
+                        callback = functools.partial(self._receive_data, conn_cb,
+                                                     value_cb)
 
-                    channel = PyDMChannel(address=ch['channel'],
-                                          callback=callback
-                                          )
-                    item['channels'].append(channel)
-                    # Connect the channel...
-                    channel.connect()
+                        channel = PyDMChannel(address=ch['channel'],
+                                              callback=callback
+                                              )
+                        item['channels'].append(channel)
+                        # Connect the channel...
+                        channel.connect()
 
-                self.widget_map[widget_ref].append(item)
+                    self.widget_map[widget_ref].append(item)
 
     def _receive_data(self, conn_cb, value_cb, data, introspection, *args,
                       **kwargs):
@@ -199,10 +224,11 @@ class RulesEngine(QThread):
 
     def run(self):
         while not self.isInterruptionRequested():
-            with self.map_lock:
-                for widget_ref in self.widget_map:
-                    for rule in self.widget_map[widget_ref]:
-                        if rule['calculate']:
+
+            for widget_ref in self.widget_map:
+                for rule in self.widget_map[widget_ref]:
+                    if rule['calculate']:
+                        with self.map_lock:
                             self.calculate_expression(widget_ref, rule)
             self.msleep(33)  # 30Hz
 

@@ -43,6 +43,16 @@
      <property name="title" stdset="0">
       <string>Time Plot</string>
      </property>
+     <property name="xLabels">
+      <stringlist>
+       <string>Time</string>
+      </stringlist>
+     </property>
+     <property name="yLabels">
+      <stringlist>
+       <string>Value</string>
+      </stringlist>
+     </property>
      <property name="curves">
       <stringlist>
        <string>{&quot;channel&quot;: &quot;ca://MTEST:MeanValue&quot;, &quot;name&quot;: &quot;Curve 1&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10}</string>

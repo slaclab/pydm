@@ -70,7 +70,7 @@ def install_external_tool(tool):
 
 
 def assemble_tools_menu(parent_menu, clear_menu=False, widget_only=False,
-                        **kwargs):
+                        widget=None, **kwargs):
     """
     Assemble the Tools menu for a given parent menu.
 
@@ -84,6 +84,11 @@ def assemble_tools_menu(parent_menu, clear_menu=False, widget_only=False,
         Whether or not generate only the menu for widgets compatible
         tools. This should be True when creating the menu for the
         PyDMWidgets and False for most of the other cases.
+    widget: QWidget
+        The widget for which the menu is being assembled. This allow for the
+        tools to filter if they are compatible or not with the widget based
+        on properties, types and etc. Default is None which means all tools
+        will be assembled.
     kwargs : dict
         Parameters sent directly to the `call` method of the ExternalTool
         instance. In general this dict is composed by `channels` which
@@ -110,8 +115,15 @@ def assemble_tools_menu(parent_menu, clear_menu=False, widget_only=False,
             m = QMenu(k, parent=parent_menu)
             should_create_menu = False
             for _, t in v.items():
-                if widget_only and not t.use_with_widgets:
-                    continue
+                if widget_only:
+                    if not t.use_with_widgets:
+                        continue
+                    if widget is not None and not t.is_compatible_with(widget):
+                        logger.debug('Skipping tool {} as it is incompatible with widget {}.'.format(t.name, widget))
+                        continue
+                else:
+                    if not t.use_without_widget:
+                        continue
                 assemble_action(m, t)
                 should_create_menu = True
             if should_create_menu:

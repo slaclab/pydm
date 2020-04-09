@@ -17,6 +17,8 @@ class DisplayFormat(object):
 
 
 def parse_value_for_display(value, precision, display_format_type=DisplayFormat.Default, string_encoding="utf_8", widget=None):
+    if value is None:
+        return ""
     try:
         widget_name = widget.objectName()
     except(AttributeError, TypeError):

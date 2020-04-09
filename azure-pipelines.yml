@@ -42,199 +42,161 @@ pr:
 variables:
   OFFICIAL_REPO: 'slaclab/pydm'
 
-jobs:
-  - template: azure-test-template.yml
-    parameters:
-      name: Linux
-      vmImage: 'Ubuntu 16.04'
-      build_docs: 1
+stages:
 
-  - template: azure-test-template-win.yml
-    parameters:
-      name: Windows
-      vmImage: 'vs2017-win2016'
+  - stage: "Build"
+    jobs:
+      # Build the conda package and docs
+      - template: azure-build-template.yml
+  - stage: "Tests"
+    jobs:
+      - template: azure-pipelines-linux.yml
+      - template: azure-pipelines-macos.yml
+      - template: azure-pipelines-windows.yml
+  - stage: "Deploy"
+    jobs:
+      - job: 'Control'
+        displayName: Build Control
+        pool:
+          vmImage: 'Ubuntu 16.04'
+        steps:
+          - bash: echo "##vso[task.setvariable variable=build_ok;isOutput=true]true"
+            name: var
+            displayName: "Control - Set Allowed Flag"
+            condition: |
+              and
+              (
+                eq(variables['Build.Repository.Name'], variables['OFFICIAL_REPO']),
+                eq(variables['System.PullRequest.PullRequestNumber'], variables['NULL'])
+              )
+      - job: 'Publish_Documentation'
+        dependsOn: Control
+        displayName: Publish - Documentation
+        pool:
+          vmImage: 'Ubuntu 16.04'
+        condition: |
+            and (
+              eq( dependencies.Control.outputs['var.build_ok'], true),
+              or (
+                contains(variables['Build.SourceBranch'],'heads/master'),
+                contains(variables['Build.SourceBranch'],'refs/tags')
+              )
+            )
+        steps:
+        - checkout: self
+          persistCredentials: true
+          clean: true
+        - task: DownloadBuildArtifacts@0
+          inputs:
+            buildType: 'current'
+            artifactName: 'docs_html'
+            downloadPath: $(Build.Repository.LocalPath)/artifacts
+          displayName: Artifact Download - Documentation
 
-  - template: azure-test-template.yml
-    parameters:
-      name: MacOS
-      vmImage: 'macOS-10.13'
+        - bash: |
+            git config --global user.name "Azure Pipelines"
+            git checkout gh-pages
+            cp -r $(Build.Repository.LocalPath)/artifacts/docs_html/* .
+            rm -rf $(Build.Repository.LocalPath)/artifacts
+            git add *
+            git commit -m "Updating Docs with latest build"
+            git push https://$(GITHUB_DOCS_PAT)@github.com/$(Build.Repository.Name).git gh-pages
+          displayName: Documentation - Upload
 
-  - job: 'DeployControl'
-    pool:
-      vmImage: 'Ubuntu 16.04'
-    steps:
-    - bash: |
-        echo "##vso[task.setvariable variable=build_ok;isOutput=true]true"
-      name: var
-      condition: |
-        and
-        (
-          eq(variables['Build.Repository.Name'], variables['OFFICIAL_REPO']),
-          eq(variables['System.PullRequest.PullRequestNumber'], variables['NULL'])
-        )
-    - bash: echo $(var.build_ok)
+      - job: 'Publish_PyPI'
+        dependsOn: Control
+        displayName: Publish - PyPI
+        condition: |
+          and (
+            eq( dependencies.Control.outputs['var.build_ok'], true),
+            contains(variables['Build.SourceBranch'],'refs/tags')
+          )
 
-  - job: 'Publish_Documentation'
-    displayName: Publish - Documentation
-    condition: |
-      and
-      (
-        and(
-          succeeded('Linux'),
-          succeeded('MacOS'),
-          succeededOrFailed('Windows')
-        ),
-        eq(dependencies.DeployControl.outputs['var.build_ok'], true),
-        or
-        (
-        contains(variables['Build.SourceBranch'],'heads/master'),
-        contains(variables['Build.SourceBranch'],'refs/tags')
-        )
-      )
-    dependsOn:
-      - DeployControl
-      - Linux
-      - MacOS
-      - Windows
-    pool:
-      vmImage: 'Ubuntu 16.04'
+        pool:
+          vmImage: 'Ubuntu 18.04'
 
-    steps:
-    - checkout: self
-      persistCredentials: true
-      clean: true
+        steps:
+        - task: UsePythonVersion@0
+          inputs:
+            versionSpec: '3.x'
+            architecture: 'x64'
 
-    - task: DownloadBuildArtifacts@0
-      inputs:
-        buildType: 'current'
-        artifactName: 'docs_html'
-        downloadPath: $(Build.Repository.LocalPath)/artifacts
-      displayName: Artifact Download - Documentation
+        - script: python setup.py sdist
+          displayName: 'Python - Build sdist'
 
-    - bash: |
-        git config --global user.name "Azure Pipelines"
-        git checkout gh-pages
-        cp -r $(Build.Repository.LocalPath)/artifacts/docs_html/* .
-        rm -rf $(Build.Repository.LocalPath)/artifacts
-        git add *
-        git commit -m "Updating Docs with latest build"
-        git push https://$(GITHUB_DOCS_PAT)@github.com/$(Build.Repository.Name).git gh-pages
-      displayName: Documentation - Upload
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish - Python Package'
+          inputs:
+            pathtoPublish: 'dist'
+            artifactName: 'dist'
 
-  - job: 'Publish_PyPI'
-    displayName: Publish - PyPI
-    condition: |
-      and
-      (
-        and(
-          succeeded('Linux'),
-          succeeded('MacOS'),
-          succeededOrFailed('Windows')
-        ),
-        eq(dependencies.DeployControl.outputs['var.build_ok'], true),
-        contains(variables['Build.SourceBranch'],'refs/tags')
-      )
-    dependsOn:
-      - DeployControl
-      - Linux
-      - MacOS
-      - Windows
-    pool:
-      vmImage: 'Ubuntu 16.04'
+        - bash: |
+            pip install twine
+          displayName: PyPI - Install Twine
 
-    steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '3.x'
-        architecture: 'x64'
+        - task: TwineAuthenticate@0
+          inputs:
+            externalFeeds: 'pypi'
+          displayName: PyPI - Authenticate
 
-    - script: python setup.py sdist
-      displayName: 'Python - Build sdist'
+        # Download PyPI package
+        - task: DownloadBuildArtifacts@0
+          inputs:
+            buildType: 'current'
+            artifactName: 'dist'
+            downloadPath: $(Build.Repository.LocalPath)/artifacts
+          displayName: Artifact Download - PyPI Package
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish - Python Package'
-      inputs:
-        pathtoPublish: 'dist'
-        artifactName: 'dist'
+        - bash: |
+            twine upload --config-file $(PYPIRC_PATH) $(Build.Repository.LocalPath)/artifacts/dist/*
+          condition: contains(variables['Build.SourceBranch'], 'tags')
+          displayName: PyPI - Upload
 
-    - bash: |
-        pip install twine
-      displayName: PyPI - Install Twine
+      - job: 'Publish_Anaconda'
+        dependsOn: Control
+        displayName: Publish - Anaconda
+        condition: |
+          and (
+            eq( dependencies.Control.outputs['var.build_ok'], true),
+            or (
+              contains(variables['Build.SourceBranch'],'heads/master'),
+              contains(variables['Build.SourceBranch'],'refs/tags')
+            )
+          )
+        pool:
+          vmImage: 'Ubuntu 16.04'
+        steps:
+        # Download Anaconda packages
+        - task: DownloadBuildArtifacts@0
+          inputs:
+            buildType: 'current'
+            artifactName: 'anaconda_package'
+            downloadPath: $(Build.Repository.LocalPath)/artifacts
+          displayName: Artifact Download - Anaconda Packages
 
-    - task: TwineAuthenticate@0
-      inputs:
-        externalFeeds: 'pypi'
-      displayName: PyPI - Authenticate
+        - bash: |
+            # Fix Anaconda permissions
+            sudo install -d -m 0777 /usr/envs
+            sudo install -d -m 0777 /usr/share/miniconda/
 
-    # Download PyPI package
-    - task: DownloadBuildArtifacts@0
-      inputs:
-        buildType: 'current'
-        artifactName: 'dist'
-        downloadPath: $(Build.Repository.LocalPath)/artifacts
-      displayName: Artifact Download - PyPI Package
+          displayName: 'Linux - Prepare OS'
+          condition: eq(variables['agent.os'], 'Linux' )
 
-    - bash: |
-        twine upload --config-file $(PYPIRC_PATH) $(Build.Repository.LocalPath)/artifacts/dist/*
-      condition: contains(variables['Build.SourceBranch'], 'tags')
-      displayName: PyPI - Upload
+        - task: CondaEnvironment@0
+          displayName: 'Anaconda - Create - Upload Environment'
+          inputs:
+            environmentName: 'test-environment'
+            packageSpecs: 'python=3.6 conda-build conda-verify anaconda-client'
+            updateConda: true
 
-  - job: 'Publish_Anaconda'
-    displayName: Publish - Anaconda
-    condition: |
-      and
-      (
-        and(
-          succeeded('Linux'),
-          succeeded('MacOS'),
-          succeededOrFailed('Windows')
-        ),
-        eq(dependencies.DeployControl.outputs['var.build_ok'], true),
-        or
-        (
-        contains(variables['Build.SourceBranch'],'heads/master'),
-        contains(variables['Build.SourceBranch'],'refs/tags')
-        )
-      )
-    dependsOn:
-      - DeployControl
-      - Linux
-      - MacOS
-      - Windows
-    pool:
-      vmImage: 'Ubuntu 16.04'
-    steps:
-    # Download Anaconda packages
-    - task: DownloadBuildArtifacts@0
-      inputs:
-        buildType: 'current'
-        artifactName: 'anaconda_package'
-        downloadPath: $(Build.Repository.LocalPath)/artifacts
-      displayName: Artifact Download - Anaconda Packages
+        - script: 'anaconda upload $(Build.Repository.LocalPath)/artifacts/anaconda_package/*/*.tar.bz2'
+          displayName: 'Anaconda - Upload - DEV'
+          env:
+            ANACONDA_API_TOKEN: $(CONDA_UPLOAD_TOKEN_DEV)
+          condition: contains(variables['Build.SourceBranch'],'heads/master')
 
-    - bash: |
-        # Fix Anaconda permissions
-        sudo install -d -m 0777 /usr/envs
-        sudo install -d -m 0777 /usr/share/miniconda/
-
-      displayName: 'Linux - Prepare OS'
-      condition: eq(variables['agent.os'], 'Linux' )
-
-    - task: CondaEnvironment@0
-      displayName: 'Anaconda - Create - Upload Environment'
-      inputs:
-        environmentName: 'test-environment'
-        packageSpecs: 'python=3.6 conda-build conda-verify anaconda-client'
-        updateConda: true
-
-    - script: 'anaconda upload $(Build.Repository.LocalPath)/artifacts/anaconda_package/*/*.tar.bz2'
-      displayName: 'Anaconda - Upload - DEV'
-      env:
-        ANACONDA_API_TOKEN: $(CONDA_UPLOAD_TOKEN_DEV)
-      condition: contains(variables['Build.SourceBranch'],'heads/master')
-
-    - script: 'anaconda upload $(Build.Repository.LocalPath)/artifacts/anaconda_package/*/*.tar.bz2'
-      displayName: 'Anaconda - Upload - TAG'
-      env:
-        ANACONDA_API_TOKEN: $(CONDA_UPLOAD_TOKEN_TAG)
-      condition: contains(variables['Build.SourceBranch'],'refs/tags')
+        - script: 'anaconda upload $(Build.Repository.LocalPath)/artifacts/anaconda_package/*/*.tar.bz2'
+          displayName: 'Anaconda - Upload - TAG'
+          env:
+            ANACONDA_API_TOKEN: $(CONDA_UPLOAD_TOKEN_TAG)
+          condition: contains(variables['Build.SourceBranch'],'refs/tags')

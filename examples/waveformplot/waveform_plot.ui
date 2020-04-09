@@ -22,13 +22,23 @@
      <property name="whatsThis">
       <string/>
      </property>
+     <property name="xLabels">
+      <stringlist>
+       <string>Point #</string>
+      </stringlist>
+     </property>
+     <property name="yLabels">
+      <stringlist>
+       <string>Value</string>
+      </stringlist>
+     </property>
      <property name="showLegend">
       <bool>true</bool>
      </property>
      <property name="curves">
       <stringlist>
-       <string>{&quot;y_channel&quot;: &quot;ca://MTEST:Waveform&quot;, &quot;x_channel&quot;: &quot;ca://MTEST:TimeBase&quot;, &quot;name&quot;: &quot;Sine&quot;, &quot;color&quot;: &quot;white&quot;}</string>
-       <string>{&quot;y_channel&quot;: &quot;ca://MTEST:Cosine&quot;, &quot;x_channel&quot;: &quot;ca://MTEST:TimeBase&quot;, &quot;name&quot;: &quot;Cosine&quot;, &quot;color&quot;: &quot;red&quot;}</string>
+       <string>{&quot;y_channel&quot;: &quot;ca://MTEST:Waveform&quot;, &quot;x_channel&quot;: &quot;ca://MTEST:TimeBase&quot;, &quot;name&quot;: &quot;Sine&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;redraw_mode&quot;: 2}</string>
+       <string>{&quot;y_channel&quot;: &quot;ca://MTEST:Cosine&quot;, &quot;x_channel&quot;: &quot;ca://MTEST:TimeBase&quot;, &quot;name&quot;: &quot;Cosine&quot;, &quot;color&quot;: &quot;red&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;redraw_mode&quot;: 2}</string>
       </stringlist>
      </property>
     </widget>

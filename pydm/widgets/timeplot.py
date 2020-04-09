@@ -150,9 +150,10 @@ class TimePlotCurveItem(BasePlotCurveItem):
         Get the minimum y-value so far in the same plot. This is useful to
         scale the y-axis for a selected curve.
 
-        Returns : float
+        Returns
         -------
-        The minimum y-value collected so far for this current curve.
+        float
+            The minimum y-value collected so far for this current curve.
         """
         return self._min_y_value
 
@@ -187,11 +188,14 @@ class TimePlotCurveItem(BasePlotCurveItem):
         For Asynchronous, write the new value into a temporary (buffered)
         variable, which will be written to the data buffer when asyncUpdate
         is called.
+        
+        This method is usually called by a PyDMChannel when it updates.  You
+        can call it yourself to inject data into the curve.
 
         Parameters
         ----------
         new_value : float
-            The new y-value just available.
+            The new y-value.
         """
 
         self.update_min_max_y_values(new_value)
@@ -584,7 +588,7 @@ class PyDMTimePlot(BasePlot):
                              symbol=d.get('symbol'),
                              symbolSize=d.get('symbolSize'))
 
-    curves = Property("QStringList", getCurves, setCurves)
+    curves = Property("QStringList", getCurves, setCurves, designable=False)
 
     def findCurve(self, pv_name):
         """
@@ -869,6 +873,10 @@ class TimeAxisItem(AxisItem):
     """
     TimeAxisItem formats a unix time axis into a human-readable format.
     """
+    def __init__(self, *args, **kwargs):
+        super(TimeAxisItem, self).__init__(*args, **kwargs)
+        self.enableAutoSIPrefix(False)
+
     def tickStrings(self, values, scale, spacing):
         strings = []
         for val in values:

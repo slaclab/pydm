@@ -2,14 +2,13 @@ import math
 import os
 import logging
 
-from qtpy.QtWidgets import (QApplication, QWidget,
-                            QStyle, QStyleOption)
+from qtpy.QtWidgets import (QWidget, QStyle, QStyleOption)
 from qtpy.QtGui import (QColor, QPainter, QBrush, QPen, QPolygon, QPolygonF, QPixmap,
                             QMovie)
-from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot
+from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot, QTimer
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
-from ..utilities import is_pydm_app, is_qt_designer
+from ..utilities import is_qt_designer, find_file
 
 logger = logging.getLogger(__name__)
 
@@ -501,6 +500,7 @@ class PyDMDrawingImage(PyDMDrawing):
         self._pixmap.fill(self.null_color)
         self._aspect_ratio_mode = Qt.KeepAspectRatio
         self._movie = None
+        self._file = None
         # Make sure we don't set a non-existant file
         if filename:
             self.filename = filename
@@ -511,6 +511,7 @@ class PyDMDrawingImage(PyDMDrawing):
             designer_window = self.get_designer_window()
             if designer_window is not None:
                 designer_window.fileNameChanged.connect(self.designer_form_saved)
+                QTimer.singleShot(200, self.reload_image)
 
     def get_designer_window(self):  # pragma: no cover
         # Internal function to find the designer window that owns this widget.
@@ -523,6 +524,9 @@ class PyDMDrawingImage(PyDMDrawing):
 
     @Slot(str)
     def designer_form_saved(self, filename):  # pragma: no cover
+        self.filename = self._file
+
+    def reload_image(self):
         self.filename = self._file
 
     @Property(str)
@@ -558,19 +562,16 @@ class PyDMDrawingImage(PyDMDrawing):
         abs_path = os.path.expanduser(os.path.expandvars(self._file))
         # Find the absolute path relative to UI
         if not os.path.isabs(abs_path):
-            try:
-                # Based on the QApplication
-                if is_pydm_app():
-                    abs_path = QApplication.instance().get_path(abs_path)
-                # Based on the QtDesigner
-                elif is_qt_designer():  # pragma: no cover
-                    p = self.get_designer_window()
-                    if p is not None:
-                        ui_dir = p.absoluteDir().absolutePath()
-                        abs_path = os.path.join(ui_dir, abs_path)
-            except Exception:
+            parent_display = self.find_parent_display()
+            base_path = None
+            if parent_display:
+                base_path = os.path.dirname(parent_display.loaded_file())
+            abs_path = find_file(abs_path, base_path=base_path)
+            if not abs_path:
                 logger.exception("Unable to find full filepath for %s",
                                  self._file)
+                return
+
         # Check that the path exists
         if os.path.isfile(abs_path):
             if self._movie is not None:

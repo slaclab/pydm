@@ -1,31 +1,45 @@
-from qtpy.QtWidgets import QPushButton
-from qtpy.QtGui import QCursor, QIcon
-from qtpy.QtCore import Slot, Property, QSize, Qt
 import shlex
 import subprocess
+from functools import partial
+import sys
+import logging
+import warnings
+
+from qtpy.QtWidgets import QPushButton, QMenu
+from qtpy.QtGui import QCursor, QIcon, QColor
+from qtpy.QtCore import Property, QSize, Qt, QTimer
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
 
-import sys
-import logging
 logger = logging.getLogger(__name__)
-
 
 class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
     """
     A QPushButton capable of execute shell commands.
     """
 
-    def __init__(self, parent=None, command=None):
+    def __init__(self, parent=None, command=None, title=None):
         QPushButton.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
         self.iconFont = IconFont()
         self._icon = self.iconFont.icon("cog")
+        self._warning_icon = self.iconFont.icon('exclamation-circle')
         self.setIconSize(QSize(16, 16))
         self.setIcon(self._icon)
         self.setCursor(QCursor(self._icon.pixmap(16, 16)))
-
-        self._command = command
+        if not title:
+            title = []
+        if not command:
+            command = []
+        if isinstance(title, str):
+            title = [title]
+        if isinstance(command, str):
+            command = [command]
+        if len(title) > 0 and (len(title) != len(command)):
+            raise ValueError("Number of items in 'command' must match number of items in 'title'.")
+        self._commands = command
+        self._titles = title
+        self._menu_needs_rebuild = True
         self._allow_multiple = False
         self.process = None
         self._show_icon = True
@@ -84,28 +98,89 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         if self._allow_multiple != value:
             self._allow_multiple = value
 
-    @Property(str)
+    @Property('QStringList')
+    def titles(self):
+        return self._titles
+        
+    @titles.setter
+    def titles(self, val):
+        self._titles = val
+        self._menu_needs_rebuild = True
+        
+    @Property('QStringList')
+    def commands(self):
+        return self._commands
+        
+    @commands.setter
+    def commands(self, val):
+        if not val:
+            self._commands = []
+        else:
+            self._commands = val
+        self._menu_needs_rebuild = True
+
+    @Property(str, designable=False)
     def command(self):
         """
-        The Shell Command to be executed
+        DEPRECATED: use the 'commands' property.
+        This property simply returns the first command from the 'commands'
+        property.
+        The shell command to run.
 
         Returns
         -------
         str
         """
-        return self._command
+        if len(self.commands) == 0:
+            return ""
+        return self.commands[0]
 
     @command.setter
     def command(self, value):
         """
-        The Shell Command to be executed
+        DEPRECATED: Use the 'commands' property instead.
+        This property only has an effect if the 'commands' property is empty.
+        If 'commands' is empty, it will be set to a single item list containing
+        the value of 'command'.
 
         Parameters
         ----------
         value : str
         """
-        if self._command != value:
-            self._command = value
+        warnings.warn("'PyDMShellCommand.command' is deprecated, "
+                      "use 'PyDMShellCommand.commands' instead.")
+        if not self._commands:
+            if value:
+                self.commands = [value]
+            else:
+                self.commands = []
+        
+    def _rebuild_menu(self):
+        if not any(self._commands):
+            self._commands = []
+        if not any(self._titles):
+            self._titles = []
+        if len(self._commands) == 0:
+            self.setEnabled(False)
+        if len(self._commands) <= 1:
+            self.setMenu(None)
+            self._menu_needs_rebuild = False
+            return
+        menu = QMenu(self)
+        for i, command in enumerate(self._commands):
+            if i >= len(self._titles):
+                title = command
+            else:
+                title = self._titles[i]
+            action = menu.addAction(title)
+            action.triggered.connect(partial(self.execute_command, command))
+        self.setMenu(menu)
+        self._menu_needs_rebuild = False
+
+    def mousePressEvent(self, event):
+        if self._menu_needs_rebuild:
+            self._rebuild_menu()
+        super(PyDMShellCommand, self).mousePressEvent(event)
 
     def mouseReleaseEvent(self, mouse_event):
         """
@@ -118,26 +193,44 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         ----------
         mouse_event :
         """
-        if mouse_event.button() == Qt.LeftButton:
-            self.execute_command()
+        if mouse_event.button() != Qt.LeftButton:
+            return super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
+        if self.menu() is not None:
+            return super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
+        assert len(self.commands) == 1, "More than one command present, but no menu created."
+        self.execute_command(self.commands[0])
         super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
 
-    @Slot()
-    def execute_command(self):
+    def show_warning_icon(self):
+        """ Show the warning icon.  This is called when a shell command fails
+        (i.e. exits with nonzero status) """
+        self.setIcon(self._warning_icon)
+        QTimer.singleShot(5000, self.hide_warning_icon)
+        
+    def hide_warning_icon(self):
+        """ Hide the warning icon.  This is called on a timer after the warning
+        icon is shown."""
+        if self._show_icon:
+            self.setIcon(self._icon)
+        else:
+            self.setIcon(QIcon())
+
+    def execute_command(self, command):
         """
         Execute the shell command given by ```command```.
         The process is available through the ```process``` member.
         """
-
-        if self._command is None or self._command == "":
+        if not command:
             logger.info("The command is not set, so no command was executed.")
             return
 
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
-            args = shlex.split(self._command, posix='win' not in sys.platform)
+            args = shlex.split(command, posix='win' not in sys.platform)
             try:
+                logger.debug("Launching process: %s", repr(args))
                 self.process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             except Exception as exc:
-                logger.error("Error in command: {0}".format(exc))
+                self.show_warning_icon()
+                logger.error("Error in shell command: %s", exc)
         else:
-            logging.error("Command already active.")
+            logger.error("Command '%s' already active.", command)

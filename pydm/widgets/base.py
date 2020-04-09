@@ -15,6 +15,7 @@ from .channel import PyDMChannel
 from .. import data_plugins, tools, config
 from ..data_store import DataKeys
 from ..utilities import (is_qt_designer, remove_protocol, data_callback)
+from ..display import Display
 from .rules import RulesDispatcher
 
 
@@ -206,9 +207,18 @@ class PyDMPrimitiveWidget(object):
             self._rules = new_rules
             try:
                 rules_list = json.loads(self._rules)
-                RulesDispatcher().register(self, rules_list)
+                if rules_list:
+                    RulesDispatcher().register(self, rules_list)
             except JSONDecodeError as ex:
                 logger.exception('Invalid format for Rules')
+
+    def find_parent_display(self):
+        widget = self.parent()
+        while widget is not None:
+            if isinstance(widget, Display):
+                return widget
+            widget = widget.parent()
+        return None
 
 
 class TextFormatter(object):
@@ -285,7 +295,7 @@ class TextFormatter(object):
         """
         # Only allow one to change the property if not getting the precision
         # from the PV
-        if self.precisionFromPV:
+        if self._precision_from_pv is not None and self._precision_from_pv:
             return
         if new_prec and self._prec != int(new_prec) and new_prec >= 0:
             self._user_prec = int(new_prec)
@@ -521,7 +531,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if menu is None:
             menu = QMenu(parent=self)
         kwargs = {'channels': self.channels_for_tools(), 'sender': self}
-        tools.assemble_tools_menu(menu, widget_only=True, **kwargs)
+        tools.assemble_tools_menu(menu, widget_only=True, widget=self, **kwargs)
         return menu
 
     def open_context_menu(self, ev):

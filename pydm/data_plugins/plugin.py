@@ -158,6 +158,7 @@ class PyDMPlugin(object):
                     destroying=destroying)
                 self.channels.remove(channel)
                 if self.connections[connection].listener_count < 1:
+                    self.connections[connection].deleteLater()
                     del self.connections[connection]
 
     def get_repr(self, channel):

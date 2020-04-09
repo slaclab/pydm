@@ -1,6 +1,7 @@
-from qtpy.QtCore import (Qt, QSize, Property, Slot, Q_ENUMS)
+from qtpy.QtCore import (Qt, QSize, Property, Slot, Q_ENUMS, QMargins)
 from qtpy.QtWidgets import (QWidget, QButtonGroup, QGridLayout, QPushButton,
-                            QRadioButton)
+                            QRadioButton, QStyleOption, QStyle)
+from qtpy.QtGui import QPainter
 
 from .base import PyDMWritableWidget
 from .. import data_plugins
@@ -17,7 +18,7 @@ class_for_type = [QPushButton, QRadioButton]
 class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
     """
     A QWidget that renders buttons for every option of Enum Items.
-    For now three types of buttons can be rendered:
+    For now, two types of buttons can be rendered:
     - Push Button
     - Radio Button
 
@@ -36,7 +37,11 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         QWidget.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self._has_enums = False
+        self._checkable = True
         self.setLayout(QGridLayout(self))
+        self._layout_spacing_horizontal = 6
+        self._layout_spacing_vertical = 6
+        self._layout_margins = QMargins(9, 9, 9, 9)
         self._btn_group = QButtonGroup()
         self._btn_group.setExclusive(True)
         self._btn_group.buttonClicked[int].connect(self.handle_button_clicked)
@@ -122,6 +127,170 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
             self._orientation = new_orientation
             self.rebuild_layout()
 
+    @Property(int)
+    def marginTop(self):
+        """
+        The top margin of the QGridLayout of buttons.
+
+        Returns
+        -------
+        int
+        """
+        return self._layout_margins.top()
+
+    @marginTop.setter
+    def marginTop(self, new_margin):
+        """
+        Set the top margin of the QGridLayout of buttons.
+
+        Parameters
+        -------
+        int
+        """
+        new_margin = max(0, int(new_margin))
+        self._layout_margins.setTop(new_margin)
+        self.layout().setContentsMargins(self._layout_margins)
+
+    @Property(int)
+    def marginBottom(self):
+        """
+        The bottom margin of the QGridLayout of buttons.
+
+        Returns
+        -------
+        int
+        """
+        return self._layout_margins.bottom()
+
+    @marginBottom.setter
+    def marginBottom(self, new_margin):
+        """
+        Set the bottom margin of the QGridLayout of buttons.
+
+        Parameters
+        -------
+        int
+        """
+        new_margin = max(0, int(new_margin))
+        self._layout_margins.setBottom(new_margin)
+        self.layout().setContentsMargins(self._layout_margins)
+
+    @Property(int)
+    def marginLeft(self):
+        """
+        The left margin of the QGridLayout of buttons.
+
+        Returns
+        -------
+        int
+        """
+        return self._layout_margins.left()
+
+    @marginLeft.setter
+    def marginLeft(self, new_margin):
+        """
+        Set the left margin of the QGridLayout of buttons.
+
+        Parameters
+        -------
+        int
+        """
+        new_margin = max(0, int(new_margin))
+        self._layout_margins.setLeft(new_margin)
+        self.layout().setContentsMargins(self._layout_margins)
+
+    @Property(int)
+    def marginRight(self):
+        """
+        The right margin of the QGridLayout of buttons.
+
+        Returns
+        -------
+        int
+        """
+        return self._layout_margins.right()
+
+    @marginRight.setter
+    def marginRight(self, new_margin):
+        """
+        Set the right margin of the QGridLayout of buttons.
+
+        Parameters
+        -------
+        int
+        """
+        new_margin = max(0, int(new_margin))
+        self._layout_margins.setRight(new_margin)
+        self.layout().setContentsMargins(self._layout_margins)
+
+    @Property(int)
+    def horizontalSpacing(self):
+        """
+        The horizontal gap of the QGridLayout containing the QButtonGroup.
+
+        Returns
+        -------
+        int
+        """
+        return self._layout_spacing_horizontal
+
+    @horizontalSpacing.setter
+    def horizontalSpacing(self, new_spacing):
+        """
+        Set the layout horizontal gap between buttons.
+
+        Parameters
+        -------
+        new_spacing : int
+        """
+        new_spacing = max(0, int(new_spacing))
+        if new_spacing != self._layout_spacing_horizontal:
+            self._layout_spacing_horizontal = new_spacing
+            self.layout().setHorizontalSpacing(new_spacing)
+
+    @Property(int)
+    def verticalSpacing(self):
+        """
+        The vertical gap of the QGridLayout containing the QButtonGroup.
+
+        Returns
+        -------
+        int
+        """
+        return self._layout_spacing_vertical
+
+    @verticalSpacing.setter
+    def verticalSpacing(self, new_spacing):
+        """
+        Set the layout vertical gap between buttons.
+
+        Parameters
+        -------
+        new_spacing : int
+        """
+        new_spacing = max(0, int(new_spacing))
+        if new_spacing != self._layout_spacing_vertical:
+            self._layout_spacing_vertical = new_spacing
+            self.layout().setVerticalSpacing(new_spacing)
+
+    @Property(bool)
+    def checkable(self):
+        """
+        Whether or not the button should be checkable.
+
+        Returns
+        -------
+        bool
+        """
+        return self._checkable
+
+    @checkable.setter
+    def checkable(self, value):
+        if value != self._checkable:
+            self._checkable = value
+            for widget in self._widgets:
+                widget.setCheckable(value)
+
     @Slot(int)
     def handle_button_clicked(self, id):
         """
@@ -160,7 +329,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
 
             for idx, entry in enumerate(items):
                 w = class_for_type[self._widget_type](parent=self)
-                w.setCheckable(True)
+                w.setCheckable(self.checkable)
                 w.setText(entry)
                 self._widgets.append(w)
                 self._btn_group.addButton(w, idx)
@@ -240,3 +409,23 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
             self._has_enums = True
             self.check_enable_state()
             self.rebuild_widgets()
+
+    def paintEvent(self, _):
+        """
+        Paint events are sent to widgets that need to update themselves,
+        for instance when part of a widget is exposed because a covering
+        widget was moved.
+
+        At PyDMDrawing this method handles the alarm painting with parameters
+        from the stylesheet, configures the brush, pen and calls ```draw_item```
+        so the specifics can be performed for each of the drawing classes.
+
+        Parameters
+        ----------
+        event : QPaintEvent
+        """
+        painter = QPainter(self)
+        opt = QStyleOption()
+        opt.initFrom(self)
+        self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
+        painter.setRenderHint(QPainter.Antialiasing)

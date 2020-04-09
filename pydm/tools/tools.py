@@ -24,15 +24,18 @@ class ExternalTool():
         for the PyDMWidgets. If `False` the tool will be available at the Main Window
         menu only and will receive as a parameter `channels` as `None` and `sender` as
         the `main_window` object.
-
+    use_without_widgets : bool
+        Whether or not this action should be rendered at locations other than a
+        widget Custom Context Menu.
     """
-
-    def __init__(self, icon, name, group, author="", use_with_widgets=True):
+    def __init__(self, icon, name, group, author="", use_with_widgets=True,
+                 use_without_widget=True):
         self.icon = icon
         self.name = name
         self.group = group
         self.author = author
         self.use_with_widgets = use_with_widgets
+        self.use_without_widget = use_without_widget
 
     def call(self, channels, sender):
         """
@@ -87,3 +90,20 @@ class ExternalTool():
             'group': self.group,
             'name': self.name
             }
+
+    def is_compatible_with(self, widget):
+        """
+        Verify if the ExternalTool is compatible with the given widget.
+
+        Parameters
+        ----------
+        widget : QWidget
+            The widget for which the ExternalTool is being assembled.
+
+        Returns
+        -------
+        bool
+            True if this ExternalTool is compatible with the widget, False
+            otherwise.
+        """
+        return True

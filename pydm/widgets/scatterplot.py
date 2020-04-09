@@ -50,12 +50,13 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
 
     def to_dict(self):
         """
-        Returns an OrderedDict representation with values for all properties
-        needed to recreate this curve.
+        Serialize this curve into a dictionary.
 
         Returns
         -------
         OrderedDict
+            Representation with values for all properties
+            needed to recreate this curve.
         """
         dic_ = OrderedDict([("y_channel", self.y_address),
                             ("x_channel", self.x_address)])
@@ -72,6 +73,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         Returns
         -------
         str
+            The address of the channel used to get the x axis data.
         """
         return self._x_address
 
@@ -121,6 +123,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         Returns
         -------
         str
+            The address of the channel used to get the y axis data.
         """
         return self._y_address
 
@@ -174,7 +177,13 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
     @Slot(float)
     def receiveXValue(self, new_x):
         """
-        Handler for new x data.
+        Handler for new x data.  This method is usually called by a PyDMChannel
+        when it updates.  You can call this yourself to inject data into the curve.
+        
+        Parameters
+        ----------
+        new_x: numpy.ndarray
+            A new array values for the X axis.
         """
         if new_x is None:
             return
@@ -186,7 +195,13 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
     @Slot(float)
     def receiveYValue(self, new_y):
         """
-        Handler for new y data.
+        Handler for new y data.  This method is usually called by a PyDMChannel
+        when it updates.  You can call this yourself to inject data into the curve.
+        
+        Parameters
+        ----------
+        new_y: numpy.ndarray
+            A new array values for the Y axis.
         """
         if new_y is None:
             return
@@ -261,12 +276,12 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
 
     def limits(self):
         """
-        Limits of the data for this curve.
-        Returns a nested tuple of limits: ((xmin, xmax), (ymin, ymax))
+        Get the limits of the data for this curve.
 
         Returns
         -------
         tuple
+            A nested tuple of limits: ((xmin, xmax), (ymin, ymax))
         """
         if self.points_accumulated == 0:
             raise NoDataError("Curve has no data, cannot determine limits.")
@@ -483,7 +498,7 @@ class PyDMScatterPlot(BasePlot):
                             redraw_mode=d.get('redraw_mode'),
                             buffer_size=d.get('buffer_size'))
 
-    curves = Property("QStringList", getCurves, setCurves)
+    curves = Property("QStringList", getCurves, setCurves, designable=False)
 
     def channels(self):
         """

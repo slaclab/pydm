@@ -1,4 +1,5 @@
 codecov
 pytest>=3.6
 pytest-qt
-pytest-cov<2.6.0
+pytest-cov
+pytest-timeout

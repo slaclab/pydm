@@ -37,6 +37,7 @@ Plot Widgets
 .. toctree::
    :maxdepth: 1
 
+   curve_editor.rst
    scatterplot.rst
    timeplot.rst
    waveformplot.rst

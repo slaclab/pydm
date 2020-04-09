@@ -1,4 +1,4 @@
-Copyright (c) 2017-2018, The Board of Trustees of the Leland Stanford
+Copyright (c) 2017-2019, The Board of Trustees of the Leland Stanford
 Junior University, through SLAC National Accelerator Laboratory
 (subject to receipt of any required approvals from the U.S. Dept. of
 Energy). All rights reserved. Redistribution and use in source and
