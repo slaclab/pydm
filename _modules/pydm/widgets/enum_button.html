@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.enum_button &mdash; PyDM v1.9.0+27.gd5b082fd documentation</title>
+  <title>pydm.widgets.enum_button &mdash; PyDM v1.9.0+36.g389d63b5 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.9.0+27.gd5b082fd
+                v1.9.0+36.g389d63b5
               </div>
             
           
@@ -176,7 +176,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.enum_button</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Q_ENUMS</span><span class="p">)</span>
+<span></span><span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Q_ENUMS</span><span class="p">,</span> <span class="n">QMargins</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">QButtonGroup</span><span class="p">,</span> <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span>
                             <span class="n">QRadioButton</span><span class="p">,</span> <span class="n">QStyleOption</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QPainter</span>
@@ -196,7 +196,7 @@
 <div class="viewcode-block" id="PyDMEnumButton"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton">[docs]</a><span class="k">class</span> <span class="nc">PyDMEnumButton</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">WidgetType</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QWidget that renders buttons for every option of Enum Items.</span>
-<span class="sd">    For now three types of buttons can be rendered:</span>
+<span class="sd">    For now, two types of buttons can be rendered:</span>
 <span class="sd">    - Push Button</span>
 <span class="sd">    - Radio Button</span>
 
@@ -221,6 +221,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_has_enums</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_checkable</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">QGridLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_horizontal</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_vertical</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span> <span class="o">=</span> <span class="n">QMargins</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_btn_group</span> <span class="o">=</span> <span class="n">QButtonGroup</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_btn_group</span><span class="o">.</span><span class="n">setExclusive</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_btn_group</span><span class="o">.</span><span class="n">buttonClicked</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_button_clicked</span><span class="p">)</span>
@@ -305,6 +308,152 @@
         <span class="k">if</span> <span class="n">new_orientation</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span> <span class="o">=</span> <span class="n">new_orientation</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">marginTop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The top margin of the QGridLayout of buttons.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">top</span><span class="p">()</span>
+
+    <span class="nd">@marginTop</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">marginTop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the top margin of the QGridLayout of buttons.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_margin</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_margin</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">setTop</span><span class="p">(</span><span class="n">new_margin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">marginBottom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The bottom margin of the QGridLayout of buttons.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">bottom</span><span class="p">()</span>
+
+    <span class="nd">@marginBottom</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">marginBottom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the bottom margin of the QGridLayout of buttons.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_margin</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_margin</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">setBottom</span><span class="p">(</span><span class="n">new_margin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">marginLeft</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The left margin of the QGridLayout of buttons.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">left</span><span class="p">()</span>
+
+    <span class="nd">@marginLeft</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">marginLeft</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the left margin of the QGridLayout of buttons.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_margin</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_margin</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">setLeft</span><span class="p">(</span><span class="n">new_margin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">marginRight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The right margin of the QGridLayout of buttons.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">right</span><span class="p">()</span>
+
+    <span class="nd">@marginRight</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">marginRight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the right margin of the QGridLayout of buttons.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_margin</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_margin</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">setRight</span><span class="p">(</span><span class="n">new_margin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">horizontalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The horizontal gap of the QGridLayout containing the QButtonGroup.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_horizontal</span>
+
+    <span class="nd">@horizontalSpacing</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">horizontalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_spacing</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the layout horizontal gap between buttons.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_spacing : int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_spacing</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_spacing</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">new_spacing</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_horizontal</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_horizontal</span> <span class="o">=</span> <span class="n">new_spacing</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setHorizontalSpacing</span><span class="p">(</span><span class="n">new_spacing</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">verticalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The vertical gap of the QGridLayout containing the QButtonGroup.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_vertical</span>
+
+    <span class="nd">@verticalSpacing</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">verticalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_spacing</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the layout vertical gap between buttons.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_spacing : int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_spacing</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_spacing</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">new_spacing</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_vertical</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_vertical</span> <span class="o">=</span> <span class="n">new_spacing</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setVerticalSpacing</span><span class="p">(</span><span class="n">new_spacing</span><span class="p">)</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">checkable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

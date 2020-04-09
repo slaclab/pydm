@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMEnumButton &mdash; PyDM v1.9.0+27.gd5b082fd documentation</title>
+  <title>PyDMEnumButton &mdash; PyDM v1.9.0+36.g389d63b5 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+27.gd5b082fd
+                v1.9.0+36.g389d63b5
               </div>
             
           
@@ -205,7 +205,7 @@
 <dt id="pydm.widgets.enum_button.PyDMEnumButton">
 <em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.enum_button.</code><code class="sig-name descname">PyDMEnumButton</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_channel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton" title="Permalink to this definition">¶</a></dt>
 <dd><p>A QWidget that renders buttons for every option of Enum Items.
-For now three types of buttons can be rendered:
+For now, two types of buttons can be rendered:
 - Push Button
 - Radio Button</p>
 <dl class="field-list simple">
@@ -272,6 +272,20 @@ new enum values to be broadcasted.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.horizontalSpacing">
+<code class="sig-name descname">horizontalSpacing</code><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.horizontalSpacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>The horizontal gap of the QGridLayout containing the QButtonGroup.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
 <dt id="pydm.widgets.enum_button.PyDMEnumButton.items">
 <code class="sig-name descname">items</code><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Items to be displayed in the button group.</p>
@@ -283,6 +297,62 @@ Because C++ QStringList expects a list type, we need to make sure that None is n
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.marginBottom">
+<code class="sig-name descname">marginBottom</code><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.marginBottom" title="Permalink to this definition">¶</a></dt>
+<dd><p>The bottom margin of the QGridLayout of buttons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.marginLeft">
+<code class="sig-name descname">marginLeft</code><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.marginLeft" title="Permalink to this definition">¶</a></dt>
+<dd><p>The left margin of the QGridLayout of buttons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.marginRight">
+<code class="sig-name descname">marginRight</code><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.marginRight" title="Permalink to this definition">¶</a></dt>
+<dd><p>The right margin of the QGridLayout of buttons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.marginTop">
+<code class="sig-name descname">marginTop</code><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.marginTop" title="Permalink to this definition">¶</a></dt>
+<dd><p>The top margin of the QGridLayout of buttons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -352,6 +422,20 @@ list of fake strings so we can see something at Designer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_val</strong> (<em>int</em>) – The new value from the channel.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.enum_button.PyDMEnumButton.verticalSpacing">
+<code class="sig-name descname">verticalSpacing</code><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.verticalSpacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>The vertical gap of the QGridLayout containing the QButtonGroup.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
