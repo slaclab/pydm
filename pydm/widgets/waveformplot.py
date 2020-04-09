@@ -138,7 +138,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         The address of the channel used to get the y axis waveform data.
 
         Parameters
-        -------
+        ----------
         new_address: str
         """
         if new_address is None or len(str(new_address)) < 1:
