@@ -153,10 +153,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         new_margin = max(0, int(new_margin))
         self._layout_margins.setTop(new_margin)
         self.layout().setContentsMargins(self._layout_margins)
-        self.rebuild_layout()
 
     @Property(int)
-    def margin_bottom(self):
+    def marginBottom(self):
         """
         The bottom margin of the QGridLayout of buttons.
 
@@ -166,8 +165,8 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         """
         return self._layout_margins.bottom()
 
-    @margin_bottom.setter
-    def margin_bottom(self, new_margin):
+    @marginBottom.setter
+    def marginBottom(self, new_margin):
         """
         Set the bottom margin of the QGridLayout of buttons.
 
@@ -178,10 +177,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         new_margin = max(0, int(new_margin))
         self._layout_margins.setBottom(new_margin)
         self.layout().setContentsMargins(self._layout_margins)
-        self.rebuild_layout()
 
     @Property(int)
-    def margin_left(self):
+    def marginLeft(self):
         """
         The left margin of the QGridLayout of buttons.
 
@@ -191,8 +189,8 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         """
         return self._layout_margins.left()
 
-    @margin_left.setter
-    def margin_left(self, new_margin):
+    @marginLeft.setter
+    def marginLeft(self, new_margin):
         """
         Set the left margin of the QGridLayout of buttons.
 
@@ -203,10 +201,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         new_margin = max(0, int(new_margin))
         self._layout_margins.setLeft(new_margin)
         self.layout().setContentsMargins(self._layout_margins)
-        self.rebuild_layout()
 
     @Property(int)
-    def margin_right(self):
+    def marginRight(self):
         """
         The right margin of the QGridLayout of buttons.
 
@@ -216,8 +213,8 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         """
         return self._layout_margins.right()
 
-    @margin_right.setter
-    def margin_right(self, new_margin):
+    @marginRight.setter
+    def marginRight(self, new_margin):
         """
         Set the right margin of the QGridLayout of buttons.
 
@@ -228,7 +225,6 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         new_margin = max(0, int(new_margin))
         self._layout_margins.setRight(new_margin)
         self.layout().setContentsMargins(self._layout_margins)
-        self.rebuild_layout()
 
     @Property(int)
     def horizontalSpacing(self):
