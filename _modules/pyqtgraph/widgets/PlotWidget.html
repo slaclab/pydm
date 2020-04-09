@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pyqtgraph.widgets.PlotWidget &mdash; PyDM v1.9.0+38.g27b957bc documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.9.0+38.g27b957bc
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyDM</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyqtgraph.widgets.PlotWidget</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyqtgraph.widgets.PlotWidget</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">PlotWidget.py -  Convenience class--GraphicsView widget displaying a single PlotItem</span>
+<span class="sd">Copyright 2010  Luke Campagnola</span>
+<span class="sd">Distributed under MIT/X11 license. See license.txt for more information.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">..Qt</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span>
+<span class="kn">from</span> <span class="nn">.GraphicsView</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..graphicsItems.PlotItem</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PlotWidget&#39;</span><span class="p">]</span>
+<span class="k">class</span> <span class="nc">PlotWidget</span><span class="p">(</span><span class="n">GraphicsView</span><span class="p">):</span>
+    
+    <span class="c1"># signals wrapped from PlotItem / ViewBox</span>
+    <span class="n">sigRangeChanged</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
+    <span class="n">sigTransformChanged</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :class:`GraphicsView &lt;pyqtgraph.GraphicsView&gt;` widget with a single </span>
+<span class="sd">    :class:`PlotItem &lt;pyqtgraph.PlotItem&gt;` inside.</span>
+<span class="sd">    </span>
+<span class="sd">    The following methods are wrapped directly from PlotItem: </span>
+<span class="sd">    :func:`addItem &lt;pyqtgraph.PlotItem.addItem&gt;`, </span>
+<span class="sd">    :func:`removeItem &lt;pyqtgraph.PlotItem.removeItem&gt;`, </span>
+<span class="sd">    :func:`clear &lt;pyqtgraph.PlotItem.clear&gt;`, </span>
+<span class="sd">    :func:`setXRange &lt;pyqtgraph.ViewBox.setXRange&gt;`,</span>
+<span class="sd">    :func:`setYRange &lt;pyqtgraph.ViewBox.setYRange&gt;`,</span>
+<span class="sd">    :func:`setRange &lt;pyqtgraph.ViewBox.setRange&gt;`,</span>
+<span class="sd">    :func:`autoRange &lt;pyqtgraph.ViewBox.autoRange&gt;`,</span>
+<span class="sd">    :func:`setXLink &lt;pyqtgraph.ViewBox.setXLink&gt;`,</span>
+<span class="sd">    :func:`setYLink &lt;pyqtgraph.ViewBox.setYLink&gt;`,</span>
+<span class="sd">    :func:`viewRect &lt;pyqtgraph.ViewBox.viewRect&gt;`,</span>
+<span class="sd">    :func:`setMouseEnabled &lt;pyqtgraph.ViewBox.setMouseEnabled&gt;`,</span>
+<span class="sd">    :func:`enableAutoRange &lt;pyqtgraph.ViewBox.enableAutoRange&gt;`,</span>
+<span class="sd">    :func:`disableAutoRange &lt;pyqtgraph.ViewBox.disableAutoRange&gt;`,</span>
+<span class="sd">    :func:`setAspectLocked &lt;pyqtgraph.ViewBox.setAspectLocked&gt;`,</span>
+<span class="sd">    :func:`setLimits &lt;pyqtgraph.ViewBox.setLimits&gt;`,</span>
+<span class="sd">    :func:`register &lt;pyqtgraph.ViewBox.register&gt;`,</span>
+<span class="sd">    :func:`unregister &lt;pyqtgraph.ViewBox.unregister&gt;`</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    For all </span>
+<span class="sd">    other methods, use :func:`getPlotItem &lt;pyqtgraph.PlotWidget.getPlotItem&gt;`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;When initializing PlotWidget, *parent* and *background* are passed to </span>
+<span class="sd">        :func:`GraphicsWidget.__init__() &lt;pyqtgraph.GraphicsWidget.__init__&gt;`</span>
+<span class="sd">        and all others are passed</span>
+<span class="sd">        to :func:`PlotItem.__init__() &lt;pyqtgraph.PlotItem.__init__&gt;`.&quot;&quot;&quot;</span>
+        <span class="n">GraphicsView</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enableMouse</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span> <span class="o">=</span> <span class="n">PlotItem</span><span class="p">(</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCentralItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="p">)</span>
+        <span class="c1">## Explicitly wrap methods from plotItem</span>
+        <span class="c1">## NOTE: If you change this list, update the documentation above as well.</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;addItem&#39;</span><span class="p">,</span> <span class="s1">&#39;removeItem&#39;</span><span class="p">,</span> <span class="s1">&#39;autoRange&#39;</span><span class="p">,</span> <span class="s1">&#39;clear&#39;</span><span class="p">,</span> <span class="s1">&#39;setXRange&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;setYRange&#39;</span><span class="p">,</span> <span class="s1">&#39;setRange&#39;</span><span class="p">,</span> <span class="s1">&#39;setAspectLocked&#39;</span><span class="p">,</span> <span class="s1">&#39;setMouseEnabled&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;setXLink&#39;</span><span class="p">,</span> <span class="s1">&#39;setYLink&#39;</span><span class="p">,</span> <span class="s1">&#39;enableAutoRange&#39;</span><span class="p">,</span> <span class="s1">&#39;disableAutoRange&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;setLimits&#39;</span><span class="p">,</span> <span class="s1">&#39;register&#39;</span><span class="p">,</span> <span class="s1">&#39;unregister&#39;</span><span class="p">,</span> <span class="s1">&#39;viewRect&#39;</span><span class="p">]:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+        <span class="c1">#QtCore.QObject.connect(self.plotItem, QtCore.SIGNAL(&#39;viewChanged&#39;), self.viewChanged)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">sigRangeChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viewRangeChanged</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1">#self.scene().clear()</span>
+        <span class="c1">#self.mPlotItem.close()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PlotWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>  <span class="c1">## implicitly wrap methods from plotItem</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;__call__&#39;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">m</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">viewRangeChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="nb">range</span><span class="p">):</span>
+        <span class="c1">#self.emit(QtCore.SIGNAL(&#39;viewChanged&#39;), *args)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigRangeChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">range</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">widgetGroupInterface</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">PlotWidget</span><span class="o">.</span><span class="n">saveState</span><span class="p">,</span> <span class="n">PlotWidget</span><span class="o">.</span><span class="n">restoreState</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">saveState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">saveState</span><span class="p">()</span>
+        
+    <span class="k">def</span> <span class="nf">restoreState</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">restoreState</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">getPlotItem</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the PlotItem contained within.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span>
+        
+        
+        
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

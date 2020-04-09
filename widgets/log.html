@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMLogDisplay &mdash; PyDM v1.9.0+36.g389d63b5 documentation</title>
+  <title>PyDMLogDisplay &mdash; PyDM v1.9.0+38.g27b957bc documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+36.g389d63b5
+                v1.9.0+38.g27b957bc
               </div>
             
           
@@ -202,7 +202,8 @@
 <dl class="py class">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay">
 <em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.logdisplay.</code><code class="sig-name descname">PyDMLogDisplay</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">logname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">level</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay" title="Permalink to this definition">¶</a></dt>
-<dd><p>Standard display for Log Output</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.logdisplay.LogLevels</span></code></p>
+<p>Standard display for Log Output</p>
 <p>This widget handles instantating a <code class="docutils literal notranslate"><span class="pre">GuiHandler</span></code> and displaying log
 messages to a <code class="docutils literal notranslate"><span class="pre">QPlainTextEdit</span></code>. The level of the log can be changed from
 inside the widget itself, allowing users to select from any of the
@@ -216,11 +217,685 @@ inside the widget itself, allowing users to select from any of the
 </ul>
 </dd>
 </dl>
+<dl class="py class">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.PaintDeviceMetric">
+<em class="property">class </em><code class="sig-name descname">PaintDeviceMetric</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.PaintDeviceMetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.RenderFlag">
+<em class="property">class </em><code class="sig-name descname">RenderFlag</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.RenderFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.RenderFlags">
+<em class="property">class </em><code class="sig-name descname">RenderFlags</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.RenderFlags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<p>QWidget.RenderFlags(Union[QWidget.RenderFlags, QWidget.RenderFlag])
+QWidget.RenderFlags(QWidget.RenderFlags)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.acceptDrops">
+<code class="sig-name descname">acceptDrops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.acceptDrops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.accessibleDescription">
+<code class="sig-name descname">accessibleDescription</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.accessibleDescription" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.accessibleName">
+<code class="sig-name descname">accessibleName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.accessibleName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.actionEvent">
+<code class="sig-name descname">actionEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QActionEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.actionEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.actions">
+<code class="sig-name descname">actions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QAction<span class="p">]</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.actions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.activateWindow">
+<code class="sig-name descname">activateWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.activateWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.addAction">
+<code class="sig-name descname">addAction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QAction</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.addAction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.addActions">
+<code class="sig-name descname">addActions</code><span class="sig-paren">(</span><em class="sig-param">self, Iterable[QAction]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.addActions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.adjustSize">
+<code class="sig-name descname">adjustSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.adjustSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.as_dict">
+<em class="property">static </em><code class="sig-name descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an ordered dict of LogLevels ordered by value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>OrderedDict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.autoFillBackground">
+<code class="sig-name descname">autoFillBackground</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.autoFillBackground" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.backgroundRole">
+<code class="sig-name descname">backgroundRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette.ColorRole<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.backgroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.baseSize">
+<code class="sig-name descname">baseSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.baseSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.blockSignals">
+<code class="sig-name descname">blockSignals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.blockSignals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.changeEvent">
+<code class="sig-name descname">changeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.changeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.childAt">
+<code class="sig-name descname">childAt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.childAt" title="Permalink to this definition">¶</a></dt>
+<dd><p>childAt(self, int, int) -&gt; QWidget</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.childEvent">
+<code class="sig-name descname">childEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QChildEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.childEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.children">
+<code class="sig-name descname">children</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QObject<span class="p">]</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.children" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.childrenRect">
+<code class="sig-name descname">childrenRect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.childrenRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.childrenRegion">
+<code class="sig-name descname">childrenRegion</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.childrenRegion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay.clear">
 <code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.clear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear the text area.</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.clearFocus">
+<code class="sig-name descname">clearFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.clearFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.clearMask">
+<code class="sig-name descname">clearMask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.clearMask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.closeEvent">
+<code class="sig-name descname">closeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QCloseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.closeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.colorCount">
+<code class="sig-name descname">colorCount</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.colorCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.connectNotify">
+<code class="sig-name descname">connectNotify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.connectNotify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.contentsMargins">
+<code class="sig-name descname">contentsMargins</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QMargins<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.contentsMargins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.contentsRect">
+<code class="sig-name descname">contentsRect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.contentsRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.contextMenuEvent">
+<code class="sig-name descname">contextMenuEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QContextMenuEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.contextMenuEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.contextMenuPolicy">
+<code class="sig-name descname">contextMenuPolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.ContextMenuPolicy<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.contextMenuPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">window</span><span class="p">:</span> <span class="n">sip.voidptr</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">initializeWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">destroyOldWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.createWindowContainer">
+<code class="sig-name descname">createWindowContainer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">QWindow</span></em>, <em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n">QWidget</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">flags</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.WindowFlags<span class="p">, </span>Qt.WindowType<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.createWindowContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.cursor">
+<code class="sig-name descname">cursor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QCursor<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.cursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.customContextMenuRequested">
+<code class="sig-name descname">customContextMenuRequested</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.customContextMenuRequested" title="Permalink to this definition">¶</a></dt>
+<dd><p>customContextMenuRequested(self, QPoint) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.customEvent">
+<code class="sig-name descname">customEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.customEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.deleteLater">
+<code class="sig-name descname">deleteLater</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.deleteLater" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.depth">
+<code class="sig-name descname">depth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.depth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.destroy">
+<code class="sig-name descname">destroy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">destroyWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">destroySubWindows</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.destroy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.destroyed">
+<code class="sig-name descname">destroyed</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.destroyed" title="Permalink to this definition">¶</a></dt>
+<dd><p>QObject = None) [signal]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>destroyed(self, object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.devType">
+<code class="sig-name descname">devType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.devType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.devicePixelRatio">
+<code class="sig-name descname">devicePixelRatio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.devicePixelRatio" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.devicePixelRatioF">
+<code class="sig-name descname">devicePixelRatioF</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.devicePixelRatioF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.devicePixelRatioFScale">
+<code class="sig-name descname">devicePixelRatioFScale</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.devicePixelRatioFScale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.disconnect">
+<code class="sig-name descname">disconnect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.disconnectNotify">
+<code class="sig-name descname">disconnectNotify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.disconnectNotify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.dragEnterEvent">
+<code class="sig-name descname">dragEnterEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragEnterEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.dragEnterEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.dragLeaveEvent">
+<code class="sig-name descname">dragLeaveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragLeaveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.dragLeaveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.dragMoveEvent">
+<code class="sig-name descname">dragMoveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragMoveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.dragMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.dropEvent">
+<code class="sig-name descname">dropEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDropEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.dropEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.dumpObjectInfo">
+<code class="sig-name descname">dumpObjectInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.dumpObjectInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.dumpObjectTree">
+<code class="sig-name descname">dumpObjectTree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.dumpObjectTree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.dynamicPropertyNames">
+<code class="sig-name descname">dynamicPropertyNames</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QByteArray<span class="p">]</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.dynamicPropertyNames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.effectiveWinId">
+<code class="sig-name descname">effectiveWinId</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; sip.voidptr<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.effectiveWinId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.ensurePolished">
+<code class="sig-name descname">ensurePolished</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.ensurePolished" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.enterEvent">
+<code class="sig-name descname">enterEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.enterEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.event">
+<code class="sig-name descname">event</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.event" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.eventFilter">
+<code class="sig-name descname">eventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.eventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.find">
+<code class="sig-name descname">find</code><span class="sig-paren">(</span><em class="sig-param">sip.voidptr</em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.find" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.findChild">
+<code class="sig-name descname">findChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">options</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.FindChildOptions<span class="p">, </span>Qt.FindChildOption<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Qt.FindChildrenRecursively</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.findChild" title="Permalink to this definition">¶</a></dt>
+<dd><p>findChild(self, Tuple, name: str = ‘’, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; QObject</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.findChildren">
+<code class="sig-name descname">findChildren</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">options</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.FindChildOptions<span class="p">, </span>Qt.FindChildOption<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Qt.FindChildrenRecursively</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QObject<span class="p">]</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.findChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>findChildren(self, Tuple, name: str = ‘’, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, type, QRegExp, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, Tuple, QRegExp, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, type, QRegularExpression, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, Tuple, QRegularExpression, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.focusInEvent">
+<code class="sig-name descname">focusInEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFocusEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.focusInEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.focusNextChild">
+<code class="sig-name descname">focusNextChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.focusNextChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.focusNextPrevChild">
+<code class="sig-name descname">focusNextPrevChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.focusNextPrevChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.focusOutEvent">
+<code class="sig-name descname">focusOutEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFocusEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.focusOutEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.focusPolicy">
+<code class="sig-name descname">focusPolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.FocusPolicy<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.focusPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.focusPreviousChild">
+<code class="sig-name descname">focusPreviousChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.focusPreviousChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.focusProxy">
+<code class="sig-name descname">focusProxy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.focusProxy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.focusWidget">
+<code class="sig-name descname">focusWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.focusWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.font">
+<code class="sig-name descname">font</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFont<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.font" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.fontInfo">
+<code class="sig-name descname">fontInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFontInfo<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.fontInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.fontMetrics">
+<code class="sig-name descname">fontMetrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFontMetrics<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.fontMetrics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.foregroundRole">
+<code class="sig-name descname">foregroundRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette.ColorRole<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.foregroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.frameGeometry">
+<code class="sig-name descname">frameGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.frameGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.frameSize">
+<code class="sig-name descname">frameSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.frameSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.geometry">
+<code class="sig-name descname">geometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.geometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.getContentsMargins">
+<code class="sig-name descname">getContentsMargins</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.getContentsMargins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.grab">
+<code class="sig-name descname">grab</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">rectangle</span><span class="p">:</span> <span class="n">QRect</span> <span class="o">=</span> <span class="default_value">QRect(QPoint(0, 0), QSize(- 1, - 1))</span></em><span class="sig-paren">)</span> &#x2192; QPixmap<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.grab" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.grabGesture">
+<code class="sig-name descname">grabGesture</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.GestureType</em>, <em class="sig-param">flags: Union[Qt.GestureFlags</em>, <em class="sig-param">Qt.GestureFlag] = Qt.GestureFlags()</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.grabGesture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.grabKeyboard">
+<code class="sig-name descname">grabKeyboard</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.grabKeyboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.grabMouse">
+<code class="sig-name descname">grabMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.grabMouse" title="Permalink to this definition">¶</a></dt>
+<dd><p>grabMouse(self, Union[QCursor, Qt.CursorShape])</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.grabShortcut">
+<code class="sig-name descname">grabShortcut</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QKeySequence, QKeySequence.StandardKey, str, int], context: Qt.ShortcutContext = Qt.WindowShortcut</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.grabShortcut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.graphicsEffect">
+<code class="sig-name descname">graphicsEffect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QGraphicsEffect<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.graphicsEffect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.graphicsProxyWidget">
+<code class="sig-name descname">graphicsProxyWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QGraphicsProxyWidget<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.graphicsProxyWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.hasFocus">
+<code class="sig-name descname">hasFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.hasFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.hasHeightForWidth">
+<code class="sig-name descname">hasHeightForWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.hasHeightForWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.hasMouseTracking">
+<code class="sig-name descname">hasMouseTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.hasMouseTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.hasTabletTracking">
+<code class="sig-name descname">hasTabletTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.hasTabletTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.height">
+<code class="sig-name descname">height</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.heightForWidth">
+<code class="sig-name descname">heightForWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.heightForWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.heightMM">
+<code class="sig-name descname">heightMM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.heightMM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.hide">
+<code class="sig-name descname">hide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.hide" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.hideEvent">
+<code class="sig-name descname">hideEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QHideEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.hideEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.inherits">
+<code class="sig-name descname">inherits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.inherits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.initPainter">
+<code class="sig-name descname">initPainter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPainter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.initPainter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.inputMethodEvent">
+<code class="sig-name descname">inputMethodEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QInputMethodEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.inputMethodEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.inputMethodHints">
+<code class="sig-name descname">inputMethodHints</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.InputMethodHints<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.inputMethodHints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.inputMethodQuery">
+<code class="sig-name descname">inputMethodQuery</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.InputMethodQuery</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.inputMethodQuery" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMLogDisplay.insertAction(self, QAction, QAction)</code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.insertActions">
+<code class="sig-name descname">insertActions</code><span class="sig-paren">(</span><em class="sig-param">self, QAction, Iterable[QAction]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.insertActions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.installEventFilter">
+<code class="sig-name descname">installEventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.installEventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isActiveWindow">
+<code class="sig-name descname">isActiveWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isActiveWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isAncestorOf">
+<code class="sig-name descname">isAncestorOf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isAncestorOf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isEnabled">
+<code class="sig-name descname">isEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isEnabledTo">
+<code class="sig-name descname">isEnabledTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isEnabledTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isFullScreen">
+<code class="sig-name descname">isFullScreen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isFullScreen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isHidden">
+<code class="sig-name descname">isHidden</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isHidden" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isLeftToRight">
+<code class="sig-name descname">isLeftToRight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isLeftToRight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isMaximized">
+<code class="sig-name descname">isMaximized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isMaximized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isMinimized">
+<code class="sig-name descname">isMinimized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isMinimized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isModal">
+<code class="sig-name descname">isModal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isModal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isRightToLeft">
+<code class="sig-name descname">isRightToLeft</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isRightToLeft" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isSignalConnected">
+<code class="sig-name descname">isSignalConnected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isSignalConnected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isVisible">
+<code class="sig-name descname">isVisible</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isVisible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isVisibleTo">
+<code class="sig-name descname">isVisibleTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isVisibleTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isWidgetType">
+<code class="sig-name descname">isWidgetType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isWidgetType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isWindow">
+<code class="sig-name descname">isWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isWindowModified">
+<code class="sig-name descname">isWindowModified</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isWindowModified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.isWindowType">
+<code class="sig-name descname">isWindowType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.isWindowType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.keyPressEvent">
+<code class="sig-name descname">keyPressEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QKeyEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.keyReleaseEvent">
+<code class="sig-name descname">keyReleaseEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QKeyEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.keyReleaseEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.keyboardGrabber">
+<code class="sig-name descname">keyboardGrabber</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.keyboardGrabber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.killTimer">
+<code class="sig-name descname">killTimer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.killTimer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.layout">
+<code class="sig-name descname">layout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QLayout<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.layoutDirection">
+<code class="sig-name descname">layoutDirection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.LayoutDirection<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.layoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.leaveEvent">
+<code class="sig-name descname">leaveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.leaveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.locale">
+<code class="sig-name descname">locale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QLocale<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.locale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay.logFormat">
@@ -233,6 +908,188 @@ inside the widget itself, allowing users to select from any of the
 <code class="sig-name descname">logName</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.logName" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name of associated log</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.logicalDpiX">
+<code class="sig-name descname">logicalDpiX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.logicalDpiX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.logicalDpiY">
+<code class="sig-name descname">logicalDpiY</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.logicalDpiY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.lower">
+<code class="sig-name descname">lower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.lower" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.mapFrom">
+<code class="sig-name descname">mapFrom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.mapFrom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.mapFromGlobal">
+<code class="sig-name descname">mapFromGlobal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.mapFromGlobal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.mapFromParent">
+<code class="sig-name descname">mapFromParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.mapFromParent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.mapTo">
+<code class="sig-name descname">mapTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.mapTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.mapToGlobal">
+<code class="sig-name descname">mapToGlobal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.mapToGlobal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.mapToParent">
+<code class="sig-name descname">mapToParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.mapToParent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.mask">
+<code class="sig-name descname">mask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.mask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.maximumHeight">
+<code class="sig-name descname">maximumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.maximumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.maximumSize">
+<code class="sig-name descname">maximumSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.maximumSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.maximumWidth">
+<code class="sig-name descname">maximumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.maximumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.metaObject">
+<code class="sig-name descname">metaObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QMetaObject<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.metaObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.metric">
+<code class="sig-name descname">metric</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPaintDevice.PaintDeviceMetric</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.metric" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.minimumHeight">
+<code class="sig-name descname">minimumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.minimumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.minimumSize">
+<code class="sig-name descname">minimumSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.minimumSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.minimumSizeHint">
+<code class="sig-name descname">minimumSizeHint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.minimumSizeHint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.minimumWidth">
+<code class="sig-name descname">minimumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.minimumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.mouseDoubleClickEvent">
+<code class="sig-name descname">mouseDoubleClickEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.mouseDoubleClickEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.mouseGrabber">
+<code class="sig-name descname">mouseGrabber</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.mouseGrabber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.mouseMoveEvent">
+<code class="sig-name descname">mouseMoveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.mouseMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.mousePressEvent">
+<code class="sig-name descname">mousePressEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.mouseReleaseEvent">
+<code class="sig-name descname">mouseReleaseEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.mouseReleaseEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.move">
+<code class="sig-name descname">move</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>move(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.moveEvent">
+<code class="sig-name descname">moveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMoveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.moveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.moveToThread">
+<code class="sig-name descname">moveToThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QThread</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.moveToThread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.nativeEvent">
+<code class="sig-name descname">nativeEvent</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QByteArray, bytes, bytearray], sip.voidptr</em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>bool<span class="p">, </span>int<span class="p">]</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.nativeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.nativeParentWidget">
+<code class="sig-name descname">nativeParentWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.nativeParentWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.nextInFocusChain">
+<code class="sig-name descname">nextInFocusChain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.nextInFocusChain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.normalGeometry">
+<code class="sig-name descname">normalGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.normalGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.objectName">
+<code class="sig-name descname">objectName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.objectName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.objectNameChanged">
+<code class="sig-name descname">objectNameChanged</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.objectNameChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>objectNameChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.overrideWindowFlags">
+<code class="sig-name descname">overrideWindowFlags</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowFlags, Qt.WindowType]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.overrideWindowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.overrideWindowState">
+<code class="sig-name descname">overrideWindowState</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowStates, Qt.WindowState]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.overrideWindowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.paintEngine">
+<code class="sig-name descname">paintEngine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPaintEngine<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.paintEngine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay.paintEvent">
@@ -251,10 +1108,532 @@ so the specifics can be performed for each of the drawing classes.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.paintingActive">
+<code class="sig-name descname">paintingActive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.paintingActive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.palette">
+<code class="sig-name descname">palette</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.palette" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.parent">
+<code class="sig-name descname">parent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.parentWidget">
+<code class="sig-name descname">parentWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.parentWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.physicalDpiX">
+<code class="sig-name descname">physicalDpiX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.physicalDpiX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.physicalDpiY">
+<code class="sig-name descname">physicalDpiY</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.physicalDpiY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.pos">
+<code class="sig-name descname">pos</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.pos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.previousInFocusChain">
+<code class="sig-name descname">previousInFocusChain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.previousInFocusChain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.property">
+<code class="sig-name descname">property</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.property" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.pyqtConfigure">
+<code class="sig-name descname">pyqtConfigure</code><span class="sig-paren">(</span><em class="sig-param">...</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.pyqtConfigure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Each keyword argument is either the name of a Qt property or a Qt signal.
+For properties the property is set to the given value which should be of an
+appropriate type.
+For signals the signal is connected to the given value which should be a
+callable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.raise_">
+<code class="sig-name descname">raise_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.raise_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.receivers">
+<code class="sig-name descname">receivers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">PYQT_SIGNAL</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.receivers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.rect">
+<code class="sig-name descname">rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.rect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.releaseKeyboard">
+<code class="sig-name descname">releaseKeyboard</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.releaseKeyboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.releaseMouse">
+<code class="sig-name descname">releaseMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.releaseMouse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.releaseShortcut">
+<code class="sig-name descname">releaseShortcut</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.releaseShortcut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.removeAction">
+<code class="sig-name descname">removeAction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QAction</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.removeAction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.removeEventFilter">
+<code class="sig-name descname">removeEventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.removeEventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.render">
+<code class="sig-name descname">render</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPaintDevice</span></em>, <em class="sig-param"><span class="n">targetOffset</span><span class="p">:</span> <span class="n">QPoint</span> <span class="o">=</span> <span class="default_value">QPoint()</span></em>, <em class="sig-param"><span class="n">sourceRegion</span><span class="p">:</span> <span class="n">QRegion</span> <span class="o">=</span> <span class="default_value">QRegion()</span></em>, <em class="sig-param"><span class="n">flags</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>QWidget.RenderFlags<span class="p">, </span>QWidget.RenderFlag<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">QWidget.RenderFlags(QWidget.DrawWindowBackground | QWidget.DrawChildren)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>render(self, QPainter, targetOffset: QPoint = QPoint(), sourceRegion: QRegion = QRegion(), flags: Union[QWidget.RenderFlags, QWidget.RenderFlag] = QWidget.RenderFlags(QWidget.DrawWindowBackground|QWidget.DrawChildren))</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.repaint">
+<code class="sig-name descname">repaint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.repaint" title="Permalink to this definition">¶</a></dt>
+<dd><p>repaint(self, int, int, int, int)
+repaint(self, QRect)
+repaint(self, QRegion)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.resize">
+<code class="sig-name descname">resize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSize</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>resize(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.resizeEvent">
+<code class="sig-name descname">resizeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QResizeEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.resizeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.restoreGeometry">
+<code class="sig-name descname">restoreGeometry</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QByteArray, bytes, bytearray]</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.restoreGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.saveGeometry">
+<code class="sig-name descname">saveGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QByteArray<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.saveGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMLogDisplay.scroll(self, int, int)</code></dt>
+<dd><p>scroll(self, int, int, QRect)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.sender">
+<code class="sig-name descname">sender</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.sender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.senderSignalIndex">
+<code class="sig-name descname">senderSignalIndex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.senderSignalIndex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setAcceptDrops">
+<code class="sig-name descname">setAcceptDrops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setAcceptDrops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setAccessibleDescription">
+<code class="sig-name descname">setAccessibleDescription</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setAccessibleDescription" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setAccessibleName">
+<code class="sig-name descname">setAccessibleName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setAccessibleName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setAttribute">
+<code class="sig-name descname">setAttribute</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WidgetAttribute</em>, <em class="sig-param">on: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setAutoFillBackground">
+<code class="sig-name descname">setAutoFillBackground</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setAutoFillBackground" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setBackgroundRole">
+<code class="sig-name descname">setBackgroundRole</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPalette.ColorRole</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setBackgroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMLogDisplay.setBaseSize(self, int, int)</code></dt>
+<dd><p>setBaseSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMLogDisplay.setContentsMargins(self, int, int, int, int)</code></dt>
+<dd><p>setContentsMargins(self, QMargins)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setContextMenuPolicy">
+<code class="sig-name descname">setContextMenuPolicy</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.ContextMenuPolicy</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setContextMenuPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setCursor">
+<code class="sig-name descname">setCursor</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QCursor, Qt.CursorShape]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setCursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setDisabled">
+<code class="sig-name descname">setDisabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setDisabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setEnabled">
+<code class="sig-name descname">setEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setFixedHeight">
+<code class="sig-name descname">setFixedHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setFixedHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setFixedSize">
+<code class="sig-name descname">setFixedSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSize</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setFixedSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>setFixedSize(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setFixedWidth">
+<code class="sig-name descname">setFixedWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setFixedWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setFocus">
+<code class="sig-name descname">setFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setFocus" title="Permalink to this definition">¶</a></dt>
+<dd><p>setFocus(self, Qt.FocusReason)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setFocusPolicy">
+<code class="sig-name descname">setFocusPolicy</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.FocusPolicy</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setFocusPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setFocusProxy">
+<code class="sig-name descname">setFocusProxy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setFocusProxy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setFont">
+<code class="sig-name descname">setFont</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFont</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setFont" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setForegroundRole">
+<code class="sig-name descname">setForegroundRole</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPalette.ColorRole</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setForegroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setGeometry">
+<code class="sig-name descname">setGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QRect</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setGeometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>setGeometry(self, int, int, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setGraphicsEffect">
+<code class="sig-name descname">setGraphicsEffect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QGraphicsEffect</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setGraphicsEffect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setHidden">
+<code class="sig-name descname">setHidden</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setHidden" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setInputMethodHints">
+<code class="sig-name descname">setInputMethodHints</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.InputMethodHints, Qt.InputMethodHint]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setInputMethodHints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setLayout">
+<code class="sig-name descname">setLayout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QLayout</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setLayout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setLayoutDirection">
+<code class="sig-name descname">setLayoutDirection</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.LayoutDirection</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setLayoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setLevel">
 <code class="sig-name descname">setLevel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">level</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.setLevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setLevel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the level of the contained logger</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setLocale">
+<code class="sig-name descname">setLocale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QLocale</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setLocale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setMask">
+<code class="sig-name descname">setMask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QBitmap</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setMask" title="Permalink to this definition">¶</a></dt>
+<dd><p>setMask(self, QRegion)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setMaximumHeight">
+<code class="sig-name descname">setMaximumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setMaximumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMLogDisplay.setMaximumSize(self, int, int)</code></dt>
+<dd><p>setMaximumSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setMaximumWidth">
+<code class="sig-name descname">setMaximumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setMaximumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setMinimumHeight">
+<code class="sig-name descname">setMinimumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setMinimumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMLogDisplay.setMinimumSize(self, int, int)</code></dt>
+<dd><p>setMinimumSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setMinimumWidth">
+<code class="sig-name descname">setMinimumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setMinimumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setMouseTracking">
+<code class="sig-name descname">setMouseTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setMouseTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setObjectName">
+<code class="sig-name descname">setObjectName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setObjectName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setPalette">
+<code class="sig-name descname">setPalette</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPalette</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setPalette" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setParent">
+<code class="sig-name descname">setParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setParent" title="Permalink to this definition">¶</a></dt>
+<dd><p>setParent(self, QWidget, Union[Qt.WindowFlags, Qt.WindowType])</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setProperty">
+<code class="sig-name descname">setProperty</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em>, <em class="sig-param"><span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setProperty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setShortcutAutoRepeat">
+<code class="sig-name descname">setShortcutAutoRepeat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">enabled</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setShortcutAutoRepeat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setShortcutEnabled">
+<code class="sig-name descname">setShortcutEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">enabled</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setShortcutEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMLogDisplay.setSizeIncrement(self, int, int)</code></dt>
+<dd><p>setSizeIncrement(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setSizePolicy">
+<code class="sig-name descname">setSizePolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSizePolicy</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setSizePolicy" title="Permalink to this definition">¶</a></dt>
+<dd><p>setSizePolicy(self, QSizePolicy.Policy, QSizePolicy.Policy)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setStatusTip">
+<code class="sig-name descname">setStatusTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setStatusTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setStyle">
+<code class="sig-name descname">setStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QStyle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setStyle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setStyleSheet">
+<code class="sig-name descname">setStyleSheet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setStyleSheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMLogDisplay.setTabOrder(QWidget, QWidget)</code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setTabletTracking">
+<code class="sig-name descname">setTabletTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setTabletTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setToolTip">
+<code class="sig-name descname">setToolTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setToolTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setToolTipDuration">
+<code class="sig-name descname">setToolTipDuration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setToolTipDuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setUpdatesEnabled">
+<code class="sig-name descname">setUpdatesEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setUpdatesEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setVisible">
+<code class="sig-name descname">setVisible</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setVisible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setWhatsThis">
+<code class="sig-name descname">setWhatsThis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setWhatsThis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setWindowFilePath">
+<code class="sig-name descname">setWindowFilePath</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setWindowFilePath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setWindowFlag">
+<code class="sig-name descname">setWindowFlag</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WindowType</em>, <em class="sig-param">on: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setWindowFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setWindowFlags">
+<code class="sig-name descname">setWindowFlags</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowFlags, Qt.WindowType]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setWindowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setWindowIcon">
+<code class="sig-name descname">setWindowIcon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QIcon</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setWindowIcon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setWindowIconText">
+<code class="sig-name descname">setWindowIconText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setWindowIconText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setWindowModality">
+<code class="sig-name descname">setWindowModality</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WindowModality</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setWindowModality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setWindowModified">
+<code class="sig-name descname">setWindowModified</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setWindowModified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setWindowOpacity">
+<code class="sig-name descname">setWindowOpacity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setWindowOpacity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setWindowRole">
+<code class="sig-name descname">setWindowRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setWindowRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setWindowState">
+<code class="sig-name descname">setWindowState</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowStates, Qt.WindowState]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setWindowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.setWindowTitle">
+<code class="sig-name descname">setWindowTitle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setWindowTitle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.sharedPainter">
+<code class="sig-name descname">sharedPainter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPainter<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.sharedPainter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.show">
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.showEvent">
+<code class="sig-name descname">showEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QShowEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.showEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.showFullScreen">
+<code class="sig-name descname">showFullScreen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.showFullScreen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.showMaximized">
+<code class="sig-name descname">showMaximized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.showMaximized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.showMinimized">
+<code class="sig-name descname">showMinimized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.showMinimized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.showNormal">
+<code class="sig-name descname">showNormal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.showNormal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.signalsBlocked">
+<code class="sig-name descname">signalsBlocked</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.signalsBlocked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.size">
+<code class="sig-name descname">size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay.sizeHint">
@@ -262,10 +1641,246 @@ so the specifics can be performed for each of the drawing classes.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.sizeIncrement">
+<code class="sig-name descname">sizeIncrement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.sizeIncrement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.sizePolicy">
+<code class="sig-name descname">sizePolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSizePolicy<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.sizePolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.stackUnder">
+<code class="sig-name descname">stackUnder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.stackUnder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.startTimer">
+<code class="sig-name descname">startTimer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">timerType</span><span class="p">:</span> <span class="n">Qt.TimerType</span> <span class="o">=</span> <span class="default_value">Qt.CoarseTimer</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.startTimer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.statusTip">
+<code class="sig-name descname">statusTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.statusTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.style">
+<code class="sig-name descname">style</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QStyle<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.style" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.styleSheet">
+<code class="sig-name descname">styleSheet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.styleSheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.tabletEvent">
+<code class="sig-name descname">tabletEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QTabletEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.tabletEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.testAttribute">
+<code class="sig-name descname">testAttribute</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WidgetAttribute</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.testAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.thread">
+<code class="sig-name descname">thread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QThread<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.thread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.timerEvent">
+<code class="sig-name descname">timerEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QTimerEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.timerEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.toolTip">
+<code class="sig-name descname">toolTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.toolTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.toolTipDuration">
+<code class="sig-name descname">toolTipDuration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.toolTipDuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.tr">
+<code class="sig-name descname">tr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em>, <em class="sig-param"><span class="n">disambiguation</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">- 1</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.tr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.underMouse">
+<code class="sig-name descname">underMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.underMouse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.ungrabGesture">
+<code class="sig-name descname">ungrabGesture</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.GestureType</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.ungrabGesture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.unsetCursor">
+<code class="sig-name descname">unsetCursor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.unsetCursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.unsetLayoutDirection">
+<code class="sig-name descname">unsetLayoutDirection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.unsetLayoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.unsetLocale">
+<code class="sig-name descname">unsetLocale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.unsetLocale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>update(self, QRect)
+update(self, QRegion)
+update(self, int, int, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.updateGeometry">
+<code class="sig-name descname">updateGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.updateGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.updateMicroFocus">
+<code class="sig-name descname">updateMicroFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.updateMicroFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.updatesEnabled">
+<code class="sig-name descname">updatesEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.updatesEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.visibleRegion">
+<code class="sig-name descname">visibleRegion</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.visibleRegion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.whatsThis">
+<code class="sig-name descname">whatsThis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.whatsThis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.wheelEvent">
+<code class="sig-name descname">wheelEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWheelEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.wheelEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.width">
+<code class="sig-name descname">width</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.widthMM">
+<code class="sig-name descname">widthMM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.widthMM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.winId">
+<code class="sig-name descname">winId</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; sip.voidptr<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.winId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.window">
+<code class="sig-name descname">window</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.window" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.windowFilePath">
+<code class="sig-name descname">windowFilePath</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.windowFilePath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.windowFlags">
+<code class="sig-name descname">windowFlags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowFlags<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.windowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.windowHandle">
+<code class="sig-name descname">windowHandle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWindow<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.windowHandle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.windowIcon">
+<code class="sig-name descname">windowIcon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QIcon<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.windowIcon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.windowIconChanged">
+<code class="sig-name descname">windowIconChanged</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.windowIconChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowIconChanged(self, QIcon) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.windowIconText">
+<code class="sig-name descname">windowIconText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.windowIconText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.windowIconTextChanged">
+<code class="sig-name descname">windowIconTextChanged</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.windowIconTextChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowIconTextChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.windowModality">
+<code class="sig-name descname">windowModality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowModality<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.windowModality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.windowOpacity">
+<code class="sig-name descname">windowOpacity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.windowOpacity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.windowRole">
+<code class="sig-name descname">windowRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.windowRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.windowState">
+<code class="sig-name descname">windowState</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowStates<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.windowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.windowTitle">
+<code class="sig-name descname">windowTitle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.windowTitle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.windowTitleChanged">
+<code class="sig-name descname">windowTitleChanged</code><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.windowTitleChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowTitleChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.windowType">
+<code class="sig-name descname">windowType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowType<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.windowType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.logdisplay.PyDMLogDisplay.write">
 <code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write a message to the log display</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.x">
+<code class="sig-name descname">x</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.x" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.logdisplay.PyDMLogDisplay.y">
+<code class="sig-name descname">y</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.y" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

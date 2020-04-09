@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMSlider &mdash; PyDM v1.9.0+36.g389d63b5 documentation</title>
+  <title>PyDMSlider &mdash; PyDM v1.9.0+38.g27b957bc documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+36.g389d63b5
+                v1.9.0+38.g27b957bc
               </div>
             
           
@@ -204,7 +204,8 @@
 <dl class="py class">
 <dt id="pydm.widgets.slider.PyDMSlider">
 <em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.slider.</code><code class="sig-name descname">PyDMSlider</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_channel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider" title="Permalink to this definition">¶</a></dt>
-<dd><p>A QSlider with support for Channels and more from PyDM.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QFrame</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.base.TextFormatter</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.base.PyDMWritableWidget</span></code></p>
+<p>A QSlider with support for Channels and more from PyDM.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -213,6 +214,311 @@
 </ul>
 </dd>
 </dl>
+<dl class="py class">
+<dt id="pydm.widgets.slider.PyDMSlider.PaintDeviceMetric">
+<em class="property">class </em><code class="sig-name descname">PaintDeviceMetric</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.PaintDeviceMetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.slider.PyDMSlider.RenderFlag">
+<em class="property">class </em><code class="sig-name descname">RenderFlag</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.RenderFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.slider.PyDMSlider.RenderFlags">
+<em class="property">class </em><code class="sig-name descname">RenderFlags</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.RenderFlags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<p>QWidget.RenderFlags(Union[QWidget.RenderFlags, QWidget.RenderFlag])
+QWidget.RenderFlags(QWidget.RenderFlags)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.slider.PyDMSlider.Shadow">
+<em class="property">class </em><code class="sig-name descname">Shadow</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.Shadow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.slider.PyDMSlider.Shape">
+<em class="property">class </em><code class="sig-name descname">Shape</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.Shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.slider.PyDMSlider.StyleMask">
+<em class="property">class </em><code class="sig-name descname">StyleMask</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.StyleMask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.acceptDrops">
+<code class="sig-name descname">acceptDrops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.acceptDrops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.accessibleDescription">
+<code class="sig-name descname">accessibleDescription</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.accessibleDescription" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.accessibleName">
+<code class="sig-name descname">accessibleName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.accessibleName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.actionEvent">
+<code class="sig-name descname">actionEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QActionEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.actionEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.actions">
+<code class="sig-name descname">actions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QAction<span class="p">]</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.actions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.activateWindow">
+<code class="sig-name descname">activateWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.activateWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.addAction">
+<code class="sig-name descname">addAction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QAction</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.addAction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.addActions">
+<code class="sig-name descname">addActions</code><span class="sig-paren">(</span><em class="sig-param">self, Iterable[QAction]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.addActions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.adjustSize">
+<code class="sig-name descname">adjustSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.adjustSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.alarmSensitiveBorder">
+<code class="sig-name descname">alarmSensitiveBorder</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.alarmSensitiveBorder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the border color changes when alarm severity changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True means that the border color will be changed in case of
+alarm severity changes.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.alarmSensitiveContent">
+<code class="sig-name descname">alarmSensitiveContent</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.alarmSensitiveContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the content color changes when alarm severity
+changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True means that the content color will be changed in case of
+alarm severity changes.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.alarmSeverityChanged">
+<code class="sig-name descname">alarmSeverityChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_alarm_severity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.alarmSeverityChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the Alarm Severity of the Channel
+This slot sends the severity value to the
+<code class="docutils literal notranslate"><span class="pre">`alarm_severity_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_alarm_severity</strong> (<em>int</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.alarm_severity_changed">
+<code class="sig-name descname">alarm_severity_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_alarm_severity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.alarm_severity_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel alarm severity is changed.
+This callback is not processed if the widget has no channel
+associated with it.
+This callback handles the composition of the stylesheet to be
+applied and the call
+to update to redraw the widget with the needed changes for the
+new state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_alarm_severity</strong> (<em>int</em>) – The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
+and 3 = INVALID</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.autoFillBackground">
+<code class="sig-name descname">autoFillBackground</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.autoFillBackground" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.backgroundRole">
+<code class="sig-name descname">backgroundRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette.ColorRole<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.backgroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.baseSize">
+<code class="sig-name descname">baseSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.baseSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.blockSignals">
+<code class="sig-name descname">blockSignals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.blockSignals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.changeEvent">
+<code class="sig-name descname">changeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.changeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.channel">
+<code class="sig-name descname">channel</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The channel address in use for this widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>channel</strong> – Channel address</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.channelValueChanged">
+<code class="sig-name descname">channelValueChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.channelValueChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the Value of the Channel
+This slot sends the value to the <code class="docutils literal notranslate"><span class="pre">`value_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_val</strong> (<em>int</em><em>, </em><em>float</em><em>, </em><em>str</em><em>, </em><em>bool</em><em> or </em><em>np.ndarray</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.channels">
+<code class="sig-name descname">channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the channels being used for this Widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>channels</strong> – List of PyDMChannel objects</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.channels_for_tools">
+<code class="sig-name descname">channels_for_tools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.channels_for_tools" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of channels useful for external tools.
+The default implementation here is just to return
+self.channels(), but some widgets will want to re-implement
+this, especially if they have multiple channels, but only
+one real ‘signal’ channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.check_enable_state">
+<code class="sig-name descname">check_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.check_enable_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether or not the widget should be disable.
+This method also disables the widget and add a Tool Tip
+with the reason why it is disabled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.childAt">
+<code class="sig-name descname">childAt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.childAt" title="Permalink to this definition">¶</a></dt>
+<dd><p>childAt(self, int, int) -&gt; QWidget</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.childEvent">
+<code class="sig-name descname">childEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QChildEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.childEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.children">
+<code class="sig-name descname">children</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QObject<span class="p">]</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.children" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.childrenRect">
+<code class="sig-name descname">childrenRect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.childrenRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.childrenRegion">
+<code class="sig-name descname">childrenRegion</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.childrenRegion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.clearFocus">
+<code class="sig-name descname">clearFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.clearFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.clearMask">
+<code class="sig-name descname">clearMask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.clearMask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.closeEvent">
+<code class="sig-name descname">closeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QCloseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.closeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.colorCount">
+<code class="sig-name descname">colorCount</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.colorCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.connectNotify">
+<code class="sig-name descname">connectNotify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.connectNotify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.connectionStateChanged">
+<code class="sig-name descname">connectionStateChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">connected</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.connectionStateChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the Connection State of the Channel
+This slot sends the connection state to the <code class="docutils literal notranslate"><span class="pre">`connection_changed`</span></code>
+callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>connected</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="pydm.widgets.slider.PyDMSlider.connection_changed">
 <code class="sig-name descname">connection_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">connected</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.connection_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.connection_changed" title="Permalink to this definition">¶</a></dt>
@@ -227,6 +533,36 @@ and also trigger the change on alarm severity to ALARM_DISCONNECTED.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.contentsMargins">
+<code class="sig-name descname">contentsMargins</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QMargins<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.contentsMargins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.contentsRect">
+<code class="sig-name descname">contentsRect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.contentsRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.contextMenuEvent">
+<code class="sig-name descname">contextMenuEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QContextMenuEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.contextMenuEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.contextMenuPolicy">
+<code class="sig-name descname">contextMenuPolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.ContextMenuPolicy<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.contextMenuPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">window</span><span class="p">:</span> <span class="n">sip.voidptr</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">initializeWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">destroyOldWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.createWindowContainer">
+<code class="sig-name descname">createWindowContainer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">QWindow</span></em>, <em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n">QWidget</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">flags</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.WindowFlags<span class="p">, </span>Qt.WindowType<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.createWindowContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.slider.PyDMSlider.ctrl_limit_changed">
 <code class="sig-name descname">ctrl_limit_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">which</span></em>, <em class="sig-param"><span class="n">new_limit</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.ctrl_limit_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.ctrl_limit_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel receives new control limit
@@ -239,6 +575,190 @@ values.</p>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.cursor">
+<code class="sig-name descname">cursor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QCursor<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.cursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.customContextMenuRequested">
+<code class="sig-name descname">customContextMenuRequested</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.customContextMenuRequested" title="Permalink to this definition">¶</a></dt>
+<dd><p>customContextMenuRequested(self, QPoint) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.customEvent">
+<code class="sig-name descname">customEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.customEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.deleteLater">
+<code class="sig-name descname">deleteLater</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.deleteLater" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.depth">
+<code class="sig-name descname">depth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.depth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.destroy">
+<code class="sig-name descname">destroy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">destroyWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">destroySubWindows</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.destroy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.destroyed">
+<code class="sig-name descname">destroyed</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.destroyed" title="Permalink to this definition">¶</a></dt>
+<dd><p>QObject = None) [signal]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>destroyed(self, object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.devType">
+<code class="sig-name descname">devType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.devType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.devicePixelRatio">
+<code class="sig-name descname">devicePixelRatio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.devicePixelRatio" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.devicePixelRatioF">
+<code class="sig-name descname">devicePixelRatioF</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.devicePixelRatioF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.devicePixelRatioFScale">
+<code class="sig-name descname">devicePixelRatioFScale</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.devicePixelRatioFScale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.disconnect">
+<code class="sig-name descname">disconnect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.disconnectNotify">
+<code class="sig-name descname">disconnectNotify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.disconnectNotify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.dragEnterEvent">
+<code class="sig-name descname">dragEnterEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragEnterEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.dragEnterEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.dragLeaveEvent">
+<code class="sig-name descname">dragLeaveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragLeaveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.dragLeaveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.dragMoveEvent">
+<code class="sig-name descname">dragMoveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragMoveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.dragMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.drawFrame">
+<code class="sig-name descname">drawFrame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPainter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.drawFrame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.dropEvent">
+<code class="sig-name descname">dropEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDropEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.dropEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.dumpObjectInfo">
+<code class="sig-name descname">dumpObjectInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.dumpObjectInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.dumpObjectTree">
+<code class="sig-name descname">dumpObjectTree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.dumpObjectTree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.dynamicPropertyNames">
+<code class="sig-name descname">dynamicPropertyNames</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QByteArray<span class="p">]</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.dynamicPropertyNames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.effectiveWinId">
+<code class="sig-name descname">effectiveWinId</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; sip.voidptr<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.effectiveWinId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.ensurePolished">
+<code class="sig-name descname">ensurePolished</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.ensurePolished" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.enterEvent">
+<code class="sig-name descname">enterEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.enterEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.enumStringsChanged">
+<code class="sig-name descname">enumStringsChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_enum_strings</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.enumStringsChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the string values of the Channel
+This slot sends the new strings to the
+<code class="docutils literal notranslate"><span class="pre">`enum_strings_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_enum_strings</strong> (<em>tuple</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.enum_strings_changed">
+<code class="sig-name descname">enum_strings_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_enum_strings</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.enum_strings_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel has new enum values.
+This callback also triggers a value_changed call so the
+new enum values to be broadcasted</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_enum_strings</strong> (<em>tuple</em>) – The new list of values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.event">
+<code class="sig-name descname">event</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.event" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.eventFilter">
+<code class="sig-name descname">eventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.eventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.find">
+<code class="sig-name descname">find</code><span class="sig-paren">(</span><em class="sig-param">sip.voidptr</em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.find" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.findChild">
+<code class="sig-name descname">findChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">options</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.FindChildOptions<span class="p">, </span>Qt.FindChildOption<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Qt.FindChildrenRecursively</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.findChild" title="Permalink to this definition">¶</a></dt>
+<dd><p>findChild(self, Tuple, name: str = ‘’, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; QObject</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.findChildren">
+<code class="sig-name descname">findChildren</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">options</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.FindChildOptions<span class="p">, </span>Qt.FindChildOption<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Qt.FindChildrenRecursively</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QObject<span class="p">]</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.findChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>findChildren(self, Tuple, name: str = ‘’, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, type, QRegExp, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, Tuple, QRegExp, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, type, QRegularExpression, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, Tuple, QRegularExpression, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]</p>
 </dd></dl>
 
 <dl class="py method">
@@ -260,11 +780,233 @@ for a given value.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.focusInEvent">
+<code class="sig-name descname">focusInEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFocusEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.focusInEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.focusNextChild">
+<code class="sig-name descname">focusNextChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.focusNextChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.focusNextPrevChild">
+<code class="sig-name descname">focusNextPrevChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.focusNextPrevChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.focusOutEvent">
+<code class="sig-name descname">focusOutEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFocusEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.focusOutEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.focusPolicy">
+<code class="sig-name descname">focusPolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.FocusPolicy<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.focusPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.focusPreviousChild">
+<code class="sig-name descname">focusPreviousChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.focusPreviousChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.focusProxy">
+<code class="sig-name descname">focusProxy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.focusProxy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.focusWidget">
+<code class="sig-name descname">focusWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.focusWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.font">
+<code class="sig-name descname">font</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFont<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.font" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.fontInfo">
+<code class="sig-name descname">fontInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFontInfo<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.fontInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.fontMetrics">
+<code class="sig-name descname">fontMetrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFontMetrics<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.fontMetrics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.force_redraw">
+<code class="sig-name descname">force_redraw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.force_redraw" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot to force a redraw on the widget.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.foregroundRole">
+<code class="sig-name descname">foregroundRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette.ColorRole<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.foregroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.frameGeometry">
+<code class="sig-name descname">frameGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.frameGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.frameRect">
+<code class="sig-name descname">frameRect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.frameRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.frameShadow">
+<code class="sig-name descname">frameShadow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFrame.Shadow<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.frameShadow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.frameShape">
+<code class="sig-name descname">frameShape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFrame.Shape<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.frameShape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.frameSize">
+<code class="sig-name descname">frameSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.frameSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.frameStyle">
+<code class="sig-name descname">frameStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.frameStyle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.frameWidth">
+<code class="sig-name descname">frameWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.frameWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.generate_context_menu">
+<code class="sig-name descname">generate_context_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.generate_context_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the custom context menu, and populates it with any external
+tools that have been loaded.  PyDMWidget subclasses should override
+this method (after calling superclass implementation) to add the menu.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QMenu</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.geometry">
+<code class="sig-name descname">geometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.geometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.getContentsMargins">
+<code class="sig-name descname">getContentsMargins</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.getContentsMargins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.get_ctrl_limits">
+<code class="sig-name descname">get_ctrl_limits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.get_ctrl_limits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple with the control limits for the channel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>(lower, upper)</strong> – Lower and Upper control limits</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.grab">
+<code class="sig-name descname">grab</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">rectangle</span><span class="p">:</span> <span class="n">QRect</span> <span class="o">=</span> <span class="default_value">QRect(QPoint(0, 0), QSize(- 1, - 1))</span></em><span class="sig-paren">)</span> &#x2192; QPixmap<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.grab" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.grabGesture">
+<code class="sig-name descname">grabGesture</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.GestureType</em>, <em class="sig-param">flags: Union[Qt.GestureFlags</em>, <em class="sig-param">Qt.GestureFlag] = Qt.GestureFlags()</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.grabGesture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.grabKeyboard">
+<code class="sig-name descname">grabKeyboard</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.grabKeyboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.grabMouse">
+<code class="sig-name descname">grabMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.grabMouse" title="Permalink to this definition">¶</a></dt>
+<dd><p>grabMouse(self, Union[QCursor, Qt.CursorShape])</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.grabShortcut">
+<code class="sig-name descname">grabShortcut</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QKeySequence, QKeySequence.StandardKey, str, int], context: Qt.ShortcutContext = Qt.WindowShortcut</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.grabShortcut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.graphicsEffect">
+<code class="sig-name descname">graphicsEffect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QGraphicsEffect<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.graphicsEffect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.graphicsProxyWidget">
+<code class="sig-name descname">graphicsProxyWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QGraphicsProxyWidget<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.graphicsProxyWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.hasFocus">
+<code class="sig-name descname">hasFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.hasFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.hasHeightForWidth">
+<code class="sig-name descname">hasHeightForWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.hasHeightForWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.hasMouseTracking">
+<code class="sig-name descname">hasMouseTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.hasMouseTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.hasTabletTracking">
+<code class="sig-name descname">hasTabletTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.hasTabletTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.slider.PyDMSlider.hasTracking">
 <code class="sig-name descname">hasTracking</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.hasTracking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.hasTracking" title="Permalink to this definition">¶</a></dt>
 <dd><p>An alternative function to get the tracking property, to match what
 Qt provides for QSlider.</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.height">
+<code class="sig-name descname">height</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.heightForWidth">
+<code class="sig-name descname">heightForWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.heightForWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.heightMM">
+<code class="sig-name descname">heightMM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.heightMM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.hide">
+<code class="sig-name descname">hide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.hide" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.hideEvent">
+<code class="sig-name descname">hideEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QHideEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.hideEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="pydm.widgets.slider.PyDMSlider.ignoreMouseWheel">
@@ -275,11 +1017,56 @@ don’t want to accidentally change the slider as you are scrolling.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.inherits">
+<code class="sig-name descname">inherits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.inherits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.initPainter">
+<code class="sig-name descname">initPainter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPainter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.initPainter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.initStyleOption">
+<code class="sig-name descname">initStyleOption</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QStyleOptionFrame</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.initStyleOption" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.slider.PyDMSlider.init_for_designer">
 <code class="sig-name descname">init_for_designer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.init_for_designer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.init_for_designer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method called after the constructor to tweak configurations for
 when using the widget with the Qt Designer</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.inputMethodEvent">
+<code class="sig-name descname">inputMethodEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QInputMethodEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.inputMethodEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.inputMethodHints">
+<code class="sig-name descname">inputMethodHints</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.InputMethodHints<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.inputMethodHints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.inputMethodQuery">
+<code class="sig-name descname">inputMethodQuery</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.InputMethodQuery</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.inputMethodQuery" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSlider.insertAction(self, QAction, QAction)</code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.insertActions">
+<code class="sig-name descname">insertActions</code><span class="sig-paren">(</span><em class="sig-param">self, QAction, Iterable[QAction]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.insertActions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.installEventFilter">
+<code class="sig-name descname">installEventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.installEventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="pydm.widgets.slider.PyDMSlider.internal_slider_moved">
@@ -318,6 +1105,204 @@ unless <cite>mute_internal_slider_changes</cite> is True.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isActiveWindow">
+<code class="sig-name descname">isActiveWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isActiveWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isAncestorOf">
+<code class="sig-name descname">isAncestorOf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isAncestorOf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isEnabled">
+<code class="sig-name descname">isEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isEnabledTo">
+<code class="sig-name descname">isEnabledTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isEnabledTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isFullScreen">
+<code class="sig-name descname">isFullScreen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isFullScreen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isHidden">
+<code class="sig-name descname">isHidden</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isHidden" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isLeftToRight">
+<code class="sig-name descname">isLeftToRight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isLeftToRight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isMaximized">
+<code class="sig-name descname">isMaximized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isMaximized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isMinimized">
+<code class="sig-name descname">isMinimized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isMinimized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isModal">
+<code class="sig-name descname">isModal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isModal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isRightToLeft">
+<code class="sig-name descname">isRightToLeft</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isRightToLeft" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isSignalConnected">
+<code class="sig-name descname">isSignalConnected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isSignalConnected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isVisible">
+<code class="sig-name descname">isVisible</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isVisible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isVisibleTo">
+<code class="sig-name descname">isVisibleTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isVisibleTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isWidgetType">
+<code class="sig-name descname">isWidgetType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isWidgetType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isWindow">
+<code class="sig-name descname">isWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isWindowModified">
+<code class="sig-name descname">isWindowModified</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isWindowModified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.isWindowType">
+<code class="sig-name descname">isWindowType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.isWindowType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.keyPressEvent">
+<code class="sig-name descname">keyPressEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QKeyEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.keyReleaseEvent">
+<code class="sig-name descname">keyReleaseEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QKeyEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.keyReleaseEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.keyboardGrabber">
+<code class="sig-name descname">keyboardGrabber</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.keyboardGrabber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.killTimer">
+<code class="sig-name descname">killTimer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.killTimer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.layout">
+<code class="sig-name descname">layout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QLayout<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.layoutDirection">
+<code class="sig-name descname">layoutDirection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.LayoutDirection<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.layoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.leaveEvent">
+<code class="sig-name descname">leaveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.leaveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.lineWidth">
+<code class="sig-name descname">lineWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.lineWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.locale">
+<code class="sig-name descname">locale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QLocale<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.locale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.logicalDpiX">
+<code class="sig-name descname">logicalDpiX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.logicalDpiX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.logicalDpiY">
+<code class="sig-name descname">logicalDpiY</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.logicalDpiY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.lower">
+<code class="sig-name descname">lower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.lower" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.lowerCtrlLimitChanged">
+<code class="sig-name descname">lowerCtrlLimitChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_limit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.lowerCtrlLimitChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the lower control limit value of the Channel
+This slot sends the new limit value to the
+<code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.mapFrom">
+<code class="sig-name descname">mapFrom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.mapFrom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.mapFromGlobal">
+<code class="sig-name descname">mapFromGlobal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.mapFromGlobal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.mapFromParent">
+<code class="sig-name descname">mapFromParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.mapFromParent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.mapTo">
+<code class="sig-name descname">mapTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.mapTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.mapToGlobal">
+<code class="sig-name descname">mapToGlobal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.mapToGlobal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.mapToParent">
+<code class="sig-name descname">mapToParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.mapToParent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.mask">
+<code class="sig-name descname">mask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.mask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.slider.PyDMSlider.maximum">
 <em class="property">property </em><code class="sig-name descname">maximum</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.maximum" title="Permalink to this definition">¶</a></dt>
 <dd><p>The current value being used for the upper limit</p>
@@ -330,6 +1315,36 @@ unless <cite>mute_internal_slider_changes</cite> is True.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.maximumHeight">
+<code class="sig-name descname">maximumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.maximumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.maximumSize">
+<code class="sig-name descname">maximumSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.maximumSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.maximumWidth">
+<code class="sig-name descname">maximumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.maximumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.metaObject">
+<code class="sig-name descname">metaObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QMetaObject<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.metaObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.metric">
+<code class="sig-name descname">metric</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPaintDevice.PaintDeviceMetric</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.metric" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.midLineWidth">
+<code class="sig-name descname">midLineWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.midLineWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="pydm.widgets.slider.PyDMSlider.minimum">
@@ -345,6 +1360,87 @@ unless <cite>mute_internal_slider_changes</cite> is True.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.minimumHeight">
+<code class="sig-name descname">minimumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.minimumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.minimumSize">
+<code class="sig-name descname">minimumSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.minimumSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.minimumSizeHint">
+<code class="sig-name descname">minimumSizeHint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.minimumSizeHint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.minimumWidth">
+<code class="sig-name descname">minimumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.minimumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.mouseDoubleClickEvent">
+<code class="sig-name descname">mouseDoubleClickEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.mouseDoubleClickEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.mouseGrabber">
+<code class="sig-name descname">mouseGrabber</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.mouseGrabber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.mouseMoveEvent">
+<code class="sig-name descname">mouseMoveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.mouseMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.mousePressEvent">
+<code class="sig-name descname">mousePressEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.mouseReleaseEvent">
+<code class="sig-name descname">mouseReleaseEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.mouseReleaseEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.move">
+<code class="sig-name descname">move</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>move(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.moveEvent">
+<code class="sig-name descname">moveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMoveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.moveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.moveToThread">
+<code class="sig-name descname">moveToThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QThread</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.moveToThread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.nativeEvent">
+<code class="sig-name descname">nativeEvent</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QByteArray, bytes, bytearray], sip.voidptr</em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>bool<span class="p">, </span>int<span class="p">]</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.nativeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.nativeParentWidget">
+<code class="sig-name descname">nativeParentWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.nativeParentWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.nextInFocusChain">
+<code class="sig-name descname">nextInFocusChain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.nextInFocusChain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.normalGeometry">
+<code class="sig-name descname">normalGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.normalGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt id="pydm.widgets.slider.PyDMSlider.num_steps">
 <code class="sig-name descname">num_steps</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.num_steps" title="Permalink to this definition">¶</a></dt>
@@ -355,6 +1451,43 @@ unless <cite>mute_internal_slider_changes</cite> is True.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.objectName">
+<code class="sig-name descname">objectName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.objectName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.objectNameChanged">
+<code class="sig-name descname">objectNameChanged</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.objectNameChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>objectNameChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.opacity">
+<code class="sig-name descname">opacity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.opacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Float value between 0 and 1 representing the opacity of the widget
+where 0 means transparent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>opacity</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.open_context_menu">
+<code class="sig-name descname">open_context_menu</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ev</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.open_context_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for when the Default Context Menu is requested.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ev</strong> (<em>QEvent</em>) – </p>
 </dd>
 </dl>
 </dd></dl>
@@ -374,10 +1507,563 @@ unless <cite>mute_internal_slider_changes</cite> is True.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.overrideWindowFlags">
+<code class="sig-name descname">overrideWindowFlags</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowFlags, Qt.WindowType]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.overrideWindowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.overrideWindowState">
+<code class="sig-name descname">overrideWindowState</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowStates, Qt.WindowState]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.overrideWindowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.paintEngine">
+<code class="sig-name descname">paintEngine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPaintEngine<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.paintEngine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.paintEvent">
+<code class="sig-name descname">paintEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPaintEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.paintEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.paintingActive">
+<code class="sig-name descname">paintingActive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.paintingActive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.palette">
+<code class="sig-name descname">palette</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.palette" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.parent">
+<code class="sig-name descname">parent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.parentWidget">
+<code class="sig-name descname">parentWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.parentWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.physicalDpiX">
+<code class="sig-name descname">physicalDpiX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.physicalDpiX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.physicalDpiY">
+<code class="sig-name descname">physicalDpiY</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.physicalDpiY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.pos">
+<code class="sig-name descname">pos</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.pos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.precision">
+<code class="sig-name descname">precision</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.precision" title="Permalink to this definition">¶</a></dt>
+<dd><p>The precision to be used when formatting the output of the PV</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>prec</strong> – The current precision value</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.precisionChanged">
+<code class="sig-name descname">precisionChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_prec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.precisionChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the precision of the Channel
+This slot sends the new precision value to the
+<code class="docutils literal notranslate"><span class="pre">`precision_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_prec</strong> (<em>int</em><em> or </em><em>float</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.precisionFromPV">
+<code class="sig-name descname">precisionFromPV</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.precisionFromPV" title="Permalink to this definition">¶</a></dt>
+<dd><p>A choice whether or not to use the precision given by channel.</p>
+<p>If set to False, the value received will be displayed as is, with
+no modification to the number of displayed significant figures.
+However, if set to True, and the channel specifies a display
+precision, a float or integer channel value will be set to display
+the correct precision. When using an EPICS Channel, the precision
+value corresponds to the PV’s PREC field.</p>
+<p>It is also important to note, that if the value of the channel
+is a String, the choice of True or False will have no affect on
+the display.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>precison_from_pv</strong> – True means that the widget will use the precision information
+from the Channel if available.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.precision_changed">
+<code class="sig-name descname">precision_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_precision</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.precision_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel has new precision value.
+This callback also triggers an update_format_string call so the
+new precision value is considered.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_precison</strong> (<em>int</em><em> or </em><em>float</em>) – The new precision value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.previousInFocusChain">
+<code class="sig-name descname">previousInFocusChain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.previousInFocusChain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.property">
+<code class="sig-name descname">property</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.property" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.pyqtConfigure">
+<code class="sig-name descname">pyqtConfigure</code><span class="sig-paren">(</span><em class="sig-param">...</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.pyqtConfigure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Each keyword argument is either the name of a Qt property or a Qt signal.
+For properties the property is set to the given value which should be of an
+appropriate type.
+For signals the signal is connected to the given value which should be a
+callable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.raise_">
+<code class="sig-name descname">raise_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.raise_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.receivers">
+<code class="sig-name descname">receivers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">PYQT_SIGNAL</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.receivers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.rect">
+<code class="sig-name descname">rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.rect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.releaseKeyboard">
+<code class="sig-name descname">releaseKeyboard</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.releaseKeyboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.releaseMouse">
+<code class="sig-name descname">releaseMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.releaseMouse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.releaseShortcut">
+<code class="sig-name descname">releaseShortcut</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.releaseShortcut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.removeAction">
+<code class="sig-name descname">removeAction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QAction</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.removeAction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.removeEventFilter">
+<code class="sig-name descname">removeEventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.removeEventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.render">
+<code class="sig-name descname">render</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPaintDevice</span></em>, <em class="sig-param"><span class="n">targetOffset</span><span class="p">:</span> <span class="n">QPoint</span> <span class="o">=</span> <span class="default_value">QPoint()</span></em>, <em class="sig-param"><span class="n">sourceRegion</span><span class="p">:</span> <span class="n">QRegion</span> <span class="o">=</span> <span class="default_value">QRegion()</span></em>, <em class="sig-param"><span class="n">flags</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>QWidget.RenderFlags<span class="p">, </span>QWidget.RenderFlag<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">QWidget.RenderFlags(QWidget.DrawWindowBackground | QWidget.DrawChildren)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>render(self, QPainter, targetOffset: QPoint = QPoint(), sourceRegion: QRegion = QRegion(), flags: Union[QWidget.RenderFlags, QWidget.RenderFlag] = QWidget.RenderFlags(QWidget.DrawWindowBackground|QWidget.DrawChildren))</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.repaint">
+<code class="sig-name descname">repaint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.repaint" title="Permalink to this definition">¶</a></dt>
+<dd><p>repaint(self, int, int, int, int)
+repaint(self, QRect)
+repaint(self, QRegion)</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.slider.PyDMSlider.reset_slider_limits">
 <code class="sig-name descname">reset_slider_limits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.reset_slider_limits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.reset_slider_limits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset the limits and adjust the labels properly for the slider.</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.resize">
+<code class="sig-name descname">resize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSize</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>resize(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.resizeEvent">
+<code class="sig-name descname">resizeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QResizeEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.resizeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.restoreGeometry">
+<code class="sig-name descname">restoreGeometry</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QByteArray, bytes, bytearray]</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.restoreGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.rule_evaluated">
+<code class="sig-name descname">rule_evaluated</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">payload</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.rule_evaluated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback called when a rule has a new value for a property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
+new value.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.rules">
+<code class="sig-name descname">rules</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.rules" title="Permalink to this definition">¶</a></dt>
+<dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.saveGeometry">
+<code class="sig-name descname">saveGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QByteArray<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.saveGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSlider.scroll(self, int, int)</code></dt>
+<dd><p>scroll(self, int, int, QRect)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.sender">
+<code class="sig-name descname">sender</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.sender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.senderSignalIndex">
+<code class="sig-name descname">senderSignalIndex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.senderSignalIndex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setAcceptDrops">
+<code class="sig-name descname">setAcceptDrops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setAcceptDrops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setAccessibleDescription">
+<code class="sig-name descname">setAccessibleDescription</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setAccessibleDescription" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setAccessibleName">
+<code class="sig-name descname">setAccessibleName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setAccessibleName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setAttribute">
+<code class="sig-name descname">setAttribute</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WidgetAttribute</em>, <em class="sig-param">on: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setAutoFillBackground">
+<code class="sig-name descname">setAutoFillBackground</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setAutoFillBackground" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setBackgroundRole">
+<code class="sig-name descname">setBackgroundRole</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPalette.ColorRole</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setBackgroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSlider.setBaseSize(self, int, int)</code></dt>
+<dd><p>setBaseSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSlider.setContentsMargins(self, int, int, int, int)</code></dt>
+<dd><p>setContentsMargins(self, QMargins)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setContextMenuPolicy">
+<code class="sig-name descname">setContextMenuPolicy</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.ContextMenuPolicy</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setContextMenuPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setCursor">
+<code class="sig-name descname">setCursor</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QCursor, Qt.CursorShape]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setCursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setDisabled">
+<code class="sig-name descname">setDisabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setDisabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setEnabled">
+<code class="sig-name descname">setEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setFixedHeight">
+<code class="sig-name descname">setFixedHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setFixedHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setFixedSize">
+<code class="sig-name descname">setFixedSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSize</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setFixedSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>setFixedSize(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setFixedWidth">
+<code class="sig-name descname">setFixedWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setFixedWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setFocus">
+<code class="sig-name descname">setFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setFocus" title="Permalink to this definition">¶</a></dt>
+<dd><p>setFocus(self, Qt.FocusReason)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setFocusPolicy">
+<code class="sig-name descname">setFocusPolicy</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.FocusPolicy</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setFocusPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setFocusProxy">
+<code class="sig-name descname">setFocusProxy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setFocusProxy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setFont">
+<code class="sig-name descname">setFont</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFont</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setFont" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setForegroundRole">
+<code class="sig-name descname">setForegroundRole</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPalette.ColorRole</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setForegroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setFrameRect">
+<code class="sig-name descname">setFrameRect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QRect</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setFrameRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setFrameShadow">
+<code class="sig-name descname">setFrameShadow</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QFrame.Shadow</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setFrameShadow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setFrameShape">
+<code class="sig-name descname">setFrameShape</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QFrame.Shape</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setFrameShape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setFrameStyle">
+<code class="sig-name descname">setFrameStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setFrameStyle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setGeometry">
+<code class="sig-name descname">setGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QRect</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setGeometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>setGeometry(self, int, int, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setGraphicsEffect">
+<code class="sig-name descname">setGraphicsEffect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QGraphicsEffect</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setGraphicsEffect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setHidden">
+<code class="sig-name descname">setHidden</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setHidden" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setInputMethodHints">
+<code class="sig-name descname">setInputMethodHints</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.InputMethodHints, Qt.InputMethodHint]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setInputMethodHints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setLayout">
+<code class="sig-name descname">setLayout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QLayout</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setLayout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setLayoutDirection">
+<code class="sig-name descname">setLayoutDirection</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.LayoutDirection</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setLayoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setLineWidth">
+<code class="sig-name descname">setLineWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setLineWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setLocale">
+<code class="sig-name descname">setLocale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QLocale</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setLocale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setMask">
+<code class="sig-name descname">setMask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QBitmap</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setMask" title="Permalink to this definition">¶</a></dt>
+<dd><p>setMask(self, QRegion)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setMaximumHeight">
+<code class="sig-name descname">setMaximumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setMaximumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSlider.setMaximumSize(self, int, int)</code></dt>
+<dd><p>setMaximumSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setMaximumWidth">
+<code class="sig-name descname">setMaximumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setMaximumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setMidLineWidth">
+<code class="sig-name descname">setMidLineWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setMidLineWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setMinimumHeight">
+<code class="sig-name descname">setMinimumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setMinimumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSlider.setMinimumSize(self, int, int)</code></dt>
+<dd><p>setMinimumSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setMinimumWidth">
+<code class="sig-name descname">setMinimumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setMinimumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setMouseTracking">
+<code class="sig-name descname">setMouseTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setMouseTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setObjectName">
+<code class="sig-name descname">setObjectName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setObjectName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setPalette">
+<code class="sig-name descname">setPalette</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPalette</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setPalette" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setParent">
+<code class="sig-name descname">setParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setParent" title="Permalink to this definition">¶</a></dt>
+<dd><p>setParent(self, QWidget, Union[Qt.WindowFlags, Qt.WindowType])</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setProperty">
+<code class="sig-name descname">setProperty</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em>, <em class="sig-param"><span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setProperty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setShortcutAutoRepeat">
+<code class="sig-name descname">setShortcutAutoRepeat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">enabled</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setShortcutAutoRepeat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setShortcutEnabled">
+<code class="sig-name descname">setShortcutEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">enabled</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setShortcutEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSlider.setSizeIncrement(self, int, int)</code></dt>
+<dd><p>setSizeIncrement(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setSizePolicy">
+<code class="sig-name descname">setSizePolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSizePolicy</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setSizePolicy" title="Permalink to this definition">¶</a></dt>
+<dd><p>setSizePolicy(self, QSizePolicy.Policy, QSizePolicy.Policy)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setStatusTip">
+<code class="sig-name descname">setStatusTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setStatusTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setStyle">
+<code class="sig-name descname">setStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QStyle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setStyle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setStyleSheet">
+<code class="sig-name descname">setStyleSheet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setStyleSheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSlider.setTabOrder(QWidget, QWidget)</code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setTabletTracking">
+<code class="sig-name descname">setTabletTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setTabletTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setToolTip">
+<code class="sig-name descname">setToolTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setToolTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setToolTipDuration">
+<code class="sig-name descname">setToolTipDuration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setToolTipDuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="pydm.widgets.slider.PyDMSlider.setTracking">
@@ -387,10 +2073,126 @@ Qt provides for QSlider.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setUpdatesEnabled">
+<code class="sig-name descname">setUpdatesEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setUpdatesEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setVisible">
+<code class="sig-name descname">setVisible</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setVisible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setWhatsThis">
+<code class="sig-name descname">setWhatsThis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setWhatsThis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setWindowFilePath">
+<code class="sig-name descname">setWindowFilePath</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setWindowFilePath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setWindowFlag">
+<code class="sig-name descname">setWindowFlag</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WindowType</em>, <em class="sig-param">on: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setWindowFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setWindowFlags">
+<code class="sig-name descname">setWindowFlags</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowFlags, Qt.WindowType]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setWindowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setWindowIcon">
+<code class="sig-name descname">setWindowIcon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QIcon</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setWindowIcon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setWindowIconText">
+<code class="sig-name descname">setWindowIconText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setWindowIconText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setWindowModality">
+<code class="sig-name descname">setWindowModality</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WindowModality</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setWindowModality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setWindowModified">
+<code class="sig-name descname">setWindowModified</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setWindowModified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setWindowOpacity">
+<code class="sig-name descname">setWindowOpacity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setWindowOpacity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setWindowRole">
+<code class="sig-name descname">setWindowRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setWindowRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setWindowState">
+<code class="sig-name descname">setWindowState</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowStates, Qt.WindowState]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setWindowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setWindowTitle">
+<code class="sig-name descname">setWindowTitle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setWindowTitle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setX">
+<code class="sig-name descname">setX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the X position of the Widget on the screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.setY">
+<code class="sig-name descname">setY</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.setY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the Y position of the Widget on the screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.slider.PyDMSlider.set_enable_state">
 <code class="sig-name descname">set_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.set_enable_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.set_enable_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines wether or not the widget must be enabled or not depending
 on the write access, connection state and presence of limits information</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.set_opacity">
+<code class="sig-name descname">set_opacity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.set_opacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Float value between 0 and 1 representing the opacity of the widget
+where 0 means transparent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> (<em>float</em>) – The new value for the opacity</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -415,6 +2217,26 @@ on the write access, connection state and presence of limits information</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.sharedPainter">
+<code class="sig-name descname">sharedPainter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPainter<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.sharedPainter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.show">
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.showEvent">
+<code class="sig-name descname">showEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QShowEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.showEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.showFullScreen">
+<code class="sig-name descname">showFullScreen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.showFullScreen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt id="pydm.widgets.slider.PyDMSlider.showLimitLabels">
 <code class="sig-name descname">showLimitLabels</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.showLimitLabels" title="Permalink to this definition">¶</a></dt>
@@ -422,6 +2244,39 @@ on the write access, connection state and presence of limits information</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.showMaximized">
+<code class="sig-name descname">showMaximized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.showMaximized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.showMinimized">
+<code class="sig-name descname">showMinimized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.showMinimized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.showNormal">
+<code class="sig-name descname">showNormal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.showNormal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.showUnits">
+<code class="sig-name descname">showUnits</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.showUnits" title="Permalink to this definition">¶</a></dt>
+<dd><p>A choice whether or not to show the units given by the channel</p>
+<p>If set to True, the units given in the channel will be displayed
+with the value. If using an EPICS channel, this will automatically
+be linked to the EGU field of the PV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>show_units</strong> – True means that the unit will be appended to the output value
+format string</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>bool</p>
@@ -443,6 +2298,80 @@ on the write access, connection state and presence of limits information</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.show_address_tooltip">
+<code class="sig-name descname">show_address_tooltip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.show_address_tooltip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the PyDMTooltip and copy address to clipboard</p>
+<p>This is intended to replicate the behavior of the “middle click” from
+EDM. If the QWidget does not have a valid PyDMChannel nothing will be
+displayed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.signalsBlocked">
+<code class="sig-name descname">signalsBlocked</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.signalsBlocked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.size">
+<code class="sig-name descname">size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.sizeHint">
+<code class="sig-name descname">sizeHint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.sizeHint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.sizeIncrement">
+<code class="sig-name descname">sizeIncrement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.sizeIncrement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.sizePolicy">
+<code class="sig-name descname">sizePolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSizePolicy<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.sizePolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.stackUnder">
+<code class="sig-name descname">stackUnder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.stackUnder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.startTimer">
+<code class="sig-name descname">startTimer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">timerType</span><span class="p">:</span> <span class="n">Qt.TimerType</span> <span class="o">=</span> <span class="default_value">Qt.CoarseTimer</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.startTimer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.statusTip">
+<code class="sig-name descname">statusTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.statusTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.style">
+<code class="sig-name descname">style</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QStyle<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.style" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.styleSheet">
+<code class="sig-name descname">styleSheet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.styleSheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.tabletEvent">
+<code class="sig-name descname">tabletEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QTabletEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.tabletEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.testAttribute">
+<code class="sig-name descname">testAttribute</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WidgetAttribute</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.testAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.thread">
+<code class="sig-name descname">thread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QThread<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.thread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt id="pydm.widgets.slider.PyDMSlider.tickPosition">
 <code class="sig-name descname">tickPosition</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.tickPosition" title="Permalink to this definition">¶</a></dt>
@@ -457,6 +2386,26 @@ on the write access, connection state and presence of limits information</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.timerEvent">
+<code class="sig-name descname">timerEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QTimerEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.timerEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.toolTip">
+<code class="sig-name descname">toolTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.toolTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.toolTipDuration">
+<code class="sig-name descname">toolTipDuration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.toolTipDuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.tr">
+<code class="sig-name descname">tr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em>, <em class="sig-param"><span class="n">disambiguation</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">- 1</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.tr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt id="pydm.widgets.slider.PyDMSlider.tracking">
 <code class="sig-name descname">tracking</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.tracking" title="Permalink to this definition">¶</a></dt>
@@ -468,6 +2417,75 @@ the slider to control physical hardware, consider whether the device
 you want to control can handle large amounts of changes in a short
 timespan.</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.underMouse">
+<code class="sig-name descname">underMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.underMouse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.ungrabGesture">
+<code class="sig-name descname">ungrabGesture</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.GestureType</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.ungrabGesture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.unitChanged">
+<code class="sig-name descname">unitChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_unit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.unitChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the unit of the Channel
+This slot sends the new unit string to the
+<code class="docutils literal notranslate"><span class="pre">`unit_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_unit</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.unit_changed">
+<code class="sig-name descname">unit_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_unit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.unit_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel has new unit value.
+This callback also triggers an update_format_string call so the
+new unit value is considered if <code class="docutils literal notranslate"><span class="pre">`showUnits`</span></code> is set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_unit</strong> (<em>str</em>) – The new unit</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.unsetCursor">
+<code class="sig-name descname">unsetCursor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.unsetCursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.unsetLayoutDirection">
+<code class="sig-name descname">unsetLayoutDirection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.unsetLayoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.unsetLocale">
+<code class="sig-name descname">unsetLocale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.unsetLocale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>update(self, QRect)
+update(self, QRegion)
+update(self, int, int, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.updateGeometry">
+<code class="sig-name descname">updateGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.updateGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.updateMicroFocus">
+<code class="sig-name descname">updateMicroFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.updateMicroFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="pydm.widgets.slider.PyDMSlider.update_format_string">
@@ -489,6 +2507,24 @@ and unit</p>
 <dt id="pydm.widgets.slider.PyDMSlider.update_labels">
 <code class="sig-name descname">update_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.update_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.update_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the limits and value labels with the correct values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.updatesEnabled">
+<code class="sig-name descname">updatesEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.updatesEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.upperCtrlLimitChanged">
+<code class="sig-name descname">upperCtrlLimitChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_limit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.upperCtrlLimitChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the upper control limit value of the Channel
+This slot sends the new limit value to the
+<code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -546,9 +2582,138 @@ channel</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.visibleRegion">
+<code class="sig-name descname">visibleRegion</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.visibleRegion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.whatsThis">
+<code class="sig-name descname">whatsThis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.whatsThis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.slider.PyDMSlider.wheelEvent">
 <code class="sig-name descname">wheelEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWheelEvent</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.wheelEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.wheelEvent" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.widget_ctx_menu">
+<code class="sig-name descname">widget_ctx_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.widget_ctx_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch the Widget specific context menu which will be populated with additional tools by <cite>assemble_tools_menu</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>If the return of this method is None a new QMenu will be created by <cite>assemble_tools_menu</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QMenu or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.width">
+<code class="sig-name descname">width</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.widthMM">
+<code class="sig-name descname">widthMM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.widthMM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.winId">
+<code class="sig-name descname">winId</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; sip.voidptr<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.winId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.window">
+<code class="sig-name descname">window</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.window" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.windowFilePath">
+<code class="sig-name descname">windowFilePath</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.windowFilePath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.windowFlags">
+<code class="sig-name descname">windowFlags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowFlags<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.windowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.windowHandle">
+<code class="sig-name descname">windowHandle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWindow<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.windowHandle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.windowIcon">
+<code class="sig-name descname">windowIcon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QIcon<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.windowIcon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.windowIconChanged">
+<code class="sig-name descname">windowIconChanged</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.windowIconChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowIconChanged(self, QIcon) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.windowIconText">
+<code class="sig-name descname">windowIconText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.windowIconText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.windowIconTextChanged">
+<code class="sig-name descname">windowIconTextChanged</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.windowIconTextChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowIconTextChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.windowModality">
+<code class="sig-name descname">windowModality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowModality<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.windowModality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.windowOpacity">
+<code class="sig-name descname">windowOpacity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.windowOpacity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.windowRole">
+<code class="sig-name descname">windowRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.windowRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.windowState">
+<code class="sig-name descname">windowState</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowStates<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.windowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.windowTitle">
+<code class="sig-name descname">windowTitle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.windowTitle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.slider.PyDMSlider.windowTitleChanged">
+<code class="sig-name descname">windowTitleChanged</code><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.windowTitleChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowTitleChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.windowType">
+<code class="sig-name descname">windowType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowType<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.windowType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.writeAccessChanged">
+<code class="sig-name descname">writeAccessChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">write_access</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.writeAccessChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the write access value of the Channel
+This slot sends the write access value to the <code class="docutils literal notranslate"><span class="pre">`write_access_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>write_access</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pydm.widgets.slider.PyDMSlider.write_access_changed">
@@ -562,6 +2727,16 @@ enabling or disabling it accordingly</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.x">
+<code class="sig-name descname">x</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.x" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.slider.PyDMSlider.y">
+<code class="sig-name descname">y</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.y" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

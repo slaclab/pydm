@@ -1,0 +1,1014 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pydm.widgets.baseplot &mdash; PyDM v1.9.0+38.g27b957bc documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.9.0+38.g27b957bc
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyDM</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pydm.widgets.baseplot</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pydm.widgets.baseplot</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QBrush</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QEvent</span><span class="p">,</span> <span class="n">QRect</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QToolTip</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">utilities</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="kn">import</span> <span class="n">PlotWidget</span><span class="p">,</span> <span class="n">PlotDataItem</span><span class="p">,</span> <span class="n">mkPen</span><span class="p">,</span> <span class="n">ViewBox</span><span class="p">,</span> <span class="n">InfiniteLine</span><span class="p">,</span> <span class="n">SignalProxy</span><span class="p">,</span> <span class="n">CurvePoint</span><span class="p">,</span> <span class="n">TextItem</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">,</span> <span class="n">widget_destroyed</span>
+
+
+<span class="k">class</span> <span class="nc">NoDataError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;NoDataError is raised when a curve tries to perform an operation,</span>
+<span class="sd">    but does not yet have any data.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">BasePlotCurveItem</span><span class="p">(</span><span class="n">PlotDataItem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    BasePlotCurveItem represents a single curve in a plot.</span>
+
+<span class="sd">    In addition to the parameters listed below, WaveformCurveItem accepts</span>
+<span class="sd">    keyword arguments for all plot options that pyqtgraph.PlotDataItem accepts.</span>
+<span class="sd">    Each subclass of ``BasePlotCurveItem`` should have a class attribute</span>
+<span class="sd">    `_channels` that lets us know the attribute names where we can find</span>
+<span class="sd">    PyDMChannel objects. This allows us to connect and disconnect these</span>
+<span class="sd">    connections when appropriate</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    color : QColor, optional</span>
+<span class="sd">        The color used to draw the curve line and the symbols.</span>
+<span class="sd">    lineStyle: int, optional</span>
+<span class="sd">        Style of the line connecting the data points.</span>
+<span class="sd">        Must be a value from the Qt::PenStyle enum</span>
+<span class="sd">        (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).</span>
+<span class="sd">    lineWidth: int, optional</span>
+<span class="sd">        Width of the line connecting the data points.</span>
+<span class="sd">    **kargs: optional</span>
+<span class="sd">        PlotDataItem keyword arguments, such as symbol and symbolSize.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">REDRAW_ON_X</span><span class="p">,</span> <span class="n">REDRAW_ON_Y</span><span class="p">,</span> <span class="n">REDRAW_ON_EITHER</span><span class="p">,</span> <span class="n">REDRAW_ON_BOTH</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">symbols</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Circle&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Square&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Triangle&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Star&#39;</span><span class="p">,</span> <span class="s1">&#39;star&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Pentagon&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Hexagon&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Diamond&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">),</span>
+                           <span class="p">(</span><span class="s1">&#39;Plus&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)])</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s1">&#39;NoLine&#39;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">NoPen</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s1">&#39;Solid&#39;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">SolidLine</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s1">&#39;Dash&#39;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">DashLine</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s1">&#39;Dot&#39;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">DotLine</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s1">&#39;DashDot&#39;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">DashDotLine</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s1">&#39;DashDotDot&#39;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">DashDotDotLine</span><span class="p">)])</span>
+    <span class="n">data_changed</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineStyle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineWidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span> <span class="o">=</span> <span class="n">mkPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lineWidth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setWidth</span><span class="p">(</span><span class="n">lineWidth</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lineStyle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setStyle</span><span class="p">(</span><span class="n">lineStyle</span><span class="p">)</span>
+        <span class="n">kws</span><span class="p">[</span><span class="s1">&#39;pen&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BasePlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSymbolBrush</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;channels&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">destroyed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">widget_destroyed</span><span class="p">,</span>
+                                                     <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">color_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A string representation of the color used for the curve.  This string</span>
+<span class="sd">        will be a hex color code, like #FF00FF, or an SVG spec color name, if</span>
+<span class="sd">        a name exists for the color.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">utilities</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">svg_color_from_hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span>
+                                                       <span class="n">hex_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+    <span class="nd">@color_string</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">color_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color_string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A string representation of the color used for the curve.  This string</span>
+<span class="sd">        will be a hex color code, like #FF00FF, or an SVG spec color name, if</span>
+<span class="sd">        a name exists for the color.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_color_string: int</span>
+<span class="sd">            The new string to use for the curve color.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">new_color_string</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The color used for the curve.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        QColor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color</span>
+
+    <span class="nd">@color</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The color used for the curve.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_color: QColor or str</span>
+<span class="sd">            The new color to use for the curve.</span>
+<span class="sd">            Strings are passed to WaveformCurveItem.color_string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_color</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">color_string</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">new_color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSymbolPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lineStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the style of the line connecting the data points.</span>
+<span class="sd">        Must be a value from the Qt::PenStyle enum</span>
+<span class="sd">        (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">style</span><span class="p">()</span>
+
+    <span class="nd">@lineStyle</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">lineStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_style</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the style of the line connecting the data points.</span>
+<span class="sd">        Must be a value from the Qt::PenStyle enum</span>
+<span class="sd">        (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_style: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_style</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setStyle</span><span class="p">(</span><span class="n">new_style</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lineWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the width of the line connecting the data points.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">width</span><span class="p">()</span>
+
+    <span class="nd">@lineWidth</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">lineWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_width</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the width of the line connecting the data points.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_width: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setWidth</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">new_width</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The single-character code for the symbol drawn at each datapoint.</span>
+
+<span class="sd">        See the documentation for pyqtgraph.PlotDataItem for possible values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span>
+
+    <span class="nd">@symbol</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_symbol</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The single-character code for the symbol drawn at each datapoint.</span>
+
+<span class="sd">        See the documentation for pyqtgraph.PlotDataItem for possible values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_symbol: str or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_symbol</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setSymbol</span><span class="p">(</span><span class="n">new_symbol</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setSymbolPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">symbolSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the size of the symbol to represent the data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;symbolSize&#39;</span><span class="p">]</span>
+
+    <span class="nd">@symbolSize</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">symbolSize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the size of the symbol to represent the data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_size: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSymbolSize</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">new_size</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an OrderedDict representation with values for all properties</span>
+<span class="sd">        needed to recreate this curve.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        OrderedDict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">()),</span>
+                            <span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_string</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s2">&quot;lineStyle&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lineStyle</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s2">&quot;lineWidth&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lineWidth</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s2">&quot;symbol&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">),</span>
+                            <span class="p">(</span><span class="s2">&quot;symbolSize&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbolSize</span><span class="p">)])</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">BasePlot</span><span class="p">(</span><span class="n">PlotWidget</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">):</span>
+    <span class="n">crosshair_position_updated</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">axisItems</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">PlotWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span>
+                            <span class="n">axisItems</span><span class="o">=</span><span class="n">axisItems</span><span class="p">)</span>
+        <span class="n">PyDMPrimitiveWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPlotItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">hideButtons</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_x</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAutoRangeX</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_y</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAutoRangeY</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_x</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min_y</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_y</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_x_grid</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setShowXGrid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_y_grid</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setShowYGrid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_right_axis</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">redrawPlot</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span> <span class="o">=</span> <span class="mi">30</span> <span class="c1"># Redraw at 30 Hz by default.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxRedrawRate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_title</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_legend</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_legend</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addLegend</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_legend</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+
+        <span class="c1"># Drawing crosshair on the ViewBox</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertical_crosshair_line</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontal_crosshair_line</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crosshair_movement_proxy</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">utilities</span><span class="o">.</span><span class="n">is_qt_designer</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">BasePlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">utilities</span><span class="o">.</span><span class="n">is_qt_designer</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">.</span><span class="n">Enter</span><span class="p">:</span>
+                <span class="n">QToolTip</span><span class="o">.</span><span class="n">showText</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">center</span><span class="p">()),</span>
+                    <span class="s1">&#39;Edit plot curves via Right-Click and select &quot;Edit Curves...&quot;&#39;</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="p">,</span>
+                    <span class="n">QRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+                    <span class="mi">4000</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+
+    <span class="k">def</span> <span class="nf">addCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_item</span><span class="p">,</span> <span class="n">curve_color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">curve_color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">curve_color</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">default_colors</span><span class="p">[</span>
+                    <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">utilities</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">default_colors</span><span class="p">)]</span>
+            <span class="n">plot_item</span><span class="o">.</span><span class="n">color_string</span> <span class="o">=</span> <span class="n">curve_color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot_item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">plot_item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="c1"># Connect channels</span>
+        <span class="k">for</span> <span class="n">chan</span> <span class="ow">in</span> <span class="n">plot_item</span><span class="o">.</span><span class="n">channels</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">chan</span><span class="p">:</span>
+                <span class="n">chan</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+        <span class="c1"># self._legend.addItem(plot_item, plot_item.curve_name)</span>
+
+    <span class="k">def</span> <span class="nf">removeCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_item</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="n">plot_item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">plot_item</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="c1"># Disconnect channels</span>
+        <span class="k">for</span> <span class="n">chan</span> <span class="ow">in</span> <span class="n">plot_item</span><span class="o">.</span><span class="n">channels</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">chan</span><span class="p">:</span>
+                <span class="n">chan</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">removeCurveWithName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">curve</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">removeCurve</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">removeCurveAtIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">curve_to_remove</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">removeCurve</span><span class="p">(</span><span class="n">curve_to_remove</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setCurveAtIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">new_curve</span><span class="p">):</span>
+        <span class="n">old_curve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_curve</span>
+        <span class="c1"># self._legend.addItem(new_curve, new_curve.name())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">removeCurve</span><span class="p">(</span><span class="n">old_curve</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">curveAtIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">curves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span>
+
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">legend_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">label</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_legend</span><span class="o">.</span><span class="n">items</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">legend_items</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_legend</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">:</span>
+            <span class="n">curve</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">redrawPlot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">getShowXGrid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_x_grid</span>
+
+    <span class="k">def</span> <span class="nf">setShowXGrid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_x_grid</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">showGrid</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_show_x_grid</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">resetShowXGrid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setShowXGrid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">showXGrid</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;bool&quot;</span><span class="p">,</span> <span class="n">getShowXGrid</span><span class="p">,</span> <span class="n">setShowXGrid</span><span class="p">,</span> <span class="n">resetShowXGrid</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getShowYGrid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_y_grid</span>
+
+    <span class="k">def</span> <span class="nf">setShowYGrid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_y_grid</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">showGrid</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_show_y_grid</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">resetShowYGrid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setShowYGrid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">showYGrid</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;bool&quot;</span><span class="p">,</span> <span class="n">getShowYGrid</span><span class="p">,</span> <span class="n">setShowYGrid</span><span class="p">,</span> <span class="n">resetShowYGrid</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getBackgroundColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backgroundBrush</span><span class="p">()</span><span class="o">.</span><span class="n">color</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">setBackgroundColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">backgroundBrush</span><span class="p">()</span><span class="o">.</span><span class="n">color</span><span class="p">()</span> <span class="o">!=</span> <span class="n">color</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setBackgroundBrush</span><span class="p">(</span><span class="n">QBrush</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
+
+    <span class="n">backgroundColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">getBackgroundColor</span><span class="p">,</span> <span class="n">setBackgroundColor</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getAxisColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">color</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">setAxisColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">color</span><span class="p">()</span> <span class="o">!=</span> <span class="n">color</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s1">&#39;top&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s1">&#39;right&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+
+    <span class="n">axisColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">getAxisColor</span><span class="p">,</span> <span class="n">setAxisColor</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getBottomAxisLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">labelText</span>
+
+    <span class="k">def</span> <span class="nf">getShowRightAxis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Provide whether the right y-axis is being shown.</span>
+
+<span class="sd">        Returns : bool</span>
+<span class="sd">        -------</span>
+<span class="sd">        True if the graph shows the right y-axis. False if not.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_right_axis</span>
+
+    <span class="k">def</span> <span class="nf">setShowRightAxis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set whether the graph should show the right y-axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        show : bool</span>
+<span class="sd">            True for showing the right axis; False is for not showing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">showAxis</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hideAxis</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_right_axis</span> <span class="o">=</span> <span class="n">show</span>
+
+    <span class="n">showRightAxis</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;bool&quot;</span><span class="p">,</span> <span class="n">getShowRightAxis</span><span class="p">,</span> <span class="n">setShowRightAxis</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getPlotTitle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_title</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setPlotTitle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_title</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_title</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_title</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_title</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">resetPlotTitle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_title</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_title</span><span class="p">)</span>
+
+    <span class="n">title</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">getPlotTitle</span><span class="p">,</span> <span class="n">setPlotTitle</span><span class="p">,</span> <span class="n">resetPlotTitle</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getXLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_labels</span>
+
+    <span class="k">def</span> <span class="nf">setXLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_labels</span> <span class="o">!=</span> <span class="n">labels</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_x_labels</span> <span class="o">=</span> <span class="n">labels</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x_labels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># Hardcoded for now as we only have one axis</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">resetXLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">xLabels</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getXLabels</span><span class="p">,</span> <span class="n">setXLabels</span><span class="p">,</span> <span class="n">resetXLabels</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getYLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_labels</span>
+
+    <span class="k">def</span> <span class="nf">setYLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_labels</span> <span class="o">!=</span> <span class="n">labels</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_y_labels</span> <span class="o">=</span> <span class="n">labels</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_y_labels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># Hardcoded for now as we only have one axis</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">resetYLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">yLabels</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getYLabels</span><span class="p">,</span> <span class="n">setYLabels</span><span class="p">,</span> <span class="n">resetYLabels</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getShowLegend</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the legend is being shown.</span>
+
+<span class="sd">        Returns : bool</span>
+<span class="sd">        -------</span>
+<span class="sd">            True if the legend is displayed on the graph; False if not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_legend</span>
+
+    <span class="k">def</span> <span class="nf">setShowLegend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set to display the legend on the graph.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : bool</span>
+<span class="sd">            True to display the legend; False is not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_legend</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_legend</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_legend</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_legend</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addLegend</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_legend</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_legend</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">resetShowLegend</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reset the legend display status to hidden.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setShowLegend</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">showLegend</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">getShowLegend</span><span class="p">,</span> <span class="n">setShowLegend</span><span class="p">,</span> <span class="n">resetShowLegend</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getAutoRangeX</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_x</span>
+
+    <span class="k">def</span> <span class="nf">setAutoRangeX</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_x</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_x</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">enableAutoRange</span><span class="p">(</span><span class="n">ViewBox</span><span class="o">.</span><span class="n">XAxis</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_x</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">resetAutoRangeX</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAutoRangeX</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getAutoRangeY</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_y</span>
+
+    <span class="k">def</span> <span class="nf">setAutoRangeY</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_y</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_y</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">enableAutoRange</span><span class="p">(</span><span class="n">ViewBox</span><span class="o">.</span><span class="n">YAxis</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_y</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">resetAutoRangeY</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAutoRangeY</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getMinXRange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Minimum X-axis value visible on the plot.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">viewRange</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">setMinXRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_min_x_range</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the minimum X-axis value visible on the plot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_min_x_range : float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_x</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="o">=</span> <span class="n">new_min_x_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setXRange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_x</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getMaxXRange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maximum X-axis value visible on the plot.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">viewRange</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">setMaxXRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_max_x_range</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the Maximum X-axis value visible on the plot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_max_x_range : float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_x</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_x</span> <span class="o">=</span> <span class="n">new_max_x_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setXRange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_x</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getMinYRange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Minimum Y-axis value visible on the plot.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">viewRange</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">setMinYRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_min_y_range</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the minimum Y-axis value visible on the plot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_min_y_range : float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_y</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min_y</span> <span class="o">=</span> <span class="n">new_min_y_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setYRange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_min_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_y</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">getMaxYRange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maximum Y-axis value visible on the plot.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">viewRange</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">setMaxYRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_max_y_range</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the maximum Y-axis value visible on the plot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_max_y_range : float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_y</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_y</span> <span class="o">=</span> <span class="n">new_max_y_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setYRange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_min_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_y</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">mouseEnabledX</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not mouse interactions are enabled for the X-axis.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="s1">&#39;mouseEnabled&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@mouseEnabledX</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">mouseEnabledX</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_enabled</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not mouse interactions are enabled for the X-axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        x_enabled : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setMouseEnabled</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_enabled</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">mouseEnabledY</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not mouse interactions are enabled for the Y-axis.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="s1">&#39;mouseEnabled&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@mouseEnabledY</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">mouseEnabledY</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_enabled</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not mouse interactions are enabled for the Y-axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        y_enabled : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setMouseEnabled</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y_enabled</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">maxRedrawRate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The maximum rate (in Hz) at which the plot will be redrawn.</span>
+<span class="sd">        The plot will not be redrawn if there is not new data to draw.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span>
+
+    <span class="nd">@maxRedrawRate</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">maxRedrawRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">redraw_rate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The maximum rate (in Hz) at which the plot will be redrawn.</span>
+<span class="sd">        The plot will not be redrawn if there is not new data to draw.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        redraw_rate : int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span> <span class="o">=</span> <span class="n">redraw_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">setInterval</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="mf">1.0</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">_redraw_rate</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">pausePlotting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">isActive</span><span class="p">()</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">isActive</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">mouseMoved</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A handler for the crosshair feature. Every time the mouse move, the mouse coordinates are updated, and the</span>
+<span class="sd">        horizontal and vertical hairlines will be redrawn at the new coordinate. If a PyDMDisplay object is available,</span>
+<span class="sd">        that display will also have the x- and y- values to update on the UI.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        evt: MouseEvent</span>
+<span class="sd">            The mouse event type, from which the mouse coordinates are obtained.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">evt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sceneBoundingRect</span><span class="p">()</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+            <span class="n">mouse_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">mapSceneToView</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vertical_crosshair_line</span><span class="o">.</span><span class="n">setPos</span><span class="p">(</span><span class="n">mouse_point</span><span class="o">.</span><span class="n">x</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">horizontal_crosshair_line</span><span class="o">.</span><span class="n">setPos</span><span class="p">(</span><span class="n">mouse_point</span><span class="o">.</span><span class="n">y</span><span class="p">())</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">crosshair_position_updated</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">mouse_point</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">mouse_point</span><span class="o">.</span><span class="n">y</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">enableCrosshair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_enabled</span><span class="p">,</span> <span class="n">starting_x_pos</span><span class="p">,</span> <span class="n">starting_y_pos</span><span class="p">,</span>  <span class="n">vertical_angle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">horizontal_angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                        <span class="n">vertical_movable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">horizontal_movable</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enable the crosshair to be drawn on the ViewBox.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        is_enabled : bool</span>
+<span class="sd">            True is to draw the crosshair, False is to not draw.</span>
+<span class="sd">        starting_x_pos : float</span>
+<span class="sd">            The x coordinate where to start the vertical crosshair line.</span>
+<span class="sd">        starting_y_pos : float</span>
+<span class="sd">            The y coordinate where to start the horizontal crosshair line.</span>
+<span class="sd">        vertical_angle : float</span>
+<span class="sd">            The angle to tilt the vertical crosshair line. Default at 90 degrees.</span>
+<span class="sd">        horizontal_angle</span>
+<span class="sd">            The angle to tilt the horizontal crosshair line. Default at 0 degrees.</span>
+<span class="sd">        vertical_movable : bool</span>
+<span class="sd">            True if the vertical line can be moved by the user; False is not.</span>
+<span class="sd">        horizontal_movable</span>
+<span class="sd">            False if the horizontal line can be moved by the user; False is not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">is_enabled</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vertical_crosshair_line</span> <span class="o">=</span> <span class="n">InfiniteLine</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="n">starting_x_pos</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">vertical_angle</span><span class="p">,</span>
+                                                        <span class="n">movable</span><span class="o">=</span><span class="n">vertical_movable</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">horizontal_crosshair_line</span> <span class="o">=</span> <span class="n">InfiniteLine</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="n">starting_y_pos</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">horizontal_angle</span><span class="p">,</span>
+                                                          <span class="n">movable</span><span class="o">=</span><span class="n">horizontal_movable</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertical_crosshair_line</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizontal_crosshair_line</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">crosshair_movement_proxy</span> <span class="o">=</span> <span class="n">SignalProxy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">sigMouseMoved</span><span class="p">,</span> <span class="n">rateLimit</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+                                                        <span class="n">slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mouseMoved</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertical_crosshair_line</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertical_crosshair_line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizontal_crosshair_line</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizontal_crosshair_line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crosshair_movement_proxy</span><span class="p">:</span>
+                <span class="c1"># self.crosshair_movement_proxy.disconnect()</span>
+                <span class="n">proxy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crosshair_movement_proxy</span>
+                <span class="n">proxy</span><span class="o">.</span><span class="n">block</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">proxy</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="n">proxy</span><span class="o">.</span><span class="n">signalReceived</span><span class="p">)</span>
+                    <span class="n">proxy</span><span class="o">.</span><span class="n">sigDelayed</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="n">proxy</span><span class="o">.</span><span class="n">slot</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMEmbeddedDisplay &mdash; PyDM v1.9.0+36.g389d63b5 documentation</title>
+  <title>PyDMEmbeddedDisplay &mdash; PyDM v1.9.0+38.g27b957bc documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+36.g389d63b5
+                v1.9.0+38.g27b957bc
               </div>
             
           
@@ -199,12 +199,172 @@
 <dl class="py class">
 <dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay">
 <em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.embedded_display.</code><code class="sig-name descname">PyDMEmbeddedDisplay</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/embedded_display.html#PyDMEmbeddedDisplay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay" title="Permalink to this definition">¶</a></dt>
-<dd><p>A QFrame capable of rendering a PyDM Display</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QFrame</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.base.PyDMPrimitiveWidget</span></code></p>
+<p>A QFrame capable of rendering a PyDM Display</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p>
 </dd>
 </dl>
+<dl class="py class">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.PaintDeviceMetric">
+<em class="property">class </em><code class="sig-name descname">PaintDeviceMetric</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.PaintDeviceMetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.RenderFlag">
+<em class="property">class </em><code class="sig-name descname">RenderFlag</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.RenderFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.RenderFlags">
+<em class="property">class </em><code class="sig-name descname">RenderFlags</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.RenderFlags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<p>QWidget.RenderFlags(Union[QWidget.RenderFlags, QWidget.RenderFlag])
+QWidget.RenderFlags(QWidget.RenderFlags)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.Shadow">
+<em class="property">class </em><code class="sig-name descname">Shadow</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.Shadow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.Shape">
+<em class="property">class </em><code class="sig-name descname">Shape</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.Shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.StyleMask">
+<em class="property">class </em><code class="sig-name descname">StyleMask</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.StyleMask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.acceptDrops">
+<code class="sig-name descname">acceptDrops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.acceptDrops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.accessibleDescription">
+<code class="sig-name descname">accessibleDescription</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.accessibleDescription" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.accessibleName">
+<code class="sig-name descname">accessibleName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.accessibleName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.actionEvent">
+<code class="sig-name descname">actionEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QActionEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.actionEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.actions">
+<code class="sig-name descname">actions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QAction<span class="p">]</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.actions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.activateWindow">
+<code class="sig-name descname">activateWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.activateWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.addAction">
+<code class="sig-name descname">addAction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QAction</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.addAction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.addActions">
+<code class="sig-name descname">addActions</code><span class="sig-paren">(</span><em class="sig-param">self, Iterable[QAction]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.addActions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.adjustSize">
+<code class="sig-name descname">adjustSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.adjustSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.autoFillBackground">
+<code class="sig-name descname">autoFillBackground</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.autoFillBackground" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.backgroundRole">
+<code class="sig-name descname">backgroundRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette.ColorRole<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.backgroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.baseSize">
+<code class="sig-name descname">baseSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.baseSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.blockSignals">
+<code class="sig-name descname">blockSignals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.blockSignals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.changeEvent">
+<code class="sig-name descname">changeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.changeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.childAt">
+<code class="sig-name descname">childAt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.childAt" title="Permalink to this definition">¶</a></dt>
+<dd><p>childAt(self, int, int) -&gt; QWidget</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.childEvent">
+<code class="sig-name descname">childEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QChildEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.childEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.children">
+<code class="sig-name descname">children</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QObject<span class="p">]</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.children" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.childrenRect">
+<code class="sig-name descname">childrenRect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.childrenRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.childrenRegion">
+<code class="sig-name descname">childrenRegion</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.childrenRegion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.clearFocus">
+<code class="sig-name descname">clearFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.clearFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.clearMask">
+<code class="sig-name descname">clearMask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.clearMask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.closeEvent">
+<code class="sig-name descname">closeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QCloseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.closeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.colorCount">
+<code class="sig-name descname">colorCount</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.colorCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.connect">
 <code class="sig-name descname">connect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/embedded_display.html#PyDMEmbeddedDisplay.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.connect" title="Permalink to this definition">¶</a></dt>
@@ -213,11 +373,113 @@ the channels associated with it.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.connectNotify">
+<code class="sig-name descname">connectNotify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.connectNotify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.contentsMargins">
+<code class="sig-name descname">contentsMargins</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QMargins<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.contentsMargins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.contentsRect">
+<code class="sig-name descname">contentsRect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.contentsRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.contextMenuEvent">
+<code class="sig-name descname">contextMenuEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QContextMenuEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.contextMenuEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.contextMenuPolicy">
+<code class="sig-name descname">contextMenuPolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.ContextMenuPolicy<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.contextMenuPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">window</span><span class="p">:</span> <span class="n">sip.voidptr</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">initializeWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">destroyOldWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.createWindowContainer">
+<code class="sig-name descname">createWindowContainer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">QWindow</span></em>, <em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n">QWidget</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">flags</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.WindowFlags<span class="p">, </span>Qt.WindowType<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.createWindowContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.cursor">
+<code class="sig-name descname">cursor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QCursor<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.cursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.customContextMenuRequested">
+<code class="sig-name descname">customContextMenuRequested</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.customContextMenuRequested" title="Permalink to this definition">¶</a></dt>
+<dd><p>customContextMenuRequested(self, QPoint) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.customEvent">
+<code class="sig-name descname">customEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.customEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.deleteLater">
+<code class="sig-name descname">deleteLater</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.deleteLater" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.depth">
+<code class="sig-name descname">depth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.depth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.destroy">
+<code class="sig-name descname">destroy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">destroyWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">destroySubWindows</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.destroy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.destroyed">
+<code class="sig-name descname">destroyed</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.destroyed" title="Permalink to this definition">¶</a></dt>
+<dd><p>QObject = None) [signal]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>destroyed(self, object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.devType">
+<code class="sig-name descname">devType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.devType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.devicePixelRatio">
+<code class="sig-name descname">devicePixelRatio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.devicePixelRatio" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.devicePixelRatioF">
+<code class="sig-name descname">devicePixelRatioF</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.devicePixelRatioF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.devicePixelRatioFScale">
+<code class="sig-name descname">devicePixelRatioFScale</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.devicePixelRatioFScale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.disconnect">
 <code class="sig-name descname">disconnect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/embedded_display.html#PyDMEmbeddedDisplay.disconnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.disconnect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disconnects the embedded widget from the channels
 associated with it.</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.disconnectNotify">
+<code class="sig-name descname">disconnectNotify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.disconnectNotify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.disconnectWhenHidden">
@@ -234,6 +496,51 @@ associated with it.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.dragEnterEvent">
+<code class="sig-name descname">dragEnterEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragEnterEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.dragEnterEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.dragLeaveEvent">
+<code class="sig-name descname">dragLeaveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragLeaveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.dragLeaveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.dragMoveEvent">
+<code class="sig-name descname">dragMoveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragMoveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.dragMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.drawFrame">
+<code class="sig-name descname">drawFrame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPainter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.drawFrame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.dropEvent">
+<code class="sig-name descname">dropEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDropEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.dropEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.dumpObjectInfo">
+<code class="sig-name descname">dumpObjectInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.dumpObjectInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.dumpObjectTree">
+<code class="sig-name descname">dumpObjectTree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.dumpObjectTree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.dynamicPropertyNames">
+<code class="sig-name descname">dynamicPropertyNames</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QByteArray<span class="p">]</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.dynamicPropertyNames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.effectiveWinId">
+<code class="sig-name descname">effectiveWinId</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; sip.voidptr<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.effectiveWinId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.embedded_widget">
 <em class="property">property </em><code class="sig-name descname">embedded_widget</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.embedded_widget" title="Permalink to this definition">¶</a></dt>
 <dd><p>The embedded widget being displayed.</p>
@@ -246,6 +553,26 @@ associated with it.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.ensurePolished">
+<code class="sig-name descname">ensurePolished</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.ensurePolished" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.enterEvent">
+<code class="sig-name descname">enterEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.enterEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.event">
+<code class="sig-name descname">event</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.event" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.eventFilter">
+<code class="sig-name descname">eventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.eventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.filename">
@@ -262,6 +589,208 @@ associated with it.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.find">
+<code class="sig-name descname">find</code><span class="sig-paren">(</span><em class="sig-param">sip.voidptr</em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.find" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.findChild">
+<code class="sig-name descname">findChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">options</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.FindChildOptions<span class="p">, </span>Qt.FindChildOption<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Qt.FindChildrenRecursively</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.findChild" title="Permalink to this definition">¶</a></dt>
+<dd><p>findChild(self, Tuple, name: str = ‘’, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; QObject</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.findChildren">
+<code class="sig-name descname">findChildren</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">options</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.FindChildOptions<span class="p">, </span>Qt.FindChildOption<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Qt.FindChildrenRecursively</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QObject<span class="p">]</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.findChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>findChildren(self, Tuple, name: str = ‘’, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, type, QRegExp, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, Tuple, QRegExp, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, type, QRegularExpression, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, Tuple, QRegularExpression, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusInEvent">
+<code class="sig-name descname">focusInEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFocusEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusInEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusNextChild">
+<code class="sig-name descname">focusNextChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusNextChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusNextPrevChild">
+<code class="sig-name descname">focusNextPrevChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusNextPrevChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusOutEvent">
+<code class="sig-name descname">focusOutEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFocusEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusOutEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusPolicy">
+<code class="sig-name descname">focusPolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.FocusPolicy<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusPreviousChild">
+<code class="sig-name descname">focusPreviousChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusPreviousChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusProxy">
+<code class="sig-name descname">focusProxy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusProxy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusWidget">
+<code class="sig-name descname">focusWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.focusWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.font">
+<code class="sig-name descname">font</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFont<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.font" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.fontInfo">
+<code class="sig-name descname">fontInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFontInfo<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.fontInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.fontMetrics">
+<code class="sig-name descname">fontMetrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFontMetrics<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.fontMetrics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.foregroundRole">
+<code class="sig-name descname">foregroundRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette.ColorRole<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.foregroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.frameGeometry">
+<code class="sig-name descname">frameGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.frameGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.frameRect">
+<code class="sig-name descname">frameRect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.frameRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.frameShadow">
+<code class="sig-name descname">frameShadow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFrame.Shadow<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.frameShadow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.frameShape">
+<code class="sig-name descname">frameShape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFrame.Shape<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.frameShape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.frameSize">
+<code class="sig-name descname">frameSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.frameSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.frameStyle">
+<code class="sig-name descname">frameStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.frameStyle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.frameWidth">
+<code class="sig-name descname">frameWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.frameWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.geometry">
+<code class="sig-name descname">geometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.geometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.getContentsMargins">
+<code class="sig-name descname">getContentsMargins</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.getContentsMargins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.grab">
+<code class="sig-name descname">grab</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">rectangle</span><span class="p">:</span> <span class="n">QRect</span> <span class="o">=</span> <span class="default_value">QRect(QPoint(0, 0), QSize(- 1, - 1))</span></em><span class="sig-paren">)</span> &#x2192; QPixmap<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.grab" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.grabGesture">
+<code class="sig-name descname">grabGesture</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.GestureType</em>, <em class="sig-param">flags: Union[Qt.GestureFlags</em>, <em class="sig-param">Qt.GestureFlag] = Qt.GestureFlags()</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.grabGesture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.grabKeyboard">
+<code class="sig-name descname">grabKeyboard</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.grabKeyboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.grabMouse">
+<code class="sig-name descname">grabMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.grabMouse" title="Permalink to this definition">¶</a></dt>
+<dd><p>grabMouse(self, Union[QCursor, Qt.CursorShape])</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.grabShortcut">
+<code class="sig-name descname">grabShortcut</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QKeySequence, QKeySequence.StandardKey, str, int], context: Qt.ShortcutContext = Qt.WindowShortcut</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.grabShortcut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.graphicsEffect">
+<code class="sig-name descname">graphicsEffect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QGraphicsEffect<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.graphicsEffect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.graphicsProxyWidget">
+<code class="sig-name descname">graphicsProxyWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QGraphicsProxyWidget<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.graphicsProxyWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hasFocus">
+<code class="sig-name descname">hasFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hasFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hasHeightForWidth">
+<code class="sig-name descname">hasHeightForWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hasHeightForWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hasMouseTracking">
+<code class="sig-name descname">hasMouseTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hasMouseTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hasTabletTracking">
+<code class="sig-name descname">hasTabletTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hasTabletTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.height">
+<code class="sig-name descname">height</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.heightForWidth">
+<code class="sig-name descname">heightForWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.heightForWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.heightMM">
+<code class="sig-name descname">heightMM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.heightMM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hide">
+<code class="sig-name descname">hide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hide" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hideEvent">
 <code class="sig-name descname">hideEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">e</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/embedded_display.html#PyDMEmbeddedDisplay.hideEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hideEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hide events are sent to widgets that become invisible on the screen.</p>
@@ -271,6 +800,181 @@ associated with it.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.inherits">
+<code class="sig-name descname">inherits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.inherits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.initPainter">
+<code class="sig-name descname">initPainter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPainter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.initPainter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.initStyleOption">
+<code class="sig-name descname">initStyleOption</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QStyleOptionFrame</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.initStyleOption" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.inputMethodEvent">
+<code class="sig-name descname">inputMethodEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QInputMethodEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.inputMethodEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.inputMethodHints">
+<code class="sig-name descname">inputMethodHints</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.InputMethodHints<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.inputMethodHints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.inputMethodQuery">
+<code class="sig-name descname">inputMethodQuery</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.InputMethodQuery</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.inputMethodQuery" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMEmbeddedDisplay.insertAction(self, QAction, QAction)</code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.insertActions">
+<code class="sig-name descname">insertActions</code><span class="sig-paren">(</span><em class="sig-param">self, QAction, Iterable[QAction]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.insertActions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.installEventFilter">
+<code class="sig-name descname">installEventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.installEventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isActiveWindow">
+<code class="sig-name descname">isActiveWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isActiveWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isAncestorOf">
+<code class="sig-name descname">isAncestorOf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isAncestorOf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isEnabled">
+<code class="sig-name descname">isEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isEnabledTo">
+<code class="sig-name descname">isEnabledTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isEnabledTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isFullScreen">
+<code class="sig-name descname">isFullScreen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isFullScreen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isHidden">
+<code class="sig-name descname">isHidden</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isHidden" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isLeftToRight">
+<code class="sig-name descname">isLeftToRight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isLeftToRight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isMaximized">
+<code class="sig-name descname">isMaximized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isMaximized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isMinimized">
+<code class="sig-name descname">isMinimized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isMinimized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isModal">
+<code class="sig-name descname">isModal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isModal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isRightToLeft">
+<code class="sig-name descname">isRightToLeft</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isRightToLeft" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isSignalConnected">
+<code class="sig-name descname">isSignalConnected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isSignalConnected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isVisible">
+<code class="sig-name descname">isVisible</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isVisible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isVisibleTo">
+<code class="sig-name descname">isVisibleTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isVisibleTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isWidgetType">
+<code class="sig-name descname">isWidgetType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isWidgetType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isWindow">
+<code class="sig-name descname">isWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isWindowModified">
+<code class="sig-name descname">isWindowModified</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isWindowModified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isWindowType">
+<code class="sig-name descname">isWindowType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.isWindowType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.keyPressEvent">
+<code class="sig-name descname">keyPressEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QKeyEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.keyReleaseEvent">
+<code class="sig-name descname">keyReleaseEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QKeyEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.keyReleaseEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.keyboardGrabber">
+<code class="sig-name descname">keyboardGrabber</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.keyboardGrabber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.killTimer">
+<code class="sig-name descname">killTimer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.killTimer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.layout">
+<code class="sig-name descname">layout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QLayout<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.layoutDirection">
+<code class="sig-name descname">layoutDirection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.LayoutDirection<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.layoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.leaveEvent">
+<code class="sig-name descname">leaveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.leaveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.lineWidth">
+<code class="sig-name descname">lineWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.lineWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.loadWhenShown">
@@ -292,6 +996,26 @@ not been loaded yet, it will be loaded immediately.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.locale">
+<code class="sig-name descname">locale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QLocale<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.locale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.logicalDpiX">
+<code class="sig-name descname">logicalDpiX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.logicalDpiX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.logicalDpiY">
+<code class="sig-name descname">logicalDpiY</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.logicalDpiY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.lower">
+<code class="sig-name descname">lower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.lower" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.macros">
 <code class="sig-name descname">macros</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.macros" title="Permalink to this definition">¶</a></dt>
@@ -307,6 +1031,81 @@ not been loaded yet, it will be loaded immediately.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mapFrom">
+<code class="sig-name descname">mapFrom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mapFrom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mapFromGlobal">
+<code class="sig-name descname">mapFromGlobal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mapFromGlobal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mapFromParent">
+<code class="sig-name descname">mapFromParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mapFromParent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mapTo">
+<code class="sig-name descname">mapTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mapTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mapToGlobal">
+<code class="sig-name descname">mapToGlobal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mapToGlobal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mapToParent">
+<code class="sig-name descname">mapToParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mapToParent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mask">
+<code class="sig-name descname">mask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.maximumHeight">
+<code class="sig-name descname">maximumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.maximumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.maximumSize">
+<code class="sig-name descname">maximumSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.maximumSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.maximumWidth">
+<code class="sig-name descname">maximumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.maximumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.metaObject">
+<code class="sig-name descname">metaObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QMetaObject<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.metaObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.metric">
+<code class="sig-name descname">metric</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPaintDevice.PaintDeviceMetric</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.metric" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.midLineWidth">
+<code class="sig-name descname">midLineWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.midLineWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.minimumHeight">
+<code class="sig-name descname">minimumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.minimumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.minimumSize">
+<code class="sig-name descname">minimumSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.minimumSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.minimumSizeHint">
 <code class="sig-name descname">minimumSizeHint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/embedded_display.html#PyDMEmbeddedDisplay.minimumSizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.minimumSizeHint" title="Permalink to this definition">¶</a></dt>
 <dd><p>This property holds the recommended minimum size for the widget.</p>
@@ -316,6 +1115,98 @@ not been loaded yet, it will be loaded immediately.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QSize</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.minimumWidth">
+<code class="sig-name descname">minimumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.minimumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mouseDoubleClickEvent">
+<code class="sig-name descname">mouseDoubleClickEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mouseDoubleClickEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mouseGrabber">
+<code class="sig-name descname">mouseGrabber</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mouseGrabber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mouseMoveEvent">
+<code class="sig-name descname">mouseMoveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mouseMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mousePressEvent">
+<code class="sig-name descname">mousePressEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mouseReleaseEvent">
+<code class="sig-name descname">mouseReleaseEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.mouseReleaseEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.move">
+<code class="sig-name descname">move</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>move(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.moveEvent">
+<code class="sig-name descname">moveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMoveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.moveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.moveToThread">
+<code class="sig-name descname">moveToThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QThread</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.moveToThread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.nativeEvent">
+<code class="sig-name descname">nativeEvent</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QByteArray, bytes, bytearray], sip.voidptr</em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>bool<span class="p">, </span>int<span class="p">]</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.nativeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.nativeParentWidget">
+<code class="sig-name descname">nativeParentWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.nativeParentWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.nextInFocusChain">
+<code class="sig-name descname">nextInFocusChain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.nextInFocusChain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.normalGeometry">
+<code class="sig-name descname">normalGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.normalGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.objectName">
+<code class="sig-name descname">objectName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.objectName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.objectNameChanged">
+<code class="sig-name descname">objectNameChanged</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.objectNameChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>objectNameChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.opacity">
+<code class="sig-name descname">opacity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.opacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Float value between 0 and 1 representing the opacity of the widget
+where 0 means transparent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>opacity</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -335,6 +1226,46 @@ not been loaded yet, it will be loaded immediately.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.overrideWindowFlags">
+<code class="sig-name descname">overrideWindowFlags</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowFlags, Qt.WindowType]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.overrideWindowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.overrideWindowState">
+<code class="sig-name descname">overrideWindowState</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowStates, Qt.WindowState]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.overrideWindowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.paintEngine">
+<code class="sig-name descname">paintEngine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPaintEngine<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.paintEngine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.paintEvent">
+<code class="sig-name descname">paintEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPaintEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.paintEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.paintingActive">
+<code class="sig-name descname">paintingActive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.paintingActive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.palette">
+<code class="sig-name descname">palette</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.palette" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.parent">
+<code class="sig-name descname">parent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.parentWidget">
+<code class="sig-name descname">parentWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.parentWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.parsed_macros">
 <code class="sig-name descname">parsed_macros</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/embedded_display.html#PyDMEmbeddedDisplay.parsed_macros"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.parsed_macros" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dictionary containing the key value pair for each macro specified.</p>
@@ -349,6 +1280,547 @@ not been loaded yet, it will be loaded immediately.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.physicalDpiX">
+<code class="sig-name descname">physicalDpiX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.physicalDpiX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.physicalDpiY">
+<code class="sig-name descname">physicalDpiY</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.physicalDpiY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.pos">
+<code class="sig-name descname">pos</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.pos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.previousInFocusChain">
+<code class="sig-name descname">previousInFocusChain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.previousInFocusChain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.property">
+<code class="sig-name descname">property</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.property" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.pyqtConfigure">
+<code class="sig-name descname">pyqtConfigure</code><span class="sig-paren">(</span><em class="sig-param">...</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.pyqtConfigure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Each keyword argument is either the name of a Qt property or a Qt signal.
+For properties the property is set to the given value which should be of an
+appropriate type.
+For signals the signal is connected to the given value which should be a
+callable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.raise_">
+<code class="sig-name descname">raise_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.raise_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.receivers">
+<code class="sig-name descname">receivers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">PYQT_SIGNAL</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.receivers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.rect">
+<code class="sig-name descname">rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.rect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.releaseKeyboard">
+<code class="sig-name descname">releaseKeyboard</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.releaseKeyboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.releaseMouse">
+<code class="sig-name descname">releaseMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.releaseMouse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.releaseShortcut">
+<code class="sig-name descname">releaseShortcut</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.releaseShortcut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.removeAction">
+<code class="sig-name descname">removeAction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QAction</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.removeAction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.removeEventFilter">
+<code class="sig-name descname">removeEventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.removeEventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.render">
+<code class="sig-name descname">render</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPaintDevice</span></em>, <em class="sig-param"><span class="n">targetOffset</span><span class="p">:</span> <span class="n">QPoint</span> <span class="o">=</span> <span class="default_value">QPoint()</span></em>, <em class="sig-param"><span class="n">sourceRegion</span><span class="p">:</span> <span class="n">QRegion</span> <span class="o">=</span> <span class="default_value">QRegion()</span></em>, <em class="sig-param"><span class="n">flags</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>QWidget.RenderFlags<span class="p">, </span>QWidget.RenderFlag<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">QWidget.RenderFlags(QWidget.DrawWindowBackground | QWidget.DrawChildren)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>render(self, QPainter, targetOffset: QPoint = QPoint(), sourceRegion: QRegion = QRegion(), flags: Union[QWidget.RenderFlags, QWidget.RenderFlag] = QWidget.RenderFlags(QWidget.DrawWindowBackground|QWidget.DrawChildren))</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.repaint">
+<code class="sig-name descname">repaint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.repaint" title="Permalink to this definition">¶</a></dt>
+<dd><p>repaint(self, int, int, int, int)
+repaint(self, QRect)
+repaint(self, QRegion)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.resize">
+<code class="sig-name descname">resize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSize</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>resize(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.resizeEvent">
+<code class="sig-name descname">resizeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QResizeEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.resizeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.restoreGeometry">
+<code class="sig-name descname">restoreGeometry</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QByteArray, bytes, bytearray]</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.restoreGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.rule_evaluated">
+<code class="sig-name descname">rule_evaluated</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">payload</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.rule_evaluated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback called when a rule has a new value for a property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
+new value.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.rules">
+<code class="sig-name descname">rules</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.rules" title="Permalink to this definition">¶</a></dt>
+<dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.saveGeometry">
+<code class="sig-name descname">saveGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QByteArray<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.saveGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMEmbeddedDisplay.scroll(self, int, int)</code></dt>
+<dd><p>scroll(self, int, int, QRect)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.sender">
+<code class="sig-name descname">sender</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.sender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.senderSignalIndex">
+<code class="sig-name descname">senderSignalIndex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.senderSignalIndex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setAcceptDrops">
+<code class="sig-name descname">setAcceptDrops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setAcceptDrops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setAccessibleDescription">
+<code class="sig-name descname">setAccessibleDescription</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setAccessibleDescription" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setAccessibleName">
+<code class="sig-name descname">setAccessibleName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setAccessibleName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setAttribute">
+<code class="sig-name descname">setAttribute</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WidgetAttribute</em>, <em class="sig-param">on: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setAutoFillBackground">
+<code class="sig-name descname">setAutoFillBackground</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setAutoFillBackground" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setBackgroundRole">
+<code class="sig-name descname">setBackgroundRole</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPalette.ColorRole</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setBackgroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMEmbeddedDisplay.setBaseSize(self, int, int)</code></dt>
+<dd><p>setBaseSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMEmbeddedDisplay.setContentsMargins(self, int, int, int, int)</code></dt>
+<dd><p>setContentsMargins(self, QMargins)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setContextMenuPolicy">
+<code class="sig-name descname">setContextMenuPolicy</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.ContextMenuPolicy</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setContextMenuPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setCursor">
+<code class="sig-name descname">setCursor</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QCursor, Qt.CursorShape]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setCursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setDisabled">
+<code class="sig-name descname">setDisabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setDisabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setEnabled">
+<code class="sig-name descname">setEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFixedHeight">
+<code class="sig-name descname">setFixedHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFixedHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFixedSize">
+<code class="sig-name descname">setFixedSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSize</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFixedSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>setFixedSize(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFixedWidth">
+<code class="sig-name descname">setFixedWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFixedWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFocus">
+<code class="sig-name descname">setFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFocus" title="Permalink to this definition">¶</a></dt>
+<dd><p>setFocus(self, Qt.FocusReason)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFocusPolicy">
+<code class="sig-name descname">setFocusPolicy</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.FocusPolicy</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFocusPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFocusProxy">
+<code class="sig-name descname">setFocusProxy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFocusProxy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFont">
+<code class="sig-name descname">setFont</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFont</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFont" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setForegroundRole">
+<code class="sig-name descname">setForegroundRole</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPalette.ColorRole</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setForegroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFrameRect">
+<code class="sig-name descname">setFrameRect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QRect</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFrameRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFrameShadow">
+<code class="sig-name descname">setFrameShadow</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QFrame.Shadow</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFrameShadow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFrameShape">
+<code class="sig-name descname">setFrameShape</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QFrame.Shape</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFrameShape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFrameStyle">
+<code class="sig-name descname">setFrameStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFrameStyle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setGeometry">
+<code class="sig-name descname">setGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QRect</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setGeometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>setGeometry(self, int, int, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setGraphicsEffect">
+<code class="sig-name descname">setGraphicsEffect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QGraphicsEffect</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setGraphicsEffect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setHidden">
+<code class="sig-name descname">setHidden</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setHidden" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setInputMethodHints">
+<code class="sig-name descname">setInputMethodHints</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.InputMethodHints, Qt.InputMethodHint]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setInputMethodHints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setLayout">
+<code class="sig-name descname">setLayout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QLayout</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setLayout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setLayoutDirection">
+<code class="sig-name descname">setLayoutDirection</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.LayoutDirection</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setLayoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setLineWidth">
+<code class="sig-name descname">setLineWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setLineWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setLocale">
+<code class="sig-name descname">setLocale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QLocale</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setLocale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMask">
+<code class="sig-name descname">setMask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QBitmap</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMask" title="Permalink to this definition">¶</a></dt>
+<dd><p>setMask(self, QRegion)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMaximumHeight">
+<code class="sig-name descname">setMaximumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMaximumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMEmbeddedDisplay.setMaximumSize(self, int, int)</code></dt>
+<dd><p>setMaximumSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMaximumWidth">
+<code class="sig-name descname">setMaximumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMaximumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMidLineWidth">
+<code class="sig-name descname">setMidLineWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMidLineWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMinimumHeight">
+<code class="sig-name descname">setMinimumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMinimumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMEmbeddedDisplay.setMinimumSize(self, int, int)</code></dt>
+<dd><p>setMinimumSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMinimumWidth">
+<code class="sig-name descname">setMinimumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMinimumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMouseTracking">
+<code class="sig-name descname">setMouseTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMouseTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setObjectName">
+<code class="sig-name descname">setObjectName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setObjectName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setPalette">
+<code class="sig-name descname">setPalette</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPalette</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setPalette" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setParent">
+<code class="sig-name descname">setParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setParent" title="Permalink to this definition">¶</a></dt>
+<dd><p>setParent(self, QWidget, Union[Qt.WindowFlags, Qt.WindowType])</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setProperty">
+<code class="sig-name descname">setProperty</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em>, <em class="sig-param"><span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setProperty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setShortcutAutoRepeat">
+<code class="sig-name descname">setShortcutAutoRepeat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">enabled</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setShortcutAutoRepeat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setShortcutEnabled">
+<code class="sig-name descname">setShortcutEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">enabled</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setShortcutEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMEmbeddedDisplay.setSizeIncrement(self, int, int)</code></dt>
+<dd><p>setSizeIncrement(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setSizePolicy">
+<code class="sig-name descname">setSizePolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSizePolicy</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setSizePolicy" title="Permalink to this definition">¶</a></dt>
+<dd><p>setSizePolicy(self, QSizePolicy.Policy, QSizePolicy.Policy)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setStatusTip">
+<code class="sig-name descname">setStatusTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setStatusTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setStyle">
+<code class="sig-name descname">setStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QStyle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setStyle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setStyleSheet">
+<code class="sig-name descname">setStyleSheet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setStyleSheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMEmbeddedDisplay.setTabOrder(QWidget, QWidget)</code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setTabletTracking">
+<code class="sig-name descname">setTabletTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setTabletTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setToolTip">
+<code class="sig-name descname">setToolTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setToolTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setToolTipDuration">
+<code class="sig-name descname">setToolTipDuration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setToolTipDuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setUpdatesEnabled">
+<code class="sig-name descname">setUpdatesEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setUpdatesEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setVisible">
+<code class="sig-name descname">setVisible</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setVisible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWhatsThis">
+<code class="sig-name descname">setWhatsThis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWhatsThis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowFilePath">
+<code class="sig-name descname">setWindowFilePath</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowFilePath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowFlag">
+<code class="sig-name descname">setWindowFlag</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WindowType</em>, <em class="sig-param">on: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowFlags">
+<code class="sig-name descname">setWindowFlags</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowFlags, Qt.WindowType]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowIcon">
+<code class="sig-name descname">setWindowIcon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QIcon</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowIcon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowIconText">
+<code class="sig-name descname">setWindowIconText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowIconText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowModality">
+<code class="sig-name descname">setWindowModality</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WindowModality</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowModality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowModified">
+<code class="sig-name descname">setWindowModified</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowModified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowOpacity">
+<code class="sig-name descname">setWindowOpacity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowOpacity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowRole">
+<code class="sig-name descname">setWindowRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowState">
+<code class="sig-name descname">setWindowState</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowStates, Qt.WindowState]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowTitle">
+<code class="sig-name descname">setWindowTitle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setWindowTitle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.set_opacity">
+<code class="sig-name descname">set_opacity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.set_opacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Float value between 0 and 1 representing the opacity of the widget
+where 0 means transparent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> (<em>float</em>) – The new value for the opacity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.sharedPainter">
+<code class="sig-name descname">sharedPainter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPainter<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.sharedPainter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.show">
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.showEvent">
 <code class="sig-name descname">showEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">e</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/embedded_display.html#PyDMEmbeddedDisplay.showEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.showEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show events are sent to widgets that become visible on the screen.</p>
@@ -358,6 +1830,277 @@ not been loaded yet, it will be loaded immediately.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.showFullScreen">
+<code class="sig-name descname">showFullScreen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.showFullScreen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.showMaximized">
+<code class="sig-name descname">showMaximized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.showMaximized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.showMinimized">
+<code class="sig-name descname">showMinimized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.showMinimized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.showNormal">
+<code class="sig-name descname">showNormal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.showNormal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.signalsBlocked">
+<code class="sig-name descname">signalsBlocked</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.signalsBlocked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.size">
+<code class="sig-name descname">size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.sizeHint">
+<code class="sig-name descname">sizeHint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.sizeHint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.sizeIncrement">
+<code class="sig-name descname">sizeIncrement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.sizeIncrement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.sizePolicy">
+<code class="sig-name descname">sizePolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSizePolicy<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.sizePolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.stackUnder">
+<code class="sig-name descname">stackUnder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.stackUnder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.startTimer">
+<code class="sig-name descname">startTimer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">timerType</span><span class="p">:</span> <span class="n">Qt.TimerType</span> <span class="o">=</span> <span class="default_value">Qt.CoarseTimer</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.startTimer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.statusTip">
+<code class="sig-name descname">statusTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.statusTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.style">
+<code class="sig-name descname">style</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QStyle<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.style" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.styleSheet">
+<code class="sig-name descname">styleSheet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.styleSheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.tabletEvent">
+<code class="sig-name descname">tabletEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QTabletEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.tabletEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.testAttribute">
+<code class="sig-name descname">testAttribute</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WidgetAttribute</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.testAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.thread">
+<code class="sig-name descname">thread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QThread<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.thread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.timerEvent">
+<code class="sig-name descname">timerEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QTimerEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.timerEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.toolTip">
+<code class="sig-name descname">toolTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.toolTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.toolTipDuration">
+<code class="sig-name descname">toolTipDuration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.toolTipDuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.tr">
+<code class="sig-name descname">tr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em>, <em class="sig-param"><span class="n">disambiguation</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">- 1</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.tr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.underMouse">
+<code class="sig-name descname">underMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.underMouse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.ungrabGesture">
+<code class="sig-name descname">ungrabGesture</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.GestureType</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.ungrabGesture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.unsetCursor">
+<code class="sig-name descname">unsetCursor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.unsetCursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.unsetLayoutDirection">
+<code class="sig-name descname">unsetLayoutDirection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.unsetLayoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.unsetLocale">
+<code class="sig-name descname">unsetLocale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.unsetLocale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>update(self, QRect)
+update(self, QRegion)
+update(self, int, int, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.updateGeometry">
+<code class="sig-name descname">updateGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.updateGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.updateMicroFocus">
+<code class="sig-name descname">updateMicroFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.updateMicroFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.updatesEnabled">
+<code class="sig-name descname">updatesEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.updatesEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.visibleRegion">
+<code class="sig-name descname">visibleRegion</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.visibleRegion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.whatsThis">
+<code class="sig-name descname">whatsThis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.whatsThis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.wheelEvent">
+<code class="sig-name descname">wheelEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWheelEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.wheelEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.width">
+<code class="sig-name descname">width</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.widthMM">
+<code class="sig-name descname">widthMM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.widthMM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.winId">
+<code class="sig-name descname">winId</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; sip.voidptr<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.winId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.window">
+<code class="sig-name descname">window</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.window" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowFilePath">
+<code class="sig-name descname">windowFilePath</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowFilePath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowFlags">
+<code class="sig-name descname">windowFlags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowFlags<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowHandle">
+<code class="sig-name descname">windowHandle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWindow<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowHandle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowIcon">
+<code class="sig-name descname">windowIcon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QIcon<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowIcon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowIconChanged">
+<code class="sig-name descname">windowIconChanged</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowIconChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowIconChanged(self, QIcon) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowIconText">
+<code class="sig-name descname">windowIconText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowIconText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowIconTextChanged">
+<code class="sig-name descname">windowIconTextChanged</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowIconTextChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowIconTextChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowModality">
+<code class="sig-name descname">windowModality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowModality<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowModality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowOpacity">
+<code class="sig-name descname">windowOpacity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowOpacity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowRole">
+<code class="sig-name descname">windowRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowState">
+<code class="sig-name descname">windowState</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowStates<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowTitle">
+<code class="sig-name descname">windowTitle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowTitle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowTitleChanged">
+<code class="sig-name descname">windowTitleChanged</code><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowTitleChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowTitleChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowType">
+<code class="sig-name descname">windowType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowType<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.windowType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.x">
+<code class="sig-name descname">x</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.x" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.y">
+<code class="sig-name descname">y</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.y" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMByteIndicator &mdash; PyDM v1.9.0+36.g389d63b5 documentation</title>
+  <title>PyDMByteIndicator &mdash; PyDM v1.9.0+38.g27b957bc documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+36.g389d63b5
+                v1.9.0+38.g27b957bc
               </div>
             
           
@@ -202,7 +202,8 @@
 <dl class="py class">
 <dt id="pydm.widgets.byte.PyDMByteIndicator">
 <em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.byte.</code><code class="sig-name descname">PyDMByteIndicator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_channel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Widget for graphical representation of bits from an integer number
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.base.PyDMWidget</span></code></p>
+<p>Widget for graphical representation of bits from an integer number
 with support for Channels and more from PyDM</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -212,6 +213,148 @@ with support for Channels and more from PyDM</p>
 </ul>
 </dd>
 </dl>
+<dl class="py class">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.PaintDeviceMetric">
+<em class="property">class </em><code class="sig-name descname">PaintDeviceMetric</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.PaintDeviceMetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.RenderFlag">
+<em class="property">class </em><code class="sig-name descname">RenderFlag</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.RenderFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.RenderFlags">
+<em class="property">class </em><code class="sig-name descname">RenderFlags</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.RenderFlags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<p>QWidget.RenderFlags(Union[QWidget.RenderFlags, QWidget.RenderFlag])
+QWidget.RenderFlags(QWidget.RenderFlags)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.acceptDrops">
+<code class="sig-name descname">acceptDrops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.acceptDrops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.accessibleDescription">
+<code class="sig-name descname">accessibleDescription</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.accessibleDescription" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.accessibleName">
+<code class="sig-name descname">accessibleName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.accessibleName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.actionEvent">
+<code class="sig-name descname">actionEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QActionEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.actionEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.actions">
+<code class="sig-name descname">actions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QAction<span class="p">]</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.actions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.activateWindow">
+<code class="sig-name descname">activateWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.activateWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.addAction">
+<code class="sig-name descname">addAction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QAction</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.addAction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.addActions">
+<code class="sig-name descname">addActions</code><span class="sig-paren">(</span><em class="sig-param">self, Iterable[QAction]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.addActions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.adjustSize">
+<code class="sig-name descname">adjustSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.adjustSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.alarmSensitiveBorder">
+<code class="sig-name descname">alarmSensitiveBorder</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.alarmSensitiveBorder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the border color changes when alarm severity changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True means that the border color will be changed in case of
+alarm severity changes.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.alarmSensitiveContent">
+<code class="sig-name descname">alarmSensitiveContent</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.alarmSensitiveContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the content color changes when alarm severity
+changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True means that the content color will be changed in case of
+alarm severity changes.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.alarmSeverityChanged">
+<code class="sig-name descname">alarmSeverityChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_alarm_severity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.alarmSeverityChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the Alarm Severity of the Channel
+This slot sends the severity value to the
+<code class="docutils literal notranslate"><span class="pre">`alarm_severity_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_alarm_severity</strong> (<em>int</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.alarm_severity_changed">
+<code class="sig-name descname">alarm_severity_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_alarm_severity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.alarm_severity_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel alarm severity is changed.
+This callback is not processed if the widget has no channel
+associated with it.
+This callback handles the composition of the stylesheet to be
+applied and the call
+to update to redraw the widget with the needed changes for the
+new state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_alarm_severity</strong> (<em>int</em>) – The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
+and 3 = INVALID</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.autoFillBackground">
+<code class="sig-name descname">autoFillBackground</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.autoFillBackground" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.backgroundRole">
+<code class="sig-name descname">backgroundRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette.ColorRole<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.backgroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.baseSize">
+<code class="sig-name descname">baseSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.baseSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.bigEndian">
 <code class="sig-name descname">bigEndian</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.bigEndian" title="Permalink to this definition">¶</a></dt>
@@ -225,6 +368,108 @@ with support for Channels and more from PyDM</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.blockSignals">
+<code class="sig-name descname">blockSignals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.blockSignals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.changeEvent">
+<code class="sig-name descname">changeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.changeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.channel">
+<code class="sig-name descname">channel</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The channel address in use for this widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>channel</strong> – Channel address</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.channelValueChanged">
+<code class="sig-name descname">channelValueChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.channelValueChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the Value of the Channel
+This slot sends the value to the <code class="docutils literal notranslate"><span class="pre">`value_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_val</strong> (<em>int</em><em>, </em><em>float</em><em>, </em><em>str</em><em>, </em><em>bool</em><em> or </em><em>np.ndarray</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.channels">
+<code class="sig-name descname">channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the channels being used for this Widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>channels</strong> – List of PyDMChannel objects</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.channels_for_tools">
+<code class="sig-name descname">channels_for_tools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.channels_for_tools" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of channels useful for external tools.
+The default implementation here is just to return
+self.channels(), but some widgets will want to re-implement
+this, especially if they have multiple channels, but only
+one real ‘signal’ channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.check_enable_state">
+<code class="sig-name descname">check_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.check_enable_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether or not the widget should be disable.
+This method also disables the widget and add a Tool Tip
+with the reason why it is disabled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.childAt">
+<code class="sig-name descname">childAt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.childAt" title="Permalink to this definition">¶</a></dt>
+<dd><p>childAt(self, int, int) -&gt; QWidget</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.childEvent">
+<code class="sig-name descname">childEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QChildEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.childEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.children">
+<code class="sig-name descname">children</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QObject<span class="p">]</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.children" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.childrenRect">
+<code class="sig-name descname">childrenRect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.childrenRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.childrenRegion">
+<code class="sig-name descname">childrenRegion</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.childrenRegion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.circles">
@@ -247,6 +492,49 @@ with support for Channels and more from PyDM</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.clearFocus">
+<code class="sig-name descname">clearFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.clearFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.clearMask">
+<code class="sig-name descname">clearMask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.clearMask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.closeEvent">
+<code class="sig-name descname">closeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QCloseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.closeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.colorCount">
+<code class="sig-name descname">colorCount</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.colorCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.connectNotify">
+<code class="sig-name descname">connectNotify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.connectNotify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.connectionStateChanged">
+<code class="sig-name descname">connectionStateChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">connected</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.connectionStateChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the Connection State of the Channel
+This slot sends the connection state to the <code class="docutils literal notranslate"><span class="pre">`connection_changed`</span></code>
+callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>connected</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.connection_changed">
 <code class="sig-name descname">connection_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">connected</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.connection_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.connection_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the connection state of the Channel is changed.
@@ -260,11 +548,582 @@ and also trigger the change on alarm severity to ALARM_DISCONNECTED.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.contentsMargins">
+<code class="sig-name descname">contentsMargins</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QMargins<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.contentsMargins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.contentsRect">
+<code class="sig-name descname">contentsRect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.contentsRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.contextMenuEvent">
+<code class="sig-name descname">contextMenuEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QContextMenuEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.contextMenuEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.contextMenuPolicy">
+<code class="sig-name descname">contextMenuPolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.ContextMenuPolicy<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.contextMenuPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">window</span><span class="p">:</span> <span class="n">sip.voidptr</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">initializeWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">destroyOldWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.createWindowContainer">
+<code class="sig-name descname">createWindowContainer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">QWindow</span></em>, <em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n">QWidget</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">flags</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.WindowFlags<span class="p">, </span>Qt.WindowType<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.createWindowContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.ctrl_limit_changed">
+<code class="sig-name descname">ctrl_limit_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">which</span></em>, <em class="sig-param"><span class="n">new_limit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.ctrl_limit_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel receives new control limit
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which</strong> (<em>str</em>) – Which control limit was changed. “UPPER” or “LOWER”</p></li>
+<li><p><strong>new_limit</strong> (<em>float</em>) – New value for the control limit</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.cursor">
+<code class="sig-name descname">cursor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QCursor<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.cursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.customContextMenuRequested">
+<code class="sig-name descname">customContextMenuRequested</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.customContextMenuRequested" title="Permalink to this definition">¶</a></dt>
+<dd><p>customContextMenuRequested(self, QPoint) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.customEvent">
+<code class="sig-name descname">customEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.customEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.deleteLater">
+<code class="sig-name descname">deleteLater</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.deleteLater" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.depth">
+<code class="sig-name descname">depth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.depth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.destroy">
+<code class="sig-name descname">destroy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">destroyWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">destroySubWindows</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.destroy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.destroyed">
+<code class="sig-name descname">destroyed</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.destroyed" title="Permalink to this definition">¶</a></dt>
+<dd><p>QObject = None) [signal]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>destroyed(self, object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.devType">
+<code class="sig-name descname">devType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.devType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.devicePixelRatio">
+<code class="sig-name descname">devicePixelRatio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.devicePixelRatio" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.devicePixelRatioF">
+<code class="sig-name descname">devicePixelRatioF</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.devicePixelRatioF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.devicePixelRatioFScale">
+<code class="sig-name descname">devicePixelRatioFScale</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.devicePixelRatioFScale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.disconnect">
+<code class="sig-name descname">disconnect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.disconnectNotify">
+<code class="sig-name descname">disconnectNotify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.disconnectNotify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.dragEnterEvent">
+<code class="sig-name descname">dragEnterEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragEnterEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.dragEnterEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.dragLeaveEvent">
+<code class="sig-name descname">dragLeaveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragLeaveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.dragLeaveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.dragMoveEvent">
+<code class="sig-name descname">dragMoveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragMoveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.dragMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.dropEvent">
+<code class="sig-name descname">dropEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDropEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.dropEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.dumpObjectInfo">
+<code class="sig-name descname">dumpObjectInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.dumpObjectInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.dumpObjectTree">
+<code class="sig-name descname">dumpObjectTree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.dumpObjectTree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.dynamicPropertyNames">
+<code class="sig-name descname">dynamicPropertyNames</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QByteArray<span class="p">]</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.dynamicPropertyNames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.effectiveWinId">
+<code class="sig-name descname">effectiveWinId</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; sip.voidptr<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.effectiveWinId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.ensurePolished">
+<code class="sig-name descname">ensurePolished</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.ensurePolished" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.enterEvent">
+<code class="sig-name descname">enterEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.enterEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.enumStringsChanged">
+<code class="sig-name descname">enumStringsChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_enum_strings</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.enumStringsChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the string values of the Channel
+This slot sends the new strings to the
+<code class="docutils literal notranslate"><span class="pre">`enum_strings_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_enum_strings</strong> (<em>tuple</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.enum_strings_changed">
+<code class="sig-name descname">enum_strings_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_enum_strings</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.enum_strings_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel has new enum values.
+This callback also triggers a value_changed call so the
+new enum values to be broadcasted</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_enum_strings</strong> (<em>tuple</em>) – The new list of values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.event">
+<code class="sig-name descname">event</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.event" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.eventFilter">
+<code class="sig-name descname">eventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.eventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.find">
+<code class="sig-name descname">find</code><span class="sig-paren">(</span><em class="sig-param">sip.voidptr</em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.find" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.findChild">
+<code class="sig-name descname">findChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">options</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.FindChildOptions<span class="p">, </span>Qt.FindChildOption<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Qt.FindChildrenRecursively</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.findChild" title="Permalink to this definition">¶</a></dt>
+<dd><p>findChild(self, Tuple, name: str = ‘’, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; QObject</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.findChildren">
+<code class="sig-name descname">findChildren</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">options</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.FindChildOptions<span class="p">, </span>Qt.FindChildOption<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Qt.FindChildrenRecursively</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QObject<span class="p">]</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.findChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>findChildren(self, Tuple, name: str = ‘’, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, type, QRegExp, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, Tuple, QRegExp, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, type, QRegularExpression, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, Tuple, QRegularExpression, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.focusInEvent">
+<code class="sig-name descname">focusInEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFocusEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.focusInEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.focusNextChild">
+<code class="sig-name descname">focusNextChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.focusNextChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.focusNextPrevChild">
+<code class="sig-name descname">focusNextPrevChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.focusNextPrevChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.focusOutEvent">
+<code class="sig-name descname">focusOutEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFocusEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.focusOutEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.focusPolicy">
+<code class="sig-name descname">focusPolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.FocusPolicy<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.focusPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.focusPreviousChild">
+<code class="sig-name descname">focusPreviousChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.focusPreviousChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.focusProxy">
+<code class="sig-name descname">focusProxy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.focusProxy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.focusWidget">
+<code class="sig-name descname">focusWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.focusWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.font">
+<code class="sig-name descname">font</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFont<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.font" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.fontInfo">
+<code class="sig-name descname">fontInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFontInfo<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.fontInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.fontMetrics">
+<code class="sig-name descname">fontMetrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFontMetrics<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.fontMetrics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.force_redraw">
+<code class="sig-name descname">force_redraw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.force_redraw" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot to force a redraw on the widget.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.foregroundRole">
+<code class="sig-name descname">foregroundRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette.ColorRole<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.foregroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.frameGeometry">
+<code class="sig-name descname">frameGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.frameGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.frameSize">
+<code class="sig-name descname">frameSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.frameSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.generate_context_menu">
+<code class="sig-name descname">generate_context_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.generate_context_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the custom context menu, and populates it with any external
+tools that have been loaded.  PyDMWidget subclasses should override
+this method (after calling superclass implementation) to add the menu.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QMenu</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.geometry">
+<code class="sig-name descname">geometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.geometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.getContentsMargins">
+<code class="sig-name descname">getContentsMargins</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.getContentsMargins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.get_ctrl_limits">
+<code class="sig-name descname">get_ctrl_limits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.get_ctrl_limits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple with the control limits for the channel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>(lower, upper)</strong> – Lower and Upper control limits</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.grab">
+<code class="sig-name descname">grab</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">rectangle</span><span class="p">:</span> <span class="n">QRect</span> <span class="o">=</span> <span class="default_value">QRect(QPoint(0, 0), QSize(- 1, - 1))</span></em><span class="sig-paren">)</span> &#x2192; QPixmap<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.grab" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.grabGesture">
+<code class="sig-name descname">grabGesture</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.GestureType</em>, <em class="sig-param">flags: Union[Qt.GestureFlags</em>, <em class="sig-param">Qt.GestureFlag] = Qt.GestureFlags()</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.grabGesture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.grabKeyboard">
+<code class="sig-name descname">grabKeyboard</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.grabKeyboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.grabMouse">
+<code class="sig-name descname">grabMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.grabMouse" title="Permalink to this definition">¶</a></dt>
+<dd><p>grabMouse(self, Union[QCursor, Qt.CursorShape])</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.grabShortcut">
+<code class="sig-name descname">grabShortcut</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QKeySequence, QKeySequence.StandardKey, str, int], context: Qt.ShortcutContext = Qt.WindowShortcut</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.grabShortcut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.graphicsEffect">
+<code class="sig-name descname">graphicsEffect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QGraphicsEffect<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.graphicsEffect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.graphicsProxyWidget">
+<code class="sig-name descname">graphicsProxyWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QGraphicsProxyWidget<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.graphicsProxyWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.hasFocus">
+<code class="sig-name descname">hasFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.hasFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.hasHeightForWidth">
+<code class="sig-name descname">hasHeightForWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.hasHeightForWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.hasMouseTracking">
+<code class="sig-name descname">hasMouseTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.hasMouseTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.hasTabletTracking">
+<code class="sig-name descname">hasTabletTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.hasTabletTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.height">
+<code class="sig-name descname">height</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.heightForWidth">
+<code class="sig-name descname">heightForWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.heightForWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.heightMM">
+<code class="sig-name descname">heightMM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.heightMM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.hide">
+<code class="sig-name descname">hide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.hide" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.hideEvent">
+<code class="sig-name descname">hideEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QHideEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.hideEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.inherits">
+<code class="sig-name descname">inherits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.inherits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.initPainter">
+<code class="sig-name descname">initPainter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPainter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.initPainter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.init_for_designer">
 <code class="sig-name descname">init_for_designer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.init_for_designer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.init_for_designer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method called after the constructor to tweak configurations for
 when using the widget with the Qt Designer</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.inputMethodEvent">
+<code class="sig-name descname">inputMethodEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QInputMethodEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.inputMethodEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.inputMethodHints">
+<code class="sig-name descname">inputMethodHints</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.InputMethodHints<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.inputMethodHints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.inputMethodQuery">
+<code class="sig-name descname">inputMethodQuery</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.InputMethodQuery</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.inputMethodQuery" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMByteIndicator.insertAction(self, QAction, QAction)</code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.insertActions">
+<code class="sig-name descname">insertActions</code><span class="sig-paren">(</span><em class="sig-param">self, QAction, Iterable[QAction]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.insertActions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.installEventFilter">
+<code class="sig-name descname">installEventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.installEventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isActiveWindow">
+<code class="sig-name descname">isActiveWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isActiveWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isAncestorOf">
+<code class="sig-name descname">isAncestorOf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isAncestorOf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isEnabled">
+<code class="sig-name descname">isEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isEnabledTo">
+<code class="sig-name descname">isEnabledTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isEnabledTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isFullScreen">
+<code class="sig-name descname">isFullScreen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isFullScreen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isHidden">
+<code class="sig-name descname">isHidden</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isHidden" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isLeftToRight">
+<code class="sig-name descname">isLeftToRight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isLeftToRight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isMaximized">
+<code class="sig-name descname">isMaximized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isMaximized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isMinimized">
+<code class="sig-name descname">isMinimized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isMinimized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isModal">
+<code class="sig-name descname">isModal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isModal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isRightToLeft">
+<code class="sig-name descname">isRightToLeft</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isRightToLeft" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isSignalConnected">
+<code class="sig-name descname">isSignalConnected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isSignalConnected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isVisible">
+<code class="sig-name descname">isVisible</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isVisible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isVisibleTo">
+<code class="sig-name descname">isVisibleTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isVisibleTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isWidgetType">
+<code class="sig-name descname">isWidgetType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isWidgetType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isWindow">
+<code class="sig-name descname">isWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isWindowModified">
+<code class="sig-name descname">isWindowModified</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isWindowModified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.isWindowType">
+<code class="sig-name descname">isWindowType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.isWindowType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.keyPressEvent">
+<code class="sig-name descname">keyPressEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QKeyEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.keyReleaseEvent">
+<code class="sig-name descname">keyReleaseEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QKeyEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.keyReleaseEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.keyboardGrabber">
+<code class="sig-name descname">keyboardGrabber</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.keyboardGrabber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.killTimer">
+<code class="sig-name descname">killTimer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.killTimer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.labelPosition">
@@ -294,6 +1153,195 @@ when using the widget with the Qt Designer</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.layout">
+<code class="sig-name descname">layout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QLayout<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.layoutDirection">
+<code class="sig-name descname">layoutDirection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.LayoutDirection<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.layoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.leaveEvent">
+<code class="sig-name descname">leaveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.leaveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.locale">
+<code class="sig-name descname">locale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QLocale<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.locale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.logicalDpiX">
+<code class="sig-name descname">logicalDpiX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.logicalDpiX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.logicalDpiY">
+<code class="sig-name descname">logicalDpiY</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.logicalDpiY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.lower">
+<code class="sig-name descname">lower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.lower" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.lowerCtrlLimitChanged">
+<code class="sig-name descname">lowerCtrlLimitChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_limit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.lowerCtrlLimitChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the lower control limit value of the Channel
+This slot sends the new limit value to the
+<code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.mapFrom">
+<code class="sig-name descname">mapFrom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.mapFrom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.mapFromGlobal">
+<code class="sig-name descname">mapFromGlobal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.mapFromGlobal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.mapFromParent">
+<code class="sig-name descname">mapFromParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.mapFromParent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.mapTo">
+<code class="sig-name descname">mapTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.mapTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.mapToGlobal">
+<code class="sig-name descname">mapToGlobal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.mapToGlobal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.mapToParent">
+<code class="sig-name descname">mapToParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.mapToParent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.mask">
+<code class="sig-name descname">mask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.mask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.maximumHeight">
+<code class="sig-name descname">maximumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.maximumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.maximumSize">
+<code class="sig-name descname">maximumSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.maximumSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.maximumWidth">
+<code class="sig-name descname">maximumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.maximumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.metaObject">
+<code class="sig-name descname">metaObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QMetaObject<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.metaObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.metric">
+<code class="sig-name descname">metric</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPaintDevice.PaintDeviceMetric</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.metric" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.minimumHeight">
+<code class="sig-name descname">minimumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.minimumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.minimumSize">
+<code class="sig-name descname">minimumSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.minimumSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.minimumSizeHint">
+<code class="sig-name descname">minimumSizeHint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.minimumSizeHint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.minimumWidth">
+<code class="sig-name descname">minimumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.minimumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.mouseDoubleClickEvent">
+<code class="sig-name descname">mouseDoubleClickEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.mouseDoubleClickEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.mouseGrabber">
+<code class="sig-name descname">mouseGrabber</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.mouseGrabber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.mouseMoveEvent">
+<code class="sig-name descname">mouseMoveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.mouseMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.mousePressEvent">
+<code class="sig-name descname">mousePressEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.mouseReleaseEvent">
+<code class="sig-name descname">mouseReleaseEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.mouseReleaseEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.move">
+<code class="sig-name descname">move</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>move(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.moveEvent">
+<code class="sig-name descname">moveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMoveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.moveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.moveToThread">
+<code class="sig-name descname">moveToThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QThread</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.moveToThread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.nativeEvent">
+<code class="sig-name descname">nativeEvent</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QByteArray, bytes, bytearray], sip.voidptr</em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>bool<span class="p">, </span>int<span class="p">]</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.nativeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.nativeParentWidget">
+<code class="sig-name descname">nativeParentWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.nativeParentWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.nextInFocusChain">
+<code class="sig-name descname">nextInFocusChain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.nextInFocusChain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.normalGeometry">
+<code class="sig-name descname">normalGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.normalGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.numBits">
 <code class="sig-name descname">numBits</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.numBits" title="Permalink to this definition">¶</a></dt>
@@ -306,6 +1354,17 @@ when using the widget with the Qt Designer</p>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.objectName">
+<code class="sig-name descname">objectName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.objectName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.objectNameChanged">
+<code class="sig-name descname">objectNameChanged</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.objectNameChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>objectNameChanged(self, str) [signal]</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -336,6 +1395,32 @@ when using the widget with the Qt Designer</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.opacity">
+<code class="sig-name descname">opacity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.opacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Float value between 0 and 1 representing the opacity of the widget
+where 0 means transparent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>opacity</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.open_context_menu">
+<code class="sig-name descname">open_context_menu</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ev</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.open_context_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for when the Default Context Menu is requested.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ev</strong> (<em>QEvent</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.orientation">
 <code class="sig-name descname">orientation</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.orientation" title="Permalink to this definition">¶</a></dt>
@@ -349,6 +1434,21 @@ when using the widget with the Qt Designer</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.overrideWindowFlags">
+<code class="sig-name descname">overrideWindowFlags</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowFlags, Qt.WindowType]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.overrideWindowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.overrideWindowState">
+<code class="sig-name descname">overrideWindowState</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowStates, Qt.WindowState]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.overrideWindowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.paintEngine">
+<code class="sig-name descname">paintEngine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPaintEngine<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.paintEngine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.paintEvent">
@@ -367,6 +1467,66 @@ so the specifics can be performed for each of the drawing classes.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.paintingActive">
+<code class="sig-name descname">paintingActive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.paintingActive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.palette">
+<code class="sig-name descname">palette</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.palette" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.parent">
+<code class="sig-name descname">parent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.parentWidget">
+<code class="sig-name descname">parentWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.parentWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.physicalDpiX">
+<code class="sig-name descname">physicalDpiX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.physicalDpiX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.physicalDpiY">
+<code class="sig-name descname">physicalDpiY</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.physicalDpiY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.pos">
+<code class="sig-name descname">pos</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.pos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.previousInFocusChain">
+<code class="sig-name descname">previousInFocusChain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.previousInFocusChain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.property">
+<code class="sig-name descname">property</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.property" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.pyqtConfigure">
+<code class="sig-name descname">pyqtConfigure</code><span class="sig-paren">(</span><em class="sig-param">...</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.pyqtConfigure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Each keyword argument is either the name of a Qt property or a Qt signal.
+For properties the property is set to the given value which should be of an
+appropriate type.
+For signals the signal is connected to the given value which should be a
+callable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.raise_">
+<code class="sig-name descname">raise_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.raise_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.rebuild_layout">
 <code class="sig-name descname">rebuild_layout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.rebuild_layout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.rebuild_layout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to reorganize the top-level widget and its contents
@@ -374,10 +1534,510 @@ according to the layout property values.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.receivers">
+<code class="sig-name descname">receivers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">PYQT_SIGNAL</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.receivers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.rect">
+<code class="sig-name descname">rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.rect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.releaseKeyboard">
+<code class="sig-name descname">releaseKeyboard</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.releaseKeyboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.releaseMouse">
+<code class="sig-name descname">releaseMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.releaseMouse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.releaseShortcut">
+<code class="sig-name descname">releaseShortcut</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.releaseShortcut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.removeAction">
+<code class="sig-name descname">removeAction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QAction</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.removeAction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.removeEventFilter">
+<code class="sig-name descname">removeEventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.removeEventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.render">
+<code class="sig-name descname">render</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPaintDevice</span></em>, <em class="sig-param"><span class="n">targetOffset</span><span class="p">:</span> <span class="n">QPoint</span> <span class="o">=</span> <span class="default_value">QPoint()</span></em>, <em class="sig-param"><span class="n">sourceRegion</span><span class="p">:</span> <span class="n">QRegion</span> <span class="o">=</span> <span class="default_value">QRegion()</span></em>, <em class="sig-param"><span class="n">flags</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>QWidget.RenderFlags<span class="p">, </span>QWidget.RenderFlag<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">QWidget.RenderFlags(QWidget.DrawWindowBackground | QWidget.DrawChildren)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>render(self, QPainter, targetOffset: QPoint = QPoint(), sourceRegion: QRegion = QRegion(), flags: Union[QWidget.RenderFlags, QWidget.RenderFlag] = QWidget.RenderFlags(QWidget.DrawWindowBackground|QWidget.DrawChildren))</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.repaint">
+<code class="sig-name descname">repaint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.repaint" title="Permalink to this definition">¶</a></dt>
+<dd><p>repaint(self, int, int, int, int)
+repaint(self, QRect)
+repaint(self, QRegion)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.resize">
+<code class="sig-name descname">resize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSize</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>resize(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.resizeEvent">
+<code class="sig-name descname">resizeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QResizeEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.resizeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.restoreGeometry">
+<code class="sig-name descname">restoreGeometry</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QByteArray, bytes, bytearray]</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.restoreGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.rule_evaluated">
+<code class="sig-name descname">rule_evaluated</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">payload</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.rule_evaluated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback called when a rule has a new value for a property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
+new value.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.rules">
+<code class="sig-name descname">rules</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.rules" title="Permalink to this definition">¶</a></dt>
+<dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.saveGeometry">
+<code class="sig-name descname">saveGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QByteArray<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.saveGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMByteIndicator.scroll(self, int, int)</code></dt>
+<dd><p>scroll(self, int, int, QRect)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.sender">
+<code class="sig-name descname">sender</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.sender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.senderSignalIndex">
+<code class="sig-name descname">senderSignalIndex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.senderSignalIndex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setAcceptDrops">
+<code class="sig-name descname">setAcceptDrops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setAcceptDrops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setAccessibleDescription">
+<code class="sig-name descname">setAccessibleDescription</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setAccessibleDescription" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setAccessibleName">
+<code class="sig-name descname">setAccessibleName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setAccessibleName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setAttribute">
+<code class="sig-name descname">setAttribute</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WidgetAttribute</em>, <em class="sig-param">on: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setAutoFillBackground">
+<code class="sig-name descname">setAutoFillBackground</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setAutoFillBackground" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setBackgroundRole">
+<code class="sig-name descname">setBackgroundRole</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPalette.ColorRole</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setBackgroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMByteIndicator.setBaseSize(self, int, int)</code></dt>
+<dd><p>setBaseSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMByteIndicator.setContentsMargins(self, int, int, int, int)</code></dt>
+<dd><p>setContentsMargins(self, QMargins)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setContextMenuPolicy">
+<code class="sig-name descname">setContextMenuPolicy</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.ContextMenuPolicy</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setContextMenuPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setCursor">
+<code class="sig-name descname">setCursor</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QCursor, Qt.CursorShape]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setCursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setDisabled">
+<code class="sig-name descname">setDisabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setDisabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setEnabled">
+<code class="sig-name descname">setEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setFixedHeight">
+<code class="sig-name descname">setFixedHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setFixedHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setFixedSize">
+<code class="sig-name descname">setFixedSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSize</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setFixedSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>setFixedSize(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setFixedWidth">
+<code class="sig-name descname">setFixedWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setFixedWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setFocus">
+<code class="sig-name descname">setFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setFocus" title="Permalink to this definition">¶</a></dt>
+<dd><p>setFocus(self, Qt.FocusReason)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setFocusPolicy">
+<code class="sig-name descname">setFocusPolicy</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.FocusPolicy</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setFocusPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setFocusProxy">
+<code class="sig-name descname">setFocusProxy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setFocusProxy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setFont">
+<code class="sig-name descname">setFont</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFont</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setFont" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setForegroundRole">
+<code class="sig-name descname">setForegroundRole</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPalette.ColorRole</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setForegroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setGeometry">
+<code class="sig-name descname">setGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QRect</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setGeometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>setGeometry(self, int, int, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setGraphicsEffect">
+<code class="sig-name descname">setGraphicsEffect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QGraphicsEffect</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setGraphicsEffect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setHidden">
+<code class="sig-name descname">setHidden</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setHidden" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setInputMethodHints">
+<code class="sig-name descname">setInputMethodHints</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.InputMethodHints, Qt.InputMethodHint]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setInputMethodHints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setLayout">
+<code class="sig-name descname">setLayout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QLayout</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setLayout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setLayoutDirection">
+<code class="sig-name descname">setLayoutDirection</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.LayoutDirection</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setLayoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setLocale">
+<code class="sig-name descname">setLocale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QLocale</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setLocale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setMask">
+<code class="sig-name descname">setMask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QBitmap</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setMask" title="Permalink to this definition">¶</a></dt>
+<dd><p>setMask(self, QRegion)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setMaximumHeight">
+<code class="sig-name descname">setMaximumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setMaximumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMByteIndicator.setMaximumSize(self, int, int)</code></dt>
+<dd><p>setMaximumSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setMaximumWidth">
+<code class="sig-name descname">setMaximumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setMaximumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setMinimumHeight">
+<code class="sig-name descname">setMinimumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setMinimumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMByteIndicator.setMinimumSize(self, int, int)</code></dt>
+<dd><p>setMinimumSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setMinimumWidth">
+<code class="sig-name descname">setMinimumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setMinimumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setMouseTracking">
+<code class="sig-name descname">setMouseTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setMouseTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setObjectName">
+<code class="sig-name descname">setObjectName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setObjectName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setPalette">
+<code class="sig-name descname">setPalette</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPalette</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setPalette" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setParent">
+<code class="sig-name descname">setParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setParent" title="Permalink to this definition">¶</a></dt>
+<dd><p>setParent(self, QWidget, Union[Qt.WindowFlags, Qt.WindowType])</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setProperty">
+<code class="sig-name descname">setProperty</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em>, <em class="sig-param"><span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setProperty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setShortcutAutoRepeat">
+<code class="sig-name descname">setShortcutAutoRepeat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">enabled</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setShortcutAutoRepeat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setShortcutEnabled">
+<code class="sig-name descname">setShortcutEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">enabled</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setShortcutEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMByteIndicator.setSizeIncrement(self, int, int)</code></dt>
+<dd><p>setSizeIncrement(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setSizePolicy">
+<code class="sig-name descname">setSizePolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSizePolicy</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setSizePolicy" title="Permalink to this definition">¶</a></dt>
+<dd><p>setSizePolicy(self, QSizePolicy.Policy, QSizePolicy.Policy)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setStatusTip">
+<code class="sig-name descname">setStatusTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setStatusTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setStyle">
+<code class="sig-name descname">setStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QStyle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setStyle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setStyleSheet">
+<code class="sig-name descname">setStyleSheet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setStyleSheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMByteIndicator.setTabOrder(QWidget, QWidget)</code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setTabletTracking">
+<code class="sig-name descname">setTabletTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setTabletTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setToolTip">
+<code class="sig-name descname">setToolTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setToolTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setToolTipDuration">
+<code class="sig-name descname">setToolTipDuration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setToolTipDuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setUpdatesEnabled">
+<code class="sig-name descname">setUpdatesEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setUpdatesEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setVisible">
+<code class="sig-name descname">setVisible</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setVisible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setWhatsThis">
+<code class="sig-name descname">setWhatsThis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setWhatsThis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setWindowFilePath">
+<code class="sig-name descname">setWindowFilePath</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setWindowFilePath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setWindowFlag">
+<code class="sig-name descname">setWindowFlag</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WindowType</em>, <em class="sig-param">on: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setWindowFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setWindowFlags">
+<code class="sig-name descname">setWindowFlags</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowFlags, Qt.WindowType]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setWindowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setWindowIcon">
+<code class="sig-name descname">setWindowIcon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QIcon</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setWindowIcon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setWindowIconText">
+<code class="sig-name descname">setWindowIconText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setWindowIconText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setWindowModality">
+<code class="sig-name descname">setWindowModality</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WindowModality</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setWindowModality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setWindowModified">
+<code class="sig-name descname">setWindowModified</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setWindowModified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setWindowOpacity">
+<code class="sig-name descname">setWindowOpacity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setWindowOpacity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setWindowRole">
+<code class="sig-name descname">setWindowRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setWindowRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setWindowState">
+<code class="sig-name descname">setWindowState</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowStates, Qt.WindowState]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setWindowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setWindowTitle">
+<code class="sig-name descname">setWindowTitle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setWindowTitle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setX">
+<code class="sig-name descname">setX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the X position of the Widget on the screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.setY">
+<code class="sig-name descname">setY</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the Y position of the Widget on the screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.set_opacity">
+<code class="sig-name descname">set_opacity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.set_opacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Float value between 0 and 1 representing the opacity of the widget
+where 0 means transparent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> (<em>float</em>) – The new value for the opacity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.set_spacing">
 <code class="sig-name descname">set_spacing</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.set_spacing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.set_spacing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configures the correct spacing given the selected orientation.</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.sharedPainter">
+<code class="sig-name descname">sharedPainter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPainter<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.sharedPainter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.shift">
@@ -392,6 +2052,21 @@ according to the layout property values.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.show">
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.showEvent">
+<code class="sig-name descname">showEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QShowEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.showEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.showFullScreen">
+<code class="sig-name descname">showFullScreen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.showFullScreen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.showLabels">
@@ -408,9 +2083,179 @@ according to the layout property values.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.showMaximized">
+<code class="sig-name descname">showMaximized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.showMaximized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.showMinimized">
+<code class="sig-name descname">showMinimized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.showMinimized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.showNormal">
+<code class="sig-name descname">showNormal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.showNormal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.show_address_tooltip">
+<code class="sig-name descname">show_address_tooltip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.show_address_tooltip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the PyDMTooltip and copy address to clipboard</p>
+<p>This is intended to replicate the behavior of the “middle click” from
+EDM. If the QWidget does not have a valid PyDMChannel nothing will be
+displayed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.signalsBlocked">
+<code class="sig-name descname">signalsBlocked</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.signalsBlocked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.size">
+<code class="sig-name descname">size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.sizeHint">
+<code class="sig-name descname">sizeHint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.sizeHint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.sizeIncrement">
+<code class="sig-name descname">sizeIncrement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.sizeIncrement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.sizePolicy">
+<code class="sig-name descname">sizePolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSizePolicy<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.sizePolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.stackUnder">
+<code class="sig-name descname">stackUnder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.stackUnder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.startTimer">
+<code class="sig-name descname">startTimer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">timerType</span><span class="p">:</span> <span class="n">Qt.TimerType</span> <span class="o">=</span> <span class="default_value">Qt.CoarseTimer</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.startTimer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.statusTip">
+<code class="sig-name descname">statusTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.statusTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.style">
+<code class="sig-name descname">style</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QStyle<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.style" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.styleSheet">
+<code class="sig-name descname">styleSheet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.styleSheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.tabletEvent">
+<code class="sig-name descname">tabletEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QTabletEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.tabletEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.testAttribute">
+<code class="sig-name descname">testAttribute</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WidgetAttribute</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.testAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.thread">
+<code class="sig-name descname">thread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QThread<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.thread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.timerEvent">
+<code class="sig-name descname">timerEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QTimerEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.timerEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.toolTip">
+<code class="sig-name descname">toolTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.toolTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.toolTipDuration">
+<code class="sig-name descname">toolTipDuration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.toolTipDuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.tr">
+<code class="sig-name descname">tr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em>, <em class="sig-param"><span class="n">disambiguation</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">- 1</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.tr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.underMouse">
+<code class="sig-name descname">underMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.underMouse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.ungrabGesture">
+<code class="sig-name descname">ungrabGesture</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.GestureType</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.ungrabGesture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.unsetCursor">
+<code class="sig-name descname">unsetCursor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.unsetCursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.unsetLayoutDirection">
+<code class="sig-name descname">unsetLayoutDirection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.unsetLayoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.unsetLocale">
+<code class="sig-name descname">unsetLocale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.unsetLocale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>update(self, QRect)
+update(self, QRegion)
+update(self, int, int, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.updateGeometry">
+<code class="sig-name descname">updateGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.updateGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.updateMicroFocus">
+<code class="sig-name descname">updateMicroFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.updateMicroFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.byte.PyDMByteIndicator.update_indicators">
 <code class="sig-name descname">update_indicators</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.update_indicators"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.update_indicators" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the inner bit indicators accordingly with the new value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.updatesEnabled">
+<code class="sig-name descname">updatesEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.updatesEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.upperCtrlLimitChanged">
+<code class="sig-name descname">upperCtrlLimitChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_limit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.upperCtrlLimitChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the upper control limit value of the Channel
+This slot sends the new limit value to the
+<code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -423,6 +2268,138 @@ according to the layout property values.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.visibleRegion">
+<code class="sig-name descname">visibleRegion</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.visibleRegion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.whatsThis">
+<code class="sig-name descname">whatsThis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.whatsThis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.wheelEvent">
+<code class="sig-name descname">wheelEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWheelEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.wheelEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.widget_ctx_menu">
+<code class="sig-name descname">widget_ctx_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.widget_ctx_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch the Widget specific context menu which will be populated with additional tools by <cite>assemble_tools_menu</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>If the return of this method is None a new QMenu will be created by <cite>assemble_tools_menu</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QMenu or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.width">
+<code class="sig-name descname">width</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.widthMM">
+<code class="sig-name descname">widthMM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.widthMM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.winId">
+<code class="sig-name descname">winId</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; sip.voidptr<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.winId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.window">
+<code class="sig-name descname">window</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.window" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.windowFilePath">
+<code class="sig-name descname">windowFilePath</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.windowFilePath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.windowFlags">
+<code class="sig-name descname">windowFlags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowFlags<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.windowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.windowHandle">
+<code class="sig-name descname">windowHandle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWindow<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.windowHandle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.windowIcon">
+<code class="sig-name descname">windowIcon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QIcon<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.windowIcon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.windowIconChanged">
+<code class="sig-name descname">windowIconChanged</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.windowIconChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowIconChanged(self, QIcon) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.windowIconText">
+<code class="sig-name descname">windowIconText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.windowIconText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.windowIconTextChanged">
+<code class="sig-name descname">windowIconTextChanged</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.windowIconTextChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowIconTextChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.windowModality">
+<code class="sig-name descname">windowModality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowModality<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.windowModality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.windowOpacity">
+<code class="sig-name descname">windowOpacity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.windowOpacity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.windowRole">
+<code class="sig-name descname">windowRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.windowRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.windowState">
+<code class="sig-name descname">windowState</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowStates<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.windowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.windowTitle">
+<code class="sig-name descname">windowTitle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.windowTitle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.windowTitleChanged">
+<code class="sig-name descname">windowTitleChanged</code><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.windowTitleChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowTitleChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.windowType">
+<code class="sig-name descname">windowType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowType<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.windowType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.x">
+<code class="sig-name descname">x</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.x" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.byte.PyDMByteIndicator.y">
+<code class="sig-name descname">y</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.y" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

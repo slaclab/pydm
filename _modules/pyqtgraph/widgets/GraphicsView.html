@@ -1,0 +1,643 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pyqtgraph.widgets.GraphicsView &mdash; PyDM v1.9.0+38.g27b957bc documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> PyDM
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.9.0+38.g27b957bc
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyDM</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyqtgraph.widgets.GraphicsView</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyqtgraph.widgets.GraphicsView</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">GraphicsView.py -   Extension of QGraphicsView</span>
+<span class="sd">Copyright 2010  Luke Campagnola</span>
+<span class="sd">Distributed under MIT/X11 license. See license.txt for more information.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">..Qt</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QT_LIB</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">..Qt</span> <span class="kn">import</span> <span class="n">QtOpenGL</span>
+    <span class="n">HAVE_OPENGL</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">HAVE_OPENGL</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="kn">from</span> <span class="nn">..Point</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">.FileDialog</span> <span class="kn">import</span> <span class="n">FileDialog</span>
+<span class="kn">from</span> <span class="nn">..GraphicsScene</span> <span class="kn">import</span> <span class="n">GraphicsScene</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">functions</span> <span class="k">as</span> <span class="n">fn</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">debug</span> <span class="k">as</span> <span class="n">debug</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">getConfigOption</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GraphicsView&#39;</span><span class="p">]</span>
+
+<span class="k">class</span> <span class="nc">GraphicsView</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Re-implementation of QGraphicsView that removes scrollbars and allows unambiguous control of the </span>
+<span class="sd">    viewed coordinate range. Also automatically creates a GraphicsScene and a central QGraphicsWidget</span>
+<span class="sd">    that is automatically scaled to the full view geometry.</span>
+<span class="sd">    </span>
+<span class="sd">    This widget is the basis for :class:`PlotWidget &lt;pyqtgraph.PlotWidget&gt;`, </span>
+<span class="sd">    :class:`GraphicsLayoutWidget &lt;pyqtgraph.GraphicsLayoutWidget&gt;`, and the view widget in</span>
+<span class="sd">    :class:`ImageView &lt;pyqtgraph.ImageView&gt;`.</span>
+<span class="sd">    </span>
+<span class="sd">    By default, the view coordinate system matches the widget&#39;s pixel coordinates and </span>
+<span class="sd">    automatically updates when the view is resized. This can be overridden by setting </span>
+<span class="sd">    autoPixelRange=False. The exact visible range can be set with setRange().</span>
+<span class="sd">    </span>
+<span class="sd">    The view can be panned using the middle mouse button and scaled using the right mouse button if</span>
+<span class="sd">    enabled via enableMouse()  (but ordinarily, we use ViewBox for this functionality).&quot;&quot;&quot;</span>
+    
+    <span class="n">sigDeviceRangeChanged</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
+    <span class="n">sigDeviceTransformChanged</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+    <span class="n">sigMouseReleased</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+    <span class="n">sigSceneMouseMoved</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+    <span class="c1">#sigRegionChanged = QtCore.Signal(object)</span>
+    <span class="n">sigScaleChanged</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+    <span class="n">lastFileDir</span> <span class="o">=</span> <span class="kc">None</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">useOpenGL</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ==============  ============================================================</span>
+<span class="sd">        **Arguments:**</span>
+<span class="sd">        parent          Optional parent widget</span>
+<span class="sd">        useOpenGL       If True, the GraphicsView will use OpenGL to do all of its</span>
+<span class="sd">                        rendering. This can improve performance on some systems,</span>
+<span class="sd">                        but may also introduce bugs (the combination of </span>
+<span class="sd">                        QGraphicsView and QGLWidget is still an &#39;experimental&#39; </span>
+<span class="sd">                        feature of Qt)</span>
+<span class="sd">        background      Set the background color of the GraphicsView. Accepts any</span>
+<span class="sd">                        single argument accepted by </span>
+<span class="sd">                        :func:`mkColor &lt;pyqtgraph.mkColor&gt;`. By </span>
+<span class="sd">                        default, the background color is determined using the</span>
+<span class="sd">                        &#39;backgroundColor&#39; configuration option (see </span>
+<span class="sd">                        :func:`setConfigOptions &lt;pyqtgraph.setConfigOptions&gt;`).</span>
+<span class="sd">        ==============  ============================================================</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">closed</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        
+        <span class="c1"># This connects a cleanup function to QApplication.aboutToQuit. It is</span>
+        <span class="c1"># called from here because we have no good way to react when the</span>
+        <span class="c1"># QApplication is created by the user.</span>
+        <span class="c1"># See pyqtgraph.__init__.py</span>
+        <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">_connectCleanup</span>
+        <span class="n">_connectCleanup</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="n">useOpenGL</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">useOpenGL</span> <span class="o">=</span> <span class="n">getConfigOption</span><span class="p">(</span><span class="s1">&#39;useOpenGL&#39;</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">useOpenGL</span><span class="p">(</span><span class="n">useOpenGL</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCacheMode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CacheBackground</span><span class="p">)</span>
+        
+        <span class="c1">## This might help, but it&#39;s probably dangerous in the general case..</span>
+        <span class="c1">#self.setOptimizationFlag(self.DontSavePainterState, True)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">setBackgroundRole</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPalette</span><span class="o">.</span><span class="n">NoRole</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setBackground</span><span class="p">(</span><span class="n">background</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">StrongFocus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QFrame</span><span class="o">.</span><span class="n">NoFrame</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setTransformationAnchor</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">NoAnchor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setResizeAnchor</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">AnchorViewCenter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setViewportUpdateMode</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">MinimalViewportUpdate</span><span class="p">)</span>
+        
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">lockedViewports</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastMousePos</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMouseTracking</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aspectLocked</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QRectF</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoPixelRange</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clearMouse</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateMatrix</span><span class="p">()</span>
+        <span class="c1"># GraphicsScene must have parent or expect crashes!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sceneObj</span> <span class="o">=</span> <span class="n">GraphicsScene</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setScene</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sceneObj</span><span class="p">)</span>
+        
+        <span class="c1">## Workaround for PySide crash</span>
+        <span class="c1">## This ensures that the scene will outlive the view.</span>
+        <span class="k">if</span> <span class="n">QT_LIB</span> <span class="o">==</span> <span class="s1">&#39;PySide&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sceneObj</span><span class="o">.</span><span class="n">_view_ref_workaround</span> <span class="o">=</span> <span class="bp">self</span>
+        
+        <span class="c1">## by default we set up a central widget with a grid layout.</span>
+        <span class="c1">## this can be replaced if needed.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centralWidget</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCentralItem</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsWidget</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centralLayout</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsGridLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centralWidget</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centralLayout</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">mouseEnabled</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaleCenter</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1">## should scaling center around view center (True) or mouse click (False)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clickAccepted</span> <span class="o">=</span> <span class="kc">False</span>
+        
+    <span class="k">def</span> <span class="nf">setAntialiasing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aa</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Enable or disable default antialiasing.</span>
+<span class="sd">        Note that this will only affect items that do not specify their own antialiasing options.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">aa</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setRenderHints</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">renderHints</span><span class="p">()</span> <span class="o">|</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setRenderHints</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">renderHints</span><span class="p">()</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">setBackground</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">background</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the background color of the GraphicsView.</span>
+<span class="sd">        To use the defaults specified py pyqtgraph.setConfigOption, use background=&#39;default&#39;.</span>
+<span class="sd">        To make the background transparent, use background=None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_background</span> <span class="o">=</span> <span class="n">background</span>
+        <span class="k">if</span> <span class="n">background</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>
+            <span class="n">background</span> <span class="o">=</span> <span class="n">getConfigOption</span><span class="p">(</span><span class="s1">&#39;background&#39;</span><span class="p">)</span>
+        <span class="n">brush</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">mkBrush</span><span class="p">(</span><span class="n">background</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setBackgroundBrush</span><span class="p">(</span><span class="n">brush</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">prepareForPaint</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">prepareForPaint</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        
+    
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centralWidget</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sceneObj</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">closed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setViewport</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GraphicsView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">useOpenGL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">b</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">HAVE_OPENGL</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Requested to use OpenGL with QGraphicsView, but QtOpenGL module is not available.&quot;</span><span class="p">)</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">QtOpenGL</span><span class="o">.</span><span class="n">QGLWidget</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="p">()</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">setViewport</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            
+    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span>  <span class="c1">## bypass view, hand event directly to scene</span>
+                                        <span class="c1">## (view likes to eat arrow key events)</span>
+        
+        
+    <span class="k">def</span> <span class="nf">setCentralItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">setCentralWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets a QGraphicsWidget to automatically fill the entire view (the item will be automatically</span>
+<span class="sd">        resize whenever the GraphicsView is resized).&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">centralWidget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centralWidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centralWidget</span> <span class="o">=</span> <span class="n">item</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sceneObj</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resizeEvent</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">addItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">removeItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">enableMouse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mouseEnabled</span> <span class="o">=</span> <span class="n">b</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoPixelRange</span> <span class="o">=</span> <span class="p">(</span><span class="ow">not</span> <span class="n">b</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">clearMouse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mouseTrail</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastButtonReleased</span> <span class="o">=</span> <span class="kc">None</span>
+    
+    <span class="k">def</span> <span class="nf">resizeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoPixelRange</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QRectF</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">height</span><span class="p">())</span>
+        <span class="n">GraphicsView</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">disableAutoPixel</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1">## we do this because some subclasses like to redefine setRange in an incompatible way.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateMatrix</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">updateMatrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">propagate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSceneRect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoPixelRange</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resetTransform</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">aspectLocked</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">KeepAspectRatio</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">IgnoreAspectRatio</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="n">propagate</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lockedViewports</span><span class="p">:</span>
+                <span class="n">v</span><span class="o">.</span><span class="n">setXRange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigDeviceRangeChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigDeviceTransformChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">viewRect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the boundaries of the view in scene coordinates&quot;&quot;&quot;</span>
+        <span class="c1">## easier to just return self.range ?</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QRectF</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewportTransform</span><span class="p">()</span><span class="o">.</span><span class="n">inverted</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mapRect</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">visibleRange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">## for backward compatibility</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewRect</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="o">.</span><span class="n">adjust</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateMatrix</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="p">[</span><span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">aspectLocked</span><span class="p">:</span>
+            <span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaleCenter</span><span class="p">:</span>
+            <span class="n">center</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">center</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="o">.</span><span class="n">center</span><span class="p">()</span>
+            
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="o">.</span><span class="n">width</span><span class="p">()</span>  <span class="o">/</span> <span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">/</span> <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QRectF</span><span class="p">(</span><span class="n">center</span><span class="o">.</span><span class="n">x</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span><span class="n">center</span><span class="o">.</span><span class="n">x</span><span class="p">()</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="o">.</span><span class="n">left</span><span class="p">())</span> <span class="o">/</span> <span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">center</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span><span class="n">center</span><span class="o">.</span><span class="n">y</span><span class="p">()</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="o">.</span><span class="n">top</span><span class="p">())</span>  <span class="o">/</span><span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateMatrix</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigScaleChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">newRect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">lockAspect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">propagate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">disableAutoPixel</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">disableAutoPixel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">autoPixelRange</span><span class="o">=</span><span class="kc">False</span>
+        <span class="k">if</span> <span class="n">newRect</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">newRect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visibleRange</span><span class="p">()</span>
+            <span class="n">padding</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="n">padding</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">padding</span><span class="p">)</span>
+        <span class="n">newRect</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QRectF</span><span class="p">(</span><span class="n">newRect</span><span class="p">)</span>
+        <span class="n">pw</span> <span class="o">=</span> <span class="n">newRect</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">*</span> <span class="n">padding</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ph</span> <span class="o">=</span> <span class="n">newRect</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">*</span> <span class="n">padding</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">newRect</span> <span class="o">=</span> <span class="n">newRect</span><span class="o">.</span><span class="n">adjusted</span><span class="p">(</span><span class="o">-</span><span class="n">pw</span><span class="p">,</span> <span class="o">-</span><span class="n">ph</span><span class="p">,</span> <span class="n">pw</span><span class="p">,</span> <span class="n">ph</span><span class="p">)</span>
+        <span class="n">scaleChanged</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">!=</span> <span class="n">newRect</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">!=</span> <span class="n">newRect</span><span class="o">.</span><span class="n">height</span><span class="p">():</span>
+            <span class="n">scaleChanged</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="n">newRect</span>
+        <span class="c1">#print &quot;New Range:&quot;, self.range</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">centralWidget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">centralWidget</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateMatrix</span><span class="p">(</span><span class="n">propagate</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">scaleChanged</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sigScaleChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">scaleToImage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scales such that pixels in image are the same size as screen pixels. This may result in a significant performance increase.&quot;&quot;&quot;</span>
+        <span class="n">pxSize</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">pixelSize</span><span class="p">()</span>
+        <span class="n">image</span><span class="o">.</span><span class="n">setPxMode</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sigScaleChanged</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">setScaledMode</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">RuntimeError</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="n">tl</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">sceneBoundingRect</span><span class="p">()</span><span class="o">.</span><span class="n">topLeft</span><span class="p">()</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">*</span> <span class="n">pxSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">*</span> <span class="n">pxSize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="nb">range</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QRectF</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">tl</span><span class="o">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        <span class="n">GraphicsView</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigScaleChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">setScaledMode</span><span class="p">)</span>
+        
+        
+        
+    <span class="k">def</span> <span class="nf">lockXRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">v1</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lockedViewports</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lockedViewports</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">setXRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+        <span class="n">r1</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QRectF</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
+        <span class="n">r1</span><span class="o">.</span><span class="n">setLeft</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">left</span><span class="p">())</span>
+        <span class="n">r1</span><span class="o">.</span><span class="n">setRight</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">right</span><span class="p">())</span>
+        <span class="n">GraphicsView</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">[</span><span class="n">padding</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">propagate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">setYRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+        <span class="n">r1</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QRectF</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
+        <span class="n">r1</span><span class="o">.</span><span class="n">setTop</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">top</span><span class="p">())</span>
+        <span class="n">r1</span><span class="o">.</span><span class="n">setBottom</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">bottom</span><span class="p">())</span>
+        <span class="n">GraphicsView</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">padding</span><span class="p">],</span> <span class="n">propagate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mouseEnabled</span><span class="p">:</span>
+            <span class="n">ev</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
+            <span class="k">return</span>
+        
+        <span class="n">delta</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">QT_LIB</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;PyQt4&#39;</span><span class="p">,</span> <span class="s1">&#39;PySide&#39;</span><span class="p">]:</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">delta</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">angleDelta</span><span class="p">()</span><span class="o">.</span><span class="n">x</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">delta</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">angleDelta</span><span class="p">()</span><span class="o">.</span><span class="n">y</span><span class="p">()</span>
+                
+        <span class="n">sc</span> <span class="o">=</span> <span class="mf">1.001</span> <span class="o">**</span> <span class="n">delta</span>
+        <span class="c1">#self.scale *= sc</span>
+        <span class="c1">#self.updateMatrix()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">sc</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">setAspectLocked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aspectLocked</span> <span class="o">=</span> <span class="n">s</span>
+        
+    <span class="k">def</span> <span class="nf">leaveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">leaveEvent</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span>  <span class="c1">## inform scene when mouse leaves</span>
+        
+    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">)</span>
+        
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mouseEnabled</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastMousePos</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">pos</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mousePressPos</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clickAccepted</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">isAccepted</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">clickAccepted</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">clearSelection</span><span class="p">()</span>
+        <span class="k">return</span>   <span class="c1">## Everything below disabled for now..</span>
+        
+    <span class="k">def</span> <span class="nf">mouseReleaseEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">mouseReleaseEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mouseEnabled</span><span class="p">:</span>
+            <span class="k">return</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigMouseReleased</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastButtonReleased</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">button</span><span class="p">()</span>
+        <span class="k">return</span>   <span class="c1">## Everything below disabled for now..</span>
+        
+    <span class="k">def</span> <span class="nf">mouseMoveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastMousePos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lastMousePos</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">pos</span><span class="p">())</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span> <span class="o">-</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QPoint</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">lastMousePos</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastMousePos</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">pos</span><span class="p">())</span>
+
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">mouseMoveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mouseEnabled</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigSceneMouseMoved</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapToScene</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">pos</span><span class="p">()))</span>
+            
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clickAccepted</span><span class="p">:</span>  <span class="c1">## Ignore event if an item in the scene has already claimed it.</span>
+            <span class="k">return</span>
+        
+        <span class="k">if</span> <span class="n">ev</span><span class="o">.</span><span class="n">buttons</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">RightButton</span><span class="p">:</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="o">-</span><span class="n">delta</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="mf">1.01</span> <span class="o">**</span> <span class="n">delta</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">center</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mapToScene</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mousePressPos</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sigDeviceRangeChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">ev</span><span class="o">.</span><span class="n">buttons</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">MidButton</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">LeftButton</span><span class="p">]:</span>  <span class="c1">## Allow panning by left or mid button.</span>
+            <span class="n">px</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pixelSize</span><span class="p">()</span>
+            <span class="n">tr</span> <span class="o">=</span> <span class="o">-</span><span class="n">delta</span> <span class="o">*</span> <span class="n">px</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tr</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sigDeviceRangeChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">pixelSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return vector with the length and width of one view pixel in scene coordinates&quot;&quot;&quot;</span>
+        <span class="n">p0</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">tr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">()</span><span class="o">.</span><span class="n">inverted</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">p01</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">p0</span><span class="p">)</span>
+        <span class="n">p11</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="n">p11</span> <span class="o">-</span> <span class="n">p01</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">dragEnterEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="n">ev</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>  <span class="c1">## not sure why, but for some reason this class likes to consume drag events</span>
+
+    <span class="k">def</span> <span class="nf">_del</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parentWidget</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Visible window deleted. To prevent this, store a reference to the window object.&quot;</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                    <span class="c1"># warnings module not available during interpreter shutdown</span>
+                    <span class="k">pass</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+    <span class="n">GraphicsView</span><span class="o">.</span><span class="fm">__del__</span> <span class="o">=</span> <span class="n">GraphicsView</span><span class="o">.</span><span class="n">_del</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

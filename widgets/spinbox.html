@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMSpinbox &mdash; PyDM v1.9.0+36.g389d63b5 documentation</title>
+  <title>PyDMSpinbox &mdash; PyDM v1.9.0+38.g27b957bc documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v1.9.0+36.g389d63b5
+                v1.9.0+38.g27b957bc
               </div>
             
           
@@ -204,7 +204,8 @@
 <dl class="py class">
 <dt id="pydm.widgets.spinbox.PyDMSpinbox">
 <em class="property">class </em><code class="sig-prename descclassname">pydm.widgets.spinbox.</code><code class="sig-name descname">PyDMSpinbox</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_channel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox" title="Permalink to this definition">¶</a></dt>
-<dd><p>A QDoubleSpinBox with support for Channels and more from PyDM.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDoubleSpinBox</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.base.TextFormatter</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.base.PyDMWritableWidget</span></code></p>
+<p>A QDoubleSpinBox with support for Channels and more from PyDM.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -213,6 +214,393 @@
 </ul>
 </dd>
 </dl>
+<dl class="py class">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.ButtonSymbols">
+<em class="property">class </em><code class="sig-name descname">ButtonSymbols</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.ButtonSymbols" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.CorrectionMode">
+<em class="property">class </em><code class="sig-name descname">CorrectionMode</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.CorrectionMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.PaintDeviceMetric">
+<em class="property">class </em><code class="sig-name descname">PaintDeviceMetric</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.PaintDeviceMetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.RenderFlag">
+<em class="property">class </em><code class="sig-name descname">RenderFlag</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.RenderFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.RenderFlags">
+<em class="property">class </em><code class="sig-name descname">RenderFlags</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.RenderFlags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<p>QWidget.RenderFlags(Union[QWidget.RenderFlags, QWidget.RenderFlag])
+QWidget.RenderFlags(QWidget.RenderFlags)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.StepEnabled">
+<em class="property">class </em><code class="sig-name descname">StepEnabled</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.StepEnabled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<p>QAbstractSpinBox.StepEnabled(Union[QAbstractSpinBox.StepEnabled, QAbstractSpinBox.StepEnabledFlag])
+QAbstractSpinBox.StepEnabled(QAbstractSpinBox.StepEnabled)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.StepEnabledFlag">
+<em class="property">class </em><code class="sig-name descname">StepEnabledFlag</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.StepEnabledFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.StepType">
+<em class="property">class </em><code class="sig-name descname">StepType</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.StepType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.acceptDrops">
+<code class="sig-name descname">acceptDrops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.acceptDrops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.accessibleDescription">
+<code class="sig-name descname">accessibleDescription</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.accessibleDescription" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.accessibleName">
+<code class="sig-name descname">accessibleName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.accessibleName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.actionEvent">
+<code class="sig-name descname">actionEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QActionEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.actionEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.actions">
+<code class="sig-name descname">actions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QAction<span class="p">]</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.actions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.activateWindow">
+<code class="sig-name descname">activateWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.activateWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.addAction">
+<code class="sig-name descname">addAction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QAction</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.addAction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.addActions">
+<code class="sig-name descname">addActions</code><span class="sig-paren">(</span><em class="sig-param">self, Iterable[QAction]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.addActions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.adjustSize">
+<code class="sig-name descname">adjustSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.adjustSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.alarmSensitiveBorder">
+<code class="sig-name descname">alarmSensitiveBorder</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.alarmSensitiveBorder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the border color changes when alarm severity changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True means that the border color will be changed in case of
+alarm severity changes.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.alarmSensitiveContent">
+<code class="sig-name descname">alarmSensitiveContent</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.alarmSensitiveContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether or not the content color changes when alarm severity
+changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True means that the content color will be changed in case of
+alarm severity changes.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.alarmSeverityChanged">
+<code class="sig-name descname">alarmSeverityChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_alarm_severity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.alarmSeverityChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the Alarm Severity of the Channel
+This slot sends the severity value to the
+<code class="docutils literal notranslate"><span class="pre">`alarm_severity_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_alarm_severity</strong> (<em>int</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.alarm_severity_changed">
+<code class="sig-name descname">alarm_severity_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_alarm_severity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.alarm_severity_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel alarm severity is changed.
+This callback is not processed if the widget has no channel
+associated with it.
+This callback handles the composition of the stylesheet to be
+applied and the call
+to update to redraw the widget with the needed changes for the
+new state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_alarm_severity</strong> (<em>int</em>) – The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
+and 3 = INVALID</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.alignment">
+<code class="sig-name descname">alignment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.Alignment<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.alignment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.autoFillBackground">
+<code class="sig-name descname">autoFillBackground</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.autoFillBackground" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.backgroundRole">
+<code class="sig-name descname">backgroundRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette.ColorRole<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.backgroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.baseSize">
+<code class="sig-name descname">baseSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.baseSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.blockSignals">
+<code class="sig-name descname">blockSignals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.blockSignals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.buttonSymbols">
+<code class="sig-name descname">buttonSymbols</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QAbstractSpinBox.ButtonSymbols<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.buttonSymbols" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.changeEvent">
+<code class="sig-name descname">changeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.changeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.channel">
+<code class="sig-name descname">channel</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The channel address in use for this widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>channel</strong> – Channel address</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.channelValueChanged">
+<code class="sig-name descname">channelValueChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.channelValueChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the Value of the Channel
+This slot sends the value to the <code class="docutils literal notranslate"><span class="pre">`value_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_val</strong> (<em>int</em><em>, </em><em>float</em><em>, </em><em>str</em><em>, </em><em>bool</em><em> or </em><em>np.ndarray</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.channels">
+<code class="sig-name descname">channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the channels being used for this Widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>channels</strong> – List of PyDMChannel objects</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.channels_for_tools">
+<code class="sig-name descname">channels_for_tools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.channels_for_tools" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of channels useful for external tools.
+The default implementation here is just to return
+self.channels(), but some widgets will want to re-implement
+this, especially if they have multiple channels, but only
+one real ‘signal’ channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.check_enable_state">
+<code class="sig-name descname">check_enable_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.check_enable_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether or not the widget should be disable.
+This method also disables the widget and add a Tool Tip
+with the reason why it is disabled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.childAt">
+<code class="sig-name descname">childAt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.childAt" title="Permalink to this definition">¶</a></dt>
+<dd><p>childAt(self, int, int) -&gt; QWidget</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.childEvent">
+<code class="sig-name descname">childEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QChildEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.childEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.children">
+<code class="sig-name descname">children</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QObject<span class="p">]</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.children" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.childrenRect">
+<code class="sig-name descname">childrenRect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.childrenRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.childrenRegion">
+<code class="sig-name descname">childrenRegion</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.childrenRegion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.cleanText">
+<code class="sig-name descname">cleanText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.cleanText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.clear">
+<code class="sig-name descname">clear</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.clearFocus">
+<code class="sig-name descname">clearFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.clearFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.clearMask">
+<code class="sig-name descname">clearMask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.clearMask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.closeEvent">
+<code class="sig-name descname">closeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QCloseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.closeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.colorCount">
+<code class="sig-name descname">colorCount</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.colorCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.connectNotify">
+<code class="sig-name descname">connectNotify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.connectNotify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.connectionStateChanged">
+<code class="sig-name descname">connectionStateChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">connected</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.connectionStateChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the Connection State of the Channel
+This slot sends the connection state to the <code class="docutils literal notranslate"><span class="pre">`connection_changed`</span></code>
+callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>connected</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.connection_changed">
+<code class="sig-name descname">connection_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">connected</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.connection_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the connection state of the Channel is changed.
+This callback acts on the connection state to enable/disable the widget
+and also trigger the change on alarm severity to ALARM_DISCONNECTED.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>connected</strong> (<em>int</em>) – When this value is 0 the channel is disconnected, 1 otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.contentsMargins">
+<code class="sig-name descname">contentsMargins</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QMargins<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.contentsMargins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.contentsRect">
+<code class="sig-name descname">contentsRect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.contentsRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.contextMenuEvent">
+<code class="sig-name descname">contextMenuEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QContextMenuEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.contextMenuEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.contextMenuPolicy">
+<code class="sig-name descname">contextMenuPolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.ContextMenuPolicy<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.contextMenuPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.correctionMode">
+<code class="sig-name descname">correctionMode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QAbstractSpinBox.CorrectionMode<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.correctionMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">window</span><span class="p">:</span> <span class="n">sip.voidptr</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">initializeWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">destroyOldWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.createWindowContainer">
+<code class="sig-name descname">createWindowContainer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">QWindow</span></em>, <em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n">QWidget</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">flags</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.WindowFlags<span class="p">, </span>Qt.WindowType<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.createWindowContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt id="pydm.widgets.spinbox.PyDMSpinbox.ctrl_limit_changed">
 <code class="sig-name descname">ctrl_limit_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">which</span></em>, <em class="sig-param"><span class="n">new_limit</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.ctrl_limit_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.ctrl_limit_changed" title="Permalink to this definition">¶</a></dt>
@@ -227,6 +615,570 @@ values.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.cursor">
+<code class="sig-name descname">cursor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QCursor<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.cursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.customContextMenuRequested">
+<code class="sig-name descname">customContextMenuRequested</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.customContextMenuRequested" title="Permalink to this definition">¶</a></dt>
+<dd><p>customContextMenuRequested(self, QPoint) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.customEvent">
+<code class="sig-name descname">customEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.customEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.decimals">
+<code class="sig-name descname">decimals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.decimals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.deleteLater">
+<code class="sig-name descname">deleteLater</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.deleteLater" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.depth">
+<code class="sig-name descname">depth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.depth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.destroy">
+<code class="sig-name descname">destroy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">destroyWindow</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">destroySubWindows</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.destroy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.destroyed">
+<code class="sig-name descname">destroyed</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.destroyed" title="Permalink to this definition">¶</a></dt>
+<dd><p>QObject = None) [signal]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>destroyed(self, object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.devType">
+<code class="sig-name descname">devType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.devType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.devicePixelRatio">
+<code class="sig-name descname">devicePixelRatio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.devicePixelRatio" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.devicePixelRatioF">
+<code class="sig-name descname">devicePixelRatioF</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.devicePixelRatioF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.devicePixelRatioFScale">
+<code class="sig-name descname">devicePixelRatioFScale</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.devicePixelRatioFScale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.disconnect">
+<code class="sig-name descname">disconnect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.disconnectNotify">
+<code class="sig-name descname">disconnectNotify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.disconnectNotify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.dragEnterEvent">
+<code class="sig-name descname">dragEnterEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragEnterEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.dragEnterEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.dragLeaveEvent">
+<code class="sig-name descname">dragLeaveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragLeaveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.dragLeaveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.dragMoveEvent">
+<code class="sig-name descname">dragMoveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragMoveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.dragMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.dropEvent">
+<code class="sig-name descname">dropEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDropEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.dropEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.dumpObjectInfo">
+<code class="sig-name descname">dumpObjectInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.dumpObjectInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.dumpObjectTree">
+<code class="sig-name descname">dumpObjectTree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.dumpObjectTree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.dynamicPropertyNames">
+<code class="sig-name descname">dynamicPropertyNames</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QByteArray<span class="p">]</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.dynamicPropertyNames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.editingFinished">
+<code class="sig-name descname">editingFinished</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.editingFinished" title="Permalink to this definition">¶</a></dt>
+<dd><p>editingFinished(self) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.effectiveWinId">
+<code class="sig-name descname">effectiveWinId</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; sip.voidptr<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.effectiveWinId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.ensurePolished">
+<code class="sig-name descname">ensurePolished</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.ensurePolished" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.enterEvent">
+<code class="sig-name descname">enterEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.enterEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.enumStringsChanged">
+<code class="sig-name descname">enumStringsChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_enum_strings</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.enumStringsChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the string values of the Channel
+This slot sends the new strings to the
+<code class="docutils literal notranslate"><span class="pre">`enum_strings_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_enum_strings</strong> (<em>tuple</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.enum_strings_changed">
+<code class="sig-name descname">enum_strings_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_enum_strings</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.enum_strings_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel has new enum values.
+This callback also triggers a value_changed call so the
+new enum values to be broadcasted</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_enum_strings</strong> (<em>tuple</em>) – The new list of values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.event">
+<code class="sig-name descname">event</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.event" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.eventFilter">
+<code class="sig-name descname">eventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.eventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.find">
+<code class="sig-name descname">find</code><span class="sig-paren">(</span><em class="sig-param">sip.voidptr</em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.find" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.findChild">
+<code class="sig-name descname">findChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">options</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.FindChildOptions<span class="p">, </span>Qt.FindChildOption<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Qt.FindChildrenRecursively</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.findChild" title="Permalink to this definition">¶</a></dt>
+<dd><p>findChild(self, Tuple, name: str = ‘’, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; QObject</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.findChildren">
+<code class="sig-name descname">findChildren</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">options</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Qt.FindChildOptions<span class="p">, </span>Qt.FindChildOption<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Qt.FindChildrenRecursively</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>QObject<span class="p">]</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.findChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>findChildren(self, Tuple, name: str = ‘’, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, type, QRegExp, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, Tuple, QRegExp, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, type, QRegularExpression, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]
+findChildren(self, Tuple, QRegularExpression, options: Union[Qt.FindChildOptions, Qt.FindChildOption] = Qt.FindChildrenRecursively) -&gt; List[QObject]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.fixup">
+<code class="sig-name descname">fixup</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.fixup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.focusInEvent">
+<code class="sig-name descname">focusInEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFocusEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.focusInEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.focusNextChild">
+<code class="sig-name descname">focusNextChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.focusNextChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.focusNextPrevChild">
+<code class="sig-name descname">focusNextPrevChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.focusNextPrevChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.focusOutEvent">
+<code class="sig-name descname">focusOutEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFocusEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.focusOutEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.focusPolicy">
+<code class="sig-name descname">focusPolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.FocusPolicy<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.focusPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.focusPreviousChild">
+<code class="sig-name descname">focusPreviousChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.focusPreviousChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.focusProxy">
+<code class="sig-name descname">focusProxy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.focusProxy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.focusWidget">
+<code class="sig-name descname">focusWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.focusWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.font">
+<code class="sig-name descname">font</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFont<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.font" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.fontInfo">
+<code class="sig-name descname">fontInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFontInfo<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.fontInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.fontMetrics">
+<code class="sig-name descname">fontMetrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QFontMetrics<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.fontMetrics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.force_redraw">
+<code class="sig-name descname">force_redraw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.force_redraw" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot to force a redraw on the widget.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.foregroundRole">
+<code class="sig-name descname">foregroundRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette.ColorRole<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.foregroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.frameGeometry">
+<code class="sig-name descname">frameGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.frameGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.frameSize">
+<code class="sig-name descname">frameSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.frameSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.generate_context_menu">
+<code class="sig-name descname">generate_context_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.generate_context_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the custom context menu, and populates it with any external
+tools that have been loaded.  PyDMWidget subclasses should override
+this method (after calling superclass implementation) to add the menu.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QMenu</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.geometry">
+<code class="sig-name descname">geometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.geometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.getContentsMargins">
+<code class="sig-name descname">getContentsMargins</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.getContentsMargins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.get_ctrl_limits">
+<code class="sig-name descname">get_ctrl_limits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.get_ctrl_limits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple with the control limits for the channel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>(lower, upper)</strong> – Lower and Upper control limits</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.grab">
+<code class="sig-name descname">grab</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">rectangle</span><span class="p">:</span> <span class="n">QRect</span> <span class="o">=</span> <span class="default_value">QRect(QPoint(0, 0), QSize(- 1, - 1))</span></em><span class="sig-paren">)</span> &#x2192; QPixmap<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.grab" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.grabGesture">
+<code class="sig-name descname">grabGesture</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.GestureType</em>, <em class="sig-param">flags: Union[Qt.GestureFlags</em>, <em class="sig-param">Qt.GestureFlag] = Qt.GestureFlags()</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.grabGesture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.grabKeyboard">
+<code class="sig-name descname">grabKeyboard</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.grabKeyboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.grabMouse">
+<code class="sig-name descname">grabMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.grabMouse" title="Permalink to this definition">¶</a></dt>
+<dd><p>grabMouse(self, Union[QCursor, Qt.CursorShape])</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.grabShortcut">
+<code class="sig-name descname">grabShortcut</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QKeySequence, QKeySequence.StandardKey, str, int], context: Qt.ShortcutContext = Qt.WindowShortcut</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.grabShortcut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.graphicsEffect">
+<code class="sig-name descname">graphicsEffect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QGraphicsEffect<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.graphicsEffect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.graphicsProxyWidget">
+<code class="sig-name descname">graphicsProxyWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QGraphicsProxyWidget<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.graphicsProxyWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.hasAcceptableInput">
+<code class="sig-name descname">hasAcceptableInput</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.hasAcceptableInput" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.hasFocus">
+<code class="sig-name descname">hasFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.hasFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.hasFrame">
+<code class="sig-name descname">hasFrame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.hasFrame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.hasHeightForWidth">
+<code class="sig-name descname">hasHeightForWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.hasHeightForWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.hasMouseTracking">
+<code class="sig-name descname">hasMouseTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.hasMouseTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.hasTabletTracking">
+<code class="sig-name descname">hasTabletTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.hasTabletTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.height">
+<code class="sig-name descname">height</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.heightForWidth">
+<code class="sig-name descname">heightForWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.heightForWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.heightMM">
+<code class="sig-name descname">heightMM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.heightMM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.hide">
+<code class="sig-name descname">hide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.hide" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.hideEvent">
+<code class="sig-name descname">hideEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QHideEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.hideEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.inherits">
+<code class="sig-name descname">inherits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.inherits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.initPainter">
+<code class="sig-name descname">initPainter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPainter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.initPainter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.initStyleOption">
+<code class="sig-name descname">initStyleOption</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QStyleOptionSpinBox</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.initStyleOption" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.init_for_designer">
+<code class="sig-name descname">init_for_designer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.init_for_designer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method called after the constructor to tweak configurations for
+when using the widget with the Qt Designer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.inputMethodEvent">
+<code class="sig-name descname">inputMethodEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QInputMethodEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.inputMethodEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.inputMethodHints">
+<code class="sig-name descname">inputMethodHints</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.InputMethodHints<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.inputMethodHints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.inputMethodQuery">
+<code class="sig-name descname">inputMethodQuery</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.InputMethodQuery</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.inputMethodQuery" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSpinbox.insertAction(self, QAction, QAction)</code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.insertActions">
+<code class="sig-name descname">insertActions</code><span class="sig-paren">(</span><em class="sig-param">self, QAction, Iterable[QAction]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.insertActions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.installEventFilter">
+<code class="sig-name descname">installEventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.installEventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.interpretText">
+<code class="sig-name descname">interpretText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.interpretText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isAccelerated">
+<code class="sig-name descname">isAccelerated</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isAccelerated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isActiveWindow">
+<code class="sig-name descname">isActiveWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isActiveWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isAncestorOf">
+<code class="sig-name descname">isAncestorOf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isAncestorOf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isEnabled">
+<code class="sig-name descname">isEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isEnabledTo">
+<code class="sig-name descname">isEnabledTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isEnabledTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isFullScreen">
+<code class="sig-name descname">isFullScreen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isFullScreen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isGroupSeparatorShown">
+<code class="sig-name descname">isGroupSeparatorShown</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isGroupSeparatorShown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isHidden">
+<code class="sig-name descname">isHidden</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isHidden" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isLeftToRight">
+<code class="sig-name descname">isLeftToRight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isLeftToRight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isMaximized">
+<code class="sig-name descname">isMaximized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isMaximized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isMinimized">
+<code class="sig-name descname">isMinimized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isMinimized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isModal">
+<code class="sig-name descname">isModal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isModal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isReadOnly">
+<code class="sig-name descname">isReadOnly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isReadOnly" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isRightToLeft">
+<code class="sig-name descname">isRightToLeft</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isRightToLeft" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isSignalConnected">
+<code class="sig-name descname">isSignalConnected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMetaMethod</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isSignalConnected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isVisible">
+<code class="sig-name descname">isVisible</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isVisible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isVisibleTo">
+<code class="sig-name descname">isVisibleTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isVisibleTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isWidgetType">
+<code class="sig-name descname">isWidgetType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isWidgetType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isWindow">
+<code class="sig-name descname">isWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isWindowModified">
+<code class="sig-name descname">isWindowModified</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isWindowModified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.isWindowType">
+<code class="sig-name descname">isWindowType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.isWindowType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="pydm.widgets.spinbox.PyDMSpinbox.keyPressEvent">
@@ -251,6 +1203,359 @@ to the value;</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.keyReleaseEvent">
+<code class="sig-name descname">keyReleaseEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QKeyEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.keyReleaseEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.keyboardGrabber">
+<code class="sig-name descname">keyboardGrabber</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.keyboardGrabber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.keyboardTracking">
+<code class="sig-name descname">keyboardTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.keyboardTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.killTimer">
+<code class="sig-name descname">killTimer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.killTimer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.layout">
+<code class="sig-name descname">layout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QLayout<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.layoutDirection">
+<code class="sig-name descname">layoutDirection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.LayoutDirection<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.layoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.leaveEvent">
+<code class="sig-name descname">leaveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.leaveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.lineEdit">
+<code class="sig-name descname">lineEdit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QLineEdit<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.lineEdit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.locale">
+<code class="sig-name descname">locale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QLocale<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.locale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.logicalDpiX">
+<code class="sig-name descname">logicalDpiX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.logicalDpiX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.logicalDpiY">
+<code class="sig-name descname">logicalDpiY</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.logicalDpiY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.lower">
+<code class="sig-name descname">lower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.lower" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.lowerCtrlLimitChanged">
+<code class="sig-name descname">lowerCtrlLimitChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_limit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.lowerCtrlLimitChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the lower control limit value of the Channel
+This slot sends the new limit value to the
+<code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.mapFrom">
+<code class="sig-name descname">mapFrom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.mapFrom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.mapFromGlobal">
+<code class="sig-name descname">mapFromGlobal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.mapFromGlobal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.mapFromParent">
+<code class="sig-name descname">mapFromParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.mapFromParent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.mapTo">
+<code class="sig-name descname">mapTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.mapTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.mapToGlobal">
+<code class="sig-name descname">mapToGlobal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.mapToGlobal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.mapToParent">
+<code class="sig-name descname">mapToParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.mapToParent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.mask">
+<code class="sig-name descname">mask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.mask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.maximum">
+<code class="sig-name descname">maximum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.maximum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.maximumHeight">
+<code class="sig-name descname">maximumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.maximumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.maximumSize">
+<code class="sig-name descname">maximumSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.maximumSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.maximumWidth">
+<code class="sig-name descname">maximumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.maximumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.metaObject">
+<code class="sig-name descname">metaObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QMetaObject<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.metaObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.metric">
+<code class="sig-name descname">metric</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPaintDevice.PaintDeviceMetric</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.metric" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.minimum">
+<code class="sig-name descname">minimum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.minimum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.minimumHeight">
+<code class="sig-name descname">minimumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.minimumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.minimumSize">
+<code class="sig-name descname">minimumSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.minimumSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.minimumSizeHint">
+<code class="sig-name descname">minimumSizeHint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.minimumSizeHint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.minimumWidth">
+<code class="sig-name descname">minimumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.minimumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.mouseDoubleClickEvent">
+<code class="sig-name descname">mouseDoubleClickEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.mouseDoubleClickEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.mouseGrabber">
+<code class="sig-name descname">mouseGrabber</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.mouseGrabber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.mouseMoveEvent">
+<code class="sig-name descname">mouseMoveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.mouseMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.mousePressEvent">
+<code class="sig-name descname">mousePressEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.mouseReleaseEvent">
+<code class="sig-name descname">mouseReleaseEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMouseEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.mouseReleaseEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.move">
+<code class="sig-name descname">move</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPoint</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>move(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.moveEvent">
+<code class="sig-name descname">moveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QMoveEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.moveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.moveToThread">
+<code class="sig-name descname">moveToThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QThread</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.moveToThread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.nativeEvent">
+<code class="sig-name descname">nativeEvent</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QByteArray, bytes, bytearray], sip.voidptr</em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>bool<span class="p">, </span>int<span class="p">]</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.nativeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.nativeParentWidget">
+<code class="sig-name descname">nativeParentWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.nativeParentWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.nextInFocusChain">
+<code class="sig-name descname">nextInFocusChain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.nextInFocusChain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.normalGeometry">
+<code class="sig-name descname">normalGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.normalGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.objectName">
+<code class="sig-name descname">objectName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.objectName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.objectNameChanged">
+<code class="sig-name descname">objectNameChanged</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.objectNameChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>objectNameChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.opacity">
+<code class="sig-name descname">opacity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.opacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Float value between 0 and 1 representing the opacity of the widget
+where 0 means transparent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>opacity</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.open_context_menu">
+<code class="sig-name descname">open_context_menu</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ev</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.open_context_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for when the Default Context Menu is requested.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ev</strong> (<em>QEvent</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.overrideWindowFlags">
+<code class="sig-name descname">overrideWindowFlags</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowFlags, Qt.WindowType]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.overrideWindowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.overrideWindowState">
+<code class="sig-name descname">overrideWindowState</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowStates, Qt.WindowState]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.overrideWindowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.paintEngine">
+<code class="sig-name descname">paintEngine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPaintEngine<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.paintEngine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.paintEvent">
+<code class="sig-name descname">paintEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPaintEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.paintEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.paintingActive">
+<code class="sig-name descname">paintingActive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.paintingActive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.palette">
+<code class="sig-name descname">palette</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPalette<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.palette" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.parent">
+<code class="sig-name descname">parent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.parentWidget">
+<code class="sig-name descname">parentWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.parentWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.physicalDpiX">
+<code class="sig-name descname">physicalDpiX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.physicalDpiX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.physicalDpiY">
+<code class="sig-name descname">physicalDpiY</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.physicalDpiY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.pos">
+<code class="sig-name descname">pos</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPoint<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.pos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.precisionChanged">
+<code class="sig-name descname">precisionChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_prec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.precisionChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the precision of the Channel
+This slot sends the new precision value to the
+<code class="docutils literal notranslate"><span class="pre">`precision_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_prec</strong> (<em>int</em><em> or </em><em>float</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.precisionFromPV">
+<code class="sig-name descname">precisionFromPV</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.precisionFromPV" title="Permalink to this definition">¶</a></dt>
+<dd><p>A choice whether or not to use the precision given by channel.</p>
+<p>If set to False, the value received will be displayed as is, with
+no modification to the number of displayed significant figures.
+However, if set to True, and the channel specifies a display
+precision, a float or integer channel value will be set to display
+the correct precision. When using an EPICS Channel, the precision
+value corresponds to the PV’s PREC field.</p>
+<p>It is also important to note, that if the value of the channel
+is a String, the choice of True or False will have no affect on
+the display.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>precison_from_pv</strong> – True means that the widget will use the precision information
+from the Channel if available.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.spinbox.PyDMSpinbox.precision_changed">
 <code class="sig-name descname">precision_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_precision</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.precision_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.precision_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel has new precision value.
@@ -264,11 +1569,676 @@ new precision value is considered.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.prefix">
+<code class="sig-name descname">prefix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.prefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.previousInFocusChain">
+<code class="sig-name descname">previousInFocusChain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.previousInFocusChain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.property">
+<code class="sig-name descname">property</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.property" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.pyqtConfigure">
+<code class="sig-name descname">pyqtConfigure</code><span class="sig-paren">(</span><em class="sig-param">...</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.pyqtConfigure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Each keyword argument is either the name of a Qt property or a Qt signal.
+For properties the property is set to the given value which should be of an
+appropriate type.
+For signals the signal is connected to the given value which should be a
+callable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.raise_">
+<code class="sig-name descname">raise_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.raise_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.receivers">
+<code class="sig-name descname">receivers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">PYQT_SIGNAL</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.receivers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.rect">
+<code class="sig-name descname">rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRect<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.rect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.releaseKeyboard">
+<code class="sig-name descname">releaseKeyboard</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.releaseKeyboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.releaseMouse">
+<code class="sig-name descname">releaseMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.releaseMouse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.releaseShortcut">
+<code class="sig-name descname">releaseShortcut</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.releaseShortcut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.removeAction">
+<code class="sig-name descname">removeAction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QAction</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.removeAction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.removeEventFilter">
+<code class="sig-name descname">removeEventFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QObject</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.removeEventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.render">
+<code class="sig-name descname">render</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPaintDevice</span></em>, <em class="sig-param"><span class="n">targetOffset</span><span class="p">:</span> <span class="n">QPoint</span> <span class="o">=</span> <span class="default_value">QPoint()</span></em>, <em class="sig-param"><span class="n">sourceRegion</span><span class="p">:</span> <span class="n">QRegion</span> <span class="o">=</span> <span class="default_value">QRegion()</span></em>, <em class="sig-param"><span class="n">flags</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>QWidget.RenderFlags<span class="p">, </span>QWidget.RenderFlag<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">QWidget.RenderFlags(QWidget.DrawWindowBackground | QWidget.DrawChildren)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>render(self, QPainter, targetOffset: QPoint = QPoint(), sourceRegion: QRegion = QRegion(), flags: Union[QWidget.RenderFlags, QWidget.RenderFlag] = QWidget.RenderFlags(QWidget.DrawWindowBackground|QWidget.DrawChildren))</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.repaint">
+<code class="sig-name descname">repaint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.repaint" title="Permalink to this definition">¶</a></dt>
+<dd><p>repaint(self, int, int, int, int)
+repaint(self, QRect)
+repaint(self, QRegion)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.resize">
+<code class="sig-name descname">resize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSize</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>resize(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.resizeEvent">
+<code class="sig-name descname">resizeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QResizeEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.resizeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.restoreGeometry">
+<code class="sig-name descname">restoreGeometry</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QByteArray, bytes, bytearray]</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.restoreGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.rule_evaluated">
+<code class="sig-name descname">rule_evaluated</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">payload</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.rule_evaluated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback called when a rule has a new value for a property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
+new value.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.rules">
+<code class="sig-name descname">rules</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.rules" title="Permalink to this definition">¶</a></dt>
+<dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.saveGeometry">
+<code class="sig-name descname">saveGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QByteArray<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.saveGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSpinbox.scroll(self, int, int)</code></dt>
+<dd><p>scroll(self, int, int, QRect)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.selectAll">
+<code class="sig-name descname">selectAll</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.selectAll" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.spinbox.PyDMSpinbox.send_value">
 <code class="sig-name descname">send_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.send_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.send_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method invoked to send the current value on the QDoubleSpinBox to
 the channel using the <cite>send_value_signal</cite>.</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.sender">
+<code class="sig-name descname">sender</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QObject<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.sender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.senderSignalIndex">
+<code class="sig-name descname">senderSignalIndex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.senderSignalIndex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setAccelerated">
+<code class="sig-name descname">setAccelerated</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setAccelerated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setAcceptDrops">
+<code class="sig-name descname">setAcceptDrops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setAcceptDrops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setAccessibleDescription">
+<code class="sig-name descname">setAccessibleDescription</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setAccessibleDescription" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setAccessibleName">
+<code class="sig-name descname">setAccessibleName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setAccessibleName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setAlignment">
+<code class="sig-name descname">setAlignment</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.Alignment, Qt.AlignmentFlag]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setAlignment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setAttribute">
+<code class="sig-name descname">setAttribute</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WidgetAttribute</em>, <em class="sig-param">on: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setAutoFillBackground">
+<code class="sig-name descname">setAutoFillBackground</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setAutoFillBackground" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setBackgroundRole">
+<code class="sig-name descname">setBackgroundRole</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPalette.ColorRole</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setBackgroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSpinbox.setBaseSize(self, int, int)</code></dt>
+<dd><p>setBaseSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setButtonSymbols">
+<code class="sig-name descname">setButtonSymbols</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QAbstractSpinBox.ButtonSymbols</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setButtonSymbols" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSpinbox.setContentsMargins(self, int, int, int, int)</code></dt>
+<dd><p>setContentsMargins(self, QMargins)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setContextMenuPolicy">
+<code class="sig-name descname">setContextMenuPolicy</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.ContextMenuPolicy</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setContextMenuPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setCorrectionMode">
+<code class="sig-name descname">setCorrectionMode</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QAbstractSpinBox.CorrectionMode</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setCorrectionMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setCursor">
+<code class="sig-name descname">setCursor</code><span class="sig-paren">(</span><em class="sig-param">self, Union[QCursor, Qt.CursorShape]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setCursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setDecimals">
+<code class="sig-name descname">setDecimals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setDecimals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setDisabled">
+<code class="sig-name descname">setDisabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setDisabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setEnabled">
+<code class="sig-name descname">setEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setFixedHeight">
+<code class="sig-name descname">setFixedHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setFixedHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setFixedSize">
+<code class="sig-name descname">setFixedSize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSize</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setFixedSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>setFixedSize(self, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setFixedWidth">
+<code class="sig-name descname">setFixedWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setFixedWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setFocus">
+<code class="sig-name descname">setFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setFocus" title="Permalink to this definition">¶</a></dt>
+<dd><p>setFocus(self, Qt.FocusReason)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setFocusPolicy">
+<code class="sig-name descname">setFocusPolicy</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.FocusPolicy</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setFocusPolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setFocusProxy">
+<code class="sig-name descname">setFocusProxy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setFocusProxy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setFont">
+<code class="sig-name descname">setFont</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QFont</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setFont" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setForegroundRole">
+<code class="sig-name descname">setForegroundRole</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPalette.ColorRole</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setForegroundRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setFrame">
+<code class="sig-name descname">setFrame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setFrame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setGeometry">
+<code class="sig-name descname">setGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QRect</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setGeometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>setGeometry(self, int, int, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setGraphicsEffect">
+<code class="sig-name descname">setGraphicsEffect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QGraphicsEffect</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setGraphicsEffect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setGroupSeparatorShown">
+<code class="sig-name descname">setGroupSeparatorShown</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setGroupSeparatorShown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setHidden">
+<code class="sig-name descname">setHidden</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setHidden" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setInputMethodHints">
+<code class="sig-name descname">setInputMethodHints</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.InputMethodHints, Qt.InputMethodHint]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setInputMethodHints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setKeyboardTracking">
+<code class="sig-name descname">setKeyboardTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setKeyboardTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setLayout">
+<code class="sig-name descname">setLayout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QLayout</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setLayout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setLayoutDirection">
+<code class="sig-name descname">setLayoutDirection</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.LayoutDirection</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setLayoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setLineEdit">
+<code class="sig-name descname">setLineEdit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QLineEdit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setLineEdit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setLocale">
+<code class="sig-name descname">setLocale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QLocale</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setLocale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setMask">
+<code class="sig-name descname">setMask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QBitmap</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setMask" title="Permalink to this definition">¶</a></dt>
+<dd><p>setMask(self, QRegion)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setMaximum">
+<code class="sig-name descname">setMaximum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setMaximum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setMaximumHeight">
+<code class="sig-name descname">setMaximumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setMaximumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSpinbox.setMaximumSize(self, int, int)</code></dt>
+<dd><p>setMaximumSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setMaximumWidth">
+<code class="sig-name descname">setMaximumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setMaximumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setMinimum">
+<code class="sig-name descname">setMinimum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setMinimum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setMinimumHeight">
+<code class="sig-name descname">setMinimumHeight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setMinimumHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSpinbox.setMinimumSize(self, int, int)</code></dt>
+<dd><p>setMinimumSize(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setMinimumWidth">
+<code class="sig-name descname">setMinimumWidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setMinimumWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setMouseTracking">
+<code class="sig-name descname">setMouseTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setMouseTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setObjectName">
+<code class="sig-name descname">setObjectName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setObjectName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setPalette">
+<code class="sig-name descname">setPalette</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QPalette</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setPalette" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setParent">
+<code class="sig-name descname">setParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setParent" title="Permalink to this definition">¶</a></dt>
+<dd><p>setParent(self, QWidget, Union[Qt.WindowFlags, Qt.WindowType])</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setPrefix">
+<code class="sig-name descname">setPrefix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setPrefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setProperty">
+<code class="sig-name descname">setProperty</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em>, <em class="sig-param"><span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setProperty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSpinbox.setRange(self, float, float)</code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setReadOnly">
+<code class="sig-name descname">setReadOnly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setReadOnly" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setShortcutAutoRepeat">
+<code class="sig-name descname">setShortcutAutoRepeat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">enabled</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setShortcutAutoRepeat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setShortcutEnabled">
+<code class="sig-name descname">setShortcutEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">enabled</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setShortcutEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setSingleStep">
+<code class="sig-name descname">setSingleStep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setSingleStep" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSpinbox.setSizeIncrement(self, int, int)</code></dt>
+<dd><p>setSizeIncrement(self, QSize)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setSizePolicy">
+<code class="sig-name descname">setSizePolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QSizePolicy</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setSizePolicy" title="Permalink to this definition">¶</a></dt>
+<dd><p>setSizePolicy(self, QSizePolicy.Policy, QSizePolicy.Policy)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setSpecialValueText">
+<code class="sig-name descname">setSpecialValueText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setSpecialValueText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setStatusTip">
+<code class="sig-name descname">setStatusTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setStatusTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setStepType">
+<code class="sig-name descname">setStepType</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QAbstractSpinBox.StepType</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setStepType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setStyle">
+<code class="sig-name descname">setStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QStyle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setStyle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setStyleSheet">
+<code class="sig-name descname">setStyleSheet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setStyleSheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setSuffix">
+<code class="sig-name descname">setSuffix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setSuffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">PyDMSpinbox.setTabOrder(QWidget, QWidget)</code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setTabletTracking">
+<code class="sig-name descname">setTabletTracking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setTabletTracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setToolTip">
+<code class="sig-name descname">setToolTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setToolTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setToolTipDuration">
+<code class="sig-name descname">setToolTipDuration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setToolTipDuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setUpdatesEnabled">
+<code class="sig-name descname">setUpdatesEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setUpdatesEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setValue">
+<code class="sig-name descname">setValue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setVisible">
+<code class="sig-name descname">setVisible</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setVisible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setWhatsThis">
+<code class="sig-name descname">setWhatsThis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setWhatsThis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setWindowFilePath">
+<code class="sig-name descname">setWindowFilePath</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setWindowFilePath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setWindowFlag">
+<code class="sig-name descname">setWindowFlag</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WindowType</em>, <em class="sig-param">on: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setWindowFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setWindowFlags">
+<code class="sig-name descname">setWindowFlags</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowFlags, Qt.WindowType]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setWindowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setWindowIcon">
+<code class="sig-name descname">setWindowIcon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QIcon</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setWindowIcon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setWindowIconText">
+<code class="sig-name descname">setWindowIconText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setWindowIconText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setWindowModality">
+<code class="sig-name descname">setWindowModality</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WindowModality</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setWindowModality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setWindowModified">
+<code class="sig-name descname">setWindowModified</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setWindowModified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setWindowOpacity">
+<code class="sig-name descname">setWindowOpacity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setWindowOpacity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setWindowRole">
+<code class="sig-name descname">setWindowRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setWindowRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setWindowState">
+<code class="sig-name descname">setWindowState</code><span class="sig-paren">(</span><em class="sig-param">self, Union[Qt.WindowStates, Qt.WindowState]</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setWindowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setWindowTitle">
+<code class="sig-name descname">setWindowTitle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setWindowTitle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setWrapping">
+<code class="sig-name descname">setWrapping</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setWrapping" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setX">
+<code class="sig-name descname">setX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the X position of the Widget on the screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.setY">
+<code class="sig-name descname">setY</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.setY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the Y position of the Widget on the screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.set_opacity">
+<code class="sig-name descname">set_opacity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.set_opacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Float value between 0 and 1 representing the opacity of the widget
+where 0 means transparent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> (<em>float</em>) – The new value for the opacity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.sharedPainter">
+<code class="sig-name descname">sharedPainter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QPainter<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.sharedPainter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.show">
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.showEvent">
+<code class="sig-name descname">showEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QShowEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.showEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.showFullScreen">
+<code class="sig-name descname">showFullScreen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.showFullScreen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.showMaximized">
+<code class="sig-name descname">showMaximized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.showMaximized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.showMinimized">
+<code class="sig-name descname">showMinimized</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.showMinimized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.showNormal">
+<code class="sig-name descname">showNormal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.showNormal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="pydm.widgets.spinbox.PyDMSpinbox.showStepExponent">
@@ -283,6 +2253,237 @@ the channel using the <cite>send_value_signal</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.showUnits">
+<code class="sig-name descname">showUnits</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.showUnits" title="Permalink to this definition">¶</a></dt>
+<dd><p>A choice whether or not to show the units given by the channel</p>
+<p>If set to True, the units given in the channel will be displayed
+with the value. If using an EPICS channel, this will automatically
+be linked to the EGU field of the PV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>show_units</strong> – True means that the unit will be appended to the output value
+format string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.show_address_tooltip">
+<code class="sig-name descname">show_address_tooltip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.show_address_tooltip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the PyDMTooltip and copy address to clipboard</p>
+<p>This is intended to replicate the behavior of the “middle click” from
+EDM. If the QWidget does not have a valid PyDMChannel nothing will be
+displayed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.signalsBlocked">
+<code class="sig-name descname">signalsBlocked</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.signalsBlocked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.singleStep">
+<code class="sig-name descname">singleStep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.singleStep" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.size">
+<code class="sig-name descname">size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.sizeHint">
+<code class="sig-name descname">sizeHint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.sizeHint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.sizeIncrement">
+<code class="sig-name descname">sizeIncrement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSize<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.sizeIncrement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.sizePolicy">
+<code class="sig-name descname">sizePolicy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QSizePolicy<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.sizePolicy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.specialValueText">
+<code class="sig-name descname">specialValueText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.specialValueText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.stackUnder">
+<code class="sig-name descname">stackUnder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWidget</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.stackUnder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.startTimer">
+<code class="sig-name descname">startTimer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em>, <em class="sig-param"><span class="n">timerType</span><span class="p">:</span> <span class="n">Qt.TimerType</span> <span class="o">=</span> <span class="default_value">Qt.CoarseTimer</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.startTimer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.statusTip">
+<code class="sig-name descname">statusTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.statusTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.stepBy">
+<code class="sig-name descname">stepBy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.stepBy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.stepDown">
+<code class="sig-name descname">stepDown</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.stepDown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.stepEnabled">
+<code class="sig-name descname">stepEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QAbstractSpinBox.StepEnabled<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.stepEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.stepType">
+<code class="sig-name descname">stepType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QAbstractSpinBox.StepType<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.stepType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.stepUp">
+<code class="sig-name descname">stepUp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.stepUp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.style">
+<code class="sig-name descname">style</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QStyle<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.style" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.styleSheet">
+<code class="sig-name descname">styleSheet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.styleSheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.suffix">
+<code class="sig-name descname">suffix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.suffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.tabletEvent">
+<code class="sig-name descname">tabletEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QTabletEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.tabletEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.testAttribute">
+<code class="sig-name descname">testAttribute</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.WidgetAttribute</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.testAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.text">
+<code class="sig-name descname">text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.textFromValue">
+<code class="sig-name descname">textFromValue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.textFromValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.thread">
+<code class="sig-name descname">thread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QThread<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.thread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.timerEvent">
+<code class="sig-name descname">timerEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QTimerEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.timerEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.toolTip">
+<code class="sig-name descname">toolTip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.toolTip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.toolTipDuration">
+<code class="sig-name descname">toolTipDuration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.toolTipDuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.tr">
+<code class="sig-name descname">tr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em>, <em class="sig-param"><span class="n">disambiguation</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">- 1</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.tr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.underMouse">
+<code class="sig-name descname">underMouse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.underMouse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.ungrabGesture">
+<code class="sig-name descname">ungrabGesture</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">Qt.GestureType</em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.ungrabGesture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.unitChanged">
+<code class="sig-name descname">unitChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_unit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.unitChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the unit of the Channel
+This slot sends the new unit string to the
+<code class="docutils literal notranslate"><span class="pre">`unit_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_unit</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.unit_changed">
+<code class="sig-name descname">unit_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_unit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.unit_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel has new unit value.
+This callback also triggers an update_format_string call so the
+new unit value is considered if <code class="docutils literal notranslate"><span class="pre">`showUnits`</span></code> is set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_unit</strong> (<em>str</em>) – The new unit</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.unsetCursor">
+<code class="sig-name descname">unsetCursor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.unsetCursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.unsetLayoutDirection">
+<code class="sig-name descname">unsetLayoutDirection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.unsetLayoutDirection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.unsetLocale">
+<code class="sig-name descname">unsetLocale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.unsetLocale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>update(self, QRect)
+update(self, QRegion)
+update(self, int, int, int, int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.updateGeometry">
+<code class="sig-name descname">updateGeometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.updateGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.updateMicroFocus">
+<code class="sig-name descname">updateMicroFocus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.updateMicroFocus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="pydm.widgets.spinbox.PyDMSpinbox.update_format_string">
@@ -306,6 +2507,46 @@ output value.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.updatesEnabled">
+<code class="sig-name descname">updatesEnabled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.updatesEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.upperCtrlLimitChanged">
+<code class="sig-name descname">upperCtrlLimitChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_limit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.upperCtrlLimitChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the upper control limit value of the Channel
+This slot sends the new limit value to the
+<code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.validate">
+<code class="sig-name descname">validate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>QValidator.State<span class="p">, </span>str<span class="p">, </span>int<span class="p">]</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.validate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.value">
+<code class="sig-name descname">value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.valueChanged">
+<code class="sig-name descname">valueChanged</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.valueChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>valueChanged(self, float) [signal]
+valueChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.valueFromText">
+<code class="sig-name descname">valueFromText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.valueFromText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.spinbox.PyDMSpinbox.value_changed">
 <code class="sig-name descname">value_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_val</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.value_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.value_changed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback invoked when the Channel value is changed.</p>
@@ -315,6 +2556,21 @@ output value.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.visibleRegion">
+<code class="sig-name descname">visibleRegion</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QRegion<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.visibleRegion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.whatsThis">
+<code class="sig-name descname">whatsThis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.whatsThis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.wheelEvent">
+<code class="sig-name descname">wheelEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWheelEvent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.wheelEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="pydm.widgets.spinbox.PyDMSpinbox.widget_ctx_menu">
@@ -329,6 +2585,139 @@ output value.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.width">
+<code class="sig-name descname">width</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.widthMM">
+<code class="sig-name descname">widthMM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.widthMM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.winId">
+<code class="sig-name descname">winId</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; sip.voidptr<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.winId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.window">
+<code class="sig-name descname">window</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWidget<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.window" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.windowFilePath">
+<code class="sig-name descname">windowFilePath</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.windowFilePath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.windowFlags">
+<code class="sig-name descname">windowFlags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowFlags<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.windowFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.windowHandle">
+<code class="sig-name descname">windowHandle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QWindow<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.windowHandle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.windowIcon">
+<code class="sig-name descname">windowIcon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; QIcon<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.windowIcon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.windowIconChanged">
+<code class="sig-name descname">windowIconChanged</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.windowIconChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowIconChanged(self, QIcon) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.windowIconText">
+<code class="sig-name descname">windowIconText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.windowIconText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.windowIconTextChanged">
+<code class="sig-name descname">windowIconTextChanged</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.windowIconTextChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowIconTextChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.windowModality">
+<code class="sig-name descname">windowModality</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowModality<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.windowModality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.windowOpacity">
+<code class="sig-name descname">windowOpacity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.windowOpacity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.windowRole">
+<code class="sig-name descname">windowRole</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.windowRole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.windowState">
+<code class="sig-name descname">windowState</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowStates<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.windowState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.windowTitle">
+<code class="sig-name descname">windowTitle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.windowTitle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.windowTitleChanged">
+<code class="sig-name descname">windowTitleChanged</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.windowTitleChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>windowTitleChanged(self, str) [signal]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.windowType">
+<code class="sig-name descname">windowType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Qt.WindowType<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.windowType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.wrapping">
+<code class="sig-name descname">wrapping</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.wrapping" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.writeAccessChanged">
+<code class="sig-name descname">writeAccessChanged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">write_access</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.writeAccessChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyQT Slot for changes on the write access value of the Channel
+This slot sends the write access value to the <code class="docutils literal notranslate"><span class="pre">`write_access_changed`</span></code> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>write_access</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.write_access_changed">
+<code class="sig-name descname">write_access_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_write_access</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.write_access_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback invoked when the Channel has new write access value.
+This callback calls check_enable_state so it can act on the widget
+enabling or disabling it accordingly</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_write_access</strong> (<em>bool</em>) – True if write operations to the channel are allowed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.x">
+<code class="sig-name descname">x</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.x" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.y">
+<code class="sig-name descname">y</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.y" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
