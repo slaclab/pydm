@@ -333,6 +333,16 @@ class PyDMMainWindow(QMainWindow):
             if display_widget:
                 new_widget.previous_display = display_widget
             self.set_display_widget(new_widget)
+            ui_file, py_file = self.get_files_in_display()
+            editors = []
+            if ui_file:
+                editors.append("Designer")
+            if py_file:
+                editors.append("Text Editor")
+            edit_in_text = "Open in {}".format(' and '.join(editors))
+            self.ui.actionEdit_in_Designer.setText(edit_in_text)
+            if (self.designer_path and ui_file) or (py_file and not ui_file):
+                self.ui.actionEdit_in_Designer.setEnabled(True)
         return new_widget
 
     def load_tool(self, checked):
