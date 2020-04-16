@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.related_display_button &mdash; PyDM v1.9.0+40.gb6f71846 documentation</title>
+  <title>pydm.widgets.related_display_button &mdash; PyDM v1.9.0+42.gcdb2a684 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.9.0+40.gb6f71846
+                v1.9.0+42.gcdb2a684
               </div>
             
           
@@ -215,6 +215,12 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QPushButton</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMPrimitiveWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;Text&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PyDMRelatedDisplayButton</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="p">:</span>
+            <span class="n">PyDMRelatedDisplayButton</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span> <span class="o">=</span> <span class="n">PyDMRelatedDisplayButton</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">PyDMRelatedDisplayButton</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">{</span><span class="s1">&#39;Text&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setText&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">]})</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">mouseReleaseEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">push_button_release_event</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">customContextMenuRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_context_menu</span><span class="p">)</span>
