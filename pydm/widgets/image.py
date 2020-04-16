@@ -1,3 +1,4 @@
+from distutils.version import LooseVersion
 from qtpy.QtWidgets import QActionGroup
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QThread
 from pyqtgraph import ImageView, PlotItem
@@ -310,7 +311,21 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
                 return
             # Take default values
             pos = np.linspace(0.0, 1.0, num=len(self._cm_colors))
-            cmap = ColorMap(pos, self._cm_colors)
+            # This is a temporary fix with pyqtgraph 0.11
+            logger.debug(
+                'Using pyqtgraph version: {}'.format(pyqtgraph.__version__))
+            if LooseVersion(pyqtgraph.__version__) > LooseVersion('0.10.0'):
+                if self._colormap not in {
+                    PyDMColorMap.Jet,
+                    PyDMColorMap.Monochrome,
+                    PyDMColorMap.Hot
+                }:
+                    cmap = ColorMap(pos, self._cm_colors*255)
+                else:
+                    cmap = ColorMap(pos, self._cm_colors)
+            else:
+                print(pyqtgraph.__version__)
+                cmap = ColorMap(pos, self._cm_colors)
         self.getView().getViewBox().setBackgroundColor(cmap.map(0))
         lut = cmap.getLookupTable(0.0, 1.0, alpha=False)
         self.getImageItem().setLookupTable(lut)
