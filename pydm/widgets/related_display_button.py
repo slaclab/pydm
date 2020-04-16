@@ -37,6 +37,12 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
     def __init__(self, parent=None, filename=None):
         QPushButton.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
+
+        if 'Text' not in PyDMRelatedDisplayButton.RULE_PROPERTIES:
+            PyDMRelatedDisplayButton.RULE_PROPERTIES = PyDMRelatedDisplayButton.RULE_PROPERTIES.copy()
+            PyDMRelatedDisplayButton.RULE_PROPERTIES.update(
+                {'Text': ['setText', str]})
+
         self.mouseReleaseEvent = self.push_button_release_event
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.show_context_menu)
