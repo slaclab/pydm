@@ -13,6 +13,8 @@
 # You should have received a copy of the CC0 legalcode along with this
 # work.  If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+from distutils.version import LooseVersion
+import pyqtgraph
 __all__ = ['magma', 'inferno', 'plasma', 'viridis', 'jet', 'monochrome', 'hot']
 
 _magma_data = [[0.001462, 0.000466, 0.013866],
@@ -1066,6 +1068,13 @@ for (name, data) in ((PyDMColorMap.Magma, np.array(_magma_data)),
                      (PyDMColorMap.Monochrome, np.array(_monochrome_data)),
                      (PyDMColorMap.Hot, np.array(_hot_data))):
     cmaps[name] = data
+# This is a temporary fix with pyqtgraph
+if LooseVersion(pyqtgraph.__version__) > LooseVersion('0.10.0'):
+    for (name, data) in ((PyDMColorMap.Magma, np.array(_magma_data)),
+                         (PyDMColorMap.Inferno, np.array(_inferno_data)),
+                         (PyDMColorMap.Plasma, np.array(_plasma_data)),
+                         (PyDMColorMap.Viridis, np.array(_viridis_data))):
+        cmaps[name] = data*255
 
 magma = cmaps[PyDMColorMap.Magma]
 inferno = cmaps[PyDMColorMap.Inferno]
