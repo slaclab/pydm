@@ -1070,11 +1070,9 @@ for (name, data) in ((PyDMColorMap.Magma, np.array(_magma_data)),
     cmaps[name] = data
 # This is a temporary fix with pyqtgraph
 if LooseVersion(pyqtgraph.__version__) > LooseVersion('0.10.0'):
-    for (name, data) in ((PyDMColorMap.Magma, np.array(_magma_data)),
-                         (PyDMColorMap.Inferno, np.array(_inferno_data)),
-                         (PyDMColorMap.Plasma, np.array(_plasma_data)),
-                         (PyDMColorMap.Viridis, np.array(_viridis_data))):
-        cmaps[name] = data*255
+    for name in (PyDMColorMap.Magma, PyDMColorMap.Inferno,
+                 PyDMColorMap.Plasma, PyDMColorMap.Viridis):
+        cmaps[name] *= 255
 
 magma = cmaps[PyDMColorMap.Magma]
 inferno = cmaps[PyDMColorMap.Inferno]
