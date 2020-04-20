@@ -13,6 +13,16 @@ def main():
     logger.setLevel("INFO")
     handler.setLevel("INFO")
 
+    try:
+        """
+        We must import QtWebEngineWidgets before creating a QApplication
+        otherwise we get the following error if someone adds a WebView at Designer:
+        ImportError: QtWebEngineWidgets must be imported before a QCoreApplication instance is created
+        """
+        from qtpy import QtWebEngineWidgets
+    except ImportError:
+        logger.info('QtWebEngine is not supported.')
+
     import pydm
     from pydm.utilities.macro import parse_macro_string
 
