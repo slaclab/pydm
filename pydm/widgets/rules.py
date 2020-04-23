@@ -159,30 +159,29 @@ class RulesEngine(QThread):
         if widget_ref in self.widget_map:
             self.unregister(widget_ref)
 
-        with pydm.data_plugins.connection_queue(defer_connections=False):
-            with QMutexLocker(self.map_lock):
-                self.widget_map[widget_ref] = []
-                for idx, rule in enumerate(rules):
-                    channels_list = rule.get('channels', [])
+        with QMutexLocker(self.map_lock):
+            self.widget_map[widget_ref] = []
+            for idx, rule in enumerate(rules):
+                channels_list = rule.get('channels', [])
 
-                    item = dict()
-                    item['rule'] = rule
-                    item['calculate'] = False
-                    item['values'] = [None] * len(channels_list)
-                    item['conn'] = [False] * len(channels_list)
-                    item['channels'] = []
+                item = dict()
+                item['rule'] = rule
+                item['calculate'] = False
+                item['values'] = [None] * len(channels_list)
+                item['conn'] = [False] * len(channels_list)
+                item['channels'] = []
 
-                    for ch_idx, ch in enumerate(channels_list):
-                        conn_cb = functools.partial(self.callback_conn, widget_ref,
-                                                    idx, ch_idx)
-                        value_cb = functools.partial(self.callback_value, widget_ref,
-                                                     idx, ch_idx, ch['trigger'])
-                        c = PyDMChannel(ch['channel'], connection_slot=conn_cb,
-                                        value_slot=value_cb)
-                        item['channels'].append(c)
-                        c.connect()
+                for ch_idx, ch in enumerate(channels_list):
+                    conn_cb = functools.partial(self.callback_conn, widget_ref,
+                                                idx, ch_idx)
+                    value_cb = functools.partial(self.callback_value, widget_ref,
+                                                 idx, ch_idx, ch['trigger'])
+                    c = PyDMChannel(ch['channel'], connection_slot=conn_cb,
+                                    value_slot=value_cb)
+                    item['channels'].append(c)
+                    c.connect()
 
-                    self.widget_map[widget_ref].append(item)
+                self.widget_map[widget_ref].append(item)
 
     def unregister(self, widget_ref):
         with QMutexLocker(self.map_lock):
@@ -200,7 +199,7 @@ class RulesEngine(QThread):
 
         for rule in w_data:
             for ch in rule['channels']:
-                ch.disconnect()
+                ch.disconnect(destroying=True)
 
         del w_data
 
@@ -236,12 +235,16 @@ class RulesEngine(QThread):
         None
         """
         with QMutexLocker(self.map_lock):
-            self.widget_map[widget_ref][index]['values'][ch_index] = value
-            if trigger:
-                if not all(self.widget_map[widget_ref][index]['conn']):
-                    self.warn_unconnected_channels(widget_ref, index)
-                    return
-                self.widget_map[widget_ref][index]['calculate'] = True
+            try:
+                self.widget_map[widget_ref][index]['values'][ch_index] = value
+                if trigger:
+                    if not all(self.widget_map[widget_ref][index]['conn']):
+                        self.warn_unconnected_channels(widget_ref, index)
+                        return
+                    self.widget_map[widget_ref][index]['calculate'] = True
+            except KeyError:
+                # widget_ref was destroyed
+                pass
 
     def callback_conn(self, widget_ref, index, ch_index, value):
         """
@@ -263,7 +266,11 @@ class RulesEngine(QThread):
         None
         """
         with QMutexLocker(self.map_lock):
-            self.widget_map[widget_ref][index]['conn'][ch_index] = value
+            try:
+                self.widget_map[widget_ref][index]['conn'][ch_index] = value
+            except KeyError:
+                # widget_ref was destroyed
+                pass
 
     def warn_unconnected_channels(self, widget_ref, index):
         logger.error(
