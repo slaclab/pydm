@@ -159,7 +159,11 @@ class Connection(PyDMConnection):
                 pass
 
     def close(self):
-        self.pv.disconnect()
+        try:
+            self.pv.disconnect()
+        except KeyError:
+            # The PV was no longer availbale.
+            pass
 
 
 class PyEPICSPlugin(PyDMPlugin):

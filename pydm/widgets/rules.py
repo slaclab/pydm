@@ -128,6 +128,8 @@ class RulesDispatcher(object):
                 self.rules_engine.unregister(widget_ref)
             else:
                 widget.rule_evaluated(payload)
+        except RuntimeError as ex:
+            logger.debug("Widget reference was gone but not yet for Python.")
         except Exception as ex:
             logger.exception("Error at RulesDispatcher.")
 
