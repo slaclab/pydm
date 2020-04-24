@@ -21,7 +21,7 @@ def main():
         """
         from qtpy import QtWebEngineWidgets
     except ImportError:
-        logger.info('QtWebEngine is not supported.')
+        logger.debug('QtWebEngine is not supported.')
 
     import pydm
     from pydm.utilities.macro import parse_macro_string
