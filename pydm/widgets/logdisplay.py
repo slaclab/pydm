@@ -67,7 +67,10 @@ class GuiHandler(QObject, logging.Handler):
         # Avoid garbage to be presented when master log is running with DEBUG.
         if self.level == logging.NOTSET:
             return
-        self.message.emit(self.format(record))
+        try:
+            self.message.emit(self.format(record))
+        except RuntimeError:
+            logger.debug('Handler was destroyed at the C++ level.')
 
 
 class LogLevels(object):
