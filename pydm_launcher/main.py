@@ -123,6 +123,9 @@ def main():
         stylesheet_path=pydm_args.stylesheet
         )
 
+    pydm.utilities.shortcuts.install_connection_inspector(
+        parent=app.main_window)
+
     sys.exit(app.exec_())
 
 
