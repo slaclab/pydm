@@ -15,6 +15,7 @@ from .connection import establish_widget_connections, close_widget_connections
 from .iconfont import IconFont
 from ..qtdesigner import DesignerHooks
 
+from . import shortcuts
 
 logger = logging.getLogger(__name__)
 
