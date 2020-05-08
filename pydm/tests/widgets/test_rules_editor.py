@@ -1,6 +1,4 @@
 import os
-import pytest
-import logging
 import json
 import copy
 import webbrowser
@@ -8,8 +6,29 @@ import webbrowser
 from qtpy import QtCore
 from qtpy.QtWidgets import QMessageBox, QTableWidgetSelectionRange
 
-from ...widgets.label import PyDMLabel
+from ...widgets.base import PyDMPrimitiveWidget
 from ...widgets.rules_editor import RulesEditor
+
+
+class DummyWidget:
+    """
+    A stub class to play with the rules editor and not touch
+    the RulesEngine
+    """
+    RULE_PROPERTIES = PyDMPrimitiveWidget.RULE_PROPERTIES
+    DEFAULT_RULE_PROPERTY = PyDMPrimitiveWidget.DEFAULT_RULE_PROPERTY
+
+    def __init__(self, *args, **kwargs):
+        self._rules = None
+
+    @property
+    def rules(self):
+        return self._rules
+
+    @rules.setter
+    def rules(self, new_rules):
+        if new_rules != self._rules:
+            self._rules = new_rules
 
 
 def test_rules_editor(qtbot, monkeypatch):
@@ -23,9 +42,9 @@ def test_rules_editor(qtbot, monkeypatch):
     monkeypatch : fixture
         To override dialog behaviors
     """
+
     # Create the base widget
-    widget = PyDMLabel()
-    qtbot.addWidget(widget)
+    widget = DummyWidget()
 
     # Ensure that no rules are set
     assert widget.rules is None
@@ -210,8 +229,7 @@ def test_rules_editor_open_help(qtbot, monkeypatch):
         To override dialog behaviors
     """
     # Create the base widget
-    widget = PyDMLabel()
-    qtbot.addWidget(widget)
+    widget = DummyWidget()
 
     # Create a new Editor Window
     re = RulesEditor(widget)
