@@ -207,11 +207,11 @@ class RulesEngine(QThread):
 
     def run(self):
         while not self.isInterruptionRequested():
-            for widget_ref in self.widget_map:
-                for rule in self.widget_map[widget_ref]:
-                    if rule['calculate']:
-                        with QMutexLocker(self.map_lock):
-                            self.calculate_expression(widget_ref, rule)
+            with QMutexLocker(self.map_lock):
+                for widget_ref in self.widget_map:
+                    for rule in self.widget_map[widget_ref]:
+                        if rule['calculate']:
+                                self.calculate_expression(widget_ref, rule)
             self.msleep(33)  # 30Hz
 
     def callback_value(self, widget_ref, index, ch_index, trigger, value):
