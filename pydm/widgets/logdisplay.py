@@ -185,7 +185,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
         self.log = logging.getLogger(name)
         # Ensure that the log matches level of handler
         # only if the handler level is less than the log.
-        if self.log.level < self.handler.level:
+        if self.handler.level < self.log.level:
             self.log.setLevel(self.handler.level)
         # Attach preconfigured handler
         self.log.addHandler(self.handler)
