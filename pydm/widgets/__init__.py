@@ -1,3 +1,4 @@
+from .channel import PyDMChannel
 from .byte import PyDMByteIndicator
 
 from .checkbox import PyDMCheckbox
