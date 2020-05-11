@@ -3,7 +3,7 @@ import threading
 from os import path
 from skimage.feature import blob_doh
 from marker import ImageMarker
-from pyqtgraph import mkPen
+from pyqtgraph import mkPen, PlotItem
 
 
 class ImageViewer(Display):
@@ -21,15 +21,17 @@ class ImageViewer(Display):
 
     def draw_markers(self, *args, **kwargs):
         with self.markers_lock:
+            view = self.ui.imageView.getView().getViewBox()
+
             for m in self.markers:
-                if m in self.ui.imageView.getView().addedItems:
-                    self.ui.imageView.getView().removeItem(m)
+                if m in view.addedItems:
+                    view.removeItem(m)
 
             for blob in self.blobs:
                 x, y, size = blob
                 m = ImageMarker((y, x), size=size, pen=mkPen((100, 100, 255), width=3))
                 self.markers.append(m)
-                self.ui.imageView.getView().addItem(m)
+                view.addItem(m)
 
             self.ui.numBlobsLabel.setText(str(len(self.blobs)))
 

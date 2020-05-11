@@ -110,13 +110,13 @@ class CamViewer(Display):
         self.marker_dict[4]['xlineedit'] = self.ui.marker4XPosLineEdit
         self.marker_dict[4]['ylineedit'] = self.ui.marker4YPosLineEdit
         # Disable auto-ranging the image (it feels strange when the zoom changes as you move markers around.)
-        self.ui.imageView.getView().disableAutoRange()
+        self.ui.imageView.getView().getViewBox().disableAutoRange()
         for d in self.marker_dict:
             marker = self.marker_dict[d]['marker']
             marker.setZValue(20)
             marker.hide()
             marker.sigRegionChanged.connect(self.markerMoved)
-            self.ui.imageView.getView().addItem(marker)
+            self.ui.imageView.getView().getViewBox().addItem(marker)
             self.marker_dict[d]['button'].toggled.connect(self.enableMarker)
             curvepen = QPen(marker.pen)
             curvepen.setWidth(1)
@@ -139,11 +139,11 @@ class CamViewer(Display):
 
     @Slot()
     def zoomIn(self):
-        self.ui.imageView.getView().scaleBy((0.5, 0.5))
+        self.ui.imageView.getView().getViewBox().scaleBy((0.5, 0.5))
 
     @Slot()
     def zoomOut(self):
-        self.ui.imageView.getView().scaleBy((2.0, 2.0))
+        self.ui.imageView.getView().getViewBox().scaleBy((2.0, 2.0))
 
     @Slot()
     def zoomToActualSize(self):
