@@ -1,0 +1,27 @@
+record(calc, "DEMO:ANGLE")
+{
+   field(PINI, "YES")
+   field(VAL,  0)
+   field(CALC, "(A >= 360) ? 0:A+1")
+   field(INPA, "DEMO:ANGLE.VAL")
+   field(SCAN, ".1 second")
+}
+
+record(calc, "DEMO:SIN")
+{
+    field(CALC, "SIN(A*0.0174533)")
+    field(INPA, "DEMO:ANGLE CP")
+}
+
+record(calc, "DEMO:COS")
+{
+    field(CALC, "COS(A*0.0174533)")
+    field(INPA, "DEMO:ANGLE CP")
+}
+
+record(calc, "DEMO:TAN")
+{
+    field(CALC, "TAN(A*0.0174533)")
+    field(INPA, "DEMO:ANGLE CP")
+}
+
