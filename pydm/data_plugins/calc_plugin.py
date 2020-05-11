@@ -3,9 +3,10 @@ import logging
 import json
 import math
 import numpy as np
+import threading
 
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
-from qtpy.QtCore import Slot, QThread, Signal
+from qtpy.QtCore import Slot, QThread, Signal, Qt
 from qtpy.QtWidgets import QApplication
 
 import pydm
@@ -23,8 +24,8 @@ class CalcThread(QThread):
 
         self.config = config
 
+        self._calculate = threading.Event()
         self._channels = []
-        self._calculate = False
         self._value = None
         self._values = None
         self._connections = None
@@ -41,10 +42,6 @@ class CalcThread(QThread):
     def connected(self):
         return all(self._connections)
 
-    @property
-    def value(self):
-        return self._value
-
     def _connect(self):
         self._values = [None]*len(self._channels)
         self._connections = [False]*len(self._channels)
@@ -55,16 +52,20 @@ class CalcThread(QThread):
         for ch in self._channels:
             ch.disconnect()
 
-    def _send_update(self):
-        self.new_data_signal.emit({"connection": self.connected,
-                                   "value": self.value})
+    def _send_update(self, conn, value):
+        self.new_data_signal.emit({"connection": conn,
+                                   "value": value})
 
     def run(self):
         self._connect()
-        while not self.isInterruptionRequested():
-            if self._calculate:
-                self.calculate_expression()
-            self.msleep(33)  # 30Hz
+
+        while True:
+            self._calculate.wait()
+            self._calculate.clear()
+            if self.isInterruptionRequested():
+                break
+            self.calculate_expression()
+        self._disconnect()
 
     def callback_value(self, ch_index, value):
         """
@@ -85,7 +86,8 @@ class CalcThread(QThread):
         if not self.connected:
             self.warn_unconnected_channels()
             return
-        self._calculate = True
+        self._calculate.set()
+
 
     def callback_conn(self, ch_index, value):
         """
@@ -98,12 +100,9 @@ class CalcThread(QThread):
         value : bool
             Whether or not this channel is connected.
 
-        Returns
-        -------
-        None
         """
         self._connections[ch_index] = value
-        self._send_update()
+        self._send_update(self.connected, self._value)
 
     def warn_unconnected_channels(self):
         logger.debug(
@@ -114,19 +113,15 @@ class CalcThread(QThread):
         """
         Evaluate the expression defined by the rule and emit the `rule_signal`
         with the new value.
-
-        .. warning
-
-            This method mutates the input rule in-place
-
-        Returns
-        -------
-        None
         """
-        self._calculate = False
         vals = list(self._values)
 
-        eval_env = {'np': np,
+        if None in vals:
+            logger.debug('Skipping execution as not all values are set.')
+            return
+
+        eval_env = {'math': math,
+                    'np': np,
                     'ch': vals}
         eval_env.update({k: v
                          for k, v in math.__dict__.items()
@@ -135,7 +130,7 @@ class CalcThread(QThread):
         try:
             ret = eval(self._expression, eval_env)
             self._value = ret
-            self._send_update()
+            self._send_update(self.connected, ret)
         except Exception as e:
             logger.exception("Error while evaluating CalcPlugin connection %s",
                              self.objectName())
@@ -175,7 +170,8 @@ class Connection(PyDMConnection):
 
         self._calc_thread = CalcThread(self._configuration)
         self._calc_thread.setObjectName("calc_{}".format(name))
-        self._calc_thread.new_data_signal.connect(self.receive_new_data)
+        self._calc_thread.new_data_signal.connect(self.receive_new_data,
+                                                  Qt.QueuedConnection)
         self._calc_thread.start()
 
     @Slot(dict)
@@ -189,16 +185,6 @@ class Connection(PyDMConnection):
         if val:
             self.new_value_signal[type(val)].emit(val)
 
-    @Slot(int)
-    @Slot(float)
-    @Slot(str)
-    @Slot(np.ndarray)
-    def put_value(self, new_val):
-        return
-
-    def add_listener(self, channel):
-        super(Connection, self).add_listener(channel)
-
     def close(self):
         self._calc_thread.requestInterruption()
 
@@ -210,7 +196,9 @@ class CalculationPlugin(PyDMPlugin):
     @staticmethod
     def get_connection_id(channel):
         address = PyDMPlugin.get_address(channel)
+
         j_addr = json.loads(address)
         name = j_addr.get('name')
         if not name:
             raise ValueError("Name is a required field for calc plugin")
+        return name
