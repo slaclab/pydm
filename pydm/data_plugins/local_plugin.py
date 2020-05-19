@@ -15,15 +15,18 @@ class Connection(PyDMConnection):
         super(Connection, self).__init__(channel, address, protocol, parent)
 
         self.add_listener(channel)
+
         self._is_connection_configured = False
         self._configuration = {}
 
-        self._configure_local_plugin(address)
         self.emit_access_state()
 
+        # self.value = address
         self._value = None
         self._value_type = None
         self._name = None
+        self.connected = True
+        self._configure_local_plugin(address)
 
     @property
     def name(self):
@@ -60,14 +63,16 @@ class Connection(PyDMConnection):
                 'Invalid configuration for LocalPlugin connection. %s',
                 address)
             return
+        # set the object's attributes
+        self._value = self._configuration.get('init')
+        self._value_type = self._configuration.get('type')
+        self.name = self._configuration.get('name')
         if self._configuration.get('type') and self._configuration.get('init'):
             self._is_connection_configured = True
-            # set the object's attributes
-            self.value = self._configuration.get('init')
-            self.value_type = self._configuration.get('type')
-            self.name = self._configuration.get('name')
             # send initial value
-            self.send_new_value(self.value)
+            self.send_connection_state(conn=True)
+            send_value = self.convert_value(self.value, self.value_type)
+            self.send_new_value(send_value)
 
     @Slot(int)
     @Slot(float)
@@ -76,7 +81,6 @@ class Connection(PyDMConnection):
     @Slot(np.ndarray)
     def send_new_value(self, value):
         if value is not None:
-            self.new_value_signal[type(value)].emit(value)
             if isinstance(value, (int, float, bool)):
                 self.new_value_signal[type(value)].emit(value)
             elif isinstance(value, np.ndarray):
@@ -88,56 +92,73 @@ class Connection(PyDMConnection):
         # emit true for now
         self.write_access_signal.emit(True)
 
+    def convert_value(self, value, value_type):
+        # if value is not None and value_type is not None:
+        if value_type == 'int':
+            try:
+                return int(value)
+            except TypeError:
+                return None
+        elif value_type == 'np.ndarray':
+            try:
+                return np.array(list(value))
+            except TypeError:
+                return None
+        elif value_type == 'float':
+            try:
+                return float(value)
+            except TypeError:
+                return None
+        elif value_type == 'str':
+            try:
+                return value
+            except TypeError:
+                return None
+        elif value_type == 'bool':
+            try:
+                return bool(value)
+            except TypeError:
+                return None
+        else:
+            logger.debug(
+                'In convert_value provided unknown type %s', value_type)
+            return None
+
     def send_connection_state(self, conn):
         self.connection_state_signal.emit(conn)
 
     def add_listener(self, channel):
         super(Connection, self).add_listener(channel)
         self.send_connection_state(conn=True)
+
         # Connect the channel up  to the 'put_value' method
+        # TODO: add a function to give you the type?
         if channel.value_signal is not None:
             try:
                 channel.value_signal[int].connect(
-                   self.put_value, Qt.QueuedConnection)
+                    self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
             try:
                 channel.value_signal[float].connect(
-                   self.put_value, Qt.QueuedConnection)
+                    self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
             try:
                 channel.value_signal[str].connect(
-                   self.put_value, Qt.QueuedConnection)
+                    self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
             try:
                 channel.value_signal[bool].connect(
-                   self.put_value, Qt.QueuedConnection)
+                    self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
             try:
                 channel.value_signal[np.ndarray].connect(
-                   self.put_value, Qt.QueuedConnection)
+                    self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
-        # self.update()
-
-    # @Slot()
-    # def update(self):
-    #     if self.value is None:
-    #         self.send_connection_state(False)
-    #         return
-    #     else:
-    #         self.send_connection_state(True)
-    #         self.send_new_value(self.value)
-
-    # def is_connected(self):
-    #     try:
-    #         # some way of finding out if connected
-    #         return True
-    #     except:
-    #         return False
 
     @Slot(int)
     @Slot(float)
@@ -147,34 +168,11 @@ class Connection(PyDMConnection):
     def put_value(self, new_value):
         if new_value is not None:
             # update the attributes here with the new values
-            self.value = new_value
+            self._value = new_value
             # send this value
             self.send_new_value(new_value)
-
-            # self.new_value_signal[type(new_value)].emit(new_value)
-            # if isinstance(new_value, (int, float, bool)):
-            #     print('is bool or int or float')
-            #     self.new_value_signal[type(new_value)].emit(new_value)
-            # elif isinstance(new_value, np.ndarray):
-            #     print('is np.ndarray')
-            #     self.new_value_signal[np.ndarray].emit(new_value)
-            # else:
-            #     print('is string')
-            #     self.new_value_signal[str].emit(str(new_value))
-
-            # self.update()
-            # maybe here just update the attributes for the class
 
 
 class LocalPlugin(PyDMPlugin):
     protocol = "loc"
     connection_class = Connection
-
-    @staticmethod
-    def get_connection_id(channel):
-        address = PyDMPlugin.get_address(channel)
-        addr = json.loads(address)
-        name = addr.get('name')
-        if not name:
-            raise ValueError('Name is a required field for the local plugin')
-        return name
