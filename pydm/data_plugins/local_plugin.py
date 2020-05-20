@@ -3,14 +3,12 @@ import json
 import numpy as np
 
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
-from qtpy.QtCore import Slot, Signal, Qt
+from qtpy.QtCore import Slot, Qt
 
 logger = logging.getLogger(__name__)
 
 
 class Connection(PyDMConnection):
-    new_data_signal = Signal([int], [float], [str], [bool], [np.ndarray])
-
     def __init__(self, channel, address, protocol=None, parent=None):
         super(Connection, self).__init__(channel, address, protocol, parent)
 
@@ -21,36 +19,12 @@ class Connection(PyDMConnection):
 
         self.emit_access_state()
 
-        # self.value = address
         self._value = None
         self._value_type = None
         self._name = None
-        self.connected = True
+        self.connected = False
         self._configure_local_plugin(address)
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, name):
-        self._name = name
-
-    @property
-    def value(self):
-        return self._value
-
-    @value.setter
-    def value(self, value):
-        self._value = value
-
-    @property
-    def value_type(self):
-        return self._value_type
-
-    @value_type.setter
-    def value_type(self, value_type):
-        self._value_type = value_type
+        self.send_new_value(723)
 
     def _configure_local_plugin(self, address):
         if self._is_connection_configured:
@@ -66,12 +40,12 @@ class Connection(PyDMConnection):
         # set the object's attributes
         self._value = self._configuration.get('init')
         self._value_type = self._configuration.get('type')
-        self.name = self._configuration.get('name')
+        self._name = self._configuration.get('name')
         if self._configuration.get('type') and self._configuration.get('init'):
             self._is_connection_configured = True
-            # send initial value
             self.send_connection_state(conn=True)
-            send_value = self.convert_value(self.value, self.value_type)
+            # send initial value
+            send_value = self.convert_value(self._value, self._value_type)
             self.send_new_value(send_value)
 
     @Slot(int)
@@ -101,7 +75,11 @@ class Connection(PyDMConnection):
                 return None
         elif value_type == 'np.ndarray':
             try:
-                return np.array(list(value))
+                #return np.ndarray(list(value))
+                # this is for np.array
+                return np.fromstring(value[1:-1], dtype=np.int, sep=',')
+                # this is for np.ndarray
+                #np.fromstring(value.replace(), .reshape())
             except TypeError:
                 return None
         elif value_type == 'float':
@@ -125,14 +103,15 @@ class Connection(PyDMConnection):
             return None
 
     def send_connection_state(self, conn):
+        self.connected = conn
         self.connection_state_signal.emit(conn)
 
     def add_listener(self, channel):
         super(Connection, self).add_listener(channel)
-        self.send_connection_state(conn=True)
+        if channel.connection_slot is not None:
+            self.send_connection_state(conn=True)
 
         # Connect the channel up  to the 'put_value' method
-        # TODO: add a function to give you the type?
         if channel.value_signal is not None:
             try:
                 channel.value_signal[int].connect(
