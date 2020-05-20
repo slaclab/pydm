@@ -60,10 +60,8 @@ class Connection(PyDMConnection):
     def send_new_value(self, value):
         if value is not None:
             logger.debug(' sending value', value)
-            if isinstance(value, (int, float, bool, str)):
+            if isinstance(value, (int, float, bool, str, np.ndarray)):
                 self.new_value_signal[type(value)].emit(value)
-            elif isinstance(value, np.ndarray):
-                self.new_value_signal[np.ndarray].emit(value)
             else:
                 self.new_value_signal[str].emit(str(value))
 

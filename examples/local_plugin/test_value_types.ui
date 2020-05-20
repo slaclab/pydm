@@ -64,6 +64,9 @@
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_string&quot;,&quot;type&quot;:&quot;str&quot;,&quot;init&quot;:&quot;Hello&quot;}</string>
       </property>
+      <property name="displayFormat" stdset="0">
+       <enum>PyDMLineEdit::String</enum>
+      </property>
      </widget>
     </item>
     <item row="6" column="0">
@@ -84,6 +87,9 @@
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_np.ndarray&quot;,&quot;type&quot;:&quot;numpy.ndarray&quot;,&quot;init&quot;:&quot;[[1,2,3],[4,5,6]]&quot;}</string>
       </property>
+      <property name="displayFormat" stdset="0">
+       <enum>PyDMLineEdit::Decimal</enum>
+      </property>
      </widget>
     </item>
     <item row="7" column="1">
@@ -93,6 +99,9 @@
       </property>
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;unknown_type&quot;,&quot;type&quot;:&quot;unk&quot;,&quot;init&quot;:&quot;23&quot;}</string>
+      </property>
+      <property name="displayFormat" stdset="0">
+       <enum>PyDMLineEdit::Decimal</enum>
       </property>
      </widget>
     </item>
@@ -127,6 +136,9 @@ rgb(165, 216, 255)
       </property>
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_float&quot;,&quot;type&quot;:&quot;float&quot;,&quot;init&quot;:&quot;7.7&quot;}</string>
+      </property>
+      <property name="displayFormat" stdset="0">
+       <enum>PyDMLineEdit::Decimal</enum>
       </property>
      </widget>
     </item>
@@ -171,11 +183,20 @@ rgb(165, 216, 255)
       <property name="toolTip">
        <string/>
       </property>
+      <property name="clearButtonEnabled">
+       <bool>false</bool>
+      </property>
       <property name="showUnits" stdset="0">
+       <bool>false</bool>
+      </property>
+      <property name="precisionFromPV" stdset="0">
        <bool>true</bool>
       </property>
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_int&quot;,&quot;type&quot;:&quot;int&quot;,&quot;init&quot;:&quot;7&quot;}</string>
+      </property>
+      <property name="displayFormat" stdset="0">
+       <enum>PyDMLineEdit::Decimal</enum>
       </property>
      </widget>
     </item>
@@ -209,6 +230,9 @@ rgb(165, 216, 255)
       </property>
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_float&quot;}</string>
+      </property>
+      <property name="displayFormat" stdset="0">
+       <enum>PyDMLineEdit::Decimal</enum>
       </property>
      </widget>
     </item>
