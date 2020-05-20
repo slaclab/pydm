@@ -161,26 +161,32 @@ class PyDMPlugin(object):
     def get_address(channel):
         return protocol_and_address(channel.address)[1]
 
+    @staticmethod
+    def get_connection_id(channel):
+        return PyDMPlugin.get_address(channel)
+
     def add_connection(self, channel):
         with self.lock:
-            address = self.get_address(channel)
             # If this channel is already connected to this plugin lets ignore
             if channel in self.channels:
                 return
+            connection_id = self.get_connection_id(channel)
+            address = self.get_address(channel)
+
             self.channels.add(channel)
-            if address in self.connections:
-                self.connections[address].add_listener(channel)
+            if connection_id in self.connections:
+                self.connections[connection_id].add_listener(channel)
             else:
-                self.connections[address] = self.connection_class(channel, address,
-                                                                  self.protocol)
+                self.connections[connection_id] = self.connection_class(
+                    channel, address, self.protocol)
 
     def remove_connection(self, channel, destroying=False):
         with self.lock:
-            address = self.get_address(channel)
-            if address in self.connections and channel in self.channels:
-                self.connections[address].remove_listener(channel,
-                                                          destroying=destroying)
+            connection_id = self.get_connection_id(channel)
+            if connection_id in self.connections and channel in self.channels:
+                self.connections[connection_id].remove_listener(
+                    channel, destroying=destroying)
                 self.channels.remove(channel)
-                if self.connections[address].listener_count < 1:
-                    self.connections[address].deleteLater()
-                    del self.connections[address]
+                if self.connections[connection_id].listener_count < 1:
+                    self.connections[connection_id].deleteLater()
+                    del self.connections[connection_id]
