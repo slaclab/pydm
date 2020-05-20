@@ -1,3 +1,4 @@
+import ast
 import logging
 import json
 import numpy as np
@@ -24,7 +25,7 @@ class Connection(PyDMConnection):
         self._name = None
         self.connected = False
         self._configure_local_plugin(address)
-        self.send_new_value(723)
+        # TODO: what if i don't provide initial values?
 
     def _configure_local_plugin(self, address):
         if self._is_connection_configured:
@@ -41,14 +42,15 @@ class Connection(PyDMConnection):
         self._value = self._configuration.get('init')
         self._value_type = self._configuration.get('type')
         self._name = self._configuration.get('name')
+        # send initial values
+        # this should set the type of this variable and there
+        # should not be any need to convert it somewhere else
+        send_value = self.convert_value(self._value, self._value_type)
+        self.put_value(send_value)
+
         if self._configuration.get('type') and self._configuration.get('init'):
             self._is_connection_configured = True
             self.send_connection_state(conn=True)
-            # send initial values
-            # this should set the type of this variable and there
-            # should not be any need to convert it somewhere else
-            send_value = self.convert_value(self._value, self._value_type)
-            self.send_new_value(send_value)
 
     @Slot(int)
     @Slot(float)
@@ -57,7 +59,8 @@ class Connection(PyDMConnection):
     @Slot(np.ndarray)
     def send_new_value(self, value):
         if value is not None:
-            if isinstance(value, (int, float, bool)):
+            logger.debug(' sending value', value)
+            if isinstance(value, (int, float, bool, str)):
                 self.new_value_signal[type(value)].emit(value)
             elif isinstance(value, np.ndarray):
                 self.new_value_signal[np.ndarray].emit(value)
@@ -90,11 +93,12 @@ class Connection(PyDMConnection):
                 return int(value)
             except TypeError:
                 pass
-        elif (value_type == 'np.ndarray' or value_type == 'numpy.ndarray' or
-              value_type == 'np.array' or value_type == 'numpy.array'):
+        elif value_type == 'np.ndarray' or value_type == 'numpy.ndarray':
             try:
-                # convert this into an np.ndarray of floats for now
-                return np.ndarray(value)
+                # convert this into a list first
+                value_list = ast.literal_eval(value)
+                # convert into a numpy array
+                return np.array(value_list)
             except TypeError:
                 pass
         elif value_type == 'float':
@@ -109,7 +113,7 @@ class Connection(PyDMConnection):
                 pass
         elif value_type == 'bool':
             try:
-                return bool(value)
+                return value == 'True'
             except TypeError:
                 pass
         else:
@@ -166,7 +170,7 @@ class Connection(PyDMConnection):
         Updates the value of this local variable and then broadcasts it to
         the other listeners to this channel
         '''
-        print('---- the value type: ---', type(new_value))
+        logger.debug('putting value:',  new_value)
         if new_value is not None:
             # update the attributes here with the new values
             self._value = new_value
