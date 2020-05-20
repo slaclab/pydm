@@ -20,12 +20,9 @@ class Connection(PyDMConnection):
 
         self.emit_access_state()
 
-        self._value = None
         self._value_type = None
-        self._name = None
         self.connected = False
         self._configure_local_plugin(address)
-        # TODO: what if i don't provide initial values?
 
     def _configure_local_plugin(self, address):
         if self._is_connection_configured:
@@ -39,18 +36,16 @@ class Connection(PyDMConnection):
                 address)
             return
         # set the object's attributes
-        self._value = self._configuration.get('init')
+        self.value = self._configuration.get('init')
         self._value_type = self._configuration.get('type')
-        self._name = self._configuration.get('name')
+        self.name = self._configuration.get('name')
         # send initial values
-        # this should set the type of this variable and there
-        # should not be any need to convert it somewhere else
-        send_value = self.convert_value(self._value, self._value_type)
+        send_value = self.convert_value(self.value, self._value_type)
         self.put_value(send_value)
 
         if self._configuration.get('type') and self._configuration.get('init'):
             self._is_connection_configured = True
-            self.send_connection_state(conn=True)
+            #self.send_connection_state(conn=True)
 
     @Slot(int)
     @Slot(float)
@@ -126,6 +121,10 @@ class Connection(PyDMConnection):
 
     def add_listener(self, channel):
         super(Connection, self).add_listener(channel)
+        # TODO: should probably give access to appropriate ones only?
+        self.emit_access_state()
+        # send new values to the listeners right away
+        self.send_new_value(self.value)
         if channel.connection_slot is not None:
             self.send_connection_state(conn=True)
 
@@ -171,7 +170,7 @@ class Connection(PyDMConnection):
         logger.debug('putting value:',  new_value)
         if new_value is not None:
             # update the attributes here with the new values
-            self._value = new_value
+            self.value = new_value
             # send this value
             self.send_new_value(new_value)
 

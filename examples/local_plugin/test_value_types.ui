@@ -162,22 +162,6 @@ rgb(165, 216, 255)
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
-     <widget class="PyDMLineEdit" name="PyDMLineEdit_4">
-      <property name="toolTip">
-       <string/>
-      </property>
-      <property name="rules" stdset="0">
-       <string>[]</string>
-      </property>
-      <property name="showUnits" stdset="0">
-       <bool>true</bool>
-      </property>
-      <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_bool&quot;,&quot;type&quot;:&quot;bool&quot;,&quot;init&quot;:&quot;True&quot;}</string>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="1">
      <widget class="PyDMLineEdit" name="PyDMLineEdit">
       <property name="toolTip">
@@ -216,7 +200,7 @@ rgb(165, 216, 255)
        <string/>
       </property>
       <property name="rules" stdset="0">
-       <string>[{&quot;name&quot;: &quot;show_int&quot;, &quot;property&quot;: &quot;Position - X&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;loc://{\&quot;name\&quot;:\&quot;my_int\&quot;}&quot;, &quot;trigger&quot;: true}]}]</string>
+       <string>[]</string>
       </property>
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_int&quot;}</string>
@@ -243,16 +227,6 @@ rgb(165, 216, 255)
       </property>
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_string&quot;}</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="2">
-     <widget class="PyDMLineEdit" name="PyDMLineEdit_11">
-      <property name="toolTip">
-       <string/>
-      </property>
-      <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_bool&quot;}</string>
       </property>
      </widget>
     </item>
@@ -286,6 +260,29 @@ rgb(165, 216, 255)
       </property>
      </widget>
     </item>
+    <item row="4" column="2">
+     <widget class="PyDMByteIndicator" name="PyDMByteIndicator">
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="channel" stdset="0">
+       <string>loc://{&quot;name&quot;:&quot;boolean&quot;}</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="PyDMCheckbox" name="PyDMCheckbox">
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="autoRepeat">
+       <bool>true</bool>
+      </property>
+      <property name="channel" stdset="0">
+       <string>loc://{&quot;name&quot;:&quot;boolean&quot;, &quot;type&quot;:&quot;bool&quot;, &quot;init&quot;:&quot;True&quot;}</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
  </widget>
@@ -294,6 +291,16 @@ rgb(165, 216, 255)
    <class>PyDMLabel</class>
    <extends>QLabel</extends>
    <header>pydm.widgets.label</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMByteIndicator</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.byte</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMCheckbox</class>
+   <extends>QCheckBox</extends>
+   <header>pydm.widgets.checkbox</header>
   </customwidget>
   <customwidget>
    <class>PyDMLineEdit</class>
