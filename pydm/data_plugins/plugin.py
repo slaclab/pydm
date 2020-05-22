@@ -9,7 +9,7 @@ from qtpy.QtWidgets import QApplication
 
 
 class PyDMConnection(QObject):
-    new_value_signal = Signal([float], [int], [str], [ndarray])
+    new_value_signal = Signal([float], [int], [str], [ndarray], [bool])
     connection_state_signal = Signal(bool)
     new_severity_signal = Signal(int)
     write_access_signal = Signal(bool)

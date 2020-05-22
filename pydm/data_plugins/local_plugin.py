@@ -18,11 +18,16 @@ class Connection(PyDMConnection):
         self._is_connection_configured = False
         self._configuration = {}
 
+        self.send_connection_state(False)
         self.emit_access_state()
 
         self._value_type = None
         self.connected = False
         self._configure_local_plugin(address)
+
+    def add_listener(self, channel):
+        super(Connection, self).add_listener(channel)
+        self._configure_local_plugin(channel.address)
 
     def _configure_local_plugin(self, address):
         if self._is_connection_configured:
@@ -35,17 +40,20 @@ class Connection(PyDMConnection):
                 'Invalid configuration for LocalPlugin connection. %s',
                 address)
             return
-        # set the object's attributes
-        self.value = self._configuration.get('init')
-        self._value_type = self._configuration.get('type')
-        self.name = self._configuration.get('name')
-        # send initial values
-        send_value = self.convert_value(self.value, self._value_type)
-        self.put_value(send_value)
 
-        if self._configuration.get('type') and self._configuration.get('init'):
+        if (self._configuration.get('name') and self._configuration.get('type')
+                and self._configuration.get('init')):
             self._is_connection_configured = True
-            #self.send_connection_state(conn=True)
+            self.address = address
+            # set the object's attributes
+            init_value = self._configuration.get('init')
+            self._value_type = self._configuration.get('type')
+            self.name = self._configuration.get('name')
+            # send initial values
+            self.value = self.convert_value(init_value, self._value_type)
+            self.connected = True
+            self.send_connection_state(True)
+            self.send_new_value(self.value)
 
     @Slot(int)
     @Slot(float)
