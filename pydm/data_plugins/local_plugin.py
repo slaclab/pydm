@@ -12,6 +12,9 @@ logger = logging.getLogger(__name__)
 class Connection(PyDMConnection):
     def __init__(self, channel, address, protocol=None, parent=None):
         self._is_connection_configured = False
+        self._value_type = None
+        self._subtype = None
+
         super(Connection, self).__init__(channel, address, protocol, parent)
 
         self.add_listener(channel)
@@ -21,8 +24,6 @@ class Connection(PyDMConnection):
         self.send_connection_state(False)
         self.emit_access_state()
 
-        self._value_type = None
-        self._subtype = None
         self.connected = False
         self._configure_local_plugin(channel)
 
