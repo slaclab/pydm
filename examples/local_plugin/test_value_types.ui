@@ -82,7 +82,7 @@
        <string/>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_np.ndarray&quot;,&quot;type&quot;:&quot;numpy.ndarray&quot;,&quot;init&quot;:&quot;[[1,2,3],[4,5,6]]&quot;, &quot;subtype&quot;:&quot;float&quot;}</string>
+       <string>loc://{&quot;name&quot;:&quot;my_np.ndarray&quot;,&quot;type&quot;:&quot;numpy.ndarray&quot;,&quot;init&quot;:&quot;[[1,2,3],[4,5,6]]&quot;}</string>
       </property>
      </widget>
     </item>
@@ -127,6 +127,9 @@ rgb(165, 216, 255)
       </property>
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_float&quot;,&quot;type&quot;:&quot;float&quot;,&quot;init&quot;:&quot;7.7&quot;}</string>
+      </property>
+      <property name="displayFormat" stdset="0">
+       <enum>PyDMLineEdit::Default</enum>
       </property>
      </widget>
     </item>
@@ -200,6 +203,9 @@ rgb(165, 216, 255)
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_float&quot;}</string>
       </property>
+      <property name="displayFormat" stdset="0">
+       <enum>PyDMLineEdit::Default</enum>
+      </property>
      </widget>
     </item>
     <item row="3" column="2">
@@ -243,12 +249,15 @@ rgb(165, 216, 255)
      </widget>
     </item>
     <item row="4" column="1">
-     <widget class="PyDMLineEdit" name="PyDMLineEdit_4">
+     <widget class="PyDMCheckbox" name="PyDMCheckbox">
       <property name="toolTip">
        <string/>
       </property>
+      <property name="autoRepeat">
+       <bool>true</bool>
+      </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;boolean&quot;, &quot;type&quot;:&quot;bool&quot;, &quot;init&quot;:&quot;1&quot;}</string>
+       <string>loc://{&quot;name&quot;:&quot;boolean&quot;, &quot;type&quot;:&quot;bool&quot;, &quot;init&quot;:&quot;True&quot;}</string>
       </property>
      </widget>
     </item>
@@ -275,6 +284,11 @@ rgb(165, 216, 255)
    <class>PyDMByteIndicator</class>
    <extends>QWidget</extends>
    <header>pydm.widgets.byte</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMCheckbox</class>
+   <extends>QCheckBox</extends>
+   <header>pydm.widgets.checkbox</header>
   </customwidget>
   <customwidget>
    <class>PyDMLineEdit</class>

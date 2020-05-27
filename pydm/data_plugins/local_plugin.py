@@ -2,20 +2,20 @@ import ast
 import logging
 import json
 import numpy as np
-
-from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from qtpy.QtCore import Slot, Qt
+from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
+
 
 logger = logging.getLogger(__name__)
 
 
 class Connection(PyDMConnection):
     def __init__(self, channel, address, protocol=None, parent=None):
+        self._is_connection_configured = False
         super(Connection, self).__init__(channel, address, protocol, parent)
 
         self.add_listener(channel)
 
-        self._is_connection_configured = False
         self._configuration = {}
 
         self.send_connection_state(False)
@@ -25,10 +25,6 @@ class Connection(PyDMConnection):
         self._subtype = None
         self.connected = False
         self._configure_local_plugin(address)
-
-    #def add_listener(self, channel):
-        #super(Connection, self).add_listener(channel)
-        #self._configure_local_pluhin(channel.address)
 
     def _configure_local_plugin(self, address):
         if self._is_connection_configured:
@@ -67,17 +63,19 @@ class Connection(PyDMConnection):
     @Slot(np.ndarray)
     def send_new_value(self, value):
         if value is not None:
-            if isinstance(value, (int, float, bool, str, np.ndarray)):
+            if isinstance(value, (int, float, bool, str)):
                 self.new_value_signal[type(value)].emit(value)
+            elif isinstance(value, np.ndarray):
+                self.new_value_signal[np.ndarray].emit(value)
             else:
-                self.new_value_signal[str].emit(str(value))
+                logger.debub('Not sending anything....')
 
     def emit_access_state(self):
         # emit true for now
         self.write_access_signal.emit(True)
 
     def convert_value(self, value, value_type, subtype):
-        '''
+        """
         Function that converts values from string to
         their appropriate type
 
@@ -92,7 +90,7 @@ class Connection(PyDMConnection):
         -------
             The data for this variable converted to its appropriate type
 
-        '''
+        """
         if value_type == 'int':
             try:
                 return int(value)
@@ -106,9 +104,9 @@ class Connection(PyDMConnection):
                 # convert into a numpy array
                 if subtype is not None:
                     value_array = np.array(value_list, dtype=subtype)
-                    value_array = list(value_array)
                 else:
-                    value_array = np.array(str(value_list))
+                    # default the subtype to int64 if no subtype provided
+                    value_array = np.array(value_list, dtype=np.int64)
                 return value_array
             except ValueError:
                 pass
@@ -125,8 +123,8 @@ class Connection(PyDMConnection):
         elif value_type == 'bool':
             try:
                 # is True if not found in the list with possible false values
-                s = str(value).strip().lower()
-                return s not in ['false', 'f', 'n', '0', '']
+                str_value = str(value).strip().lower()
+                return str_value not in ['false', 'f', 'n', '1', '']
             except ValueError:
                 pass
         else:
@@ -140,7 +138,7 @@ class Connection(PyDMConnection):
 
     def add_listener(self, channel):
         super(Connection, self).add_listener(channel)
-        #self._configure_local_pluhin(channel.address)
+        self._configure_local_plugin(channel.address)
         self.emit_access_state()
         # send new values to the listeners right away
         self.send_new_value(self.value)
@@ -181,11 +179,11 @@ class Connection(PyDMConnection):
     @Slot(bool)
     @Slot(np.ndarray)
     def put_value(self, new_value):
-        '''
+        """
         Slot connected to the channal.value_signal.
         Updates the value of this local variable and then broadcasts it to
         the other listeners to this channel
-        '''
+        """
         if new_value is not None:
             # update the attributes here with the new values
             self.value = new_value
