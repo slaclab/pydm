@@ -24,12 +24,15 @@ class Connection(PyDMConnection):
         self._value_type = None
         self._subtype = None
         self.connected = False
-        self._configure_local_plugin(address)
+        self._configure_local_plugin(channel)
 
-    def _configure_local_plugin(self, address):
+    def _configure_local_plugin(self, channel):
         if self._is_connection_configured:
             logger.debug('LocalPlugin connection already configured.')
             return
+
+        address = PyDMPlugin.get_address(channel)
+
         try:
             self._configuration = json.loads(address)
         except json.decoder.JSONDecodeError:
@@ -138,7 +141,7 @@ class Connection(PyDMConnection):
 
     def add_listener(self, channel):
         super(Connection, self).add_listener(channel)
-        self._configure_local_plugin(channel.address)
+        self._configure_local_plugin(channel)
         self.emit_access_state()
         # send new values to the listeners right away
         self.send_new_value(self.value)
