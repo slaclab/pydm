@@ -22,8 +22,13 @@ class Connection(PyDMConnection):
         self.emit_access_state()
 
         self._value_type = None
+        self._subtype = None
         self.connected = False
         self._configure_local_plugin(address)
+
+    #def add_listener(self, channel):
+        #super(Connection, self).add_listener(channel)
+        #self._configure_local_pluhin(channel.address)
 
     def _configure_local_plugin(self, address):
         if self._is_connection_configured:
@@ -37,6 +42,9 @@ class Connection(PyDMConnection):
                 address)
             return
 
+        if self._configuration.get('subtype'):
+            self._subtype = self._configuration.get('subtype')
+            self._subtype = np.dtype(self._subtype)
         if (self._configuration.get('name') and self._configuration.get('type')
                 and self._configuration.get('init')):
             self._is_connection_configured = True
@@ -46,7 +54,8 @@ class Connection(PyDMConnection):
             self._value_type = self._configuration.get('type')
             self.name = self._configuration.get('name')
             # send initial values
-            self.value = self.convert_value(init_value, self._value_type)
+            self.value = self.convert_value(init_value,
+                                            self._value_type, self._subtype)
             self.connected = True
             self.send_connection_state(True)
             self.send_new_value(self.value)
@@ -69,7 +78,7 @@ class Connection(PyDMConnection):
         # emit true for now
         self.write_access_signal.emit(True)
 
-    def convert_value(self, value, value_type):
+    def convert_value(self, value, value_type, subtype):
         '''
         Function that converts values from string to
         their appropriate type
@@ -89,36 +98,43 @@ class Connection(PyDMConnection):
         if value_type == 'int':
             try:
                 return int(value)
-            except TypeError:
+            except ValueError:
                 pass
         elif 'ndarray' in value_type:
             try:
                 # evaluate it first
                 value_list = ast.literal_eval(value)
+                value_array = None
                 # convert into a numpy array
-                value_array = np.array(str(value_list))
+                if subtype is not None:
+                    value_array = np.array(value_list, dtype=subtype)
+                    value_array = list(value_array)
+                else:
+                    value_array = np.array(str(value_list))
                 return value_array
-            except TypeError:
+            except ValueError:
                 pass
         elif value_type == 'float':
             try:
                 return float(value)
-            except TypeError:
+            except ValueError:
                 pass
         elif value_type == 'str':
             try:
                 return str(value)
-            except TypeError:
+            except ValueError:
                 pass
         elif value_type == 'bool':
             try:
-                return value == 'True'
-            except TypeError:
+                # is True if not found in the list with possible false values
+                s = str(value).strip().lower()
+                return s not in ['false', 'f', 'n', '0', '']
+            except ValueError:
                 pass
         else:
-            msg = 'In conver_value provide unknown type %s', value
+            msg = 'In convert_value provide unknown type %s', value
             logger.debug(msg)
-            raise TypeError(msg)
+            raise ValueError(msg)
 
     def send_connection_state(self, conn):
         self.connected = conn
@@ -126,6 +142,7 @@ class Connection(PyDMConnection):
 
     def add_listener(self, channel):
         super(Connection, self).add_listener(channel)
+        #self._configure_local_pluhin(channel.address)
         self.emit_access_state()
         # send new values to the listeners right away
         self.send_new_value(self.value)

@@ -64,9 +64,6 @@
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_string&quot;,&quot;type&quot;:&quot;str&quot;,&quot;init&quot;:&quot;Hello&quot;}</string>
       </property>
-      <property name="displayFormat" stdset="0">
-       <enum>PyDMLineEdit::String</enum>
-      </property>
      </widget>
     </item>
     <item row="6" column="0">
@@ -85,10 +82,7 @@
        <string/>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_np.ndarray&quot;,&quot;type&quot;:&quot;numpy.ndarray&quot;,&quot;init&quot;:&quot;[[1,2,3],[4,5,6]]&quot;}</string>
-      </property>
-      <property name="displayFormat" stdset="0">
-       <enum>PyDMLineEdit::Decimal</enum>
+       <string>loc://{&quot;name&quot;:&quot;my_np.ndarray&quot;,&quot;type&quot;:&quot;numpy.ndarray&quot;,&quot;init&quot;:&quot;[[1,2,3],[4,5,6]]&quot;, &quot;subtype&quot;:&quot;float&quot;}</string>
       </property>
      </widget>
     </item>
@@ -99,9 +93,6 @@
       </property>
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;unknown_type&quot;,&quot;type&quot;:&quot;unk&quot;,&quot;init&quot;:&quot;23&quot;}</string>
-      </property>
-      <property name="displayFormat" stdset="0">
-       <enum>PyDMLineEdit::Decimal</enum>
       </property>
      </widget>
     </item>
@@ -136,9 +127,6 @@ rgb(165, 216, 255)
       </property>
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_float&quot;,&quot;type&quot;:&quot;float&quot;,&quot;init&quot;:&quot;7.7&quot;}</string>
-      </property>
-      <property name="displayFormat" stdset="0">
-       <enum>PyDMLineEdit::Decimal</enum>
       </property>
      </widget>
     </item>
@@ -179,9 +167,6 @@ rgb(165, 216, 255)
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_int&quot;,&quot;type&quot;:&quot;int&quot;,&quot;init&quot;:&quot;7&quot;}</string>
       </property>
-      <property name="displayFormat" stdset="0">
-       <enum>PyDMLineEdit::Decimal</enum>
-      </property>
      </widget>
     </item>
     <item row="5" column="1">
@@ -190,7 +175,7 @@ rgb(165, 216, 255)
        <string/>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_np.array&quot;,&quot;type&quot;:&quot;np.ndarray&quot;,&quot;init&quot;:&quot;[1, 2, 3, 4]&quot;}</string>
+       <string>loc://{&quot;name&quot;:&quot;my_np.array&quot;,&quot;type&quot;:&quot;np.ndarray&quot;,&quot;init&quot;:&quot;[1, 2, 3, 4]&quot;, &quot;subtype&quot;:&quot;float&quot;}</string>
       </property>
      </widget>
     </item>
@@ -214,9 +199,6 @@ rgb(165, 216, 255)
       </property>
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_float&quot;}</string>
-      </property>
-      <property name="displayFormat" stdset="0">
-       <enum>PyDMLineEdit::Decimal</enum>
       </property>
      </widget>
     </item>
@@ -260,6 +242,16 @@ rgb(165, 216, 255)
       </property>
      </widget>
     </item>
+    <item row="4" column="1">
+     <widget class="PyDMLineEdit" name="PyDMLineEdit_4">
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="channel" stdset="0">
+       <string>loc://{&quot;name&quot;:&quot;boolean&quot;, &quot;type&quot;:&quot;bool&quot;, &quot;init&quot;:&quot;1&quot;}</string>
+      </property>
+     </widget>
+    </item>
     <item row="4" column="2">
      <widget class="PyDMByteIndicator" name="PyDMByteIndicator">
       <property name="toolTip">
@@ -267,19 +259,6 @@ rgb(165, 216, 255)
       </property>
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;boolean&quot;}</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="PyDMCheckbox" name="PyDMCheckbox">
-      <property name="toolTip">
-       <string/>
-      </property>
-      <property name="autoRepeat">
-       <bool>true</bool>
-      </property>
-      <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;boolean&quot;, &quot;type&quot;:&quot;bool&quot;, &quot;init&quot;:&quot;True&quot;}</string>
       </property>
      </widget>
     </item>
@@ -296,11 +275,6 @@ rgb(165, 216, 255)
    <class>PyDMByteIndicator</class>
    <extends>QWidget</extends>
    <header>pydm.widgets.byte</header>
-  </customwidget>
-  <customwidget>
-   <class>PyDMCheckbox</class>
-   <extends>QCheckBox</extends>
-   <header>pydm.widgets.checkbox</header>
   </customwidget>
   <customwidget>
    <class>PyDMLineEdit</class>
