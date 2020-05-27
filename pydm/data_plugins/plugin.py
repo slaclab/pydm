@@ -50,6 +50,10 @@ class PyDMConnection(QObject):
                 self.new_value_signal[ndarray].connect(channel.value_slot, Qt.QueuedConnection)
             except TypeError:
                 pass
+            try:
+                self.new_value_signal[bool].connect(channel.value_slot, Qt.QueuedConnection)
+            except TypeError:
+                pass
 
         if channel.severity_slot is not None:
             self.new_severity_signal.connect(channel.severity_slot, Qt.QueuedConnection)
@@ -95,6 +99,10 @@ class PyDMConnection(QObject):
                     pass
                 try:
                     self.new_value_signal[ndarray].disconnect(channel.value_slot)
+                except TypeError:
+                    pass
+                try:
+                    self.new_value_signal[bool].disconnect(channel.value_slot)
                 except TypeError:
                     pass
 

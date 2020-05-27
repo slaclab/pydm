@@ -1,3 +1,4 @@
+import ast
 import locale
 from functools import partial
 import numpy as np
@@ -109,8 +110,8 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                 if self._display_format_type == DisplayFormat.String:
                     self.send_value_signal[str].emit(send_value)
                 else:
-                    arr_value = list(filter(None, send_value.replace("[", "").replace("]", "").split(" ")))
-                    arr_value = np.array(arr_value, dtype=self.subtype)
+                    arr_value = ast.literal_eval(send_value)
+                    arr_value = np.array(str(arr_value), dtype=self.subtype)
                     self.send_value_signal[np.ndarray].emit(arr_value)
             else:
                 # Channel Type is String

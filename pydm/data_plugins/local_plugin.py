@@ -25,10 +25,6 @@ class Connection(PyDMConnection):
         self.connected = False
         self._configure_local_plugin(address)
 
-    def add_listener(self, channel):
-        super(Connection, self).add_listener(channel)
-        self._configure_local_plugin(channel.address)
-
     def _configure_local_plugin(self, address):
         if self._is_connection_configured:
             logger.debug('LocalPlugin connection already configured.')
@@ -62,9 +58,10 @@ class Connection(PyDMConnection):
     @Slot(np.ndarray)
     def send_new_value(self, value):
         if value is not None:
-            logger.debug(' sending value', value)
-            if isinstance(value, (int, float, bool, str, np.ndarray)):
+            if isinstance(value, (int, float, bool, str)):
                 self.new_value_signal[type(value)].emit(value)
+            if isinstance(value, np.ndarray):
+                self.new_value_signal[np.ndarray].emit(value)
             else:
                 self.new_value_signal[str].emit(str(value))
 
@@ -94,12 +91,13 @@ class Connection(PyDMConnection):
                 return int(value)
             except TypeError:
                 pass
-        elif value_type == 'np.ndarray' or value_type == 'numpy.ndarray':
+        elif 'ndarray' in value_type:
             try:
-                # convert this into a list first
+                # evaluate it first
                 value_list = ast.literal_eval(value)
                 # convert into a numpy array
-                return np.array(value_list)
+                value_array = np.array(str(value_list))
+                return value_array
             except TypeError:
                 pass
         elif value_type == 'float':
@@ -109,7 +107,7 @@ class Connection(PyDMConnection):
                 pass
         elif value_type == 'str':
             try:
-                return value
+                return str(value)
             except TypeError:
                 pass
         elif value_type == 'bool':
@@ -118,10 +116,9 @@ class Connection(PyDMConnection):
             except TypeError:
                 pass
         else:
-            logger.debug(
-                'In convert_value provided unknown type %s,'
-                'will default to str', value_type)
-            return value
+            msg = 'In conver_value provide unknown type %s', value
+            logger.debug(msg)
+            raise TypeError(msg)
 
     def send_connection_state(self, conn):
         self.connected = conn
@@ -129,7 +126,6 @@ class Connection(PyDMConnection):
 
     def add_listener(self, channel):
         super(Connection, self).add_listener(channel)
-        # TODO: should probably give access to appropriate ones only?
         self.emit_access_state()
         # send new values to the listeners right away
         self.send_new_value(self.value)
@@ -175,7 +171,6 @@ class Connection(PyDMConnection):
         Updates the value of this local variable and then broadcasts it to
         the other listeners to this channel
         '''
-        logger.debug('putting value:',  new_value)
         if new_value is not None:
             # update the attributes here with the new values
             self.value = new_value
