@@ -67,10 +67,8 @@ class Connection(PyDMConnection):
     @Slot(np.ndarray)
     def send_new_value(self, value):
         if value is not None:
-            if isinstance(value, (int, float, bool, str)):
+            if isinstance(value, (int, float, bool, str, np.ndarray)):
                 self.new_value_signal[type(value)].emit(value)
-            if isinstance(value, np.ndarray):
-                self.new_value_signal[np.ndarray].emit(value)
             else:
                 self.new_value_signal[str].emit(str(value))
 
