@@ -110,9 +110,13 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                 if self._display_format_type == DisplayFormat.String:
                     self.send_value_signal[str].emit(send_value)
                 else:
-                    arr_value = list(filter(None, send_value.replace("[", "").replace("]", "").split(" ")))
-                    arr_value = np.array(arr_value, dtype=self.subtype)
-                    self.send_value_signal[np.ndarray].emit(arr_value)
+                    try:
+                        arr_value = ','.join(send_value.split(' '))
+                        new_arr = ast.literal_eval(arr_value)
+                        arr_value = np.array(new_arr, dtype=self.subtype)
+                        self.send_value_signal[np.ndarray].emit(arr_value)
+                    except SyntaxError:
+                        logger.exception("Error, inserted invalid syntax")
             else:
                 # Channel Type is String
                 # Lets just send what we have after all
