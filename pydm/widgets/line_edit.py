@@ -111,7 +111,10 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                     self.send_value_signal[str].emit(send_value)
                 else:
                     try:
-                        arr_value = ','.join(send_value.split(' '))
+                        # get rid of all the extra spaces
+                        arr_value = ' '.join(send_value.split())
+                        # join the elements with a comma
+                        arr_value = ','.join(arr_value.split(' '))
                         new_arr = ast.literal_eval(arr_value)
                         arr_value = np.array(new_arr, dtype=self.subtype)
                         self.send_value_signal[np.ndarray].emit(arr_value)

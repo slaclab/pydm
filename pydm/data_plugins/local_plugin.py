@@ -1,4 +1,8 @@
+"""
+Local Plugin
+"""
 import ast
+import decimal
 import logging
 import json
 import numpy as np
@@ -22,7 +26,7 @@ class Connection(PyDMConnection):
         self._configuration = {}
 
         self.send_connection_state(False)
-        self.emit_access_state()
+        self.send_access_state()
 
         self.connected = False
         self._configure_local_plugin(channel)
@@ -66,16 +70,37 @@ class Connection(PyDMConnection):
     @Slot(bool)
     @Slot(np.ndarray)
     def send_new_value(self, value):
+        """
+        Sends all the values sent trought a specific local
+        variable channel to all its listeners
+
+        """
         if value is not None:
             if isinstance(value, (int, float, bool, str)):
                 self.new_value_signal[type(value)].emit(value)
             elif isinstance(value, np.ndarray):
                 self.new_value_signal[np.ndarray].emit(value)
             else:
-                logger.debub('Not sending anything....')
+                logger.debug('Does not support this type')
 
-    def emit_access_state(self):
-        # emit true for now
+    def send_precision(self, value):
+        """
+        Sends the precision for float values
+        It is being sent anytime a float value is sent
+
+        Parameters
+        ----------
+        value : float
+            The value to be sent
+
+        """
+        if value is not None:
+            dec = decimal.Decimal(str(value))
+            precision = len(str(dec).split('.')[1])
+            self.prec_signal.emit(precision)
+
+    def send_access_state(self):
+        # emit true for all widgets using Local Plugin
         self.write_access_signal.emit(True)
 
     def convert_value(self, value, value_type, subtype):
@@ -143,13 +168,19 @@ class Connection(PyDMConnection):
     def add_listener(self, channel):
         super(Connection, self).add_listener(channel)
         self._configure_local_plugin(channel)
-        self.emit_access_state()
+        # send write acces == True to the listeners
+        self.send_access_state()
         # send new values to the listeners right away
         self.send_new_value(self.value)
+        # send the precision in case of float values
+        if isinstance(self.value, float):
+            self.send_precision(self.value)
+
         if channel.connection_slot is not None:
             self.send_connection_state(conn=True)
 
-        # Connect the channel up  to the 'put_value' method
+        # Connect the put_value slot to the channel's value_signal,
+        # which captures the values sent through the plugin
         if channel.value_signal is not None:
             try:
                 channel.value_signal[int].connect(
@@ -193,6 +224,9 @@ class Connection(PyDMConnection):
             self.value = new_value
             # send this value
             self.send_new_value(new_value)
+            # send precision for float values
+            if isinstance(new_value, float):
+                self.send_precision(new_value)
 
 
 class LocalPlugin(PyDMPlugin):
