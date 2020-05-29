@@ -160,8 +160,8 @@ class Connection(PyDMConnection):
                         address)
             return
 
-        if self._configuration.get('channels') \
-                and self._configuration.get('expr'):
+        if (self._configuration.get('channels')
+                and self._configuration.get('expr')):
             self._waiting_config = False
 
         name = self._configuration.get('name')
