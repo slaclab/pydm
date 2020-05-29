@@ -170,23 +170,24 @@ class PyDMPlugin(object):
             # If this channel is already connected to this plugin lets ignore
             if channel in self.channels:
                 return
-            id = self.get_connection_id(channel)
+            ch_id = self.get_connection_id(channel)
             address = self.get_address(channel)
 
             self.channels.add(channel)
-            if id in self.connections:
-                self.connections[id].add_listener(channel)
+            if ch_id in self.connections:
+                self.connections[ch_id].add_listener(channel)
             else:
-                self.connections[id] = self.connection_class(channel, address,
-                                                             self.protocol)
+                self.connections[ch_id] = self.connection_class(channel,
+                                                                address,
+                                                                self.protocol)
 
     def remove_connection(self, channel, destroying=False):
         with self.lock:
-            id = self.get_connection_id(channel)
-            if id in self.connections and channel in self.channels:
-                self.connections[id].remove_listener(channel,
-                                                     destroying=destroying)
+            ch_id = self.get_connection_id(channel)
+            if ch_id in self.connections and channel in self.channels:
+                self.connections[ch_id].remove_listener(channel,
+                                                        destroying=destroying)
                 self.channels.remove(channel)
-                if self.connections[id].listener_count < 1:
-                    self.connections[id].deleteLater()
-                    del self.connections[id]
+                if self.connections[ch_id].listener_count < 1:
+                    self.connections[ch_id].deleteLater()
+                    del self.connections[ch_id]
