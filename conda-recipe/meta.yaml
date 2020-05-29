@@ -21,6 +21,7 @@ requirements:
     - qtpy
   run:
     - python
+    - jsonschema
     - six
     - numpy
     - scipy
