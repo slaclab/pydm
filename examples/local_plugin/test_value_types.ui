@@ -112,21 +112,19 @@
        <string/>
       </property>
       <property name="styleSheet">
-       <string notr="true">PyDMEditLine{
-rgb(165, 216, 255)
-}</string>
+       <string notr="true"/>
       </property>
       <property name="precision" stdset="0">
        <number>0</number>
       </property>
       <property name="showUnits" stdset="0">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="precisionFromPV" stdset="0">
        <bool>true</bool>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_float&quot;,&quot;type&quot;:&quot;float&quot;,&quot;init&quot;:&quot;7.7&quot;}</string>
+       <string>loc://{&quot;name&quot;:&quot;my_float&quot;,&quot;type&quot;:&quot;float&quot;,&quot;init&quot;:&quot;7.7&quot;,&quot;extras&quot;: {&quot;precision&quot;:&quot;3&quot;, &quot;unit&quot;:&quot;V&quot;, &quot;lower_limit&quot;:&quot;-100&quot;, &quot;upper_limit&quot;:&quot;100&quot;, &quot;severity&quot;:&quot;0&quot;}}</string>
       </property>
       <property name="displayFormat" stdset="0">
        <enum>PyDMLineEdit::Default</enum>
@@ -178,7 +176,7 @@ rgb(165, 216, 255)
        <string/>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_np.array&quot;,&quot;type&quot;:&quot;np.ndarray&quot;,&quot;init&quot;:&quot;[1, 2, 3, 4]&quot;, &quot;subtype&quot;:&quot;float&quot;}</string>
+       <string>loc://{&quot;name&quot;:&quot;my_np.array&quot;,&quot;type&quot;:&quot;ndarray&quot;,&quot;init&quot;:&quot;[1,2,3,4]&quot;,&quot;extras&quot;: {&quot;precision&quot;:&quot;3&quot;, &quot;unit&quot;:&quot;V&quot;, &quot;lower_limit&quot;:&quot;-100&quot;, &quot;upper_limit&quot;:&quot;100&quot;, &quot;enum_string&quot;: &quot;(hey, hello)&quot;, &quot;severity&quot;:&quot;5&quot;, &quot;dtype&quot;:&quot;float64&quot;, &quot;copy&quot;:&quot;False&quot;, &quot;order&quot;:&quot;C&quot;, &quot;ndmin&quot;:&quot;2&quot;, &quot;subok&quot;:&quot;True&quot;}}</string>
       </property>
      </widget>
     </item>

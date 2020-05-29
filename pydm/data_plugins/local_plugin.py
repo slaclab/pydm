@@ -1,6 +1,4 @@
-"""
-Local Plugin
-"""
+"""Local Plugin."""
 import ast
 import decimal
 import logging
@@ -17,7 +15,17 @@ class Connection(PyDMConnection):
     def __init__(self, channel, address, protocol=None, parent=None):
         self._is_connection_configured = False
         self._value_type = None
-        self._subtype = None
+        self._precision_set = None
+        self._type_kwargs = {}
+
+        self._extra_config_keys = [
+            "precision",
+            "unit",
+            "upper_limit",
+            "lower_limit",
+            "enum_string",
+            "severity"
+            ]
 
         super(Connection, self).__init__(channel, address, protocol, parent)
 
@@ -46,23 +54,75 @@ class Connection(PyDMConnection):
                 address)
             return
 
-        if self._configuration.get('subtype'):
-            self._subtype = self._configuration.get('subtype')
-            self._subtype = np.dtype(self._subtype)
         if (self._configuration.get('name') and self._configuration.get('type')
                 and self._configuration.get('init')):
             self._is_connection_configured = True
             self.address = address
+
+            # get the extra info if any
+            extras = self._configuration.get('extras')
+            if extras:
+                self.parse_channel_extras(extras)
+
             # set the object's attributes
             init_value = self._configuration.get('init')
             self._value_type = self._configuration.get('type')
             self.name = self._configuration.get('name')
+
             # send initial values
-            self.value = self.convert_value(init_value,
-                                            self._value_type, self._subtype)
+            self.value = self.convert_value(init_value, self._value_type)
             self.connected = True
             self.send_connection_state(True)
             self.send_new_value(self.value)
+
+    def parse_channel_extras(self, extras):
+        """
+        Parse the extras dictionay and either pass the data
+        to the appropriate methods that will take care of it,
+        or emit it right away.
+        Those methods should be responsible for converting
+        the data into appropriate types as well, this function
+        will pass strings to them
+
+        Parameters
+        ----------
+        extras : dict
+            Dictionary containing extra parameters for the
+            this local variable configuration configuration
+            These parameters are optional
+
+        Returns
+        -------
+        None.
+
+        """
+        precision = extras.get('precision')
+        if precision is not None:
+            try:
+                precision = int(precision)
+                self._precision_set = precision
+                self.prec_signal.emit(self._precision_set)
+            except ValueError:
+                logger.debug('Cannot convert precision')
+        unit = extras.get('unit')
+        if unit is not None:
+            self.unit_signal.emit(str(unit))
+        upper_limit = extras.get('upper_limit')
+        if upper_limit is not None:
+            self.send_upper_limit(upper_limit)
+        lower_limit = extras.get('lower_limit')
+        if lower_limit is not None:
+            self.send_lower_limit(lower_limit)
+        enum_string = extras.get('enum_string')
+        if enum_string is not None:
+            self.send_enum_string(enum_string)
+        severity = extras.get('severity')
+        if severity is not None:
+            self.send_severity(severity)
+        type_kwargs = {k: v for k, v in extras.items()
+                       if k not in self._extra_config_keys}
+        if type_kwargs:
+            self.format_ndarray_params(type_kwargs)
 
     @Slot(int)
     @Slot(float)
@@ -71,9 +131,8 @@ class Connection(PyDMConnection):
     @Slot(np.ndarray)
     def send_new_value(self, value):
         """
-        Sends all the values sent trought a specific local
-        variable channel to all its listeners
-
+        Send the values sent trought a specific local
+        variable channel to all its listeners.
         """
         if value is not None:
             if isinstance(value, (int, float, bool, str)):
@@ -85,13 +144,17 @@ class Connection(PyDMConnection):
 
     def send_precision(self, value):
         """
-        Sends the precision for float values
-        It is being sent anytime a float value is sent
+        Send the precision for float values.
+        It is being sent anytime a float value is sent.
 
         Parameters
         ----------
-        value : float
-            The value to be sent
+        value : string
+            The value to be sent,should be sent as int
+
+        Returns
+        -------
+        None.
 
         """
         if value is not None:
@@ -99,14 +162,198 @@ class Connection(PyDMConnection):
             precision = len(str(dec).split('.')[1])
             self.prec_signal.emit(precision)
 
+    def send_unit(self, unit):
+        """
+        Send the unit for the data.
+
+        Parameters
+        ----------
+        unit : string
+
+        Returns
+        -------
+        None.
+
+        """
+        if unit is not None:
+            self.prec_signal.emit(str(unit))
+
+    def send_upper_limit(self, upper_limit):
+        """
+        Send the upper limit value as float or int.
+
+        Parameters
+        ----------
+        upper_limit : string
+
+        Returns
+        -------
+        None.
+
+        """
+        if upper_limit is not None:
+            try:
+                upper_limit = int(upper_limit)
+            except ValueError:
+                upper_limit = float(upper_limit)
+
+            self.upper_ctrl_limit_signal.emit(upper_limit)
+
+    def send_lower_limit(self, lower_limit):
+        """
+        Send the lower limit value as float or int.
+
+        Parameters
+        ----------
+        lower_limit : string
+
+        Returns
+        -------
+        None.
+
+        """
+        if lower_limit is not None:
+            try:
+                lower_limit = int(lower_limit)
+            except ValueError:
+                lower_limit = float(lower_limit)
+
+            self.lower_ctrl_limit_signal.emit(lower_limit)
+
+    def send_enum_string(self, enum_string):
+        """
+        Send enum_string as tuple of strings.
+
+        Parameters
+        ----------
+        enum_string : string
+
+        Returns
+        -------
+        None.
+
+        """
+        if enum_string is not None:
+            try:
+                enum = enum_string.replace('(', '').replace(')', '').split(',')
+                enum_string = tuple(enum)
+                self.enum_strings_signal.emit(enum_string)
+            except ValueError:
+                logger.debug("Error when converting enum_string")
+
+    def send_severity(self, severity):
+        """
+        Send severity as int.
+
+        Possible values:
+            0 - NO_ALARM
+            1 - MINOR
+            2 - MAJOR
+            3 - INVALID
+
+        Parameters
+        ----------
+        severity : string
+
+        Returns
+        -------
+        None.
+
+        """
+        if severity is not None:
+            try:
+                severity = int(severity)
+                self.new_severity_signal.emit(severity)
+            except ValueError:
+                logger.debug("Cannot convert severity")
+
+    def format_ndarray_params(self, type_kwargs):
+        """
+        Format the ndarray parameters.
+        Possible parameters:
+            object - array_like
+            dtype - data-type, optional
+            copy - bool, optional
+            order - {'K', 'A', 'C', 'F'}, optional
+            subok - bool, optional
+            ndmin - int, optional
+
+        Parameters
+        ----------
+        type_kwargs : dict
+            String representing a set of parameters for np.array()
+
+        Returns
+        -------
+            ndarray
+
+        """
+        # default values that a np.array() will normally use
+        # to construct a ndarray if they are not specified
+        dtype = None
+        copy = True
+        order = 'K'
+        subok = False
+        ndmin = 0
+
+        if type_kwargs:
+
+            dtype = type_kwargs.get('dtype')
+            if dtype is not None:
+                try:
+                    dtype = np.dtype(dtype)
+                except ValueError:
+                    logger.debug('Cannot convert dtype')
+
+            copy = type_kwargs.get('copy')
+            if copy is not None:
+                if copy == 'False':
+                    copy = False
+                else:
+                    copy = True
+
+            order = type_kwargs.get('order')
+            if order is not None:
+                if order not in ['K', 'A', 'C', 'F']:
+                    # set it to the default value
+                    order = 'K'
+
+            subok = type_kwargs.get('subok')
+            if subok is not None:
+                if subok == 'True':
+                    subok = True
+                else:
+                    subok = False
+
+            ndmin = type_kwargs.get('ndmin')
+            if ndmin is not None:
+                try:
+                    ndmin = int(ndmin)
+                except ValueError:
+                    logger.debug('Cannot convert ndmin to integer')
+
+            self._type_kwargs = {
+                'dtype': dtype,
+                'copy': copy,
+                'order': order,
+                'subok': subok,
+                'ndmin': ndmin
+                }
+
     def send_access_state(self):
-        # emit true for all widgets using Local Plugin
+        """
+        Send True for all the widgets using Local Plugin.
+
+        Returns
+        -------
+        None.
+
+        """
         self.write_access_signal.emit(True)
 
-    def convert_value(self, value, value_type, subtype):
+    def convert_value(self, value, value_type):
         """
-        Function that converts values from string to
-        their appropriate type
+        Convert values from string to their appropriate type.
 
         Parameters
         ----------
@@ -130,12 +377,11 @@ class Connection(PyDMConnection):
                 # evaluate it first
                 value_list = ast.literal_eval(value)
                 value_array = None
-                # convert into a numpy array
-                if subtype is not None:
-                    value_array = np.array(value_list, dtype=subtype)
+                # convert into a numpy array using the extras
+                if self._type_kwargs:
+                    value_array = np.array(value_list, **self._type_kwargs)
                 else:
-                    # default the subtype to int64 if no subtype provided
-                    value_array = np.array(value_list, dtype=np.int64)
+                    value_array = np.array(value_list)
                 return value_array
             except ValueError:
                 pass
@@ -174,7 +420,11 @@ class Connection(PyDMConnection):
         self.send_new_value(self.value)
         # send the precision in case of float values
         if isinstance(self.value, float):
-            self.send_precision(self.value)
+            if self._precision_set is None:
+                print('is set....', self._precision_set)
+                self.send_precision(self.value)
+            else:
+                self.prec_signal.emit(self._precision_set)
 
         if channel.connection_slot is not None:
             self.send_connection_state(conn=True)
@@ -226,7 +476,10 @@ class Connection(PyDMConnection):
             self.send_new_value(new_value)
             # send precision for float values
             if isinstance(new_value, float):
-                self.send_precision(new_value)
+                if self._precision_set is None:
+                    self.send_precision(new_value)
+                else:
+                    self.prec_signal.emit(self._precision_set)
 
 
 class LocalPlugin(PyDMPlugin):
