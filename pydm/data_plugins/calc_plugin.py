@@ -84,7 +84,9 @@ class CalcThread(QThread):
         """
         self._values[ch_index] = value
         if not self.connected:
-            self.warn_unconnected_channels()
+            logger.debug(
+                "Calculation '%s': Not all channels are connected, skipping execution.",
+                self.objectName())
             return
         self._calculate.set()
 
@@ -103,11 +105,6 @@ class CalcThread(QThread):
         """
         self._connections[ch_index] = value
         self._send_update(self.connected, self._value)
-
-    def warn_unconnected_channels(self):
-        logger.debug(
-            "Calculation '%s': Not all channels are connected, skipping execution.",
-            self.objectName())
 
     def calculate_expression(self):
         """
