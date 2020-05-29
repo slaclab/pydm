@@ -176,12 +176,18 @@ class Connection(PyDMConnection):
     def receive_new_data(self, data):
         if not data:
             return
-        conn = data.get('connection', False)
-        val = data.get('value', None)
-        self.connected = conn
-        self.connection_state_signal.emit(conn)
-        if val:
-            self.new_value_signal[type(val)].emit(val)
+        try:
+            conn = data.get('connection')
+            self.connected = conn
+            self.connection_state_signal.emit(conn)
+        except KeyError:
+            logger.debug('Connection was not available yet for calc.')
+        try:
+            val = data.get('value')
+            if val is not None:
+                self.new_value_signal[type(val)].emit(val)
+        except KeyError:
+            logger.debug('Value was not available yet for calc.')
 
     def close(self):
         self._calc_thread.requestInterruption()
