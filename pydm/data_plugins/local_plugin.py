@@ -28,7 +28,6 @@ class Connection(PyDMConnection):
             ]
 
         super(Connection, self).__init__(channel, address, protocol, parent)
-
         self.add_listener(channel)
 
         self._configuration = {}
@@ -271,7 +270,6 @@ class Connection(PyDMConnection):
         """
         Format the ndarray parameters.
         Possible parameters:
-            object - array_like
             dtype - data-type, optional
             copy - bool, optional
             order - {'K', 'A', 'C', 'F'}, optional
