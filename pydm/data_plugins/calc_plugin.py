@@ -1,18 +1,38 @@
 import collections
 import functools
-import logging
 import json
+import jsonschema
+import logging
 import math
-import numpy as np
 import threading
 
-from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
+import numpy as np
 from qtpy.QtCore import Slot, QThread, Signal, Qt
 from qtpy.QtWidgets import QApplication
 
 import pydm
+from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
 logger = logging.getLogger(__name__)
+
+CALC_ADDRESS_SCHEMA = json.loads("""
+{
+    "definitions": {
+        "channel": {
+            "type": "object",
+            "additionalProperties": {"type": "string"}
+        }
+    },
+
+    "type": "object",
+    "properties": {
+        "name": {"type": "string"},
+        "expr": {"type": "string"},
+        "channels": {"$ref": "#/definitions/channel"}
+    },
+    "required": ["name", "expr", "channels"]
+}
+""")
 
 
 class CalcThread(QThread):
@@ -154,15 +174,15 @@ class Connection(PyDMConnection):
             logger.debug('CalcPlugin connection already configured.')
             return
         try:
-            self._configuration = json.loads(address)
+            config = json.loads(address)
+            jsonschema.validate(config, CALC_ADDRESS_SCHEMA)
         except:
-            logger.info("Invalid configuration for CalcPlugin connection. %s",
-                        address)
+            msg = "Invalid configuration for CalcPlugin connection. %s"
+            logger.exception(msg, address)
             return
 
-        if (self._configuration.get('channels')
-                and self._configuration.get('expr')):
-            self._waiting_config = False
+        self._configuration = config
+        self._waiting_config = False
 
         name = self._configuration.get('name')
 
