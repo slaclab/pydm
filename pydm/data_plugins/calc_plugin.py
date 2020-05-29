@@ -16,6 +16,10 @@ logger = logging.getLogger(__name__)
 
 
 class CalcThread(QThread):
+    eval_env = {'math': math,
+                'np': np,
+                'numpy': np}
+
     new_data_signal = Signal(dict)
 
     def __init__(self, config, *args, **kwargs):
@@ -115,16 +119,14 @@ class CalcThread(QThread):
             logger.debug('Skipping execution as not all values are set.')
             return
 
-        eval_env = {'math': math,
-                    'np': np,
-                    'numpy': np}
-        eval_env.update({k: v
-                         for k, v in math.__dict__.items()
-                         if k[0] != '_'})
-        eval_env.update(**vals)
+        env = dict(CalcThread.eval_env)
+        env.update({k: v
+                    for k, v in math.__dict__.items()
+                    if k[0] != '_'})
+        env.update(**vals)
 
         try:
-            ret = eval(self._expression, eval_env)
+            ret = eval(self._expression, env)
             self._value = ret
             self._send_update(self.connected, ret)
         except Exception as e:
