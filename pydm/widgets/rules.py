@@ -208,7 +208,7 @@ class RulesEngine(QThread):
     def run(self):
         while not self.isInterruptionRequested():
             with QMutexLocker(self.map_lock):
-                for widget_ref in self.widget_map:
+                for widget_ref in list(self.widget_map):
                     for rule in self.widget_map[widget_ref]:
                         if rule['calculate']:
                                 self.calculate_expression(widget_ref, rule)
