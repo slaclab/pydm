@@ -1,3 +1,4 @@
+import collections
 import functools
 import logging
 import json
@@ -27,24 +28,23 @@ class CalcThread(QThread):
         self._calculate = threading.Event()
         self._channels = []
         self._value = None
-        self._values = None
-        self._connections = None
+        self._values = collections.defaultdict(None)
+        self._connections = collections.defaultdict(lambda: False)
         self._expression = self.config.get('expr', '')
 
-        for ch_idx, ch in enumerate(self.config.get('channels', [])):
-            conn_cb = functools.partial(self.callback_conn, ch_idx)
-            value_cb = functools.partial(self.callback_value, ch_idx)
-            c = pydm.PyDMChannel(ch, connection_slot=conn_cb,
+        channels = self.config.get('channels', {})
+        for name, channel in channels.items():
+            conn_cb = functools.partial(self.callback_conn, name)
+            value_cb = functools.partial(self.callback_value, name)
+            c = pydm.PyDMChannel(channel, connection_slot=conn_cb,
                                  value_slot=value_cb)
             self._channels.append(c)
 
     @property
     def connected(self):
-        return all(self._connections)
+        return all(v for _, v in self._connections.items())
 
     def _connect(self):
-        self._values = [None]*len(self._channels)
-        self._connections = [False]*len(self._channels)
         for ch in self._channels:
             ch.connect()
 
@@ -67,14 +67,14 @@ class CalcThread(QThread):
             self.calculate_expression()
         self._disconnect()
 
-    def callback_value(self, ch_index, value):
+    def callback_value(self, name, value):
         """
         Callback executed when a channel receives a new value.
 
         Parameters
         ----------
-        ch_index : int
-            The channel index on the list for this rule.
+        name : str
+            The channel variable name.
         value : any
             The new value for this channel.
 
@@ -82,7 +82,7 @@ class CalcThread(QThread):
         -------
         None
         """
-        self._values[ch_index] = value
+        self._values[name] = value
         if not self.connected:
             logger.debug(
                 "Calculation '%s': Not all channels are connected, skipping execution.",
@@ -90,20 +90,19 @@ class CalcThread(QThread):
             return
         self._calculate.set()
 
-
-    def callback_conn(self, ch_index, value):
+    def callback_conn(self, name, value):
         """
         Callback executed when a channel connection status is changed.
 
         Parameters
         ----------
-        ch_index : int
-            The channel index on the list for this rule.
+        name : str
+            The channel variable name.
         value : bool
             Whether or not this channel is connected.
 
         """
-        self._connections[ch_index] = value
+        self._connections[name] = value
         self._send_update(self.connected, self._value)
 
     def calculate_expression(self):
@@ -111,18 +110,18 @@ class CalcThread(QThread):
         Evaluate the expression defined by the rule and emit the `rule_signal`
         with the new value.
         """
-        vals = list(self._values)
-
+        vals = dict(self._values)
         if None in vals:
             logger.debug('Skipping execution as not all values are set.')
             return
 
         eval_env = {'math': math,
                     'np': np,
-                    'ch': vals}
+                    'numpy': np}
         eval_env.update({k: v
                          for k, v in math.__dict__.items()
                          if k[0] != '_'})
+        eval_env.update(**vals)
 
         try:
             ret = eval(self._expression, eval_env)
