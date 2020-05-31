@@ -1,3 +1,4 @@
+import json
 import logging
 import functools
 import weakref
@@ -50,7 +51,8 @@ def register_widget_rules(widget):
         try:
             if hasattr(child_widget, 'rules'):
                 if child_widget.rules:
-                    RulesDispatcher().register(child_widget, child_widget.rules)
+                    rules = json.loads(child_widget.rules)
+                    RulesDispatcher().register(child_widget, rules)
         except Exception:
             pass
 
@@ -208,10 +210,11 @@ class RulesEngine(QThread):
     def run(self):
         while not self.isInterruptionRequested():
             with QMutexLocker(self.map_lock):
-                for widget_ref in list(self.widget_map):
-                    for rule in self.widget_map[widget_ref]:
-                        if rule['calculate']:
-                                self.calculate_expression(widget_ref, rule)
+                w_map = dict(self.widget_map)
+            for widget_ref, rules in w_map.items():
+                for idx, rule in enumerate(rules):
+                    if rule['calculate']:
+                        self.calculate_expression(widget_ref, idx, rule)
             self.msleep(33)  # 30Hz
 
     def callback_value(self, widget_ref, index, ch_index, trigger, value):
@@ -279,7 +282,7 @@ class RulesEngine(QThread):
             "Rule '%s': Not all channels are connected, skipping execution.",
             self.widget_map[widget_ref][index]['rule']['name'])
 
-    def calculate_expression(self, widget_ref, rule):
+    def calculate_expression(self, widget_ref, idx, rule):
         """
         Evaluate the expression defined by the rule and emit the `rule_signal`
         with the new value.
@@ -292,7 +295,13 @@ class RulesEngine(QThread):
         -------
         None
         """
-        rule['calculate'] = False
+        def safe_reset_calculate():
+            try:
+                self.widget_map[widget_ref][idx]['calculate'] = False
+            except (Exception, RuntimeError):
+                pass
+
+        safe_reset_calculate()
         eval_env = {'np': np,
                     'ch': rule['values']}
         eval_env.update({k: v
