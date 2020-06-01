@@ -36,6 +36,9 @@
         <property name="text">
          <string>X- values</string>
         </property>
+        <property name="displayFormat" stdset="0">
+         <enum>PyDMLabel::Decimal</enum>
+        </property>
        </widget>
       </item>
       <item row="2" column="1">
@@ -65,6 +68,9 @@
         </property>
         <property name="text">
          <string> Y - values</string>
+        </property>
+        <property name="displayFormat" stdset="0">
+         <enum>PyDMLabel::Decimal</enum>
         </property>
        </widget>
       </item>

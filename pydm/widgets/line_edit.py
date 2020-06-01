@@ -1,4 +1,3 @@
-import ast
 import locale
 from functools import partial
 import numpy as np
@@ -110,16 +109,9 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                 if self._display_format_type == DisplayFormat.String:
                     self.send_value_signal[str].emit(send_value)
                 else:
-                    try:
-                        # get rid of all the extra spaces
-                        arr_value = ' '.join(send_value.split())
-                        # join the elements with a comma
-                        arr_value = ','.join(arr_value.split(' '))
-                        new_arr = ast.literal_eval(arr_value)
-                        arr_value = np.array(new_arr, dtype=self.subtype)
-                        self.send_value_signal[np.ndarray].emit(arr_value)
-                    except SyntaxError:
-                        logger.exception("Error, inserted invalid syntax")
+                    arr_value = list(filter(None, send_value.replace("[", "").replace("]", "").split(" ")))
+                    arr_value = np.array(arr_value, dtype=self.subtype)
+                    self.send_value_signal[np.ndarray].emit(arr_value)
             else:
                 # Channel Type is String
                 # Lets just send what we have after all
