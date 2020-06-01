@@ -163,40 +163,41 @@ class RulesEngine(QThread):
         if widget_ref in self.widget_map:
             self.unregister(widget_ref)
 
-        with QMutexLocker(self.map_lock):
-            self.widget_map[widget_ref] = []
-            for idx, rule in enumerate(rules):
-                channels_list = rule.get('channels', [])
+        rules_db = []
+        for idx, rule in enumerate(rules):
+            channels_list = rule.get('channels', [])
 
-                item = dict()
-                item['rule'] = rule
-                item['calculate'] = False
-                item['values'] = [None] * len(channels_list)
-                item['conn'] = [False] * len(channels_list)
-                item['channels'] = []
+            item = dict()
+            item['rule'] = rule
+            item['calculate'] = False
+            item['values'] = [None] * len(channels_list)
+            item['conn'] = [False] * len(channels_list)
+            item['channels'] = []
 
-                for ch_idx, ch in enumerate(channels_list):
-                    conn_cb = functools.partial(self.callback_conn, widget_ref,
-                                                idx, ch_idx)
-                    value_cb = functools.partial(self.callback_value, widget_ref,
-                                                 idx, ch_idx, ch['trigger'])
-                    c = PyDMChannel(ch['channel'], connection_slot=conn_cb,
-                                    value_slot=value_cb)
-                    item['channels'].append(c)
-                    c.connect()
+            for ch_idx, ch in enumerate(channels_list):
+                conn_cb = functools.partial(self.callback_conn, widget_ref,
+                                            idx, ch_idx)
+                value_cb = functools.partial(self.callback_value, widget_ref,
+                                             idx, ch_idx, ch['trigger'])
+                c = PyDMChannel(ch['channel'], connection_slot=conn_cb,
+                                value_slot=value_cb)
+                item['channels'].append(c)
+                c.connect()
 
-                self.widget_map[widget_ref].append(item)
+            rules_db.append(item)
+
+        if rules_db:
+            self.widget_map[widget_ref] = rules_db
 
     def unregister(self, widget_ref):
-        with QMutexLocker(self.map_lock):
-            # If hash() is called the first time only after the object was
-            # deleted, the call will raise TypeError.
-            # We should just ignore it.
-            w_data = None
-            try:
-                w_data = self.widget_map.pop(widget_ref, None)
-            except TypeError:
-                pass
+        # If hash() is called the first time only after the object was
+        # deleted, the call will raise TypeError.
+        # We should just ignore it.
+        w_data = None
+        try:
+            w_data = self.widget_map.pop(widget_ref, None)
+        except TypeError:
+            pass
 
         if not w_data:
             return
@@ -239,17 +240,17 @@ class RulesEngine(QThread):
         -------
         None
         """
-        with QMutexLocker(self.map_lock):
-            try:
-                self.widget_map[widget_ref][index]['values'][ch_index] = value
-                if trigger:
-                    if not all(self.widget_map[widget_ref][index]['conn']):
-                        self.warn_unconnected_channels(widget_ref, index)
-                        return
-                    self.widget_map[widget_ref][index]['calculate'] = True
-            except KeyError:
-                # widget_ref was destroyed
-                pass
+        try:
+            w_map = self.widget_map[widget_ref]
+            w_map[index]['values'][ch_index] = value
+            if trigger:
+                if not all(w_map[index]['conn']):
+                    self.warn_unconnected_channels(widget_ref, index)
+                    return
+                w_map[index]['calculate'] = True
+        except KeyError:
+            logger.exception('Key Error at value Changed')
+            pass
 
     def callback_conn(self, widget_ref, index, ch_index, value):
         """
@@ -270,12 +271,11 @@ class RulesEngine(QThread):
         -------
         None
         """
-        with QMutexLocker(self.map_lock):
-            try:
-                self.widget_map[widget_ref][index]['conn'][ch_index] = value
-            except KeyError:
-                # widget_ref was destroyed
-                pass
+        try:
+            self.widget_map[widget_ref][index]['conn'][ch_index] = value
+        except KeyError:
+            # widget_ref was destroyed
+            pass
 
     def warn_unconnected_channels(self, widget_ref, index):
         logger.error(
@@ -298,10 +298,11 @@ class RulesEngine(QThread):
         def safe_reset_calculate():
             try:
                 self.widget_map[widget_ref][idx]['calculate'] = False
-            except (Exception, RuntimeError):
+            except Exception:
                 pass
 
         safe_reset_calculate()
+
         eval_env = {'np': np,
                     'ch': rule['values']}
         eval_env.update({k: v
