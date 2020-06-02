@@ -210,8 +210,7 @@ class RulesEngine(QThread):
 
     def run(self):
         while not self.isInterruptionRequested():
-            with QMutexLocker(self.map_lock):
-                w_map = dict(self.widget_map)
+            w_map = self.widget_map.copy()
             for widget_ref, rules in w_map.items():
                 for idx, rule in enumerate(rules):
                     if rule['calculate']:
@@ -295,14 +294,7 @@ class RulesEngine(QThread):
         -------
         None
         """
-        def safe_reset_calculate():
-            try:
-                self.widget_map[widget_ref][idx]['calculate'] = False
-            except Exception:
-                pass
-
-        safe_reset_calculate()
-
+        rule['calculate'] = False
         eval_env = {'np': np,
                     'ch': rule['values']}
         eval_env.update({k: v
