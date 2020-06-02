@@ -84,7 +84,7 @@
        <string/>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_np.array&quot;, &quot;type&quot;:&quot;np.array&quot;, &quot;init&quot;:[1,2,3,4], &quot;extras&quot;: {&quot;dtype&quot;:&quot;float64&quot;, &quot;copy&quot;:false, &quot;order&quot;:&quot;C&quot;, &quot;ndmin&quot;:1, &quot;subok&quot;:true}}</string>
+       <string>loc://{&quot;name&quot;:&quot;my_np.array&quot;, &quot;type&quot;:&quot;array&quot;, &quot;init&quot;:[1,2,3,4], &quot;extras&quot;: {&quot;dtype&quot;:&quot;float64&quot;, &quot;copy&quot;:false, &quot;order&quot;:&quot;C&quot;, &quot;ndmin&quot;:1, &quot;subok&quot;:true}}</string>
       </property>
      </widget>
     </item>

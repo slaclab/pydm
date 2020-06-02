@@ -4,7 +4,7 @@ import logging
 import json
 import numpy
 import numpy as np
-from numpy import array, ndarray
+from numpy import array, ndarray, zeros, empty, ones
 from qtpy.QtCore import Slot, Qt
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
@@ -255,6 +255,13 @@ class Connection(PyDMConnection):
                     type_kwargs['dtype'] = dtype
                 except ValueError:
                     logger.debug('Cannot convert dtype')
+            buffer = type_kwargs.get('buffer')
+            if buffer is not None:
+                try:
+                    buffer = np.array(buffer)
+                    type_kwargs['buffer'] = buffer
+                except ValueError:
+                    logger.debug('Cannot convert buffer to np.array')
             self._type_kwargs = type_kwargs
             return self._type_kwargs
 
@@ -287,9 +294,14 @@ class Connection(PyDMConnection):
         """
         try:
             _type = eval(value_type)
-            return _type(value, **self._type_kwargs)
+            if self._type_kwargs.get('shape') is not None:
+                return _type(**self._type_kwargs)
+            else:
+                return _type(value, **self._type_kwargs)
         except NameError:
             logger.debug('In convert_value cannot evaluate value_type')
+        except TypeError:
+            logger.debug('In convert_value cannot evaluate parameters')
 
     def send_connection_state(self, conn):
         self.connected = conn
