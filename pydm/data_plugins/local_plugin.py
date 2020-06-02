@@ -1,9 +1,10 @@
 """Local Plugin."""
-import ast
 import decimal
 import logging
 import json
+import numpy
 import numpy as np
+from numpy import array, ndarray
 from qtpy.QtCore import Slot, Qt
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
@@ -23,9 +24,14 @@ class Connection(PyDMConnection):
             "unit",
             "upper_limit",
             "lower_limit",
-            "enum_string",
-            "severity"
+            "enum_string"
             ]
+
+        self._precision = None
+        self._unit = None
+        self._upper_limit = None
+        self._lower_limit = None
+        self._enum_string = None
 
         super(Connection, self).__init__(channel, address, protocol, parent)
         self.add_listener(channel)
@@ -79,15 +85,12 @@ class Connection(PyDMConnection):
         Parse the extras dictionay and either pass the data
         to the appropriate methods that will take care of it,
         or emit it right away.
-        Those methods should be responsible for converting
-        the data into appropriate types as well, this function
-        will pass strings to them
 
         Parameters
         ----------
         extras : dict
             Dictionary containing extra parameters for the
-            this local variable configuration configuration
+            this local variable configuration
             These parameters are optional
 
         Returns
@@ -98,8 +101,7 @@ class Connection(PyDMConnection):
         precision = extras.get('precision')
         if precision is not None:
             try:
-                precision = int(precision)
-                self._precision_set = precision
+                self._precision_set = int(precision)
                 self.prec_signal.emit(self._precision_set)
             except ValueError:
                 logger.debug('Cannot convert precision')
@@ -115,13 +117,10 @@ class Connection(PyDMConnection):
         enum_string = extras.get('enum_string')
         if enum_string is not None:
             self.send_enum_string(enum_string)
-        severity = extras.get('severity')
-        if severity is not None:
-            self.send_severity(severity)
         type_kwargs = {k: v for k, v in extras.items()
                        if k not in self._extra_config_keys}
         if type_kwargs:
-            self.format_ndarray_params(type_kwargs)
+            self.format_type_params(type_kwargs)
 
     @Slot(int)
     @Slot(float)
@@ -134,21 +133,16 @@ class Connection(PyDMConnection):
         variable channel to all its listeners.
         """
         if value is not None:
-            if isinstance(value, (int, float, bool, str)):
-                self.new_value_signal[type(value)].emit(value)
-            elif isinstance(value, np.ndarray):
-                self.new_value_signal[np.ndarray].emit(value)
-            else:
-                logger.debug('Does not support this type')
+            self.new_value_signal[type(value)].emit(value)
 
     def send_precision(self, value):
         """
-        Send the precision for float values.
-        It is being sent anytime a float value is sent.
+        Calculate and send the precision for float values if precision
+        is not specified in the extras
 
         Parameters
         ----------
-        value : string
+        value : int
             The value to be sent,should be sent as int
 
         Returns
@@ -158,8 +152,8 @@ class Connection(PyDMConnection):
         """
         if value is not None:
             dec = decimal.Decimal(str(value))
-            precision = len(str(dec).split('.')[1])
-            self.prec_signal.emit(precision)
+            self._precision = len(str(dec).split('.')[1])
+            self.prec_signal.emit(self._precision)
 
     def send_unit(self, unit):
         """
@@ -175,7 +169,8 @@ class Connection(PyDMConnection):
 
         """
         if unit is not None:
-            self.prec_signal.emit(str(unit))
+            self._unit = str(unit)
+            self.prec_signal.emit(self.unit)
 
     def send_upper_limit(self, upper_limit):
         """
@@ -183,7 +178,7 @@ class Connection(PyDMConnection):
 
         Parameters
         ----------
-        upper_limit : string
+        upper_limit : int or float
 
         Returns
         -------
@@ -192,11 +187,11 @@ class Connection(PyDMConnection):
         """
         if upper_limit is not None:
             try:
-                upper_limit = int(upper_limit)
+                self._upper_limit = int(upper_limit)
             except ValueError:
-                upper_limit = float(upper_limit)
+                self._upper_limit = float(upper_limit)
 
-            self.upper_ctrl_limit_signal.emit(upper_limit)
+            self.upper_ctrl_limit_signal.emit(self._upper_limit)
 
     def send_lower_limit(self, lower_limit):
         """
@@ -204,7 +199,7 @@ class Connection(PyDMConnection):
 
         Parameters
         ----------
-        lower_limit : string
+        lower_limit : int or float
 
         Returns
         -------
@@ -213,11 +208,11 @@ class Connection(PyDMConnection):
         """
         if lower_limit is not None:
             try:
-                lower_limit = int(lower_limit)
+                self._lower_limit = int(lower_limit)
             except ValueError:
-                lower_limit = float(lower_limit)
+                self._lower_limit = float(lower_limit)
 
-            self.lower_ctrl_limit_signal.emit(lower_limit)
+            self.lower_ctrl_limit_signal.emit(self._lower_limit)
 
     def send_enum_string(self, enum_string):
         """
@@ -225,7 +220,7 @@ class Connection(PyDMConnection):
 
         Parameters
         ----------
-        enum_string : string
+        enum_string : int or float
 
         Returns
         -------
@@ -234,109 +229,34 @@ class Connection(PyDMConnection):
         """
         if enum_string is not None:
             try:
-                enum = enum_string.replace('(', '').replace(')', '').split(',')
-                enum_string = tuple(enum)
-                self.enum_strings_signal.emit(enum_string)
+                self._enum_string = tuple(enum_string)
+                self.enum_strings_signal.emit(self._enum_string)
             except ValueError:
                 logger.debug("Error when converting enum_string")
 
-    def send_severity(self, severity):
+    def format_type_params(self, type_kwargs):
         """
-        Send severity as int.
-
-        Possible values:
-            0 - NO_ALARM
-            1 - MINOR
-            2 - MAJOR
-            3 - INVALID
-
-        Parameters
-        ----------
-        severity : string
-
-        Returns
-        -------
-        None.
-
-        """
-        if severity is not None:
-            try:
-                severity = int(severity)
-                self.new_severity_signal.emit(severity)
-            except ValueError:
-                logger.debug("Cannot convert severity")
-
-    def format_ndarray_params(self, type_kwargs):
-        """
-        Format the ndarray parameters.
-        Possible parameters:
-            dtype - data-type, optional
-            copy - bool, optional
-            order - {'K', 'A', 'C', 'F'}, optional
-            subok - bool, optional
-            ndmin - int, optional
+        Format value_type parameters.
 
         Parameters
         ----------
         type_kwargs : dict
-            String representing a set of parameters for np.array()
 
         Returns
         -------
-            ndarray
+            dict
 
         """
-        # default values that a np.array() will normally use
-        # to construct a ndarray if they are not specified
-        dtype = None
-        copy = True
-        order = 'K'
-        subok = False
-        ndmin = 0
-
         if type_kwargs:
-
             dtype = type_kwargs.get('dtype')
             if dtype is not None:
                 try:
                     dtype = np.dtype(dtype)
+                    type_kwargs['dtype'] = dtype
                 except ValueError:
                     logger.debug('Cannot convert dtype')
-
-            copy = type_kwargs.get('copy')
-            if copy is not None:
-                if copy == 'False':
-                    copy = False
-                else:
-                    copy = True
-
-            order = type_kwargs.get('order')
-            if order is not None:
-                if order not in ['K', 'A', 'C', 'F']:
-                    # set it to the default value
-                    order = 'K'
-
-            subok = type_kwargs.get('subok')
-            if subok is not None:
-                if subok == 'True':
-                    subok = True
-                else:
-                    subok = False
-
-            ndmin = type_kwargs.get('ndmin')
-            if ndmin is not None:
-                try:
-                    ndmin = int(ndmin)
-                except ValueError:
-                    logger.debug('Cannot convert ndmin to integer')
-
-            self._type_kwargs = {
-                'dtype': dtype,
-                'copy': copy,
-                'order': order,
-                'subok': subok,
-                'ndmin': ndmin
-                }
+            self._type_kwargs = type_kwargs
+            return self._type_kwargs
 
     def send_access_state(self):
         """
@@ -355,7 +275,7 @@ class Connection(PyDMConnection):
 
         Parameters
         ----------
-        value : str
+        value :
             Data for this variable.
         value_type : str
             Data type intended for this variable.
@@ -365,45 +285,11 @@ class Connection(PyDMConnection):
             The data for this variable converted to its appropriate type
 
         """
-        if value_type == 'int':
-            try:
-                return int(value)
-            except ValueError:
-                pass
-        elif 'ndarray' in value_type:
-            try:
-                # evaluate it first
-                value_list = ast.literal_eval(value)
-                value_array = None
-                # convert into a numpy array using the extras
-                if self._type_kwargs:
-                    value_array = np.array(value_list, **self._type_kwargs)
-                else:
-                    value_array = np.array(value_list)
-                return value_array
-            except ValueError:
-                pass
-        elif value_type == 'float':
-            try:
-                return float(value)
-            except ValueError:
-                pass
-        elif value_type == 'str':
-            try:
-                return str(value)
-            except ValueError:
-                pass
-        elif value_type == 'bool':
-            try:
-                # is True if not found in the list with possible false values
-                str_value = str(value).strip().lower()
-                return str_value not in ['false', 'f', 'n', '1', '']
-            except ValueError:
-                pass
-        else:
-            msg = 'In convert_value provide unknown type %s', value
-            logger.debug(msg)
-            raise ValueError(msg)
+        try:
+            _type = eval(value_type)
+            return _type(value, **self._type_kwargs)
+        except NameError:
+            logger.debug('In convert_value cannot evaluate value_type')
 
     def send_connection_state(self, conn):
         self.connected = conn
@@ -419,7 +305,6 @@ class Connection(PyDMConnection):
         # send the precision in case of float values
         if isinstance(self.value, float):
             if self._precision_set is None:
-                print('is set....', self._precision_set)
                 self.send_precision(self.value)
             else:
                 self.prec_signal.emit(self._precision_set)
