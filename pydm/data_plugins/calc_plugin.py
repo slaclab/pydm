@@ -164,16 +164,19 @@ class Connection(PyDMConnection):
         self.add_listener(channel)
         self._init_connection()
 
-        self._setup_calc(address)
-
     def _init_connection(self):
         self.write_access_signal.emit(False)
 
-    def _setup_calc(self, address):
+    def add_listener(self, channel):
+        self._setup_calc(channel)
+        super(Connection, self).add_listener(channel)
+
+    def _setup_calc(self, channel):
         if not self._waiting_config:
             logger.debug('CalcPlugin connection already configured.')
             return
         try:
+            address = PyDMPlugin.get_address(channel)
             config = json.loads(address)
             jsonschema.validate(config, CALC_ADDRESS_SCHEMA)
         except:
