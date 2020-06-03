@@ -50,6 +50,7 @@ class CalcThread(QThread):
         self.config = config
 
         self._calculate = threading.Event()
+        self._names = []
         self._channels = []
         self._value = None
         self._values = collections.defaultdict(None)
@@ -63,6 +64,7 @@ class CalcThread(QThread):
             c = pydm.PyDMChannel(channel, connection_slot=conn_cb,
                                  value_slot=value_cb)
             self._channels.append(c)
+            self._names.append(name)
 
     @property
     def connected(self):
@@ -134,8 +136,8 @@ class CalcThread(QThread):
         Evaluate the expression defined by the rule and emit the `rule_signal`
         with the new value.
         """
-        vals = dict(self._values)
-        if None in vals:
+        vals = self._values.copy()
+        if None in [vals.get(n) for n in self._names]:
             logger.debug('Skipping execution as not all values are set.')
             return
 
