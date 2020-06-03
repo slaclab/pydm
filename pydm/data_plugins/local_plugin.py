@@ -2,9 +2,7 @@
 import decimal
 import logging
 import json
-import numpy
 import numpy as np
-from numpy import array, ndarray, zeros, empty, ones
 from qtpy.QtCore import Slot, Qt
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
@@ -26,6 +24,14 @@ class Connection(PyDMConnection):
             "lower_limit",
             "enum_string"
             ]
+
+        self._data_types = {
+            'int': int,
+            'float': float,
+            'str': str,
+            'bool': bool,
+            'array': np.array
+            }
 
         self._precision = None
         self._unit = None
@@ -247,23 +253,14 @@ class Connection(PyDMConnection):
             dict
 
         """
-        if type_kwargs:
-            dtype = type_kwargs.get('dtype')
-            if dtype is not None:
-                try:
-                    dtype = np.dtype(dtype)
-                    type_kwargs['dtype'] = dtype
-                except ValueError:
-                    logger.debug('Cannot convert dtype')
-            buffer = type_kwargs.get('buffer')
-            if buffer is not None:
-                try:
-                    buffer = np.array(buffer)
-                    type_kwargs['buffer'] = buffer
-                except ValueError:
-                    logger.debug('Cannot convert buffer to np.array')
-            self._type_kwargs = type_kwargs
-            return self._type_kwargs
+        dtype = type_kwargs.get('dtype')
+        if dtype is not None:
+            try:
+                self._type_kwargs['dtype'] = np.dtype(dtype)
+                return self._type_kwargs
+            except ValueError:
+                logger.debug('Cannot convert dtype')
+        return self._type_kwargs
 
     def send_access_state(self):
         """
@@ -278,7 +275,7 @@ class Connection(PyDMConnection):
 
     def convert_value(self, value, value_type):
         """
-        Convert values from string to their appropriate type.
+        Convert values to heir appropriate types.
 
         Parameters
         ----------
@@ -292,16 +289,14 @@ class Connection(PyDMConnection):
             The data for this variable converted to its appropriate type
 
         """
-        try:
-            _type = eval(value_type)
-            if self._type_kwargs.get('shape') is not None:
-                return _type(**self._type_kwargs)
-            else:
+        _type = self._data_types.get(value_type)
+        if _type is not None:
+            try:
                 return _type(value, **self._type_kwargs)
-        except NameError:
-            logger.debug('In convert_value cannot evaluate value_type')
-        except TypeError:
-            logger.debug('In convert_value cannot evaluate parameters')
+            except ValueError:
+                logger.debug('Cannot convert value_type')
+        else:
+            return None
 
     def send_connection_state(self, conn):
         self.connected = conn
