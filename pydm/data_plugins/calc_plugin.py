@@ -258,8 +258,6 @@ class CalculationPlugin(PyDMPlugin):
         except:
             try:
                 jsonschema.validate(config, CALC_ADDRESS_MINIMUM_SCHEMA)
-                logger.info('CalcPlugin connection %s got new listener.',
-                             address)
             except:
                 msg = "Invalid configuration for CalcPlugin connection. %s"
                 logger.exception(msg, address)
