@@ -2,12 +2,47 @@
 import decimal
 import logging
 import json
+import jsonschema
 import numpy as np
 from qtpy.QtCore import Slot, Qt
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
-
 logger = logging.getLogger(__name__)
+
+LOC_ADDRESS_SCHEMA = json.loads("""
+{
+  "definitions": {
+      "init": {
+          "type": ["number", "string", "boolean", "array"]
+        },
+      "type": {
+          "type": "string",
+          "enum": ["int", "float", "bool", "array", "str"]
+       }
+      },
+  "type": "object",
+  "properties": {
+      "name": {"type": "string"},
+      "type": {"$ref": "#/definitions/type"},
+      "init": {"$ref": "#/definitions/init"},
+      "extras": {
+        "type": "object",
+        "properties": {
+          "precision": {"type": "number"},
+          "unit": {"type": "string"},
+          "upper_limit": {"type": "number"},
+          "lower_limit": {"type": "number"},
+          "enum_string": {"type": "array"},
+          "dtype": {"type": "string"},
+          "copy": {"type": "boolean"},
+          "order": {"type": "string"},
+          "subok": {"type": "boolean"},
+          "ndmin": {"type": "integer"}
+      }
+    }
+  },
+  "required": ["name", "type","init"]
+}""")
 
 
 class Connection(PyDMConnection):
@@ -48,17 +83,16 @@ class Connection(PyDMConnection):
         self.send_access_state()
 
         self.connected = False
-        self._configure_local_plugin(channel)
 
     def _configure_local_plugin(self, channel):
         if self._is_connection_configured:
             logger.debug('LocalPlugin connection already configured.')
             return
 
-        address = PyDMPlugin.get_address(channel)
-
         try:
+            address = PyDMPlugin.get_address(channel)
             self._configuration = json.loads(address)
+            jsonschema.validate(self._configuration, LOC_ADDRESS_SCHEMA)
         except json.decoder.JSONDecodeError:
             logger.debug(
                 'Invalid configuration for LocalPlugin connection. %s',
@@ -303,8 +337,8 @@ class Connection(PyDMConnection):
         self.connection_state_signal.emit(conn)
 
     def add_listener(self, channel):
-        super(Connection, self).add_listener(channel)
         self._configure_local_plugin(channel)
+        super(Connection, self).add_listener(channel) 
         # send write acces == True to the listeners
         self.send_access_state()
         # send new values to the listeners right away

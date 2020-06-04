@@ -29,7 +29,7 @@
        <string/>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_np.array&quot;}</string>
+       <string>loc://{&quot;name&quot;:&quot;my_ndarray&quot;}</string>
       </property>
      </widget>
     </item>
@@ -63,9 +63,6 @@
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_float&quot;,&quot;type&quot;:&quot;float&quot;,&quot;init&quot;:7.7,&quot;extras&quot;: {&quot;precision&quot;:3, &quot;unit&quot;:&quot;V&quot;}}</string>
       </property>
-      <property name="displayFormat" stdset="0">
-       <enum>PyDMLineEdit::Default</enum>
-      </property>
      </widget>
     </item>
     <item row="6" column="0">
@@ -84,7 +81,7 @@
        <string/>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_np.array&quot;, &quot;type&quot;:&quot;array&quot;, &quot;init&quot;:[1,2,3,4], &quot;extras&quot;: {&quot;dtype&quot;:&quot;float64&quot;, &quot;copy&quot;:false, &quot;order&quot;:&quot;C&quot;, &quot;ndmin&quot;:1, &quot;subok&quot;:true}}</string>
+       <string>loc://{&quot;name&quot;:&quot;my_ndarray&quot;, &quot;type&quot;:&quot;array&quot;, &quot;init&quot;:[1,2,3], &quot;extras&quot;: {&quot;dtype&quot;:&quot;float64&quot;, &quot;copy&quot;:false, &quot;order&quot;:&quot;C&quot;, &quot;ndmin&quot;:1, &quot;subok&quot;:true}}</string>
       </property>
      </widget>
     </item>
@@ -105,9 +102,6 @@
       </property>
       <property name="channel" stdset="0">
        <string>loc://{&quot;name&quot;:&quot;my_float&quot;}</string>
-      </property>
-      <property name="displayFormat" stdset="0">
-       <enum>PyDMLineEdit::Default</enum>
       </property>
      </widget>
     </item>
