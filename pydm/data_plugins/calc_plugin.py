@@ -5,6 +5,7 @@ import jsonschema
 import logging
 import math
 import threading
+import warnings
 
 import numpy as np
 from qtpy.QtCore import Slot, QThread, Signal, Qt
@@ -34,11 +35,34 @@ CALC_ADDRESS_SCHEMA = json.loads("""
 }
 """)
 
+CALC_ADDRESS_MINIMUM_SCHEMA = json.loads("""
+{
+    "type": "object",
+    "properties": {
+        "name": {"type": "string"}
+    },
+    "required": ["name"],
+    "additionalProperties": false
+}
+""")
+
+def epics_string(value, string_encoding="utf-8"):
+    # Stop at the first zero (EPICS convention)
+    # Assume the ndarray is one-dimensional
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        zeros = np.where(value == 0)[0]
+    if zeros.size > 0:
+        value = value[:zeros[0]]
+    r = value.tobytes().decode(string_encoding)
+    return r
+
 
 class CalcThread(QThread):
     eval_env = {'math': math,
                 'np': np,
-                'numpy': np}
+                'numpy': np,
+                'epics_string': epics_string}
 
     new_data_signal = Signal(dict)
 
@@ -137,7 +161,7 @@ class CalcThread(QThread):
         with the new value.
         """
         vals = self._values.copy()
-        if None in [vals.get(n) for n in self._names]:
+        if any([vals.get(n) is None for n in self._names]):
             logger.debug('Skipping execution as not all values are set.')
             return
 
@@ -177,13 +201,14 @@ class Connection(PyDMConnection):
         if not self._waiting_config:
             logger.debug('CalcPlugin connection already configured.')
             return
+
         try:
             address = PyDMPlugin.get_address(channel)
             config = json.loads(address)
             jsonschema.validate(config, CALC_ADDRESS_SCHEMA)
         except:
-            msg = "Invalid configuration for CalcPlugin connection. %s"
-            logger.exception(msg, address)
+            logger.debug('CalcPlugin connection waiting for configuration. %s',
+                         address)
             return
 
         self._configuration = config
@@ -196,6 +221,7 @@ class Connection(PyDMConnection):
         self._calc_thread.new_data_signal.connect(self.receive_new_data,
                                                   Qt.QueuedConnection)
         self._calc_thread.start()
+        return True
 
     @Slot(dict)
     def receive_new_data(self, data):
@@ -226,8 +252,18 @@ class CalculationPlugin(PyDMPlugin):
     def get_connection_id(channel):
         address = PyDMPlugin.get_address(channel)
 
-        j_addr = json.loads(address)
-        name = j_addr.get('name')
-        if not name:
-            raise ValueError("Name is a required field for calc plugin")
+        try:
+            config = json.loads(address)
+            jsonschema.validate(config, CALC_ADDRESS_SCHEMA)
+        except:
+            try:
+                jsonschema.validate(config, CALC_ADDRESS_MINIMUM_SCHEMA)
+                logger.info('CalcPlugin connection %s got new listener.',
+                             address)
+            except:
+                msg = "Invalid configuration for CalcPlugin connection. %s"
+                logger.exception(msg, address)
+                raise ValueError("Name is a required field for calc plugin")
+
+        name = config['name']
         return name
