@@ -41,8 +41,43 @@ LOC_ADDRESS_SCHEMA = json.loads("""
       }
     }
   },
+ "allOf": [
+  {
+   "if": {"properties": { "type": { "const": "int" }}},
+   "then": {"properties": { "init": { "type": "integer" }}}
+  },
+  {
+   "if": {"properties": { "type": { "const": "float" }}},
+   "then": {"properties": { "init": { "type": "number" }}}
+  },
+  {
+   "if": {"properties": { "type": { "const": "str" }}},
+   "then": {"properties": { "init": { "type": "string" }}}
+  },
+  {
+   "if": {"properties": { "type": { "const": "bool" }}},
+   "then": {"properties": { "init": { "type": "boolean" }}}
+  },
+  {
+    "if": {"properties": { "type": { "const": "array" }}},
+  "then": {"properties": { "init": { "type": "array" }}}
+  }
+  ],
+
   "required": ["name", "type","init"]
-}""")
+}
+""")
+
+LOC_ADDRESS_MINIMUM_SCHEMA = json.loads("""
+{
+    "type": "object",
+    "properties": {
+        "name": {"type": "string"}
+    },
+    "required": ["name"],
+    "additionalProperties": false
+}
+""")
 
 
 class Connection(PyDMConnection):
@@ -76,7 +111,6 @@ class Connection(PyDMConnection):
 
         super(Connection, self).__init__(channel, address, protocol, parent)
         self.add_listener(channel)
-
         self._configuration = {}
 
         self.send_connection_state(False)
@@ -93,7 +127,7 @@ class Connection(PyDMConnection):
             address = PyDMPlugin.get_address(channel)
             self._configuration = json.loads(address)
             jsonschema.validate(self._configuration, LOC_ADDRESS_SCHEMA)
-        except json.decoder.JSONDecodeError:
+        except:
             logger.debug(
                 'Invalid configuration for LocalPlugin connection. %s',
                 address)
@@ -337,8 +371,8 @@ class Connection(PyDMConnection):
         self.connection_state_signal.emit(conn)
 
     def add_listener(self, channel):
+        super(Connection, self).add_listener(channel)
         self._configure_local_plugin(channel)
-        super(Connection, self).add_listener(channel) 
         # send write acces == True to the listeners
         self.send_access_state()
         # send new values to the listeners right away
@@ -414,8 +448,17 @@ class LocalPlugin(PyDMPlugin):
     def get_connection_id(channel):
         address = PyDMPlugin.get_address(channel)
 
-        addr = json.loads(address)
-        name = addr.get('name')
-        if not name:
-            raise ValueError("Name is a required field for local plugin")
-        return name
+        try:
+            config = json.loads(address)
+            jsonschema.validate(config, LOC_ADDRESS_SCHEMA)
+        except:
+            try:
+                jsonschema.validate(config, LOC_ADDRESS_MINIMUM_SCHEMA)
+                logger.debug('LocalPlugin connection %s got new listener.',
+                             address)
+            except:
+                msg = "Invalid configuration for LocalPlugin connection. %s"
+                logger.exception(msg, address)
+                raise ValueError("Name is a required field for calc plugin")
+
+        return config['name']
