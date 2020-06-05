@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.byte &mdash; PyDM v1.10.1+7.gdaf14f41 documentation</title>
+  <title>pydm.widgets.byte &mdash; PyDM v1.10.1+9.g81843aa2 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.10.1+7.gdaf14f41
+                v1.10.1+9.g81843aa2
               </div>
             
           
@@ -526,10 +526,14 @@
 <span class="sd">            If True, the Big Endian will be used, Little Endian otherwise</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_big_endian</span> <span class="o">=</span> <span class="n">is_big_endian</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_big_endian</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setOriginCorner</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">BottomLeftCorner</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setOriginCorner</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">TopLeftCorner</span><span class="p">)</span>
+
+        <span class="n">origin_map</span> <span class="o">=</span> <span class="p">{(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span> <span class="n">Qt</span><span class="o">.</span><span class="n">BottomLeftCorner</span><span class="p">,</span>
+                      <span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span> <span class="n">Qt</span><span class="o">.</span><span class="n">TopLeftCorner</span><span class="p">,</span>
+                      <span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span> <span class="n">Qt</span><span class="o">.</span><span class="n">TopRightCorner</span><span class="p">,</span>
+                      <span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span> <span class="n">Qt</span><span class="o">.</span><span class="n">TopLeftCorner</span><span class="p">}</span>
+
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">origin_map</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bigEndian</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setOriginCorner</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
