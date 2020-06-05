@@ -348,10 +348,14 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             If True, the Big Endian will be used, Little Endian otherwise
         """
         self._big_endian = is_big_endian
-        if self._big_endian:
-            self.layout().setOriginCorner(Qt.BottomLeftCorner)
-        else:
-            self.layout().setOriginCorner(Qt.TopLeftCorner)
+
+        origin_map = {(Qt.Vertical, True): Qt.BottomLeftCorner,
+                      (Qt.Vertical, False): Qt.TopLeftCorner,
+                      (Qt.Horizontal, True): Qt.TopRightCorner,
+                      (Qt.Horizontal, False): Qt.TopLeftCorner}
+
+        origin = origin_map[(self.orientation, self.bigEndian)]
+        self.layout().setOriginCorner(origin)
         self.rebuild_layout()
 
     @Property(bool)
