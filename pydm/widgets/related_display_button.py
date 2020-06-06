@@ -169,7 +169,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         warnings.warn("'PyDMRelatedDisplayButton.displayFilename' is deprecated, "
                       "use 'PyDMRelatedDisplayButton.filenames' instead.")
         if value:
-            self._filenames.insert(0, str(value))
+            if value in self.filenames:
+                return
+            else:
+                file_list = [value]
+                self.filenames = self.filenames + file_list
         self._display_filename = ""
             
     @Property('QStringList')
