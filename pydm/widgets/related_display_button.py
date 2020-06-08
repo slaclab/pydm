@@ -63,9 +63,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         self._macro_string = None
         self._open_in_new_window = False
         self.open_in_new_window_action = QAction("Open in New Window", self)
-        self.open_in_new_window_action.triggered.connect(partial(self.open_display, target=self.NEW_WINDOW))
+        self.open_in_new_window_action.triggered.connect(
+            self.handle_open_new_window_action)
         self._show_icon = True
         self._menu_needs_rebuild = True
+        self._open_new_window_acttion_triggered = False
 
     @Property('QStringList')
     def filenames(self):
@@ -171,9 +173,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         if value:
             if value in self.filenames:
                 return
-            else:
-                file_list = [value]
-                self.filenames = self.filenames + file_list
+            file_list = [value]
+            self.filenames = self.filenames + file_list
         self._display_filename = ""
             
     @Property('QStringList')
@@ -266,6 +267,19 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
 
     @Slot()
+    def handle_open_new_window_action(self):
+        if len(self.filenames) == 0:
+            return
+        try:
+            self._open_new_window_acttion_triggered = True
+            self.open_display(
+                filename=self.filenames[0], target=self.NEW_WINDOW)
+        except Exception:
+            logger.exception("Failed to open display.")
+        finally:
+            self._open_new_window_acttion_triggered = False
+
+    @Slot()
     def open_display(self, filename, macro_string="", target=None):
         """
         Open the configured `filename` with the given `target`.
@@ -295,6 +309,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         screen_target = None
         if self._shift_key_was_down:
             target = self.NEW_WINDOW
+            screen_target = ScreenTarget.NEW_PROCESS
+        if self._open_new_window_acttion_triggered:
             screen_target = ScreenTarget.NEW_PROCESS
         if target is None:
             if self._open_in_new_window:
