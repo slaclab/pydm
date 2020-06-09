@@ -248,7 +248,6 @@ class RulesEngine(QThread):
                     return
                 w_map[index]['calculate'] = True
         except KeyError:
-            logger.exception('Key Error at value Changed')
             pass
 
     def callback_conn(self, widget_ref, index, ch_index, value):
