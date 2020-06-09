@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pyqtgraph.graphicsItems.GraphicsItem &mdash; PyDM v1.10.1+9.g81843aa2 documentation</title>
+  <title>pyqtgraph.graphicsItems.GraphicsItem &mdash; PyDM v1.10.1+16.gd297ee38 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.10.1+9.g81843aa2
+                v1.10.1+16.gd297ee38
               </div>
             
           
@@ -197,8 +197,9 @@
 <span class="sd">    The GraphicsView system places a lot of emphasis on the notion that the graphics within the scene should be device independent--you should be able to take the same graphics and display them on screens of different resolutions, printers, export to SVG, etc. This is nice in principle, but causes me a lot of headache in practice. It means that I have to circumvent all the device-independent expectations any time I want to operate in pixel coordinates rather than arbitrary scene coordinates. A lot of the code in GraphicsItem is devoted to this task--keeping track of view widgets and device transforms, computing the size and shape of a pixel in local item coordinates, etc. Note that in item coordinates, a pixel does not have to be square or even rectangular, so just asking how to increase a bounding rect by 2px can be a rather complex task.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_pixelVectorGlobalCache</span> <span class="o">=</span> <span class="n">LRUCache</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
-    
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">_mapRectFromViewGlobalCache</span> <span class="o">=</span> <span class="n">LRUCache</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_qtBaseClass&#39;</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__bases__</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsItem</span><span class="p">):</span>
@@ -206,15 +207,18 @@
                     <span class="k">break</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_qtBaseClass&#39;</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Could not determine Qt base class for GraphicsItem: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_pixelVectorCache</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_viewWidget</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_viewBox</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connectedView</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_exportOpts</span> <span class="o">=</span> <span class="kc">False</span>   <span class="c1">## If False, not currently exporting. Otherwise, contains dict of export options.</span>
-        <span class="k">if</span> <span class="n">register</span><span class="p">:</span>
-            <span class="n">GraphicsScene</span><span class="o">.</span><span class="n">registerObject</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1">## workaround for pyqt bug in graphicsscene.items()</span>
-                    
+        <span class="k">if</span> <span class="n">register</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">register</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;register&#39; argument is deprecated and does nothing&quot;</span><span class="p">,</span>
+                <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
+            <span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">getViewWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the view widget for this item. </span>
@@ -363,24 +367,23 @@
         <span class="c1">## (such as when looking at unix timestamps), we can get floating-point errors.</span>
         <span class="n">dt</span><span class="o">.</span><span class="n">setMatrix</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">m11</span><span class="p">(),</span> <span class="n">dt</span><span class="o">.</span><span class="n">m12</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">m21</span><span class="p">(),</span> <span class="n">dt</span><span class="o">.</span><span class="n">m22</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         
+        <span class="k">if</span> <span class="n">direction</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QPointF</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">direction</span><span class="o">.</span><span class="n">manhattanLength</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Cannot compute pixel length for 0-length vector.&quot;</span><span class="p">)</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">m11</span><span class="p">(),</span> <span class="n">dt</span><span class="o">.</span><span class="n">m21</span><span class="p">(),</span> <span class="n">dt</span><span class="o">.</span><span class="n">m12</span><span class="p">(),</span> <span class="n">dt</span><span class="o">.</span><span class="n">m22</span><span class="p">(),</span> <span class="n">direction</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">direction</span><span class="o">.</span><span class="n">y</span><span class="p">())</span>
+
         <span class="c1">## check local cache</span>
-        <span class="k">if</span> <span class="n">direction</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">dt</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixelVectorCache</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixelVectorCache</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">Point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixelVectorCache</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>  <span class="c1">## return a *copy*</span>
-        
+
         <span class="c1">## check global cache</span>
-        <span class="c1">#key = (dt.m11(), dt.m21(), dt.m31(), dt.m12(), dt.m22(), dt.m32(), dt.m31(), dt.m32())</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">m11</span><span class="p">(),</span> <span class="n">dt</span><span class="o">.</span><span class="n">m21</span><span class="p">(),</span> <span class="n">dt</span><span class="o">.</span><span class="n">m12</span><span class="p">(),</span> <span class="n">dt</span><span class="o">.</span><span class="n">m22</span><span class="p">())</span>
         <span class="n">pv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixelVectorGlobalCache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">direction</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">pv</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_pixelVectorCache</span> <span class="o">=</span> <span class="p">[</span><span class="n">dt</span><span class="p">,</span> <span class="n">pv</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">pv</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pixelVectorCache</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="n">pv</span><span class="p">]</span>
             <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">Point</span><span class="p">,</span><span class="n">pv</span><span class="p">))</span>  <span class="c1">## return a *copy*</span>
         
-        
-        <span class="k">if</span> <span class="n">direction</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">direction</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QPointF</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  
-        <span class="k">if</span> <span class="n">direction</span><span class="o">.</span><span class="n">manhattanLength</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Cannot compute pixel length for 0-length vector.&quot;</span><span class="p">)</span>
-            
         <span class="c1">## attempt to re-scale direction vector to fit within the precision of the coordinate system</span>
         <span class="c1">## Here&#39;s the problem: we need to map the vector &#39;direction&#39; from the item to the device, via transform &#39;dt&#39;.</span>
         <span class="c1">## In some extreme cases, this mapping can fail unless the length of &#39;direction&#39; is cleverly chosen.</span>
@@ -543,8 +546,21 @@
         <span class="n">vt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewTransform</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">vt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">vt</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">invertQTransform</span><span class="p">(</span><span class="n">vt</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">vt</span><span class="o">.</span><span class="n">mapRect</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+        <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapRectFromViewGlobalCache</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">vt</span><span class="o">.</span><span class="n">m11</span><span class="p">(),</span> <span class="n">vt</span><span class="o">.</span><span class="n">m12</span><span class="p">(),</span> <span class="n">vt</span><span class="o">.</span><span class="n">m13</span><span class="p">(),</span>
+            <span class="n">vt</span><span class="o">.</span><span class="n">m21</span><span class="p">(),</span> <span class="n">vt</span><span class="o">.</span><span class="n">m22</span><span class="p">(),</span> <span class="n">vt</span><span class="o">.</span><span class="n">m23</span><span class="p">(),</span>
+            <span class="n">vt</span><span class="o">.</span><span class="n">m31</span><span class="p">(),</span> <span class="n">vt</span><span class="o">.</span><span class="n">m32</span><span class="p">(),</span> <span class="n">vt</span><span class="o">.</span><span class="n">m33</span><span class="p">(),</span>
+        <span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">inv_vt</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">inv_vt</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">invertQTransform</span><span class="p">(</span><span class="n">vt</span><span class="p">)</span>
+            <span class="n">cache</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">inv_vt</span>
+
+        <span class="k">return</span> <span class="n">inv_vt</span><span class="o">.</span><span class="n">mapRect</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">pos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_qtBaseClass</span><span class="o">.</span><span class="n">pos</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>

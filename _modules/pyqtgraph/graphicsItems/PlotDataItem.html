@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pyqtgraph.graphicsItems.PlotDataItem &mdash; PyDM v1.10.1+9.g81843aa2 documentation</title>
+  <title>pyqtgraph.graphicsItems.PlotDataItem &mdash; PyDM v1.10.1+16.gd297ee38 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.10.1+9.g81843aa2
+                v1.10.1+16.gd297ee38
               </div>
             
           
@@ -176,7 +176,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pyqtgraph.graphicsItems.PlotDataItem</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">metaarray</span> <span class="k">as</span> <span class="n">metaarray</span>
 <span class="kn">from</span> <span class="nn">..Qt</span> <span class="kn">import</span> <span class="n">QtCore</span>
 <span class="kn">from</span> <span class="nn">.GraphicsObject</span> <span class="kn">import</span> <span class="n">GraphicsObject</span>
@@ -218,25 +219,30 @@
 <span class="sd">        **Data initialization arguments:** (x,y data only)</span>
 <span class="sd">        </span>
 <span class="sd">            =================================== ======================================</span>
-<span class="sd">            PlotDataItem(xValues, yValues)      x and y values may be any sequence (including ndarray) of real numbers</span>
-<span class="sd">            PlotDataItem(yValues)               y values only -- x will be automatically set to range(len(y))</span>
+<span class="sd">            PlotDataItem(xValues, yValues)      x and y values may be any sequence</span>
+<span class="sd">                                                (including ndarray) of real numbers</span>
+<span class="sd">            PlotDataItem(yValues)               y values only -- x will be</span>
+<span class="sd">                                                automatically set to range(len(y))</span>
 <span class="sd">            PlotDataItem(x=xValues, y=yValues)  x and y given by keyword arguments</span>
-<span class="sd">            PlotDataItem(ndarray(Nx2))          numpy array with shape (N, 2) where x=data[:,0] and y=data[:,1]</span>
+<span class="sd">            PlotDataItem(ndarray(Nx2))          numpy array with shape (N, 2) where</span>
+<span class="sd">                                                ``x=data[:,0]`` and ``y=data[:,1]``</span>
 <span class="sd">            =================================== ======================================</span>
 <span class="sd">        </span>
 <span class="sd">        **Data initialization arguments:** (x,y data AND may include spot style)</span>
 <span class="sd">        </span>
-<span class="sd">            ===========================   =========================================</span>
-<span class="sd">            PlotDataItem(recarray)        numpy array with dtype=[(&#39;x&#39;, float), (&#39;y&#39;, float), ...]</span>
-<span class="sd">            PlotDataItem(list-of-dicts)   [{&#39;x&#39;: x, &#39;y&#39;: y, ...},   ...] </span>
-<span class="sd">            PlotDataItem(dict-of-lists)   {&#39;x&#39;: [...], &#39;y&#39;: [...],  ...}           </span>
-<span class="sd">            PlotDataItem(MetaArray)       1D array of Y values with X sepecified as axis values </span>
-<span class="sd">                                          OR 2D array with a column &#39;y&#39; and extra columns as needed.</span>
-<span class="sd">            ===========================   =========================================</span>
+<span class="sd">            ============================ =========================================</span>
+<span class="sd">            PlotDataItem(recarray)       numpy array with ``dtype=[(&#39;x&#39;, float),</span>
+<span class="sd">                                         (&#39;y&#39;, float), ...]``</span>
+<span class="sd">            PlotDataItem(list-of-dicts)  ``[{&#39;x&#39;: x, &#39;y&#39;: y, ...},   ...]``</span>
+<span class="sd">            PlotDataItem(dict-of-lists)  ``{&#39;x&#39;: [...], &#39;y&#39;: [...],  ...}``</span>
+<span class="sd">            PlotDataItem(MetaArray)      1D array of Y values with X sepecified as</span>
+<span class="sd">                                         axis values OR 2D array with a column &#39;y&#39;</span>
+<span class="sd">                                         and extra columns as needed.</span>
+<span class="sd">            ============================ =========================================</span>
 <span class="sd">        </span>
 <span class="sd">        **Line style keyword arguments:**</span>
 
-<span class="sd">            ==========   ==============================================================================</span>
+<span class="sd">            ============ ==============================================================================</span>
 <span class="sd">            connect      Specifies how / whether vertexes should be connected. See</span>
 <span class="sd">                         :func:`arrayToQPath() &lt;pyqtgraph.arrayToQPath&gt;`</span>
 <span class="sd">            pen          Pen to use for drawing line between points.</span>
@@ -245,15 +251,14 @@
 <span class="sd">            shadowPen    Pen for secondary line to draw behind the primary line. disabled by default.</span>
 <span class="sd">                         May be any single argument accepted by :func:`mkPen() &lt;pyqtgraph.mkPen&gt;`</span>
 <span class="sd">            fillLevel    Fill the area between the curve and fillLevel</span>
-<span class="sd">            fillOutline  (bool) If True, an outline surrounding the *fillLevel*</span>
-<span class="sd">                         area is drawn.</span>
-<span class="sd">            fillBrush    Fill to use when fillLevel is specified. </span>
+<span class="sd">            fillOutline  (bool) If True, an outline surrounding the *fillLevel* area is drawn.</span>
+<span class="sd">            fillBrush    Fill to use when fillLevel is specified.</span>
 <span class="sd">                         May be any single argument accepted by :func:`mkBrush() &lt;pyqtgraph.mkBrush&gt;`</span>
 <span class="sd">            stepMode     If True, two orthogonal lines are drawn for each sample</span>
 <span class="sd">                         as steps. This is commonly used when drawing histograms.</span>
-<span class="sd">                         Note that in this case, `len(x) == len(y) + 1`</span>
+<span class="sd">                         Note that in this case, ``len(x) == len(y) + 1``</span>
 <span class="sd">                         (added in version 0.9.9)</span>
-<span class="sd">            ==========   ==============================================================================</span>
+<span class="sd">            ============ ==============================================================================</span>
 <span class="sd">        </span>
 <span class="sd">        **Point style keyword arguments:**  (see :func:`ScatterPlotItem.setData() &lt;pyqtgraph.ScatterPlotItem.setData&gt;` for more information)</span>
 <span class="sd">        </span>
