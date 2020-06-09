@@ -1,3 +1,4 @@
+import json
 import logging
 import functools
 import weakref
@@ -50,7 +51,8 @@ def register_widget_rules(widget):
         try:
             if hasattr(child_widget, 'rules'):
                 if child_widget.rules:
-                    RulesDispatcher().register(child_widget, child_widget.rules)
+                    rules = json.loads(child_widget.rules)
+                    RulesDispatcher().register(child_widget, rules)
         except Exception:
             pass
 
@@ -161,40 +163,41 @@ class RulesEngine(QThread):
         if widget_ref in self.widget_map:
             self.unregister(widget_ref)
 
-        with QMutexLocker(self.map_lock):
-            self.widget_map[widget_ref] = []
-            for idx, rule in enumerate(rules):
-                channels_list = rule.get('channels', [])
+        rules_db = []
+        for idx, rule in enumerate(rules):
+            channels_list = rule.get('channels', [])
 
-                item = dict()
-                item['rule'] = rule
-                item['calculate'] = False
-                item['values'] = [None] * len(channels_list)
-                item['conn'] = [False] * len(channels_list)
-                item['channels'] = []
+            item = dict()
+            item['rule'] = rule
+            item['calculate'] = False
+            item['values'] = [None] * len(channels_list)
+            item['conn'] = [False] * len(channels_list)
+            item['channels'] = []
 
-                for ch_idx, ch in enumerate(channels_list):
-                    conn_cb = functools.partial(self.callback_conn, widget_ref,
-                                                idx, ch_idx)
-                    value_cb = functools.partial(self.callback_value, widget_ref,
-                                                 idx, ch_idx, ch['trigger'])
-                    c = PyDMChannel(ch['channel'], connection_slot=conn_cb,
-                                    value_slot=value_cb)
-                    item['channels'].append(c)
-                    c.connect()
+            for ch_idx, ch in enumerate(channels_list):
+                conn_cb = functools.partial(self.callback_conn, widget_ref,
+                                            idx, ch_idx)
+                value_cb = functools.partial(self.callback_value, widget_ref,
+                                             idx, ch_idx, ch['trigger'])
+                c = PyDMChannel(ch['channel'], connection_slot=conn_cb,
+                                value_slot=value_cb)
+                item['channels'].append(c)
+                c.connect()
 
-                self.widget_map[widget_ref].append(item)
+            rules_db.append(item)
+
+        if rules_db:
+            self.widget_map[widget_ref] = rules_db
 
     def unregister(self, widget_ref):
-        with QMutexLocker(self.map_lock):
-            # If hash() is called the first time only after the object was
-            # deleted, the call will raise TypeError.
-            # We should just ignore it.
-            w_data = None
-            try:
-                w_data = self.widget_map.pop(widget_ref, None)
-            except TypeError:
-                pass
+        # If hash() is called the first time only after the object was
+        # deleted, the call will raise TypeError.
+        # We should just ignore it.
+        w_data = None
+        try:
+            w_data = self.widget_map.pop(widget_ref, None)
+        except TypeError:
+            pass
 
         if not w_data:
             return
@@ -207,11 +210,11 @@ class RulesEngine(QThread):
 
     def run(self):
         while not self.isInterruptionRequested():
-            with QMutexLocker(self.map_lock):
-                for widget_ref in self.widget_map:
-                    for rule in self.widget_map[widget_ref]:
-                        if rule['calculate']:
-                                self.calculate_expression(widget_ref, rule)
+            w_map = self.widget_map.copy()
+            for widget_ref, rules in w_map.items():
+                for idx, rule in enumerate(rules):
+                    if rule['calculate']:
+                        self.calculate_expression(widget_ref, idx, rule)
             self.msleep(33)  # 30Hz
 
     def callback_value(self, widget_ref, index, ch_index, trigger, value):
@@ -236,17 +239,16 @@ class RulesEngine(QThread):
         -------
         None
         """
-        with QMutexLocker(self.map_lock):
-            try:
-                self.widget_map[widget_ref][index]['values'][ch_index] = value
-                if trigger:
-                    if not all(self.widget_map[widget_ref][index]['conn']):
-                        self.warn_unconnected_channels(widget_ref, index)
-                        return
-                    self.widget_map[widget_ref][index]['calculate'] = True
-            except KeyError:
-                # widget_ref was destroyed
-                pass
+        try:
+            w_map = self.widget_map[widget_ref]
+            w_map[index]['values'][ch_index] = value
+            if trigger:
+                if not all(w_map[index]['conn']):
+                    self.warn_unconnected_channels(widget_ref, index)
+                    return
+                w_map[index]['calculate'] = True
+        except KeyError:
+            pass
 
     def callback_conn(self, widget_ref, index, ch_index, value):
         """
@@ -267,19 +269,18 @@ class RulesEngine(QThread):
         -------
         None
         """
-        with QMutexLocker(self.map_lock):
-            try:
-                self.widget_map[widget_ref][index]['conn'][ch_index] = value
-            except KeyError:
-                # widget_ref was destroyed
-                pass
+        try:
+            self.widget_map[widget_ref][index]['conn'][ch_index] = value
+        except KeyError:
+            # widget_ref was destroyed
+            pass
 
     def warn_unconnected_channels(self, widget_ref, index):
         logger.error(
             "Rule '%s': Not all channels are connected, skipping execution.",
             self.widget_map[widget_ref][index]['rule']['name'])
 
-    def calculate_expression(self, widget_ref, rule):
+    def calculate_expression(self, widget_ref, idx, rule):
         """
         Evaluate the expression defined by the rule and emit the `rule_signal`
         with the new value.

@@ -55,7 +55,7 @@ def test_unregister(qtbot):
     assert weakref.ref(widget) not in dispatcher.rules_engine.widget_map
 
 
-def test_rules_full(qtbot, caplog):
+def test_rules_not_connected(qtbot, caplog):
     """
     Test the rules mechanism.
 
@@ -88,6 +88,35 @@ def test_rules_full(qtbot, caplog):
         assert record.levelno == logging.ERROR
     assert "Not all channels are connected" in caplog.text
 
+
+def test_rules_ok(qtbot, caplog):
+    """
+    Test the rules mechanism.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Parent of all the widgets
+    caplog : fixture
+        To capture the log messages
+    """
+    widget = PyDMLabel()
+    qtbot.addWidget(widget)
+    widget.show()
+    assert widget.isVisible()
+
+    rules = [{'name': 'Rule #1', 'property': 'Visible',
+                'expression': 'ch[0] < 1',
+                'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+
+    dispatcher = RulesDispatcher()
+    dispatcher.register(widget, rules)
+
+    re = dispatcher.rules_engine
+    assert weakref.ref(widget) in re.widget_map
+    assert len(re.widget_map[weakref.ref(widget)]) == 1
+    assert re.widget_map[weakref.ref(widget)][0]['rule'] == rules[0]
+
     blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
 
     re.callback_conn(weakref.ref(widget), 0, 0, value=True)
@@ -97,6 +126,35 @@ def test_rules_full(qtbot, caplog):
     blocker.wait()
     assert re.widget_map[weakref.ref(widget)][0]['calculate'] is False
     assert not widget.isVisible()
+
+
+def test_rules_invalid_expr(qtbot, caplog):
+    """
+    Test the rules mechanism.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Parent of all the widgets
+    caplog : fixture
+        To capture the log messages
+    """
+    widget = PyDMLabel()
+    qtbot.addWidget(widget)
+    widget.show()
+    assert widget.isVisible()
+
+    rules = [{'name': 'Rule #1', 'property': 'Visible',
+                'expression': 'ch[0] < 1',
+                'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+
+    dispatcher = RulesDispatcher()
+    dispatcher.register(widget, rules)
+
+    re = dispatcher.rules_engine
+    assert weakref.ref(widget) in re.widget_map
+    assert len(re.widget_map[weakref.ref(widget)]) == 1
+    assert re.widget_map[weakref.ref(widget)][0]['rule'] == rules[0]
 
     caplog.clear()
 
