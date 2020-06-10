@@ -67,7 +67,6 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             self.handle_open_new_window_action)
         self._show_icon = True
         self._menu_needs_rebuild = True
-        self._open_new_window_acttion_triggered = False
 
     @Property('QStringList')
     def filenames(self):
@@ -86,7 +85,27 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
     def titles(self, val):
         self._titles = val
         self._menu_needs_rebuild = True
-    
+
+    def _get_items(self):
+        """
+        Aggregate file entry information.
+
+        Yields
+        ------
+        item : dict
+            Containing filename, title, and macros if any
+
+        """
+        for i, filename in enumerate(self.filenames):
+            item = {'filename': filename}
+            if i >= len(self.titles):
+                item['title'] = filename
+            else:
+                item['title'] = self.titles[i]
+            if i < len(self.macros):
+                item['macros'] = self.macros[i]
+            yield item
+
     def _rebuild_menu(self):
         if not any(self._filenames):
             self._filenames = []
@@ -99,16 +118,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             self._menu_needs_rebuild = False
             return
         menu = QMenu(self)
-        for i, filename in enumerate(self._filenames):
-            if i >= len(self._titles):
-                title = filename
-            else:
-                title = self._titles[i]
-            action = menu.addAction(title)
-            macros = ""
-            if i < len(self._macros):
-                macros = self._macros[i]
-            action.triggered.connect(partial(self.open_display, filename, macros, target=None))
+        for item in self._get_items():
+            action = menu.addAction(item.get('title'))
+            action.triggered.connect(
+                partial(self.open_display, item.get('filename'),
+                        item.get('macros', ""), target=None))
         self.setMenu(menu)
         self._menu_needs_rebuild = False
 
@@ -268,22 +282,20 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
 
     @Slot()
     def handle_open_new_window_action(self):
-        '''
+        """
         Handle the "Open in New Window" action.
 
         Returns
         -------
         None.
 
-        '''
-        if len(self.filenames) == 0:
-            return
-        try:
-            self._open_new_window_acttion_triggered = True
-            self.open_display(
-                filename=self.filenames[0], target=self.NEW_WINDOW)
-        except Exception:
-            logger.exception("Failed to open display.")
+        """
+        for item in self._get_items():
+            try:
+                self.open_display(item.get('filename'), item.get('macros', ""),
+                                  target=self.NEW_WINDOW)
+            except Exception:
+                logger.exception("Failed to open display.")
 
     @Slot()
     def open_display(self, filename, macro_string="", target=None):
@@ -313,12 +325,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         macros.update(widget_macros)
 
         screen_target = None
+        if target is self.NEW_WINDOW:
+            screen_target = ScreenTarget.NEW_PROCESS
         if self._shift_key_was_down:
             target = self.NEW_WINDOW
             screen_target = ScreenTarget.NEW_PROCESS
-        if self._open_new_window_acttion_triggered:
-            screen_target = ScreenTarget.NEW_PROCESS
-            self._open_new_window_acttion_triggered = False
         if target is None:
             if self._open_in_new_window:
                 target = self.NEW_WINDOW
@@ -335,7 +346,6 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         else:
             w = load_file(fname, macros=macros, target=ScreenTarget.DIALOG)
 
-
     def context_menu(self):
         try:
             menu = super(PyDMRelatedDisplayButton, self).context_menu()
@@ -347,19 +357,12 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             action = menu.addAction(self.open_in_new_window_action)
             return menu
         sub_menu = menu.addMenu("Open in New Window")
-        for i, filename in enumerate(self.filenames):
-            if i >= len(self.titles):
-                title = filename
-            else:
-                title = self.titles[i]
-            action = sub_menu.addAction(title)
-            macros = ""
-            if i < len(self.macros):
-                macros = self.macros[i]
-            self._open_new_window_acttion_triggered = True
+        for item in self._get_items():
             try:
-                action.triggered.connect(partial(
-                    self.open_display, filename, macros, target=self.NEW_WINDOW))
+                action = sub_menu.addAction(item.get('title'))
+                action.triggered.connect(
+                    partial(self.open_display, item.get('filename'),
+                            item.get('macros', ""), target=self.NEW_WINDOW))
             except Exception:
                 logger.exception("Failed to open display.")
         return menu
