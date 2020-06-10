@@ -93,10 +93,13 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         Yields
         ------
         item : dict
-            Containing filename, title, and macros if any
+            Containing filename, title, and macros/empy macros
+            Only containing valid entries or nothing
 
         """
         for i, filename in enumerate(self.filenames):
+            if not filename or "":
+                return
             item = {'filename': filename}
             if i >= len(self.titles):
                 item['title'] = filename
@@ -104,6 +107,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
                 item['title'] = self.titles[i]
             if i < len(self.macros):
                 item['macros'] = self.macros[i]
+            else:
+                item['macros'] = ""
             yield item
 
     def _rebuild_menu(self):
@@ -263,18 +268,15 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
         if self.menu() is not None:
             return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
-        if len(self.filenames) == 0:
-            return
-        try:
-            macros = ""
-            if len(self.macros) > 0:
-                macros = self.macros[0]
-            self.open_display(self.filenames[0], macros)
-        except Exception as ex:
-            logger.exception("Failed to open display.")
-            pass
-        finally:
-            super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
+        for item in self._get_items():
+            try:
+                self.open_display(item['filename'], item['macros'],
+                                  target=None)
+            except Exception:
+                logger.exception("Failed to open display.")
+            finally:
+                super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(
+                    mouse_event)
 
     @Slot()
     def handle_open_new_window_action(self):
@@ -288,7 +290,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         """
         for item in self._get_items():
             try:
-                self.open_display(item.get('filename'), item.get('macros', ""),
+                self.open_display(item['filename'], item['macros'],
                                   target=self.NEW_WINDOW)
             except Exception:
                 logger.exception("Failed to open display.")
@@ -296,10 +298,10 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
     def _assemble_menu(self, menu, target=None):
         for item in self._get_items():
             try:
-                action = menu.addAction(item.get('title'))
+                action = menu.addAction(item['title'])
                 action.triggered.connect(
-                    partial(self.open_display, item.get('filename'),
-                            item.get('macros', ""), target=target))
+                    partial(self.open_display, item['filename'],
+                            item['macros'], target=target))
             except Exception:
                 logger.exception("Failed to open display.")
 
@@ -315,10 +317,6 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             file on the same window. PyDMRelatedDisplayButton.NEW_WINDOW
             or 1 will result on a new process.
         """
-        # Check for None and ""
-        if not filename:
-            return
-
         parent_display = self.find_parent_display()
         base_path = ""
         macros = {}
