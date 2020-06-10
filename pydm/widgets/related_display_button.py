@@ -98,8 +98,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
 
         """
         for i, filename in enumerate(self.filenames):
-            if not filename or "":
-                return
+            if not filename:
+                continue
             item = {'filename': filename}
             if i >= len(self.titles):
                 item['title'] = filename
@@ -268,15 +268,16 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
         if self.menu() is not None:
             return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
-        for item in self._get_items():
-            try:
+        try:
+            for item in self._get_items():
                 self.open_display(item['filename'], item['macros'],
                                   target=None)
-            except Exception:
-                logger.exception("Failed to open display.")
-            finally:
-                super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(
-                    mouse_event)
+                break
+        except Exception:
+            logger.exception("Failed to open display.")
+        finally:
+            super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(
+                mouse_event)
 
     @Slot()
     def handle_open_new_window_action(self):
