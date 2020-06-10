@@ -118,11 +118,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             self._menu_needs_rebuild = False
             return
         menu = QMenu(self)
-        for item in self._get_items():
-            action = menu.addAction(item.get('title'))
-            action.triggered.connect(
-                partial(self.open_display, item.get('filename'),
-                        item.get('macros', ""), target=None))
+        self._assemble_menu(menu, target=None)
         self.setMenu(menu)
         self._menu_needs_rebuild = False
 
@@ -297,6 +293,16 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             except Exception:
                 logger.exception("Failed to open display.")
 
+    def _assemble_menu(self, menu, target=None):
+        for item in self._get_items():
+            try:
+                action = menu.addAction(item.get('title'))
+                action.triggered.connect(
+                    partial(self.open_display, item.get('filename'),
+                            item.get('macros', ""), target=target))
+            except Exception:
+                logger.exception("Failed to open display.")
+
     @Slot()
     def open_display(self, filename, macro_string="", target=None):
         """
@@ -354,17 +360,10 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         if len(menu.findChildren(QAction)) > 0:
             menu.addSeparator()
         if len(self.filenames) <= 1:
-            action = menu.addAction(self.open_in_new_window_action)
+            menu.addAction(self.open_in_new_window_action)
             return menu
         sub_menu = menu.addMenu("Open in New Window")
-        for item in self._get_items():
-            try:
-                action = sub_menu.addAction(item.get('title'))
-                action.triggered.connect(
-                    partial(self.open_display, item.get('filename'),
-                            item.get('macros', ""), target=self.NEW_WINDOW))
-            except Exception:
-                logger.exception("Failed to open display.")
+        self._assemble_menu(sub_menu, target=self.NEW_WINDOW)
         return menu
 
     @Slot(QPoint)
