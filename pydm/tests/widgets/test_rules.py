@@ -83,10 +83,11 @@ def test_rules_not_connected(qtbot, caplog):
     assert len(re.widget_map[weakref.ref(widget)]) == 1
     assert re.widget_map[weakref.ref(widget)][0]['rule'] == rules[0]
 
-    re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=1)
-    for record in caplog.records:
-        assert record.levelno == logging.ERROR
-    assert "Not all channels are connected" in caplog.text
+    with caplog.at_level(logging.DEBUG):
+        re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=1)
+        for record in caplog.records:
+            assert record.levelno == logging.DEBUG
+        assert "Not all channels are connected" in caplog.text
 
 
 def test_rules_ok(qtbot, caplog):

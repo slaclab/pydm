@@ -276,7 +276,7 @@ class RulesEngine(QThread):
             pass
 
     def warn_unconnected_channels(self, widget_ref, index):
-        logger.error(
+        logger.debug(
             "Rule '%s': Not all channels are connected, skipping execution.",
             self.widget_map[widget_ref][index]['rule']['name'])
 
