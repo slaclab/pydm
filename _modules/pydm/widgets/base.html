@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.base &mdash; PyDM v1.10.1+16.gd297ee38 documentation</title>
+  <title>pydm.widgets.base &mdash; PyDM v1.10.1+19.g2e97faea documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.10.1+16.gd297ee38
+                v1.10.1+19.g2e97faea
               </div>
             
           
@@ -400,7 +400,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_user_prec</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_prec</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    
+
     <span class="k">def</span> <span class="nf">update_format_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reconstruct the format string to be used when representing the</span>
@@ -418,7 +418,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_units</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">format_string</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_string</span>
-    
+
     <span class="k">def</span> <span class="nf">precision_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_precision</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel has new precision value.</span>
@@ -434,7 +434,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_prec</span> <span class="o">=</span> <span class="n">new_precision</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-    
+
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">precisionChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_prec</span><span class="p">):</span>
@@ -448,7 +448,7 @@
 <span class="sd">        new_prec : int or float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">precision_changed</span><span class="p">(</span><span class="n">new_prec</span><span class="p">)</span>
-    
+
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">precision</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -482,7 +482,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_user_prec</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_prec</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">()</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">DESIGNER_ONLINE</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-    
+
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">unitChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_unit</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -495,7 +495,7 @@
 <span class="sd">        new_unit : str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_changed</span><span class="p">(</span><span class="n">new_unit</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">unit_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_unit</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel has new unit value.</span>
@@ -511,7 +511,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="o">=</span> <span class="n">new_unit</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-    
+
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">showUnits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -548,7 +548,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_units</span> <span class="o">!=</span> <span class="n">show_units</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_show_units</span> <span class="o">=</span> <span class="n">show_units</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_format_string</span><span class="p">()</span>
-    
+
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">precisionFromPV</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -600,7 +600,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_precision_from_pv</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_precision_from_pv</span> <span class="o">!=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_precision_from_pv</span> <span class="o">=</span> <span class="n">value</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_format_string</span><span class="p">()</span>
-    
+
     <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel value is changed.</span>
@@ -613,7 +613,7 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">TextFormatter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_format_string</span><span class="p">()</span>
 
-  
+
 <span class="k">class</span> <span class="nc">PyDMWidget</span><span class="p">(</span><span class="n">PyDMPrimitiveWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    PyDM base class for Read-Only widgets.</span>
@@ -1079,6 +1079,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
             <span class="c1"># Load new channel</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Channel was set to an empty string.&#39;</span><span class="p">)</span>
+                <span class="k">return</span>
             <span class="n">channel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">,</span>
                                   <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connectionStateChanged</span><span class="p">,</span>
                                   <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">channelValueChanged</span><span class="p">,</span>
