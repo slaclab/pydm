@@ -195,6 +195,7 @@ class PyDMPrimitiveWidget(object):
         """
         if new_rules != self._rules:
             self._rules = new_rules
+            RulesDispatcher().unregister(self)
             try:
                 rules_list = json.loads(self._rules)
                 if rules_list:
