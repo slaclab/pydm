@@ -73,7 +73,7 @@ def test_pydmwidget_construct(qtbot, init_channel):
 
     assert pydm_label.app is None if not is_pydm_app else not None
     assert pydm_label._connected is not is_pydm_app
-    if init_channel is None:
+    if not init_channel:
         assert pydm_label.channels() is None
     else:
         assert len(pydm_label.channels()) == 1
