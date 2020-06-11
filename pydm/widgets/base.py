@@ -222,7 +222,7 @@ class TextFormatter(object):
         self._user_prec = 0
         self._prec = 0
         self._unit = ""
-    
+
     def update_format_string(self):
         """
         Reconstruct the format string to be used when representing the
@@ -240,7 +240,7 @@ class TextFormatter(object):
         if self._show_units and self._unit != "":
             self.format_string += " {}".format(self._unit)
         return self.format_string
-    
+
     def precision_changed(self, new_precision):
         """
         Callback invoked when the Channel has new precision value.
@@ -256,7 +256,7 @@ class TextFormatter(object):
             self._prec = new_precision
             if self.value is not None:
                 self.value_changed(self.value)
-    
+
     @Slot(int)
     @Slot(float)
     def precisionChanged(self, new_prec):
@@ -270,7 +270,7 @@ class TextFormatter(object):
         new_prec : int or float
         """
         self.precision_changed(new_prec)
-    
+
     @Property(int)
     def precision(self):
         """
@@ -304,7 +304,7 @@ class TextFormatter(object):
             self._user_prec = int(new_prec)
             if not is_qt_designer() or config.DESIGNER_ONLINE:
                 self.value_changed(self.value)
-    
+
     @Slot(str)
     def unitChanged(self, new_unit):
         """
@@ -317,7 +317,7 @@ class TextFormatter(object):
         new_unit : str
         """
         self.unit_changed(new_unit)
-    
+
     def unit_changed(self, new_unit):
         """
         Callback invoked when the Channel has new unit value.
@@ -333,7 +333,7 @@ class TextFormatter(object):
             self._unit = new_unit
             if self.value is not None:
                 self.value_changed(self.value)
-    
+
 
     @Property(bool)
     def showUnits(self):
@@ -370,7 +370,7 @@ class TextFormatter(object):
         if self._show_units != show_units:
             self._show_units = show_units
             self.update_format_string()
-    
+
     @Property(bool)
     def precisionFromPV(self):
         """
@@ -422,7 +422,7 @@ class TextFormatter(object):
         if self._precision_from_pv is None or self._precision_from_pv != bool(value):
             self._precision_from_pv = value
             self.update_format_string()
-    
+
     def value_changed(self, new_val):
         """
         Callback invoked when the Channel value is changed.
@@ -435,7 +435,7 @@ class TextFormatter(object):
         super(TextFormatter, self).value_changed(new_val)
         self.update_format_string()
 
-  
+
 class PyDMWidget(PyDMPrimitiveWidget):
     """
     PyDM base class for Read-Only widgets.
@@ -901,6 +901,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
                 self._channels.remove(channel)
             # Load new channel
             self._channel = str(value)
+            if not self._channel:
+                logger.debug('Channel was set to an empty string.')
+                return
             channel = PyDMChannel(address=self._channel,
                                   connection_slot=self.connectionStateChanged,
                                   value_slot=self.channelValueChanged,
