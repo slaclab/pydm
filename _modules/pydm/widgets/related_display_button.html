@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.related_display_button &mdash; PyDM v1.10.1+19.g2e97faea documentation</title>
+  <title>pydm.widgets.related_display_button &mdash; PyDM v1.10.1+27.ge8300287 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.10.1+19.g2e97faea
+                v1.10.1+27.ge8300287
               </div>
             
           
@@ -241,7 +241,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_macro_string</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_open_in_new_window</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">open_in_new_window_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Open in New Window&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">open_in_new_window_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_display</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NEW_WINDOW</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open_in_new_window_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_open_new_window_action</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_icon</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_menu_needs_rebuild</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -262,7 +263,32 @@
     <span class="k">def</span> <span class="nf">titles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span> <span class="o">=</span> <span class="n">val</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_menu_needs_rebuild</span> <span class="o">=</span> <span class="kc">True</span>
-    
+
+    <span class="k">def</span> <span class="nf">_get_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Aggregate file entry information.</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        item : dict</span>
+<span class="sd">            Containing filename, title, and macros/empy macros</span>
+<span class="sd">            Only containing valid entries or nothing</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">filename</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="n">filename</span><span class="p">}</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">titles</span><span class="p">):</span>
+                <span class="n">item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filename</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">macros</span><span class="p">):</span>
+                <span class="n">item</span><span class="p">[</span><span class="s1">&#39;macros&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">macros</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">item</span><span class="p">[</span><span class="s1">&#39;macros&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">yield</span> <span class="n">item</span>
+
     <span class="k">def</span> <span class="nf">_rebuild_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filenames</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filenames</span> <span class="o">=</span> <span class="p">[]</span>
@@ -275,16 +301,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_menu_needs_rebuild</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">return</span>
         <span class="n">menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filenames</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_titles</span><span class="p">):</span>
-                <span class="n">title</span> <span class="o">=</span> <span class="n">filename</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
-            <span class="n">macros</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_macros</span><span class="p">):</span>
-                <span class="n">macros</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macros</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_display</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">macros</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assemble_menu</span><span class="p">(</span><span class="n">menu</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setMenu</span><span class="p">(</span><span class="n">menu</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_menu_needs_rebuild</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -347,7 +364,10 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMRelatedDisplayButton.displayFilename&#39; is deprecated, &quot;</span>
                       <span class="s2">&quot;use &#39;PyDMRelatedDisplayButton.filenames&#39; instead.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_filenames</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">file_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span> <span class="o">+</span> <span class="n">file_list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_display_filename</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
             
     <span class="nd">@Property</span><span class="p">(</span><span class="s1">&#39;QStringList&#39;</span><span class="p">)</span>
@@ -426,18 +446,43 @@
             <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMRelatedDisplayButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">mouseReleaseEvent</span><span class="p">(</span><span class="n">mouse_event</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMRelatedDisplayButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">mouseReleaseEvent</span><span class="p">(</span><span class="n">mouse_event</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">macros</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">macros</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">macros</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">macros</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">open_display</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">macros</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">open_display</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;macros&#39;</span><span class="p">],</span>
+                                  <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                <span class="k">break</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failed to open display.&quot;</span><span class="p">)</span>
-            <span class="k">pass</span>
         <span class="k">finally</span><span class="p">:</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">PyDMRelatedDisplayButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">mouseReleaseEvent</span><span class="p">(</span><span class="n">mouse_event</span><span class="p">)</span></div>
+            <span class="nb">super</span><span class="p">(</span><span class="n">PyDMRelatedDisplayButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">mouseReleaseEvent</span><span class="p">(</span>
+                <span class="n">mouse_event</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.handle_open_new_window_action"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.handle_open_new_window_action">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">handle_open_new_window_action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle the &quot;Open in New Window&quot; action.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">open_display</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;macros&#39;</span><span class="p">],</span>
+                                  <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NEW_WINDOW</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failed to open display.&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_assemble_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">menu</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span>
+                <span class="n">action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                    <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_display</span><span class="p">,</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">],</span>
+                            <span class="n">item</span><span class="p">[</span><span class="s1">&#39;macros&#39;</span><span class="p">],</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failed to open display.&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMRelatedDisplayButton.open_display"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.open_display">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">open_display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">macro_string</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -451,10 +496,6 @@
 <span class="sd">            file on the same window. PyDMRelatedDisplayButton.NEW_WINDOW</span>
 <span class="sd">            or 1 will result on a new process.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Check for None and &quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">filename</span><span class="p">:</span>
-            <span class="k">return</span>
-
         <span class="n">parent_display</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_parent_display</span><span class="p">()</span>
         <span class="n">base_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="n">macros</span> <span class="o">=</span> <span class="p">{}</span>
@@ -467,6 +508,8 @@
         <span class="n">macros</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">widget_macros</span><span class="p">)</span>
 
         <span class="n">screen_target</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">NEW_WINDOW</span><span class="p">:</span>
+            <span class="n">screen_target</span> <span class="o">=</span> <span class="n">ScreenTarget</span><span class="o">.</span><span class="n">NEW_PROCESS</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shift_key_was_down</span><span class="p">:</span>
             <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NEW_WINDOW</span>
             <span class="n">screen_target</span> <span class="o">=</span> <span class="n">ScreenTarget</span><span class="o">.</span><span class="n">NEW_PROCESS</span>
@@ -486,7 +529,6 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">w</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">ScreenTarget</span><span class="o">.</span><span class="n">DIALOG</span><span class="p">)</span></div>
 
-
     <span class="k">def</span> <span class="nf">context_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">menu</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMRelatedDisplayButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">context_menu</span><span class="p">()</span>
@@ -494,7 +536,11 @@
             <span class="n">menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QAction</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
-        <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_in_new_window_action</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_in_new_window_action</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">menu</span>
+        <span class="n">sub_menu</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s2">&quot;Open in New Window&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assemble_menu</span><span class="p">(</span><span class="n">sub_menu</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NEW_WINDOW</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">menu</span>
 
     <span class="nd">@Slot</span><span class="p">(</span><span class="n">QPoint</span><span class="p">)</span>
