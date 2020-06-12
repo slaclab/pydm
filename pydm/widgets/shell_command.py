@@ -43,6 +43,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         self._allow_multiple = False
         self.process = None
         self._show_icon = True
+        self._redirect_output = False
 
     @Property(bool)
     def showIcon(self):
@@ -72,6 +73,33 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
             else:
                 self._icon = self.icon()
                 self.setIcon(QIcon())
+
+    @Property(bool)
+    def redirectCommandOutput(self):
+        """
+        Whether or not we should redirect the output of command to the shell.
+
+        Returns
+        -------
+        bool
+        """
+        return self._redirect_output
+
+    @redirectCommandOutput.setter
+    def redirectCommandOutput(self, value):
+        """
+        Whether or not we should redirect the output of command to the shell.
+
+        Parameters
+        ----------
+        value : bool
+
+        Returns
+        -------
+        None.
+        """
+        if self._redirect_output != value:
+            self._redirect_output = value
 
     @Property(bool)
     def allowMultipleExecutions(self):
@@ -228,7 +256,12 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
             args = shlex.split(command, posix='win' not in sys.platform)
             try:
                 logger.debug("Launching process: %s", repr(args))
-                self.process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                if self._redirect_output:
+                    self.process = subprocess.Popen(
+                        args, stderr=subprocess.PIPE)
+                else:
+                    self.process = subprocess.Popen(
+                        args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             except Exception as exc:
                 self.show_warning_icon()
                 logger.error("Error in shell command: %s", exc)

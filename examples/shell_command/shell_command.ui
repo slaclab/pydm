@@ -41,8 +41,16 @@
      <property name="text">
       <string>Run Shell Command</string>
      </property>
+     <property name="redirectCommandOutput" stdset="0">
+      <bool>true</bool>
+     </property>
      <property name="allowMultipleExecutions" stdset="0">
       <bool>false</bool>
+     </property>
+     <property name="commands" stdset="0">
+      <stringlist>
+       <string>echo &quot;Hello World!&quot;</string>
+      </stringlist>
      </property>
     </widget>
    </item>
