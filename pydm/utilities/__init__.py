@@ -139,8 +139,7 @@ def find_file(fname, base_path=None, mode=None, extra_path=None):
         The file name. Environment variables, ~ and ~user constructs before
         search.
     base_path : str
-        If None, it defaults to the current open display path or Qt Designer
-        path
+        The directory name of a file pathname from a display, if any
     mode : int
         The mode required for the file, defaults to os.F_OK | os.R_OK.
         Which ensure that the file exists and we can read it.
