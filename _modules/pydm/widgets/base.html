@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.base &mdash; PyDM v1.10.1+27.ge8300287 documentation</title>
+  <title>pydm.widgets.base &mdash; PyDM v1.10.1+30.gfa7bb30e documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v1.10.1+27.ge8300287
+                v1.10.1+30.gfa7bb30e
               </div>
             
           
@@ -373,6 +373,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_rules</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span> <span class="o">=</span> <span class="n">new_rules</span>
+            <span class="n">RulesDispatcher</span><span class="p">()</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">rules_list</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">rules_list</span><span class="p">:</span>
