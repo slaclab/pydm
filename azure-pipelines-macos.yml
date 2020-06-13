@@ -10,7 +10,7 @@ jobs:
     parameters:
       name: MacOS_3_7
       vmImage: 'macOS-10.14'
-      python: '3.7.3'
+      python: '3.7'
       allowFailure: false
   - template: azure-test-template.yml
     parameters:
