@@ -19,7 +19,7 @@ jobs:
       name: Linux_3_7
       vmImage: 'Ubuntu 18.04'
       build_docs: 1
-      python: '3.7.3'
+      python: '3.7'
       allowFailure: false
   - template: azure-test-template.yml
     parameters:

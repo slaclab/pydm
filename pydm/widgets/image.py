@@ -105,12 +105,9 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
 
     def __init__(self, parent=None, image_channel=None, width_channel=None):
         """Initialize widget."""
-        plot_item = PlotItem()
-        ImageView.__init__(self, parent, view=plot_item)
-        PyDMWidget.__init__(self)
-        self._channels = [None, None]
-        self.thread = None
-        self.axes = dict({'t': None, "x": 0, "y": 1, "c": None})
+        # Set the default colormap.
+        self._colormap = PyDMColorMap.Inferno
+        self._cm_colors = None
         self._imagechannel = None
         self._widthchannel = None
         self.image_waveform = np.zeros(0)
@@ -118,6 +115,22 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self._normalize_data = False
         self._auto_downsample = True
         self._show_axes = False
+
+        # Set default reading order of numpy array data to Fortranlike.
+        self._reading_order = ReadingOrder.Fortranlike
+
+        self._redraw_rate = 30
+
+        # Set color map limits.
+        self.cm_min = 0.0
+        self.cm_max = 255.0
+
+        plot_item = PlotItem()
+        ImageView.__init__(self, parent, view=plot_item)
+        PyDMWidget.__init__(self)
+        self._channels = [None, None]
+        self.thread = None
+        self.axes = dict({'t': None, "x": 0, "y": 1, "c": None})
         self.showAxes = self._show_axes
 
         # Hide some itens of the widget.
@@ -127,13 +140,6 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self.ui.roiBtn.hide()
         self.ui.menuBtn.hide()
 
-        # Set color map limits.
-        self.cm_min = 0.0
-        self.cm_max = 255.0
-
-        # Set default reading order of numpy array data to Fortranlike.
-        self._reading_order = ReadingOrder.Fortranlike
-
         # Make a right-click menu for changing the color map.
         self.cm_group = QActionGroup(self)
         self.cmap_for_action = {}
@@ -142,16 +148,12 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
             action.setCheckable(True)
             self.cmap_for_action[action] = cm
 
-        # Set the default colormap.
-        self._colormap = PyDMColorMap.Inferno
-        self._cm_colors = None
         self.colorMap = self._colormap
 
         # Setup the redraw timer.
         self.needs_redraw = False
         self.redraw_timer = QTimer(self)
         self.redraw_timer.timeout.connect(self.redrawImage)
-        self._redraw_rate = 30
         self.maxRedrawRate = self._redraw_rate
         self.newImageSignal = self.getImageItem().sigImageChanged
         # Set live channels if requested on initialization
@@ -166,6 +168,8 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
 
     @channel.setter
     def channel(self, ch):
+        if not ch:
+            return
         logger.info("Use the imageChannel property with the ImageView widget.")
         return
 
@@ -640,38 +644,43 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         Whether or not axes should be shown on the widget.
         """
         return self._show_axes
-    
+
     @showAxes.setter
     def showAxes(self, show):
         self._show_axes = show
         self.getView().showAxis('left', show=show)
         self.getView().showAxis('bottom', show=show)
-        
+
     @Property(float)
     def scaleXAxis(self):
         """
         Sets the scale for the X Axis.
-    
+
         For example, if your image has 100 pixels per millimeter, you can set
         xAxisScale to 1/100 = 0.01 to make the X Axis report in millimeter units.
         """
-        return self.getView().getAxis('bottom').scale
-    
+        # protect against access to not yet initialized view
+        if hasattr(self, 'view'):
+            return self.getView().getAxis('bottom').scale
+        return None
+
     @scaleXAxis.setter
     def scaleXAxis(self, new_scale):
         self.getView().getAxis('bottom').setScale(new_scale)
-    
+
     @Property(float)
     def scaleYAxis(self):
         """
         Sets the scale for the Y Axis.
-    
+
         For example, if your image has 100 pixels per millimeter, you can set
         yAxisScale to 1/100 = 0.01 to make the Y Axis report in millimeter units.
         """
-        return self.getView().getAxis('left').scale
-    
+        # protect against access to not yet initialized view
+        if hasattr(self, 'view'):
+            return self.getView().getAxis('left').scale
+        return None
+
     @scaleYAxis.setter
     def scaleYAxis(self, new_scale):
         self.getView().getAxis('left').setScale(new_scale)
-        
