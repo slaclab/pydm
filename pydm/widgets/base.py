@@ -649,6 +649,12 @@ class PyDMWidget(PyDMPrimitiveWidget):
                 self.show_address_tooltip(event)
                 return True
         return False
+    
+    def get_address(self):
+        if not len(self._channels):
+            logger.warning("Object %r has no PyDM Channels", self)
+            return
+        return self.channels()[0].address
 
     def show_address_tooltip(self, event):
         """
@@ -658,10 +664,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         EDM. If the QWidget does not have a valid PyDMChannel nothing will be
         displayed
         """
-        if not len(self._channels):
-            logger.warning("Object %r has no PyDM Channels", self)
+        addr = self.get_address()
+        if not addr:
             return
-        addr = self.channels()[0].address
         QToolTip.showText(event.globalPos(), addr)
         # If the address has a protocol, strip it out before putting it on the
         # clipboard.
@@ -950,6 +955,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
             if tooltip != '':
                 tooltip += '\n'
             tooltip += "PV is disconnected."
+            tooltip += '\n'
+            tooltip +=  self.get_address()
 
         self.setToolTip(tooltip)
         self.setEnabled(status)
@@ -1095,6 +1102,8 @@ class PyDMWritableWidget(PyDMWidget):
             if tooltip != '':
                 tooltip += '\n'
             tooltip += "PV is disconnected."
+            tooltip += '\n'
+            tooltip += self.get_address()
         elif not self._write_access:
             if tooltip != '':
                 tooltip += '\n'
