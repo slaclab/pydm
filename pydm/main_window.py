@@ -1,6 +1,7 @@
 import os
 from os import path
-from qtpy.QtWidgets import QApplication, QMainWindow, QFileDialog, QWidget, QAction
+from qtpy.QtWidgets import (QApplication, QMainWindow, QFileDialog,
+                            QWidget, QAction, QMessageBox)
 from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
 from .utilities import (IconFont, find_file, establish_widget_connections,
                         close_widget_connections)
@@ -448,4 +449,10 @@ class PyDMMainWindow(QMainWindow):
 
     @Slot(bool)
     def quit_main_window(self, checked):
-        self.app.quit()
+        quit_message = QMessageBox.question(
+            self, 'Quitting Application', 'Exit Application?',
+            QMessageBox.Yes | QMessageBox.No)
+        if quit_message == QMessageBox.Yes:
+            self.app.quit()
+        else:
+            pass
