@@ -55,6 +55,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionAbout_PyDM.triggered.connect(self.show_about_window)
         self.ui.actionLoadTool.triggered.connect(self.load_tool)
         self.ui.actionLoadTool.setIcon(self.iconFont.icon("rocket"))
+        self.ui.actionQuit.triggered.connect(self.quit_main_window)
 
         self._saved_menu_geometry = None
         self._saved_menu_height = None
@@ -444,3 +445,7 @@ class PyDMMainWindow(QMainWindow):
 
     def closeEvent(self, event):
         self.clear_display_widget()
+
+    @Slot(bool)
+    def quit_main_window(self, checked):
+        self.app.quit()
