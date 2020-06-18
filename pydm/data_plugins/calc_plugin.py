@@ -184,6 +184,7 @@ class Connection(PyDMConnection):
     def __init__(self, channel, address, protocol=None, parent=None):
         super(Connection, self).__init__(channel, address, protocol, parent)
         self._calc_thread = None
+        self.value = None
         self._configuration = {}
         self._waiting_config = True
 
@@ -196,6 +197,12 @@ class Connection(PyDMConnection):
     def add_listener(self, channel):
         self._setup_calc(channel)
         super(Connection, self).add_listener(channel)
+        self.broadcast_value()
+
+    def broadcast_value(self):
+        self.connection_state_signal.emit(self.connected)
+        if self.value is not None:
+            self.new_value_signal[type(self.value)].emit(self.value)
 
     def _setup_calc(self, channel):
         if not self._waiting_config:
@@ -235,6 +242,7 @@ class Connection(PyDMConnection):
             logger.debug('Connection was not available yet for calc.')
         try:
             val = data.get('value')
+            self.value = val
             if val is not None:
                 self.new_value_signal[type(val)].emit(val)
         except KeyError:
