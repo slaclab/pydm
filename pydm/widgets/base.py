@@ -85,7 +85,12 @@ def refresh_style(widget):
     widget : QWidget
     """
     widgets = [widget]
-    widgets.extend(widget.findChildren(QWidget))
+
+    try:
+        widgets.extend(widget.findChildren(QWidget))
+    except:
+        # If we fail it means that widget is probably destroyed
+        return
     for child_widget in widgets:
         try:
             child_widget.style().unpolish(child_widget)
