@@ -94,7 +94,6 @@ def refresh_style(widget):
         except Exception as ex:
             # Widget was probably destroyed
             logger.debug('Error while refreshing stylesheet. %s ', ex)
-            pass
 
 
 class PyDMPrimitiveWidget(object):
