@@ -182,12 +182,13 @@ class RulesEngine(QThread):
                 c = PyDMChannel(ch['channel'], connection_slot=conn_cb,
                                 value_slot=value_cb)
                 item['channels'].append(c)
-                c.connect()
-
             rules_db.append(item)
 
         if rules_db:
             self.widget_map[widget_ref] = rules_db
+            for rule in rules_db:
+                for ch in rule['channels']:
+                    ch.connect()
 
     def unregister(self, widget_ref):
         # If hash() is called the first time only after the object was
@@ -247,7 +248,7 @@ class RulesEngine(QThread):
                     self.warn_unconnected_channels(widget_ref, index)
                     return
                 w_map[index]['calculate'] = True
-        except KeyError:
+        except (KeyError, IndexError):
             pass
 
     def callback_conn(self, widget_ref, index, ch_index, value):
@@ -271,7 +272,7 @@ class RulesEngine(QThread):
         """
         try:
             self.widget_map[widget_ref][index]['conn'][ch_index] = value
-        except KeyError:
+        except (KeyError, IndexError):
             # widget_ref was destroyed
             pass
 
