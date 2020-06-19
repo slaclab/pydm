@@ -55,6 +55,27 @@
     </widget>
    </item>
    <item>
+    <widget class="PyDMShellCommand" name="PyDMShellCommand_3">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Run Invalid Command</string>
+     </property>
+     <property name="allowMultipleExecutions" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="commands" stdset="0">
+      <stringlist>
+       <string>fooo</string>
+      </stringlist>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -85,6 +106,9 @@
      <property name="text">
       <string>Multiple Shell Command Menu</string>
      </property>
+     <property name="redirectCommandOutput" stdset="0">
+      <bool>true</bool>
+     </property>
      <property name="titles" stdset="0">
       <stringlist>
        <string>Print &quot;Hello, World!&quot; to terminal</string>
@@ -94,7 +118,7 @@
      <property name="commands" stdset="0">
       <stringlist>
        <string>echo &quot;Hello, World!&quot;</string>
-       <string>echo `pwd`</string>
+       <string>pwd</string>
       </stringlist>
      </property>
     </widget>

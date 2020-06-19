@@ -129,16 +129,16 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
     @Property('QStringList')
     def titles(self):
         return self._titles
-        
+
     @titles.setter
     def titles(self, val):
         self._titles = val
         self._menu_needs_rebuild = True
-        
+
     @Property('QStringList')
     def commands(self):
         return self._commands
-        
+
     @commands.setter
     def commands(self, val):
         if not val:
@@ -182,7 +182,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
                 self.commands = [value]
             else:
                 self.commands = []
-        
+
     def _rebuild_menu(self):
         if not any(self._commands):
             self._commands = []
@@ -234,7 +234,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         (i.e. exits with nonzero status) """
         self.setIcon(self._warning_icon)
         QTimer.singleShot(5000, self.hide_warning_icon)
-        
+
     def hide_warning_icon(self):
         """ Hide the warning icon.  This is called on a timer after the warning
         icon is shown."""
@@ -256,12 +256,11 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
             args = shlex.split(command, posix='win' not in sys.platform)
             try:
                 logger.debug("Launching process: %s", repr(args))
+                stdout = subprocess.PIPE
                 if self._redirect_output:
-                    self.process = subprocess.Popen(
-                        args, stderr=subprocess.PIPE)
-                else:
-                    self.process = subprocess.Popen(
-                        args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    stdout = None
+                self.process = subprocess.Popen(
+                    args, stdout=stdout, stderr=subprocess.PIPE)
             except Exception as exc:
                 self.show_warning_icon()
                 logger.error("Error in shell command: %s", exc)
