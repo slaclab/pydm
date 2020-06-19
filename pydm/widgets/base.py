@@ -85,11 +85,20 @@ def refresh_style(widget):
     widget : QWidget
     """
     widgets = [widget]
-    widgets.extend(widget.findChildren(QWidget))
+
+    try:
+        widgets.extend(widget.findChildren(QWidget))
+    except:
+        # If we fail it means that widget is probably destroyed
+        return
     for child_widget in widgets:
-        child_widget.style().unpolish(child_widget)
-        child_widget.style().polish(child_widget)
-        child_widget.update()
+        try:
+            child_widget.style().unpolish(child_widget)
+            child_widget.style().polish(child_widget)
+            child_widget.update()
+        except Exception as ex:
+            # Widget was probably destroyed
+            logger.debug('Error while refreshing stylesheet. %s ', ex)
 
 
 class PyDMPrimitiveWidget(object):
