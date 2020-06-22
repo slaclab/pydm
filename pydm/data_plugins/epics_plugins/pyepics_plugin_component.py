@@ -160,6 +160,9 @@ class Connection(PyDMConnection):
 
     def close(self):
         try:
+            self.pv.clear_callbacks()
+            self.pv.access_callbacks = []
+            self.pv.connection_callbacks = []
             self.pv.disconnect()
         except KeyError:
             # The PV was no longer availbale.
