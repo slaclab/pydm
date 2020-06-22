@@ -155,7 +155,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
             The new precision value
         """
         super(PyDMSpinbox, self).precision_changed(new_precision)
-        self.setDecimals(new_precision)
+        self.setDecimals(self.precision)
 
     @Property(int)
     def precision(self):
