@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'pydm.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.12.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from qtpy import QtCore, QtWidgets
+
+from qtpy import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -129,6 +131,7 @@ class Ui_MainWindow(object):
         self.navbar.addAction(self.actionHome)
 
         self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -166,4 +169,3 @@ class Ui_MainWindow(object):
         self.actionDefault_Font_Size.setText(_translate("MainWindow", "Default Font Size"))
         self.actionDefault_Font_Size.setShortcut(_translate("MainWindow", "Ctrl+0"))
         self.actionQuit.setText(_translate("MainWindow", "Quit"))
-
