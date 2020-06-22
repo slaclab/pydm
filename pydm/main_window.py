@@ -26,17 +26,27 @@ class PyDMMainWindow(QMainWindow):
         self.app = QApplication.instance()
         self.font_factor = 1
         self.iconFont = IconFont()
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
         self._display_widget = None
         self._showing_file_path_in_title_bar = False
+
+        self._saved_menu_geometry = None
+        self._saved_menu_height = None
+        self._new_widget_size = None
+
         self.default_font_size = QApplication.instance().font().pointSizeF()
+
+        self.home_file = None
+        self.home_widget = None
+
+        self.designer_path = None
+
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+
         self.ui.navbar.setIconSize(QSize(24, 24))
         self.ui.navbar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.ui.actionHome.triggered.connect(self.home_triggered)
         self.ui.actionHome.setIcon(self.iconFont.icon("home"))
-        self.home_file = None
-        self.home_widget = None
         self.ui.actionBack.triggered.connect(self.back_triggered)
         self.ui.actionBack.setIcon(self.iconFont.icon("angle-left"))
         self.ui.actionForward.triggered.connect(self.forward_triggered)
@@ -58,9 +68,6 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionLoadTool.setIcon(self.iconFont.icon("rocket"))
         self.ui.actionQuit.triggered.connect(self.quit_main_window)
 
-        self._saved_menu_geometry = None
-        self._saved_menu_height = None
-        self._new_widget_size = None
         if hide_nav_bar:
             self.toggle_nav_bar(False)
         if hide_menu_bar:
@@ -71,7 +78,7 @@ class PyDMMainWindow(QMainWindow):
             self.toggle_status_bar(False)
         #Try to find the designer binary.
         self.ui.actionEdit_in_Designer.setEnabled(False)
-        self.designer_path = None
+
         possible_designer_bin_paths = (QLibraryInfo.location(QLibraryInfo.BinariesPath), QLibraryInfo.location(QLibraryInfo.LibraryExecutablesPath))
         for bin_path in possible_designer_bin_paths:
             if platform.system() == 'Darwin':
