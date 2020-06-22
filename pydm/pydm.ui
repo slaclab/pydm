@@ -42,6 +42,7 @@
     <addaction name="actionReload_Display"/>
     <addaction name="separator"/>
     <addaction name="actionAbout_PyDM"/>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -279,6 +280,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+0</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
    </property>
   </action>
  </widget>
