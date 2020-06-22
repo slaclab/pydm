@@ -1,6 +1,7 @@
 import os
 from os import path
-from qtpy.QtWidgets import QApplication, QMainWindow, QFileDialog, QWidget, QAction
+from qtpy.QtWidgets import (QApplication, QMainWindow, QFileDialog,
+                            QWidget, QAction, QMessageBox)
 from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
 from .utilities import (IconFont, find_file, establish_widget_connections,
                         close_widget_connections)
@@ -55,6 +56,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionAbout_PyDM.triggered.connect(self.show_about_window)
         self.ui.actionLoadTool.triggered.connect(self.load_tool)
         self.ui.actionLoadTool.setIcon(self.iconFont.icon("rocket"))
+        self.ui.actionQuit.triggered.connect(self.quit_main_window)
 
         self._saved_menu_geometry = None
         self._saved_menu_height = None
@@ -444,3 +446,13 @@ class PyDMMainWindow(QMainWindow):
 
     def closeEvent(self, event):
         self.clear_display_widget()
+
+    @Slot(bool)
+    def quit_main_window(self, checked):
+        quit_message = QMessageBox.question(
+            self, 'Quitting Application', 'Exit Application?',
+            QMessageBox.Yes | QMessageBox.No)
+        if quit_message == QMessageBox.Yes:
+            self.app.quit()
+        else:
+            pass
