@@ -13,6 +13,7 @@ from qtpy import uic
 from qtpy.QtWidgets import QWidget, QApplication
 
 from .utilities import macro, is_pydm_app
+from .utilities.stylesheet import merge_widget_stylesheet
 
 
 class ScreenTarget:
@@ -89,6 +90,8 @@ def load_ui_file(uifile, macros=None):
     """
 
     d = Display(macros=macros)
+    merge_widget_stylesheet(d)
+
     if macros:
         f = macro.substitute_in_file(uifile, macros)
     else:
@@ -182,6 +185,7 @@ def load_py_file(pyfile, args=None, macros=None):
         kwargs['macros'] = macros
     instance = cls(**kwargs)
     instance._loaded_file = pyfile
+    merge_widget_stylesheet(instance)
     return instance
 
 
@@ -261,3 +265,4 @@ class Display(QWidget):
             else:
                 f = self.ui_filepath()
             self.ui = uic.loadUi(f, baseinstance=self)
+            merge_widget_stylesheet(self.ui)
