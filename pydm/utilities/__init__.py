@@ -20,6 +20,18 @@ from . import shortcuts
 logger = logging.getLogger(__name__)
 
 
+def is_ssh_session():
+    """
+    Whether or not this is a SSH session.
+
+    Returns
+    -------
+    bool
+        True if it is a ssh session, False otherwise.
+    """
+    return os.getenv('SSH_CONNECTION') is not None
+
+
 def is_pydm_app(app=None):
     """
     Check whether or not `QApplication.instance()` is a PyDMApplication.
