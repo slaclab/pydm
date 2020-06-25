@@ -32,6 +32,20 @@ def is_ssh_session():
     return os.getenv('SSH_CONNECTION') is not None
 
 
+def setup_renderer():
+    """
+    This utility function reverts the renderer to Software rendering if it is
+    running in a SSH session.
+    """
+    if is_ssh_session():
+        logger.info('Using PyDM via SSH. Reverting to Software Rendering.')
+        from qtpy.QtCore import QCoreApplication, Qt
+        from qtpy.QtQuick import QQuickWindow, QSGRendererInterface
+
+        QCoreApplication.setAttribute(Qt.AA_UseSoftwareOpenGL)
+        QQuickWindow.setSceneGraphBackend(QSGRendererInterface.Software)
+
+
 def is_pydm_app(app=None):
     """
     Check whether or not `QApplication.instance()` is a PyDMApplication.

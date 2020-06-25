@@ -12,15 +12,9 @@ def main():
     logger.setLevel("INFO")
     handler.setLevel("INFO")
 
-    from pydm.utilities import is_ssh_session
+    from pydm.utilities import setup_renderer
 
-    if is_ssh_session():
-        logger.info('Using PyDM via SSH. Reverting to Software Rendering.')
-        from qtpy.QtCore import QCoreApplication, Qt
-        from qtpy.QtQuick import QQuickWindow, QSGRendererInterface
-
-        QCoreApplication.setAttribute(Qt.AA_UseSoftwareOpenGL)
-        QQuickWindow.setSceneGraphBackend(QSGRendererInterface.Software)
+    setup_renderer()
 
     try:
         """
