@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.utilities &mdash; PyDM v1.10.2 documentation</title>
+  <title>pydm.utilities &mdash; PyDM v1.10.2+3.ga1976fde documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.10.2
+                v1.10.2+3.ga1976fde
               </div>
             
           
@@ -199,6 +199,32 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">shortcuts</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="is_ssh_session"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.is_ssh_session">[docs]</a><span class="k">def</span> <span class="nf">is_ssh_session</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Whether or not this is a SSH session.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if it is a ssh session, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SSH_CONNECTION&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="setup_renderer"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.setup_renderer">[docs]</a><span class="k">def</span> <span class="nf">setup_renderer</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This utility function reverts the renderer to Software rendering if it is</span>
+<span class="sd">    running in a SSH session.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">is_ssh_session</span><span class="p">():</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Using PyDM via SSH. Reverting to Software Rendering.&#39;</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">QCoreApplication</span><span class="p">,</span> <span class="n">Qt</span>
+        <span class="kn">from</span> <span class="nn">qtpy.QtQuick</span> <span class="kn">import</span> <span class="n">QQuickWindow</span><span class="p">,</span> <span class="n">QSGRendererInterface</span>
+
+        <span class="n">QCoreApplication</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AA_UseSoftwareOpenGL</span><span class="p">)</span>
+        <span class="n">QQuickWindow</span><span class="o">.</span><span class="n">setSceneGraphBackend</span><span class="p">(</span><span class="n">QSGRendererInterface</span><span class="o">.</span><span class="n">Software</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="is_pydm_app"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.is_pydm_app">[docs]</a><span class="k">def</span> <span class="nf">is_pydm_app</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
