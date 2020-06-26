@@ -205,7 +205,7 @@ class RulesEngine(QThread):
 
         for rule in w_data:
             for ch in rule['channels']:
-                ch.disconnect(destroying=True)
+                ch.disconnect(destroying=widget_ref() is None)
 
         del w_data
 
