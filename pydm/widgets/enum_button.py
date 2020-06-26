@@ -1,3 +1,4 @@
+import logging
 from qtpy.QtCore import (Qt, QSize, Property, Slot, Q_ENUMS, QMargins)
 from qtpy.QtWidgets import (QWidget, QButtonGroup, QGridLayout, QPushButton,
                             QRadioButton, QStyleOption, QStyle)
@@ -14,6 +15,7 @@ class WidgetType(object):
 
 class_for_type = [QPushButton, QRadioButton]
 
+logger = logging.getLogger(__name__)
 
 class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
     """
@@ -112,13 +114,14 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         -------
         bool
         """
-        return self._use_custom_order
+        return self._invert_order
 
     @invertOrder.setter
     def invertOrder(self, value):
         if value != self._invert_order:
             self._invert_order = value
-            self.rebuild_layout()
+            if self._has_enums:
+                self.rebuild_layout()
 
     @Property("QStringList")
     def customOrder(self):
@@ -134,8 +137,13 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
     @customOrder.setter
     def customOrder(self, value):
         if value != self._custom_order:
+            try:
+                v = [int(v) for v in value]
+            except ValueError:
+                logger.error('customOrder values can only be integers.')
+                return
             self._custom_order = value
-            if self.useCustomOrder:
+            if self.useCustomOrder and self._has_enums:
                 self.rebuild_layout()
 
     @Property(WidgetType)
@@ -407,11 +415,20 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         according to the layout property values.
         """
         self.clear()
-        if self.orientation == Qt.Vertical:
-            for i, widget in enumerate(self._widgets):
+
+        if self.useCustomOrder:
+            order = [int(v) for v in self.customOrder]
+        else:
+            order = list(range(len(self._widgets)))
+
+        if self.invertOrder:
+            order = order[::-1]
+
+        for i, idx in enumerate(order):
+            widget = self._widgets[idx]
+            if self.orientation == Qt.Vertical:
                 self.layout().addWidget(widget, i, 0)
-        elif self.orientation == Qt.Horizontal:
-            for i, widget in enumerate(self._widgets):
+            elif self.orientation == Qt.Horizontal:
                 self.layout().addWidget(widget, 0, i)
 
     def check_enable_state(self):
