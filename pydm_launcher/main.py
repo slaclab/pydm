@@ -1,6 +1,5 @@
 import sys
 import argparse
-import json
 import logging
 
 
@@ -12,6 +11,10 @@ def main():
     logger.addHandler(handler)
     logger.setLevel("INFO")
     handler.setLevel("INFO")
+
+    from pydm.utilities import setup_renderer
+
+    setup_renderer()
 
     try:
         """
