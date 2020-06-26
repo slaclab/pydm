@@ -1,8 +1,9 @@
 import logging
+
 from qtpy.QtCore import (Qt, QSize, Property, Slot, Q_ENUMS, QMargins)
+from qtpy.QtGui import QPainter
 from qtpy.QtWidgets import (QWidget, QButtonGroup, QGridLayout, QPushButton,
                             QRadioButton, QStyleOption, QStyle)
-from qtpy.QtGui import QPainter
 
 from .base import PyDMWritableWidget
 from .. import data_plugins
@@ -425,7 +426,14 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
             order = order[::-1]
 
         for i, idx in enumerate(order):
-            widget = self._widgets[idx]
+            try:
+                widget = self._widgets[idx]
+            except IndexError:
+                if self._has_enums:
+                    logger.error(
+                        'Invalid index for PyDMEnumButton %s. Index: %s, Range: 0 to %s',
+                        self.objectName(), idx, len(self._widgets) - 1)
+                continue
             if self.orientation == Qt.Vertical:
                 self.layout().addWidget(widget, i, 0)
             elif self.orientation == Qt.Horizontal:
