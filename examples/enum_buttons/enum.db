@@ -1,0 +1,12 @@
+record(mbbo, "TEST:ENUM")
+{
+   field(PINI, "YES")
+   field(ZRST, "YES")
+   field(ZRVL, "0")
+   field(ONST, "NO")
+   field(ONVL, "1")
+   field(TWST, "MAYBE")
+   field(TWVL, "2")
+   field(VAL,  "0")
+}
+

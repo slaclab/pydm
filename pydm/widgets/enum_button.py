@@ -1,7 +1,9 @@
+import logging
+
 from qtpy.QtCore import (Qt, QSize, Property, Slot, Q_ENUMS, QMargins)
+from qtpy.QtGui import QPainter
 from qtpy.QtWidgets import (QWidget, QButtonGroup, QGridLayout, QPushButton,
                             QRadioButton, QStyleOption, QStyle)
-from qtpy.QtGui import QPainter
 
 from .base import PyDMWritableWidget
 from .. import data_plugins
@@ -14,6 +16,7 @@ class WidgetType(object):
 
 class_for_type = [QPushButton, QRadioButton]
 
+logger = logging.getLogger(__name__)
 
 class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
     """
@@ -40,6 +43,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
     def __init__(self, parent=None, init_channel=None):
         QWidget.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
+        self._invert_order = False
+        self._use_custom_order = False
+        self._custom_order = []
         self._has_enums = False
         self._checkable = True
         self.setLayout(QGridLayout(self))
@@ -82,6 +88,64 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
     @items.setter
     def items(self, value):
         self.enum_strings_changed(value)
+
+    @Property(bool)
+    def useCustomOrder(self):
+        """
+        Whether or not to use custom order for the button group.
+
+        Returns
+        -------
+        bool
+        """
+        return self._use_custom_order
+
+    @useCustomOrder.setter
+    def useCustomOrder(self, value):
+        if value != self._use_custom_order:
+            self._use_custom_order = value
+            self.rebuild_layout()
+
+    @Property(bool)
+    def invertOrder(self):
+        """
+        Whether or not to invert the order for the button group.
+
+        Returns
+        -------
+        bool
+        """
+        return self._invert_order
+
+    @invertOrder.setter
+    def invertOrder(self, value):
+        if value != self._invert_order:
+            self._invert_order = value
+            if self._has_enums:
+                self.rebuild_layout()
+
+    @Property("QStringList")
+    def customOrder(self):
+        """
+        Index list in which items are to be displayed in the button group.
+
+        Returns
+        -------
+        List[str]
+        """
+        return self._custom_order
+
+    @customOrder.setter
+    def customOrder(self, value):
+        if value != self._custom_order:
+            try:
+                v = [int(v) for v in value]
+            except ValueError:
+                logger.error('customOrder values can only be integers.')
+                return
+            self._custom_order = value
+            if self.useCustomOrder and self._has_enums:
+                self.rebuild_layout()
 
     @Property(WidgetType)
     def widgetType(self):
@@ -352,11 +416,27 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         according to the layout property values.
         """
         self.clear()
-        if self.orientation == Qt.Vertical:
-            for i, widget in enumerate(self._widgets):
+
+        if self.useCustomOrder:
+            order = [int(v) for v in self.customOrder]
+        else:
+            order = list(range(len(self._widgets)))
+
+        if self.invertOrder:
+            order = order[::-1]
+
+        for i, idx in enumerate(order):
+            try:
+                widget = self._widgets[idx]
+            except IndexError:
+                if self._has_enums:
+                    logger.error(
+                        'Invalid index for PyDMEnumButton %s. Index: %s, Range: 0 to %s',
+                        self.objectName(), idx, len(self._widgets) - 1)
+                continue
+            if self.orientation == Qt.Vertical:
                 self.layout().addWidget(widget, i, 0)
-        elif self.orientation == Qt.Horizontal:
-            for i, widget in enumerate(self._widgets):
+            elif self.orientation == Qt.Horizontal:
                 self.layout().addWidget(widget, 0, i)
 
     def check_enable_state(self):
