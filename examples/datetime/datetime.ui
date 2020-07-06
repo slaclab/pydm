@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>208</width>
+    <height>149</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,1,0,0,0">
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Configurable Value:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMDateTimeEdit" name="PyDMDateTimeEdit">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:ConfigTime</string>
+     </property>
+     <property name="timeBase" stdset="0">
+      <enum>PyDMDateTimeEdit::Milliseconds</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMDateTimeLabel" name="PyDMDateTimeLabel">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:ConfigTime</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Current Time:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMDateTimeLabel" name="PyDMDateTimeLabel_2">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:CurrentTimeSec</string>
+     </property>
+     <property name="format" stdset="0">
+      <string>yyyy/MM/dd hh:mm:ss.zzz</string>
+     </property>
+     <property name="timeBase" stdset="0">
+      <enum>PyDMDateTimeLabel::Seconds</enum>
+     </property>
+     <property name="relative" stdset="0">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMDateTimeEdit</class>
+   <extends>QDateTimeEdit</extends>
+   <header>pydm.widgets.datetime</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDateTimeLabel</class>
+   <extends>QLabel</extends>
+   <header>pydm.widgets.datetime</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
