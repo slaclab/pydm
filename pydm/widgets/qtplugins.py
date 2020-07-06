@@ -9,6 +9,7 @@ from .tab_bar_qtplugin import TabWidgetPlugin
 from .byte import PyDMByteIndicator
 
 from .checkbox import PyDMCheckbox
+from .datetime import (PyDMDateTimeEdit, PyDMDateTimeLabel)
 from .drawing import (PyDMDrawingLine, PyDMDrawingRectangle,
                       PyDMDrawingTriangle,
                       PyDMDrawingEllipse, PyDMDrawingCircle, PyDMDrawingArc,
@@ -69,6 +70,15 @@ PyDMByteIndicatorPlugin = qtplugin_factory(PyDMByteIndicator,
 # Checkbox plugin
 PyDMCheckboxPlugin = qtplugin_factory(PyDMCheckbox, group=WidgetCategory.INPUT,
                                       extensions=BASE_EXTENSIONS)
+
+# Date/Time plugins
+PyDMDateTimeEditPlugin = qtplugin_factory(PyDMDateTimeEdit,
+                                          group=WidgetCategory.INPUT,
+                                          extensions=BASE_EXTENSIONS)
+
+PyDMDateTimeLabelPlugin = qtplugin_factory(PyDMDateTimeLabel,
+                                           group=WidgetCategory.DISPLAY,
+                                           extensions=BASE_EXTENSIONS)
 
 # Drawing plugins
 PyDMDrawingArcPlugin = qtplugin_factory(PyDMDrawingArc,
