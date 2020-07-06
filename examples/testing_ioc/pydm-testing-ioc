@@ -2,6 +2,7 @@
 import os
 import threading
 import numpy
+import time
 
 from pcaspy import Driver, SimpleServer
 
@@ -49,7 +50,9 @@ pvdb = {
         'CosVal'           : { 'type' : 'float', 'value': 0.0, 'asg': 'default' },
         'Normal'           : { 'type' : 'float', 'value': 0.0, 'asg': 'default' },
         'Infinity'         : { 'count': MAX_POINTS,
-                              'prec' : 5, 'asg' : 'default', 'value': numpy.array([numpy.inf]*MAX_POINTS)}
+                              'prec' : 5, 'asg' : 'default', 'value': numpy.array([numpy.inf]*MAX_POINTS)},
+        'CurrentTimeSec'   : {'type': 'float', 'value': 0},
+        'ConfigTime'       : { 'type': 'float', 'value': 0, 'asg': 'default'}
 
 }
 
@@ -91,6 +94,7 @@ class myDriver(Driver):
         y = numpy.linspace(-5.0, 5.0, IMAGE_SIZE)
         xgrid, ygrid = numpy.meshgrid(x, y)
         i = 0
+
         while True:
             run = self.getParam('Run')
             updateTime = self.getParam('UpdateTime')
@@ -99,7 +103,10 @@ class myDriver(Driver):
             else:
                 self.eid.wait()
             run = self.getParam('Run')
-            if not run: continue
+            self.setParam('CurrentTimeSec', time.time())
+            if not run:
+                self.updatePV('CurrentTimeSec')
+                continue
             # retrieve parameters
             noiseAmplitude = self.getParam('NoiseAmplitude')
             timePerDivision = self.getParam('TimePerDivision')
