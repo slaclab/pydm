@@ -10,6 +10,7 @@ Display Widgets
    :maxdepth: 1
 
    byte.rst
+   datetime_label.rst
    image.rst
    label.rst
    log.rst
@@ -23,6 +24,7 @@ Input Widgets
    :maxdepth: 1
 
    checkbox.rst
+   datetime_edit.rst
    enum_button.rst
    enum_combo_box.rst
    line_edit.rst
