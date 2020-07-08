@@ -39,6 +39,8 @@ PYDM_STRING_ENCODING            | The string encoding to be used when converting
 PYDM_STYLESHEET                 | Path to the QSS files defining the global stylesheets for the
                                 | PyDM application. When used, it will override the default look.
                                 | If using multiple files they must be separated by the path separator.
+                                | Only files are supported, not directories. On this list, like a PATH
+                                | variable, the first elements will take precedence over others.
                                 | E.g.: ``/path_to/my_style_1.qss:/path_to/other/my_other_style.qss``
                                 | **Default:** None
 PYDM_STYLESHEET_INCLUDE_DEFAULT | Whether or not to include the PyDM Default stylesheet along with customized
