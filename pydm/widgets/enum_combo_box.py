@@ -119,6 +119,9 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         tooltip = ""
         if not self._connected:
             tooltip += "PV is disconnected."
+            if self.channel:
+                tooltip += '\n'
+                tooltip += self.get_address()
         elif not self._write_access:
             if data_plugins.is_read_only():
                 tooltip += "Running PyDM on Read-Only mode."
