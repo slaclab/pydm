@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.base &mdash; PyDM v1.10.2+14.g900097f6 documentation</title>
+  <title>pydm.widgets.base &mdash; PyDM v1.10.2+17.g4e6f1bcd documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.10.2+14.g900097f6
+                v1.10.2+17.g4e6f1bcd
               </div>
             
           
@@ -839,6 +839,12 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">show_address_tooltip</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="k">def</span> <span class="nf">get_address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Object </span><span class="si">%r</span><span class="s2"> has no PyDM Channels&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">address</span>
 
     <span class="k">def</span> <span class="nf">show_address_tooltip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -848,10 +854,9 @@
 <span class="sd">        EDM. If the QWidget does not have a valid PyDMChannel nothing will be</span>
 <span class="sd">        displayed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="p">):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Object </span><span class="si">%r</span><span class="s2"> has no PyDM Channels&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_address</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">addr</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">address</span>
         <span class="n">QToolTip</span><span class="o">.</span><span class="n">showText</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">globalPos</span><span class="p">(),</span> <span class="n">addr</span><span class="p">)</span>
         <span class="c1"># If the address has a protocol, strip it out before putting it on the</span>
         <span class="c1"># clipboard.</span>
@@ -1140,6 +1145,8 @@
             <span class="k">if</span> <span class="n">tooltip</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
                 <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
             <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;PV is disconnected.&quot;</span>
+            <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">tooltip</span> <span class="o">+=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">get_address</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">tooltip</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
@@ -1285,6 +1292,8 @@
             <span class="k">if</span> <span class="n">tooltip</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
                 <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
             <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;PV is disconnected.&quot;</span>
+            <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">tooltip</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_address</span><span class="p">()</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_access</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">tooltip</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
                 <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>

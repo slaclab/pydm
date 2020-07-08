@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.10.2+14.g900097f6 documentation</title>
+  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.10.2+17.g4e6f1bcd documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.10.2+14.g900097f6
+                v1.10.2+17.g4e6f1bcd
               </div>
             
           
@@ -300,6 +300,9 @@
         <span class="n">tooltip</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span><span class="p">:</span>
             <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;PV is disconnected.&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">:</span>
+                <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">tooltip</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_address</span><span class="p">()</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_access</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">is_read_only</span><span class="p">():</span>
                 <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;Running PyDM on Read-Only mode.&quot;</span>
