@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; PyDM v1.10.2+26.g73303357 documentation</title>
+  <title>Customizing the Look and Feel &mdash; PyDM v1.10.2+26.g73303357 documentation</title>
   
 
   
@@ -20,7 +20,6 @@
   
 
   
-    
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -35,9 +34,10 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-    <script type="text/javascript" src="_static/searchtools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Widgets" href="widgets/index.html" />
+    <link rel="prev" title="Configuration" href="configuration.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -68,7 +68,7 @@
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -99,8 +99,12 @@
 <li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="stylesheets.html">Customizing the Look and Feel</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Customizing the Look and Feel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#processing-order-of-style-sheets">Processing Order of Style Sheets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#important-notes">Important Notes</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="widgets/index.html">Widgets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="widgets/widget_rules/index.html">Widget Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="add_data_plugins.html">Including Data Plugins</a></li>
@@ -164,12 +168,14 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Search</li>
+      <li>Customizing the Look and Feel</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
+            <a href="_sources/stylesheets.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -181,23 +187,60 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="customizing-the-look-and-feel">
+<h1>Customizing the Look and Feel<a class="headerlink" href="#customizing-the-look-and-feel" title="Permalink to this headline">¶</a></h1>
+<p>Instead of rolling out hardcoded styles or reinvent the wheel, PyDM leverages
+the existing Qt Style Sheet mechanism.</p>
+<p>Qt Style Sheet terminology and syntactic rules are almost identical to those of
+HTML CSS. More on the rules, selectors and syntax can be found at this
+<a class="reference external" href="https://doc.qt.io/Qt-5/stylesheet-syntax.html">link</a>.</p>
+<p>By default PyDM ships with a <a class="reference external" href="https://github.com/slaclab/pydm/blob/master/pydm/default_stylesheet.qss">default stylesheet file</a>
+that is used unless an user specify a file to be used either via the PyDM
+launcher argument <cite>–-stylesheet STYLESHEET</cite> or via the <cite>PYDM_STYLESHEET</cite>
+environment variable.</p>
+<p>To help users extend this feature, PyDM offers two main configurations that can
+be used:</p>
+<ul class="simple">
+<li><p><strong>PYDM_STYLESHEET</strong></p></li>
+</ul>
+<p>Path to the QSS files defining the global stylesheets for the PyDM application.
+When used, it will override the default look. If using multiple files they
+must be separated by the path separator.
+E.g.: <code class="docutils literal notranslate"><span class="pre">/path_to/my_style_1.qss:/path_to/other/my_other_style.qss</span></code></p>
+<ul class="simple">
+<li><p><strong>PYDM_STYLESHEET_INCLUDE_DEFAULT</strong></p></li>
+</ul>
+<p>Whether or not to include the PyDM Default stylesheet along with customized
+files. Note that the PyDM default stylesheet will have lower precedence compared
+to files specified at <code class="docutils literal notranslate"><span class="pre">PYDM_STYLESHEET</span></code></p>
+<div class="section" id="processing-order-of-style-sheets">
+<h2>Processing Order of Style Sheets<a class="headerlink" href="#processing-order-of-style-sheets" title="Permalink to this headline">¶</a></h2>
+<p>The file will be processed from top to bottom and the bottom-most rules will
+take precedence over rules defined at the top in case of repeated/conflicts.</p>
+<p>Rules defined at widgets will always take precedence over general rules defined
+at higher levels.</p>
+</div>
+<div class="section" id="important-notes">
+<h2>Important Notes<a class="headerlink" href="#important-notes" title="Permalink to this headline">¶</a></h2>
+<p>When writing your own style sheet rules please be always mindful about your
+selectors since, as with HTML CSS, the style rules will cascade to child widgets.</p>
+</div>
+</div>
 
-  
-  <div id="search-results">
-  
-  </div>
 
            </div>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="widgets/index.html" class="btn btn-neutral float-right" title="Widgets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="configuration.html" class="btn btn-neutral float-left" title="Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -237,14 +280,7 @@
   
   
     
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Configuration &mdash; PyDM v1.10.2+17.g4e6f1bcd documentation</title>
+  <title>Configuration &mdash; PyDM v1.10.2+26.g73303357 documentation</title>
   
 
   
@@ -36,7 +36,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Widgets" href="widgets/index.html" />
+    <link rel="next" title="Customizing the Look and Feel" href="stylesheets.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                v1.10.2+17.g4e6f1bcd
+                v1.10.2+26.g73303357
               </div>
             
           
@@ -100,6 +100,7 @@
 </ul>
 <p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="stylesheets.html">Customizing the Look and Feel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="widgets/index.html">Widgets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="widgets/widget_rules/index.html">Widget Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="add_data_plugins.html">Including Data Plugins</a></li>
@@ -190,8 +191,8 @@ for configuration and customization.</p>
 default values.</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 26%" />
-<col style="width: 74%" />
+<col style="width: 27%" />
+<col style="width: 73%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Variable</p></th>
@@ -271,13 +272,26 @@ default values.</p>
 </tr>
 <tr class="row-odd"><td><p>PYDM_STYLESHEET</p></td>
 <td><div class="line-block">
-<div class="line">Path to the QSS file defining the global stylesheet for the</div>
+<div class="line">Path to the QSS files defining the global stylesheets for the</div>
 <div class="line">PyDM application. When used, it will override the default look.</div>
+<div class="line">If using multiple files they must be separated by the path separator.</div>
+<div class="line">Only files are supported, not directories. On this list, like a PATH</div>
+<div class="line">variable, the first elements will take precedence over others.</div>
+<div class="line">E.g.: <code class="docutils literal notranslate"><span class="pre">/path_to/my_style_1.qss:/path_to/other/my_other_style.qss</span></code></div>
 <div class="line"><strong>Default:</strong> None</div>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><p>PYDM_DESIGNER_ONLINE</p></td>
+<tr class="row-even"><td><p>PYDM_STYLESHEET_INCLUDE_DEFAULT</p></td>
+<td><div class="line-block">
+<div class="line">Whether or not to include the PyDM Default stylesheet along with customized</div>
+<div class="line">files. Note that the PyDM default stylesheet will have lower precedence compared</div>
+<div class="line">to files specified at <code class="docutils literal notranslate"><span class="pre">PYDM_STYLESHEET</span></code></div>
+<div class="line"><strong>Default:</strong> False</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>PYDM_DESIGNER_ONLINE</p></td>
 <td><div class="line-block">
 <div class="line">This flag enables receiving live data in Qt Designer. If disabled,</div>
 <div class="line">channels will not be connected to in Qt Designer.</div>
@@ -297,7 +311,7 @@ default values.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="widgets/index.html" class="btn btn-neutral float-right" title="Widgets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="stylesheets.html" class="btn btn-neutral float-right" title="Customizing the Look and Feel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
