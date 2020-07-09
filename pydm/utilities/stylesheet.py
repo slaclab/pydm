@@ -4,6 +4,8 @@ import logging
 
 from qtpy.QtWidgets import QApplication
 
+from ..config import STYLESHEET, STYLESHEET_INCLUDE_DEFAULT
+
 logger = logging.getLogger(__name__)
 
 
@@ -24,6 +26,12 @@ def clear_cache():
     """Clear the cache for stylesheet data"""
     global __style_data
     __style_data = None
+
+
+def merge_widget_stylesheet(widget, stylesheet_file_path=None):
+    curr_style = widget.styleSheet() or ""
+    env_style = _get_style_data(stylesheet_file_path) or ""
+    widget.setStyleSheet(env_style + curr_style)
 
 
 def apply_stylesheet(stylesheet_file_path=None, widget=None):
@@ -67,38 +75,38 @@ def _get_style_data(stylesheet_file_path=None):
     """
     global __style_data
 
-    if not stylesheet_file_path:
-        stylesheet_file_path = os.getenv("PYDM_STYLESHEET", None)
-
-    if stylesheet_file_path == "":
-        stylesheet_file_path = None
-
     if __style_data:
         return __style_data
 
-    __style_data = None
+    if not stylesheet_file_path:
+        stylesheet_file_path = STYLESHEET
+
+    if not stylesheet_file_path:
+        stylesheet_file_path = None
+
+    __style_data = ""
     load_default = True
 
     if stylesheet_file_path is not None:
-        try:
-            with open(stylesheet_file_path, 'r') as stylesheet_file:
-                logger.info(
-                    "Opening style file '{0}'...".format(stylesheet_file_path))
-                __style_data = stylesheet_file.read()
-                load_default = False
-        except Exception as ex:
-            __style_data = None
-            logger.error(
-                "Error reading the stylesheet file '{0}'. Exception: {1}".format(
-                    stylesheet_file_path,
-                    str(ex)))
+        files = stylesheet_file_path.split(os.pathsep)
+        for f in files[::-1]:
+            try:
+                with open(f, 'r') as stylesheet_file:
+                    logger.debug(
+                        "Opening style file '{0}'...".format(stylesheet_file_path))
+                    __style_data += stylesheet_file.read()
+                    load_default = False
+            except Exception as ex:
+                logger.error(
+                    "Error reading the stylesheet file '{0}'. Exception: {1}".format(
+                        f, str(ex)))
 
-    if load_default:
+    if load_default or STYLESHEET_INCLUDE_DEFAULT:
         try:
             with open(GLOBAL_STYLESHEET, 'r') as default_stylesheet:
-                logger.info("Opening the default stylesheet '{0}'...".format(
+                logger.debug("Opening the default stylesheet '{0}'...".format(
                     GLOBAL_STYLESHEET))
-                __style_data = default_stylesheet.read()
+                __style_data = default_stylesheet.read() + __style_data
         except Exception as ex:
             __style_data = None
             logger.error(
