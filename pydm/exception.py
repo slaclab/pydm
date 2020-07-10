@@ -58,9 +58,28 @@ class ExceptionDispatcher(QtCore.QThread):
         self._queue.put((exc_type, exc_value, exc_tb))
 
     def run(self):
+        def create_entry(entry):
+            # Use the Type and message to deduplicate the errors
+            key = (entry[0], str(entry[1]))
+            return {key: entry}
+
         while not self.isInterruptionRequested():
-            data = self._queue.get(block=True, timeout=None)
-            self.newException.emit(data)
+            bucket = {}
+            # Wait until we have an error
+            data = self._queue.get(block=True, timeout=None)  # Block forever
+            # Wait a bit to check if we have more
+            self.msleep(200)
+
+            bucket.update(create_entry(data))
+
+            # Collect all errors
+            while not self._queue.empty():
+                data = self._queue.get(block=False)
+                bucket.update(create_entry(data))
+
+            # Emit unique errors to listeners
+            for _, v in bucket.items():
+                self.newException.emit(data)
 
 
 class DefaultExceptionNotifier(QtCore.QObject):
