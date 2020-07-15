@@ -90,6 +90,8 @@ def _get_style_data(stylesheet_file_path=None):
     if stylesheet_file_path is not None:
         files = stylesheet_file_path.split(os.pathsep)
         for f in files[::-1]:
+            if not f:
+                continue
             try:
                 with open(f, 'r') as stylesheet_file:
                     logger.debug(
