@@ -296,6 +296,11 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.vertical_crosshair_line = None
         self.horizontal_crosshair_line = None
         self.crosshair_movement_proxy = None
+
+        # Mouse mode to 1 button (left button draw rectangle for zoom)
+        self.plotItem.getViewBox().setMouseMode(ViewBox.RectMode)
+
+
         if utilities.is_qt_designer():
             self.installEventFilter(self)
 
