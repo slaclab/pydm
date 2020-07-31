@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.baseplot &mdash; PyDM v1.10.3 documentation</title>
+  <title>pydm.widgets.baseplot &mdash; PyDM v1.10.3+2.g1a7f50ce documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.10.3
+                v1.10.3+2.g1a7f50ce
               </div>
             
           
@@ -478,6 +478,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">vertical_crosshair_line</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">horizontal_crosshair_line</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">crosshair_movement_proxy</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Mouse mode to 1 button (left button draw rectangle for zoom)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">setMouseMode</span><span class="p">(</span><span class="n">ViewBox</span><span class="o">.</span><span class="n">RectMode</span><span class="p">)</span>
+
+
         <span class="k">if</span> <span class="n">utilities</span><span class="o">.</span><span class="n">is_qt_designer</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
