@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.enum_button &mdash; PyDM v1.10.3+5.gb40bbe8f documentation</title>
+  <title>pydm.widgets.enum_button &mdash; PyDM v1.10.3+7.gdfacca8e documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.10.3+5.gb40bbe8f
+                v1.10.3+7.gdfacca8e
               </div>
             
           
@@ -563,6 +563,7 @@
                 <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">w</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">widget</span><span class="p">()</span>
                     <span class="k">if</span> <span class="n">w</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">w</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">removeWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMEnumButton.rebuild_widgets"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.rebuild_widgets">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -574,6 +575,7 @@
         <span class="k">def</span> <span class="nf">generate_widgets</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
             <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_widgets</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widgets</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">w</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_btn_group</span><span class="o">.</span><span class="n">removeButton</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
                 <span class="n">w</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
 
@@ -581,6 +583,7 @@
                 <span class="n">w</span> <span class="o">=</span> <span class="n">class_for_type</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_widget_type</span><span class="p">](</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
                 <span class="n">w</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">checkable</span><span class="p">)</span>
                 <span class="n">w</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+                <span class="n">w</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_widgets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_btn_group</span><span class="o">.</span><span class="n">addButton</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
 
@@ -610,6 +613,7 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">order</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widgets</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="n">widget</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_enums</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
