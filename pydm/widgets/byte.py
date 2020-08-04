@@ -16,7 +16,6 @@ class PyDMBitIndicator(QWidget):
     """
     def __init__(self, parent=None, circle=False):
         super(PyDMBitIndicator, self).__init__(parent)
-        self.setAutoFillBackground(True)
         self.circle = circle
         self._painter = QPainter()
         self._brush = QBrush(Qt.SolidPattern)
