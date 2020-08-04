@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.template_repeater &mdash; PyDM v1.10.3+2.g1a7f50ce documentation</title>
+  <title>pydm.widgets.template_repeater &mdash; PyDM v1.10.3+5.gb40bbe8f documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.10.3+2.g1a7f50ce
+                v1.10.3+5.gb40bbe8f
               </div>
             
           
@@ -440,11 +440,33 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-    
+
+    <span class="k">def</span> <span class="nf">_is_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate if the string source is a valid json.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        source : str</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple (bool, obj)</span>
+<span class="sd">            True if a valid json or False otherwise.</span>
+<span class="sd">            Obj will either be the dictionary data or the exception while trying</span>
+<span class="sd">            to load the JSON string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">data</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ex</span>
+
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">dataSource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The path to the JSON file to fill in each instance of the template.</span>
+<span class="sd">        The path to the JSON file or a valid JSON string to fill in each</span>
+<span class="sd">        instance of the template.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -455,7 +477,8 @@
     <span class="nd">@dataSource</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">dataSource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_source</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets the path to the JSON file to fill in each instance of the template.</span>
+<span class="sd">        Sets the path to the JSON file or a valid JSON string to fill in each</span>
+<span class="sd">        instance of the template.</span>
 <span class="sd">        </span>
 <span class="sd">        For example, if you build a template that contains two macro variables,</span>
 <span class="sd">        ${NAME} and ${UNIT}, your JSON file should be a list of dictionaries,</span>
@@ -470,27 +493,33 @@
         <span class="k">if</span> <span class="n">data_source</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span> <span class="o">=</span> <span class="n">data_source</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span><span class="p">:</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">parent_display</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_parent_display</span><span class="p">()</span>
-                    <span class="n">base_path</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="k">if</span> <span class="n">parent_display</span><span class="p">:</span>
-                        <span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span>
-                            <span class="n">parent_display</span><span class="o">.</span><span class="n">loaded_file</span><span class="p">())</span>
-                    <span class="n">fname</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">)</span>
+                <span class="n">is_json</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_json</span><span class="p">(</span><span class="n">data_source</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">is_json</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;TemplateRepeater dataSource is a valid JSON.&#39;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;TemplateRepeater dataSource is not a valid JSON. Assuming it is a file path.&#39;</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">parent_display</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_parent_display</span><span class="p">()</span>
+                        <span class="n">base_path</span> <span class="o">=</span> <span class="kc">None</span>
+                        <span class="k">if</span> <span class="n">parent_display</span><span class="p">:</span>
+                            <span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span>
+                                <span class="n">parent_display</span><span class="o">.</span><span class="n">loaded_file</span><span class="p">())</span>
+                        <span class="n">fname</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">)</span>
 
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">fname</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">():</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Cannot locate data source file </span><span class="si">{}</span><span class="s1"> for PyDMTemplateRepeater.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">fname</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">():</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Cannot locate data source file </span><span class="si">{}</span><span class="s1"> for PyDMTemplateRepeater.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                                <span class="k">try</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to parse data source file </span><span class="si">{}</span><span class="s1"> for PyDMTemplateRepeater.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                            <span class="k">try</span><span class="p">:</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-                            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to parse data source file </span><span class="si">{}</span><span class="s1"> for PyDMTemplateRepeater.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
