@@ -381,6 +381,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
                 if item is not None:
                     w = item.widget()
                     if w is not None:
+                        w.hide()
                         self.layout().removeWidget(w)
 
     def rebuild_widgets(self):
@@ -392,6 +393,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         def generate_widgets(items):
             while len(self._widgets) != 0:
                 w = self._widgets.pop(0)
+                w.hide()
                 self._btn_group.removeButton(w)
                 w.deleteLater()
 
@@ -399,6 +401,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
                 w = class_for_type[self._widget_type](parent=self)
                 w.setCheckable(self.checkable)
                 w.setText(entry)
+                w.setVisible(False)
                 self._widgets.append(w)
                 self._btn_group.addButton(w, idx)
 
@@ -428,6 +431,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         for i, idx in enumerate(order):
             try:
                 widget = self._widgets[idx]
+                widget.setVisible(True)
             except IndexError:
                 if self._has_enums:
                     logger.error(
