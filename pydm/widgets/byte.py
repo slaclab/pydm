@@ -151,10 +151,10 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             for i, (label, indicator) in enumerate(pairs):
                 if self.labelPosition == QTabWidget.East:
                     self.layout().addWidget(indicator, i, 0)
-                    self.layout().addWidget(label, i, 1)
+                    self.layout().addWidget(label, i, 1, 1, 1, Qt.AlignVCenter)
                     label.setVisible(self._show_labels)
                 elif self.labelPosition == QTabWidget.West:
-                    self.layout().addWidget(label, i, 0)
+                    self.layout().addWidget(label, i, 0, 1, 1, Qt.AlignVCenter)
                     self.layout().addWidget(indicator, i, 1)
                     label.setVisible(self._show_labels)
                 else:
@@ -164,12 +164,12 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         elif self.orientation == Qt.Horizontal:
             for i, (label, indicator) in enumerate(pairs):
                 if self.labelPosition == QTabWidget.North:
-                    self.layout().addWidget(label, 0, i)
+                    self.layout().addWidget(label, 0, i, 1, 1, Qt.AlignHCenter)
                     self.layout().addWidget(indicator, 1, i)
                     label.setVisible(self._show_labels)
                 elif self.labelPosition == QTabWidget.South:
                     self.layout().addWidget(indicator, 0, i)
-                    self.layout().addWidget(label, 1, i)
+                    self.layout().addWidget(label, 1, i, 1, 1, Qt.AlignHCenter)
                     label.setVisible(self._show_labels)
                 else:
                     self.layout().addWidget(indicator, 0, i)
