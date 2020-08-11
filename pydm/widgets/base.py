@@ -1,3 +1,5 @@
+import os
+import platform
 import weakref
 import logging
 import functools
@@ -117,6 +119,61 @@ class PyDMPrimitiveWidget(object):
     def __init__(self, **kwargs):
         self._rules = None
         self._opacity = 1.0
+        if not is_qt_designer():
+            # We should  install the Event Filter only if we are running
+            # and not at the Designer
+            self.installEventFilter(self)
+
+    def eventFilter(self, obj, event):
+        """
+        EventFilter to redirect "middle click" to :meth:`.show_address_tooltip`
+        """
+        # Override the eventFilter to capture all middle mouse button events,
+        # and show a tooltip if needed.
+        if event.type() == QEvent.MouseButtonPress:
+            if event.button() == Qt.MiddleButton:
+                self.show_address_tooltip(event)
+                return True
+        return False
+
+    def show_address_tooltip(self, event):
+        """
+        Show the PyDMTooltip and copy address to clipboard
+
+        This is intended to replicate the behavior of the "middle click" from
+        EDM. If the QWidget does not have a valid PyDMChannel nothing will be
+        displayed
+        """
+        channels = getattr(self, 'channels', [])
+        if not channels:
+            logger.debug('Widget has no channels to display tooltip')
+            return
+
+        addrs = []
+        no_proto_addrs = []
+        for ch in channels:
+            addr = ch.address
+            if not addr:
+                continue
+            addrs.append(addr)
+            no_proto_addrs.append(remove_protocol(addr))
+
+        tooltip = os.linesep.join(addrs)
+        clipboard_text = os.linesep.join(no_proto_addrs)
+        QToolTip.showText(event.globalPos(), tooltip)
+        # If the address has a protocol, strip it out before putting it on the
+        # clipboard.
+
+        clipboard = QApplication.clipboard()
+
+        mode = clipboard.Clipboard
+        if platform.system() == 'Linux':
+            # Mode Selection is only valid for X11.
+            mode = clipboard.Selection
+
+        clipboard.setText(clipboard_text, mode=mode)
+        event = QEvent(QEvent.Clipboard)
+        self.app.sendEvent(clipboard, event)
 
     def opacity(self):
         """
@@ -500,9 +557,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self.contextMenuEvent = self.open_context_menu
         self.channel = init_channel
         if not is_qt_designer():
-            # We should  install the Event Filter only if we are running
-            # and not at the Designer
-            self.installEventFilter(self)
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
@@ -647,44 +701,11 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self.enum_strings = new_enum_strings
             self.value_changed(self.value)
 
-    def eventFilter(self, obj, event):
-        """
-        EventFilter to redirect "middle click" to :meth:`.show_address_tooltip`
-        """
-        # Override the eventFilter to capture all middle mouse button events,
-        # and show a tooltip if needed.
-        if event.type() == QEvent.MouseButtonPress:
-            if event.button() == Qt.MiddleButton:
-                self.show_address_tooltip(event)
-                return True
-        return False
-    
     def get_address(self):
         if not len(self._channels):
             logger.warning("Object %r has no PyDM Channels", self)
             return
         return self.channels()[0].address
-
-    def show_address_tooltip(self, event):
-        """
-        Show the PyDMTooltip and copy address to clipboard
-
-        This is intended to replicate the behavior of the "middle click" from
-        EDM. If the QWidget does not have a valid PyDMChannel nothing will be
-        displayed
-        """
-        addr = self.get_address()
-        if not addr:
-            return
-        QToolTip.showText(event.globalPos(), addr)
-        # If the address has a protocol, strip it out before putting it on the
-        # clipboard.
-        copy_text = remove_protocol(addr)
-
-        clipboard = QApplication.clipboard()
-        clipboard.setText(copy_text)
-        event = QEvent(QEvent.Clipboard)
-        self.app.sendEvent(clipboard, event)
 
     def ctrl_limit_changed(self, which, new_limit):
         """
@@ -965,7 +986,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
                 tooltip += '\n'
             tooltip += "PV is disconnected."
             tooltip += '\n'
-            tooltip +=  self.get_address()
+            tooltip += self.get_address()
 
         self.setToolTip(tooltip)
         self.setEnabled(status)
