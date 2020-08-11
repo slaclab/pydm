@@ -144,7 +144,10 @@ class PyDMPrimitiveWidget(object):
         EDM. If the QWidget does not have a valid PyDMChannel nothing will be
         displayed
         """
-        channels = getattr(self, 'channels', [])
+        channels_method = getattr(self, 'channels', None)
+        if channels_method is None:
+            return
+        channels = channels_method()
         if not channels:
             logger.debug('Widget has no channels to display tooltip')
             return
