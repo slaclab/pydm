@@ -117,6 +117,7 @@ class PyDMPrimitiveWidget(object):
     }
 
     def __init__(self, **kwargs):
+        self.app = QApplication.instance()
         self._rules = None
         self._opacity = 1.0
         if not is_qt_designer():
@@ -162,7 +163,7 @@ class PyDMPrimitiveWidget(object):
             no_proto_addrs.append(remove_protocol(addr))
 
         tooltip = os.linesep.join(addrs)
-        clipboard_text = os.linesep.join(no_proto_addrs)
+        clipboard_text = " ".join(no_proto_addrs)
         QToolTip.showText(event.globalPos(), tooltip)
         # If the address has a protocol, strip it out before putting it on the
         # clipboard.
@@ -535,7 +536,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
                 {'Position - X': ['setX', int],
                  'Position - Y': ['setY', int]})
 
-        self.app = QApplication.instance()
         self._connected = True
         self._channel = None
         self._channels = list()
