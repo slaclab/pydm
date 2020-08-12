@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.data_plugins &mdash; PyDM v1.10.3+11.g925cf84e documentation</title>
+  <title>pydm.data_plugins &mdash; PyDM v1.10.3+17.g6306d668 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.10.3+11.g925cf84e
+                v1.10.3+17.g6306d668
               </div>
             
           
@@ -224,7 +224,8 @@
     <span class="k">if</span> <span class="n">__CONNECTION_QUEUE__</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">while</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">__CONNECTION_QUEUE__</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">__CONNECTION_QUEUE__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
+               <span class="nb">len</span><span class="p">(</span><span class="n">__CONNECTION_QUEUE__</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
             <span class="n">channel</span> <span class="o">=</span> <span class="n">__CONNECTION_QUEUE__</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
             <span class="n">establish_connection_immediately</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
             <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">processEvents</span><span class="p">()</span>

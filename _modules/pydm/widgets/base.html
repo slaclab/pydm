@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.base &mdash; PyDM v1.10.3+11.g925cf84e documentation</title>
+  <title>pydm.widgets.base &mdash; PyDM v1.10.3+17.g6306d668 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.10.3+11.g925cf84e
+                v1.10.3+17.g6306d668
               </div>
             
           
@@ -180,7 +180,9 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.base</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">weakref</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">platform</span>
+<span class="kn">import</span> <span class="nn">weakref</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -297,8 +299,67 @@
     <span class="p">}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_opacity</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">():</span>
+            <span class="c1"># We should  install the Event Filter only if we are running</span>
+            <span class="c1"># and not at the Designer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        EventFilter to redirect &quot;middle click&quot; to :meth:`.show_address_tooltip`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Override the eventFilter to capture all middle mouse button events,</span>
+        <span class="c1"># and show a tooltip if needed.</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">.</span><span class="n">MouseButtonPress</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MiddleButton</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">show_address_tooltip</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">show_address_tooltip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Show the PyDMTooltip and copy address to clipboard</span>
+
+<span class="sd">        This is intended to replicate the behavior of the &quot;middle click&quot; from</span>
+<span class="sd">        EDM. If the QWidget does not have a valid PyDMChannel nothing will be</span>
+<span class="sd">        displayed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">channels_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;channels&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">channels_method</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">channels</span> <span class="o">=</span> <span class="n">channels_method</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">channels</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Widget has no channels to display tooltip&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">addrs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">no_proto_addrs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">channels</span><span class="p">:</span>
+            <span class="n">addr</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">address</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">addr</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">addrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+            <span class="n">no_proto_addrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">remove_protocol</span><span class="p">(</span><span class="n">addr</span><span class="p">))</span>
+
+        <span class="n">tooltip</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">addrs</span><span class="p">)</span>
+        <span class="n">clipboard_text</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">no_proto_addrs</span><span class="p">)</span>
+        <span class="n">QToolTip</span><span class="o">.</span><span class="n">showText</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">globalPos</span><span class="p">(),</span> <span class="n">tooltip</span><span class="p">)</span>
+        <span class="c1"># If the address has a protocol, strip it out before putting it on the</span>
+        <span class="c1"># clipboard.</span>
+
+        <span class="n">clipboard</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">clipboard</span><span class="p">()</span>
+
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">clipboard</span><span class="o">.</span><span class="n">Clipboard</span>
+        <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Linux&#39;</span><span class="p">:</span>
+            <span class="c1"># Mode Selection is only valid for X11.</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">clipboard</span><span class="o">.</span><span class="n">Selection</span>
+
+        <span class="n">clipboard</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">clipboard_text</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">QEvent</span><span class="p">(</span><span class="n">QEvent</span><span class="o">.</span><span class="n">Clipboard</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">sendEvent</span><span class="p">(</span><span class="n">clipboard</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">opacity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -657,7 +718,6 @@
                 <span class="p">{</span><span class="s1">&#39;Position - X&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setX&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
                  <span class="s1">&#39;Position - Y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setY&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">]})</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -682,9 +742,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">contextMenuEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_context_menu</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">init_channel</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">():</span>
-            <span class="c1"># We should  install the Event Filter only if we are running</span>
-            <span class="c1"># and not at the Designer</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">alarmSeverityChanged</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ALARM_DISCONNECTED</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span>
@@ -829,44 +886,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">enum_strings</span> <span class="o">=</span> <span class="n">new_enum_strings</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        EventFilter to redirect &quot;middle click&quot; to :meth:`.show_address_tooltip`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Override the eventFilter to capture all middle mouse button events,</span>
-        <span class="c1"># and show a tooltip if needed.</span>
-        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">.</span><span class="n">MouseButtonPress</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MiddleButton</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">show_address_tooltip</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-                <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span>
-    
     <span class="k">def</span> <span class="nf">get_address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="p">):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Object </span><span class="si">%r</span><span class="s2"> has no PyDM Channels&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
             <span class="k">return</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">address</span>
-
-    <span class="k">def</span> <span class="nf">show_address_tooltip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Show the PyDMTooltip and copy address to clipboard</span>
-
-<span class="sd">        This is intended to replicate the behavior of the &quot;middle click&quot; from</span>
-<span class="sd">        EDM. If the QWidget does not have a valid PyDMChannel nothing will be</span>
-<span class="sd">        displayed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_address</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">addr</span><span class="p">:</span>
-            <span class="k">return</span>
-        <span class="n">QToolTip</span><span class="o">.</span><span class="n">showText</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">globalPos</span><span class="p">(),</span> <span class="n">addr</span><span class="p">)</span>
-        <span class="c1"># If the address has a protocol, strip it out before putting it on the</span>
-        <span class="c1"># clipboard.</span>
-        <span class="n">copy_text</span> <span class="o">=</span> <span class="n">remove_protocol</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
-
-        <span class="n">clipboard</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">clipboard</span><span class="p">()</span>
-        <span class="n">clipboard</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">copy_text</span><span class="p">)</span>
-        <span class="n">event</span> <span class="o">=</span> <span class="n">QEvent</span><span class="p">(</span><span class="n">QEvent</span><span class="o">.</span><span class="n">Clipboard</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">sendEvent</span><span class="p">(</span><span class="n">clipboard</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">ctrl_limit_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1147,7 +1171,7 @@
                 <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
             <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;PV is disconnected.&quot;</span>
             <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-            <span class="n">tooltip</span> <span class="o">+=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">get_address</span><span class="p">()</span>
+            <span class="n">tooltip</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_address</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">tooltip</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.baseplot &mdash; PyDM v1.10.3+11.g925cf84e documentation</title>
+  <title>pydm.widgets.baseplot &mdash; PyDM v1.10.3+17.g6306d668 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.10.3+11.g925cf84e
+                v1.10.3+17.g6306d668
               </div>
             
           
@@ -440,9 +440,8 @@
     <span class="n">crosshair_position_updated</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">axisItems</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">PlotWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span>
-                            <span class="n">axisItems</span><span class="o">=</span><span class="n">axisItems</span><span class="p">)</span>
-        <span class="n">PyDMPrimitiveWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BasePlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span>
+                                       <span class="n">axisItems</span><span class="o">=</span><span class="n">axisItems</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPlotItem</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">hideButtons</span><span class="p">()</span>
@@ -482,7 +481,6 @@
         <span class="c1"># Mouse mode to 1 button (left button draw rectangle for zoom)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">setMouseMode</span><span class="p">(</span><span class="n">ViewBox</span><span class="o">.</span><span class="n">RectMode</span><span class="p">)</span>
 
-
         <span class="k">if</span> <span class="n">utilities</span><span class="o">.</span><span class="n">is_qt_designer</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -496,8 +494,12 @@
                     <span class="bp">self</span><span class="p">,</span>
                     <span class="n">QRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
                     <span class="mi">4000</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ret</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Somehow super here is not invoking the PyDMPrimitiveWidget</span>
+            <span class="c1"># eventFilter</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">PyDMPrimitiveWidget</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
 
+        <span class="k">return</span> <span class="n">ret</span>
 
     <span class="k">def</span> <span class="nf">addCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_item</span><span class="p">,</span> <span class="n">curve_color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">curve_color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
