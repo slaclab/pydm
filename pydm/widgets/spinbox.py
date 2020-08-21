@@ -21,6 +21,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         self.setEnabled(False)
         self._alarm_sensitive_border = False
         self._show_step_exponent = True
+        self._write_on_press = False
         self.step_exponent = 0
         self.setDecimals(0)
         self.app = QApplication.instance()
@@ -52,10 +53,16 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
             self.step_exponent += 1 if ev.key() == Qt.Key_Left else -1
             self.step_exponent = max(-self.decimals(), self.step_exponent)
             self.update_step_size()
+
         elif ev.key() in (Qt.Key_Return, Qt.Key_Enter):
             self.send_value()
+    
         else:
             super(PyDMSpinbox, self).keyPressEvent(ev)
+
+        if self._write_on_press and (ev.key() in (Qt.Key_Left, Qt.Key_Right)) and not ctrl_hold:
+            self.send_value()
+
 
     def widget_ctx_menu(self):
         """
@@ -200,3 +207,14 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         """
         self._show_step_exponent = val
         self.update_format_string()
+
+    @Property(bool)
+    def writeOnPress(self):
+        """
+        Whether to write value on key press
+
+        Returns
+        -------
+        bool
+        """
+        return self._write_on_press
