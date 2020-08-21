@@ -218,3 +218,15 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         bool
         """
         return self._write_on_press
+
+    @writeOnPress.setter
+    def writeOnPress(self, val):
+        """
+        Whether value to write on key press.
+
+        Parameters
+        ----------
+        val : bool
+        """
+        self._write_on_press = val
+        self.update_format_string()
