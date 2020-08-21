@@ -60,7 +60,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         else:
             super(PyDMSpinbox, self).keyPressEvent(ev)
 
-        if self._write_on_press and (ev.key() in (Qt.Key_Left, Qt.Key_Right)) and not ctrl_hold:
+        if self._write_on_press and (ev.key() in (Qt.Key_Up, Qt.Key_Down)) and not ctrl_hold:
             self.send_value()
 
 
