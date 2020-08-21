@@ -73,13 +73,20 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         QMenu or None
             If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.
         """
-        def toggle():
+        def toggle_step():
             self.showStepExponent = not self.showStepExponent
+
+        def toggle_write():
+            self.writeOnPress = not self.writeOnPress
 
         menu = self.lineEdit().createStandardContextMenu()
         menu.addSeparator()
         ac = menu.addAction('Toggle Show Step Size')
-        ac.triggered.connect(toggle)
+        ac.triggered.connect(toggle_step)
+
+        ac_write = menu.addAction('Toggle write on press')
+        ac_write.triggered.connect(toggle_write)
+
         return menu
 
     def update_step_size(self):
@@ -229,4 +236,3 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         val : bool
         """
         self._write_on_press = val
-        self.update_format_string()
