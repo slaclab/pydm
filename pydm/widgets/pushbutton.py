@@ -49,7 +49,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
 
     def __init__(self, parent=None, label=None, icon=None,
-                 pressValue=None, relative=False,
+                 pressValue=None, releaseValue=None, relative=False,
                  init_channel=None):
         if icon:
             QPushButton.__init__(self, icon, label, parent)
@@ -59,6 +59,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             QPushButton.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self._pressValue = pressValue
+        self._releaseValue = releaseValue
         self._relative = relative
         self._alarm_sensitive_border = False
         self._show_confirm_dialog = False
@@ -66,6 +67,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         self._password_protected = False
         self._password = ""
         self._protected_password = ""
+        self._write_when_release = False
         self.clicked.connect(self.sendValue)
 
     @Property(bool)
@@ -215,6 +217,39 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         if str(value) != self._pressValue:
             self._pressValue = str(value)
+
+
+    @Property(str)
+    def releaseValue(self):
+        """
+        This property holds the value to send back through the channel.
+
+        The type of this value does not matter because it is automatically
+        converted to match the prexisting value type of the channel. However,
+        the sign of the value matters for both the fixed and relative modes.
+
+        Returns
+        -------
+        str
+        """
+        return str(self._releaseValue)
+
+    @releaseValue.setter
+    def releaseValue(self, value):
+        """
+        This property holds the value to send back through the channel.
+
+        The type of this value does not matter because it is automatically
+        converted to match the prexisting value type of the channel. However,
+        the sign of the value matters for both the fixed and relative modes.
+
+        Parameters
+        ----------
+        value : str
+        """
+        if str(value) != self._releaseValue:
+            self._releaseValue = str(value)
+
 
     @Property(bool)
     def relativeChange(self):
@@ -376,3 +411,47 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             self.pressValue = self.channeltype(value)
         except(ValueError, TypeError):
             logger.error("'{0}' is not a valid pressValue for '{1}'.".format(value, self.channel))
+
+    @Property(bool)
+    def writeWhenRelease(self):
+        """
+        Wether or not to write releaseValue on release
+
+        Returns
+        -------
+        bool
+        """
+        return self._write_when_release
+
+    @writeWhenRelease.setter
+    def writeWhenRelease(self, value):
+        """
+        Wether or not to write releaseValue on release
+
+        Parameters
+        ----------
+        value : bool
+        """
+        if self._write_when_release != value:
+            self._write_when_release = value
+
+    @Slot(int)
+    @Slot(float)
+    @Slot(str)
+    def updateReleaseValue(self, value):
+        """
+        Update the releaseValue of a function by passing a signal to the
+        PyDMPushButton.
+
+        This is useful to dynamically change the releaseValue of the button
+        during runtime. This enables the applied value to be linked to the
+        state of a different widget, say a QLineEdit or QSlider
+
+        Parameters
+        ----------
+        value : int, float or str
+        """
+        try:
+            self.releaseValue = self.channeltype(value)
+        except(ValueError, TypeError):
+            logger.error("'{0}' is not a valid releaseValue for '{1}'.".format(value, self.channel))
