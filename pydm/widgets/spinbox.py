@@ -35,8 +35,12 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
 
     def stepBy(self, step):
         """
-        Method triggered whenever user triggers a step.
+        Method triggered whenever user triggers a step. If the writeOnPress property
+        is enabled, the updated value will be sent.
 
+        Parameters
+        ----------
+        step: int
         """
         super(PyDMSpinbox, self).stepBy(step)
         if self._write_on_press:
