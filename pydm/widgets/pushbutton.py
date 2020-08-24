@@ -68,7 +68,11 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         self._password = ""
         self._protected_password = ""
         self._write_when_release = False
-        self.clicked.connect(self.sendValue)
+        if self._write_when_release:
+            self.pressed.connect(self.sendValue)
+            self.released.connect(self.sendReleaseValue)
+        else:
+            self.clicked.connect(self.sendValue)
 
     @Property(bool)
     def passwordProtected(self):
@@ -388,6 +392,49 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             self.send_value_signal[self.channeltype].emit(self.channeltype(send_value))
         else:
             send_value = self.value + self.channeltype(self._pressValue)
+            self.send_value_signal[self.channeltype].emit(send_value)
+        return send_value
+
+    @Slot()
+    def sendReleaseValue(self):
+        """
+        Send new release value to the channel.
+
+        This function interprets the settings of the PyDMPushButton and sends
+        the appropriate value out through the :attr:`.send_value_signal`.
+
+        Returns
+        -------
+        None if any of the following condition is False:
+            1. There's no new value (releaseValue) for the widget
+            2. There's no initial or current value for the widget
+            3. The confirmation dialog returns No as the user's answer to the dialog
+            4. The password validation dialog returns a validation error
+            5. writeWhenRelease is False
+        Otherwise, return the value sent to the channel:
+            1. The value sent to the channel is the same as the pressValue if the existing
+               channel type is a str, or the relative flag is False
+            2. The value sent to the channel is the sum of the existing value and the pressValue
+               if the relative flag is True, and the channel type is not a str
+        """
+        send_value = None
+        if self._releaseValue is None or self.value is None:
+            return None
+
+        if not self._write_when_release:
+            return None
+
+        if not self.confirm_dialog():
+            return None
+
+        if not self.validate_password():
+            return None
+
+        if not self._relative or self.channeltype == str:
+            send_value = self._releaseValue
+            self.send_value_signal[self.channeltype].emit(self.channeltype(send_value))
+        else:
+            send_value = self.value + self.channeltype(self._releaseValue)
             self.send_value_signal[self.channeltype].emit(send_value)
         return send_value
 
