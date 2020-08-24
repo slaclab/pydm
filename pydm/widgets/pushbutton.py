@@ -68,11 +68,8 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         self._password = ""
         self._protected_password = ""
         self._write_when_release = False
-        if self._write_when_release:
-            self.pressed.connect(self.sendValue)
-            self.released.connect(self.sendReleaseValue)
-        else:
-            self.clicked.connect(self.sendValue)
+        self.clicked.connect(self.sendValue)
+
 
     @Property(bool)
     def passwordProtected(self):
@@ -481,6 +478,13 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         if self._write_when_release != value:
             self._write_when_release = value
+
+        # update widget behavior based on write when release value
+        if self._write_when_release:
+            self.clicked.disconnect()
+            self.pressed.connect(self.sendValue)
+            self.released.connect(self.sendReleaseValue)
+
 
     @Slot(int)
     @Slot(float)
