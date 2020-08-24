@@ -32,6 +32,17 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         child = self.findChild(QLineEdit)
         child.installEventFilter(self)
 
+
+    def stepBy(self, step):
+        """
+        Method triggered whenever user triggers a step.
+
+        """
+        super(PyDMSpinbox, self).stepBy(step)
+        if self._write_on_press:
+            self.send_value()
+
+
     def keyPressEvent(self, ev):
         """
         Method invoked when a key press event happens on the QDoubleSpinBox.
@@ -59,10 +70,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
     
         else:
             super(PyDMSpinbox, self).keyPressEvent(ev)
-
-        if self._write_on_press and (ev.key() in (Qt.Key_Up, Qt.Key_Down)) and not ctrl_hold:
-            self.send_value()
-
+            
 
     def widget_ctx_menu(self):
         """
