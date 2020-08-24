@@ -502,3 +502,23 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             self.releaseValue = self.channeltype(value)
         except(ValueError, TypeError):
             logger.error("'{0}' is not a valid releaseValue for '{1}'.".format(value, self.channel))
+
+
+    def widget_ctx_menu(self):
+        """
+        Fetch the Widget specific context menu which will be populated with additional tools by `assemble_tools_menu`.
+
+        Returns
+        -------
+        QMenu or None
+            If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.
+        """
+        def toggle():
+            self.writeWhenRelease = not self.writeWhenRelease
+
+        menu = self.lineEdit().createStandardContextMenu()
+        menu.addSeparator()
+        ac = menu.addAction('Toggle writeWhenRelease')
+        ac.triggered.connect(toggle)
+
+        return menu
