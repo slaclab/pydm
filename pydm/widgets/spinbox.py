@@ -1,4 +1,4 @@
-from qtpy.QtWidgets import QDoubleSpinBox, QApplication
+from qtpy.QtWidgets import QDoubleSpinBox, QApplication, QLineEdit
 from qtpy.QtCore import Property, QEvent, Qt
 from .base import PyDMWritableWidget, TextFormatter
 
@@ -25,6 +25,11 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         self.setDecimals(0)
         self.app = QApplication.instance()
         self.setAccelerated(True)
+
+        # install an event filter on the QDoubleSpinBox's children
+        # in order to catch the click events
+        child = self.findChild(QLineEdit)
+        child.installEventFilter(self)
 
     def keyPressEvent(self, ev):
         """
