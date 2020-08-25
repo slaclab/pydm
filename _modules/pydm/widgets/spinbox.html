@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.spinbox &mdash; PyDM v1.10.3+19.ga1a5b250 documentation</title>
+  <title>pydm.widgets.spinbox &mdash; PyDM v1.10.3+21.gb0ce4ae1 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.10.3+19.ga1a5b250
+                v1.10.3+21.gb0ce4ae1
               </div>
             
           
@@ -180,7 +180,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.spinbox</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QDoubleSpinBox</span><span class="p">,</span> <span class="n">QApplication</span>
+<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QDoubleSpinBox</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QLineEdit</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QEvent</span><span class="p">,</span> <span class="n">Qt</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">TextFormatter</span>
 
@@ -207,6 +207,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setAccelerated</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># install an event filter on the QDoubleSpinBox&#39;s children</span>
+        <span class="c1"># in order to catch the click events</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChild</span><span class="p">(</span><span class="n">QLineEdit</span><span class="p">)</span>
+        <span class="n">child</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMSpinbox.keyPressEvent"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
