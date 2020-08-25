@@ -21,6 +21,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         self.setEnabled(False)
         self._alarm_sensitive_border = False
         self._show_step_exponent = True
+        self._write_on_press = False
         self.step_exponent = 0
         self.setDecimals(0)
         self.app = QApplication.instance()
@@ -30,6 +31,21 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         # in order to catch the click events
         child = self.findChild(QLineEdit)
         child.installEventFilter(self)
+
+
+    def stepBy(self, step):
+        """
+        Method triggered whenever user triggers a step. If the writeOnPress property
+        is enabled, the updated value will be sent.
+
+        Parameters
+        ----------
+        step: int
+        """
+        super(PyDMSpinbox, self).stepBy(step)
+        if self._write_on_press:
+            self.send_value()
+
 
     def keyPressEvent(self, ev):
         """
@@ -52,10 +68,13 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
             self.step_exponent += 1 if ev.key() == Qt.Key_Left else -1
             self.step_exponent = max(-self.decimals(), self.step_exponent)
             self.update_step_size()
+
         elif ev.key() in (Qt.Key_Return, Qt.Key_Enter):
             self.send_value()
+    
         else:
             super(PyDMSpinbox, self).keyPressEvent(ev)
+            
 
     def widget_ctx_menu(self):
         """
@@ -66,13 +85,20 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         QMenu or None
             If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.
         """
-        def toggle():
+        def toggle_step():
             self.showStepExponent = not self.showStepExponent
+
+        def toggle_write():
+            self.writeOnPress = not self.writeOnPress
 
         menu = self.lineEdit().createStandardContextMenu()
         menu.addSeparator()
         ac = menu.addAction('Toggle Show Step Size')
-        ac.triggered.connect(toggle)
+        ac.triggered.connect(toggle_step)
+
+        ac_write = menu.addAction('Toggle write on press')
+        ac_write.triggered.connect(toggle_write)
+
         return menu
 
     def update_step_size(self):
@@ -200,3 +226,25 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         """
         self._show_step_exponent = val
         self.update_format_string()
+
+    @Property(bool)
+    def writeOnPress(self):
+        """
+        Whether to write value on key press
+
+        Returns
+        -------
+        bool
+        """
+        return self._write_on_press
+
+    @writeOnPress.setter
+    def writeOnPress(self, val):
+        """
+        Whether value to write on key press.
+
+        Parameters
+        ----------
+        val : bool
+        """
+        self._write_on_press = val
