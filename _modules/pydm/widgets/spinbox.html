@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.spinbox &mdash; PyDM v1.10.3+21.gb0ce4ae1 documentation</title>
+  <title>pydm.widgets.spinbox &mdash; PyDM v1.10.3+29.g25d55ceb documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.10.3+21.gb0ce4ae1
+                v1.10.3+29.g25d55ceb
               </div>
             
           
@@ -203,6 +203,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_sensitive_border</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_step_exponent</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_on_press</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
@@ -212,6 +213,21 @@
         <span class="c1"># in order to catch the click events</span>
         <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChild</span><span class="p">(</span><span class="n">QLineEdit</span><span class="p">)</span>
         <span class="n">child</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PyDMSpinbox.stepBy"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.stepBy">[docs]</a>    <span class="k">def</span> <span class="nf">stepBy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method triggered whenever user triggers a step. If the writeOnPress property</span>
+<span class="sd">        is enabled, the updated value will be sent.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        step: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">stepBy</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_on_press</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">()</span></div>
+
 
 <div class="viewcode-block" id="PyDMSpinbox.keyPressEvent"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -234,10 +250,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span> <span class="o">+=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">ev</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Left</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">decimals</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_step_size</span><span class="p">()</span>
+
         <span class="k">elif</span> <span class="n">ev</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_Return</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Enter</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">()</span>
+    
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span></div>
+            
 
 <div class="viewcode-block" id="PyDMSpinbox.widget_ctx_menu"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.widget_ctx_menu">[docs]</a>    <span class="k">def</span> <span class="nf">widget_ctx_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -248,13 +267,20 @@
 <span class="sd">        QMenu or None</span>
 <span class="sd">            If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">def</span> <span class="nf">toggle</span><span class="p">():</span>
+        <span class="k">def</span> <span class="nf">toggle_step</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">showStepExponent</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">showStepExponent</span>
+
+        <span class="k">def</span> <span class="nf">toggle_write</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">writeOnPress</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">writeOnPress</span>
 
         <span class="n">menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit</span><span class="p">()</span><span class="o">.</span><span class="n">createStandardContextMenu</span><span class="p">()</span>
         <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
         <span class="n">ac</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s1">&#39;Toggle Show Step Size&#39;</span><span class="p">)</span>
-        <span class="n">ac</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">toggle</span><span class="p">)</span>
+        <span class="n">ac</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">toggle_step</span><span class="p">)</span>
+
+        <span class="n">ac_write</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s1">&#39;Toggle write on press&#39;</span><span class="p">)</span>
+        <span class="n">ac_write</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">toggle_write</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">menu</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.update_step_size"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.update_step_size">[docs]</a>    <span class="k">def</span> <span class="nf">update_step_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -381,7 +407,29 @@
 <span class="sd">        val : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_step_exponent</span> <span class="o">=</span> <span class="n">val</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_format_string</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_format_string</span><span class="p">()</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">writeOnPress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether to write value on key press</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_on_press</span>
+
+    <span class="nd">@writeOnPress</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">writeOnPress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether value to write on key press.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        val : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_on_press</span> <span class="o">=</span> <span class="n">val</span></div>
 </pre></div>
 
            </div>

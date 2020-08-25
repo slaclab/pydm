@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PyDMSpinbox &mdash; PyDM v1.10.3+21.gb0ce4ae1 documentation</title>
+  <title>PyDMSpinbox &mdash; PyDM v1.10.3+29.g25d55ceb documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                v1.10.3+21.gb0ce4ae1
+                v1.10.3+29.g25d55ceb
               </div>
             
           
@@ -2338,8 +2338,15 @@ displayed</p>
 
 <dl class="py method">
 <dt id="pydm.widgets.spinbox.PyDMSpinbox.stepBy">
-<code class="sig-name descname">stepBy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.stepBy" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">stepBy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">step</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.stepBy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.stepBy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method triggered whenever user triggers a step. If the writeOnPress property
+is enabled, the updated value will be sent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>step</strong> (<em>int</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pydm.widgets.spinbox.PyDMSpinbox.stepDown">
@@ -2697,6 +2704,20 @@ This slot sends the write access value to the <code class="docutils literal notr
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>write_access</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.spinbox.PyDMSpinbox.writeOnPress">
+<code class="sig-name descname">writeOnPress</code><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.writeOnPress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to write value on key press</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
