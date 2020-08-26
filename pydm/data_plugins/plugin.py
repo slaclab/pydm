@@ -6,6 +6,7 @@ from numpy import ndarray
 from ..utilities.remove_protocol import protocol_and_address
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
+from .. import config
 
 
 class PyDMConnection(QObject):
@@ -151,6 +152,7 @@ class PyDMConnection(QObject):
 class PyDMPlugin(object):
     protocol = None
     connection_class = PyDMConnection
+    designer_online_by_default = True
 
     def __init__(self):
         self.connections = {}
@@ -162,11 +164,17 @@ class PyDMPlugin(object):
         return protocol_and_address(channel.address)[1]
 
     def add_connection(self, channel):
+        from pydm.utilities import is_qt_designer
         with self.lock:
             address = self.get_address(channel)
             # If this channel is already connected to this plugin lets ignore
             if channel in self.channels:
                 return
+
+            if (is_qt_designer() and not config.DESIGNER_ONLINE and
+                    not self.designer_online_by_default):
+                return
+
             self.channels.add(channel)
             if address in self.connections:
                 self.connections[address].add_listener(channel)
