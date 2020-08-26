@@ -7,7 +7,7 @@ import numpy as np
 
 import logging
 
-from qtpy.QtCore import QSize
+from qtpy.QtCore import QSize, Qt
 from qtpy.QtGui import QColor
 from qtpy.QtWidgets import QInputDialog, QMessageBox
 from ...widgets.base import PyDMWidget
@@ -497,3 +497,50 @@ def test_update_press_value_incompatible_update_value(qtbot, signals, caplog, cu
     for record in caplog.records:
         assert record.levelno == logging.ERROR
     assert expected_log_error in caplog.text
+
+
+
+@pytest.mark.parametrize("initial_value, press_value, release_value,", [
+    (0, 1, -2),
+    (123, 345, -3,),
+])
+def test_send_on_release_value(qtbot, monkeypatch, signals, initial_value, press_value, release_value):
+    """
+    Test send on release
+
+    Expectations:
+    1. If writeOnRelease is True, a value will be written on release 
+    2. If writeOnRelease is Fale, no value will be written on the release
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override dialog behaviors
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    initial_value : int, float, str
+        The first value given to the button
+    press_value : int, float, str
+        The new value to send to the channel
+    """
+    pydm_pushbutton = PyDMPushButton()
+    qtbot.addWidget(pydm_pushbutton)
+
+    pydm_pushbutton.writeWhenRelease = True
+    pydm_pushbutton.pressValue = press_value
+    pydm_pushbutton.releaseValue = release_value
+
+    # set up signals
+    pydm_pushbutton.send_value_signal[float].connect(signals.receiveValue)
+    signals.send_value_signal[float].connect(pydm_pushbutton.channelValueChanged)
+    signals.send_value_signal[float].emit(0)
+
+    qtbot.mousePress(pydm_pushbutton, Qt.LeftButton)
+    qtbot.mouseRelease(pydm_pushbutton, Qt.LeftButton)
+
+    if pydm_pushbutton._write_when_release:
+        assert float(pydm_pushbutton.releaseValue) == signals.value
+    else:
+        assert float(pydm_pushbutton.pressValue) == signals.value
