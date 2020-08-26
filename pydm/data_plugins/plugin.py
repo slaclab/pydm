@@ -152,7 +152,7 @@ class PyDMConnection(QObject):
 class PyDMPlugin(object):
     protocol = None
     connection_class = PyDMConnection
-    designer_online_by_default = True
+    designer_online_by_default = False
 
     def __init__(self):
         self.connections = {}
