@@ -7,7 +7,7 @@ import os
 import sys
 import json
 from qtpy.QtGui import QFontDatabase, QIconEngine, QPixmap, QPainter, QColor, QFont, QIcon
-from qtpy.QtCore import Qt, QRect, QPoint, qRound
+from qtpy.QtCore import Qt, QRect, QPoint
 
 if sys.version_info[0] == 3:
     unichr = chr
@@ -121,7 +121,7 @@ class CharIconEngine(QIconEngine):
             color = self._base_color
         painter.setPen(color)
         scale_factor = 1.0
-        draw_size = 0.875 * qRound(rect.height() * scale_factor)
+        draw_size = 0.875 * round(rect.height() * scale_factor)
         painter.setFont(self.icon_font.font(draw_size))
         painter.setOpacity(1.0)
         painter.drawText(rect, Qt.AlignCenter | Qt.AlignVCenter, self.char)

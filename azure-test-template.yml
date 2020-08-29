@@ -84,6 +84,7 @@ jobs:
     - bash: |
         source activate test-environment-$(python)
         conda install python=$(python) pytest-azurepipelines pydm --file dev-requirements.txt
+        conda install python=$(python) pyside2
       displayName: 'Anaconda - Install Dependencies'
 
     - bash: |
@@ -94,11 +95,17 @@ jobs:
         echo python location: `which python`
         echo pytest location: `which pytest`
         python -c "from PyQt5 import QtCore; print(QtCore)"
+        python -c "from PySide2 import QtCore; print(QtCore)"
       displayName: 'Debug - Conda List'
       continueOnError: false
 
     - bash: |
         source activate test-environment-$(python)
+	export QT_API="pyqt5"
+	export PYTEST_QT_API="pyqt5"
+        python run_tests.py --timeout 30 --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python)" --napoleon-docstrings
+	export QT_API="pyside2"
+	export PYTEST_QT_API="pyside2"
         python run_tests.py --timeout 30 --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python)" --napoleon-docstrings
       displayName: 'Tests - Run'
       continueOnError: false
