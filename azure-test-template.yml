@@ -101,11 +101,11 @@ jobs:
 
     - bash: |
         source activate test-environment-$(python)
-	export QT_API="pyqt5"
-	export PYTEST_QT_API="pyqt5"
+        export QT_API="pyqt5"
+        export PYTEST_QT_API="pyqt5"
         python run_tests.py --timeout 30 --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python)" --napoleon-docstrings
-	export QT_API="pyside2"
-	export PYTEST_QT_API="pyside2"
+        export QT_API="pyside2"
+        export PYTEST_QT_API="pyside2"
         python run_tests.py --timeout 30 --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python)" --napoleon-docstrings
       displayName: 'Tests - Run'
       continueOnError: false
