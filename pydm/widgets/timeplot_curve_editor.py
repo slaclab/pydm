@@ -1,4 +1,4 @@
-from qtpy.QtCore import QModelIndex, QVariant
+from qtpy.QtCore import QModelIndex
 from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import BasePlotCurveEditorDialog
 
@@ -12,7 +12,7 @@ class PyDMTimePlotCurvesModel(BasePlotCurvesModel):
     def get_data(self, column_name, curve):
         if column_name == "Channel":
             if curve.address is None:
-                return QVariant()
+                return
             return str(curve.address)
         return super(PyDMTimePlotCurvesModel, self).get_data(column_name,
                                                              curve)

@@ -1,4 +1,4 @@
-from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant, QTimer, Slot
+from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex, QTimer, Slot
 from qtpy.QtGui import QBrush
 from operator import attrgetter
 
@@ -10,7 +10,7 @@ class ConnectionTableModel(QAbstractTableModel):
         self.update_timer.setInterval(1000)
         self.update_timer.timeout.connect(self.update_values)
         self.connections = connections
-        
+
     def sort(self, col, order=Qt.AscendingOrder):
         if self._column_names[col] == "value":
             return
@@ -47,17 +47,17 @@ class ConnectionTableModel(QAbstractTableModel):
 
     def data(self, index, role=Qt.DisplayRole):
         if not index.isValid():
-            return QVariant()
+            return
         if index.row() >= self.rowCount():
-            return QVariant()
+            return
         if index.column() >= self.columnCount():
-            return QVariant()
+            return
         column_name = self._column_names[index.column()]
         conn = self.connections[index.row()]
         if role == Qt.DisplayRole or role == Qt.EditRole:
             return str(getattr(conn, column_name))
         else:
-            return QVariant()
+            return
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role != Qt.DisplayRole:

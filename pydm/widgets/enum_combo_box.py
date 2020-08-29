@@ -53,7 +53,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         ----------
         text : str
             Title of the item
-        userData : QVariant
+        userData : object
             Arbitrary user data that is stored in the Qt.UserRole
         """
         super(PyDMEnumComboBox, self).addItem(text, userData)
@@ -77,7 +77,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
             super(PyDMEnumComboBox, self).enum_strings_changed(tuple(self.itemText(i) for i in range(self.count())))
             self._has_enums = True
             self.check_enable_state()
-                
+
     # Internal methods
     def set_items(self, enums):
         """
