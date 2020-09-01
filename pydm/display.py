@@ -70,6 +70,23 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
         return w
 
 
+def _load_ui_into_display(uifile, display):
+    klass, _ = uic.loadUiType(uifile)
+
+    # Python 2.7 compatibility. More info at the following links:
+    # https://github.com/universe-proton/universe-topology/issues/3
+    # https://stackoverflow.com/questions/3296993/python-how-to-call-unbound-method-with-other-type-parameter
+    retranslateUi = six.get_unbound_function(klass.retranslateUi)
+    setupUi = six.get_unbound_function(klass.setupUi)
+
+    # Add retranslateUi to Display class
+    display.retranslateUi = functools.partial(retranslateUi, display)
+    display._loaded_file = uifile
+    setupUi(display, display)
+
+    display.ui = display
+
+
 def load_ui_file(uifile, macros=None):
     """
     Load a .ui file, perform macro substitution, then return the resulting QWidget.
@@ -97,20 +114,7 @@ def load_ui_file(uifile, macros=None):
     else:
         f = uifile
 
-    klass, _ = uic.loadUiType(f)
-
-    # Python 2.7 compatibility. More info at the following links:
-    # https://github.com/universe-proton/universe-topology/issues/3
-    # https://stackoverflow.com/questions/3296993/python-how-to-call-unbound-method-with-other-type-parameter
-    retranslateUi = six.get_unbound_function(klass.retranslateUi)
-    setupUi = six.get_unbound_function(klass.setupUi)
-
-    # Add retranslateUi to Display class
-    d.retranslateUi = functools.partial(retranslateUi, d)
-    d._loaded_file = uifile
-    setupUi(d, d)
-
-    d.ui = d
+    _load_ui_into_display(f, d)
 
     return d
 
@@ -264,5 +268,6 @@ class Display(QWidget):
                 f = macro.substitute_in_file(self.ui_filepath(), macros)
             else:
                 f = self.ui_filepath()
-            self.ui = uic.loadUi(f, baseinstance=self)
+
+            _load_ui_into_display(f, self)
             merge_widget_stylesheet(self.ui)
