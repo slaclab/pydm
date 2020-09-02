@@ -81,7 +81,6 @@ def _load_ui_into_display(uifile, display):
 
     # Add retranslateUi to Display class
     display.retranslateUi = functools.partial(retranslateUi, display)
-    display._loaded_file = uifile
     setupUi(display, display)
 
     display.ui = display
@@ -114,6 +113,7 @@ def load_ui_file(uifile, macros=None):
     else:
         f = uifile
 
+    d._loaded_file = uifile
     _load_ui_into_display(f, d)
 
     return d
