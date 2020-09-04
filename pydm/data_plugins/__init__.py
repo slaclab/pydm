@@ -36,6 +36,7 @@ def connection_queue(defer_connections=False):
         return
     establish_queued_connections()
 
+
 def establish_queued_connections():
     global __DEFER_CONNECTIONS__
     global __CONNECTION_QUEUE__
@@ -47,6 +48,8 @@ def establish_queued_connections():
             channel = __CONNECTION_QUEUE__.popleft()
             establish_connection_immediately(channel)
             QApplication.instance().processEvents()
+    except IndexError:
+        pass
     finally:
         __CONNECTION_QUEUE__ = None
         __DEFER_CONNECTIONS__ = False
