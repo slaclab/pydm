@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.slider &mdash; PyDM v1.10.3+33.g148319b9 documentation</title>
+  <title>pydm.widgets.slider &mdash; PyDM v1.10.3+35.g5e103109 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.10.3+33.g148319b9
+                v1.10.3+35.g5e103109
               </div>
             
           
@@ -450,13 +450,13 @@
 <span class="sd">        new_val : int or float</span>
 <span class="sd">            The new value from the channel.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Slider got a new value = </span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">new_val</span><span class="p">))</span>
         <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value_label&quot;</span><span class="p">):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting text for value label.&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">isSliderDown</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_slider_to_closest_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_slider_to_closest_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_format_string</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMSlider.ctrl_limit_changed"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.ctrl_limit_changed">[docs]</a>    <span class="k">def</span> <span class="nf">ctrl_limit_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
