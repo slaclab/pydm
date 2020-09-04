@@ -57,7 +57,7 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         self.tab_channels[index]["address"] = str(channel)
         self.set_initial_icon_for_tab(index)
         if channel:
-            # Create PyDMChannel and connecdt
+            # Create PyDMChannel and connect
             chan = PyDMChannel(address=str(channel),
                                connection_slot=partial(self.connection_changed_for_tab, index),
                                severity_slot=partial(self.alarm_changed_for_tab, index))
