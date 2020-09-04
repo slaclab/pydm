@@ -25,7 +25,7 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         self.alarm_icons = None
         self.generate_alarm_icons()
 
-    @Property(QByteArray)
+    @Property(str)
     def currentTabAlarmChannel(self):
         """A channel to use for this tab's alarm indicator."""
         if self.currentIndex() < 0:
@@ -199,11 +199,15 @@ class PyDMTabWidget(QTabWidget):
         -------
         str
         """
-        return self.tabBar().currentTabAlarmChannel or ''
+        if self.tabBar().currentTabAlarmChannel:
+            return bytearray(
+                self.tabBar().currentTabAlarmChannel.encode('utf-8'))
+        else:
+            return bytearray()
 
     @currentTabAlarmChannel.setter
     def currentTabAlarmChannel(self, new_alarm_channel):
-        self.tabBar().currentTabAlarmChannel = new_alarm_channel
+        self.tabBar().currentTabAlarmChannel = bytes(new_alarm_channel).decode()
 
     def channels(self):
         """
