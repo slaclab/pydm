@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.embedded_display &mdash; PyDM v1.10.4+2.g0cedca5e documentation</title>
+  <title>pydm.widgets.embedded_display &mdash; PyDM v1.10.4+4.gd0c07bbf documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.10.4+2.g0cedca5e
+                v1.10.4+4.gd0c07bbf
               </div>
             
           
@@ -225,11 +225,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">err_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_pydm_app</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">Box</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">NoFrame</span><span class="p">)</span>
-        
+
+    <span class="k">def</span> <span class="nf">init_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">Box</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMEmbeddedDisplay.minimumSizeHint"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.minimumSizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">minimumSizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
