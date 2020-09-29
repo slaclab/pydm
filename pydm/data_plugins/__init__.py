@@ -44,7 +44,7 @@ def establish_queued_connections():
         return
     try:
         while (__CONNECTION_QUEUE__ is not None and
-               len(__CONNECTION_QUEUE__) == 0):
+               len(__CONNECTION_QUEUE__) > 0):
             channel = __CONNECTION_QUEUE__.popleft()
             establish_connection_immediately(channel)
             QApplication.instance().processEvents()
