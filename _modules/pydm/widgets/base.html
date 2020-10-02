@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydm.widgets.base &mdash; PyDM v1.10.5 documentation</title>
+  <title>pydm.widgets.base &mdash; PyDM v1.10.5+2.g0b52e9b3 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v1.10.5
+                v1.10.5+2.g0b52e9b3
               </div>
             
           
@@ -203,6 +203,11 @@
     <span class="n">JSONDecodeError</span> <span class="o">=</span> <span class="ne">ValueError</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">str_types</span> <span class="o">=</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+    <span class="n">str_types</span> <span class="o">=</span> <span class="p">(</span><span class="nb">str</span><span class="p">,)</span>
 
 
 <span class="k">def</span> <span class="nf">is_channel_valid</span><span class="p">(</span><span class="n">channel</span><span class="p">):</span>
