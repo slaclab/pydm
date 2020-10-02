@@ -22,6 +22,11 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+try:
+    str_types = (str, unicode)
+except NameError:
+    str_types = (str,)
+
 
 def is_channel_valid(channel):
     """

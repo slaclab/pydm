@@ -1,4 +1,4 @@
-from .base import PyDMWidget, TextFormatter
+from .base import PyDMWidget, TextFormatter, str_types
 from qtpy.QtWidgets import QLabel, QApplication
 from qtpy.QtCore import Qt, Property, Q_ENUMS
 from .display_format import DisplayFormat, parse_value_for_display
@@ -71,7 +71,7 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
                                             widget=self)
         # If the value is a string, just display it as-is, no formatting
         # needed.
-        if isinstance(new_value, str):
+        if isinstance(new_value, str_types):
             if self._show_units and self._unit != "":
                 new_value = "{} {}".format(new_value, self._unit)
             self.setText(new_value)

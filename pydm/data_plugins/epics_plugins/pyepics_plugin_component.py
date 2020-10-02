@@ -6,6 +6,12 @@ from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from qtpy.QtCore import Slot, Qt
 from qtpy.QtWidgets import QApplication
 
+try:
+    from epics import utils3
+    utils3.EPICS_STR_ENCODING = "latin-1"
+except:
+    pass
+
 logger = logging.getLogger(__name__)
 
 int_types = set((epics.dbr.INT, epics.dbr.CTRL_INT, epics.dbr.TIME_INT,
