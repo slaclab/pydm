@@ -9,8 +9,6 @@ import logging
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
 from .base import PyDMWidget
-import pyqtgraph
-pyqtgraph.setConfigOption('imageAxisOrder', 'row-major')
 
 logger = logging.getLogger(__name__)
 
@@ -132,6 +130,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self.thread = None
         self.axes = dict({'t': None, "x": 0, "y": 1, "c": None})
         self.showAxes = self._show_axes
+        self.imageItem.setOpts(axisOrder="row-major")
 
         # Hide some itens of the widget.
         self.ui.histogram.hide()
