@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pydm.widgets.image &mdash; PyDM v1.10.7 documentation</title>
+  <title>pydm.widgets.image &mdash; PyDM v1.10.7+4.gcc5832a9 documentation</title>
   
 
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,7 +32,6 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -49,7 +51,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> PyDM
+            <a href="../../../index.html" class="icon icon-home"> PyDM
           
 
           
@@ -59,7 +61,7 @@
             
             
               <div class="version">
-                v1.10.7
+                v1.10.7+4.gcc5832a9
               </div>
             
           
@@ -156,6 +158,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -191,8 +195,6 @@
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">PyDMChannel</span>
 <span class="kn">from</span> <span class="nn">.colormaps</span> <span class="kn">import</span> <span class="n">cmaps</span><span class="p">,</span> <span class="n">cmap_names</span><span class="p">,</span> <span class="n">PyDMColorMap</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMWidget</span>
-<span class="kn">import</span> <span class="nn">pyqtgraph</span>
-<span class="n">pyqtgraph</span><span class="o">.</span><span class="n">setConfigOption</span><span class="p">(</span><span class="s1">&#39;imageAxisOrder&#39;</span><span class="p">,</span> <span class="s1">&#39;row-major&#39;</span><span class="p">)</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -314,6 +316,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">({</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">showAxes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_axes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imageItem</span><span class="o">.</span><span class="n">setOpts</span><span class="p">(</span><span class="n">axisOrder</span><span class="o">=</span><span class="s2">&quot;row-major&quot;</span><span class="p">)</span>
 
         <span class="c1"># Hide some itens of the widget.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">histogram</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
@@ -872,28 +875,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz
+        &#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyqtgraph.graphicsItems.GraphicsObject &mdash; PyDM v1.10.7 documentation</title>
+  <title>pyqtgraph.graphicsItems.GraphicsObject &mdash; PyDM v1.10.7+4.gcc5832a9 documentation</title>
   
 
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,7 +32,6 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -49,7 +51,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> PyDM
+            <a href="../../../index.html" class="icon icon-home"> PyDM
           
 
           
@@ -59,7 +61,7 @@
             
             
               <div class="version">
-                v1.10.7
+                v1.10.7+4.gcc5832a9
               </div>
             
           
@@ -156,6 +158,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -182,7 +186,10 @@
   <h1>Source code for pyqtgraph.graphicsItems.GraphicsObject</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">..Qt</span> <span class="kn">import</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QT_LIB</span>
 <span class="k">if</span> <span class="n">QT_LIB</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;PyQt4&#39;</span><span class="p">,</span> <span class="s1">&#39;PyQt5&#39;</span><span class="p">]:</span>
-    <span class="kn">import</span> <span class="nn">sip</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">sip</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">sip</span>
 <span class="kn">from</span> <span class="nn">.GraphicsItem</span> <span class="kn">import</span> <span class="n">GraphicsItem</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GraphicsObject&#39;</span><span class="p">]</span>
@@ -225,28 +232,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz
+        &#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

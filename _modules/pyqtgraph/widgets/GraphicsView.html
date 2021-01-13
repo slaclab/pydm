@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyqtgraph.widgets.GraphicsView &mdash; PyDM v1.10.7 documentation</title>
+  <title>pyqtgraph.widgets.GraphicsView &mdash; PyDM v1.10.7+4.gcc5832a9 documentation</title>
   
 
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,7 +32,6 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -49,7 +51,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> PyDM
+            <a href="../../../index.html" class="icon icon-home"> PyDM
           
 
           
@@ -59,7 +61,7 @@
             
             
               <div class="version">
-                v1.10.7
+                v1.10.7+4.gcc5832a9
               </div>
             
           
@@ -141,6 +143,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -311,7 +315,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">mouseEnabled</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scaleCenter</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1">## should scaling center around view center (True) or mouse click (False)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clickAccepted</span> <span class="o">=</span> <span class="kc">False</span>
-        
+
+        <span class="c1"># Set a transparent background QPalette!</span>
+        <span class="k">if</span> <span class="n">QT_LIB</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;PySide2&quot;</span><span class="p">,</span> <span class="s2">&quot;PyQt5&quot;</span><span class="p">]:</span>
+            <span class="n">palette</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">palette</span><span class="p">()</span>
+            <span class="n">palette</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPalette</span><span class="o">.</span><span class="n">Background</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">transparent</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setPalette</span><span class="p">(</span><span class="n">palette</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">setAntialiasing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aa</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Enable or disable default antialiasing.</span>
 <span class="sd">        Note that this will only affect items that do not specify their own antialiasing options.&quot;&quot;&quot;</span>
@@ -507,7 +517,6 @@
     <span class="k">def</span> <span class="nf">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
         <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mouseEnabled</span><span class="p">:</span>
-            <span class="n">ev</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
             <span class="k">return</span>
         
         <span class="n">delta</span> <span class="o">=</span> <span class="mi">0</span>
@@ -553,7 +562,7 @@
     <span class="k">def</span> <span class="nf">mouseMoveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastMousePos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lastMousePos</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">pos</span><span class="p">())</span>
-        <span class="n">delta</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span> <span class="o">-</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QPoint</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">lastMousePos</span><span class="p">))</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastMousePos</span><span class="o">.</span><span class="n">toQPoint</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lastMousePos</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">pos</span><span class="p">())</span>
 
         <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">mouseMoveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">)</span>
@@ -609,28 +618,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz
+        &#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

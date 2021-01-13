@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pyqtgraph.imageview.ImageView &mdash; PyDM v1.10.7 documentation</title>
+  <title>pyqtgraph.imageview.ImageView &mdash; PyDM v1.10.7+4.gcc5832a9 documentation</title>
   
 
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,7 +32,6 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -49,7 +51,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> PyDM
+            <a href="../../../index.html" class="icon icon-home"> PyDM
           
 
           
@@ -59,7 +61,7 @@
             
             
               <div class="version">
-                v1.10.7
+                v1.10.7+4.gcc5832a9
               </div>
             
           
@@ -141,6 +143,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -346,11 +350,22 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normRoi</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">normRoi</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">roiCurves</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">timeLine</span> <span class="o">=</span> <span class="n">InfiniteLine</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">movable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">timeLine</span><span class="o">.</span><span class="n">setPen</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">roiCurve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">roiPlot</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLine</span> <span class="o">=</span> <span class="n">InfiniteLine</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">movable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">getConfigOption</span><span class="p">(</span><span class="s1">&#39;background&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;w&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timeLine</span><span class="o">.</span><span class="n">setPen</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timeLine</span><span class="o">.</span><span class="n">setPen</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timeLine</span><span class="o">.</span><span class="n">setZValue</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">roiPlot</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeLine</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">splitter</span><span class="o">.</span><span class="n">setSizes</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span><span class="o">-</span><span class="mi">35</span><span class="p">,</span> <span class="mi">35</span><span class="p">])</span>
+        
+        <span class="c1"># make splitter an unchangeable small grey line:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">splitter</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;QSplitter::handle{background-color: grey}&quot;</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">setHandleWidth</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">roiPlot</span><span class="o">.</span><span class="n">hideAxis</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frameTicks</span> <span class="o">=</span> <span class="n">VTickGroup</span><span class="p">(</span><span class="n">yrange</span><span class="o">=</span><span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">pen</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">roiPlot</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frameTicks</span><span class="p">,</span> <span class="n">ignoreBounds</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -358,6 +373,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">keysPressed</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">playTimer</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QTimer</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">playRate</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># 1 Hz by default</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lastPlayTime</span> <span class="o">=</span> <span class="mi">0</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">normRgn</span> <span class="o">=</span> <span class="n">LinearRegionItem</span><span class="p">()</span>
@@ -550,11 +566,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">imageItem</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         
-    <span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Begin automatically stepping frames forward at the given rate (in fps).</span>
 <span class="sd">        This can also be accessed by pressing the spacebar.&quot;&quot;&quot;</span>
         <span class="c1">#print &quot;play:&quot;, rate</span>
+        <span class="k">if</span> <span class="n">rate</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
+            <span class="n">rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">playRate</span> <span class="o">=</span> <span class="n">rate</span>
+
         <span class="k">if</span> <span class="n">rate</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">playTimer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
             <span class="k">return</span>
@@ -603,9 +622,7 @@
         <span class="c1">#print ev.key()</span>
         <span class="k">if</span> <span class="n">ev</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_Space</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">playRate</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">fps</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getProcessedImage</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tVals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tVals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">fps</span><span class="p">)</span>
-                <span class="c1">#print fps</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">ev</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
@@ -730,8 +747,8 @@
             <span class="c1">#self.ui.roiPlot.show()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">roiPlot</span><span class="o">.</span><span class="n">setMouseEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">splitter</span><span class="o">.</span><span class="n">setSizes</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span><span class="o">*</span><span class="mf">0.6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span><span class="o">*</span><span class="mf">0.4</span><span class="p">])</span>
-            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">roiCurves</span><span class="p">:</span>
-                <span class="n">c</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">splitter</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">roiCurve</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">roiChanged</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">roiPlot</span><span class="o">.</span><span class="n">showAxis</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -751,6 +768,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">roiPlot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">roiBtn</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">splitter</span><span class="o">.</span><span class="n">setSizes</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span><span class="o">-</span><span class="mi">35</span><span class="p">,</span> <span class="mi">35</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">splitter</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">timeLine</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
             <span class="c1">#self.ui.roiPlot.hide()</span>
@@ -758,30 +776,42 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">roiPlot</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="n">showRoiPlot</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">roiChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Extract image data from ROI</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-            
+
         <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getProcessedImage</span><span class="p">()</span>
 
-        <span class="c1"># Extract image data from ROI</span>
-        <span class="n">axes</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+        <span class="c1"># getArrayRegion axes should be (x, y) of data array for col-major,</span>
+        <span class="c1"># (y, x) for row-major</span>
+        <span class="c1"># can&#39;t just transpose input because ROI is axisOrder aware</span>
+        <span class="n">colmaj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imageItem</span><span class="o">.</span><span class="n">axisOrder</span> <span class="o">==</span> <span class="s1">&#39;col-major&#39;</span>
+        <span class="k">if</span> <span class="n">colmaj</span><span class="p">:</span>
+            <span class="n">axes</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">axes</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">])</span>
 
-        <span class="n">data</span><span class="p">,</span> <span class="n">coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">roi</span><span class="o">.</span><span class="n">getArrayRegion</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">imageItem</span><span class="p">,</span> <span class="n">returnMappedCoords</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">roi</span><span class="o">.</span><span class="n">getArrayRegion</span><span class="p">(</span>
+            <span class="n">image</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">),</span> <span class="n">img</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">imageItem</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span>
+            <span class="n">returnMappedCoords</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
 
         <span class="c1"># Convert extracted data into 1D plot data</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Average across y-axis of ROI</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">axes</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span> <span class="c1">## we&#39;re in row-major order mode -- there&#39;s probably a better way to do this slicing dynamically, but I&#39;ve not figured it out yet.</span>
-                <span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span> <span class="c1">#default to old way</span>
-                <span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> 
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+
+            <span class="c1"># get coordinates along x axis of ROI mapped to range (0, roiwidth)</span>
+            <span class="k">if</span> <span class="n">colmaj</span><span class="p">:</span>
+                <span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">xvals</span> <span class="o">=</span> <span class="p">(</span><span class="n">coords</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Average data within entire ROI for each frame</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">axes</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">axes</span><span class="p">))</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
             <span class="n">xvals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tVals</span>
 
         <span class="c1"># Handle multi-channel data</span>
@@ -1014,28 +1044,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz
+        &#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
