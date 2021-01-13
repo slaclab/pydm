@@ -96,7 +96,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         ac = menu.addAction('Toggle Show Step Size')
         ac.triggered.connect(toggle_step)
 
-        ac_write = menu.addAction('Toggle write on press')
+        ac_write = menu.addAction('Toggle Write On Press')
         ac_write.triggered.connect(toggle_write)
 
         return menu
