@@ -2,6 +2,7 @@
 # Fixtures for PyDM Unit Tests
 
 import pytest
+
 from pytestqt.qt_compat import qt_api
 
 import numpy as np
@@ -10,12 +11,20 @@ import logging
 
 from qtpy.QtCore import QObject, Signal, Slot
 from pydm.application import PyDMApplication
+from pydm.main_window import PyDMMainWindow
 from pydm.data_plugins import PyDMPlugin, add_plugin
 
 logger = logging.getLogger(__name__)
 _, file_path = tempfile.mkstemp(suffix=".log")
 handler = logging.FileHandler(file_path)
 logger.addHandler(handler)
+
+
+def mock_method(*args, **kwargs):
+    pass
+
+
+PyDMMainWindow.closeEvent = mock_method
 
 
 class ConnectionSignals(QObject):
