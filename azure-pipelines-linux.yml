@@ -27,4 +27,11 @@ jobs:
       vmImage: 'Ubuntu 18.04'
       build_docs: 1
       python: '3.8'
+      allowFailure: false
+  - template: azure-test-template.yml
+    parameters:
+      name: Linux_3_9
+      vmImage: 'Ubuntu 18.04'
+      build_docs: 1
+      python: '3.9'
       allowFailure: true
