@@ -23,6 +23,7 @@ global __CONNECTION_QUEUE__
 __CONNECTION_QUEUE__ = None
 global __DEFER_CONNECTIONS__
 __DEFER_CONNECTIONS__ = False
+__plugins_initialized = False
 
 @contextmanager
 def connection_queue(defer_connections=False):
@@ -81,6 +82,7 @@ def plugin_for_address(address):
         protocol = config.DEFAULT_PROTOCOL
     # Load proper plugin module
     if protocol:
+        initialize_plugins_if_needed()
         try:
             return plugin_modules[str(protocol)]
         except KeyError as exc:
@@ -192,20 +194,28 @@ def set_read_only(read_only):
         logger.info("Running PyDM in Read Only mode.")
 
 
-# Load the data plugins from PYDM_DATA_PLUGINS_PATH
-logger.debug("*"*80)
-logger.debug("* Loading PyDM Data Plugins")
-logger.debug("*"*80)
+def initialize_plugins_if_needed():
+    global __plugins_initialized
 
-DATA_PLUGIN_TOKEN = "_plugin.py"
-path = os.getenv("PYDM_DATA_PLUGINS_PATH", None)
-if path is None:
-    locations = []
-else:
-    locations = path.split(os.pathsep)
+    if __plugins_initialized:
+        return
 
-# Ensure that we first visit the local data_plugins location
-plugin_dir = os.path.dirname(os.path.realpath(__file__))
-locations.insert(0, plugin_dir)
+    __plugins_initialized = True
 
-load_plugins_from_path(locations, DATA_PLUGIN_TOKEN)
+    # Load the data plugins from PYDM_DATA_PLUGINS_PATH
+    logger.debug("*"*80)
+    logger.debug("* Loading PyDM Data Plugins")
+    logger.debug("*"*80)
+
+    DATA_PLUGIN_TOKEN = "_plugin.py"
+    path = os.getenv("PYDM_DATA_PLUGINS_PATH", None)
+    if path is None:
+        locations = []
+    else:
+        locations = path.split(os.pathsep)
+
+    # Ensure that we first visit the local data_plugins location
+    plugin_dir = os.path.dirname(os.path.realpath(__file__))
+    locations.insert(0, plugin_dir)
+
+    load_plugins_from_path(locations, DATA_PLUGIN_TOKEN)
