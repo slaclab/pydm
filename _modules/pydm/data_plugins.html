@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pydm.data_plugins &mdash; PyDM v1.10.7+7.g8b62d3c8 documentation</title>
+  <title>pydm.data_plugins &mdash; PyDM v1.10.7+10.g0363ad51 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                v1.10.7+7.g8b62d3c8
+                v1.10.7+10.g0363ad51
               </div>
             
           
@@ -209,6 +209,7 @@
 <span class="n">__CONNECTION_QUEUE__</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="k">global</span> <span class="n">__DEFER_CONNECTIONS__</span>
 <span class="n">__DEFER_CONNECTIONS__</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">__plugins_initialized</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="nd">@contextmanager</span>
 <span class="k">def</span> <span class="nf">connection_queue</span><span class="p">(</span><span class="n">defer_connections</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -267,6 +268,7 @@
         <span class="n">protocol</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_PROTOCOL</span>
     <span class="c1"># Load proper plugin module</span>
     <span class="k">if</span> <span class="n">protocol</span><span class="p">:</span>
+        <span class="n">initialize_plugins_if_needed</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">plugin_modules</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">protocol</span><span class="p">)]</span>
         <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
@@ -378,23 +380,31 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Running PyDM in Read Only mode.&quot;</span><span class="p">)</span>
 
 
-<span class="c1"># Load the data plugins from PYDM_DATA_PLUGINS_PATH</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;* Loading PyDM Data Plugins&quot;</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">initialize_plugins_if_needed</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">__plugins_initialized</span>
 
-<span class="n">DATA_PLUGIN_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;_plugin.py&quot;</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYDM_DATA_PLUGINS_PATH&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">locations</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">locations</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">__plugins_initialized</span><span class="p">:</span>
+        <span class="k">return</span>
 
-<span class="c1"># Ensure that we first visit the local data_plugins location</span>
-<span class="n">plugin_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
-<span class="n">locations</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">plugin_dir</span><span class="p">)</span>
+    <span class="n">__plugins_initialized</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="n">load_plugins_from_path</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">DATA_PLUGIN_TOKEN</span><span class="p">)</span>
+    <span class="c1"># Load the data plugins from PYDM_DATA_PLUGINS_PATH</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;* Loading PyDM Data Plugins&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+
+    <span class="n">DATA_PLUGIN_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;_plugin.py&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYDM_DATA_PLUGINS_PATH&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">locations</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">locations</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)</span>
+
+    <span class="c1"># Ensure that we first visit the local data_plugins location</span>
+    <span class="n">plugin_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+    <span class="n">locations</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">plugin_dir</span><span class="p">)</span>
+
+    <span class="n">load_plugins_from_path</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">DATA_PLUGIN_TOKEN</span><span class="p">)</span>
 </pre></div>
 
            </div>

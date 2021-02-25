@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pydm.widgets.template_repeater &mdash; PyDM v1.10.7+7.g8b62d3c8 documentation</title>
+  <title>pydm.widgets.template_repeater &mdash; PyDM v1.10.7+10.g0363ad51 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                v1.10.7+7.g8b62d3c8
+                v1.10.7+10.g0363ad51
               </div>
             
           
@@ -330,6 +330,7 @@
     <span class="n">LayoutType</span> <span class="o">=</span> <span class="n">LayoutType</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">pydm</span><span class="o">.</span><span class="n">data_plugins</span><span class="o">.</span><span class="n">initialize_plugins_if_needed</span><span class="p">()</span>
         <span class="n">QFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMPrimitiveWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_template_filename</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
