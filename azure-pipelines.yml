@@ -74,7 +74,6 @@ stages:
       - template: azure-pipelines-windows.yml
   - stage: "Deploy"
     dependsOn:
-      - "Build"
       - "Linter"
       - "Tests"
     jobs:
