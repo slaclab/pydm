@@ -9,13 +9,6 @@ jobs:
       allowFailure: true
   - template: azure-test-template.yml
     parameters:
-      name: Linux_3_6
-      vmImage: 'Ubuntu 18.04'
-      build_docs: 1
-      python: '3.6'
-      allowFailure: false
-  - template: azure-test-template.yml
-    parameters:
       name: Linux_3_7
       vmImage: 'Ubuntu 18.04'
       build_docs: 1
