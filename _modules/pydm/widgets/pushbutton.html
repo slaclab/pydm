@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pydm.widgets.pushbutton &mdash; PyDM v1.10.7+12.ge6f96649 documentation</title>
+  <title>pydm.widgets.pushbutton &mdash; PyDM v1.10.7+22.geb45df3d documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                v1.10.7+12.ge6f96649
+                v1.10.7+22.geb45df3d
               </div>
             
           
@@ -184,7 +184,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pydm.widgets.pushbutton</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
 
 <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QInputDialog</span><span class="p">,</span> <span class="n">QLineEdit</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span>
@@ -235,7 +236,7 @@
     <span class="n">DEFAULT_CONFIRM_MESSAGE</span> <span class="o">=</span> <span class="s2">&quot;Are you sure you want to proceed?&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">pressValue</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">pressValue</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">releaseValue</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">icon</span><span class="p">:</span>
             <span class="n">QPushButton</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
@@ -245,6 +246,7 @@
             <span class="n">QPushButton</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span> <span class="o">=</span> <span class="n">pressValue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_releaseValue</span> <span class="o">=</span> <span class="n">releaseValue</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="o">=</span> <span class="n">relative</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_sensitive_border</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span> <span class="o">=</span> <span class="kc">False</span>
@@ -252,7 +254,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_password</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_when_release</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_released</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sendValue</span><span class="p">)</span>
+
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">passwordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -402,6 +407,39 @@
         <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">releaseValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This property holds the value to send back through the channel.</span>
+
+<span class="sd">        The type of this value does not matter because it is automatically</span>
+<span class="sd">        converted to match the prexisting value type of the channel. However,</span>
+<span class="sd">        the sign of the value matters for both the fixed and relative modes.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_releaseValue</span><span class="p">)</span>
+
+    <span class="nd">@releaseValue</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">releaseValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This property holds the value to send back through the channel.</span>
+
+<span class="sd">        The type of this value does not matter because it is automatically</span>
+<span class="sd">        converted to match the prexisting value type of the channel. However,</span>
+<span class="sd">        the sign of the value matters for both the fixed and relative modes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_releaseValue</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_releaseValue</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">relativeChange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -443,7 +481,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="o">!=</span> <span class="n">choice</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="o">=</span> <span class="n">choice</span>
 
-<div class="viewcode-block" id="PyDMPushButton.confirm_dialog"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.confirm_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">confirm_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMPushButton.confirm_dialog"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.confirm_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">confirm_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_release</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Show the confirmation dialog with the proper message in case</span>
 <span class="sd">        ```showConfirmMessage``` is True.</span>
@@ -460,7 +498,24 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span> <span class="o">=</span> <span class="n">PyDMPushButton</span><span class="o">.</span><span class="n">DEFAULT_CONFIRM_MESSAGE</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
             <span class="n">msg</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Question</span><span class="p">)</span>
-            <span class="n">msg</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span><span class="p">)</span>
+
+            <span class="n">relative</span> <span class="o">=</span> <span class="s2">&quot;Yes&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="k">else</span> <span class="s2">&quot;No&quot;</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;Press&quot;</span>
+            <span class="k">if</span> <span class="n">is_release</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_releaseValue</span>
+                <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;Release&quot;</span>
+
+            <span class="n">message</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span><span class="p">,</span>
+                    <span class="s2">&quot;Value: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">),</span>
+                    <span class="s2">&quot;Relative Change: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">relative</span><span class="p">)</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="n">msg</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
             <span class="n">msg</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
             <span class="n">msg</span><span class="o">.</span><span class="n">setDefaultButton</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
             <span class="n">ret</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
@@ -524,23 +579,87 @@
 <span class="sd">            2. The value sent to the channel is the sum of the existing value and the pressValue</span>
 <span class="sd">               if the relative flag is True, and the channel type is not a str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_released</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__execute_send</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__execute_send</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_releaseValue</span><span class="p">,</span> <span class="n">is_release</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">val</span></div>
+
+    <span class="k">def</span> <span class="nf">__execute_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">,</span> <span class="n">skip_confirm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_password</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                       <span class="n">is_release</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the send operation for push and release.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_value : int, float or str</span>
+<span class="sd">        skip_confirm : bool, Default False</span>
+<span class="sd">            Whether or not to skip the confirmation dialog.</span>
+<span class="sd">        skip_password : bool, Default False</span>
+<span class="sd">            Whether or not to skip the password dialog.</span>
+<span class="sd">        is_release : bool, Default False</span>
+<span class="sd">            Whether or not this method is being invoked to handle a release</span>
+<span class="sd">            event.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">send_value</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">new_value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_dialog</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">is_release</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_when_release</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_password</span><span class="p">():</span>
-            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_confirm</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_dialog</span><span class="p">(</span><span class="n">is_release</span><span class="o">=</span><span class="n">is_release</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_password</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_password</span><span class="p">():</span>
+                <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
-            <span class="n">send_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">send_value</span><span class="p">))</span>
+            <span class="n">send_value</span> <span class="o">=</span> <span class="n">new_value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">send_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">)</span>
+            <span class="n">send_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">send_value</span></div>
+        <span class="k">return</span> <span class="n">send_value</span>
+
+
+<div class="viewcode-block" id="PyDMPushButton.sendReleaseValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.sendReleaseValue">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">sendReleaseValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Send new release value to the channel.</span>
+
+<span class="sd">        This function interprets the settings of the PyDMPushButton and sends</span>
+<span class="sd">        the appropriate value out through the :attr:`.send_value_signal`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None if any of the following condition is False:</span>
+<span class="sd">            1. There&#39;s no new value (releaseValue) for the widget</span>
+<span class="sd">            2. There&#39;s no initial or current value for the widget</span>
+<span class="sd">            3. The confirmation dialog returns No as the user&#39;s answer to the dialog</span>
+<span class="sd">            4. The password validation dialog returns a validation error</span>
+<span class="sd">            5. writeWhenRelease is False</span>
+<span class="sd">        Otherwise, return the value sent to the channel:</span>
+<span class="sd">            1. The value sent to the channel is the same as the pressValue if the existing</span>
+<span class="sd">               channel type is a str, or the relative flag is False</span>
+<span class="sd">            2. The value sent to the channel is the sum of the existing value and the pressValue</span>
+<span class="sd">               if the relative flag is True, and the channel type is not a str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_released</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span><span class="p">:</span>
+            <span class="c1"># This will be handled via our friend sendValue</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__execute_send</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_releaseValue</span><span class="p">,</span> <span class="n">is_release</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMPushButton.updatePressValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.updatePressValue">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
@@ -561,7 +680,58 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pressValue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">except</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{0}</span><span class="s2">&#39; is not a valid pressValue for &#39;</span><span class="si">{1}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">))</span></div></div>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{0}</span><span class="s2">&#39; is not a valid pressValue for &#39;</span><span class="si">{1}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">))</span></div>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">writeWhenRelease</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wether or not to write releaseValue on release</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_when_release</span>
+
+    <span class="nd">@writeWhenRelease</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">writeWhenRelease</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wether or not to write releaseValue on release</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_when_release</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_when_release</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="c1"># update widget behavior based on write when release value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_when_release</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sendValue</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">released</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sendReleaseValue</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PyDMPushButton.updateReleaseValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.updateReleaseValue">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">updateReleaseValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the releaseValue of a function by passing a signal to the</span>
+<span class="sd">        PyDMPushButton.</span>
+
+<span class="sd">        This is useful to dynamically change the releaseValue of the button</span>
+<span class="sd">        during runtime. This enables the applied value to be linked to the</span>
+<span class="sd">        state of a different widget, say a QLineEdit or QSlider</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : int, float or str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">releaseValue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{0}</span><span class="s2">&#39; is not a valid releaseValue for &#39;</span><span class="si">{1}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">))</span></div></div>
 </pre></div>
 
            </div>

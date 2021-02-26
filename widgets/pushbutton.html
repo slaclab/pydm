@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>PyDMPushButton &mdash; PyDM v1.10.7+12.ge6f96649 documentation</title>
+  <title>PyDMPushButton &mdash; PyDM v1.10.7+22.geb45df3d documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                v1.10.7+12.ge6f96649
+                v1.10.7+22.geb45df3d
               </div>
             
           
@@ -212,7 +212,7 @@
 <h1>PyDMPushButton<a class="headerlink" href="#pydmpushbutton" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="pydm.widgets.pushbutton.PyDMPushButton">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pydm.widgets.pushbutton.</span></code><code class="sig-name descname"><span class="pre">PyDMPushButton</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pressValue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pydm.widgets.pushbutton.</span></code><code class="sig-name descname"><span class="pre">PyDMPushButton</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pressValue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">releaseValue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QPushButton</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.base.PyDMWritableWidget</span></code></p>
 <p>Basic PushButton to send a fixed value.</p>
 <p>The PyDMPushButton is meant to hold a specific value, and send that value
@@ -737,7 +737,7 @@ with the reason why it is disabled.</p>
 
 <dl class="py method">
 <dt id="pydm.widgets.pushbutton.PyDMPushButton.confirm_dialog">
-<code class="sig-name descname"><span class="pre">confirm_dialog</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.confirm_dialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.confirm_dialog" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">confirm_dialog</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.confirm_dialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.confirm_dialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show the confirmation dialog with the proper message in case
 <code class="docutils literal notranslate"><span class="pre">`showConfirmMessage`</span></code> is True.</p>
 <dl class="field-list simple">
@@ -1838,6 +1838,23 @@ mathematical addition.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt id="pydm.widgets.pushbutton.PyDMPushButton.releaseValue">
+<code class="sig-name descname"><span class="pre">releaseValue</span></code><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.releaseValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>This property holds the value to send back through the channel.</p>
+<p>The type of this value does not matter because it is automatically
+converted to match the prexisting value type of the channel. However,
+the sign of the value matters for both the fixed and relative modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
 <dt id="pydm.widgets.pushbutton.PyDMPushButton.released">
 <code class="sig-name descname"><span class="pre">released</span></code><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.released" title="Permalink to this definition">¶</a></dt>
 <dd><p>released(self) [signal]</p>
@@ -1924,6 +1941,38 @@ new value.</p>
 <dt>
 <code class="sig-name descname"><span class="pre">PyDMPushButton.scroll(self,</span> <span class="pre">int,</span> <span class="pre">int)</span></code></dt>
 <dd><p>scroll(self, int, int, QRect)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydm.widgets.pushbutton.PyDMPushButton.sendReleaseValue">
+<code class="sig-name descname"><span class="pre">sendReleaseValue</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.sendReleaseValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.sendReleaseValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send new release value to the channel.</p>
+<p>This function interprets the settings of the PyDMPushButton and sends
+the appropriate value out through the <code class="xref py py-attr docutils literal notranslate"><span class="pre">send_value_signal</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>None if any of the following condition is False</em> –</p>
+<ol class="arabic simple">
+<li><p>There’s no new value (releaseValue) for the widget</p></li>
+<li><p>There’s no initial or current value for the widget</p></li>
+<li><p>The confirmation dialog returns No as the user’s answer to the dialog</p></li>
+<li><p>The password validation dialog returns a validation error</p></li>
+<li><p>writeWhenRelease is False</p></li>
+</ol>
+</li>
+<li><p><em>Otherwise, return the value sent to the channel</em> –</p>
+<ol class="arabic simple">
+<li><p>The value sent to the channel is the same as the pressValue if the existing
+channel type is a str, or the relative flag is False</p></li>
+<li><p>The value sent to the channel is the sum of the existing value and the pressValue
+if the relative flag is True, and the channel type is not a str</p></li>
+</ol>
+</li>
+</ul>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -2647,6 +2696,21 @@ state of a different widget, say a QLineEdit or QSlider</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pydm.widgets.pushbutton.PyDMPushButton.updateReleaseValue">
+<code class="sig-name descname"><span class="pre">updateReleaseValue</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.updateReleaseValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.updateReleaseValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the releaseValue of a function by passing a signal to the
+PyDMPushButton.</p>
+<p>This is useful to dynamically change the releaseValue of the button
+during runtime. This enables the applied value to be linked to the
+state of a different widget, say a QLineEdit or QSlider</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>int</em><em>, </em><em>float</em><em> or </em><em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pydm.widgets.pushbutton.PyDMPushButton.updatesEnabled">
 <code class="sig-name descname"><span class="pre">updatesEnabled</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.updatesEnabled" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -2821,6 +2885,20 @@ This slot sends the write access value to the <code class="docutils literal notr
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>write_access</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydm.widgets.pushbutton.PyDMPushButton.writeWhenRelease">
+<code class="sig-name descname"><span class="pre">writeWhenRelease</span></code><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.writeWhenRelease" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wether or not to write releaseValue on release</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
