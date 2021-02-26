@@ -42,17 +42,41 @@ variables:
   OFFICIAL_REPO: 'slaclab/pydm'
 
 stages:
-
+  - stage: "Linter"
+    dependsOn: []
+    jobs:
+      - job: 'Flake8'
+        allowFailure: true
+        displayName: 'Linter - Flake8'
+        pool:
+          vmImage: 'Ubuntu 18.04'
+        steps:
+        - task: UsePythonVersion@0
+          inputs:
+            versionSpec: '3.x'
+            architecture: 'x64'
+        - script: pip install flake8
+          displayName: 'Python - Install flake8'
+        - bash: |
+            flake8 pydm
+          displayName: 'Flake8'
   - stage: "Build"
+    dependsOn: []
     jobs:
       # Build the conda package and docs
       - template: azure-build-template.yml
   - stage: "Tests"
+    dependsOn:
+      - "Build"
     jobs:
       - template: azure-pipelines-linux.yml
       - template: azure-pipelines-macos.yml
       - template: azure-pipelines-windows.yml
   - stage: "Deploy"
+    dependsOn:
+      - "Build"
+      - "Linter"
+      - "Tests"
     jobs:
       - job: 'Control'
         displayName: Build Control
