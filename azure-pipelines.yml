@@ -46,7 +46,7 @@ stages:
     dependsOn: []
     jobs:
       - job: 'Flake8'
-        allowFailure: true
+        continueOnError: true
         displayName: 'Linter - Flake8'
         pool:
           vmImage: 'Ubuntu 18.04'
