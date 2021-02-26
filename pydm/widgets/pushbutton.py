@@ -1,3 +1,4 @@
+import os
 import hashlib
 
 from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit
@@ -294,7 +295,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if self._relative != choice:
             self._relative = choice
 
-    def confirm_dialog(self):
+    def confirm_dialog(self, is_release=False):
         """
         Show the confirmation dialog with the proper message in case
         ```showConfirmMessage``` is True.
@@ -311,7 +312,24 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
                 self._confirm_message = PyDMPushButton.DEFAULT_CONFIRM_MESSAGE
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Question)
-            msg.setText(self._confirm_message)
+
+            relative = "Yes" if self._relative else "No"
+            val = self._pressValue
+            op = "Press"
+            if is_release:
+                val = self._releaseValue
+                op = "Release"
+
+            message = os.linesep.join(
+                [
+                    self._confirm_message,
+                    "Value: {}".format(val),
+                    "Relative Change: {}".format(relative)
+                ]
+            )
+
+            msg.setText(message)
+
             msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
             msg.setDefaultButton(QMessageBox.No)
             ret = msg.exec_()
@@ -411,7 +429,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             return None
 
         if not skip_confirm:
-            if not self.confirm_dialog():
+            if not self.confirm_dialog(is_release=is_release):
                 return None
 
         if not skip_password:
