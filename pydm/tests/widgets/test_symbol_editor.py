@@ -98,7 +98,7 @@ def test_symbol_editor(qtbot, monkeypatch):
     assert len(se.symbols) == 1
     assert se.frm_edit.isEnabled() is False
 
-def test_rules_editor_data_valid(qtbot):
+def test_symbol_editor_data_valid(qtbot):
     """
     Test the rules form validation.
 
