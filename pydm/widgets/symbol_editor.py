@@ -6,7 +6,7 @@ from qtpy.QtWidgets import QApplication, QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QPainter, QPixmap
 from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from qtpy.QtSvg import QSvgRenderer
-from ..utilities import is_pydm_app, is_qt_designer
+from ..utilities import is_pydm_app, is_qt_designer, find_file
 from .base import PyDMWidget
 
 
@@ -322,14 +322,20 @@ class SymbolEditor(QtWidgets.QDialog):
 
         if not os.path.isabs(abs_path):
             try:
-                if is_pydm_app():
-                    abs_path = QApplication.instance().get_path(abs_path)
-                elif is_qt_designer():
+                if is_qt_designer():
                     p = self.get_designer_window()
                     if p is not None:
                         ui_dir = p.absoluteDir().absolutePath()
                         abs_path = os.path.join(ui_dir, abs_path)
-            except Exception:
+                else:
+                    parent_display = self.widget.find_parent_display()
+                    base_path = None
+                    if parent_display:
+                        base_path = os.path.dirname(
+                            parent_display.loaded_file())
+                    abs_path = find_file(abs_path, base_path=base_path)
+            except Exception as ex:
+                print("Exception: ", ex)
                 error = "Unable to find full filepath for {}".format(filename)
                 abs_path = filename
         # First, lets try SVG.  We have to try SVG first, otherwise

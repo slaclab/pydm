@@ -92,7 +92,10 @@ class PyDMSymbol(QWidget, PyDMWidget):
             return
         self._sizeHint = QSize(0, 0)
         parent_display = self.find_parent_display()
-        base_path = os.path.dirname(parent_display.loaded_file())
+        base_path = None
+        if parent_display:
+            base_path = os.path.dirname(parent_display.loaded_file())
+
         for (state, filename) in new_file_dict.items():
             file_path = find_file(filename, base_path=base_path)
             # First, lets try SVG.  We have to try SVG first, otherwise
