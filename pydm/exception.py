@@ -1,7 +1,7 @@
 import io
 import sys
 import traceback
-import queue
+from six.moves import queue
 from collections import namedtuple
 
 from qtpy import QtWidgets, QtCore
