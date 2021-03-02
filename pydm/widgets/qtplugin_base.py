@@ -18,10 +18,9 @@ for each PyDMDesignerPlugin that Qt Designer tries to use. This will not
 affect any of your widgets, but it will be annoying.
 
 """
-from qtpy import QtGui, QtDesigner
+from qtpy import QtGui, QtDesigner, QtCore
 from .qtplugin_extensions import PyDMExtensionFactory
 from ..qtdesigner import DesignerHooks
-
 
 # TODO: Change to Enum once we drop support
 #       for the almost dead and agonizing Python 2.7
@@ -73,6 +72,8 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         self.is_container = is_container
         self.cls = cls
         self._group = group
+        if not icon:
+            icon = getattr(cls, "designer_icon", None)
         self._icon = icon or QtGui.QIcon()
         self.extensions = extensions
         self.manager = None
@@ -89,6 +90,8 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         if self.initialized:
             return
 
+        self.initialized = True
+
         designer_hooks = DesignerHooks()
         designer_hooks.form_editor = core
 
@@ -99,7 +102,6 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
                 self.manager.registerExtensions(
                     factory,
                     'org.qt-project.Qt.Designer.TaskMenu')  # Qt5
-        self.initialized = True
 
     def isInitialized(self):
         """
@@ -160,7 +162,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         """
         Return a QIcon to represent this widget in Qt Designer.
         """
-        return self._icon
+        return QtGui.QIcon(self._icon.pixmap(QtCore.QSize(32, 32)))
 
     def domXml(self):
         """

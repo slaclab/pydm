@@ -7,7 +7,7 @@ import json
 import numpy as np
 from qtpy.QtWidgets import (QApplication, QMenu, QGraphicsOpacityEffect,
                             QToolTip, QWidget)
-from qtpy.QtGui import QCursor
+from qtpy.QtGui import QCursor, QIcon
 from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
 from .. import data_plugins, tools, config
@@ -26,6 +26,24 @@ try:
     str_types = (str, unicode)
 except NameError:
     str_types = (str,)
+
+
+def get_icon_file(name):
+    """
+    Returns the full path to the icon represented by name.
+
+    Parameters
+    ----------
+    name : str
+        The filename to load the file path.
+
+    Returns
+    -------
+    str
+    """
+    base_path = os.path.dirname(os.path.realpath(__file__))
+    icon_path = os.path.join(base_path, "icons", "terminator.png")
+    return icon_path
 
 
 def is_channel_valid(channel):
@@ -120,6 +138,8 @@ class PyDMPrimitiveWidget(object):
         'Visible': ['setVisible', bool],
         'Opacity': ['set_opacity', float]
     }
+
+    designer_icon = QIcon()
 
     def __init__(self, **kwargs):
         self.app = QApplication.instance()
