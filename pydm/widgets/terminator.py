@@ -1,33 +1,54 @@
+import math
 import logging
 from qtpy.QtCore import QTimer, Property, QEvent
-from qtpy.QtWidgets import QWidget, QMessageBox
+from qtpy.QtGui import QIcon
+from qtpy.QtWidgets import QLabel, QMessageBox, QApplication
 
-from .base import PyDMPrimitiveWidget
+from .base import PyDMPrimitiveWidget, get_icon_file
 from ..utilities import is_qt_designer
 
 logger = logging.getLogger(__name__)
 
 
-class PyDMTerminator(QWidget, PyDMPrimitiveWidget):
+FAST_TIMER_INTERVAL = 1000  # 1 second
+SLOW_TIMER_INTERVAL = 10000  # 10 seconds
+
+
+class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
     """
     A watchdog widget to close a window after X seconds of inactivity.
     """
+    designer_icon = QIcon(get_icon_file("terminator.png"))
+
     def __init__(self, parent=None, timeout=60, *args, **kwargs):
         super(PyDMTerminator, self).__init__(parent=parent, *args, **kwargs)
+        self.setText("")
         self._hook_setup = False
+        self._timeout = 60
+        self._time_rem_ms = 0
 
         self._timer = QTimer()
         self._timer.timeout.connect(self.handle_timeout)
         self._timer.setSingleShot(True)
-        self._timeout = 60
+
         self._window = None
 
         if timeout and timeout > 0:
             self.timeout = timeout
+        else:
+            self._reset()
 
         self._setup_activity_hook()
+        self._update_label()
 
     def _find_window(self):
+        """
+        Finds the first window available starting from this widget's parent
+
+        Returns
+        -------
+        QWidget
+        """
         # check buffer
         if self._window:
             return self._window
@@ -50,24 +71,85 @@ class PyDMTerminator(QWidget, PyDMPrimitiveWidget):
             return
         self._window = self._find_window()
         logger.debug('Install event filter at window')
-        self._window.setMouseTracking(True)
-        self._window.installEventFilter(self)
+
+        # We must install the event filter in the application otherwise
+        # it won't stop when typing or moving over other widgets or even
+        # the PyDM main window if in use.
+        QApplication.instance().installEventFilter(self)
         self._hook_setup = True
 
     def eventFilter(self, obj, ev):
-        if ev.type() in (QEvent.MouseMove, QEvent.KeyPress):
-            self.stop()
-            self.start()
-
+        if ev.type() in (QEvent.MouseMove, QEvent.KeyPress, QEvent.KeyRelease):
+            self.reset()
         return super(PyDMTerminator, self).eventFilter(obj, ev)
 
+    def reset(self):
+        if self._time_rem_ms != self._timeout * 1000:
+            self._time_rem_ms = self._timeout * 1000
+            self._update_label()
+        self.stop()
+        self.start()
+
     def start(self):
+        if is_qt_designer():
+            return
+        interval = SLOW_TIMER_INTERVAL
+        if self._time_rem_ms < 60*1000:
+            interval = FAST_TIMER_INTERVAL
+        self._timer.setInterval(interval)
+
         if not self._timer.isActive():
             self._timer.start()
 
     def stop(self):
         if self._timer.isActive():
             self._timer.stop()
+
+    def _get_time_text(self, value):
+        """
+        Converts value in seconds into a text for days, hours, minutes and
+        seconds remaining.
+
+        Parameters
+        ----------
+        value : int
+            The value in seconds to be converted
+
+        Returns
+        -------
+        str
+        """
+        def time_msg(unit, val):
+            return "{} {}{}".format(val, unit, "s" if val > 1 else "")
+
+        days, rem = int(value//86400), value % 86400
+        hours, rem = int(rem//3600), rem % 3600
+        minutes, rem = int(rem//60), rem % 60
+        seconds = int(rem)
+
+        # We won't display seconds until we are down to 1 minute
+        # So we ceil the minutes and make seconds 0 for display purposes
+        if minutes > 1:
+            minutes = math.ceil(minutes+(rem/60.0))
+            seconds = 0
+
+        time_items = []
+        if days > 0:
+            time_items.append(time_msg("day", days))
+        if hours > 0:
+            time_items.append(time_msg("hour", hours))
+        if minutes > 0:
+            time_items.append(time_msg("minute", minutes))
+        if seconds > 0:
+            time_items.append(time_msg("second", seconds))
+
+        return ", ".join(time_items)
+
+    def _update_label(self):
+        """Updates the label text with the remaining time."""
+        rem_time_s = self._time_rem_ms/1000.0
+        text = self._get_time_text(rem_time_s)
+        self.setText("This screen will close in {}.".format(text))
 
     @Property(int)
     def timeout(self):
@@ -85,23 +167,36 @@ class PyDMTerminator(QWidget, PyDMPrimitiveWidget):
         self.stop()
         if seconds and seconds > 0:
             self._timeout = seconds
-            self._timer.setInterval(seconds * 1000)
-            self.start()
+            self.reset()
 
     def handle_timeout(self):
+        """
+        Handles the timeout event for the timer.
+        Decreases the time remaining counter until 0 and when it is time,
+        cleans up the event filter and closes the window.
+        """
         if is_qt_designer():
             return
-        logger.debug('Timeout time to the terminator')
+        # Decrease remaining time
+        self._time_rem_ms -= self._timer.interval()
+        # Update screen label with new remaining time
+        self._update_label()
+
+        if self._time_rem_ms > 0:
+            self.start()
+            return
+        QApplication.instance().removeEventFilter(self)
+
         if self._window:
             logger.debug('Time to close the window')
             self._window.close()
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Warning)
             msg.setText(
-                "Your window was closed due to inactivity for {} seconds".format(
-                    self.timeout
+                "Your window was closed due to inactivity for {}.".format(
+                    self._get_time_text(self.timeout)
                 )
             )
             msg.setStandardButtons(QMessageBox.Ok)
             msg.setDefaultButton(QMessageBox.Ok)
-            ret = msg.exec_()
+            msg.exec_()
