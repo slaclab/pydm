@@ -36,6 +36,7 @@ from .timeplot import PyDMTimePlot
 from .waveformplot import PyDMWaveformPlot
 from .scatterplot import PyDMScatterPlot
 from .template_repeater import PyDMTemplateRepeater
+from .terminator import PyDMTerminator
 
 
 BASE_EXTENSIONS = [RulesExtension]
@@ -187,7 +188,12 @@ PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable,
 # Tab Widget plugin
 PyDMTabWidgetPlugin = TabWidgetPlugin(extensions=BASE_EXTENSIONS)
 
-# Tab Widget plugin
+# Template Repeater plugin
 PyDMTemplateRepeaterPlugin = qtplugin_factory(PyDMTemplateRepeater,
                                              group=WidgetCategory.CONTAINER,
+                                             extensions=BASE_EXTENSIONS)
+
+# Terminator Widget plugin
+PyDMTerminatorPlugin = qtplugin_factory(PyDMTerminator,
+                                             group=WidgetCategory.MISC,
                                              extensions=BASE_EXTENSIONS)
