@@ -122,26 +122,24 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
         def time_msg(unit, val):
             return "{} {}{}".format(val, unit, "s" if val > 1 else "")
 
-        days, rem = int(value//86400), value % 86400
-        hours, rem = int(rem//3600), rem % 3600
-        minutes, rem = int(rem//60), rem % 60
-        seconds = int(rem)
+        units = ["day", "hour", "minute", "second"]
+        scale = [86400, 3600, 60, 1]
 
-        # We won't display seconds until we are down to 1 minute
-        # So we ceil the minutes and make seconds 0 for display purposes
-        if minutes > 1:
-            minutes = math.ceil(minutes+(rem/60.0))
-            seconds = 0
+        values = [0, 0, 0, 0]
+        rem = value
+        for idx, sc in enumerate(scale):
+            val_scaled, rem = int(rem//sc), rem % sc
+            if val_scaled >= 1:
+                val_scaled = math.ceil(val_scaled+(rem/sc))
+                values[idx] = val_scaled
+                break
+            values[idx] = val_scaled
 
         time_items = []
-        if days > 0:
-            time_items.append(time_msg("day", days))
-        if hours > 0:
-            time_items.append(time_msg("hour", hours))
-        if minutes > 0:
-            time_items.append(time_msg("minute", minutes))
-        if seconds > 0:
-            time_items.append(time_msg("second", seconds))
+        for idx, un in enumerate(units):
+            v = values[idx]
+            if v > 0:
+                time_items.append(time_msg(un, v))
 
         return ", ".join(time_items)
 
