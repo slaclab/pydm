@@ -235,7 +235,6 @@ class PyDMPrimitiveWidget(object):
         self.setGraphicsEffect(op)
         self.setAutoFillBackground(True)
 
-
     @Slot(dict)
     def rule_evaluated(self, payload):
         """
@@ -261,8 +260,19 @@ class PyDMPrimitiveWidget(object):
             return
 
         method_name, data_type = self.RULE_PROPERTIES[prop]
-        method = getattr(self, method_name)
-        method(value)
+        try:
+            method = getattr(self, method_name)
+            if data_type == bool and isinstance(value, str_types):
+                # We do this as we already import json and for Python:
+                # bool("False") -> True
+                val = json.loads(value.lower())
+            else:
+                val = data_type(value)
+            method(val)
+        except:
+            logger.error('Error at Rule: %s. Could not execute method %s with '
+                         'value %s and type as %s.',
+                         name, method_name, value, data_type.__name__)
 
     @Property(str, designable=False)
     def rules(self):
