@@ -328,7 +328,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
 
                         if not fname:
                             if not is_qt_designer():
-                                logger.error('Cannot locate data source file {} for PyDMTemplateRepeater.'.format(fname))
+                                logger.error('Cannot locate data source file {} for PyDMTemplateRepeater.'.format(self._data_source))
                             self.data = []
                         else:
                             with open(fname) as f:
