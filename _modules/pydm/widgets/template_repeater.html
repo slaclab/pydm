@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pydm.widgets.template_repeater &mdash; PyDM v1.10.7+51.g0b9c98c2 documentation</title>
+  <title>pydm.widgets.template_repeater &mdash; PyDM v1.10.7+53.g8752696d documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                v1.10.7+51.g0b9c98c2
+                v1.10.7+53.g8752696d
               </div>
             
           
@@ -514,7 +514,7 @@
 
                         <span class="k">if</span> <span class="ow">not</span> <span class="n">fname</span><span class="p">:</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">():</span>
-                                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Cannot locate data source file </span><span class="si">{}</span><span class="s1"> for PyDMTemplateRepeater.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Cannot locate data source file </span><span class="si">{}</span><span class="s1"> for PyDMTemplateRepeater.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span><span class="p">))</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
