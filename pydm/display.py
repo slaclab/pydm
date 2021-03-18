@@ -58,15 +58,14 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
         app = QApplication.instance()
         app.new_pydm_process(file, macros=macros, command_line_args=args)
         return None
-    else:
-        _, extension = os.path.splitext(file)
-        loader = _extension_to_loader.get(extension, load_py_file)
-        w = loader(file, args=args, macros=macros)
 
-        if target == ScreenTarget.DIALOG:
-            w.show()
-
-        return w
+    _, extension = os.path.splitext(file)
+    loader = _extension_to_loader.get(extension, load_py_file)
+    logger.error("Loading %s file by way of %s...", file, loader.__name__)
+    w = loader(file, args=args, macros=macros)
+    if target == ScreenTarget.DIALOG:
+        w.show()
+    return w
 
 
 def _load_ui_into_display(uifile, display):
@@ -117,6 +116,53 @@ def load_ui_file(uifile, macros=None, args=None):
     d._loaded_file = uifile
     _load_ui_into_display(f, d)
 
+    return d
+
+
+def load_adl_file(filename, args=None, macros=None):
+    """
+    Load an MEDM ADL display with adl2pydm.
+
+    Parameters
+    ----------
+    filename : str
+        The ADL file path.
+
+    macros : dict, optional
+        A dictionary of macro variables to supply to the loaded display
+        subclass.
+
+    args : any, optional
+        Ignored for load_adl_file.
+    """
+    try:
+        import adl2pydm
+        from adl2pydm import adl_parser
+        from adl2pydm import output_handler
+    except ImportError:
+        raise RuntimeError("Sorry, adl2pydm is not installed.")
+
+    screen = adl_parser.MedmMainWidget(filename)
+    buf = screen.getAdlLines(filename)
+    screen.parseAdlBuffer(buf)
+
+    writer = output_handler.Widget2Pydm()
+    writer.write_ui(screen, None)
+    ui_contents = writer.writer.generate_ui_contents()
+
+    d = Display(macros=macros)
+    merge_widget_stylesheet(d)
+
+    if macros is not None:
+        ui_contents = macro.replace_macros_in_template(ui_contents, macros)
+
+    d._loaded_file = filename
+
+    with six.StringIO() as fp:
+        fp.write(ui_contents)
+        fp.seek(0)
+
+        _load_ui_into_display(fp, d)
     return d
 
 
@@ -197,6 +243,7 @@ def load_py_file(pyfile, args=None, macros=None):
 _extension_to_loader = {
     ".ui": load_ui_file,
     ".py": load_py_file,
+    ".adl": load_adl_file,
 }
 
 
