@@ -59,10 +59,9 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
         app.new_pydm_process(file, macros=macros, command_line_args=args)
         return None
     else:
-        if file.endswith('.ui'):
-            w = load_ui_file(file, macros=macros)
-        else:
-            w = load_py_file(file, args=args, macros=macros)
+        _, extension = os.path.splitext(file)
+        loader = _extension_to_loader.get(extension, load_py_file)
+        w = loader(file, args=args, macros=macros)
 
         if target == ScreenTarget.DIALOG:
             w.show()
@@ -86,7 +85,7 @@ def _load_ui_into_display(uifile, display):
     display.ui = display
 
 
-def load_ui_file(uifile, macros=None):
+def load_ui_file(uifile, macros=None, args=None):
     """
     Load a .ui file, perform macro substitution, then return the resulting QWidget.
 
@@ -99,6 +98,8 @@ def load_ui_file(uifile, macros=None):
     macros : dict, optional
         A dictionary of macro variables to supply to the file
         to be opened.
+    args : list, optional
+        This is ignored for UI files.
 
     Returns
     -------
@@ -191,6 +192,12 @@ def load_py_file(pyfile, args=None, macros=None):
     instance._loaded_file = pyfile
     merge_widget_stylesheet(instance)
     return instance
+
+
+_extension_to_loader = {
+    ".ui": load_ui_file,
+    ".py": load_py_file,
+}
 
 
 class Display(QWidget):
