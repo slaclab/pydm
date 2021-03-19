@@ -8,6 +8,7 @@ import sys
 import uuid
 import warnings
 from os import path
+from string import Template
 
 from qtpy import uic
 from qtpy.QtWidgets import QWidget, QApplication
@@ -152,17 +153,11 @@ def load_adl_file(filename, args=None, macros=None):
 
     d = Display(macros=macros)
     merge_widget_stylesheet(d)
-
-    if macros is not None:
-        ui_contents = macro.replace_macros_in_template(ui_contents, macros)
-
     d._loaded_file = filename
 
-    with six.StringIO() as fp:
-        fp.write(ui_contents)
-        fp.seek(0)
-
-        _load_ui_into_display(fp, d)
+    fp = macro.replace_macros_in_template(Template(ui_contents), macros or {})
+    _load_ui_into_display(fp, d)
+    fp.close()
     return d
 
 
