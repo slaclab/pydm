@@ -174,3 +174,43 @@ def test_rules_invalid_expr(qtbot, caplog):
 
     dispatcher.unregister(widget)
     assert weakref.ref(widget) not in re.widget_map
+
+
+def test_rules_initial_value(qtbot, caplog):
+    """
+    Test the rules initial value mechanism.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Parent of all the widgets
+    caplog : fixture
+        To capture the log messages
+    """
+    widget = PyDMLabel()
+    widget.setText("Defaut Label")
+    qtbot.addWidget(widget)
+    widget.show()
+
+    rules = [{'name': 'Rule #1', 'property': 'Text',
+                'expression': 'str(ch[0])',
+                'initial_value': 'Initial Value Test',
+                'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+
+    dispatcher = RulesDispatcher()
+    dispatcher.register(widget, rules)
+
+    re = dispatcher.rules_engine
+    assert weakref.ref(widget) in re.widget_map
+    assert len(re.widget_map[weakref.ref(widget)]) == 1
+    assert re.widget_map[weakref.ref(widget)][0]['rule'] == rules[0]
+    assert widget.text() == 'Initial Value Test'
+    blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
+
+    re.callback_conn(weakref.ref(widget), 0, 0, value=True)
+    re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=5)
+    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is True
+
+    blocker.wait()
+    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is False
+    assert widget.text() == str(5)

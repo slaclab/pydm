@@ -169,6 +169,10 @@ class RulesEngine(QThread):
 
             item = dict()
             item['rule'] = rule
+            initial_val = rule.get('initial_value', "").strip()
+            name = rule.get('name')
+            prop = rule.get('property')
+            item['initial_value'] = initial_val
             item['calculate'] = False
             item['values'] = [None] * len(channels_list)
             item['conn'] = [False] * len(channels_list)
@@ -183,6 +187,8 @@ class RulesEngine(QThread):
                                 value_slot=value_cb)
                 item['channels'].append(c)
             rules_db.append(item)
+            if initial_val:
+                self.emit_value(widget_ref, name, prop, initial_val)
 
         if rules_db:
             self.widget_map[widget_ref] = rules_db
@@ -305,10 +311,26 @@ class RulesEngine(QThread):
             expression = rule['rule']['expression']
             name = rule['rule']['name']
             prop = rule['rule']['property']
-
             val = eval(expression, eval_env)
-            payload = {'widget': widget_ref, 'name': name, 'property': prop,
-                       'value': val}
-            self.rule_signal.emit(payload)
+            self.emit_value(widget_ref, name, prop, val)
         except Exception as e:
             logger.exception("Error while evaluating Rule.")
+
+    def emit_value(self, widget_ref, name, prop, val):
+        """
+        Emit the payload with the new value for the property.
+
+        Parameters
+        ----------
+        widget_ref : weakref
+            A weakref to the widget owner of the rule.
+        name : str
+            The Rule name
+        prop : str
+            The Rule property
+        val : object
+            The value to emit
+        """
+        payload = {'widget': widget_ref, 'name': name, 'property': prop,
+                   'value': val}
+        self.rule_signal.emit(payload)

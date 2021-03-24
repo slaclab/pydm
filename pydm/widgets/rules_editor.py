@@ -183,6 +183,11 @@ class RulesEditor(QtWidgets.QDialog):
             "color: rgb(0, 128, 255); font-weight: bold;")
         expression_layout.addRow(lbl_expected, self.lbl_expected_type)
 
+        lbl_initial = QtWidgets.QLabel("Initial Value:")
+        self.txt_initial_value = QtWidgets.QLineEdit()
+        self.txt_initial_value.editingFinished.connect(self.initial_value_changed)
+        expression_layout.addRow(lbl_initial, self.txt_initial_value)
+
         lbl_expression = QtWidgets.QLabel("Expression:")
         expr_help_layout = QtWidgets.QHBoxLayout()
         self.txt_expression = QtWidgets.QLineEdit()
@@ -209,6 +214,7 @@ class RulesEditor(QtWidgets.QDialog):
         self.txt_name.setText("")
         self.cmb_property.setCurrentIndex(-1)
         self.tbl_channels.clearContents()
+        self.txt_initial_value.setText("")
         self.txt_expression.setText("")
         self.frm_edit.setEnabled(False)
         self.loading_data = False
@@ -233,6 +239,7 @@ class RulesEditor(QtWidgets.QDialog):
         self.txt_name.setText(data.get('name', ''))
         self.cmb_property.setCurrentText(data.get('property', ''))
         self.property_changed(0)
+        self.txt_initial_value.setText(data.get('initial_value', ''))
         self.txt_expression.setText(data.get('expression', ''))
 
         channels = data.get('channels', [])
@@ -259,6 +266,7 @@ class RulesEditor(QtWidgets.QDialog):
         default_name = "New Rule"
         data = {"name": default_name,
                 "property": self.default_property,
+                "initial_value": "",
                 "expression": "",
                 "channels": []
                 }
@@ -422,6 +430,10 @@ class RulesEditor(QtWidgets.QDialog):
     def expression_changed(self):
         """Callback executed when the expression is modified."""
         self.change_entry("expression", self.txt_expression.text())
+
+    def initial_value_changed(self):
+        """Callback executed when the initial value is modified"""
+        self.change_entry("initial_value", self.txt_initial_value.text())
 
     @staticmethod
     def is_data_valid(rules):

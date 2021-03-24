@@ -62,6 +62,7 @@ def test_rules_editor(qtbot, monkeypatch):
 
     # Create the rules data for the widget
     rules_list = [{'name': 'Rule #1', 'property': 'Enable',
+                   'initial_value': 'False',
                    'expression': 'ch[0] > 1',
                    'channels': [
                        {'channel': 'ca://MTEST:Float', 'trigger': True}]}]
@@ -89,6 +90,7 @@ def test_rules_editor(qtbot, monkeypatch):
     assert re.tbl_channels.item(0, 1).checkState() == QtCore.Qt.Checked
     assert re.lbl_expected_type.text() == 'bool'
     assert re.txt_expression.text() == 'ch[0] > 1'
+    assert re.txt_initial_value.text() == 'False'
 
     qtbot.keyClicks(re.txt_name, '-Test')
     qtbot.keyClick(re.txt_name, QtCore.Qt.Key_Return)
@@ -105,6 +107,12 @@ def test_rules_editor(qtbot, monkeypatch):
     qtbot.keyClick(re.txt_expression, QtCore.Qt.Key_Return)
     assert re.txt_expression.text() == 'ch[0] < 1'
     assert re.rules[0]['expression'] == 'ch[0] < 1'
+
+    re.txt_initial_value.clear()
+    qtbot.keyClicks(re.txt_initial_value, 'True')
+    qtbot.keyClick(re.txt_initial_value, QtCore.Qt.Key_Return)
+    assert re.txt_initial_value.text() == 'True'
+    assert re.rules[0]['initial_value'] == 'True'
 
     # Test Delete with Confirm - NO
     assert re.tbl_channels.rowCount() == 2
