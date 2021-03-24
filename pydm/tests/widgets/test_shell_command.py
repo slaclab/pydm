@@ -225,4 +225,8 @@ def test_env_var(qtbot):
     qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
     stdout, stderr = pydm_shell_command.process.communicate()
     assert pydm_shell_command.process.returncode == 0
-    assert "Test: {}".format(os.getenv("PATH")) in str(stdout)
+    if platform.system() == 'Windows':
+        # Windows changes C:\\ to C:\\\\
+        assert os.getenv("PATH") in str(stdout).replace('\\\\', '\\')
+    else:
+        assert "Test: {}".format(os.getenv("PATH")) in str(stdout)
