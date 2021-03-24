@@ -1,5 +1,6 @@
 # Unit Tests for the Shell Command widget class
 
+import os
 import pytest
 
 import platform
@@ -201,3 +202,27 @@ def test_execute_multiple_commands(qtbot, signals, caplog, allow_multiple):
         assert "already active" in caplog.text
     else:
         assert not caplog.text
+
+
+def test_env_var(qtbot):
+    """
+    Test to ensure the widget can handle commands with environment variables
+    in it.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
+    pydm_shell_command = PyDMShellCommand()
+    qtbot.addWidget(pydm_shell_command)
+
+    cmd = "echo Test: $PATH"
+    if platform.system() == 'Windows':
+        cmd = "echo Test: %PATH%"
+
+    pydm_shell_command.commands = [cmd]
+    qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
+    stdout, stderr = pydm_shell_command.process.communicate()
+    assert pydm_shell_command.process.returncode == 0
+    assert "Test: {}".format(os.getenv("PATH")) in str(stdout)
