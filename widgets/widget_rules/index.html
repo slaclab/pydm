@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Widget Rules &mdash; PyDM v1.10.7+57.g439c1158 documentation</title>
+  <title>Widget Rules &mdash; PyDM v1.10.7+60.g47a2f159 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                v1.10.7+57.g439c1158
+                v1.10.7+60.g47a2f159
               </div>
             
           
@@ -213,7 +213,7 @@ on it to show the Task Menu and select the <code class="docutils literal notrans
 </div>
 <p>Here is a screenshot of the <code class="docutils literal notranslate"><span class="pre">Rules</span> <span class="pre">Editor</span></code> screen in detail.</p>
 <div class="figure align-center">
-<a class="reference internal image-reference" href="../../_images/rules_editor.png"><img alt="Rules Editor" src="../../_images/rules_editor.png" style="width: 745.0px; height: 499.0px;" /></a>
+<img alt="Rules Editor" src="../../_images/rules_editor.png" />
 </div>
 </div>
 <div class="section" id="adding-new-rule">
@@ -255,6 +255,19 @@ the channel address.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">Trigger</span></code> option defines if the expression will be evaluated or not when
 this channel’s value is changed. At least one channel must be marked as <code class="docutils literal notranslate"><span class="pre">Trigger</span></code>.</p>
 <p>With the channel(s) added it is time to create the expression.</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>Initial Value</strong></dt><dd><p>The value set here will be sent to the widget upon instantiation of the Rule.
+The value will be casted to the type expected the property.
+Users can also use macros here and the macro value will be cast as other values.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Initial Value does not accept expressions. It is just a simple value to be
+configured into the selected property before the channels connect and the
+rule start being evaluated.</p>
+</div>
 </dd>
 </dl>
 </li>

@@ -30,7 +30,6 @@ Here is a step-by-step video on how to open the ``Rules Editor``.
 Here is a screenshot of the ``Rules Editor`` screen in detail.
 
 .. figure:: /_static/widgets/widget_rules/rules_editor.png
-   :scale: 100 %
    :align: center
    :alt: Rules Editor
 
@@ -69,6 +68,16 @@ clicking on the **Remove Rule** sign.
    this channel's value is changed. At least one channel must be marked as ``Trigger``.
 
    With the channel(s) added it is time to create the expression.
+
+- **Initial Value**
+   The value set here will be sent to the widget upon instantiation of the Rule.
+   The value will be casted to the type expected the property.
+   Users can also use macros here and the macro value will be cast as other values.
+
+   .. Note::
+      Initial Value does not accept expressions. It is just a simple value to be
+      configured into the selected property before the channels connect and the
+      rule start being evaluated.
 
 .. _Expression:
 
