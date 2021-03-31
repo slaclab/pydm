@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>channel &mdash; PyDM v1.11.0+2.gf77a380c documentation</title>
+  <title>channel &mdash; PyDM v1.11.0+5.gc3b655e3 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                v1.11.0+2.gf77a380c
+                v1.11.0+5.gc3b655e3
               </div>
             
           
@@ -187,8 +187,6 @@
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">import</span> <span class="nn">pydm.data_plugins</span>
-<span class="kn">from</span> <span class="nn">pydm.utilities</span> <span class="kn">import</span> <span class="n">is_qt_designer</span>
-<span class="kn">from</span> <span class="nn">pydm</span> <span class="kn">import</span> <span class="n">config</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -299,8 +297,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="k">if</span> <span class="n">is_qt_designer</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">DESIGNER_ONLINE</span><span class="p">:</span>
-            <span class="k">return</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Connecting </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
         <span class="c1"># Connect to proper PyDMPlugin</span>
         <span class="k">try</span><span class="p">:</span>
@@ -313,8 +309,6 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Disconnect a PyDMChannel</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">is_qt_designer</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">DESIGNER_ONLINE</span><span class="p">:</span>
-            <span class="k">return</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">plugin</span> <span class="o">=</span> <span class="n">pydm</span><span class="o">.</span><span class="n">data_plugins</span><span class="o">.</span><span class="n">plugin_for_address</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">plugin</span><span class="p">:</span>
