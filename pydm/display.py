@@ -62,7 +62,7 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
 
     _, extension = os.path.splitext(file)
     loader = _extension_to_loader.get(extension, load_py_file)
-    logger.error("Loading %s file by way of %s...", file, loader.__name__)
+    logger.debug("Loading %s file by way of %s...", file, loader.__name__)
     w = loader(file, args=args, macros=macros)
     if target == ScreenTarget.DIALOG:
         w.show()
@@ -120,7 +120,7 @@ def load_ui_file(uifile, macros=None, args=None):
     return d
 
 
-def load_adl_file(filename, args=None, macros=None):
+def load_adl_file(filename, macros=None, args=None):
     """
     Load an MEDM ADL display with adl2pydm.
 
