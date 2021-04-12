@@ -139,7 +139,8 @@ PyDMDrawingPolygonPlugin = qtplugin_factory(PyDMDrawingPolygon,
 
 PyDMDrawingPolylinePlugin = qtplugin_factory(PyDMDrawingPolyline,
                                             group=WidgetCategory.DRAWING,
-                                            extensions=BASE_EXTENSIONS)
+                                            extensions=BASE_EXTENSIONS,
+                                            icon=ifont.icon("share-alt"))
 
 # Embedded Display plugin
 PyDMEmbeddedDisplayPlugin = qtplugin_factory(PyDMEmbeddedDisplay,
