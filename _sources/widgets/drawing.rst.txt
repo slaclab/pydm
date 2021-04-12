@@ -51,3 +51,9 @@ PyDMDrawing Widgets
    :members:
    :inherited-members:
    :show-inheritance:
+
+.. autoclass:: pydm.widgets.drawing.PyDMDrawingPolyline
+   :members:
+   :inherited-members:
+   :show-inheritance:
+
