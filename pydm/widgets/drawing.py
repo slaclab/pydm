@@ -1054,13 +1054,11 @@ class PyDMDrawingPolyline(PyDMDrawing):
         """
         def isinteger(value):
             value = value.strip()
-            if len(value) > 0:
-                if value.isdecimal() or value.isnumeric():
-                    return True
-                if len(value) > 1:
-                    verdict = value[0] == "-" and value[1:].isdecimal()
-                    return verdict
-            return False
+            try:
+                float(value)
+                return True
+            except:
+                return False
 
         verified = []
         for i, pt in enumerate(value):
