@@ -129,6 +129,58 @@ def test_rules_ok(qtbot, caplog):
     assert not widget.isVisible()
 
 
+def test_rules_enums(qtbot, caplog):
+    """
+    Test the rules mechanism with enums.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Parent of all the widgets
+    caplog : fixture
+        To capture the log messages
+    """
+    widget = PyDMLabel()
+    qtbot.addWidget(widget)
+    widget.show()
+    assert widget.isVisible()
+
+    rules = [{'name': 'Rule #1', 'property': 'Visible',
+                'expression': 'ch[0] == "RUN"',
+                'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+
+    dispatcher = RulesDispatcher()
+    dispatcher.register(widget, rules)
+
+    re = dispatcher.rules_engine
+    assert weakref.ref(widget) in re.widget_map
+    assert len(re.widget_map[weakref.ref(widget)]) == 1
+    assert re.widget_map[weakref.ref(widget)][0]['rule'] == rules[0]
+
+    # First we test that we receive a value but we don't have enums yet
+    blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
+
+    re.callback_conn(weakref.ref(widget), 0, 0, value=True)
+    re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=1)
+    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is True
+
+    blocker.wait()
+    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is False
+    assert not widget.isVisible()
+
+    blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
+
+    # Now receive enums and check that it was evaluated again and proper
+    # value was sent making the widget visible
+    re.callback_conn(weakref.ref(widget), 0, 0, value=True)
+    re.callback_enum(weakref.ref(widget), 0, 0, enums=["STOP", "RUN"])
+    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is True
+
+    blocker.wait()
+    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is False
+    assert widget.isVisible()
+
+
 def test_rules_invalid_expr(qtbot, caplog):
     """
     Test the rules mechanism.
