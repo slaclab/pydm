@@ -341,8 +341,7 @@ class RulesEngine(QThread):
         enums = rule['enums']
 
         calc_vals = []
-        for idx, val in enumerate(vals):
-            en = enums[idx]
+        for en, val in zip(enums, vals):
             try:
                 calc_vals.append(en[val])
                 continue
