@@ -175,6 +175,7 @@ class RulesEngine(QThread):
             item['initial_value'] = initial_val
             item['calculate'] = False
             item['values'] = [None] * len(channels_list)
+            item['enums'] = [None] * len(channels_list)
             item['conn'] = [False] * len(channels_list)
             item['channels'] = []
 
@@ -183,8 +184,10 @@ class RulesEngine(QThread):
                                             idx, ch_idx)
                 value_cb = functools.partial(self.callback_value, widget_ref,
                                              idx, ch_idx, ch['trigger'])
+                enums_cb = functools.partial(self.callback_enum, widget_ref,
+                                             idx, ch_idx)
                 c = PyDMChannel(ch['channel'], connection_slot=conn_cb,
-                                value_slot=value_cb)
+                                value_slot=value_cb, enum_strings_slot=enums_cb)
                 item['channels'].append(c)
             rules_db.append(item)
             if initial_val:
@@ -223,6 +226,38 @@ class RulesEngine(QThread):
                     if rule['calculate']:
                         self.calculate_expression(widget_ref, idx, rule)
             self.msleep(33)  # 30Hz
+
+    def callback_enum(self, widget_ref, index, ch_index, enums):
+        """
+        Callback executed when a channel receives a new enum_string.
+
+        Parameters
+        ----------
+        widget_ref : weakref
+            A weakref to the widget owner of the rule.
+        index : int
+            The index of the rule being processed.
+        ch_index : int
+            The channel index on the list for this rule.
+        trigger : bool
+            Whether or not this channel should trigger a calculation of the
+            expression
+        value : any
+            The new value for this channel.
+
+        Returns
+        -------
+        None
+        """
+        try:
+            w_map = self.widget_map[widget_ref]
+            w_map[index]['enums'][ch_index] = enums
+            if not all(w_map[index]['conn']):
+                self.warn_unconnected_channels(widget_ref, index)
+                return
+            w_map[index]['calculate'] = True
+        except (KeyError, IndexError):
+            pass
 
     def callback_value(self, widget_ref, index, ch_index, trigger, value):
         """
@@ -301,8 +336,21 @@ class RulesEngine(QThread):
         None
         """
         rule['calculate'] = False
+
+        vals = rule['values']
+        enums = rule['enums']
+
+        calc_vals = []
+        for idx, val in enumerate(vals):
+            en = enums[idx]
+            try:
+                calc_vals.append(en[val])
+                continue
+            except:
+                calc_vals.append(val)
+
         eval_env = {'np': np,
-                    'ch': rule['values']}
+                    'ch': calc_vals}
         eval_env.update({k: v
                          for k, v in math.__dict__.items()
                          if k[0] != '_'})
