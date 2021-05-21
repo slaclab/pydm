@@ -3,7 +3,8 @@ import os
 __all__ = ['DEFAULT_PROTOCOL',
            'DESIGNER_ONLINE',
            'STYLESHEET',
-           'STYLESHEET_INCLUDE_DEFAULT'
+           'STYLESHEET_INCLUDE_DEFAULT',
+           'CONFIRM_QUIT'
            ]
 
 
