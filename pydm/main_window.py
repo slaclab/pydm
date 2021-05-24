@@ -471,9 +471,10 @@ class PyDMMainWindow(QMainWindow):
 
     def _confirm_quit(self, callback):
         if not config.CONFIRM_QUIT:
-            return callback()
-        quit_message = QMessageBox.question(
-            self, 'Quitting Application', 'Exit Application?',
-            QMessageBox.Yes | QMessageBox.No)
-        if quit_message == QMessageBox.Yes:
             callback()
+        else:
+            quit_message = QMessageBox.question(
+                self, 'Quitting Application', 'Exit Application?',
+                QMessageBox.Yes | QMessageBox.No)
+            if quit_message == QMessageBox.Yes:
+                callback()
