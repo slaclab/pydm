@@ -12,6 +12,7 @@ from .about_pydm import AboutWindow
 from . import data_plugins
 from . import tools
 from .widgets.rules import register_widget_rules, unregister_widget_rules
+from . import config
 import subprocess
 import platform
 import logging
@@ -469,8 +470,11 @@ class PyDMMainWindow(QMainWindow):
         self._confirm_quit(callback=self.app.quit)
 
     def _confirm_quit(self, callback):
-        quit_message = QMessageBox.question(
-            self, 'Quitting Application', 'Exit Application?',
-            QMessageBox.Yes | QMessageBox.No)
-        if quit_message == QMessageBox.Yes:
+        if not config.CONFIRM_QUIT:
             callback()
+        else:
+            quit_message = QMessageBox.question(
+                self, 'Quitting Application', 'Exit Application?',
+                QMessageBox.Yes | QMessageBox.No)
+            if quit_message == QMessageBox.Yes:
+                callback()
