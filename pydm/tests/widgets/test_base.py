@@ -2,6 +2,7 @@
 
 import pytest
 import json
+import numpy as np
 import logging
 logger = logging.getLogger(__name__)
 
@@ -222,6 +223,51 @@ def test_pydmwidget_alarm_severity_changed(qtbot):
     assert pydm_label.alarmSeverity == PyDMWidget.ALARM_NONE
     pydm_label.alarmSeverity = PyDMWidget.ALARM_MAJOR
     assert pydm_label.alarmSeverity == PyDMWidget.ALARM_MAJOR
+
+
+class FloatSubclass(float):
+    pass
+
+
+class StrSubclass(str):
+    pass
+
+
+@pytest.mark.parametrize("value, expected_type", [
+    (123, int),
+    (123.47, float),
+    (1e2, float),
+    (0x1FF, int),
+    (0b100, int),
+    (True, bool),
+    (False, bool),
+    (np.array([123, 456]), np.ndarray),
+    ("text", str),
+    (FloatSubclass(0.5), float),
+    (StrSubclass(0.5), str),
+])
+def test_pydmwidget_channeltype(qtbot, value, expected_type):
+    """
+    Test the registered channel type on in coming value of a PyDMWritableWidget object.
+
+    Expectations:
+    Channel type is a type of incoming value or its base class.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    value : str
+        The incoming value from the channel
+    expected_type: int, float, str, bool, np.ndarray, FloatSubclass, StrSubclass
+        The type to be registered in channeltype
+    """
+    pydm_label = PyDMLabel()
+    qtbot.addWidget(pydm_label)
+
+    pydm_label.value_changed(value)
+
+    assert pydm_label.channeltype == expected_type
 
 
 @pytest.mark.parametrize("init_channel", [
