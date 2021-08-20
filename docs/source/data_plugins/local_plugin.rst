@@ -7,7 +7,7 @@ Local Data Plugin allows users to create and use local variables.
 
 The Local Data Plugin stores the data that is sent by the widgets through a channel, and broadcasts it to all the listeners connected to this particular local variable channel.
 
-By default, as soon as any widgets get connected to the same channel variable, they will get the initial values that were defined in the channel's address. These widgets can receive any updates when the data changes, or they can send data back.
+By default, as soon as any widgets gets connected to the same channel variable, they will get the initial values that were defined in the channel's address. These widgets can receive any updates when the data changes, or they can send data back.
 For example, if the user has added a Local Variable channel to a PyDMEditLine, then all the widgets connected to this Local Variable will get the values that are updated by the user in the PyDMEditLine.
 
 General Local Plugin channel syntax::
