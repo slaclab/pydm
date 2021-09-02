@@ -445,7 +445,6 @@ class PyDMDrawing(QWidget, PyDMWidget):
             if self._original_pen_style is not None:
                 self.penStyle = self._original_pen_style
 
-
 class PyDMDrawingLine(PyDMDrawing):
     """
     A widget with a line drawn in it.
@@ -458,21 +457,73 @@ class PyDMDrawingLine(PyDMDrawing):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingLine, self).__init__(parent, init_channel)
-        self.rotation = 45
-        self.penStyle = Qt.SolidLine
-        self.penWidth = 1
+        self._arrow_end_point_selection = False
+        self._arrow_start_point_selection = False
 
-    def draw_item(self, painter):
+    def _arrow_points(self, startpoint, endpoint, height, width):
+        # calculate the two perpendicular points for the arrow
+        diff_x = startpoint.x() - endpoint.x()
+        diff_y = startpoint.y() - endpoint.y()
+
+        length = math.sqrt(diff_x**2 + diff_y**2)
+
+        norm_x = diff_x/length
+        norm_y = diff_y/length
+
+        perp_x = -norm_y
+        perp_y = norm_x
+
+        left_x = endpoint.x() + height*norm_x + width*perp_x
+        left_y = endpoint.y() + height*norm_y + width*perp_y
+        right_x = endpoint.x() + height*norm_x - width*perp_x
+        right_y = endpoint.y() + height*norm_y - width*perp_y
+
+        left = QPoint(left_x, left_y)
+        right = QPoint(right_x, right_y)
+
+        return QPolygon([left, endpoint, right])
+
+    def draw_item(self):
         """
         Draws the line after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingLine, self).draw_item(painter)
-        x, y, w, h = self.get_bounds()
-        painter.drawLine(x, y, w, h)
+        super(PyDMDrawingLine, self).draw_item()
+        x, _, w, _ = self.get_bounds()
+        self._painter.drawRect(x, 0, w, 1)
 
+        #For adding arrow to end of the line
+        start_point = QPoint(x, 0)
+        end_point = QPoint(x+w, 0)
+
+        if self._arrow_end_point_selection:
+            points = self._arrow_points(start_point, end_point, 6, 6)
+            self._painter.drawPolygon(points)
+
+        if self._arrow_start_point_selection:
+            points = self._arrow_points(end_point, start_point, 6, 6)
+            self._painter.drawPolygon(points)
+
+    @Property(bool)
+    def arrowEndPoint(self):
+        return self._arrow_end_point_selection
+
+    @arrowEndPoint.setter
+    def arrowEndPoint(self, new_selection):
+        if self._arrow_end_point_selection != new_selection:
+            self._arrow_end_point_selection = new_selection
+
+    @Property(bool)
+    def arrowStartPoint(self):
+        return self._arrow_start_point_selection
+
+    @arrowStartPoint.setter
+    def arrowStartPoint(self, new_selection):
+        if self._arrow_start_point_selection != new_selection:
+            self._arrow_start_point_selection = new_selection
 
 class PyDMDrawingImage(PyDMDrawing):
     """

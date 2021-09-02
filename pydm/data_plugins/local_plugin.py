@@ -134,7 +134,7 @@ class Connection(PyDMConnection):
             return
 
         if (self._configuration.get('name') and self._configuration.get('type')
-                and self._configuration.get('init')):
+                and self._configuration.get('init') is not None):
             self._is_connection_configured = True
             self.address = address
 
