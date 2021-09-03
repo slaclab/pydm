@@ -445,6 +445,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
             if self._original_pen_style is not None:
                 self.penStyle = self._original_pen_style
 
+
 class PyDMDrawingLine(PyDMDrawing):
     """
     A widget with a line drawn in it.
@@ -462,9 +463,15 @@ class PyDMDrawingLine(PyDMDrawing):
         super(PyDMDrawingLine, self).__init__(parent, init_channel)
         self._arrow_end_point_selection = False
         self._arrow_start_point_selection = False
+        self.rotation = 0
+        self.penStyle = Qt.SolidLine
+        self.penWidth = 1
 
-    def _arrow_points(self, startpoint, endpoint, height, width):
-        # calculate the two perpendicular points for the arrow
+    @staticmethod
+    def _arrow_points(startpoint, endpoint, height, width):
+        """
+        Returns the three points needed to make a triangle with .drawPolygon
+        """
         diff_x = startpoint.x() - endpoint.x()
         diff_y = startpoint.y() - endpoint.y()
 
@@ -486,14 +493,14 @@ class PyDMDrawingLine(PyDMDrawing):
 
         return QPolygon([left, endpoint, right])
 
-    def draw_item(self):
+    def draw_item(self, painter):
         """
         Draws the line after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingLine, self).draw_item()
-        x, _, w, _ = self.get_bounds()
-        self._painter.drawRect(x, 0, w, 1)
+        super(PyDMDrawingLine, self).draw_item(painter)
+        x, y, w, h = self.get_bounds()
+        painter.drawLine(x, 0, x+w, 0)
 
         #For adding arrow to end of the line
         start_point = QPoint(x, 0)
@@ -501,11 +508,11 @@ class PyDMDrawingLine(PyDMDrawing):
 
         if self._arrow_end_point_selection:
             points = self._arrow_points(start_point, end_point, 6, 6)
-            self._painter.drawPolygon(points)
+            painter.drawPolygon(points)
 
         if self._arrow_start_point_selection:
             points = self._arrow_points(end_point, start_point, 6, 6)
-            self._painter.drawPolygon(points)
+            painter.drawPolygon(points)
 
     @Property(bool)
     def arrowEndPoint(self):
@@ -524,6 +531,7 @@ class PyDMDrawingLine(PyDMDrawing):
     def arrowStartPoint(self, new_selection):
         if self._arrow_start_point_selection != new_selection:
             self._arrow_start_point_selection = new_selection
+
 
 class PyDMDrawingImage(PyDMDrawing):
     """
