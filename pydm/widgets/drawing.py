@@ -458,11 +458,40 @@ class PyDMDrawingLine(PyDMDrawing):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingLine, self).__init__(parent, init_channel)
-        self.rotation = 45
+        self._arrow_end_point_selection = False
+        self._arrow_start_point_selection = False
+        self.rotation = 0
         self.penStyle = Qt.SolidLine
         self.penWidth = 1
+
+    @staticmethod
+    def _arrow_points(startpoint, endpoint, height, width):
+        """
+        Returns the three points needed to make a triangle with .drawPolygon
+        """
+        diff_x = startpoint.x() - endpoint.x()
+        diff_y = startpoint.y() - endpoint.y()
+
+        length = math.sqrt(diff_x**2 + diff_y**2)
+
+        norm_x = diff_x/length
+        norm_y = diff_y/length
+
+        perp_x = -norm_y
+        perp_y = norm_x
+
+        left_x = endpoint.x() + height*norm_x + width*perp_x
+        left_y = endpoint.y() + height*norm_y + width*perp_y
+        right_x = endpoint.x() + height*norm_x - width*perp_x
+        right_y = endpoint.y() + height*norm_y - width*perp_y
+
+        left = QPoint(left_x, left_y)
+        right = QPoint(right_x, right_y)
+
+        return QPolygon([left, endpoint, right])
 
     def draw_item(self, painter):
         """
@@ -471,7 +500,37 @@ class PyDMDrawingLine(PyDMDrawing):
         """
         super(PyDMDrawingLine, self).draw_item(painter)
         x, y, w, h = self.get_bounds()
-        painter.drawLine(x, y, w, h)
+        painter.drawLine(x, 0, x+w, 0)
+
+        #For adding arrow to end of the line
+        start_point = QPoint(x, 0)
+        end_point = QPoint(x+w, 0)
+
+        if self._arrow_end_point_selection:
+            points = self._arrow_points(start_point, end_point, 6, 6)
+            painter.drawPolygon(points)
+
+        if self._arrow_start_point_selection:
+            points = self._arrow_points(end_point, start_point, 6, 6)
+            painter.drawPolygon(points)
+
+    @Property(bool)
+    def arrowEndPoint(self):
+        return self._arrow_end_point_selection
+
+    @arrowEndPoint.setter
+    def arrowEndPoint(self, new_selection):
+        if self._arrow_end_point_selection != new_selection:
+            self._arrow_end_point_selection = new_selection
+
+    @Property(bool)
+    def arrowStartPoint(self):
+        return self._arrow_start_point_selection
+
+    @arrowStartPoint.setter
+    def arrowStartPoint(self, new_selection):
+        if self._arrow_start_point_selection != new_selection:
+            self._arrow_start_point_selection = new_selection
 
 
 class PyDMDrawingImage(PyDMDrawing):
