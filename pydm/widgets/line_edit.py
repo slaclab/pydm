@@ -84,7 +84,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         if self._show_units and self._unit and self._unit in send_value:
             send_value = send_value[:-len(self._unit)].strip()
         try:
-            if self.channeltype not in [str, np.ndarray]:
+            if self.channeltype not in [str, np.ndarray, bool]:
                 scale = self._scale
                 if scale is None or scale == 0:
                     scale = 1.0
@@ -112,6 +112,13 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                     arr_value = list(filter(None, send_value.replace("[", "").replace("]", "").split(" ")))
                     arr_value = np.array(arr_value, dtype=self.subtype)
                     self.send_value_signal[np.ndarray].emit(arr_value)
+            elif self.channeltype == bool:
+                try:
+                    val = bool(distutils.util.strtobool(send_value))
+                    self.send_value_signal[bool].emit(val)
+                    # might want to add error to application screen
+                except ValueError:
+                    print("not a valid boolean.")
             else:
                 # Channel Type is String
                 # Lets just send what we have after all
