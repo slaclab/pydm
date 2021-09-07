@@ -458,11 +458,40 @@ class PyDMDrawingLine(PyDMDrawing):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingLine, self).__init__(parent, init_channel)
-        self.rotation = 45
+        self._arrow_end_point_selection = False
+        self._arrow_start_point_selection = False
+        self.rotation = 0
         self.penStyle = Qt.SolidLine
         self.penWidth = 1
+
+    @staticmethod
+    def _arrow_points(startpoint, endpoint, height, width):
+        """
+        Returns the three points needed to make a triangle with .drawPolygon
+        """
+        diff_x = startpoint.x() - endpoint.x()
+        diff_y = startpoint.y() - endpoint.y()
+
+        length = math.sqrt(diff_x**2 + diff_y**2)
+
+        norm_x = diff_x/length
+        norm_y = diff_y/length
+
+        perp_x = -norm_y
+        perp_y = norm_x
+
+        left_x = endpoint.x() + height*norm_x + width*perp_x
+        left_y = endpoint.y() + height*norm_y + width*perp_y
+        right_x = endpoint.x() + height*norm_x - width*perp_x
+        right_y = endpoint.y() + height*norm_y - width*perp_y
+
+        left = QPoint(left_x, left_y)
+        right = QPoint(right_x, right_y)
+
+        return QPolygon([left, endpoint, right])
 
     def draw_item(self, painter):
         """
@@ -471,7 +500,37 @@ class PyDMDrawingLine(PyDMDrawing):
         """
         super(PyDMDrawingLine, self).draw_item(painter)
         x, y, w, h = self.get_bounds()
-        painter.drawLine(x, y, w, h)
+        painter.drawLine(x, 0, x+w, 0)
+
+        #For adding arrow to end of the line
+        start_point = QPoint(x, 0)
+        end_point = QPoint(x+w, 0)
+
+        if self._arrow_end_point_selection:
+            points = self._arrow_points(start_point, end_point, 6, 6)
+            painter.drawPolygon(points)
+
+        if self._arrow_start_point_selection:
+            points = self._arrow_points(end_point, start_point, 6, 6)
+            painter.drawPolygon(points)
+
+    @Property(bool)
+    def arrowEndPoint(self):
+        return self._arrow_end_point_selection
+
+    @arrowEndPoint.setter
+    def arrowEndPoint(self, new_selection):
+        if self._arrow_end_point_selection != new_selection:
+            self._arrow_end_point_selection = new_selection
+
+    @Property(bool)
+    def arrowStartPoint(self):
+        return self._arrow_start_point_selection
+
+    @arrowStartPoint.setter
+    def arrowStartPoint(self, new_selection):
+        if self._arrow_start_point_selection != new_selection:
+            self._arrow_start_point_selection = new_selection
 
 
 class PyDMDrawingImage(PyDMDrawing):
@@ -992,3 +1051,108 @@ class PyDMDrawingPolygon(PyDMDrawing):
         x, y, w, h = self.get_bounds(maxsize=not self.is_square())
         poly = self._calculate_drawing_points(x, y, w, h)
         painter.drawPolygon(QPolygonF(poly))
+
+
+class PyDMDrawingPolyline(PyDMDrawing):
+    """
+    A widget with a multi-segment, piecewise-linear line drawn in it.
+    This class inherits from PyDMDrawing.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    """
+    def __init__(self, parent=None, init_channel=None):
+        super(PyDMDrawingPolyline, self).__init__(parent, init_channel)
+        self.penStyle = Qt.SolidLine
+        self.penWidth = 1
+        self._points = []
+
+    def draw_item(self, painter):
+        """
+        Draws the segmented line after setting up the canvas with a call to
+        ```PyDMDrawing.draw_item```.
+        """
+        super(PyDMDrawingPolyline, self).draw_item(painter)
+        x, y, w, h = self.get_bounds()
+
+        def p2d(pt):
+            "convert point to drawing coordinates"
+            # drawing coordinates are centered: (0,0) is in center
+            # our points are absolute: (0,0) is upper-left corner
+            u, v = map(int, pt.split(","))
+            return QPoint(u+x, v+y)
+
+        if len(self._points) > 1:
+            for i, p1 in enumerate(self._points[:-1]):
+                painter.drawLine(p2d(p1), p2d(self._points[i+1]))
+
+    def getPoints(self):
+        return self._points
+
+    def _validator_(self, value):
+        """
+        ensure that `value` has correct form
+
+        Parameters
+        ----------
+        value : [str]
+            List of strings representing ordered pairs
+            of integer coordinates.  Each ordered pair
+            is comma-separated (although white-space
+            separated is acceptable as input).
+
+        Returns
+        ----------
+        verified : [str]
+            List of strings in standard format
+
+        """
+        def isinteger(value):
+            value = value.strip()
+            try:
+                float(value)
+                return True
+            except:
+                return False
+
+        verified = []
+        for i, pt in enumerate(value):
+            point = pt.split(",")
+            if len(point) != 2:
+                point = pt.split()    # tolerant of space-separated
+            if len(point) != 2:
+                emsg = "polyline point %d must be two values, comma-separated, received '%s'" % (i+1, pt)
+                logger.exception(emsg)
+                return
+            if not isinteger(point[0]):
+                emsg = "polyline point %d content must be integer, received '%s'" % (i+1, point[0])
+                logger.exception(emsg)
+                return
+            if not isinteger(point[1]):
+                emsg = "polyline point %d content must be integer, received '%s'" % (i+1, point[1])
+                logger.exception(emsg)
+                return
+            verified.append(", ".join(point))
+
+        return verified
+
+    def setPoints(self, value):
+        if len(value) < 2:
+            emsg = "Must have two or more points"
+            logger.exception(emsg)
+            return
+
+        verified = self._validator_(value)
+        if verified is not None:
+            self._points = verified
+            self.update()
+
+    def resetPoints(self):
+        self._points = []
+        self.update()
+
+    points = Property("QStringList", getPoints, setPoints, resetPoints)

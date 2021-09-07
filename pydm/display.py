@@ -8,11 +8,13 @@ import sys
 import uuid
 import warnings
 from os import path
+from string import Template
 
 from qtpy import uic
 from qtpy.QtWidgets import QWidget, QApplication
 
 from .utilities import macro, is_pydm_app
+from .utilities.stylesheet import merge_widget_stylesheet
 
 
 class ScreenTarget:
@@ -57,19 +59,33 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
         app = QApplication.instance()
         app.new_pydm_process(file, macros=macros, command_line_args=args)
         return None
-    else:
-        if file.endswith('.ui'):
-            w = load_ui_file(file, macros=macros)
-        else:
-            w = load_py_file(file, args=args, macros=macros)
 
-        if target == ScreenTarget.DIALOG:
-            w.show()
-
-        return w
+    _, extension = os.path.splitext(file)
+    loader = _extension_to_loader.get(extension, load_py_file)
+    logger.debug("Loading %s file by way of %s...", file, loader.__name__)
+    w = loader(file, args=args, macros=macros)
+    if target == ScreenTarget.DIALOG:
+        w.show()
+    return w
 
 
-def load_ui_file(uifile, macros=None):
+def _load_ui_into_display(uifile, display):
+    klass, _ = uic.loadUiType(uifile)
+
+    # Python 2.7 compatibility. More info at the following links:
+    # https://github.com/universe-proton/universe-topology/issues/3
+    # https://stackoverflow.com/questions/3296993/python-how-to-call-unbound-method-with-other-type-parameter
+    retranslateUi = six.get_unbound_function(klass.retranslateUi)
+    setupUi = six.get_unbound_function(klass.setupUi)
+
+    # Add retranslateUi to Display class
+    display.retranslateUi = functools.partial(retranslateUi, display)
+    setupUi(display, display)
+
+    display.ui = display
+
+
+def load_ui_file(uifile, macros=None, args=None):
     """
     Load a .ui file, perform macro substitution, then return the resulting QWidget.
 
@@ -82,6 +98,8 @@ def load_ui_file(uifile, macros=None):
     macros : dict, optional
         A dictionary of macro variables to supply to the file
         to be opened.
+    args : list, optional
+        This is ignored for UI files.
 
     Returns
     -------
@@ -89,26 +107,57 @@ def load_ui_file(uifile, macros=None):
     """
 
     d = Display(macros=macros)
+    merge_widget_stylesheet(d)
+
     if macros:
         f = macro.substitute_in_file(uifile, macros)
     else:
         f = uifile
 
-    klass, _ = uic.loadUiType(f)
-
-    # Python 2.7 compatibility. More info at the following links:
-    # https://github.com/universe-proton/universe-topology/issues/3
-    # https://stackoverflow.com/questions/3296993/python-how-to-call-unbound-method-with-other-type-parameter
-    retranslateUi = six.get_unbound_function(klass.retranslateUi)
-    setupUi = six.get_unbound_function(klass.setupUi)
-
-    # Add retranslateUi to Display class
-    d.retranslateUi = functools.partial(retranslateUi, d)
     d._loaded_file = uifile
-    setupUi(d, d)
+    _load_ui_into_display(f, d)
 
-    d.ui = d
+    return d
 
+
+def load_adl_file(filename, macros=None, args=None):
+    """
+    Load an MEDM ADL display with adl2pydm.
+
+    Parameters
+    ----------
+    filename : str
+        The ADL file path.
+
+    macros : dict, optional
+        A dictionary of macro variables to supply to the loaded display
+        subclass.
+
+    args : any, optional
+        Ignored for load_adl_file.
+    """
+    try:
+        import adl2pydm
+        from adl2pydm import adl_parser
+        from adl2pydm import output_handler
+    except ImportError:
+        raise RuntimeError("Sorry, adl2pydm is not installed.")
+
+    screen = adl_parser.MedmMainWidget(filename)
+    buf = screen.getAdlLines(filename)
+    screen.parseAdlBuffer(buf)
+
+    writer = output_handler.Widget2Pydm()
+    writer.write_ui(screen, None)
+    ui_contents = writer.writer.generate_ui_contents()
+
+    d = Display(macros=macros)
+    merge_widget_stylesheet(d)
+    d._loaded_file = filename
+
+    fp = macro.replace_macros_in_template(Template(ui_contents), macros or {})
+    _load_ui_into_display(fp, d)
+    fp.close()
     return d
 
 
@@ -182,7 +231,15 @@ def load_py_file(pyfile, args=None, macros=None):
         kwargs['macros'] = macros
     instance = cls(**kwargs)
     instance._loaded_file = pyfile
+    merge_widget_stylesheet(instance)
     return instance
+
+
+_extension_to_loader = {
+    ".ui": load_ui_file,
+    ".py": load_py_file,
+    ".adl": load_adl_file,
+}
 
 
 class Display(QWidget):
@@ -260,4 +317,6 @@ class Display(QWidget):
                 f = macro.substitute_in_file(self.ui_filepath(), macros)
             else:
                 f = self.ui_filepath()
-            self.ui = uic.loadUi(f, baseinstance=self)
+
+            _load_ui_into_display(f, self)
+            merge_widget_stylesheet(self.ui)

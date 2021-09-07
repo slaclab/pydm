@@ -11,10 +11,6 @@ test_stylesheet_path = os.path.join(
     "..", "test_data", "global_stylesheet.css")
 
 
-def test_stylesheet_init():
-    assert stylesheet.__style_data is None
-
-
 def test_stylesheet_apply(qtbot):
     # Backup of the variable
     env_backup = os.getenv("PYDM_STYLESHEET", None)
@@ -67,7 +63,7 @@ def test_stylesheet_get_style_data(caplog):
     os.environ["PYDM_STYLESHEET"] = ""
     assert os.getenv("PYDM_STYLESHEET", None) == ""
 
-    with caplog.at_level(logging.INFO):
+    with caplog.at_level(logging.DEBUG):
         # Cleanup the cache
         stylesheet.clear_cache()
 
@@ -80,9 +76,8 @@ def test_stylesheet_get_style_data(caplog):
         assert ret
         assert stylesheet.__style_data == ret
 
-        # Make sure logging capture the error, and have the correct error message
-        for record in caplog.records:
-            assert record.levelno == logging.INFO
+        # Make sure logging capture the error, and have the correct error
+        # message
         assert "Opening the default stylesheet" in caplog.text
 
         caplog.clear()
@@ -122,8 +117,6 @@ def test_stylesheet_get_style_data(caplog):
         # Exercise the proper loading
         ret = stylesheet._get_style_data(test_stylesheet_path)
         # Make sure logging capture the error, and have the correct error message
-        for record in caplog.records:
-            assert record.levelno == logging.INFO
         assert "Opening style file" in caplog.text
 
         caplog.clear()

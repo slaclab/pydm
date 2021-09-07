@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>802</width>
+    <height>616</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="PyDMTimePlot" name="PyDMTimePlot">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="showRightAxis">
+      <bool>false</bool>
+     </property>
+     <property name="title" stdset="0">
+      <string>MTEST:Float vs Time</string>
+     </property>
+     <property name="xLabels">
+      <stringlist>
+       <string>Time</string>
+      </stringlist>
+     </property>
+     <property name="yLabels">
+      <stringlist>
+       <string>ca://MTEST:Float</string>
+      </stringlist>
+     </property>
+     <property name="curves">
+      <stringlist>
+       <string>{&quot;channel&quot;: &quot;ca://MTEST:Float&quot;, &quot;name&quot;: &quot;MTEST:Float&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10}</string>
+      </stringlist>
+     </property>
+     <property name="autoRangeY">
+      <bool>false</bool>
+     </property>
+     <property name="maxYRange">
+      <double>2.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMPushButton" name="PyDMPushButton">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Write 1 on Press, 0 on Release</string>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Float</string>
+     </property>
+     <property name="pressValue" stdset="0">
+      <string>1</string>
+     </property>
+     <property name="releaseValue" stdset="0">
+      <string>0</string>
+     </property>
+     <property name="writeWhenRelease" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMPushButton" name="PyDMPushButton_2">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Write 1 on Press, 0 on Release - With Confirmation</string>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Float</string>
+     </property>
+     <property name="showConfirmDialog" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="pressValue" stdset="0">
+      <string>1</string>
+     </property>
+     <property name="releaseValue" stdset="0">
+      <string>0</string>
+     </property>
+     <property name="writeWhenRelease" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMPushButton" name="PyDMPushButton_3">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Write 1 on Press, 0 on Release - With Password (password)</string>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Float</string>
+     </property>
+     <property name="passwordProtected" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="password" stdset="0">
+      <string/>
+     </property>
+     <property name="protectedPassword" stdset="0">
+      <string notr="true">5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8</string>
+     </property>
+     <property name="pressValue" stdset="0">
+      <string>1</string>
+     </property>
+     <property name="releaseValue" stdset="0">
+      <string>0</string>
+     </property>
+     <property name="writeWhenRelease" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMPushButton" name="PyDMPushButton_4">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Write 1 on Press, -1 on Release - Relative</string>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Float</string>
+     </property>
+     <property name="pressValue" stdset="0">
+      <string>1</string>
+     </property>
+     <property name="releaseValue" stdset="0">
+      <string>-1</string>
+     </property>
+     <property name="relativeChange" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="writeWhenRelease" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMPushButton" name="PyDMPushButton_5">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Write 2 on Press, -1 on Release - Relative</string>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Float</string>
+     </property>
+     <property name="pressValue" stdset="0">
+      <string>2</string>
+     </property>
+     <property name="releaseValue" stdset="0">
+      <string>-1</string>
+     </property>
+     <property name="relativeChange" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="writeWhenRelease" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMTimePlot</class>
+   <extends>QGraphicsView</extends>
+   <header>pydm.widgets.timeplot</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMPushButton</class>
+   <extends>QPushButton</extends>
+   <header>pydm.widgets.pushbutton</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

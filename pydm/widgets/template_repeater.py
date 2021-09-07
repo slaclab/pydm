@@ -144,6 +144,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
     LayoutType = LayoutType
 
     def __init__(self, parent=None):
+        pydm.data_plugins.initialize_plugins_if_needed()
         QFrame.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
         self._template_filename = ""
@@ -258,11 +259,33 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
                 self.rebuild()
             else:
                 self.clear()
-    
+
+    def _is_json(self, source):
+        """
+        Validate if the string source is a valid json.
+
+        Parameters
+        ----------
+        source : str
+
+        Returns
+        -------
+        tuple (bool, obj)
+            True if a valid json or False otherwise.
+            Obj will either be the dictionary data or the exception while trying
+            to load the JSON string.
+        """
+        try:
+            data = json.loads(source)
+            return True, data
+        except Exception as ex:
+            return False, ex
+
     @Property(str)
     def dataSource(self):
         """
-        The path to the JSON file to fill in each instance of the template.
+        The path to the JSON file or a valid JSON string to fill in each
+        instance of the template.
         
         Returns
         -------
@@ -273,7 +296,8 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
     @dataSource.setter
     def dataSource(self, data_source):
         """
-        Sets the path to the JSON file to fill in each instance of the template.
+        Sets the path to the JSON file or a valid JSON string to fill in each
+        instance of the template.
         
         For example, if you build a template that contains two macro variables,
         ${NAME} and ${UNIT}, your JSON file should be a list of dictionaries,
@@ -288,27 +312,33 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         if data_source != self._data_source:
             self._data_source = data_source
             if self._data_source:
-                try:
-                    parent_display = self.find_parent_display()
-                    base_path = None
-                    if parent_display:
-                        base_path = os.path.dirname(
-                            parent_display.loaded_file())
-                    fname = find_file(self._data_source, base_path=base_path)
+                is_json, data = self._is_json(data_source)
+                if is_json:
+                    logger.debug('TemplateRepeater dataSource is a valid JSON.')
+                    self.data = data
+                else:
+                    logger.debug('TemplateRepeater dataSource is not a valid JSON. Assuming it is a file path.')
+                    try:
+                        parent_display = self.find_parent_display()
+                        base_path = None
+                        if parent_display:
+                            base_path = os.path.dirname(
+                                parent_display.loaded_file())
+                        fname = find_file(self._data_source, base_path=base_path)
 
-                    if not fname:
-                        if not is_qt_designer():
-                            logger.error('Cannot locate data source file {} for PyDMTemplateRepeater.'.format(fname))
+                        if not fname:
+                            if not is_qt_designer():
+                                logger.error('Cannot locate data source file {} for PyDMTemplateRepeater.'.format(self._data_source))
+                            self.data = []
+                        else:
+                            with open(fname) as f:
+                                try:
+                                    self.data = json.load(f)
+                                except ValueError:
+                                    logger.error('Failed to parse data source file {} for PyDMTemplateRepeater.'.format(fname))
+                                    self.data = []
+                    except IOError as e:
                         self.data = []
-                    else:
-                        with open(fname) as f:
-                            try:
-                                self.data = json.load(f)
-                            except ValueError:
-                                logger.error('Failed to parse data source file {} for PyDMTemplateRepeater.'.format(fname))
-                                self.data = []
-                except IOError as e:
-                    self.data = []
             else:
                 self.clear()
 

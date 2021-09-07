@@ -258,9 +258,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     crosshair_position_updated = Signal(float, float)
 
     def __init__(self, parent=None, background='default', axisItems=None):
-        PlotWidget.__init__(self, parent=parent, background=background,
-                            axisItems=axisItems)
-        PyDMPrimitiveWidget.__init__(self)
+        super(BasePlot, self).__init__(parent=parent, background=background,
+                                       axisItems=axisItems)
 
         self.plotItem = self.getPlotItem()
         self.plotItem.hideButtons()
@@ -296,6 +295,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.vertical_crosshair_line = None
         self.horizontal_crosshair_line = None
         self.crosshair_movement_proxy = None
+
+        # Mouse mode to 1 button (left button draw rectangle for zoom)
+        self.plotItem.getViewBox().setMouseMode(ViewBox.RectMode)
+
         if utilities.is_qt_designer():
             self.installEventFilter(self)
 
@@ -309,8 +312,12 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                     self,
                     QRect(0, 0, 200, 100),
                     4000)
-        return ret
+        else:
+            # Somehow super here is not invoking the PyDMPrimitiveWidget
+            # eventFilter
+            ret = PyDMPrimitiveWidget.eventFilter(self, obj, event)
 
+        return ret
 
     def addCurve(self, plot_item, curve_color=None):
         if curve_color is None:

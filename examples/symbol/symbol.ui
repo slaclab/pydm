@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="PyDMSymbol" name="PyDMSymbol" native="true">
+    <widget class="PyDMSymbol" name="PyDMSymbol">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -28,11 +28,11 @@
      <property name="whatsThis">
       <string/>
      </property>
-     <property name="imageFiles" stdset="0">
-      <string>{&quot;1&quot;: &quot;go.svg&quot;, &quot;0&quot;: &quot;stop.svg&quot;}</string>
-     </property>
      <property name="channel" stdset="0">
       <string>ca://MTEST:Run</string>
+     </property>
+     <property name="imageFiles" stdset="0">
+      <string>{&quot;1&quot;: &quot;go.svg&quot;, &quot;0&quot;: &quot;stop.svg&quot;}</string>
      </property>
     </widget>
    </item>
@@ -60,7 +60,7 @@
  <customwidgets>
   <customwidget>
    <class>PyDMEnumComboBox</class>
-   <extends>QWidget</extends>
+   <extends>QComboBox</extends>
    <header>pydm.widgets.enum_combo_box</header>
   </customwidget>
   <customwidget>

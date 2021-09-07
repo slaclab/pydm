@@ -1,12 +1,13 @@
 import os
 
-import pydm.data_plugins
-from pydm.data_plugins import (plugin_modules, load_plugins_from_path,
-                               plugin_for_address)
+from pydm.data_plugins import (initialize_plugins_if_needed, plugin_modules,
+                               load_plugins_from_path, plugin_for_address)
 from pydm import config
+
 
 def test_data_plugin_add(qapp, test_plugin):
     # Check that adding this after import will be reflected in PyDMApp
+    initialize_plugins_if_needed()
     assert isinstance(plugin_modules['tst'], test_plugin)
     assert isinstance(qapp.plugins['tst'], test_plugin)
 

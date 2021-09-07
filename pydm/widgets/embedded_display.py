@@ -43,11 +43,9 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         self.layout.addWidget(self.err_label)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.err_label.hide()
-        if not is_pydm_app():
-            self.setFrameShape(QFrame.Box)
-        else:
-            self.setFrameShape(QFrame.NoFrame)
-        
+
+    def init_for_designer(self):
+        self.setFrameShape(QFrame.Box)
 
     def minimumSizeHint(self):
         """

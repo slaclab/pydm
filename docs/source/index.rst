@@ -29,12 +29,19 @@ as well as a straightforward python framework to build complex applications.
    :maxdepth: 2
    :caption: User & API Documentation
 
+   stylesheets.rst
    widgets/index.rst
    widgets/widget_rules/index.rst
    add_data_plugins.rst
    application.rst
    channel.rst
    utilities/index.rst
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Data Plugins
+   
+   data_plugins/local_plugin.rst
 
 .. toctree::
    :maxdepth: 1

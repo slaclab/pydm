@@ -7,7 +7,7 @@ from scratch is probably using the Anaconda system.  If you have an existing
 python environment, and want to install PyDM for use with that, you can do that
 with pip.
 
-Please note, this guide is written with Unix in mind.
+Please note, this guide is written with Unix in mind, so there are probably some differences when installing on Windows.
 
 Installing PyDM and Prerequisites with Anaconda
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -15,14 +15,24 @@ Installing PyDM and Prerequisites with Anaconda
 After installing Anaconda (see https://www.anaconda.com/download/), create a new
 environment for PyDM::
   
-  $ conda create -n pydm-environment python=3.6 pyqt=5 pip numpy scipy six psutil pyqtgraph -c conda-forge
+  $ conda create -n pydm-environment python=3.8 pyqt=5 pip numpy scipy six psutil pyqtgraph pydm -c conda-forge
   $ source activate pydm-environment
   
-Once the environment is setup, continue on with the instructions in the `Installing PyDM
-with PIP`_ section below.  You do not need to build the prerequisites manually.
+Once you've installed and activated the environment, you should be able to run 'pydm' to launch PyDM, or run 'designer' to launch Qt Designer.  If you are on Windows, run these commands from the Anaconda Prompt.
 
-Installing the Prerequisites
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+On MacOS, launching Qt Designer is a little more annoying:
+First, use 'which pydm' to figure out where the conda environment's 'bin' directory is::
+
+  $ which pydm
+  <your anaconda directory>/base/envs/pydm-environment/bin/pydm
+
+Now, you can use 'open' to open Designer.app::
+
+  $ open <your anaconda directory>/base/envs/pydm-environment/bin/Designer.app
+
+Installing Manually, Without Anaconda
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This alternate installation method is only recommended for large 'site' installations that want to avoid using Anaconda.
 
 Qt 5
 ++++
@@ -51,23 +61,17 @@ build and install it.  Note that you may need to manually set the '--qmake' opti
 qmake binary you created when you built Qt5.
 
 Installing PyDM with PIP
-^^^^^^^^^^^^^^^^^^^^^^^^
+++++++++++++++++++++++++
 
-PyDM is not currently part of the Python Package Index (PyPI), so you'll have to
-first `download a release of PyDM <https://github.com/slaclab/pydm/releases/>`_,
-or clone PyDM's git repository::
+PyDM is part of the Python Package Index (PyPI), so you can install it with pip:
 
-  $ git clone https://github.com/slaclab/pydm.git
+  $ pip install pydm
   
-After you download PyDM, enter the directory where you saved it, and run::
-
-  $ pip install .[all]
-  
-This will download and install all the necessary dependencies, then will install 
-PyDM.
+This will download and install all the necessary python dependencies, then will install 
+PyDM.  (You'll still need the Qt and PyQt install from above).
 
 Setting Environment Variables
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++++++++++++++++++++++++++++++
 
 PyDM has several environment variables that let you configure its behavior, and
 where it looks for certain types of files.  To ensure these variables are always
@@ -75,7 +79,7 @@ set, you probably want to add them to your shell startup file (like ~/.bashrc, i
 are using bash).
 
 Designer Plugin Path
-++++++++++++++++++++
+####################
 
 If you want to use Designer to build displays with PyDM widgets, you'll need to
 add the PyDM install location to the PYQTDESIGNERPATH environment variable.  This
@@ -83,7 +87,7 @@ directory might be buried pretty deep, depending on how Python is installed on y
 system.  For example, mine lives at '/usr/local/lib/python2.7/site-packages/pydm/'.
 
 Default Data Source
-+++++++++++++++++++
+###################
 
 PyDM lets you get data from multiple data sources.  To accomplish this, all
 addresses are prefixed by a 'scheme', much like a URL.  For example, the

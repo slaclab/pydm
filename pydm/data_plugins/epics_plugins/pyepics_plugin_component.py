@@ -6,6 +6,12 @@ from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from qtpy.QtCore import Slot, Qt
 from qtpy.QtWidgets import QApplication
 
+try:
+    from epics import utils3
+    utils3.EPICS_STR_ENCODING = "latin-1"
+except:
+    pass
+
 logger = logging.getLogger(__name__)
 
 int_types = set((epics.dbr.INT, epics.dbr.CTRL_INT, epics.dbr.TIME_INT,
@@ -46,7 +52,7 @@ class Connection(PyDMConnection):
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
 
-    def send_new_value(self, value=None, char_value=None, count=None, ftype=None, type=None, *args, **kws):
+    def send_new_value(self, value=None, char_value=None, count=None, ftype=None, *args, **kws):
         self.update_ctrl_vars(**kws)
 
         if value is not None and not np.array_equal(value, self._value):
@@ -57,7 +63,7 @@ class Connection(PyDMConnection):
                 if ftype in int_types:
                     try:
                         self.new_value_signal[int].emit(int(value))
-                    except ValueError:  # This happens when a string is empty
+                    except (ValueError, TypeError):  # This happens when a string is empty
                         # HACK since looks like for PyEpics a 1 element array
                         # is in fact a scalar. =( I will try to address this
                         # with Matt Newville

@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
 from qtpy.QtCore import Property, Q_ENUMS
 from .. import utilities
-from .base import PyDMWritableWidget, TextFormatter
+from .base import PyDMWritableWidget, TextFormatter, str_types
 from .display_format import DisplayFormat, parse_value_for_display
 
 
@@ -84,7 +84,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         if self._show_units and self._unit and self._unit in send_value:
             send_value = send_value[:-len(self._unit)].strip()
         try:
-            if self.channeltype not in [str, np.ndarray]:
+            if self.channeltype not in [str, np.ndarray, bool]:
                 scale = self._scale
                 if scale is None or scale == 0:
                     scale = 1.0
@@ -112,6 +112,13 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                     arr_value = list(filter(None, send_value.replace("[", "").replace("]", "").split(" ")))
                     arr_value = np.array(arr_value, dtype=self.subtype)
                     self.send_value_signal[np.ndarray].emit(arr_value)
+            elif self.channeltype == bool:
+                try:
+                    val = bool(distutils.util.strtobool(send_value))
+                    self.send_value_signal[bool].emit(val)
+                    # might want to add error to application screen
+                except ValueError:
+                    print("not a valid boolean.")
             else:
                 # Channel Type is String
                 # Lets just send what we have after all
@@ -229,7 +236,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                                          DisplayFormat.Exponential,
                                          DisplayFormat.Hex,
                                          DisplayFormat.Binary]:
-            if not isinstance(new_value, (str, np.ndarray)):
+            if self.channeltype not in (str, np.ndarray):
                 try:
                     new_value *= self.channeltype(self._scale)
                 except TypeError:
@@ -241,7 +248,10 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                                             string_encoding=self._string_encoding,
                                             widget=self)
 
-        self._display = str(new_value)
+        if type(new_value) in str_types:
+            self._display = new_value
+        else:
+            self._display = str(new_value)
 
         if self._display_format_type == DisplayFormat.Default:
             if isinstance(new_value, (int, float)):
@@ -250,7 +260,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                 return
 
         if self._show_units:
-            self._display += " {}".format(self._unit)
+            self._display = "{} {}".format(self._display, self._unit)
 
         self.setText(self._display)
 

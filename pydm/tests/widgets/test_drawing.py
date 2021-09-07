@@ -16,7 +16,7 @@ from ...widgets.drawing import (deg_to_qt, qt_to_deg, PyDMDrawing,
                                 PyDMDrawingEllipse,
                                 PyDMDrawingCircle, PyDMDrawingArc,
                                 PyDMDrawingPie, PyDMDrawingChord,
-                                PyDMDrawingPolygon)
+                                PyDMDrawingPolygon, PyDMDrawingPolyline)
 
 from ...utilities.stylesheet import apply_stylesheet
 
@@ -1148,6 +1148,87 @@ def test_pydmdrawingpolygon_calculate_drawing_points(qapp, qtbot, x, y, width,
         assert p.y() == pytest.approx(expected_points[idx][1], 0.1)
 
     drawing.show()
+
+# # ---------------------
+# # PyDMDrawingPolyline
+# # ---------------------
+@pytest.mark.parametrize("x, y, width, height, num_points, expected_points", [
+    (-1, 27, 389, 3,  2, [(-2, -2),(384, -2)]),
+    (301, 230, 99, 20,  3, [(-1, 18),(-1, -1),(97, -1)])
+])
+def test_pydmdrawingpolyline_getPoints(qapp, qtbot, x, y, width,
+                                                      height, num_points,
+                                                      expected_points):
+    """
+    Test the calculations of the point coordinates of a PyDMDrawingPolyline widget.
+
+    Expectations:
+    The calculations match with the expected values.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    x : int, float
+        The x-coordinate
+    y: int, float
+        The y-coordinate
+    width : int, float
+        The base measurement
+    height : int, float
+        The height measurement
+    num_points : int
+        The number of points in the polygon
+    expected_points : tuple
+        The collection of the x and y coordinate sets
+    """
+    drawing = PyDMDrawingPolyline()
+    qtbot.addWidget(drawing)
+
+    drawing.numberOfPoints = num_points
+
+    assert drawing.numberOfPoints == num_points
+
+    the_points = drawing.getPoints()
+
+    for idx, p in enumerate(the_points):
+        assert p.x() == pytest.approx(expected_points[idx][0], 0.1)
+        assert p.y() == pytest.approx(expected_points[idx][1], 0.1)
+
+    drawing.show()
+
+
+@pytest.mark.parametrize("width, height", [
+    (99, 20)
+])
+def test_pydmdrawingpolyline_setPoints(qapp, qtbot, monkeypatch, width, height):
+    """
+    Test the rendering of a PyDMDrawingPolyline widget.
+
+    Expectations:
+    The drawing of the widget takes place without any problems.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    monkeypatch : fixture
+        To override attribute values
+    width : int, float
+        The width to the widget
+    height : int, float
+        The height of the widget
+    """
+    drawing = PyDMDrawingPolyline()
+    qtbot.addWidget(drawing)
+
+    monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
+    monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
+
+    drawing.setPoints(["-1, 18","-1, -1","97, -1"])
+
+    drawing.show()
+
 
 # --------------------
 # NEGATIVE TEST CASES

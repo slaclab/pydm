@@ -114,3 +114,6 @@ ENV/
 
 # vim
 *.swp
+
+# Microsoft Visual Studio Code editor
+.vscode/

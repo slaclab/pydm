@@ -4,7 +4,8 @@ from .byte import PyDMByteIndicator
 from .checkbox import PyDMCheckbox
 from .drawing import (PyDMDrawingLine, PyDMDrawingRectangle, PyDMDrawingTriangle,
                       PyDMDrawingEllipse, PyDMDrawingCircle, PyDMDrawingArc,
-                      PyDMDrawingPie, PyDMDrawingChord, PyDMDrawingImage)
+                      PyDMDrawingPie, PyDMDrawingChord, PyDMDrawingImage,
+                      PyDMDrawingPolyline, PyDMDrawingPolygon)
 
 from .embedded_display import PyDMEmbeddedDisplay
 from .enum_combo_box import PyDMEnumComboBox

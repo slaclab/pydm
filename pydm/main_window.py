@@ -12,6 +12,7 @@ from .about_pydm import AboutWindow
 from . import data_plugins
 from . import tools
 from .widgets.rules import register_widget_rules, unregister_widget_rules
+from . import config
 import subprocess
 import platform
 import logging
@@ -452,14 +453,28 @@ class PyDMMainWindow(QMainWindow):
             self.resize(self._new_widget_size)
 
     def closeEvent(self, event):
-        self.clear_display_widget()
+        event.ignore()
+
+        def do_close():
+            self.clear_display_widget()
+            event.accept()
+
+        main_windows = [w for w in self.app.topLevelWidgets() if isinstance(w, QMainWindow)]
+        if len(main_windows) == 1 and main_windows[0] == self:
+            self._confirm_quit(callback=do_close)
+        else:
+            do_close()
 
     @Slot(bool)
     def quit_main_window(self, checked):
-        quit_message = QMessageBox.question(
-            self, 'Quitting Application', 'Exit Application?',
-            QMessageBox.Yes | QMessageBox.No)
-        if quit_message == QMessageBox.Yes:
-            self.app.quit()
+        self._confirm_quit(callback=self.app.quit)
+
+    def _confirm_quit(self, callback):
+        if not config.CONFIRM_QUIT:
+            callback()
         else:
-            pass
+            quit_message = QMessageBox.question(
+                self, 'Quitting Application', 'Exit Application?',
+                QMessageBox.Yes | QMessageBox.No)
+            if quit_message == QMessageBox.Yes:
+                callback()

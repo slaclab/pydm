@@ -17,7 +17,7 @@ ALARM_DISCONNECTED = 4
 
 /* Alarm severity == ALARM_NONE */
 *[alarmSensitiveBorder="true"][alarmSeverity="0"] {
-    border: 2px solid transparent;
+    padding: 2px;
 }
 
 /* Alarm severity == ALARM_MINOR */

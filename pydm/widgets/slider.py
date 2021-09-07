@@ -268,13 +268,13 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         new_val : int or float
             The new value from the channel.
         """
-        logger.debug("Slider got a new value = %f", float(new_val))
         PyDMWritableWidget.value_changed(self, new_val)
         if hasattr(self, "value_label"):
             logger.debug("Setting text for value label.")
             self.value_label.setText(self.format_string.format(self.value))
         if not self._slider.isSliderDown():
             self.set_slider_to_closest_value(self.value)
+        self.update_format_string()
 
     def ctrl_limit_changed(self, which, new_limit):
         """

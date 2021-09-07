@@ -37,6 +37,7 @@ def test_construct(qtbot):
     assert pydm_spinbox.decimals() == 0
     assert pydm_spinbox.app == QApplication.instance()
     assert pydm_spinbox.isAccelerated() is True
+    assert pydm_spinbox._write_on_press is False
 
 
 @pytest.mark.parametrize("first_key_pressed, second_key_pressed, keys_pressed_expected_results", [
@@ -322,3 +323,82 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
         signals.lower_ctrl_limit_signal[type(new_limit)].emit(new_limit)
 
         assert pydm_spinbox.get_ctrl_limits()[0] == new_limit
+
+
+@pytest.mark.parametrize("key_pressed, initial_spinbox_value, expected_result, write_on_press", [
+    (Qt.Key_Up, 1, 2, True),
+    (Qt.Key_Down, 1, 0, True),
+    (Qt.Key_Up, 1, 1, False),
+    (Qt.Key_Down, 1, 1, False),
+])
+def test_write_on_press(qtbot, signals, monkeypatch, key_pressed, initial_spinbox_value,
+                        expected_result, write_on_press):
+    """
+    Test sending the value from the widget to the channel on key press when writeOnPress enabled. 
+
+    Expectations:
+    The correct value is sent to the channelValueChanged slot on key press and no value is send when disabled.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    signals : fixture
+        The signals fixture, which provides access signals to be bound to the appropriate slots
+    monkeypatch : fixture
+        To override default behaviors
+    key_pressed : Qt.Key
+        The key to press to change the spinbox's step exponent value (increase or decrease)
+    inital_spinbox_value: float
+        Initial value assigned to spinbox
+    expected_result : float
+        Value expected after key press
+    write_on_press: bool
+        Whether or not to enable write on press
+    """
+    pydm_spinbox = PyDMSpinbox()
+    qtbot.addWidget(pydm_spinbox)
+
+    with qtbot.waitExposed(pydm_spinbox):
+        pydm_spinbox.show()
+
+    pydm_spinbox.step_exponent = 0
+    pydm_spinbox.precisionFromPV = True
+    signals.prec_signal[int].connect(pydm_spinbox.precisionChanged)
+    signals.prec_signal[int].emit(3)
+
+    # set up signals
+    pydm_spinbox.send_value_signal[float].connect(signals.receiveValue)
+    signals.new_value_signal[float].connect(pydm_spinbox.channelValueChanged)
+    signals.new_value_signal[float].emit(initial_spinbox_value)
+
+    def press_key_and_verify(key_pressed, key_mod, expected_value, write_on_press):
+        # reset value to initial value
+        pydm_spinbox.value_changed(initial_spinbox_value)
+        pydm_spinbox.send_value()
+
+        #  use modifier if left/right keys
+        if key_mod != Qt.NoModifier:
+            # Monkeypatch the Control flag because in this test, we don't properly have the app QApplication instance
+            monkeypatch.setattr(QApplication, "queryKeyboardModifiers", lambda *args: key_mod)
+        else:
+            monkeypatch.setattr(QApplication, "queryKeyboardModifiers", lambda *args: Qt.NoModifier)
+
+        pydm_spinbox.writeOnPress = write_on_press
+        pydm_spinbox.keyPressEvent(QKeyEvent(QEvent.KeyPress, key_pressed, key_mod))
+
+        # Check for change if write on press enabled
+        if pydm_spinbox.writeOnPress:
+            assert signals.value == expected_value
+            
+        # Check for no change if disabled
+        else: 
+            assert signals.value == initial_spinbox_value
+
+
+    # check the key press with write_on_press
+    press_key_and_verify(key_pressed, Qt.NoModifier, expected_result, write_on_press)
+
+    # check that changing the exponent does not modify
+    press_key_and_verify(Qt.Key_Left, Qt.ControlModifier, initial_spinbox_value, write_on_press)
+    press_key_and_verify(Qt.Key_Right, Qt.ControlModifier, initial_spinbox_value, write_on_press)

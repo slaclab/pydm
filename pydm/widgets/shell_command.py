@@ -1,3 +1,4 @@
+import os
 import shlex
 import subprocess
 from functools import partial
@@ -253,7 +254,8 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
             return
 
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
-            args = shlex.split(command, posix='win' not in sys.platform)
+            cmd = os.path.expanduser(os.path.expandvars(command))
+            args = shlex.split(cmd, posix='win' not in sys.platform)
             try:
                 logger.debug("Launching process: %s", repr(args))
                 stdout = subprocess.PIPE
