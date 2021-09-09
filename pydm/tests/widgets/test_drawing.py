@@ -722,49 +722,6 @@ def test_pydmdrawingrectangle_draw_item(qapp, qtbot, monkeypatch, width, height,
 # # ---------------------
 # # PyDMDrawingTriangle
 # # ---------------------
-@pytest.mark.parametrize("x, y, width, height, expected_points", [
-    (0.0, 0.0, 7.7, 10.2, [QPoint(0, 5), QPoint(0, 0), QPoint(3, 0.0)]),
-    (10.3, 0, 7.7, 10.2, [QPoint(10, 5), QPoint(10, 0), QPoint(3, 0)]),
-    (10.3, 56.7, 7.7, 10.2, [QPoint(10, 5), QPoint(10, 56), QPoint(3, 56)]),
-    (0.0, 10.75, 7.7, 10.2, [QPoint(0, 5), QPoint(0, 10), QPoint(3, 10)]),
-    (-10.23, 0, 7.7, 10.2, [QPoint(-10, 5), QPoint(-10, 0), QPoint(3, 0)]),
-    (0.0, -10.23, 7.7, 10.2, [QPoint(0, 5), QPoint(0, -10), QPoint(3, -10)]),
-    (-60.23, -87.25, 7.7, 10.2,
-     [QPoint(-60, 5), QPoint(-60, -87), QPoint(3, -87)]),
-    (1, 2, 5.0, 5.0, [QPoint(1, 2), QPoint(1, 2), QPoint(2, 2)]),
-])
-def test_pydmdrawingtriangle_calculate_drawing_points(qtbot, x, y, width,
-                                                      height, expected_points):
-    """
-    Test the calculations of the point coordinates of a PyDMDrawingTriangle widget.
-
-    Expectations:
-    The calculations match with the expected values.
-
-    Parameters
-    ----------
-    qtbot : fixture
-        Window for widget testing
-    x : int, float
-        The x-coordinate of the top of the triangle
-    y: int, float
-        The y-coordinate of the top of the triangle
-    width : int, float
-        The base measurement of the triangle
-    height : int, float
-        The height measurement of the triangle
-    expected_points : tuple
-        The collection of the three x and y coordinate sets of the triangle to draw
-    """
-    pydm_drawingtriangle = PyDMDrawingTriangle()
-    qtbot.addWidget(pydm_drawingtriangle)
-
-    calculated_points = pydm_drawingtriangle._calculate_drawing_points(x, y,
-                                                                       width,
-                                                                       height)
-    assert calculated_points == expected_points
-
-
 @pytest.mark.parametrize("width, height, pen_width", [
     (7.7, 10.2, 0),
     (10.2, 7.7, 0),

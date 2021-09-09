@@ -18,7 +18,6 @@ from ...widgets.baseplot import BasePlotCurveItem, BasePlot, NoDataError
 
 def test_baseplotcurveitem_construct(qtbot, color, line_style, line_width, name):
     base_plotcurve_item = BasePlotCurveItem(color, line_style, line_width, name=name)
-    qtbot.addWidget(base_plotcurve_item)
 
     assert base_plotcurve_item._color == color if color else QColor("white")
     assert base_plotcurve_item._pen.color() == color if color else QColor("white")
@@ -29,7 +28,6 @@ def test_baseplotcurveitem_construct(qtbot, color, line_style, line_width, name)
 
 def test_baseplotcurveitem_properties_and_setters(qtbot):
     base_plotcurve_item = BasePlotCurveItem()
-    qtbot.addWidget(base_plotcurve_item)
 
     assert base_plotcurve_item.color_string == "white"
 
@@ -63,7 +61,6 @@ def test_baseplotcurveitem_properties_and_setters(qtbot):
 
 def test_baseplotcurveitem_to_dict(qtbot):
     base_plotcurve_item = BasePlotCurveItem()
-    qtbot.addWidget(base_plotcurve_item)
     dictionary = base_plotcurve_item.to_dict()
 
     assert isinstance(dictionary, OrderedDict)

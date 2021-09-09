@@ -169,8 +169,8 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.setColumnCount(len(headers))
         self.tbl_channels.setHorizontalHeaderLabels(headers)
         header = self.tbl_channels.horizontalHeader()
-        header.setResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        header.setResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
 
         frm_edit_layout.addWidget(self.tbl_channels)
 
