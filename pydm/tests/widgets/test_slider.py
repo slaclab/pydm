@@ -46,12 +46,12 @@ def test_construct(qtbot):
 
     assert type(pydm_slider.low_lim_label) == QLabel
     assert pydm_slider.low_lim_label.sizePolicy() == QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
-    assert pydm_slider.low_lim_label.alignment() == Qt.Alignment(Qt.AlignLeft | Qt.AlignTrailing | Qt.AlignVCenter)
+    assert pydm_slider.low_lim_label.alignment() == Qt.Alignment(int(Qt.AlignLeft | Qt.AlignTrailing | Qt.AlignVCenter))
 
 
     assert type(pydm_slider.high_lim_label) == QLabel
     assert pydm_slider.high_lim_label.sizePolicy() == QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
-    assert pydm_slider.high_lim_label.alignment() == Qt.Alignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
+    assert pydm_slider.high_lim_label.alignment() == Qt.Alignment(int(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter))
 
 
     assert type(pydm_slider._slider) == QSlider
@@ -144,7 +144,7 @@ def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
     pydm_slider.send_value_signal[float].connect(signals.receiveValue)
 
     signals.new_value_signal[int].connect(pydm_slider.internal_slider_value_changed)
-    signals.new_value_signal[int].emit(new_value)
+    signals.new_value_signal[int].emit(int(new_value))
 
     if not mute_change:
         # The internal_slider_value_changed_slot emitted the send_value_signal
