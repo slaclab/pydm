@@ -1,6 +1,5 @@
 from .qtplugin_base import PyDMDesignerPlugin, WidgetCategory
 from .tab_bar import PyDMTabWidget
-from ..utilities.iconfont import IconFont
 
 
 class TabWidgetPlugin(PyDMDesignerPlugin):
@@ -9,8 +8,7 @@ class TabWidgetPlugin(PyDMDesignerPlugin):
     TabClass = PyDMTabWidget
 
     def __init__(self, extensions=None):
-        icon = IconFont().icon("folder")
-        super(TabWidgetPlugin, self).__init__(self.TabClass, icon=icon,
+        super(TabWidgetPlugin, self).__init__(self.TabClass,
                                               group=WidgetCategory.CONTAINER,
                                               extensions=extensions)
 

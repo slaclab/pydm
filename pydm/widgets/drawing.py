@@ -5,7 +5,7 @@ import logging
 from qtpy.QtWidgets import (QWidget, QStyle, QStyleOption)
 from qtpy.QtGui import (QColor, QPainter, QBrush, QPen, QPolygon, QPolygonF, QPixmap,
                             QMovie)
-from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot, QTimer
+from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot, QTimer, QRectF
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
 from ..utilities import is_qt_designer, find_file
@@ -406,7 +406,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
             return
         if new_width != self._pen_width:
             self._pen_width = new_width
-            self._pen.setWidth(self._pen_width)
+            self._pen.setWidthF(float(self._pen_width))
             self.update()
 
     @Property(float)
@@ -500,11 +500,11 @@ class PyDMDrawingLine(PyDMDrawing):
         """
         super(PyDMDrawingLine, self).draw_item(painter)
         x, y, w, h = self.get_bounds()
-        painter.drawLine(x, 0, x+w, 0)
-
-        #For adding arrow to end of the line
-        start_point = QPoint(x, 0)
-        end_point = QPoint(x+w, 0)
+        
+        start_point = QPointF(x, 0)
+        end_point = QPointF(x+w, 0)
+        
+        painter.drawLine(start_point, end_point)
 
         if self._arrow_end_point_selection:
             points = self._arrow_points(start_point, end_point, 6, 6)
@@ -701,7 +701,7 @@ class PyDMDrawingImage(PyDMDrawing):
         super(PyDMDrawingImage, self).draw_item(painter)
         x, y, w, h = self.get_bounds(maxsize=True, force_no_pen=True)
         if not isinstance(self._pixmap, QMovie):
-            _scaled = self._pixmap.scaled(w, h, self._aspect_ratio_mode,
+            _scaled = self._pixmap.scaled(int(w), int(h), self._aspect_ratio_mode,
                                           Qt.SmoothTransformation)
             # Make sure the image is centered if smaller than the widget itself
             if w > _scaled.width():
@@ -710,7 +710,7 @@ class PyDMDrawingImage(PyDMDrawing):
             if h > _scaled.height():
                 logger.debug("Centering image vertically ...")
                 y += (h - _scaled.height())/2
-            painter.drawPixmap(x, y, _scaled)
+            painter.drawPixmap(QPointF(x, y), _scaled)
 
     def movie_frame_changed(self, frame_no):
         """
@@ -768,7 +768,7 @@ class PyDMDrawingRectangle(PyDMDrawing):
         """
         super(PyDMDrawingRectangle, self).draw_item(painter)
         x, y, w, h = self.get_bounds(maxsize=True)
-        painter.drawRect(x, y, w, h)
+        painter.drawRect(QRectF(x, y, w, h))
 
 
 class PyDMDrawingTriangle(PyDMDrawing):
@@ -788,9 +788,9 @@ class PyDMDrawingTriangle(PyDMDrawing):
 
     def _calculate_drawing_points(self, x, y, w, h):
         return [
-            QPoint(x, h / 2.0),
-            QPoint(x, y),
-            QPoint(w / 2.0, y)
+            QPointF(x, h / 2.0),
+            QPointF(x, y),
+            QPointF(w / 2.0, y)
         ]
 
     def draw_item(self, painter):
@@ -802,7 +802,7 @@ class PyDMDrawingTriangle(PyDMDrawing):
         x, y, w, h = self.get_bounds(maxsize=True)
         points = self._calculate_drawing_points(x, y, w, h)
 
-        painter.drawPolygon(QPolygon(points))
+        painter.drawPolygon(QPolygonF(points))
 
 
 class PyDMDrawingEllipse(PyDMDrawing):
@@ -939,7 +939,7 @@ class PyDMDrawingArc(PyDMDrawing):
         super(PyDMDrawingArc, self).draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
-        painter.drawArc(x, y, w, h, self._start_angle, self._span_angle)
+        painter.drawArc(QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle))
 
 
 class PyDMDrawingPie(PyDMDrawingArc):
@@ -965,7 +965,7 @@ class PyDMDrawingPie(PyDMDrawingArc):
         super(PyDMDrawingPie, self).draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
-        painter.drawPie(x, y, w, h, self._start_angle, self._span_angle)
+        painter.drawPie(QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle))
 
 
 class PyDMDrawingChord(PyDMDrawingArc):
@@ -991,7 +991,7 @@ class PyDMDrawingChord(PyDMDrawingArc):
         super(PyDMDrawingChord, self).draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
-        painter.drawChord(x, y, w, h, self._start_angle, self._span_angle)
+        painter.drawChord(QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle))
 
 
 class PyDMDrawingPolygon(PyDMDrawing):
@@ -1084,7 +1084,7 @@ class PyDMDrawingPolyline(PyDMDrawing):
             # drawing coordinates are centered: (0,0) is in center
             # our points are absolute: (0,0) is upper-left corner
             u, v = map(int, pt.split(","))
-            return QPoint(u+x, v+y)
+            return QPointF(u+x, v+y)
 
         if len(self._points) > 1:
             for i, p1 in enumerate(self._points[:-1]):
