@@ -92,7 +92,7 @@ def signals():
     return ConnectionSignals()
 
 
-@pytest.yield_fixture(scope='session')
+@pytest.fixture(scope='session')
 def qapp(qapp_args):
     """
     Fixture for a PyDMApplication app instance.
