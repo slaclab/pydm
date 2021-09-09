@@ -73,7 +73,7 @@ class IconFont(object):
 
     def font(self, size):
         font = QFont(self.font_name)
-        font.setPixelSize(size)
+        font.setPixelSize(int(size))
         return font
 
     def icon(self, name, color=None):
@@ -124,7 +124,7 @@ class CharIconEngine(QIconEngine):
         draw_size = 0.875 * qRound(rect.height() * scale_factor)
         painter.setFont(self.icon_font.font(draw_size))
         painter.setOpacity(1.0)
-        painter.drawText(rect, Qt.AlignCenter | Qt.AlignVCenter, self.char)
+        painter.drawText(rect, int(Qt.AlignCenter | Qt.AlignVCenter), self.char)
         painter.restore()
 
     def pixmap(self, size, mode, state):

@@ -84,7 +84,6 @@ def test_widget_orientation(qtbot, orientation):
         col = 0
 
     item = widget.layout().itemAtPosition(row, col)
-    qtbot.addWidget(item)
     assert item is not None
     w = item.widget()
     qtbot.addWidget(w)
