@@ -105,13 +105,7 @@ def qapp(qapp_args):
     -------
     An instance of PyDMApplication.
     """
-    app = qt_api.QApplication.instance()
-    if app is None or not isinstance(app, PyDMApplication):
-        global _qapp_instance
-        _qapp_instance = PyDMApplication(use_main_window=False, *qapp_args)
-        yield _qapp_instance
-    else:
-        yield app  # pragma: no cover
+    yield PyDMApplication(use_main_window=False, *qapp_args)
 
 
 @pytest.fixture(scope='session')
