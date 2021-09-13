@@ -7,12 +7,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Channel &mdash; PyDM v1.11.0+21.ga4b48f75 documentation</title>
+  <title>Channel &mdash; PyDM v1.11.1+13.g16b6ec54 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,6 +31,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -63,7 +66,7 @@
             
             
               <div class="version">
-                v1.11.0+21.ga4b48f75
+                v1.11.1+13.g16b6ec54
               </div>
             
           
@@ -88,19 +91,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Configuration</span></p>
+<p class="caption" role="heading"><span class="caption-text">Configuration</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Tutorials</span></p>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
+<p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="stylesheets.html">Customizing the Look and Feel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="widgets/index.html">Widgets</a></li>
@@ -110,13 +113,13 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Channel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities/index.html">Utilities</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="development/development.html">Development Guidelines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development/resources.html">Recommended Resources</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Links</span></p>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
@@ -190,8 +193,8 @@
   <div class="section" id="channel">
 <h1>Channel<a class="headerlink" href="#channel" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="channel.PyDMChannel">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">channel.</span></code><code class="sig-name descname"><span class="pre">PyDMChannel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">severity_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_access_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enum_strings_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_ctrl_limit_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_ctrl_limit_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_signal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/channel.html#PyDMChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#channel.PyDMChannel" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="channel.PyDMChannel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">channel.</span></span><span class="sig-name descname"><span class="pre">PyDMChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">severity_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_access_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enum_strings_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_ctrl_limit_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_ctrl_limit_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_signal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/channel.html#PyDMChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#channel.PyDMChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Object to hold signals and slots for a PyDM Widget interface to an
 external plugin</p>
 <p>The purpose of this class is to create a templated slot and signals
@@ -236,14 +239,14 @@ through the plugin</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="channel.PyDMChannel.connect">
-<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/channel.html#PyDMChannel.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#channel.PyDMChannel.connect" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="channel.PyDMChannel.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/channel.html#PyDMChannel.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#channel.PyDMChannel.connect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect a PyDMChannel to the proper PyDMPlugin</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="channel.PyDMChannel.disconnect">
-<code class="sig-name descname"><span class="pre">disconnect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destroying</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/channel.html#PyDMChannel.disconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#channel.PyDMChannel.disconnect" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="channel.PyDMChannel.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destroying</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/channel.html#PyDMChannel.disconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#channel.PyDMChannel.disconnect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disconnect a PyDMChannel</p>
 </dd></dl>
 
