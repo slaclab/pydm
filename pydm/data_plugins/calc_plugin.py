@@ -16,20 +16,19 @@ from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
 logger = logging.getLogger(__name__)
 
-CALC_ADDRESS_SCHEMA = json.loads("""
-{
+CALC_ADDRESS_SCHEMA = json.loads("""{
     "definitions": {
         "channel": {
             "type": "object",
             "additionalProperties": {"type": "string"}
         }
     },
-
     "type": "object",
     "properties": {
         "name": {"type": "string"},
         "expr": {"type": "string"},
-        "channels": {"$ref": "#/definitions/channel"}
+        "channels": {"$ref": "#/definitions/channel"},
+        "update": {"type": "array"}
     },
     "required": ["name", "expr", "channels"]
 }
@@ -45,6 +44,7 @@ CALC_ADDRESS_MINIMUM_SCHEMA = json.loads("""
     "additionalProperties": false
 }
 """)
+
 
 def epics_string(value, string_encoding="utf-8"):
     # Stop at the first zero (EPICS convention)
@@ -72,6 +72,7 @@ class CalcThread(QThread):
         self.app.aboutToQuit.connect(self.requestInterruption)
 
         self.config = config
+        self.listen_for_update = None
 
         self._calculate = threading.Event()
         self._names = []
@@ -82,6 +83,11 @@ class CalcThread(QThread):
         self._expression = self.config.get('expr', '')
 
         channels = self.config.get('channels', {})
+        update = self.config.get('update', None)
+
+        if update is not None:
+            self.listen_for_update = update
+
         for name, channel in channels.items():
             conn_cb = functools.partial(self.callback_conn, name)
             value_cb = functools.partial(self.callback_value, name)
@@ -138,7 +144,11 @@ class CalcThread(QThread):
                 "Calculation '%s': Not all channels are connected, skipping execution.",
                 self.objectName())
             return
-        self._calculate.set()
+        if self.listen_for_update is None or name in self.listen_for_update:
+            self._calculate.set()
+        else:
+            return
+
 
     def callback_conn(self, name, value):
         """
