@@ -88,8 +88,12 @@ Data can be updated in the two X and Y-values widgets and the Waveform Curve Edi
 Miscellaneous
 -------------
 
-* setting a local plugin channel for a calc variable in a python file can be tricky, you will need \\\" for the quotes inside the {} of the local variable address, here is an example: "calc://{\"name\":\"num\",\"channels\":{\"var\":\"loc://{\\\"name\\\":\\\"loc_var\\\"}\"},\"expr\":\"var\"}"
-* setting a local plugin channel for a calc variable in Designer you will need \" for the quotes inside the {} of the local variable address, here is an example: calc://{"name":"num","channels":{"var":"ca://DEMO:ANGLE","varTwo":"loc://{\"name\":\"int_var\"}"},"expr":"var*varTwo"}
+* setting a local plugin channel for a calc variable in a python file can be tricky, you will need \\\" for the quotes inside the {} of the local variable address, here is an example:
+.. code-block:: python
+"calc://{\"name\":\"num\",\"channels\":{\"var\":\"loc://{\\\"name\\\":\\\"loc_var\\\"}\"},\"expr\":\"var\"}"
+* setting a local plugin channel for a calc variable in Designer you will need \" for the quotes inside the {} of the local variable address, here is an example:
+
+calc://{"name":"num","channels":{"var":"ca://DEMO:ANGLE","varTwo":"loc://{\"name\":\"int_var\"}"},"expr":"var*varTwo"}
 * See `validate json <https://jsonlint.com>`_ to help validate a channel address.
 * See https://docs.python.org/3/library/math.html for mathematical operations which can be used in the given expression.
 * NumPy is a valid library for the mathematical expression
