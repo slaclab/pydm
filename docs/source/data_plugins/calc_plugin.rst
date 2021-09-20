@@ -40,6 +40,10 @@ Attributes  Description                                        Format Example
             | user's choice
 **channels** | dictionary with variable and address pairs      `"channels":{"var":"channel://address"}`
 **expr**    mathematical expression to be used                 `"expr":"math expression"`
+**update**  | The calc function will update when one of the    `"update":["var", "var_two"]`
+            | variables in the update list receives a new value
+            | optional. If nothing is given, the calc function
+            | will run anytime one of the variables updates
 =========== ================================================== ========================
 
 
@@ -57,11 +61,14 @@ Simple Calc Plugin Example
 ---------------------------------
 
 
-The picture below represents a simple example using the Calc Plugin, where ::
+The picture below represents an example of using the Calc Plugin, where ::
 
-	"loc://{\"name\":\"int_var\",\"type\":\"int\",\"init\":10}"
+    calc addresses given in the channels of the Wavefrom Curve Editor of a PYDMWavefromPlot :
+    calc://{"name":"circleX", "channels":{"angle":"ca://DEMO:ANGLE"}, "expr":"-1*math.cos(math.radians(180-angle))"}
+	calc://{"name":"circley", "channels":{"angle":"ca://DEMO:ANGLE"}, "expr":"math.sin(math.radians(180-angle))"}
 
-	"calc://{\"name\":\"circ\",\"channels\":{\"var\":\"ca://DEMO:ANGLE\",\"var2\":\"loc://{\\\"name\\\":\\\"int_var\\\"}\"},\"expr\":\"var+var2\"}"
+    calc address given in the channels of the Wavefrom Curve Editor of a PYDMWavefromPlot to get the Tangent:
+	calc://{"name":"tanval", "channels":{"angle":"ca://DEMO:ANGLE"}, "expr":"tan(radians(angle)) if angle not in [90, 270] else None"}
 
 Right below the Waveform Curve Editor widget, there are two other widgets connected to the 'x' and 'y' local variable respectively::
 
@@ -70,11 +77,9 @@ Right below the Waveform Curve Editor widget, there are two other widgets connec
 
 Data can be updated in the two X and Y-values widgets and the Waveform Curve Editor will receive the new data and change the curve accordingly, like seen in the picture below:
 
+*Values for TAN*
 
-
-*Waveform Curve Example with ndarrays fro X and Y values*
-
-.. image:: ../_static/data_plugins/waveform_curve_local_plugin.png
+.. image:: ../_static/data_plugins/calc_example.gif
    :width: 600 pt
    :align: center
 
