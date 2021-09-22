@@ -1,77 +1,37 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Application &mdash; PyDM v1.11.1+13.g16b6ec54 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Channel" href="channel.html" />
     <link rel="prev" title="Including Data Plugins" href="add_data_plugins.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> PyDM
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
                 v1.11.1+13.g16b6ec54
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -79,18 +39,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -125,76 +74,35 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">PyDM</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Application</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/application.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="application">
-<h1>Application<a class="headerlink" href="#application" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="application">
+<h1>Application<a class="headerlink" href="#application" title="Permalink to this headline"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.PyDMApplication">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pydm.</span></span><span class="sig-name descname"><span class="pre">PyDMApplication</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ui_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_line_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perfmon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_nav_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_menu_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_status_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">macros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_main_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stylesheet_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fullscreen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pydm.</span></span><span class="sig-name descname"><span class="pre">PyDMApplication</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ui_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_line_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perfmon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_nav_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_menu_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_status_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">macros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_main_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stylesheet_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fullscreen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication" title="Permalink to this definition"></a></dt>
 <dd><p>PyDMApplication handles loading PyDM display files, opening
 new windows, and most importantly, establishing and managing
 connections to channels via data plugins.</p>
@@ -230,7 +138,7 @@ create a PyDMMainWindow in the initialization (Default is True).</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.PyDMApplication.add_connection">
-<span class="sig-name descname"><span class="pre">add_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.add_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.add_connection" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">add_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.add_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.add_connection" title="Permalink to this definition"></a></dt>
 <dd><p>Add a new connection to a channel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -241,7 +149,7 @@ create a PyDMMainWindow in the initialization (Default is True).</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.PyDMApplication.close_widget_connections">
-<span class="sig-name descname"><span class="pre">close_widget_connections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.close_widget_connections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.close_widget_connections" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">close_widget_connections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.close_widget_connections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.close_widget_connections" title="Permalink to this definition"></a></dt>
 <dd><p>Given a widget to start from, traverse the tree of child widgets,
 and try to close connections to any widgets with channels.</p>
 <dl class="field-list simple">
@@ -253,7 +161,7 @@ and try to close connections to any widgets with channels.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.PyDMApplication.establish_widget_connections">
-<span class="sig-name descname"><span class="pre">establish_widget_connections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.establish_widget_connections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.establish_widget_connections" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">establish_widget_connections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.establish_widget_connections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.establish_widget_connections" title="Permalink to this definition"></a></dt>
 <dd><p>Given a widget to start from, traverse the tree of child widgets,
 and try to establish connections to any widgets with channels.</p>
 <p>Display subclasses which dynamically create widgets may need to
@@ -267,24 +175,24 @@ use this method.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.PyDMApplication.eventFilter">
-<span class="sig-name descname"><span class="pre">eventFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QObject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QEvent</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.eventFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.eventFilter" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">eventFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QObject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QEvent</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.eventFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.eventFilter" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.PyDMApplication.exec_">
-<span class="sig-name descname"><span class="pre">exec_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.exec_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.exec_" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">exec_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.exec_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.exec_" title="Permalink to this definition"></a></dt>
 <dd><p>Execute the QApplication.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.PyDMApplication.get_CPU_usage">
-<span class="sig-name descname"><span class="pre">get_CPU_usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.get_CPU_usage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.get_CPU_usage" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_CPU_usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.get_CPU_usage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.get_CPU_usage" title="Permalink to this definition"></a></dt>
 <dd><p>Prints total CPU usage (in percent), as well as per-thread usage, to the terminal.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.PyDMApplication.make_main_window">
-<span class="sig-name descname"><span class="pre">make_main_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stylesheet_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.make_main_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.make_main_window" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">make_main_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stylesheet_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.make_main_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.make_main_window" title="Permalink to this definition"></a></dt>
 <dd><p>Instantiate a new PyDMMainWindow, add it to the application’s
 list of windows. Typically, this function is only called as part
 of starting up a new process, because PyDMApplications only have
@@ -293,7 +201,7 @@ one window per process.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.PyDMApplication.new_pydm_process">
-<span class="sig-name descname"><span class="pre">new_pydm_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ui_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">macros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_line_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.new_pydm_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.new_pydm_process" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">new_pydm_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ui_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">macros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_line_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.new_pydm_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.new_pydm_process" title="Permalink to this definition"></a></dt>
 <dd><p>Spawn a new PyDM process and open the supplied file.  Commands to open
 new windows in PyDM typically actually spawn an entirely new PyDM process.
 This keeps each window isolated, so that one window cannot slow
@@ -315,7 +223,7 @@ write needs to use this argument.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.PyDMApplication.plugin_for_channel">
-<span class="sig-name descname"><span class="pre">plugin_for_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.plugin_for_channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.plugin_for_channel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plugin_for_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.plugin_for_channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.plugin_for_channel" title="Permalink to this definition"></a></dt>
 <dd><p>Given a PyDMChannel object, determine the appropriate plugin to use.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -332,7 +240,7 @@ write needs to use this argument.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.PyDMApplication.remove_connection">
-<span class="sig-name descname"><span class="pre">remove_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.remove_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.remove_connection" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">remove_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.remove_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.remove_connection" title="Permalink to this definition"></a></dt>
 <dd><p>Remove a connection to a channel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -343,54 +251,37 @@ write needs to use this argument.</p></li>
 
 </dd></dl>
 
-</div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="channel.html" class="btn btn-neutral float-right" title="Channel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="add_data_plugins.html" class="btn btn-neutral float-left" title="Including Data Plugins" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="channel.html" class="btn btn-neutral float-right" title="Channel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
-
-    </p>
+    <p>&#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

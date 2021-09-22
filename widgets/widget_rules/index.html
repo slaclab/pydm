@@ -1,77 +1,37 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Widget Rules &mdash; PyDM v1.11.1+13.g16b6ec54 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
+    <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Including Data Plugins" href="../../add_data_plugins.html" />
     <link rel="prev" title="PyDMDrawing Widgets" href="../drawing.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../../index.html" class="icon icon-home"> PyDM
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
                 v1.11.1+13.g16b6ec54
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -79,18 +39,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
@@ -132,95 +81,54 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">PyDM</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Widget Rules</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="../../_sources/widgets/widget_rules/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="widget-rules">
-<h1>Widget Rules<a class="headerlink" href="#widget-rules" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="widget-rules">
+<h1>Widget Rules<a class="headerlink" href="#widget-rules" title="Permalink to this headline"></a></h1>
 <p>Every PyDM Widget has a property named <code class="docutils literal notranslate"><span class="pre">rules</span></code> which is a String that holds a
 JSON-formatted list of dictionaries describing the rules associated with that
 widget.</p>
 <p>The widget rules are intended to modify a widget property based on the evaluation
 of an expression that can use value of one or more channels in it.</p>
-<div class="section" id="creating-rules">
-<h2>Creating Rules<a class="headerlink" href="#creating-rules" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="opening-the-editor">
-<h3>Opening the Editor<a class="headerlink" href="#opening-the-editor" title="Permalink to this headline">¶</a></h3>
+<section id="creating-rules">
+<h2>Creating Rules<a class="headerlink" href="#creating-rules" title="Permalink to this headline"></a></h2>
+<section id="opening-the-editor">
+<h3>Opening the Editor<a class="headerlink" href="#opening-the-editor" title="Permalink to this headline"></a></h3>
 <p>With the designer screen open, add a PyDM Widget to the screen and right-click
 on it to show the Task Menu and select the <code class="docutils literal notranslate"><span class="pre">Edit</span> <span class="pre">Rules...</span></code> option.</p>
 <p>Here is a step-by-step video on how to open the <code class="docutils literal notranslate"><span class="pre">Rules</span> <span class="pre">Editor</span></code>.</p>
-<div class="figure align-center">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/open_editor.gif"><img alt="Rules Editor" src="../../_images/open_editor.gif" style="width: 609.0px; height: 349.0px;" /></a>
-</div>
+</figure>
 <p>Here is a screenshot of the <code class="docutils literal notranslate"><span class="pre">Rules</span> <span class="pre">Editor</span></code> screen in detail.</p>
-<div class="figure align-center">
+<figure class="align-center">
 <img alt="Rules Editor" src="../../_images/rules_editor.png" />
-</div>
-</div>
-<div class="section" id="adding-new-rule">
-<h3>Adding New Rule<a class="headerlink" href="#adding-new-rule" title="Permalink to this headline">¶</a></h3>
+</figure>
+</section>
+<section id="adding-new-rule">
+<h3>Adding New Rule<a class="headerlink" href="#adding-new-rule" title="Permalink to this headline"></a></h3>
 <p>With the <code class="docutils literal notranslate"><span class="pre">Rules</span> <span class="pre">Editor</span></code> screen open, users are able to create new rules by
 clicking on the <strong>Add Rule</strong> button on the top left side or delete a rule by
 clicking on the <strong>Remove Rule</strong> sign.</p>
@@ -314,56 +222,39 @@ we can add it.</p>
 </dl>
 </li>
 </ul>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../../add_data_plugins.html" class="btn btn-neutral float-right" title="Including Data Plugins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../drawing.html" class="btn btn-neutral float-left" title="PyDMDrawing Widgets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../add_data_plugins.html" class="btn btn-neutral float-right" title="Including Data Plugins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.
-
-    </p>
+    <p>&#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
