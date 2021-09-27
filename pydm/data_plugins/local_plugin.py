@@ -1,84 +1,12 @@
 """Local Plugin."""
 import decimal
 import logging
-import json
-import jsonschema
+from urllib import parse
 import numpy as np
 from qtpy.QtCore import Slot, Qt
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
 logger = logging.getLogger(__name__)
-
-LOC_ADDRESS_SCHEMA = json.loads("""
-{
-  "definitions": {
-      "init": {
-          "type": ["number", "string", "boolean", "array"]
-        },
-      "type": {
-          "type": "string",
-          "enum": ["int", "float", "bool", "array", "str"]
-       }
-      },
-  "type": "object",
-  "properties": {
-      "name": {"type": "string"},
-      "type": {"$ref": "#/definitions/type"},
-      "init": {"$ref": "#/definitions/init"},
-      "extras": {
-        "type": "object",
-        "properties": {
-          "precision": {"type": "number"},
-          "unit": {"type": "string"},
-          "upper_limit": {"type": "number"},
-          "lower_limit": {"type": "number"},
-          "enum_string": {"type": "array"},
-          "dtype": {"type": "string"},
-          "copy": {"type": "boolean"},
-          "order": {"type": "string"},
-          "subok": {"type": "boolean"},
-          "ndmin": {"type": "integer"}
-      }
-    }
-  },
- "allOf": [
-  {
-   "if": {"properties": { "type": { "const": "int" }}},
-   "then": {"properties": { "init": { "type": "integer" }}}
-  },
-  {
-   "if": {"properties": { "type": { "const": "float" }}},
-   "then": {"properties": { "init": { "type": "number" }}}
-  },
-  {
-   "if": {"properties": { "type": { "const": "str" }}},
-   "then": {"properties": { "init": { "type": "string" }}}
-  },
-  {
-   "if": {"properties": { "type": { "const": "bool" }}},
-   "then": {"properties": { "init": { "type": "boolean" }}}
-  },
-  {
-    "if": {"properties": { "type": { "const": "array" }}},
-  "then": {"properties": { "init": { "type": "array" }}}
-  }
-  ],
-
-  "required": ["name", "type","init"]
-}
-""")
-
-LOC_ADDRESS_MINIMUM_SCHEMA = json.loads("""
-{
-    "type": "object",
-    "properties": {
-        "name": {"type": "string"}
-    },
-    "required": ["name"],
-    "additionalProperties": false
-}
-""")
-
 
 class Connection(PyDMConnection):
     def __init__(self, channel, address, protocol=None, parent=None):
@@ -125,15 +53,22 @@ class Connection(PyDMConnection):
 
         try:
             address = PyDMPlugin.get_address(channel)
-            self._configuration = json.loads(address)
-            jsonschema.validate(self._configuration, LOC_ADDRESS_SCHEMA)
+            address = "loc://" + address
+            print(address, type(address))
+
+            self._configuration = parse.parse_qs(parse.urlsplit(address).query)
+            name = parse.urlsplit(address).netloc
+            self._configuration['name'] = name
+
+            if not name and not config:
+                raise
         except:
             logger.debug(
                 'Invalid configuration for LocalPlugin connection. %s',
                 address)
             return
 
-        if (self._configuration.get('name') and self._configuration.get('type')
+        if (self._configuration.get('name') is not None and self._configuration.get('type') is not None
                 and self._configuration.get('init') is not None):
             self._is_connection_configured = True
             self.address = address
@@ -144,10 +79,9 @@ class Connection(PyDMConnection):
                 self.parse_channel_extras(extras)
 
             # set the object's attributes
-            init_value = self._configuration.get('init')
-            self._value_type = self._configuration.get('type')
+            init_value = self._configuration.get('init')[0]
+            self._value_type = self._configuration.get('type')[0]
             self.name = self._configuration.get('name')
-
             # send initial values
             self.value = self.convert_value(init_value, self._value_type)
             self.connected = True
@@ -447,18 +381,22 @@ class LocalPlugin(PyDMPlugin):
     @staticmethod
     def get_connection_id(channel):
         address = PyDMPlugin.get_address(channel)
+        address = "loc://" + address
 
         try:
-            config = json.loads(address)
-            jsonschema.validate(config, LOC_ADDRESS_SCHEMA)
+            config = parse.parse_qs(parse.urlsplit(address).query)
+            name = parse.urlsplit(address).netloc
+
+            if not name and not config:
+                raise
         except:
             try:
-                jsonschema.validate(config, LOC_ADDRESS_MINIMUM_SCHEMA)
-                logger.debug('LocalPlugin connection %s got new listener.',
-                             address)
+                if not name:
+                    raise
+                logger.debug('LocalPlugin connection %s got new listener.', address)
             except:
                 msg = "Invalid configuration for LocalPlugin connection. %s"
                 logger.exception(msg, address)
-                raise ValueError("Name is a required field for calc plugin")
+                raise ValueError("error in local data plugin input")
 
-        return config['name']
+        return name
