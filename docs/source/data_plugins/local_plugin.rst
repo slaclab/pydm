@@ -12,12 +12,12 @@ For example, if the user has added a Local Variable channel to a PyDMEditLine, t
 
 General Local Plugin channel syntax::
 
-	loc://{"name":"my_variable_name","type":"variable_type", "init":"initial_values"}
+	loc://my_variable_name?type=variable_type&init=initial_values
 
 .. note:: Once a Local Variable channel is created, multiple widgets can be connected to the same channel by providing the name of the variable, like so:
 	::
 
-		loc://{"name":"my_variable_name"}
+		loc://my_variable_name
 
 -------------
 
@@ -38,19 +38,19 @@ The table below explains the attributes that are required to create a local plug
 Attributes  Description                                        Format Example
 =========== ================================================== ========================
 **loc**     protocol name for Local Data Plugin                `loc://`
-**name**    | the identifier for a local variable              `"name":"my_ndarray_var"`
+**name**    | the identifier for a local variable              `my_ndarray_var`
             | user's choice 
-**type**    | data-type for this variable                      `"type":"array"`
+**type**    | data-type for this variable                      `type=array`
   	    | refer to :ref:`Variable Types<Variable Types>`
             | for more info of acceptable type
-**init**    initial values to be used                          `"init":[1,2,3,4]`
+**init**    initial values to be used                          `init=[1,2,3,4]`
 =========== ================================================== ========================
 
 
 Here is a simple example of a channel address format with the required attributes:
 ::
 	
-	loc://{"name":"my_np.array","type":"array","init":[1,2,3,4]}
+	loc://my_np.array?type=array&init=[1,2,3,4]
 
 
 
@@ -88,7 +88,7 @@ Attributes      Description                         Type         Format Example
 Here is a simple example of a channel address format with some optional attributes:
 ::
 	
-	loc://{"name":"my.float","type":"float","init":1, "extras": {"precision":3, "unit":"V"}}
+	loc://my.float?type=float&init=1&extras={"precision":3, "unit":"V"}
 
 -------------
 
@@ -115,7 +115,7 @@ Arrays
 
 The following option must be specified in the "type" value in the channel address:
 
-* `"type":"array"`
+* `type=array`
 
 The following extra attributes can be specified in the "extras" dictionary in the channel address. These attributes will be passed in the `numpy.array` function as parameters when creating the `numpy.ndarray`. If no attributes are specified, the `numpy.array` function will use the default values to create a `numpy.ndarray`.
 
@@ -138,7 +138,7 @@ Attributes      Description                         Type          Format Example
 Here is a simple example with array + extras:
 ::
 
-	 loc://{"name":"my_ndarray","type":"array","init":[1,2,3,4],"extras": {"dtype":"float64", "copy":false, "order":"C", "ndmin":0, "subok":true}}
+	 loc://my_ndarray?type=array&init=[1,2,3,4]&extras={"dtype":"float64", "copy":false, "order":"C", "ndmin":0, "subok":true}
 
 
 ------------
@@ -150,15 +150,15 @@ Simple Local Data Plugin Example
 
 The picture below represents a simple example using the Local Data Plugin, where a Waveform Curve Editor has two local data plugin channels::
 
-	loc://{"name":"y", "type":"array","init":[1,2,3,4,5,6], "extras": {"dtype":"float64"}}
+	loc://y?type=array&init=[1,2,3,4,5,6]&extras={"dtype":"float64"}
 
-	loc://{"name":"x", "type":"array","init":[1,2,3,4,5,6], "extras": {"dtype":"float64"}}
+	loc://x?type=array&init=[1,2,3,4,5,6]&extras={"dtype":"float64"}
 
 Right below the Waveform Curve Editor widget, there are two other widgets connected to the 'x' and 'y' local variable respectively::
 
 	
-	X-values: loc://{"name":"x"}
-	Y-values: loc://{"name":"y"}
+	X-values: loc://x
+	Y-values: loc://y
 
 Data can be updated in the two X and Y-values widgets and the Waveform Curve Editor will receive the new data and change the curve accordingly, like seen in the picture below: 
 
@@ -178,7 +178,6 @@ Miscellaneous
 
 * If precision is not sent through the "extras", and it is set to receive the precision from the PV (Process Variable), the Local Data Plugin will match the precision from the values inserted by the users in the widgets.
 
-* See `validate json <https://jsonlint.com>`_ to help validate a channel address.
 
 
 
