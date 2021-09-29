@@ -29,7 +29,7 @@
        <string/>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_ndarray&quot;}</string>
+       <string>loc://my_ndarray</string>
       </property>
      </widget>
     </item>
@@ -61,7 +61,7 @@
        <bool>true</bool>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_float&quot;,&quot;type&quot;:&quot;float&quot;,&quot;init&quot;:7.7,&quot;extras&quot;: {&quot;precision&quot;:3, &quot;unit&quot;:&quot;V&quot;}}</string>
+       <string>loc://my_float?type=float&amp;init=7.7&amp;precision=3&amp;unit=V</string>
       </property>
      </widget>
     </item>
@@ -81,7 +81,7 @@
        <string/>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_ndarray&quot;, &quot;type&quot;:&quot;array&quot;, &quot;init&quot;:[1,2,3], &quot;extras&quot;: {&quot;dtype&quot;:&quot;float64&quot;, &quot;copy&quot;:false, &quot;order&quot;:&quot;C&quot;, &quot;ndmin&quot;:1, &quot;subok&quot;:true}}</string>
+       <string>loc://my_ndarray?type=array&amp;init=[1,2,3]&amp;dtype=float64&amp;copy=False&amp;order=C&amp;ndmin=1&amp;subok=true</string>
       </property>
      </widget>
     </item>
@@ -101,7 +101,7 @@
        <string/>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_float&quot;}</string>
+       <string>loc://my_float</string>
       </property>
      </widget>
     </item>
@@ -114,7 +114,7 @@
        <bool>true</bool>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_string&quot;,&quot;type&quot;:&quot;str&quot;,&quot;init&quot;:&quot;Hello&quot;}</string>
+       <string>loc://my_string?type=str&amp;init=Hello</string>
       </property>
      </widget>
     </item>
@@ -124,7 +124,7 @@
        <string/>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;boolean&quot;}</string>
+       <string>loc://boolean</string>
       </property>
      </widget>
     </item>
@@ -143,7 +143,7 @@
        <bool>true</bool>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_int&quot;,&quot;type&quot;:&quot;int&quot;,&quot;init&quot;:7}</string>
+       <string>loc://my_int?type=int&amp;init=7</string>
       </property>
      </widget>
     </item>
@@ -166,7 +166,7 @@
        <bool>true</bool>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;boolean&quot;, &quot;type&quot;:&quot;bool&quot;, &quot;init&quot;:true}</string>
+       <string>loc://boolean?type=bool&amp;init=True</string>
       </property>
      </widget>
     </item>
@@ -176,7 +176,7 @@
        <string/>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_string&quot;}</string>
+       <string>loc://my_string</string>
       </property>
      </widget>
     </item>
@@ -199,7 +199,7 @@
        <string>[]</string>
       </property>
       <property name="channel" stdset="0">
-       <string>loc://{&quot;name&quot;:&quot;my_int&quot;}</string>
+       <string>loc://my_int</string>
       </property>
      </widget>
     </item>

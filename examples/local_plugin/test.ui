@@ -47,7 +47,7 @@
          <string/>
         </property>
         <property name="channel" stdset="0">
-         <string>loc://{&quot;name&quot;:&quot;x&quot;}</string>
+         <string>loc://x</string>
         </property>
        </widget>
       </item>
@@ -57,7 +57,7 @@
          <string/>
         </property>
         <property name="channel" stdset="0">
-         <string>loc://{&quot;name&quot;:&quot;y&quot;}</string>
+         <string>loc://y</string>
         </property>
        </widget>
       </item>
@@ -81,7 +81,7 @@
         </property>
         <property name="curves">
          <stringlist>
-          <string>{&quot;y_channel&quot;: &quot;loc://{\&quot;name\&quot;:\&quot;y\&quot;, \&quot;type\&quot;:\&quot;array\&quot;,\&quot;init\&quot;:[1,2,3,4,5,6], \&quot;extras\&quot;: {\&quot;dtype\&quot;:\&quot;float64\&quot;}}&quot;, &quot;x_channel&quot;: &quot;loc://{\&quot;name\&quot;:\&quot;x\&quot;, \&quot;type\&quot;:\&quot;array\&quot;,\&quot;init\&quot;:[1,2,3,4,5,6], \&quot;extras\&quot;: {\&quot;dtype\&quot;:\&quot;float64\&quot;}}&quot;, &quot;name&quot;: &quot;Testing ndarray&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;redraw_mode&quot;: 2}</string>
+          <string>{&quot;y_channel&quot;: &quot;loc://y?type=array&amp;init=[1,2,3,4,5,6]&amp;dtype=float64&quot;, &quot;x_channel&quot;: &quot;loc://x?type=array&amp;init=[1,2,3,4,5,6]&amp;dtype=float64&quot;, &quot;name&quot;: &quot;Testing ndarray&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;redraw_mode&quot;: 2}</string>
          </stringlist>
         </property>
        </widget>
