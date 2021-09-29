@@ -1,5 +1,6 @@
 import locale
 from functools import partial
+import shlex
 import numpy as np
 
 import logging
@@ -109,7 +110,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                 if self._display_format_type == DisplayFormat.String:
                     self.send_value_signal[str].emit(send_value)
                 else:
-                    arr_value = list(filter(None, send_value.replace("[", "").replace("]", "").split(" ")))
+                    arr_value = list(filter(None, shlex.split(send_value.replace("[", "").replace("]", ""))))
                     arr_value = np.array(arr_value, dtype=self.subtype)
                     self.send_value_signal[np.ndarray].emit(arr_value)
             elif self.channeltype == bool:

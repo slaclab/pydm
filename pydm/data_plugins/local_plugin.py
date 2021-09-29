@@ -1,84 +1,13 @@
 """Local Plugin."""
 import decimal
 import logging
-import json
-import jsonschema
+from urllib import parse
+import shlex
 import numpy as np
 from qtpy.QtCore import Slot, Qt
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
 logger = logging.getLogger(__name__)
-
-LOC_ADDRESS_SCHEMA = json.loads("""
-{
-  "definitions": {
-      "init": {
-          "type": ["number", "string", "boolean", "array"]
-        },
-      "type": {
-          "type": "string",
-          "enum": ["int", "float", "bool", "array", "str"]
-       }
-      },
-  "type": "object",
-  "properties": {
-      "name": {"type": "string"},
-      "type": {"$ref": "#/definitions/type"},
-      "init": {"$ref": "#/definitions/init"},
-      "extras": {
-        "type": "object",
-        "properties": {
-          "precision": {"type": "number"},
-          "unit": {"type": "string"},
-          "upper_limit": {"type": "number"},
-          "lower_limit": {"type": "number"},
-          "enum_string": {"type": "array"},
-          "dtype": {"type": "string"},
-          "copy": {"type": "boolean"},
-          "order": {"type": "string"},
-          "subok": {"type": "boolean"},
-          "ndmin": {"type": "integer"}
-      }
-    }
-  },
- "allOf": [
-  {
-   "if": {"properties": { "type": { "const": "int" }}},
-   "then": {"properties": { "init": { "type": "integer" }}}
-  },
-  {
-   "if": {"properties": { "type": { "const": "float" }}},
-   "then": {"properties": { "init": { "type": "number" }}}
-  },
-  {
-   "if": {"properties": { "type": { "const": "str" }}},
-   "then": {"properties": { "init": { "type": "string" }}}
-  },
-  {
-   "if": {"properties": { "type": { "const": "bool" }}},
-   "then": {"properties": { "init": { "type": "boolean" }}}
-  },
-  {
-    "if": {"properties": { "type": { "const": "array" }}},
-  "then": {"properties": { "init": { "type": "array" }}}
-  }
-  ],
-
-  "required": ["name", "type","init"]
-}
-""")
-
-LOC_ADDRESS_MINIMUM_SCHEMA = json.loads("""
-{
-    "type": "object",
-    "properties": {
-        "name": {"type": "string"}
-    },
-    "required": ["name"],
-    "additionalProperties": false
-}
-""")
-
 
 class Connection(PyDMConnection):
     def __init__(self, channel, address, protocol=None, parent=None):
@@ -86,6 +15,12 @@ class Connection(PyDMConnection):
         self._value_type = None
         self._precision_set = None
         self._type_kwargs = {}
+
+        self._required_config_keys = [
+            'name',
+            'type',
+            'init'
+        ]
 
         self._extra_config_keys = [
             "precision",
@@ -125,28 +60,32 @@ class Connection(PyDMConnection):
 
         try:
             address = PyDMPlugin.get_address(channel)
-            self._configuration = json.loads(address)
-            jsonschema.validate(self._configuration, LOC_ADDRESS_SCHEMA)
+            address = "loc://" + address
+
+            self._configuration = parse.parse_qs(parse.urlsplit(address).query)
+            name = parse.urlsplit(address).netloc
+            self._configuration['name'] = name
+
+            if not name and not config:
+                raise
         except:
             logger.debug(
                 'Invalid configuration for LocalPlugin connection. %s',
                 address)
             return
 
-        if (self._configuration.get('name') and self._configuration.get('type')
+        if (self._configuration.get('name') is not None and self._configuration.get('type') is not None
                 and self._configuration.get('init') is not None):
             self._is_connection_configured = True
             self.address = address
 
-            # get the extra info if any
-            extras = self._configuration.get('extras')
-            if extras:
-                self.parse_channel_extras(extras)
-
             # set the object's attributes
-            init_value = self._configuration.get('init')
-            self._value_type = self._configuration.get('type')
+            init_value = self._configuration.get('init')[0]
+            self._value_type = self._configuration.get('type')[0]
             self.name = self._configuration.get('name')
+
+            # get the extra info if any
+            self.parse_channel_extras(self._configuration)
 
             # send initial values
             self.value = self.convert_value(init_value, self._value_type)
@@ -172,27 +111,30 @@ class Connection(PyDMConnection):
         None.
 
         """
+
         precision = extras.get('precision')
         if precision is not None:
             try:
-                self._precision_set = int(precision)
+                self._precision_set = int(precision[0])
                 self.prec_signal.emit(self._precision_set)
             except ValueError:
                 logger.debug('Cannot convert precision')
         unit = extras.get('unit')
         if unit is not None:
-            self.unit_signal.emit(str(unit))
+            self.unit_signal.emit(str(unit[0]))
         upper_limit = extras.get('upper_limit')
         if upper_limit is not None:
-            self.send_upper_limit(upper_limit)
+            self.send_upper_limit(upper_limit[0])
         lower_limit = extras.get('lower_limit')
         if lower_limit is not None:
-            self.send_lower_limit(lower_limit)
+            self.send_lower_limit(lower_limit[0])
         enum_string = extras.get('enum_string')
         if enum_string is not None:
-            self.send_enum_string(enum_string)
+            self.send_enum_string(enum_string[0])
+
         type_kwargs = {k: v for k, v in extras.items()
-                       if k not in self._extra_config_keys}
+                       if k not in self._extra_config_keys and k not in self._required_config_keys}
+
         if type_kwargs:
             self.format_type_params(type_kwargs)
 
@@ -206,6 +148,7 @@ class Connection(PyDMConnection):
         Send the values sent trought a specific local
         variable channel to all its listeners.
         """
+
         if value is not None:
             self.new_value_signal[type(value)].emit(value)
 
@@ -321,13 +264,24 @@ class Connection(PyDMConnection):
             dict
 
         """
+
         dtype = type_kwargs.get('dtype')
+
         if dtype is not None:
+            dtype = dtype[0]
             try:
                 self._type_kwargs['dtype'] = np.dtype(dtype)
                 return self._type_kwargs
             except ValueError:
                 logger.debug('Cannot convert dtype')
+        else:
+            dtype = 'object'
+            try:
+                self._type_kwargs['dtype'] = np.dtype(dtype)
+                return self._type_kwargs
+            except ValueError:
+                logger.debug('Cannot convert dtype')
+
         return self._type_kwargs
 
     def send_access_state(self):
@@ -343,7 +297,7 @@ class Connection(PyDMConnection):
 
     def convert_value(self, value, value_type):
         """
-        Convert values to heir appropriate types.
+        Convert values to their appropriate types.
 
         Parameters
         ----------
@@ -357,14 +311,19 @@ class Connection(PyDMConnection):
             The data for this variable converted to its appropriate type
 
         """
+
         _type = self._data_types.get(value_type)
         if _type is not None:
             try:
+                if value_type == "array":
+                    value = value.replace("[", "").replace("]", "").replace(",", " ")
+                    value = shlex.split(value)
                 return _type(value, **self._type_kwargs)
             except ValueError:
                 logger.debug('Cannot convert value_type')
         else:
             return None
+
 
     def send_connection_state(self, conn):
         self.connected = conn
@@ -447,18 +406,22 @@ class LocalPlugin(PyDMPlugin):
     @staticmethod
     def get_connection_id(channel):
         address = PyDMPlugin.get_address(channel)
+        address = "loc://" + address
 
         try:
-            config = json.loads(address)
-            jsonschema.validate(config, LOC_ADDRESS_SCHEMA)
+            config = parse.parse_qs(parse.urlsplit(address).query)
+            name = parse.urlsplit(address).netloc
+
+            if not name and not config:
+                raise
         except:
             try:
-                jsonschema.validate(config, LOC_ADDRESS_MINIMUM_SCHEMA)
-                logger.debug('LocalPlugin connection %s got new listener.',
-                             address)
+                if not name:
+                    raise
+                logger.debug('LocalPlugin connection %s got new listener.', address)
             except:
                 msg = "Invalid configuration for LocalPlugin connection. %s"
                 logger.exception(msg, address)
-                raise ValueError("Name is a required field for calc plugin")
+                raise ValueError("error in local data plugin input")
 
-        return config['name']
+        return name
