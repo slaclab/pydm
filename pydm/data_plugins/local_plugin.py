@@ -2,6 +2,7 @@
 import decimal
 import logging
 from urllib import parse
+import shlex
 import numpy as np
 from qtpy.QtCore import Slot, Qt
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
@@ -54,7 +55,6 @@ class Connection(PyDMConnection):
         try:
             address = PyDMPlugin.get_address(channel)
             address = "loc://" + address
-            print(address, type(address))
 
             self._configuration = parse.parse_qs(parse.urlsplit(address).query)
             name = parse.urlsplit(address).netloc
@@ -72,11 +72,10 @@ class Connection(PyDMConnection):
                 and self._configuration.get('init') is not None):
             self._is_connection_configured = True
             self.address = address
-
             # get the extra info if any
             extras = self._configuration.get('extras')
             if extras:
-                self.parse_channel_extras(extras)
+                self.parse_channel_extras(self._configuration)
 
             # set the object's attributes
             init_value = self._configuration.get('init')[0]
@@ -106,6 +105,7 @@ class Connection(PyDMConnection):
         None.
 
         """
+
         precision = extras.get('precision')
         if precision is not None:
             try:
@@ -140,6 +140,7 @@ class Connection(PyDMConnection):
         Send the values sent trought a specific local
         variable channel to all its listeners.
         """
+
         if value is not None:
             self.new_value_signal[type(value)].emit(value)
 
@@ -255,13 +256,24 @@ class Connection(PyDMConnection):
             dict
 
         """
+
         dtype = type_kwargs.get('dtype')
+
         if dtype is not None:
+            dtype = dtype[0]
             try:
                 self._type_kwargs['dtype'] = np.dtype(dtype)
                 return self._type_kwargs
             except ValueError:
                 logger.debug('Cannot convert dtype')
+        else:
+            dtype = 'object'
+            try:
+                self._type_kwargs['dtype'] = np.dtype(dtype)
+                return self._type_kwargs
+            except ValueError:
+                logger.debug('Cannot convert dtype')
+
         return self._type_kwargs
 
     def send_access_state(self):
@@ -277,7 +289,7 @@ class Connection(PyDMConnection):
 
     def convert_value(self, value, value_type):
         """
-        Convert values to heir appropriate types.
+        Convert values to their appropriate types.
 
         Parameters
         ----------
@@ -291,14 +303,19 @@ class Connection(PyDMConnection):
             The data for this variable converted to its appropriate type
 
         """
+
         _type = self._data_types.get(value_type)
         if _type is not None:
             try:
+                if value_type == "array":
+                    value = value.replace("[", "").replace("]", "").replace(",", " ")
+                    value = shlex.split(value)
                 return _type(value, **self._type_kwargs)
             except ValueError:
                 logger.debug('Cannot convert value_type')
         else:
             return None
+
 
     def send_connection_state(self, conn):
         self.connected = conn
@@ -362,6 +379,8 @@ class Connection(PyDMConnection):
         the other listeners to this channel
         """
         if new_value is not None:
+
+            print(new_value, "hen")
             # update the attributes here with the new values
             self.value = new_value
             # send this value
