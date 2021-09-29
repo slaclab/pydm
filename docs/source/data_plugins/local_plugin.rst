@@ -76,19 +76,20 @@ The table below explains the optional attributes that can go in the *extras*:
 =============== =================================== ============ =================================
 Attributes      Description                         Type         Format Example
 =============== =================================== ============ =================================
-**precision**   precision of float values           int          `"precision":3`
-**unit**        units for the data                  string       `"unit:"V"`
-**upper_limit** upper control value limit           float or int `"upper_limit":100`
-**lower_limit** lower control value limit           float or int `"lower_limit":-100`
-**enum_string** new list of values                  tuple        `"enum_string":['hey', 'hello']`
+**extras**      flag                                bool         `extras=True`
+**precision**   precision of float values           int          `precision=3`
+**unit**        units for the data                  string       `unit=V`
+**upper_limit** upper control value limit           float or int `upper_limit=100`
+**lower_limit** lower control value limit           float or int `lower_limit=-100`
+**enum_string** new list of values                  tuple        `enum_string"=['hey', 'hello']`
 =============== =================================== ============ =================================
 
-.. note:: The "extras" Attributes are all optional, any number of desired attributes can be specified, or none.
+.. note:: The "extras" attribute will need to be included and set to True for the program to evaluated any additional attributes. All the additional attributes are optional, any number of desired attributes can be specified, or none.
 
 Here is a simple example of a channel address format with some optional attributes:
 ::
 	
-	loc://my.float?type=float&init=1&extras={"precision":3, "unit":"V"}
+	loc://my.float?type=float&init=1&extras=True&precision=3&unit=V
 
 -------------
 
@@ -117,28 +118,29 @@ The following option must be specified in the "type" value in the channel addres
 
 * `type=array`
 
-The following extra attributes can be specified in the "extras" dictionary in the channel address. These attributes will be passed in the `numpy.array` function as parameters when creating the `numpy.ndarray`. If no attributes are specified, the `numpy.array` function will use the default values to create a `numpy.ndarray`.
-
+The following extra attributes can be specified. These attributes will be passed in the `numpy.array` function as parameters when creating the `numpy.ndarray`. If no attributes are specified, the `numpy.array` function will use the default values to create a `numpy.ndarray`.
+The "extras" attribute will need to be included and set to True for the program to evaluated the extra attributes.
 
 * Extra Attributes for numpy.array:
 
 =============== =================================== ============= =============================
 Attributes      Description                         Type          Format Example
 =============== =================================== ============= =============================
-**dtype**       desired data-type for the array     np.dtype      | `"dtype":"float64"`
-                                                                  | `"dtype":"uint8"`
-**copy**        if *True* then the object is copied bool          `"copy":true` (*default*)
-**order**       memory layout of the array          string        | `"order":"K"` (*default*)
+**extras**      flag                                bool          `"extras=True`
+**dtype**       desired data-type for the array     np.dtype      | `dtype=float64`
+                                                                  | `dtype=uint8`
+**copy**        if *True* then the object is copied bool          `copy=true` (*default*)
+**order**       memory layout of the array          string        | `order=K` (*default*)
                                                                   | others {'A', 'C', 'F'}
-**subok**       | if *True* then sub-classes        bool          `"subok":false` (*default*)
+**subok**       | if *True* then sub-classes        bool          `subok=false` (*default*)
                 | will be passed-through               
-**ndmin**       minimum number of dimensions        int           `"ndmin":0` (*default*)
+**ndmin**       minimum number of dimensions        int           `ndmin=0` (*default*)
 =============== =================================== ============= =============================
 
 Here is a simple example with array + extras:
 ::
 
-	 loc://my_ndarray?type=array&init=[1,2,3,4]&extras={"dtype":"float64", "copy":false, "order":"C", "ndmin":0, "subok":true}
+	 loc://my_ndarray?type=array&init=[1,2,3,2]&extras=True&dtype=float64&copy=False&order=C&ndmin=0&subok=true
 
 
 ------------
@@ -150,9 +152,9 @@ Simple Local Data Plugin Example
 
 The picture below represents a simple example using the Local Data Plugin, where a Waveform Curve Editor has two local data plugin channels::
 
-	loc://y?type=array&init=[1,2,3,4,5,6]&extras={"dtype":"float64"}
+	loc://y?type=array&init=[1,2,3,4,5,6]&extras=True&dtype=float64
 
-	loc://x?type=array&init=[1,2,3,4,5,6]&extras={"dtype":"float64"}
+	loc://x?type=array&init=[1,2,3,4,5,6]&extras=True&dtype=float64
 
 Right below the Waveform Curve Editor widget, there are two other widgets connected to the 'x' and 'y' local variable respectively::
 
