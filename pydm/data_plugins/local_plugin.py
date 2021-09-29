@@ -2,7 +2,6 @@
 import decimal
 import logging
 from urllib import parse
-from ast import literal_eval
 import shlex
 import numpy as np
 from qtpy.QtCore import Slot, Qt
@@ -116,22 +115,22 @@ class Connection(PyDMConnection):
         precision = extras.get('precision')
         if precision is not None:
             try:
-                self._precision_set = int(precision)
+                self._precision_set = int(precision[0])
                 self.prec_signal.emit(self._precision_set)
             except ValueError:
                 logger.debug('Cannot convert precision')
         unit = extras.get('unit')
         if unit is not None:
-            self.unit_signal.emit(str(unit))
+            self.unit_signal.emit(str(unit[0]))
         upper_limit = extras.get('upper_limit')
         if upper_limit is not None:
-            self.send_upper_limit(upper_limit)
+            self.send_upper_limit(upper_limit[0])
         lower_limit = extras.get('lower_limit')
         if lower_limit is not None:
-            self.send_lower_limit(lower_limit)
+            self.send_lower_limit(lower_limit[0])
         enum_string = extras.get('enum_string')
         if enum_string is not None:
-            self.send_enum_string(enum_string)
+            self.send_enum_string(enum_string[0])
 
         type_kwargs = {k: v for k, v in extras.items()
                        if k not in self._extra_config_keys and k not in self._required_config_keys}
