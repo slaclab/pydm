@@ -2,6 +2,7 @@
 import decimal
 import logging
 from urllib import parse
+from ast import literal_eval
 import shlex
 import numpy as np
 from qtpy.QtCore import Slot, Qt
@@ -15,6 +16,12 @@ class Connection(PyDMConnection):
         self._value_type = None
         self._precision_set = None
         self._type_kwargs = {}
+
+        self._required_config_keys = [
+            'name',
+            'type',
+            'init'
+        ]
 
         self._extra_config_keys = [
             "precision",
@@ -72,15 +79,15 @@ class Connection(PyDMConnection):
                 and self._configuration.get('init') is not None):
             self._is_connection_configured = True
             self.address = address
-            # get the extra info if any
-            extras = self._configuration.get('extras')
-            if extras:
-                self.parse_channel_extras(self._configuration)
 
             # set the object's attributes
             init_value = self._configuration.get('init')[0]
             self._value_type = self._configuration.get('type')[0]
             self.name = self._configuration.get('name')
+
+            # get the extra info if any
+            self.parse_channel_extras(self._configuration)
+
             # send initial values
             self.value = self.convert_value(init_value, self._value_type)
             self.connected = True
@@ -125,8 +132,10 @@ class Connection(PyDMConnection):
         enum_string = extras.get('enum_string')
         if enum_string is not None:
             self.send_enum_string(enum_string)
+
         type_kwargs = {k: v for k, v in extras.items()
-                       if k not in self._extra_config_keys}
+                       if k not in self._extra_config_keys and k not in self._required_config_keys}
+
         if type_kwargs:
             self.format_type_params(type_kwargs)
 
@@ -379,8 +388,6 @@ class Connection(PyDMConnection):
         the other listeners to this channel
         """
         if new_value is not None:
-
-            print(new_value, "hen")
             # update the attributes here with the new values
             self.value = new_value
             # send this value

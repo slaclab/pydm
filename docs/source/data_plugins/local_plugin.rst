@@ -63,7 +63,7 @@ Here is a simple example of a channel address format with the required attribute
 Extra Attributes
 ----------------
 
-Along with the :ref:`required attributes<Required Attributes>`, the Local Data Plugin can also accept some optional attributes to configure the Local Variables with. These attributes should be provided in the `"extras"` dictionary. 
+Along with the :ref:`required attributes<Required Attributes>`, the Local Data Plugin can also accept some optional attributes to configure the Local Variables with.
 The optional attributes are described in the :ref:`extra attributes<extra attributes table>` table below: 
 
 
@@ -76,7 +76,6 @@ The table below explains the optional attributes that can go in the *extras*:
 =============== =================================== ============ =================================
 Attributes      Description                         Type         Format Example
 =============== =================================== ============ =================================
-**extras**      flag                                bool         `extras=True`
 **precision**   precision of float values           int          `precision=3`
 **unit**        units for the data                  string       `unit=V`
 **upper_limit** upper control value limit           float or int `upper_limit=100`
@@ -84,7 +83,7 @@ Attributes      Description                         Type         Format Example
 **enum_string** new list of values                  tuple        `enum_string"=['hey', 'hello']`
 =============== =================================== ============ =================================
 
-.. note:: The "extras" attribute will need to be included and set to True for the program to evaluated any additional attributes. All the additional attributes are optional, any number of desired attributes can be specified, or none.
+.. note:: All the additional attributes are optional, any number of desired attributes can be specified, or none.
 
 Here is a simple example of a channel address format with some optional attributes:
 ::
@@ -119,14 +118,12 @@ The following option must be specified in the "type" value in the channel addres
 * `type=array`
 
 The following extra attributes can be specified. These attributes will be passed in the `numpy.array` function as parameters when creating the `numpy.ndarray`. If no attributes are specified, the `numpy.array` function will use the default values to create a `numpy.ndarray`.
-The "extras" attribute will need to be included and set to True for the program to evaluated the extra attributes.
 
 * Extra Attributes for numpy.array:
 
 =============== =================================== ============= =============================
 Attributes      Description                         Type          Format Example
 =============== =================================== ============= =============================
-**extras**      flag                                bool          `"extras=True`
 **dtype**       desired data-type for the array     np.dtype      | `dtype=float64`
                                                                   | `dtype=uint8`
 **copy**        if *True* then the object is copied bool          `copy=true` (*default*)
