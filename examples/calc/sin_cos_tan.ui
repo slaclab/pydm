@@ -57,7 +57,7 @@
      </property>
      <property name="curves">
       <stringlist>
-       <string>{&quot;y_channel&quot;: &quot;calc://{\&quot;name\&quot;:\&quot;circley\&quot;, \&quot;channels\&quot;:{\&quot;angle\&quot;:\&quot;ca://DEMO:ANGLE\&quot;}, \&quot;expr\&quot;:\&quot;math.sin(math.radians(180-angle))\&quot;}&quot;, &quot;x_channel&quot;: &quot;calc://{\&quot;name\&quot;:\&quot;circleX\&quot;, \&quot;channels\&quot;:{\&quot;angle\&quot;:\&quot;ca://DEMO:ANGLE\&quot;}, \&quot;expr\&quot;:\&quot;-1*math.cos(math.radians(180-angle))\&quot;}&quot;, &quot;name&quot;: &quot;Angle&quot;, &quot;color&quot;: &quot;#ffd509&quot;, &quot;lineStyle&quot;: 0, &quot;lineWidth&quot;: 5, &quot;symbol&quot;: &quot;o&quot;, &quot;symbolSize&quot;: 5, &quot;redraw_mode&quot;: 3, &quot;buffer_size&quot;: 1}</string>
+       <string>{&quot;y_channel&quot;: &quot;calc://circley?angle=ca://DEMO:ANGLE&amp;expr=math.sin(math.radians(180-angle))&quot;, &quot;x_channel&quot;: &quot;calc://circleX?angle=ca://DEMO:ANGLE&amp;expr=-1*math.cos(math.radians(180-angle))&quot;, &quot;name&quot;: &quot;Angle&quot;, &quot;color&quot;: &quot;#ffd509&quot;, &quot;lineStyle&quot;: 0, &quot;lineWidth&quot;: 5, &quot;symbol&quot;: &quot;o&quot;, &quot;symbolSize&quot;: 5, &quot;redraw_mode&quot;: 3, &quot;buffer_size&quot;: 1}</string>
       </stringlist>
      </property>
      <property name="autoRangeX">
@@ -157,7 +157,7 @@
      </property>
      <property name="curves">
       <stringlist>
-       <string>{&quot;channel&quot;: &quot;calc://{\&quot;name\&quot;:\&quot;tanval\&quot;, \&quot;channels\&quot;:{\&quot;angle\&quot;:\&quot;ca://DEMO:ANGLE\&quot;}, \&quot;expr\&quot;:\&quot;tan(radians(angle)) if angle not in [90, 270] else None\&quot;}&quot;, &quot;name&quot;: &quot;Calc Tan&quot;, &quot;color&quot;: &quot;#fc0006&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: &quot;o&quot;, &quot;symbolSize&quot;: 3}</string>
+       <string>{&quot;channel&quot;: &quot;calc://tanval?angle=ca://DEMO:ANGLE&amp;expr=tan(radians(angle)) if angle not in [90, 270] else None&quot;, &quot;name&quot;: &quot;Calc Tan&quot;, &quot;color&quot;: &quot;#fc0006&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: &quot;o&quot;, &quot;symbolSize&quot;: 3}</string>
       </stringlist>
      </property>
      <property name="bufferSize">
