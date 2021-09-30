@@ -1,13 +1,12 @@
 import collections
 import functools
-import json
-import jsonschema
 import logging
 import math
 import threading
 import warnings
 
 import numpy as np
+from urllib import parse
 from qtpy.QtCore import Slot, QThread, Signal, Qt
 from qtpy.QtWidgets import QApplication
 
@@ -15,36 +14,6 @@ import pydm
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
 logger = logging.getLogger(__name__)
-
-CALC_ADDRESS_SCHEMA = json.loads("""{
-    "definitions": {
-        "channel": {
-            "type": "object",
-            "additionalProperties": {"type": "string"}
-        }
-    },
-    "type": "object",
-    "properties": {
-        "name": {"type": "string"},
-        "expr": {"type": "string"},
-        "channels": {"$ref": "#/definitions/channel"},
-        "update": {"type": "array"}
-    },
-    "required": ["name", "expr", "channels"]
-}
-""")
-
-CALC_ADDRESS_MINIMUM_SCHEMA = json.loads("""
-{
-    "type": "object",
-    "properties": {
-        "name": {"type": "string"}
-    },
-    "required": ["name"],
-    "additionalProperties": false
-}
-""")
-
 
 def epics_string(value, string_encoding="utf-8"):
     # Stop at the first zero (EPICS convention)
@@ -80,13 +49,18 @@ class CalcThread(QThread):
         self._value = None
         self._values = collections.defaultdict(None)
         self._connections = collections.defaultdict(lambda: False)
-        self._expression = self.config.get('expr', '')
+        self._expression = self.config.get('expr', '')[0]
 
-        channels = self.config.get('channels', {})
+        channels = {}
+        for key, channel in self.config.items():
+            if key != 'update' and key != 'expr' and key != 'name':
+                channels[key] = channel[0]
+
         update = self.config.get('update', None)
 
         if update is not None:
-            self.listen_for_update = update
+            #migth need for loop here
+            self.listen_for_update = update[0].replace("[", "").replace("]", "").split(',')
 
         for name, channel in channels.items():
             conn_cb = functools.partial(self.callback_conn, name)
@@ -144,6 +118,7 @@ class CalcThread(QThread):
                 "Calculation '%s': Not all channels are connected, skipping execution.",
                 self.objectName())
             return
+
         if self.listen_for_update is None or name in self.listen_for_update:
             self._calculate.set()
         else:
@@ -221,17 +196,17 @@ class Connection(PyDMConnection):
 
         try:
             address = PyDMPlugin.get_address(channel)
-            config = json.loads(address)
-            jsonschema.validate(config, CALC_ADDRESS_SCHEMA)
+            address = "calc://" + address
+            config = parse.parse_qs(parse.urlsplit(address).query)
+            name = parse.urlsplit(address).netloc
         except:
             logger.debug('CalcPlugin connection waiting for configuration. %s',
                          address)
             return
 
         self._configuration = config
+        self._configuration['name'] = name
         self._waiting_config = False
-
-        name = self._configuration.get('name')
 
         self._calc_thread = CalcThread(self._configuration)
         self._calc_thread.setObjectName("calc_{}".format(name))
@@ -269,17 +244,21 @@ class CalculationPlugin(PyDMPlugin):
     @staticmethod
     def get_connection_id(channel):
         address = PyDMPlugin.get_address(channel)
+        address = "calc://" + address
 
         try:
-            config = json.loads(address)
-            jsonschema.validate(config, CALC_ADDRESS_SCHEMA)
+            config = parse.parse_qs(parse.urlsplit(address).query)
+            name = parse.urlsplit(address).netloc
+
+            if not name and not config:
+                raise
         except:
             try:
-                jsonschema.validate(config, CALC_ADDRESS_MINIMUM_SCHEMA)
+                if not name:
+                    raise
             except:
                 msg = "Invalid configuration for CalcPlugin connection. %s"
                 logger.exception(msg, address)
                 raise ValueError("Name is a required field for calc plugin")
 
-        name = config['name']
         return name
