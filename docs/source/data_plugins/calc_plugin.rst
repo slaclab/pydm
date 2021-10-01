@@ -12,22 +12,22 @@ For example, if the user has added a calc channel to a PyDMLabel, then the PyDML
 
 General Calc Plugin channel syntax::
 
-	calc://my_variable_name?expr_var_name=channel://address&expr_var_name_two=channel://address&expr=math expression
+    calc://my_variable_name?expr_var_name=channel://address&expr_var_name_two=channel://address&expr=math expression
 
 .. note:: Once a calc channel is created, multiple widgets can be connected to the same channel by providing the name of the variable, like so:
-	::
+    ::
 
-		calc://my_variable_name
+        calc://my_variable_name
 
 .. note:: The calc functions uses url formatting. Where the name attribute is separated by the ? symbol and all other attributes are separated by the & symbol.
-	::
-
+    ::
 
 -------------
 
 
 Required Attributes
 -------------------
+
 
 In order to be able to properly create a calc channel, all the :ref:`required attributes<required attributes table>` must be provided in the channel's address.
 
@@ -52,7 +52,7 @@ Attributes  Description                                        Format Example
 Here is a simple example of a channel address format with the required attributes:
 ::
 
-	"calc://circ?var=ca://DEMO:ANGLE&expr=math.sin(math.radians(var))"
+    "calc://circ?var=ca://DEMO:ANGLE&expr=math.sin(math.radians(var))"
 
 ------------
 
@@ -70,21 +70,23 @@ The optional attributes are described in the :ref:`extra attributes<extra attrib
 
 The table below explains the optional attributes that can go in the *extras*:
 
-=============== =================================== ============ =================================
+=========== ================================================== ========================
 Attributes      Description                         Type         Format Example
-=============== =================================== ============ =================================
+=========== ================================================== ========================
 **update**  | The calc function will update when one of the    `update=[var, var_two]`
-            | variables in the update list receives a new value
-            | optional. If nothing is given, the calc function
-            | will run anytime one of the variables updates
-=============== =================================== ============ =================================
+            | variables in the update list receives a new
+            | value optional. If nothing is given, the calc
+            | function will run anytime one of the variables
+            | updates.
+=========== ================================================== ========================
+
 
 .. note:: The "extras" Attributes are all optional, any number of desired attributes can be specified, or none.
 
 Here is a simple example of a channel address format with some optional attributes:
 ::
 
-	calc://circ?var=ca://DEMO:ANGLE&var_two=loc://int_var&expr=var_two*var&update=[var_two]
+    calc://circ?var=ca://DEMO:ANGLE&var_two=loc://int_var&expr=var_two*var&update=[var_two]
 
 -------------
 
@@ -106,8 +108,8 @@ Calc address given in the channels of the Wavefrom Curve Editor of a PYDMWavefro
 *Values for TAN*
 
 .. image:: ../_static/data_plugins/calc_example.gif
-   :width: 600 pt
-   :align: center
+    :width: 600 pt
+    :align: center
 
 ---------------
 
