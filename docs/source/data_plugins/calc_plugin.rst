@@ -52,7 +52,7 @@ Attributes  Description                                        Format Example
 Here is a simple example of a channel address format with the required attributes:
 ::
 
-    "calc://circ?var=ca://DEMO:ANGLE&expr=math.sin(math.radians(var))"
+    calc://circ?var=ca://DEMO:ANGLE&expr=math.sin(math.radians(var))
 
 ------------
 
@@ -118,3 +118,4 @@ Miscellaneous
 
 * See https://docs.python.org/3/library/math.html for mathematical operations which can be used in the given expression.
 * NumPy is a valid library for the mathematical expression
+* Already established local variables can be used in a calc variable attribute, but it is not possible to create a local plugin variable inside a calc variable attribute.
