@@ -102,11 +102,6 @@ Calc address given in the channels of the Wavefrom Curve Editor of a PYDMWavefro
 
     calc://tanval?angle=ca://DEMO:ANGLE&expr=tan(radians(angle)) if angle not in [90, 270] else None
 
-Right below the Waveform Curve Editor widget, there are two other widgets connected to the 'x' and 'y' local variable respectively::
-
-	Solution: "calc://circ
-
-Data can be updated in the two X and Y-values widgets and the Waveform Curve Editor will receive the new data and change the curve accordingly, like seen in the picture below:
 
 *Values for TAN*
 
