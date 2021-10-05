@@ -1,5 +1,5 @@
 from qtpy import QtGui
-from pyqtgraph import Point, ROI
+from pydm.pydm_pyqtgraph.pyqtgraph import Point, ROI
 
 
 class ImageMarker(ROI):

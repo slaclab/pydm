@@ -1,5 +1,5 @@
 import pytest
-from pyqtgraph import AxisItem
+from ...pydm_pyqtgraph.pyqtgraph import AxisItem
 from ...widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem, MINIMUM_BUFFER_SIZE, DEFAULT_BUFFER_SIZE
 
 import logging

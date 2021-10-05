@@ -3,7 +3,7 @@ import threading
 from os import path
 from skimage.feature import blob_doh
 from marker import ImageMarker
-from pyqtgraph import mkPen, PlotItem
+from pydm.pydm_pyqtgraph.pyqtgraph import mkPen, PlotItem
 
 
 class ImageViewer(Display):

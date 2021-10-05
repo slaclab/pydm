@@ -1,8 +1,7 @@
 from qtpy.QtWidgets import QActionGroup
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QThread
-from pyqtgraph import ImageView, PlotItem
-from pyqtgraph import ColorMap
-from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
+from ..pydm_pyqtgraph.pyqtgraph import ColorMap, ImageView, PlotItem
+from ..pydm_pyqtgraph.pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
 import numpy as np
 import threading
 import logging

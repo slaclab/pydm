@@ -27,7 +27,6 @@ requirements:
     - pyepics
     - requests
     - pyqt >=5
-    - pyqtgraph
     - qtpy
 
 test:

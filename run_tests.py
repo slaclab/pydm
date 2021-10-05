@@ -5,7 +5,8 @@ import pytest
 if __name__ == '__main__':
     # Show output results from every test function
     # Show the message output for skipped and expected failures
-    args = ['-v', '-vrxs']
+    # Ignore the pyqtgraph test suite by default, can be run separately if working on pyqtgraph code
+    args = ['-v', '-vrxs', '--ignore=pydm/pydm_pyqtgraph/']
 
     # Add extra arguments
     if len(sys.argv) > 1:

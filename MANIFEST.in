@@ -5,6 +5,8 @@ include pydm/utilities/fontawesome*
 include pydm/about_pydm/contributors.txt
 include pydm/default_stylesheet.qss
 include pydm/widgets/icons/*
+include pydm/pydm_pyqtgraph/pyqtgraph/icons/*.png
+include pydm/pydm_pyqtgraph/pyqtgraph/icons/*.svg
 include requirements.txt
 include dev-requirements.txt
 include README.md

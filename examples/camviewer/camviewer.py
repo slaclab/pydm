@@ -6,12 +6,12 @@ from qtpy.QtGui import QPen
 from qtpy.QtWidgets import QSizePolicy
 from os import path
 from pydm import Display
+from pydm.pydm_pyqtgraph.pyqtgraph import PlotWidget, mkPen
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.base import widget_destroyed
 from pydm.widgets.colormaps import cmap_names
 from pydm.utilities import establish_widget_connections, close_widget_connections
 import numpy as np
-from pyqtgraph import PlotWidget, mkPen
 from marker import ImageMarker
 import time
 

@@ -3,7 +3,7 @@ from qtpy.QtGui import QColor, QBrush
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QRect
 from qtpy.QtWidgets import QToolTip
 from .. import utilities
-from pyqtgraph import PlotWidget, PlotDataItem, mkPen, ViewBox, InfiniteLine, SignalProxy, CurvePoint, TextItem
+from ..pydm_pyqtgraph.pyqtgraph import PlotWidget, PlotDataItem, mkPen, ViewBox, InfiniteLine, SignalProxy, CurvePoint, TextItem
 from collections import OrderedDict
 from .base import PyDMPrimitiveWidget, widget_destroyed
 

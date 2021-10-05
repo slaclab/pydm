@@ -3,7 +3,7 @@ from qtpy.QtWidgets import QWidget, QApplication, QTableWidgetItem
 from qtpy.QtCore import Qt, PYQT_VERSION_STR, qVersion
 from .about_ui import Ui_Form
 from numpy import __version__ as numpyver
-from pyqtgraph import __version__ as pyqtgraphver
+from ..pydm_pyqtgraph.pyqtgraph import __version__ as pyqtgraphver
 import pydm
 import sys
 from os import path

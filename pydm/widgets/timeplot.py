@@ -1,13 +1,13 @@
 import time
 import json
 from collections import OrderedDict
-from pyqtgraph import ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Signal, Slot, Property, QTimer
 from qtpy.QtWidgets import QAction
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
+from ..pydm_pyqtgraph.pyqtgraph import ViewBox, AxisItem
 from .. utilities import remove_protocol
 
 import logging

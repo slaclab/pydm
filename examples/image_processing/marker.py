@@ -1,6 +1,6 @@
 from qtpy import QtCore, QtGui
-from pyqtgraph import Point, ROI
-from pyqtgraph import functions as fn
+from pydm.pydm_pyqtgraph.pyqtgraph import Point, ROI
+from pydm.pydm_pyqtgraph.pyqtgraph import functions as fn
 import numpy as np
 
 class ImageMarker(ROI):

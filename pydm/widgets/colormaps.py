@@ -14,7 +14,7 @@
 # work.  If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 from distutils.version import LooseVersion
-import pyqtgraph
+import pydm.pydm_pyqtgraph.pyqtgraph as pyqtgraph
 __all__ = ['magma', 'inferno', 'plasma', 'viridis', 'jet', 'monochrome', 'hot']
 
 _magma_data = [[0.001462, 0.000466, 0.013866],
