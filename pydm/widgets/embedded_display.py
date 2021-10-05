@@ -30,7 +30,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         if 'Filename' not in PyDMEmbeddedDisplay.RULE_PROPERTIES:
             PyDMEmbeddedDisplay.RULE_PROPERTIES = PyDMPrimitiveWidget.RULE_PROPERTIES.copy()
             PyDMEmbeddedDisplay.RULE_PROPERTIES.update(
-                {'Filename': ['value_changed', str]})
+                {'Filename': ['filename', str]})
         self.app = QApplication.instance()
         self._filename = None
         self._macros = None
