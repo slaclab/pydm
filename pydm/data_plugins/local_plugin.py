@@ -95,7 +95,7 @@ class Connection(PyDMConnection):
 
     def parse_channel_extras(self, extras):
         """
-        Parse the extras dictionay and either pass the data
+        Parse the extras dictionary and either pass the data
         to the appropriate methods that will take care of it,
         or emit it right away.
 
