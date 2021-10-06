@@ -68,7 +68,7 @@ class Connection(PyDMConnection):
 
             if not name and not config:
                 raise
-        except:
+        except Exception:
             logger.debug(
                 'Invalid configuration for LocalPlugin connection. %s',
                 address)
