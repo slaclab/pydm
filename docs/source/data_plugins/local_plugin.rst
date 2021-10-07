@@ -163,7 +163,7 @@ Data can be updated in the two X and Y-values widgets and the Waveform Curve Edi
 
 
 
-*Waveform Curve Example with ndarrays fro X and Y values*
+*Waveform Curve Example with ndarrays for X and Y values*
 
 .. image:: ../_static/data_plugins/waveform_curve_local_plugin.png
    :width: 600 pt
