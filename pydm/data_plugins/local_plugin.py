@@ -382,7 +382,7 @@ class Connection(PyDMConnection):
     @Slot(np.ndarray)
     def put_value(self, new_value):
         """
-        Slot connected to the channal.value_signal.
+        Slot connected to the channel.value_signal.
         Updates the value of this local variable and then broadcasts it to
         the other listeners to this channel
         """
