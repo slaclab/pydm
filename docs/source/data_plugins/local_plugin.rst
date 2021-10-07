@@ -80,7 +80,7 @@ Attributes      Description                         Type         Format Example
 **unit**        units for the data                  string       `unit=V`
 **upper_limit** upper control value limit           float or int `upper_limit=100`
 **lower_limit** lower control value limit           float or int `lower_limit=-100`
-**enum_string** new list of values                  tuple        `enum_string"=['hey', 'hello']`
+**enum_string** new list of values                  tuple        `enum_string=['hey', 'hello']`
 =============== =================================== ============ =================================
 
 .. note:: All the additional attributes are optional, any number of desired attributes can be specified, or none.
