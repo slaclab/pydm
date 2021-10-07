@@ -118,7 +118,7 @@ class Connection(PyDMConnection):
                 self._precision_set = int(precision[0])
                 self.prec_signal.emit(self._precision_set)
             except ValueError:
-                logger.debug('Cannot convert precision')
+                logger.debug('Cannot convert precision value=%r', precision)
         unit = extras.get('unit')
         if unit is not None:
             self.unit_signal.emit(str(unit[0]))
