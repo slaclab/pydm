@@ -273,7 +273,7 @@ class Connection(PyDMConnection):
                 self._type_kwargs['dtype'] = np.dtype(dtype)
                 return self._type_kwargs
             except ValueError:
-                logger.debug('Cannot convert dtype')
+                logger.debug('Cannot convert dtype value=%r', dtype)
         else:
             dtype = 'object'
             try:
