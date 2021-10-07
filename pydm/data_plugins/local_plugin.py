@@ -216,7 +216,7 @@ class Connection(PyDMConnection):
 
         Parameters
         ----------
-        lower_limit : int or float
+        lower_limit : int, float, or str
 
         Returns
         -------
