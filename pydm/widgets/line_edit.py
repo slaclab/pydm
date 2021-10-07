@@ -119,7 +119,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                     self.send_value_signal[bool].emit(val)
                     # might want to add error to application screen
                 except ValueError:
-                    print("not a valid boolean.")
+                    logger.error("Not a valid boolean: %r", send_value)
             else:
                 # Channel Type is String
                 # Lets just send what we have after all
