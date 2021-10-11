@@ -239,7 +239,7 @@ class Connection(PyDMConnection):
         """
         if enum_string is not None:
             try:
-                self._enum_string = tuple(enum_string)
+                self._enum_string = tuple(ast.literal_eval(enum_string))
                 self.enum_strings_signal.emit(self._enum_string)
             except ValueError:
                 logger.debug("Error when converting enum_string")
