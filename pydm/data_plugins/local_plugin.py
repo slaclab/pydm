@@ -162,8 +162,7 @@ class Connection(PyDMConnection):
 
         """
         if value is not None:
-            dec = decimal.Decimal(str(value))
-            self._precision = len(str(dec).split('.')[1])
+            self._precision = self.precision_for_value(value)
             self.prec_signal.emit(self._precision)
 
     def send_unit(self, unit):
@@ -389,6 +388,12 @@ class Connection(PyDMConnection):
                     self.send_precision(new_value)
                 else:
                     self.prec_signal.emit(self._precision_set)
+
+    @staticmethod
+    def precision_for_value(value, max_precision=8):
+        dec = decimal.Decimal(str(value))
+        solution = min((len(str(dec).split('.')[1]), max_precision))
+        return solution
 
 
 class LocalPlugin(PyDMPlugin):
