@@ -15,6 +15,7 @@ from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
 logger = logging.getLogger(__name__)
 
+
 def epics_string(value, string_encoding="utf-8"):
     # Stop at the first zero (EPICS convention)
     # Assume the ndarray is one-dimensional
@@ -59,7 +60,6 @@ class CalcThread(QThread):
         update = self.config.get('update', None)
 
         if update is not None:
-            #migth need for loop here
             self.listen_for_update = update[0].replace("[", "").replace("]", "").split(',')
 
         for name, channel in channels.items():
@@ -123,7 +123,6 @@ class CalcThread(QThread):
             self._calculate.set()
         else:
             return
-
 
     def callback_conn(self, name, value):
         """
@@ -195,21 +194,17 @@ class Connection(PyDMConnection):
             return
 
         try:
-            address = PyDMPlugin.get_address(channel)
-            address = "calc://" + address
-            config = parse.parse_qs(parse.urlsplit(address).query)
-            name = parse.urlsplit(address).netloc
-        except:
-            logger.debug('CalcPlugin connection waiting for configuration. %s',
-                         address)
+            url_data = UrlToPython(channel).get_info()
+        except ValueError("Not enough information"):
+            logger.debug('Invalid configuration for Calc Plugin connection', exc_info=True)
             return
 
-        self._configuration = config
-        self._configuration['name'] = name
+        self._configuration['name'] = url_data[1]
+        self._configuration = url_data[0]
         self._waiting_config = False
 
         self._calc_thread = CalcThread(self._configuration)
-        self._calc_thread.setObjectName("calc_{}".format(name))
+        self._calc_thread.setObjectName("calc_{}".format(url_data[1]))
         self._calc_thread.new_data_signal.connect(self.receive_new_data,
                                                   Qt.QueuedConnection)
         self._calc_thread.start()
@@ -243,22 +238,46 @@ class CalculationPlugin(PyDMPlugin):
 
     @staticmethod
     def get_connection_id(channel):
-        address = PyDMPlugin.get_address(channel)
+        obj = UrlToPython(channel)
+        name = obj.get_info()[1]
+        return name
+
+
+class UrlToPython:
+    def __init__(self, channel):
+        self.channel = channel
+
+    def get_info(self):
+        """
+        Parses a given url into a list and a string.
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        A tuple: (<list>, <str>)
+        """
+        address = PyDMPlugin.get_address(self.channel)
         address = "calc://" + address
+        name = None
+        config = None
 
         try:
             config = parse.parse_qs(parse.urlsplit(address).query)
             name = parse.urlsplit(address).netloc
 
-            if not name and not config:
+            if not name or not config:
                 raise
-        except:
+        except Exception:
             try:
                 if not name:
                     raise
-            except:
-                msg = "Invalid configuration for CalcPlugin connection. %s"
-                logger.exception(msg, address)
-                raise ValueError("Name is a required field for calc plugin")
+                logger.debug('Calc Plugin  connection %s got new listener.', address)
+                return None, name, address
+            except Exeption:
+                msg = "Invalid configuration for Calc Plugin  connection. %s"
+                logger.exception(msg, address, exc_info=True)
+                raise ValueError("error in Calc Plugin plugin input")
 
-        return name
+        return config, name, address
