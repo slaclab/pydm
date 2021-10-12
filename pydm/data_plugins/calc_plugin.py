@@ -200,7 +200,7 @@ class Connection(PyDMConnection):
             return
 
         self._configuration['name'] = url_data[1]
-        self._configuration = url_data[0]
+        self._configuration.update(url_data[0])
         self._waiting_config = False
 
         self._calc_thread = CalcThread(self._configuration)
