@@ -67,7 +67,7 @@ class Connection(PyDMConnection):
         address = url_data[2]
 
         if url_data[0] is not None:
-            self._configuration = url_data[0]
+            self._configuration.update(url_data[0])
             self.address = address
 
             # set the object's attributes
