@@ -516,19 +516,47 @@ class PyDMDrawingLine(PyDMDrawing):
 
     @Property(bool)
     def arrowEndPoint(self):
+        """
+        If True, an arrow will be drawn at the end of the line.
+
+        Returns
+        -------
+        bool
+        """
         return self._arrow_end_point_selection
 
     @arrowEndPoint.setter
     def arrowEndPoint(self, new_selection):
+        """
+        If True, an arrow will be drawn at the end of the line.
+
+        Parameters
+        -------
+        new_selection : bool
+        """
         if self._arrow_end_point_selection != new_selection:
             self._arrow_end_point_selection = new_selection
 
     @Property(bool)
     def arrowStartPoint(self):
+        """
+        If True, an arrow will be drawn at the start of the line.
+
+        Returns
+        -------
+        bool
+        """
         return self._arrow_start_point_selection
 
     @arrowStartPoint.setter
     def arrowStartPoint(self, new_selection):
+        """
+        If True, an arrow will be drawn at the start of the line.
+
+        Parameters
+        -------
+        new_selection : bool
+        """
         if self._arrow_start_point_selection != new_selection:
             self._arrow_start_point_selection = new_selection
 
