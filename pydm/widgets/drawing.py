@@ -488,10 +488,10 @@ class PyDMDrawingLine(PyDMDrawing):
         right_x = endpoint.x() + height * norm_x - width * perp_x
         right_y = endpoint.y() + height * norm_y - width * perp_y
 
-        left = QPoint(left_x, left_y)
-        right = QPoint(right_x, right_y)
+        left = QPointF(left_x, left_y)
+        right = QPointF(right_x, right_y)
 
-        return QPolygon([left, endpoint, right])
+        return QPolygonF([left, endpoint, right])
 
     def draw_item(self, painter):
         """
@@ -505,7 +505,6 @@ class PyDMDrawingLine(PyDMDrawing):
         end_point = QPointF(x + w, 0)
 
         painter.drawLine(start_point, end_point)
-
         if self._arrow_end_point_selection:
             points = self._arrow_points(start_point, end_point, 6, 6)
             painter.drawPolygon(points)
