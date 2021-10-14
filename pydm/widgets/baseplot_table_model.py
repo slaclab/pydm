@@ -1,6 +1,6 @@
 from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant
 from qtpy.QtGui import QBrush
-from .baseplot import BasePlot, BasePlotCurveItem
+from .baseplot import BasePlotCurveItem
 
 
 class BasePlotCurvesModel(QAbstractTableModel):
