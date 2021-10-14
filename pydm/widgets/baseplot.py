@@ -3,9 +3,10 @@ from qtpy.QtGui import QColor, QBrush
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QRect
 from qtpy.QtWidgets import QToolTip
 from .. import utilities
-from pyqtgraph import PlotWidget, PlotDataItem, mkPen, ViewBox, InfiniteLine, SignalProxy, CurvePoint, TextItem
+from pyqtgraph import AxisItem, PlotWidget, PlotDataItem, mkPen, ViewBox, InfiniteLine, SignalProxy, CurvePoint, TextItem
 from collections import OrderedDict
 from .base import PyDMPrimitiveWidget, widget_destroyed
+from .multi_axis_plot import MultiAxisPlot
 
 
 class NoDataError(Exception):
@@ -35,6 +36,12 @@ class BasePlotCurveItem(PlotDataItem):
         (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).
     lineWidth: int, optional
         Width of the line connecting the data points.
+    yAxisName: str, optional
+        The name of the axis to link this curve with. Leaving it None will result in the default
+        name of 'Axis 1' which may still be modified later if needed.
+    yAxisOrientation: str, optional
+        The orientation of this axis. Leaving it None will result in a default of 'left'. Must be set to either 'right'
+        or 'left' or an exception will be raised. See: https://pyqtgraph.readthedocs.io/en/latest/graphicsItems/axisitem.html
     **kargs: optional
         PlotDataItem keyword arguments, such as symbol and symbolSize.
     """
@@ -56,11 +63,15 @@ class BasePlotCurveItem(PlotDataItem):
                          ('Dot', Qt.DotLine),
                          ('DashDot', Qt.DashDotLine),
                          ('DashDotDot', Qt.DashDotDotLine)])
+    axis_orientations = OrderedDict([('Left', 'left'),
+                                     ('Right', 'right')])
+
     data_changed = Signal()
 
-    def __init__(self, color=None, lineStyle=None, lineWidth=None, **kws):
+    def __init__(self, color=None, lineStyle=None, lineWidth=None, yAxisName=None, yAxisOrientation=None, **kws):
         self._color = QColor('white')
         self._pen = mkPen(self._color)
+
         if lineWidth is not None:
             self._pen.setWidth(lineWidth)
         if lineStyle is not None:
@@ -70,6 +81,12 @@ class BasePlotCurveItem(PlotDataItem):
         self.setSymbolBrush(None)
         if color is not None:
             self.color = color
+
+        if yAxisName is None:
+            self._y_axis_name = 'Axis 1'
+        else:
+            self._y_axis_name = yAxisName
+        self._y_axis_orientation = yAxisOrientation
 
         if hasattr(self, "channels"):
             self.destroyed.connect(functools.partial(widget_destroyed,
@@ -132,6 +149,49 @@ class BasePlotCurveItem(PlotDataItem):
         self._pen.setColor(self._color)
         self.setPen(self._pen)
         self.setSymbolPen(self._color)
+
+    @property
+    def y_axis_orientation(self):
+        """
+        Return the orientation of the y-axis this curve is associated with. Will be 'left' or 'right'
+        Returns
+        -------
+        str
+        """
+        return self._y_axis_orientation
+
+    @y_axis_orientation.setter
+    def y_axis_orientation(self, y_axis_orientation):
+        """
+        Set the orientation of the y-axis this curve is associated with. Must be 'left' or 'right'
+        See: https://pyqtgraph.readthedocs.io/en/latest/graphicsItems/axisitem.html
+        Parameters
+        ----------
+        y_axis_orientation: str
+        """
+        self._y_axis_orientation = y_axis_orientation
+
+    @property
+    def y_axis_name(self):
+        """
+        Return the name of the y-axis that this curve should be associated with. This allows us to have plots that
+        contain multiple y-axes, with each curve assigned to either a unique or shared axis as needed.
+        Returns
+        -------
+        str
+        """
+        return self._y_axis_name
+
+    @y_axis_name.setter
+    def y_axis_name(self, axis_name):
+        """
+        Set the name of the y-axis that should be associated with this curve.
+        Parameters
+        ----------
+        axis_name: str
+        """
+        self._y_axis_name = axis_name
+
 
     @property
     def lineStyle(self):
@@ -248,7 +308,9 @@ class BasePlotCurveItem(PlotDataItem):
                             ("lineStyle", self.lineStyle),
                             ("lineWidth", self.lineWidth),
                             ("symbol", self.symbol),
-                            ("symbolSize", self.symbolSize)])
+                            ("symbolSize", self.symbolSize),
+                            ("yAxisOrientation", self.y_axis_orientation),
+                            ("yAxisName", self.y_axis_name)])
 
     def close(self):
         pass
@@ -258,10 +320,13 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     crosshair_position_updated = Signal(float, float)
 
     def __init__(self, parent=None, background='default', axisItems=None):
+        # First create a custom MultiAxisPlot to pass to the base PlotWidget class to support multiple y axes. Note
+        # that this plot will still function just fine in the case the user doesn't need additional y axes.
+        plotItem = MultiAxisPlot()
         super(BasePlot, self).__init__(parent=parent, background=background,
-                                       axisItems=axisItems)
+                                       plotItem=plotItem, axisItems=axisItems)
 
-        self.plotItem = self.getPlotItem()
+        self.plotItem = plotItem
         self.plotItem.hideButtons()
         self._auto_range_x = None
         self.setAutoRangeX(True)
@@ -319,21 +384,76 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
         return ret
 
-    def addCurve(self, plot_item, curve_color=None):
+    def addCurve(self, plot_data_item, curve_color=None, y_axis_name=None, y_axis_orientation=None):
+        """
+        Adds a curve to this plot. If the y axis parameters are specified, either link this curve to an existing
+        axis if that axis is already part of this plot, or create a new one and link the curve to it.
+        Parameters
+        ----------
+        plot_data_item: BasePlotCurveItem
+                        The curve to add to this plot
+        curve_color: QColor, optional
+                     The color to draw the curve and axis label in
+        y_axis_name: str, optional
+                     The name of the axis to link the curve with. If this is the first time seeing this name,
+                     then a new axis will be created for it. Will use the default PyQtGraph name of 'left' if
+                     not supplied.
+        y_axis_orientation: str, optional
+                            The orientation for the axis. Will be one of either 'right' or 'left'. Attempting to change
+                            the orientation of an existing axis with associated data will have no effect. Create a new
+                            axis or unlink the existing data if a different orientation is required. Defaults to
+                            'left' if not supplied.
+        """
+
         if curve_color is None:
             curve_color = utilities.colors.default_colors[
                     len(self._curves) % len(utilities.colors.default_colors)]
-            plot_item.color_string = curve_color
-        self._curves.append(plot_item)
-        self.addItem(plot_item)
+            plot_data_item.color_string = curve_color
+
+        self._curves.append(plot_data_item)
+
+        if y_axis_orientation is None:
+            y_axis_orientation = 'left'  # Default behavior is a left axis if the user doesn't specify an orientation
+
+        if y_axis_name is None:
+            # If the user did not name the axis, use the default ones. Note: multiple calls to setAxisItems() are ok
+            self.plotItem.setAxisItems()
+            self.addItem(plot_data_item)
+        elif y_axis_name in self.plotItem.axes:
+            # If the user has chosen an axis that already exists for this curve, simply link the data to that axis
+            self.plotItem.linkDataToAxis(plot_data_item, y_axis_name)
+        else:
+            # Otherwise we create a brand new axis for this data
+            self.addAxis(plot_data_item,  y_axis_name, y_axis_orientation)
         self.redraw_timer.start()
         # Connect channels
-        for chan in plot_item.channels():
+        for chan in plot_data_item.channels():
             if chan:
                 chan.connect()
-        # self._legend.addItem(plot_item, plot_item.curve_name)
+
+    def addAxis(self, plot_data_item, name, orientation):
+        """
+        Create an AxisItem with the input name and orientation, and add it to this plot. Raises an exception if the
+        orientation parameter is not either 'left' or 'right'.
+        Parameters
+        ----------
+        plot_data_item: BasePlotCurveItem
+                        The curve that will be linked with this new axis
+        name: str
+              The name that will be assigned to this axis
+        orientation: str
+                     The orientation of this axis, must be in 'left' or 'right'
+        """
+
+        axis = AxisItem(orientation)
+        axis.setLabel(plot_data_item.name(), color=plot_data_item.color_string)
+        self.plotItem.addAxis(axis, name=name, plotDataItem=plot_data_item)
+
 
     def removeCurve(self, plot_item):
+        if plot_item.y_axis_name in self.plotItem.axes:
+            self.plotItem.unlinkDataFromAxis(plot_item.y_axis_name)
+
         self.removeItem(plot_item)
         self._curves.remove(plot_item)
         if len(self._curves) < 1:

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1260</width>
+    <height>945</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="PyDMTimePlot" name="PyDMTimePlot">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>77</y>
+     <width>941</width>
+     <height>671</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="curves">
+    <stringlist>
+     <string>{&quot;channel&quot;: &quot;ca://MTEST:SinVal&quot;, &quot;name&quot;: &quot;Loc1:Current&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisOrientation&quot;: null, &quot;yAxisName&quot;: &quot;Axis 1&quot;}</string>
+     <string>{&quot;channel&quot;: &quot;ca://MTEST:CosVal&quot;, &quot;name&quot;: &quot;Loc2:Current&quot;, &quot;color&quot;: &quot;red&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisOrientation&quot;: null, &quot;yAxisName&quot;: &quot;Axis 1&quot;}</string>
+     <string>{&quot;channel&quot;: &quot;ca://MTEST:MeanValue&quot;, &quot;name&quot;: &quot;Mean Value&quot;, &quot;color&quot;: &quot;dodgerblue&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisOrientation&quot;: &quot;right&quot;, &quot;yAxisName&quot;: &quot;Axis 2&quot;}</string>
+     <string>{&quot;channel&quot;: &quot;ca://MTEST:MaxValue&quot;, &quot;name&quot;: &quot;Max Value&quot;, &quot;color&quot;: &quot;forestgreen&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisOrientation&quot;: &quot;right&quot;, &quot;yAxisName&quot;: &quot;Axis 3&quot;}</string>
+     <string>{&quot;channel&quot;: &quot;ca://MTEST:MinValue&quot;, &quot;name&quot;: &quot;Min Value&quot;, &quot;color&quot;: &quot;yellow&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisOrientation&quot;: null, &quot;yAxisName&quot;: &quot;Axis 4&quot;}</string>
+    </stringlist>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMTimePlot</class>
+   <extends>QGraphicsView</extends>
+   <header>pydm.widgets.timeplot</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

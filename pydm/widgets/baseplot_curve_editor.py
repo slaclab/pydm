@@ -68,11 +68,13 @@ class BasePlotCurveEditorDialog(QDialog):
 
     def setup_delegate_columns(self, index=2):
         symbol_delegate = SymbolColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(index+3, symbol_delegate)
+        self.table_view.setItemDelegateForColumn(index+5, symbol_delegate)
         line_delegate = LineColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(index+1, line_delegate)
+        self.table_view.setItemDelegateForColumn(index+3, line_delegate)
         color_delegate = ColorColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(index, color_delegate)
+        axis_delegate = AxisColumnDelegate(self)
+        self.table_view.setItemDelegateForColumn(index+2, axis_delegate)
 
     @Slot()
     def addCurve(self):
@@ -112,6 +114,30 @@ class ColorColumnDelegate(QStyledItemDelegate):
     """
     def createEditor(self, parent, option, index):
         return None
+
+
+class AxisColumnDelegate(QStyledItemDelegate):
+
+    """
+    AxisColumnDelegate draws a QComboBox with the allowed values for the axis orientation
+    column value, which must map to the values expected by PyQtGraph. Helps ensure that the
+    user doesn't have to know what these exact values are, and prevents frustrating typos.
+    """
+    def createEditor(self, parent, option, index):
+        editor = QComboBox(parent)
+        editor.addItems(BasePlotCurveItem.axis_orientations.keys())
+        return editor
+
+    def setEditorData(self, editor, index):
+        val = str(index.model().data(index, Qt.EditRole))
+        editor.setCurrentText(val)
+
+    def setModelData(self, editor, model, index):
+        val = BasePlotCurveItem.axis_orientations[editor.currentText()]
+        model.setData(index, val, Qt.EditRole)
+
+    def updateEditorGeometry(self, editor, option, index):
+        editor.setGeometry(option.rect)
 
 
 class LineColumnDelegate(QStyledItemDelegate):
