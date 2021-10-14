@@ -336,7 +336,8 @@ class PyDMWaveformPlot(BasePlot):
 
     def addChannel(self, y_channel=None, x_channel=None, name=None,
                    color=None, lineStyle=None, lineWidth=None,
-                   symbol=None, symbolSize=None, redraw_mode=None):
+                   symbol=None, symbolSize=None, redraw_mode=None,
+                   yAxisName=None, yAxisOrientation=None):
         """
         Add a new curve to the plot.  In addition to the arguments below,
         all other keyword arguments are passed to the underlying
@@ -387,9 +388,11 @@ class PyDMWaveformPlot(BasePlot):
                                   x_addr=x_channel,
                                   name=name,
                                   color=color,
+                                  yAxisName=yAxisName,
+                                  yAxisOrientation=yAxisOrientation,
                                   **plot_opts)
         self.channel_pairs[(y_channel, x_channel)] = curve
-        self.addCurve(curve, curve_color=color)
+        self.addCurve(curve, curve_color=color, y_axis_name=yAxisName, y_axis_orientation=yAxisOrientation)
         curve.data_changed.connect(self.set_needs_redraw)
 
     def removeChannel(self, curve):
@@ -472,7 +475,10 @@ class PyDMWaveformPlot(BasePlot):
                             lineWidth=d.get('lineWidth'),
                             symbol=d.get('symbol'),
                             symbolSize=d.get('symbolSize'),
-                            redraw_mode=d.get('redraw_mode'))
+                            redraw_mode=d.get('redraw_mode'),
+                            yAxisName=d.get('yAxisName'),
+                            yAxisOrientation=d.get('yAxisOrientation')
+                            )
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
 
