@@ -535,6 +535,7 @@ class PyDMDrawingLine(PyDMDrawing):
         """
         if self._arrow_end_point_selection != new_selection:
             self._arrow_end_point_selection = new_selection
+            self.update()
 
     @Property(bool)
     def arrowStartPoint(self):
@@ -558,7 +559,7 @@ class PyDMDrawingLine(PyDMDrawing):
         """
         if self._arrow_start_point_selection != new_selection:
             self._arrow_start_point_selection = new_selection
-
+            self.update()
 
 class PyDMDrawingImage(PyDMDrawing):
     """
