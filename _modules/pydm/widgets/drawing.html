@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.drawing &mdash; PyDM v1.11.1+13.g16b6ec54 documentation</title>
+  <title>pydm.widgets.drawing &mdash; PyDM v1.11.1+21.gf8e280b7 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.11.1+13.g16b6ec54
+                v1.11.1+21.gf8e280b7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -556,11 +556,40 @@
 <span class="sd">    init_channel : str, optional</span>
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingLine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="mi">45</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_end_point_selection</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_start_point_selection</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">penStyle</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">SolidLine</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">penWidth</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_arrow_points</span><span class="p">(</span><span class="n">startpoint</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the three points needed to make a triangle with .drawPolygon</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">diff_x</span> <span class="o">=</span> <span class="n">startpoint</span><span class="o">.</span><span class="n">x</span><span class="p">()</span> <span class="o">-</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">x</span><span class="p">()</span>
+        <span class="n">diff_y</span> <span class="o">=</span> <span class="n">startpoint</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">-</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">y</span><span class="p">()</span>
+
+        <span class="n">length</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">diff_x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">diff_y</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">norm_x</span> <span class="o">=</span> <span class="n">diff_x</span> <span class="o">/</span> <span class="n">length</span>
+        <span class="n">norm_y</span> <span class="o">=</span> <span class="n">diff_y</span> <span class="o">/</span> <span class="n">length</span>
+
+        <span class="n">perp_x</span> <span class="o">=</span> <span class="o">-</span><span class="n">norm_y</span>
+        <span class="n">perp_y</span> <span class="o">=</span> <span class="n">norm_x</span>
+
+        <span class="n">left_x</span> <span class="o">=</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">x</span><span class="p">()</span> <span class="o">+</span> <span class="n">height</span> <span class="o">*</span> <span class="n">norm_x</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="n">perp_x</span>
+        <span class="n">left_y</span> <span class="o">=</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">+</span> <span class="n">height</span> <span class="o">*</span> <span class="n">norm_y</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="n">perp_y</span>
+        <span class="n">right_x</span> <span class="o">=</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">x</span><span class="p">()</span> <span class="o">+</span> <span class="n">height</span> <span class="o">*</span> <span class="n">norm_x</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="n">perp_x</span>
+        <span class="n">right_y</span> <span class="o">=</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">+</span> <span class="n">height</span> <span class="o">*</span> <span class="n">norm_y</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="n">perp_y</span>
+
+        <span class="n">left</span> <span class="o">=</span> <span class="n">QPointF</span><span class="p">(</span><span class="n">left_x</span><span class="p">,</span> <span class="n">left_y</span><span class="p">)</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">QPointF</span><span class="p">(</span><span class="n">right_x</span><span class="p">,</span> <span class="n">right_y</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">QPolygonF</span><span class="p">([</span><span class="n">left</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">right</span><span class="p">])</span>
 
 <div class="viewcode-block" id="PyDMDrawingLine.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingLine.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -569,8 +598,66 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingLine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_item</span><span class="p">(</span><span class="n">painter</span><span class="p">)</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">()</span>
-        <span class="n">painter</span><span class="o">.</span><span class="n">drawLine</span><span class="p">(</span><span class="n">QPointF</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">QPointF</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span></div></div>
 
+        <span class="n">start_point</span> <span class="o">=</span> <span class="n">QPointF</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">end_point</span> <span class="o">=</span> <span class="n">QPointF</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">painter</span><span class="o">.</span><span class="n">drawLine</span><span class="p">(</span><span class="n">start_point</span><span class="p">,</span> <span class="n">end_point</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_end_point_selection</span><span class="p">:</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_points</span><span class="p">(</span><span class="n">start_point</span><span class="p">,</span> <span class="n">end_point</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+            <span class="n">painter</span><span class="o">.</span><span class="n">drawPolygon</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_start_point_selection</span><span class="p">:</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_points</span><span class="p">(</span><span class="n">end_point</span><span class="p">,</span> <span class="n">start_point</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+            <span class="n">painter</span><span class="o">.</span><span class="n">drawPolygon</span><span class="p">(</span><span class="n">points</span><span class="p">)</span></div>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">arrowEndPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If True, an arrow will be drawn at the end of the line.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_end_point_selection</span>
+
+    <span class="nd">@arrowEndPoint</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">arrowEndPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_selection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If True, an arrow will be drawn at the end of the line.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_selection : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_end_point_selection</span> <span class="o">!=</span> <span class="n">new_selection</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_end_point_selection</span> <span class="o">=</span> <span class="n">new_selection</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">arrowStartPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If True, an arrow will be drawn at the start of the line.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_start_point_selection</span>
+
+    <span class="nd">@arrowStartPoint</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">arrowStartPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_selection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If True, an arrow will be drawn at the start of the line.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_selection : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_start_point_selection</span> <span class="o">!=</span> <span class="n">new_selection</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_start_point_selection</span> <span class="o">=</span> <span class="n">new_selection</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMDrawingImage"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingImage</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
