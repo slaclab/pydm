@@ -268,7 +268,12 @@ class PyDMPrimitiveWidget(object):
             else:
                 val = data_type(value)
 
-            setattr(self, method_name, val)
+            method = getattr(self, method_name)
+            if callable(method):
+                method(val)
+            else:
+                setattr(self, method_name, val)
+
         except:
             logger.error('Error at Rule: %s. Could not execute method %s with '
                          'value %s and type as %s.',
