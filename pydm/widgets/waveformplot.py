@@ -372,6 +372,11 @@ class PyDMWaveformPlot(BasePlot):
             Which symbol to use to represent the data.
         symbol: int, optional
             Size of the symbol.
+        yAxisName : str, optional
+            The name of the y axis to associate with this curve. Will be created if it
+            doesn't yet exist
+        yAxisOrientation : str, optional
+            The orientation for the y axis, either 'left' or 'right'
         """
         plot_opts = {}
         plot_opts['symbol'] = symbol
