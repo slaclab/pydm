@@ -1,16 +1,15 @@
 import locale
-from functools import partial
-import shlex
 import numpy as np
-
+import ast
 import logging
-logger = logging.getLogger(__name__)
-
+from functools import partial
 from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
 from qtpy.QtCore import Property, Q_ENUMS
 from .. import utilities
 from .base import PyDMWritableWidget, TextFormatter, str_types
 from .display_format import DisplayFormat, parse_value_for_display
+
+logger = logging.getLogger(__name__)
 
 
 class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
@@ -110,16 +109,17 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                 if self._display_format_type == DisplayFormat.String:
                     self.send_value_signal[str].emit(send_value)
                 else:
-                    arr_value = list(filter(None, shlex.split(send_value.replace("[", "").replace("]", ""))))
+                    arr_value = list(
+                        filter(None, ast.literal_eval(str(send_value.replace("[", "").replace("]", "").split()))))
                     arr_value = np.array(arr_value, dtype=self.subtype)
                     self.send_value_signal[np.ndarray].emit(arr_value)
             elif self.channeltype == bool:
                 try:
-                    val = bool(distutils.util.strtobool(send_value))
+                    val = bool(strtobool(send_value))
                     self.send_value_signal[bool].emit(val)
                     # might want to add error to application screen
                 except ValueError:
-                    print("not a valid boolean.")
+                    logger.error("Not a valid boolean: %r", send_value)
             else:
                 # Channel Type is String
                 # Lets just send what we have after all
@@ -274,3 +274,16 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         if self._display is not None:
             self.setText(self._display)
         super(PyDMLineEdit, self).focusOutEvent(event)
+
+    @staticmethod
+    def strtobool(val):
+        valid_true = ['Y', 'YES', 'T', 'TRUE', 'ON', '1']
+        valid_false = ['N', 'NO', 'F', 'FALSE', 'OFF', '0']
+
+        if val.upper() in valid_true:
+            return 1
+        elif val.upper() in valid_false:
+            return 0
+        else:
+            raise ValueError("invalid boolean input")
+

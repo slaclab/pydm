@@ -1,13 +1,14 @@
 """Local Plugin."""
 import decimal
 import logging
-from urllib import parse
-import shlex
+import ast
 import numpy as np
+from urllib import parse
 from qtpy.QtCore import Slot, Qt
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
 logger = logging.getLogger(__name__)
+
 
 class Connection(PyDMConnection):
     def __init__(self, channel, address, protocol=None, parent=None):
@@ -28,7 +29,7 @@ class Connection(PyDMConnection):
             "upper_limit",
             "lower_limit",
             "enum_string"
-            ]
+        ]
 
         self._data_types = {
             'int': int,
@@ -36,7 +37,7 @@ class Connection(PyDMConnection):
             'str': str,
             'bool': bool,
             'array': np.array
-            }
+        }
 
         self._precision = None
         self._unit = None
@@ -45,12 +46,10 @@ class Connection(PyDMConnection):
         self._enum_string = None
 
         super(Connection, self).__init__(channel, address, protocol, parent)
-        self.add_listener(channel)
         self._configuration = {}
-
+        self.add_listener(channel)
         self.send_connection_state(False)
         self.send_access_state()
-
         self.connected = False
 
     def _configure_local_plugin(self, channel):
@@ -59,24 +58,16 @@ class Connection(PyDMConnection):
             return
 
         try:
-            address = PyDMPlugin.get_address(channel)
-            address = "loc://" + address
-
-            self._configuration = parse.parse_qs(parse.urlsplit(address).query)
-            name = parse.urlsplit(address).netloc
-            self._configuration['name'] = name
-
-            if not name and not config:
-                raise
-        except:
-            logger.debug(
-                'Invalid configuration for LocalPlugin connection. %s',
-                address)
+            url_data = UrlToPython(channel).get_info()
+        except ValueError("Not enough information"):
+            logger.debug('Invalid configuration for LocalPlugin connection', exc_info=True)
             return
 
-        if (self._configuration.get('name') is not None and self._configuration.get('type') is not None
-                and self._configuration.get('init') is not None):
-            self._is_connection_configured = True
+        self._configuration['name'] = url_data[1]
+        address = url_data[2]
+
+        if url_data[0] is not None:
+            self._configuration.update(url_data[0])
             self.address = address
 
             # set the object's attributes
@@ -93,9 +84,12 @@ class Connection(PyDMConnection):
             self.send_connection_state(True)
             self.send_new_value(self.value)
 
+            # set connection configured to true
+            self._is_connection_configured = True
+
     def parse_channel_extras(self, extras):
         """
-        Parse the extras dictionay and either pass the data
+        Parse the extras dictionary and either pass the data
         to the appropriate methods that will take care of it,
         or emit it right away.
 
@@ -118,15 +112,15 @@ class Connection(PyDMConnection):
                 self._precision_set = int(precision[0])
                 self.prec_signal.emit(self._precision_set)
             except ValueError:
-                logger.debug('Cannot convert precision')
+                logger.debug('Cannot convert precision value=%r', precision)
         unit = extras.get('unit')
         if unit is not None:
             self.unit_signal.emit(str(unit[0]))
         upper_limit = extras.get('upper_limit')
-        if upper_limit is not None:
+        if upper_limit is not None and (self._value_type == 'float' or self._value_type == 'int'):
             self.send_upper_limit(upper_limit[0])
         lower_limit = extras.get('lower_limit')
-        if lower_limit is not None:
+        if lower_limit is not None and (self._value_type == 'float' or self._value_type == 'int'):
             self.send_lower_limit(lower_limit[0])
         enum_string = extras.get('enum_string')
         if enum_string is not None:
@@ -145,7 +139,7 @@ class Connection(PyDMConnection):
     @Slot(np.ndarray)
     def send_new_value(self, value):
         """
-        Send the values sent trought a specific local
+        Send the values sent through a specific local
         variable channel to all its listeners.
         """
 
@@ -168,8 +162,7 @@ class Connection(PyDMConnection):
 
         """
         if value is not None:
-            dec = decimal.Decimal(str(value))
-            self._precision = len(str(dec).split('.')[1])
+            self._precision = self.precision_for_value(value)
             self.prec_signal.emit(self._precision)
 
     def send_unit(self, unit):
@@ -203,9 +196,9 @@ class Connection(PyDMConnection):
 
         """
         if upper_limit is not None:
-            try:
+            if self._value_type == "int":
                 self._upper_limit = int(upper_limit)
-            except ValueError:
+            else:
                 self._upper_limit = float(upper_limit)
 
             self.upper_ctrl_limit_signal.emit(self._upper_limit)
@@ -216,7 +209,7 @@ class Connection(PyDMConnection):
 
         Parameters
         ----------
-        lower_limit : int or float
+        lower_limit : int, float, or str
 
         Returns
         -------
@@ -224,9 +217,9 @@ class Connection(PyDMConnection):
 
         """
         if lower_limit is not None:
-            try:
+            if self._value_type == "int":
                 self._lower_limit = int(lower_limit)
-            except ValueError:
+            else:
                 self._lower_limit = float(lower_limit)
 
             self.lower_ctrl_limit_signal.emit(self._lower_limit)
@@ -246,7 +239,7 @@ class Connection(PyDMConnection):
         """
         if enum_string is not None:
             try:
-                self._enum_string = tuple(enum_string)
+                self._enum_string = tuple(ast.literal_eval(enum_string))
                 self.enum_strings_signal.emit(self._enum_string)
             except ValueError:
                 logger.debug("Error when converting enum_string")
@@ -272,15 +265,15 @@ class Connection(PyDMConnection):
             try:
                 self._type_kwargs['dtype'] = np.dtype(dtype)
                 return self._type_kwargs
-            except ValueError:
-                logger.debug('Cannot convert dtype')
+            except TypeError:
+                logger.debug('Cannot convert dtype value=%r', dtype)
         else:
             dtype = 'object'
             try:
                 self._type_kwargs['dtype'] = np.dtype(dtype)
                 return self._type_kwargs
-            except ValueError:
-                logger.debug('Cannot convert dtype')
+            except TypeError:
+                logger.debug('Cannot convert dtype value=%r', dtype)
 
         return self._type_kwargs
 
@@ -316,14 +309,12 @@ class Connection(PyDMConnection):
         if _type is not None:
             try:
                 if value_type == "array":
-                    value = value.replace("[", "").replace("]", "").replace(",", " ")
-                    value = shlex.split(value)
+                    value = ast.literal_eval(value)
                 return _type(value, **self._type_kwargs)
             except ValueError:
                 logger.debug('Cannot convert value_type')
         else:
             return None
-
 
     def send_connection_state(self, conn):
         self.connected = conn
@@ -332,7 +323,7 @@ class Connection(PyDMConnection):
     def add_listener(self, channel):
         super(Connection, self).add_listener(channel)
         self._configure_local_plugin(channel)
-        # send write acces == True to the listeners
+        # send write access == True to the listeners
         self.send_access_state()
         # send new values to the listeners right away
         self.send_new_value(self.value)
@@ -382,7 +373,7 @@ class Connection(PyDMConnection):
     @Slot(np.ndarray)
     def put_value(self, new_value):
         """
-        Slot connected to the channal.value_signal.
+        Slot connected to the channel.value_signal.
         Updates the value of this local variable and then broadcasts it to
         the other listeners to this channel
         """
@@ -398,6 +389,12 @@ class Connection(PyDMConnection):
                 else:
                     self.prec_signal.emit(self._precision_set)
 
+    @staticmethod
+    def precision_for_value(value, max_precision=8):
+        dec = decimal.Decimal(str(value))
+        solution = min((len(str(dec).split('.')[1]), max_precision))
+        return solution
+
 
 class LocalPlugin(PyDMPlugin):
     protocol = "loc"
@@ -405,23 +402,48 @@ class LocalPlugin(PyDMPlugin):
 
     @staticmethod
     def get_connection_id(channel):
-        address = PyDMPlugin.get_address(channel)
+        obj = UrlToPython(channel)
+        name = obj.get_info()[1]
+        return name
+
+
+class UrlToPython:
+    def __init__(self, channel):
+        self.channel = channel
+
+    def get_info(self):
+        """
+        Parses a given url into a list and a string.
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        A tuple: (<list>, <str>)
+        """
+        address = PyDMPlugin.get_address(self.channel)
         address = "loc://" + address
+        name = None
+        config = None
 
         try:
             config = parse.parse_qs(parse.urlsplit(address).query)
             name = parse.urlsplit(address).netloc
 
-            if not name and not config:
+            if not name or not config:
                 raise
-        except:
+            elif config['init'] is None or config['type'] is None:
+                raise
+        except Exception:
             try:
                 if not name:
                     raise
                 logger.debug('LocalPlugin connection %s got new listener.', address)
-            except:
+                return None, name, address
+            except Exeption:
                 msg = "Invalid configuration for LocalPlugin connection. %s"
-                logger.exception(msg, address)
+                logger.exception(msg, address, exc_info=True)
                 raise ValueError("error in local data plugin input")
 
-        return name
+        return config, name, address
