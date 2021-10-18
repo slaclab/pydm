@@ -417,7 +417,7 @@ class PyDMTimePlot(BasePlot):
             The name of the y axis to associate with this curve. Will be created if it
             doesn't yet exist
         yAxisOrientation : str
-            The orienation for the y axis, either 'left' or 'right'
+            The orientation for the y axis, either 'left' or 'right'
 
         Returns
         -------

@@ -41,7 +41,7 @@ class MultiAxisViewBox(ViewBox):
              True if this event was generated from a signal rather than a user event. Used to ensure we only propagate
              the even once.
         """
-        if axis != 1 and not fromSignal:
+        if axis != ViewBox.YAxis and not fromSignal:
             # This event happened within the view box area itself or the x axis so propagate to any stacked view boxes
             self.sigMouseWheelZoomed.emit(self, ev, axis)
         super(MultiAxisViewBox, self).wheelEvent(ev, axis)
@@ -61,7 +61,7 @@ class MultiAxisViewBox(ViewBox):
              True if this event was generated from a signal rather than a user event. Used to ensure we only propagate
              the even once.
         """
-        if axis != 1 and not fromSignal:
+        if axis != ViewBox.YAxis and not fromSignal:
             # This event happened within the view box area itself or the x axis so propagate to any stacked view boxes
             self.sigMouseDragged.emit(self, ev, axis)
         super(MultiAxisViewBox, self).mouseDragEvent(ev, axis)

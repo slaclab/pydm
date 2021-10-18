@@ -65,6 +65,7 @@ class MultiAxisPlot(PlotItem):
         axis.linkToView(view)
 
         if plotDataItem is not None:
+            # Add the item to the view, and include it in this plot item's list of data items
             view.addItem(plotDataItem)
             self.dataItems.append(plotDataItem)
 
@@ -84,6 +85,8 @@ class MultiAxisPlot(PlotItem):
             if self.legend is not None and plotDataItem.name() is not None:
                 self.legend.addItem(plotDataItem, name=plotDataItem.name())
 
+            self.curvesPerAxis[name] += 1
+
         self.scene().addItem(view)
         self.addStackedView(view)
 
@@ -94,32 +97,19 @@ class MultiAxisPlot(PlotItem):
         self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
         self.vb.sigMouseDragged.connect(self.handleMouseDragEvent)
 
-        self.curvesPerAxis[name] += 1
-
-
-    def handleWheelEvent(self, view, ev, axis):
-        for stackedView in self.stackedViews:
-            if stackedView is not view:
-                stackedView.wheelEvent(ev, axis, fromSignal=True)
-
-    def handleMouseDragEvent(self, view, ev, axis):
-        for stackedView in self.stackedViews:
-            if stackedView is not view:
-                stackedView.mouseDragEvent(ev, axis, fromSignal=True)
-
     def addStackedView(self, view):
         """
-        Add a view that will be stacked underneath the top level view box. Any mouse or key events handled by the top
-        level view will be propagated through all the stacked views added here
+        Add a view that will be stacked underneath the top level view box. Any mouse or key events handled by any of the
+        view boxes will be propagated through all the stacked views added here
         Parameters
         ----------
         view: ViewBox
-              The view to be added. Events handled by the top level view box will be passed through to this one as well
+              The view to be added.
         """
 
         self.stackedViews.add(view)
 
-        # These signals will be emitted by the top level view when it handles these events, and will be connected
+        # These signals will be emitted when the view handles these events, and will be connected
         # to the event handling code of the stacked views
         view.sigMouseDragged.connect(self.handleMouseDragEvent)
         view.sigMouseWheelZoomed.connect(self.handleWheelEvent)
@@ -186,9 +176,6 @@ class MultiAxisPlot(PlotItem):
         """
         Cleans up all curve related data from this plot. To be invoked as part of the flow of clearing out
         all curves from the plot.
-        Returns
-        -------
-
         """
         for view in self.stackedViews:
             self.removeItem(view)
@@ -242,3 +229,37 @@ class MultiAxisPlot(PlotItem):
         for y, axis in enumerate([None] + orientations["top"] + [None] + orientations["bottom"]):
             if axis is not None:
                 self.layout.addItem(axis, y, leftOffset)
+
+    def handleWheelEvent(self, view, ev, axis):
+        """
+        A simple slot for propagating a mouse wheel event to all the stacked view boxes (except for the one
+        one emitting the signal)
+        Parameters
+        ----------
+        view: ViewBox
+              The view which emitted the signal that went to this slot
+        ev:   QEvent
+              The event to propagate
+        axis: int
+              The axis (or None) that the event happened on
+        """
+        for stackedView in self.stackedViews:
+            if stackedView is not view:
+                stackedView.wheelEvent(ev, axis, fromSignal=True)
+
+    def handleMouseDragEvent(self, view, ev, axis):
+        """
+        A simple slot for propagating a mouse drag event to all the stacked view boxes (except for the one
+        one emitting the signal)
+        Parameters
+        ----------
+        view: ViewBox
+              The view which emitted the signal that went to this slot
+        ev:   QEvent
+              The event to propagate
+        axis: int
+              The axis (or None) that the event happened on
+        """
+        for stackedView in self.stackedViews:
+            if stackedView is not view:
+                stackedView.mouseDragEvent(ev, axis, fromSignal=True)
