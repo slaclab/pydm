@@ -414,7 +414,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         return self._ignore_mouse_wheel
     
- 
     @ignoreMouseWheel.setter
     def ignoreMouseWheel(self, checked):
         self._ignore_mouse_wheel = checked
