@@ -19,28 +19,15 @@ class MultiAxisViewBox(ViewBox):
 
     # These signals will be emitted by the top level view when it handles these events, and will be connected
     # to the event handling code of the stacked views
-    sigMouseDragged = Signal(object, object)
-    sigMouseWheelZoomed = Signal(object, object)
+    sigMouseDragged = Signal(object, object, object)
+    sigMouseWheelZoomed = Signal(object, object, object)
     sigHistoryChanged = Signal(object)
 
     def __init__(self, parent=None):
         GraphicsWidget.__init__(self, parent)
         super(MultiAxisViewBox, self).__init__(parent=parent)
 
-        # A set containing view boxes which are stacked underneath the top level view. These views will be needed
-        # in order to support multiple axes on the same plot. This set will remain empty if the plot has only one set of axes
-        self.stackedViews = weakref.WeakSet()
-        self.sigResized.connect(self.updateStackedViews)
-
-    def updateStackedViews(self):
-        """
-        Callback for resizing stacked views when the geometry of their top level view changes
-        """
-        for view in self.stackedViews:
-            view.setGeometry(self.sceneBoundingRect())
-            #view.linkedViewChanged(self, view.XAxis)
-
-    def wheelEvent(self, ev, axis=None):
+    def wheelEvent(self, ev, axis=None, fromSignal=False):
         """
         Handles user input from the mouse wheel. Propagates to any stacked views.
 
@@ -50,13 +37,17 @@ class MultiAxisViewBox(ViewBox):
             The event that was generated
         axis: int
              Zero if the event happened on the x axis, one for any y axis, and None for no associated axis
+        fromSignal: bool
+             True if this event was generated from a signal rather than a user event. Used to ensure we only propagate
+             the even once.
         """
-        if axis is None:  # This event happened within the view box area itself so propagate to any stacked view boxes
-            self.sigMouseWheelZoomed.emit(ev, axis)
+        if axis != 1 and not fromSignal:
+            # This event happened within the view box area itself or the x axis so propagate to any stacked view boxes
+            self.sigMouseWheelZoomed.emit(self, ev, axis)
         super(MultiAxisViewBox, self).wheelEvent(ev, axis)
 
 
-    def mouseDragEvent(self, ev, axis=None):
+    def mouseDragEvent(self, ev, axis=None, fromSignal=False):
         """
         Handles user input from a drag of the mouse. Propagates to any stacked views.
 
@@ -66,9 +57,13 @@ class MultiAxisViewBox(ViewBox):
             The event that was generated
         axis: int
              Zero if the event happened on the x axis, one for any y axis, and None for no associated axis
+        fromSignal: bool
+             True if this event was generated from a signal rather than a user event. Used to ensure we only propagate
+             the even once.
         """
-        if axis is None:  # This event happened within the view box area itself so propagate to any stacked view boxes
-            self.sigMouseDragged.emit(ev, axis)
+        if axis != 1 and not fromSignal:
+            # This event happened within the view box area itself or the x axis so propagate to any stacked view boxes
+            self.sigMouseDragged.emit(self, ev, axis)
         super(MultiAxisViewBox, self).mouseDragEvent(ev, axis)
 
     def keyPressEvent(self, ev):
