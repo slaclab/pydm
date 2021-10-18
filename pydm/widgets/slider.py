@@ -31,7 +31,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.alarmSensitiveContent = True
         self.alarmSensitiveBorder = False
         # Internal values for properties
-        self._ignore_mouse_wheel = False
+        self._ignore_mouse_wheel = True
         self._show_limit_labels = True
         self._show_value_label = True
         self._user_defined_limits = False
@@ -58,7 +58,13 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.high_lim_label.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
         self._slider = QSlider(parent=self)
         self._slider.setOrientation(Qt.Horizontal)
+
+        # For anyone interested in returning the mouse wheel property.
+        # Remove the comment string around ignoreMouseWheel getter/setter methods.
+
         self._orig_wheel_event = self._slider.wheelEvent
+        self._slider.wheelEvent = self.wheelEvent
+
         self._slider.sliderMoved.connect(self.internal_slider_moved)
         self._slider.sliderPressed.connect(self.internal_slider_pressed)
         self._slider.sliderReleased.connect(self.internal_slider_released)
@@ -398,6 +404,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         self.tracking = checked
 
+    '''
     @Property(bool)
     def ignoreMouseWheel(self):
         """
@@ -406,7 +413,8 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         don't want to accidentally change the slider as you are scrolling.
         """
         return self._ignore_mouse_wheel
-        
+    
+ 
     @ignoreMouseWheel.setter
     def ignoreMouseWheel(self, checked):
         self._ignore_mouse_wheel = checked
@@ -414,6 +422,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             self._slider.wheelEvent = self.wheelEvent
         else:
             self._slider.wheelEvent = self._orig_wheel_event
+    '''
 
     @Property(bool)
     def showLimitLabels(self):
