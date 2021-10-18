@@ -322,9 +322,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def __init__(self, parent=None, background='default', axisItems=None):
         # First create a custom MultiAxisPlot to pass to the base PlotWidget class to support multiple y axes. Note
         # that this plot will still function just fine in the case the user doesn't need additional y axes.
-        plotItem = MultiAxisPlot()
-        super(BasePlot, self).__init__(parent=parent, background=background,
-                                       plotItem=plotItem, axisItems=axisItems)
+        plotItem = MultiAxisPlot(axisItems=axisItems)
+        super(BasePlot, self).__init__(parent=parent, background=background, plotItem=plotItem)
 
         self.plotItem = plotItem
         self.plotItem.hideButtons()
@@ -447,7 +446,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
         axis = AxisItem(orientation)
         axis.setLabel(plot_data_item.name(), color=plot_data_item.color_string)
-        self.plotItem.addAxis(axis, name=name, plotDataItem=plot_data_item)
+        # If the x axis is just timestamps, we don't want autorange on the x axis
+        setXLink = hasattr(self, '_plot_by_timestamps') and self._plot_by_timestamps
+        self.plotItem.addAxis(axis, name=name, plotDataItem=plot_data_item, setXLink=setXLink)
 
 
     def removeCurve(self, plot_item):

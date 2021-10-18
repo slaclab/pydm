@@ -385,10 +385,6 @@ class PyDMTimePlot(BasePlot):
         for channel in init_y_channels:
             self.addYChannel(channel)
 
-        if plot_by_timestamps:
-            self._bottom_axis = TimeAxisItem('bottom')
-            self.plotItem.setAxisItems({"bottom": self._bottom_axis})
-
     def initialize_for_designer(self):
         # If we are in Qt Designer, don't update the plot continuously.
         # This function gets called by PyDMTimePlot's designer plugin.

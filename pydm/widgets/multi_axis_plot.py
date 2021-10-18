@@ -1,3 +1,4 @@
+import weakref
 from collections import Counter
 from pyqtgraph import GraphicsWidget, PlotItem, ViewBox
 from .multi_axis_viewbox import MultiAxisViewBox
@@ -13,11 +14,13 @@ class MultiAxisPlot(PlotItem):
     ----------
     parent: QGraphicsWidget, optional
             The parent widget for this plot
+    axisItems: Dict[str, AxisItem]
+               Dictionary instructing the PlotItem to use pre-constructed items for its axes
     **kargs: optional
              PlotItem keyword arguments
     """
 
-    def __init__(self, parent=None, **kargs):
+    def __init__(self, parent=None, axisItems=None, **kargs):
         GraphicsWidget.__init__(self, parent)
 
         # Create a view box that will support multiple axes to pass to the PyQtGraph PlotItem
@@ -25,9 +28,9 @@ class MultiAxisPlot(PlotItem):
 
         self.curvesPerAxis = Counter()  # A simple mapping of AxisName to a count of curves that using that axis
 
-        super(MultiAxisPlot, self).__init__(viewBox=viewBox)
+        super(MultiAxisPlot, self).__init__(viewBox=viewBox, axisItems=axisItems, **kargs)
 
-    def addAxis(self, axis, name, plotDataItem=None, **kwargs):
+    def addAxis(self, axis, name, plotDataItem=None, setXLink=False, **kwargs):
         """
         Add an axis to this plot by creating a new view box to link it with. Links the PlotDataItem
         with this axis if provided
@@ -40,14 +43,22 @@ class MultiAxisPlot(PlotItem):
         plotDataItem: PlotDataItem
                       The plot data that will be linked with the created axis. If None, then no plot data will be linked
                       with this axis to start with
+        setXLink: bool
+                  Whether or not to link the created view to the x axis of this plot item. Linking will disable
+                  autorange on the x axis for the view, so only do this if you do not want the view to update the x axis
         """
 
         # Create a new view box to link this axis with
         self.axes[str(name)] = {'item': axis, 'pos': None}  # The None will become an actual position in rebuildLayout() below
         view = MultiAxisViewBox()
-        view.setXLink(self)  # Link this view to the shared x-axis of this plot item
+        if setXLink:
+            view.setXLink(self)  # Link this view to the shared x-axis of this plot item
+        else:
+            self.axes['bottom']['item'].linkToView(view)  # Ensure the x axis will update when the view does
+
         view.setMouseMode(self.vb.state['mouseMode'])  # Ensure that mouse behavior is consistent between stacked views
         axis.linkToView(view)
+
         if plotDataItem is not None:
             view.addItem(plotDataItem)
             self.dataItems.append(plotDataItem)
@@ -79,7 +90,7 @@ class MultiAxisPlot(PlotItem):
 
     def addStackedView(self, view):
         """
-        Add a view that will be stacked underneath the top level view box. Any mouse or key events handles by the top
+        Add a view that will be stacked underneath the top level view box. Any mouse or key events handled by the top
         level view will be propagated through all the stacked views added here
         Parameters
         ----------
@@ -118,7 +129,12 @@ class MultiAxisPlot(PlotItem):
         axisToLink.linkedView().addItem(plotDataItem)
 
         if plotDataItem.name() is not None and axisToLink.labelText is not None:
-            axisToLink.setLabel(axisToLink.labelText + ' & ' + plotDataItem.name())
+            if axisToLink.labelText is not None:
+                axisToLink.setLabel(axisToLink.labelText + '&nbsp;&nbsp;&&nbsp;&nbsp;' + plotDataItem.name())
+            else:
+                axisToLink.setLabel(plotDataItem.name())
+        if self.legend is not None and plotDataItem.name() is not None:
+            self.legend.addItem(plotDataItem, name=plotDataItem.name())
 
         self.curvesPerAxis[axisName] += 1
 
