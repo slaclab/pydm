@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Local Plugin &mdash; PyDM v1.11.1+84.g67b5bc7b documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Development Guidelines" href="../development/development.html" />
+    <link rel="prev" title="Utilities" href="../utilities/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyDM
+          </a>
+              <div class="version">
+                v1.11.1+84.g67b5bc7b
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stylesheets.html">Customizing the Look and Feel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Plugins</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Local Plugin</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#required-attributes">Required Attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extra-attributes">Extra Attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#variable-types">Variable Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#arrays">Arrays</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#simple-local-data-plugin-example">Simple Local Data Plugin Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyDM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Local Plugin</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/data_plugins/local_plugin.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="local-plugin">
+<h1>Local Plugin<a class="headerlink" href="#local-plugin" title="Permalink to this headline"></a></h1>
+<p>PyDM uses Data Plugins as sources of information to be displayed at the widgets.
+Local Data Plugin allows users to create and use local variables.</p>
+<p>The Local Data Plugin stores the data that is sent by the widgets through a channel, and broadcasts it to all the listeners connected to this particular local variable channel.</p>
+<p>By default, as soon as any widgets gets connected to the same channel variable, they will get the initial values that were defined in the channel’s address. These widgets can receive any updates when the data changes, or they can send data back.
+For example, if the user has added a Local Variable channel to a PyDMEditLine, then all the widgets connected to this Local Variable will get the values that are updated by the user in the PyDMEditLine.</p>
+<p>General Local Plugin channel syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loc://my_variable_name?type=variable_type&amp;init=initial_values
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Once a Local Variable channel is created, multiple widgets can be connected to the same channel by providing the name of the variable, like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">loc</span><span class="p">:</span><span class="o">//</span><span class="n">my_variable_name</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<section id="required-attributes">
+<span id="id1"></span><h2>Required Attributes<a class="headerlink" href="#required-attributes" title="Permalink to this headline"></a></h2>
+<p>In order to be able to properly create a Local Variable channel, all the <a class="reference internal" href="#required-attributes-table"><span class="std std-ref">required attributes</span></a> must be provided in the channel’s address.</p>
+<p id="required-attributes-table">The table below explains the attributes that are required to create a local plugin channel:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 59%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Attributes</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Format Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>loc</strong></p></td>
+<td><p>protocol name for Local Data Plugin</p></td>
+<td><p><cite>loc://</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>name</strong></p></td>
+<td><div class="line-block">
+<div class="line">the identifier for a local variable</div>
+<div class="line">user’s choice</div>
+</div>
+</td>
+<td><p><cite>my_ndarray_var</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>type</strong></p></td>
+<td><div class="line-block">
+<div class="line">data-type for this variable</div>
+<div class="line">refer to <a class="reference internal" href="#variable-types"><span class="std std-ref">Variable Types</span></a></div>
+<div class="line">for more info of acceptable type</div>
+</div>
+</td>
+<td><p><cite>type=array</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>init</strong></p></td>
+<td><p>initial values to be used</p></td>
+<td><p><cite>init=[1,2,3,4]</cite></p></td>
+</tr>
+</tbody>
+</table>
+<p>Here is a simple example of a channel address format with the required attributes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loc://my_np.array?type=array&amp;init=[1,2,3,4]
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please reference <a class="reference internal" href="#variable-types"><span class="std std-ref">Variable Types</span></a> section for more information about local variables types.</p>
+</div>
+<hr class="docutils" />
+</section>
+<section id="extra-attributes">
+<span id="id2"></span><h2>Extra Attributes<a class="headerlink" href="#extra-attributes" title="Permalink to this headline"></a></h2>
+<p>Along with the <a class="reference internal" href="#required-attributes"><span class="std std-ref">required attributes</span></a>, the Local Data Plugin can also accept some optional attributes to configure the Local Variables with.
+The optional attributes are described in the <a class="reference internal" href="#extra-attributes-table"><span class="std std-ref">extra attributes</span></a> table below:</p>
+<p id="extra-attributes-table">The table below explains the optional attributes that can go in the <em>extras</em>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 37%" />
+<col style="width: 13%" />
+<col style="width: 35%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Attributes</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Format Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>precision</strong></p></td>
+<td><p>precision of float values</p></td>
+<td><p>int</p></td>
+<td><p><cite>precision=3</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>unit</strong></p></td>
+<td><p>units for the data</p></td>
+<td><p>string</p></td>
+<td><p><cite>unit=V</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>upper_limit</strong></p></td>
+<td><p>upper control value limit</p></td>
+<td><p>float or int</p></td>
+<td><p><cite>upper_limit=100</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>lower_limit</strong></p></td>
+<td><p>lower control value limit</p></td>
+<td><p>float or int</p></td>
+<td><p><cite>lower_limit=-100</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>enum_string</strong></p></td>
+<td><p>new list of values</p></td>
+<td><p>tuple</p></td>
+<td><p><cite>enum_string=[‘hey’, ‘hello’]</cite></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All the additional attributes are optional, any number of desired attributes can be specified, or none.</p>
+</div>
+<p>Here is a simple example of a channel address format with some optional attributes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loc://my.float?type=float&amp;init=1&amp;extras=True&amp;precision=3&amp;unit=V
+</pre></div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="variable-types">
+<span id="id3"></span><h2>Variable Types<a class="headerlink" href="#variable-types" title="Permalink to this headline"></a></h2>
+<p>Local Data Plugin supports the following types:</p>
+<ul class="simple">
+<li><p><strong>int</strong></p></li>
+<li><p><strong>float</strong></p></li>
+<li><p><strong>bool</strong></p></li>
+<li><p><strong>str</strong></p></li>
+<li><p><strong>array</strong> - this will be treated as a numpy.ndarray type</p></li>
+</ul>
+<section id="arrays">
+<h3>Arrays<a class="headerlink" href="#arrays" title="Permalink to this headline"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Arrays will be constructed using <strong>numpy.array</strong> built in function. See <a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.array.html#numpy.array">numpy.array</a> for more information on how to construct an array.</p>
+</div>
+<p>The following option must be specified in the “type” value in the channel address:</p>
+<ul class="simple">
+<li><p><cite>type=array</cite></p></li>
+</ul>
+<p>The following extra attributes can be specified. These attributes will be passed in the <cite>numpy.array</cite> function as parameters when creating the <cite>numpy.ndarray</cite>. If no attributes are specified, the <cite>numpy.array</cite> function will use the default values to create a <cite>numpy.ndarray</cite>.</p>
+<ul class="simple">
+<li><p>Extra Attributes for numpy.array:</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 38%" />
+<col style="width: 14%" />
+<col style="width: 32%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Attributes</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Format Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>dtype</strong></p></td>
+<td><p>desired data-type for the array</p></td>
+<td><p>np.dtype</p></td>
+<td><div class="line-block">
+<div class="line"><cite>dtype=float64</cite></div>
+<div class="line"><cite>dtype=uint8</cite></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>copy</strong></p></td>
+<td><p>if <em>True</em> then the object is copied</p></td>
+<td><p>bool</p></td>
+<td><p><cite>copy=true</cite> (<em>default</em>)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>order</strong></p></td>
+<td><p>memory layout of the array</p></td>
+<td><p>string</p></td>
+<td><div class="line-block">
+<div class="line"><cite>order=K</cite> (<em>default</em>)</div>
+<div class="line">others {‘A’, ‘C’, ‘F’}</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>subok</strong></p></td>
+<td><div class="line-block">
+<div class="line">if <em>True</em> then sub-classes</div>
+<div class="line">will be passed-through</div>
+</div>
+</td>
+<td><p>bool</p></td>
+<td><p><cite>subok=false</cite> (<em>default</em>)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>ndmin</strong></p></td>
+<td><p>minimum number of dimensions</p></td>
+<td><p>int</p></td>
+<td><p><cite>ndmin=0</cite> (<em>default</em>)</p></td>
+</tr>
+</tbody>
+</table>
+<p>Here is a simple example with array + extras:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loc://my_ndarray?type=array&amp;init=[1,2,3,2]&amp;extras=True&amp;dtype=float64&amp;copy=False&amp;order=C&amp;ndmin=0&amp;subok=true
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="simple-local-data-plugin-example">
+<h2>Simple Local Data Plugin Example<a class="headerlink" href="#simple-local-data-plugin-example" title="Permalink to this headline"></a></h2>
+<p>The picture below represents a simple example using the Local Data Plugin, where a Waveform Curve Editor has two local data plugin channels:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loc://y?type=array&amp;init=[1,2,3,4,5,6]&amp;extras=True&amp;dtype=float64
+
+loc://x?type=array&amp;init=[1,2,3,4,5,6]&amp;extras=True&amp;dtype=float64
+</pre></div>
+</div>
+<p>Right below the Waveform Curve Editor widget, there are two other widgets connected to the ‘x’ and ‘y’ local variable respectively:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="o">-</span><span class="n">values</span><span class="p">:</span> <span class="n">loc</span><span class="p">:</span><span class="o">//</span><span class="n">x</span>
+<span class="n">Y</span><span class="o">-</span><span class="n">values</span><span class="p">:</span> <span class="n">loc</span><span class="p">:</span><span class="o">//</span><span class="n">y</span>
+</pre></div>
+</div>
+<p>Data can be updated in the two X and Y-values widgets and the Waveform Curve Editor will receive the new data and change the curve accordingly, like seen in the picture below:</p>
+<p><em>Waveform Curve Example with ndarrays for X and Y values</em></p>
+<a class="reference internal image-reference" href="../_images/waveform_curve_local_plugin.png"><img alt="../_images/waveform_curve_local_plugin.png" class="align-center" src="../_images/waveform_curve_local_plugin.png" style="width: 600pt;" /></a>
+</section>
+<hr class="docutils" />
+<section id="miscellaneous">
+<h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>If precision is not sent through the “extras”, and it is set to receive the precision from the PV (Process Variable), the Local Data Plugin will match the precision from the values inserted by the users in the widgets.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../utilities/index.html" class="btn btn-neutral float-left" title="Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../development/development.html" class="btn btn-neutral float-right" title="Development Guidelines" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
