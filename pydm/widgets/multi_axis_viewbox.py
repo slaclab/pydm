@@ -38,7 +38,7 @@ class MultiAxisViewBox(ViewBox):
         """
         for view in self.stackedViews:
             view.setGeometry(self.sceneBoundingRect())
-            view.linkedViewChanged(self, view.XAxis)
+            #view.linkedViewChanged(self, view.XAxis)
 
     def wheelEvent(self, ev, axis=None):
         """
@@ -51,7 +51,6 @@ class MultiAxisViewBox(ViewBox):
         axis: int
              Zero if the event happened on the x axis, one for any y axis, and None for no associated axis
         """
-
         if axis is None:  # This event happened within the view box area itself so propagate to any stacked view boxes
             self.sigMouseWheelZoomed.emit(ev, axis)
         super(MultiAxisViewBox, self).wheelEvent(ev, axis)
