@@ -28,6 +28,11 @@ class MultiAxisPlot(PlotItem):
 
         self.curvesPerAxis = Counter()  # A simple mapping of AxisName to a count of curves that using that axis
 
+        # A set containing view boxes which are stacked underneath the top level view. These views will be needed
+        # in order to support multiple axes on the same plot. This set will remain empty if the plot has only one set of axes
+        self.stackedViews = weakref.WeakSet()
+        viewBox.sigResized.connect(self.updateStackedViews)
+
         super(MultiAxisPlot, self).__init__(viewBox=viewBox, axisItems=axisItems, **kargs)
 
     def addAxis(self, axis, name, plotDataItem=None, setXLink=False, **kwargs):
@@ -84,9 +89,23 @@ class MultiAxisPlot(PlotItem):
 
         # Rebuilding the layout of the plot item will put the new axis in the correct place
         self.rebuildLayout()
-        self.vb.updateStackedViews()
+        self.updateStackedViews()
+
+        self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
+        self.vb.sigMouseDragged.connect(self.handleMouseDragEvent)
 
         self.curvesPerAxis[name] += 1
+
+
+    def handleWheelEvent(self, view, ev, axis):
+        for stackedView in self.stackedViews:
+            if stackedView is not view:
+                stackedView.wheelEvent(ev, axis, fromSignal=True)
+
+    def handleMouseDragEvent(self, view, ev, axis):
+        for stackedView in self.stackedViews:
+            if stackedView is not view:
+                stackedView.mouseDragEvent(ev, axis, fromSignal=True)
 
     def addStackedView(self, view):
         """
@@ -98,13 +117,20 @@ class MultiAxisPlot(PlotItem):
               The view to be added. Events handled by the top level view box will be passed through to this one as well
         """
 
-        self.vb.stackedViews.add(view)
+        self.stackedViews.add(view)
 
         # These signals will be emitted by the top level view when it handles these events, and will be connected
         # to the event handling code of the stacked views
-        self.vb.sigMouseDragged.connect(view.mouseDragEvent)
-        self.vb.sigMouseWheelZoomed.connect(view.wheelEvent)
+        view.sigMouseDragged.connect(self.handleMouseDragEvent)
+        view.sigMouseWheelZoomed.connect(self.handleWheelEvent)
         self.vb.sigHistoryChanged.connect(view.scaleHistory)
+
+    def updateStackedViews(self):
+        """
+        Callback for resizing stacked views when the geometry of their top level view changes
+        """
+        for view in self.stackedViews:
+            view.setGeometry(self.vb.sceneBoundingRect())
 
     def linkDataToAxis(self, plotDataItem, axisName):
         """
@@ -164,10 +190,10 @@ class MultiAxisPlot(PlotItem):
         -------
 
         """
-        for view in self.vb.stackedViews:
+        for view in self.stackedViews:
             self.removeItem(view)
             self.scene().removeItem(view)
-        self.vb.stackedViews.clear()
+        self.stackedViews.clear()
 
         # Also reset the axes associated with all y axis curves
         allAxes = [val['item'] for val in self.axes.values()]
