@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>674</width>
+    <height>417</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>659</width>
+     <height>350</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0" columnstretch="0,0,0,0">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="2" column="0">
+       <widget class="PyDMLabel" name="PyDMLabel">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="text">
+         <string>X- values</string>
+        </property>
+        <property name="displayFormat" stdset="0">
+         <enum>PyDMLabel::Decimal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="PyDMLineEdit" name="PyDMLineEdit">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="channel" stdset="0">
+         <string>loc://x</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="PyDMLineEdit" name="PyDMLineEdit_2">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="channel" stdset="0">
+         <string>loc://y</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="PyDMLabel" name="PyDMLabel_2">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="text">
+         <string> Y - values</string>
+        </property>
+        <property name="displayFormat" stdset="0">
+         <enum>PyDMLabel::Decimal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="4">
+       <widget class="PyDMWaveformPlot" name="AWaveform">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="curves">
+         <stringlist>
+          <string>{&quot;y_channel&quot;: &quot;loc://y?type=array&amp;init=[1,2,3,4,5,6]&amp;dtype=float64&quot;, &quot;x_channel&quot;: &quot;loc://x?type=array&amp;init=[1,2,3,4,5,6]&amp;dtype=float64&quot;, &quot;name&quot;: &quot;Testing ndarray&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;redraw_mode&quot;: 2}</string>
+         </stringlist>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMLabel</class>
+   <extends>QLabel</extends>
+   <header>pydm.widgets.label</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMWaveformPlot</class>
+   <extends>QGraphicsView</extends>
+   <header>pydm.widgets.waveformplot</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>pydm.widgets.line_edit</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

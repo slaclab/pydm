@@ -1,332 +1,449 @@
-"""
-Plugin to allow users to arbitrarily connect python object attributes to widget
-channels. This handles the polling tasks to update the gui.
-"""
-import inspect
+"""Local Plugin."""
+import decimal
+import logging
+import ast
 import numpy as np
-from qtpy.QtWidgets import QWidget
-from qtpy.QtCore import Slot, Qt, QCoreApplication, QTimer
+from urllib import parse
+from qtpy.QtCore import Slot, Qt
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
+
+logger = logging.getLogger(__name__)
+
+
+class Connection(PyDMConnection):
+    def __init__(self, channel, address, protocol=None, parent=None):
+        self._is_connection_configured = False
+        self._value_type = None
+        self._precision_set = None
+        self._type_kwargs = {}
+
+        self._required_config_keys = [
+            'name',
+            'type',
+            'init'
+        ]
+
+        self._extra_config_keys = [
+            "precision",
+            "unit",
+            "upper_limit",
+            "lower_limit",
+            "enum_string"
+        ]
+
+        self._data_types = {
+            'int': int,
+            'float': float,
+            'str': str,
+            'bool': bool,
+            'array': np.array
+        }
+
+        self._precision = None
+        self._unit = None
+        self._upper_limit = None
+        self._lower_limit = None
+        self._enum_string = None
+
+        super(Connection, self).__init__(channel, address, protocol, parent)
+        self._configuration = {}
+        self.add_listener(channel)
+        self.send_connection_state(False)
+        self.send_access_state()
+        self.connected = False
+
+    def _configure_local_plugin(self, channel):
+        if self._is_connection_configured:
+            logger.debug('LocalPlugin connection already configured.')
+            return
+
+        try:
+            url_data = UrlToPython(channel).get_info()
+        except ValueError("Not enough information"):
+            logger.debug('Invalid configuration for LocalPlugin connection', exc_info=True)
+            return
+
+        self._configuration['name'] = url_data[1]
+        address = url_data[2]
+
+        if url_data[0] is not None:
+            self._configuration.update(url_data[0])
+            self.address = address
+
+            # set the object's attributes
+            init_value = self._configuration.get('init')[0]
+            self._value_type = self._configuration.get('type')[0]
+            self.name = self._configuration.get('name')
+
+            # get the extra info if any
+            self.parse_channel_extras(self._configuration)
+
+            # send initial values
+            self.value = self.convert_value(init_value, self._value_type)
+            self.connected = True
+            self.send_connection_state(True)
+            self.send_new_value(self.value)
+
+            # set connection configured to true
+            self._is_connection_configured = True
+
+    def parse_channel_extras(self, extras):
+        """
+        Parse the extras dictionary and either pass the data
+        to the appropriate methods that will take care of it,
+        or emit it right away.
+
+        Parameters
+        ----------
+        extras : dict
+            Dictionary containing extra parameters for the
+            this local variable configuration
+            These parameters are optional
+
+        Returns
+        -------
+        None.
+
+        """
+
+        precision = extras.get('precision')
+        if precision is not None:
+            try:
+                self._precision_set = int(precision[0])
+                self.prec_signal.emit(self._precision_set)
+            except ValueError:
+                logger.debug('Cannot convert precision value=%r', precision)
+        unit = extras.get('unit')
+        if unit is not None:
+            self.unit_signal.emit(str(unit[0]))
+        upper_limit = extras.get('upper_limit')
+        if upper_limit is not None and (self._value_type == 'float' or self._value_type == 'int'):
+            self.send_upper_limit(upper_limit[0])
+        lower_limit = extras.get('lower_limit')
+        if lower_limit is not None and (self._value_type == 'float' or self._value_type == 'int'):
+            self.send_lower_limit(lower_limit[0])
+        enum_string = extras.get('enum_string')
+        if enum_string is not None:
+            self.send_enum_string(enum_string[0])
+
+        type_kwargs = {k: v for k, v in extras.items()
+                       if k not in self._extra_config_keys and k not in self._required_config_keys}
+
+        if type_kwargs:
+            self.format_type_params(type_kwargs)
+
+    @Slot(int)
+    @Slot(float)
+    @Slot(str)
+    @Slot(bool)
+    @Slot(np.ndarray)
+    def send_new_value(self, value):
+        """
+        Send the values sent through a specific local
+        variable channel to all its listeners.
+        """
+
+        if value is not None:
+            self.new_value_signal[type(value)].emit(value)
+
+    def send_precision(self, value):
+        """
+        Calculate and send the precision for float values if precision
+        is not specified in the extras
+
+        Parameters
+        ----------
+        value : int
+            The value to be sent,should be sent as int
+
+        Returns
+        -------
+        None.
+
+        """
+        if value is not None:
+            self._precision = self.precision_for_value(value)
+            self.prec_signal.emit(self._precision)
+
+    def send_unit(self, unit):
+        """
+        Send the unit for the data.
+
+        Parameters
+        ----------
+        unit : string
+
+        Returns
+        -------
+        None.
+
+        """
+        if unit is not None:
+            self._unit = str(unit)
+            self.prec_signal.emit(self.unit)
+
+    def send_upper_limit(self, upper_limit):
+        """
+        Send the upper limit value as float or int.
+
+        Parameters
+        ----------
+        upper_limit : int or float
+
+        Returns
+        -------
+        None.
+
+        """
+        if upper_limit is not None:
+            if self._value_type == "int":
+                self._upper_limit = int(upper_limit)
+            else:
+                self._upper_limit = float(upper_limit)
+
+            self.upper_ctrl_limit_signal.emit(self._upper_limit)
+
+    def send_lower_limit(self, lower_limit):
+        """
+        Send the lower limit value as float or int.
+
+        Parameters
+        ----------
+        lower_limit : int, float, or str
+
+        Returns
+        -------
+        None.
+
+        """
+        if lower_limit is not None:
+            if self._value_type == "int":
+                self._lower_limit = int(lower_limit)
+            else:
+                self._lower_limit = float(lower_limit)
+
+            self.lower_ctrl_limit_signal.emit(self._lower_limit)
+
+    def send_enum_string(self, enum_string):
+        """
+        Send enum_string as tuple of strings.
+
+        Parameters
+        ----------
+        enum_string : int or float
+
+        Returns
+        -------
+        None.
+
+        """
+        if enum_string is not None:
+            try:
+                self._enum_string = tuple(ast.literal_eval(enum_string))
+                self.enum_strings_signal.emit(self._enum_string)
+            except ValueError:
+                logger.debug("Error when converting enum_string")
+
+    def format_type_params(self, type_kwargs):
+        """
+        Format value_type parameters.
+
+        Parameters
+        ----------
+        type_kwargs : dict
+
+        Returns
+        -------
+            dict
+
+        """
+
+        dtype = type_kwargs.get('dtype')
+
+        if dtype is not None:
+            dtype = dtype[0]
+            try:
+                self._type_kwargs['dtype'] = np.dtype(dtype)
+                return self._type_kwargs
+            except TypeError:
+                logger.debug('Cannot convert dtype value=%r', dtype)
+        else:
+            dtype = 'object'
+            try:
+                self._type_kwargs['dtype'] = np.dtype(dtype)
+                return self._type_kwargs
+            except TypeError:
+                logger.debug('Cannot convert dtype value=%r', dtype)
+
+        return self._type_kwargs
+
+    def send_access_state(self):
+        """
+        Send True for all the widgets using Local Plugin.
+
+        Returns
+        -------
+        None.
+
+        """
+        self.write_access_signal.emit(True)
+
+    def convert_value(self, value, value_type):
+        """
+        Convert values to their appropriate types.
+
+        Parameters
+        ----------
+        value :
+            Data for this variable.
+        value_type : str
+            Data type intended for this variable.
+
+        Returns
+        -------
+            The data for this variable converted to its appropriate type
+
+        """
+
+        _type = self._data_types.get(value_type)
+        if _type is not None:
+            try:
+                if value_type == "array":
+                    value = ast.literal_eval(value)
+                return _type(value, **self._type_kwargs)
+            except ValueError:
+                logger.debug('Cannot convert value_type')
+        else:
+            return None
+
+    def send_connection_state(self, conn):
+        self.connected = conn
+        self.connection_state_signal.emit(conn)
+
+    def add_listener(self, channel):
+        super(Connection, self).add_listener(channel)
+        self._configure_local_plugin(channel)
+        # send write access == True to the listeners
+        self.send_access_state()
+        # send new values to the listeners right away
+        self.send_new_value(self.value)
+        # send the precision in case of float values
+        if isinstance(self.value, float):
+            if self._precision_set is None:
+                self.send_precision(self.value)
+            else:
+                self.prec_signal.emit(self._precision_set)
+
+        if channel.connection_slot is not None:
+            self.send_connection_state(conn=True)
+
+        # Connect the put_value slot to the channel's value_signal,
+        # which captures the values sent through the plugin
+        if channel.value_signal is not None:
+            try:
+                channel.value_signal[int].connect(
+                    self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
+            try:
+                channel.value_signal[float].connect(
+                    self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
+            try:
+                channel.value_signal[str].connect(
+                    self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
+            try:
+                channel.value_signal[bool].connect(
+                    self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
+            try:
+                channel.value_signal[np.ndarray].connect(
+                    self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
+
+    @Slot(int)
+    @Slot(float)
+    @Slot(str)
+    @Slot(bool)
+    @Slot(np.ndarray)
+    def put_value(self, new_value):
+        """
+        Slot connected to the channel.value_signal.
+        Updates the value of this local variable and then broadcasts it to
+        the other listeners to this channel
+        """
+        if new_value is not None:
+            # update the attributes here with the new values
+            self.value = new_value
+            # send this value
+            self.send_new_value(new_value)
+            # send precision for float values
+            if isinstance(new_value, float):
+                if self._precision_set is None:
+                    self.send_precision(new_value)
+                else:
+                    self.prec_signal.emit(self._precision_set)
+
+    @staticmethod
+    def precision_for_value(value, max_precision=8):
+        dec = decimal.Decimal(str(value))
+        solution = min((len(str(dec).split('.')[1]), max_precision))
+        return solution
 
 
 class LocalPlugin(PyDMPlugin):
-    """
-    Plugin that only exists in a local space to connect to a local object.
+    protocol = "loc"
+    connection_class = Connection
 
-    The user must:
-    1. self-define protocol to talk to their object
-    2. make sure all attributes and function calls exist and work
-    3. make sure their obj code is not slow or resource-intensive
-    4. call add_widgets or include widgets in the constructor that already
-       have valid channel addresses with this new protocol
+    @staticmethod
+    def get_connection_id(channel):
+        obj = UrlToPython(channel)
+        name = obj.get_info()[1]
+        return name
 
-    If refresh=0 (passive refresh) it is up to the user to call
-    connect_to_update to connect a signal to the "update" connection slot to
-    manage updates.
 
-    Some examples:
+class UrlToPython:
+    def __init__(self, channel):
+        self.channel = channel
 
-    LocalPlugin("motor", motor_obj, [widget1, widget2])
-    motor_obj.field, default refresh    -> "motor://field"
-    motor_obj.pvname, default refresh   -> "motor://pvname"
-    motor_obj.wm(), refresh every 1 sec -> "motor://wm()?t=1"
-    motor_obj.wm(), with no refresh:    -> "motor://wm()?t=0"
-
-    LocalPlugin("ipm", ipm_obj, [widget3])
-    ipm_obj.ch(1), default refresh      -> "ipm://ch(1)"
-    ipm_obj.ch(2), refresh every 2 sec  -> "ipm://ch(2)?t=2"
-
-    Note that function args will be casted as floats or strings for simplicity.
-    """
-
-    def __init__(self, protocol, obj, widgets=[], refresh=1.0):
+    def get_info(self):
         """
-        :param protocol: custom local protocol
-                         only valid for input widgets and their children
-        :type protocol:  str
-        :param obj: object to use for this plugin
-        :type obj:  object
-        :param widgets: widgets to connect to obj
-        :type widgets:  list of QWidget
-        :param refresh: default seconds to wait before checking new values
-                        refresh=0 means no auto-refresh by default
-        :type refresh:  float or int
-        """
-        super(LocalPlugin, self).__init__()
-        app = QCoreApplication.instance()
-        standard_protocol = app.plugins.keys()
-        if protocol in standard_protocol:
-            err = "Protocol {} invalid, same as a standard protocol"
-            raise Exception(err.format(protocol))
-        self.base_protocol = protocol
-        self.protocol = protocol + "://"
-        self.connection_class = connection_class_factory(obj, refresh)
-        self.add_widgets(widgets)
+        Parses a given url into a list and a string.
 
-    def add_widgets(self, widgets):
-        """
-        Apply LocalPlugin to additional widgets.
+        Parameters
+        ----------
 
-        :param widgets: Additional widgets to connect to obj
-        :type widgets:  list of QWidget
+        Returns
+        -------
+        A tuple: (<list>, <str>)
         """
-        target_widgets = []
-        for widget in widgets:
-            target_widgets.append(widget)
-            target_widgets.extend(widget.findChildren(QWidget))
-        for widget in target_widgets:
-            if hasattr(widget, "channels"):
-                for channel in widget.channels():
-                    channel_protocol = str(channel.address).split("://")[0]
-                    if self.base_protocol == channel_protocol:
-                        self.add_connection(channel)
+        address = PyDMPlugin.get_address(self.channel)
+        address = "loc://" + address
+        name = None
+        config = None
 
-    def connect_to_update(self, address, signal):
-        """
-        Connect signal to the update slot of the connection associated with
-        address. This allows a user to manage update timings without polling.
-
-        :param address: Everything after the protocol:// portion of the
-                        channel.address string.
-        :type address:  str
-        :param signal: User signal to connect to the update slot.
-        :type signal:  Signal()
-        """
         try:
-            connection = self.connections[address]
-        except KeyError:
-            err = "No connectino with address {} found!"
-            raise KeyError(err.format(address))
-        signal.connect(connection.update)
+            config = parse.parse_qs(parse.urlsplit(address).query)
+            name = parse.urlsplit(address).netloc
 
-
-def connection_class_factory(obj, refresh=1.0):
-    """
-    Create a Connection class for connecting to fields of an object.
-
-    :param obj: object to use as the data source
-    :type obj:  object
-    :param refresh: default refresh rate for fields
-    :type refresh:  float
-    """
-
-    class Connection(PyDMConnection):
-        """
-        Class that manages object attribute access.
-        """
-
-        def __init__(self, channel, address, parent=None):
-            """
-            Parse address, apply options, and add the first listener.
-            Start polling the field/method if applicable.
-
-            :param channel: :class:`PyDMChannel` object as the first listener.
-            :type channel:  :class:`PyDMChannel`
-            :param address: Name of the field to check, plus additional args.
-                            Currently supported args are t, the refresh rate,
-                            e.g. field?t=3, func(name)?t=4, are both valid.
-                            Additional args must be primitives.
-            :type address:  QString
-            :param parent: PyQt widget that this widget is inside of.
-            :type parent:  QWidget
-            """
-            super(Connection, self).__init__(channel, address, parent)
-            self.obj = obj
-            self.refresh = refresh
-            # remove all whitespace from address and convert to str
-            address = "".join(str(address).split())
-            # separate attr/func calls from settings (opts)
-            parts = address.split("?")
-            # call will be something like "value" or "func(3,key=lock)"
-            call = parts[0]
-            call_elems = call.split("(")
-            # attr is the attribute that we look for in obj
-            self.attr = call_elems[0]
-            # now we check if this is supposed to be a function call
-            if len(call_elems) > 1:
-                # take everything except the )
-                args_string = call_elems[1][:-1]
-                args = args_string.split(",")
-                self.args = []
-                self.kwargs = {}
-                for arg in args:
-                    if len(arg) > 0:
-                        # determine if *args or **kwargs for each
-                        k_split = arg.split("=")
-                        if len(k_split) > 1:
-                            # **kwargs
-                            key = k_split[0]
-                            value = k_split[1]
-                            try:
-                                value = float(value)
-                            except:
-                                pass
-                            self.kwargs[key] = value
-                        else:
-                            # *args
-                            try:
-                                value = float(arg)
-                            except:
-                                if arg == "''" or arg == '""':
-                                    value = ""
-                                else:
-                                    value = arg
-                            self.args.append(value)
-            if len(parts) > 1:
-                # opts will be something like t=4,gds=text
-                opts = parts[1]
-                all_opts = opts.split(",")
-                for o in all_opts:
-                    fld, value = o.split("=")
-                    if fld == "t":
-                        self.refresh = float(value)
+            if not name or not config:
+                raise
+            elif config['init'] is None or config['type'] is None:
+                raise
+        except Exception:
             try:
-                spec = inspect.getargspec(getattr(obj, self.attr))
-                self.nargs = len(spec.args) - 1
-            except:
-                self.nargs = None
-            if self.refresh > 0:
-                self.update_timer = QTimer()
-                self.update_timer.timeout.connect(self.update)
-                self.update_timer.start(1000.0 * self.refresh)
-            self.add_listener(channel)
+                if not name:
+                    raise
+                logger.debug('LocalPlugin connection %s got new listener.', address)
+                return None, name, address
+            except Exeption:
+                msg = "Invalid configuration for LocalPlugin connection. %s"
+                logger.exception(msg, address, exc_info=True)
+                raise ValueError("error in local data plugin input")
 
-        def get_value(self):
-            """
-            Return the current value of this connection.
-
-            :rtyp: Can be any type, user defined.
-            """
-            attr = getattr(self.obj, self.attr)
-            try:
-                args = self.args
-                kwargs = self.kwargs
-                return attr(*args, **kwargs)
-            except AttributeError:
-                return attr
-
-        @Slot()
-        def update(self):
-            """
-            Get a new value from the object and send it to all listeners.
-            If an exception was thrown, send a disconnected signal.
-            """
-            try:
-                value = self.get_value()
-            except:
-                self.send_connection_state(False)
-                return
-            self.send_connection_state(True)
-            self.send_new_value(value)
-
-        def send_new_value(self, value=None):
-            """
-            Send a value to every channel listening for our obj.
-
-            :param value: Value to emit to our listeners.
-            :type value:  int, float, str, or np.ndarray.
-            """
-            if isinstance(value, np.generic):
-                value = np.asscalar(value)
-            if isinstance(value, np.ndarray):
-                self.new_waveform_signal.emit(value)
-            elif isinstance(value, (int, float, str)):
-                self.new_value_signal[type(value)].emit(value)
-            else:
-                self.new_value_signal[str].emit(str(value))
-
-        def send_connection_state(self, conn=None):
-            """
-            Send an update on our connection state to every listener.
-
-            :param conn: True if attribute exists, False otherwise.
-            :type conn:  bool
-            """
-            self.connection_state_signal.emit(conn)
-
-        def is_connected(self):
-            """
-            Return True if we can get a value.
-            """
-            try:
-                self.get_value()
-                return True
-            except:
-                return False
-
-        @Slot(int)
-        @Slot(float)
-        @Slot(str)
-        @Slot(np.ndarray)
-        def put_value(self, value):
-            """
-            Set our object attribute's value. If the attribute is a function,
-            we will execute it.
-
-            :param value: The value we'd like to set in our object.
-            :type value:  int, float, str, or np.ndarray.
-            """
-            # Field: replace value
-            if self.nargs is None:
-                try:
-                    setattr(obj, self.attr, value)
-                except:
-                    return
-            # Function of zero arguments: call function
-            elif self.nargs == 0:
-                try:
-                    getattr(obj, self.attr)()
-                except:
-                    return
-            # Function of one argument: call function with value
-            elif self.nargs == 1:
-                try:
-                    getattr(obj, self.attr)(value)
-                except:
-                    return
-            # Function with many arguments: distribute arguments to args
-            elif self.nargs > 1:
-                try:
-                    getattr(obj, self.attr)(*value)
-                except:
-                    return
-            else:
-                return
-            # If we set a value, update now.
-            self.update()
-
-        @Slot(np.ndarray)
-        def put_waveform(self, value):
-            """
-            This is a deprecated function kept temporarily for compatibility
-            with old code.
-
-            :param value: The waveform value we'd like to put to our attr.
-            :type value:  np.ndarray
-            """
-            self.put_value(value)
-
-        def add_listener(self, channel):
-            """
-            Connect a channel's signals and slots with this object's signals
-            and slots.
-
-            :param channel: The channel to connect.
-            :type channel:  :class:`PyDMChannel`
-            """
-            super(Connection, self).add_listener(channel)
-            if self.is_connected():
-                self.send_connection_state(conn=True)
-                self.update()
-            try:
-                channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
-                channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
-                channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
-            except:
-                pass
-            try:
-                channel.waveform_signal.connect(self.put_value, Qt.QueuedConnection)
-            except:
-                pass
-
-    return Connection
+        return config, name, address
