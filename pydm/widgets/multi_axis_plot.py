@@ -35,6 +35,11 @@ class MultiAxisPlot(PlotItem):
 
         super(MultiAxisPlot, self).__init__(viewBox=viewBox, axisItems=axisItems, **kargs)
 
+        # Signals that will be emitted when mouse wheel or mouse drag events happen
+        self.vb.sigMouseDragged.connect(self.handleMouseDragEvent)
+        self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
+
+
     def addAxis(self, axis, name, plotDataItem=None, setXLink=False, **kwargs):
         """
         Add an axis to this plot by creating a new view box to link it with. Links the PlotDataItem
@@ -93,10 +98,6 @@ class MultiAxisPlot(PlotItem):
         # Rebuilding the layout of the plot item will put the new axis in the correct place
         self.rebuildLayout()
         self.updateStackedViews()
-
-        # Signals that will be emitted when mouse wheel or mouse drag events happen
-        self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
-        self.vb.sigMouseDragged.connect(self.handleMouseDragEvent)
 
     def addStackedView(self, view):
         """
