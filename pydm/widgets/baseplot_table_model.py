@@ -15,7 +15,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
     def __init__(self, plot, parent=None):
         super(BasePlotCurvesModel, self).__init__(parent=parent)
         self._plot = plot
-        self._column_names = ("Label", "Color", "Y-Axis Name", "Y-Axis Orientation", "Line Style",
+        self._column_names = ("Label", "Color", "Y-Axis Name", "Y-Axis Location", "Line Style",
                               "Line Width", "Symbol", "Symbol Size")
 
     @property
@@ -69,7 +69,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
             return str(curve.name())
         elif column_name == "Y-Axis Name":
             return curve.y_axis_name
-        elif column_name == "Y-Axis Orientation":
+        elif column_name == "Y-Axis Location":
             return self.name_for_orientations.get(curve.y_axis_orientation, 'Left')
         elif column_name == "Color":
             return curve.color_string
@@ -108,7 +108,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
             curve.color = value
         elif column_name == "Y-Axis Name":
             curve.y_axis_name = str(value)
-        elif column_name == "Y-Axis Orientation":
+        elif column_name == "Y-Axis Location":
             if value is None:
                 curve.y_axis_orientation = 'left'  # The PyQtGraph default is the left axis
             else:

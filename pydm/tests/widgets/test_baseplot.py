@@ -1,5 +1,8 @@
 import pytest
 import logging
+
+from pydm.widgets.waveformplot import WaveformCurveItem
+
 logger = logging.getLogger(__name__)
 
 from qtpy.QtGui import QColor
@@ -95,3 +98,74 @@ def test_baseplot_construct(qtbot):
 def test_baseplot_add_curve(qtbot):
     base_plot = BasePlot()
     qtbot.addWidget(base_plot)
+
+
+def test_baseplot_multiple_y_axes(qtbot):
+    """ Test that when we add curves while specifying new y-axis names for them, those axes are created and
+        added to the plot correctly. Also confirm that adding a curve to an existing axis works properly. """
+    base_plot = BasePlot()
+    base_plot.clear()
+
+    # Here we add 4 curves to our plot. Because we use 3 unique axis names, we should see that 3 axes are created. The
+    # 4th curve is added with an axis name that already exists, so it should get assigned to that axis rather than
+    # have a new one created for it.
+    plot_curve_item_1 = WaveformCurveItem()
+    plot_curve_item_2 = WaveformCurveItem()
+    plot_curve_item_3 = WaveformCurveItem()
+    plot_curve_item_4 = WaveformCurveItem()
+    base_plot.addCurve(plot_curve_item_1, y_axis_name='Test Axis 1', y_axis_orientation='left')
+    base_plot.addCurve(plot_curve_item_2, y_axis_name='Test Axis 2', y_axis_orientation='left')
+    base_plot.addCurve(plot_curve_item_3, y_axis_name='Test Axis 3', y_axis_orientation='right')
+    base_plot.addCurve(plot_curve_item_4, y_axis_name='Test Axis 1', y_axis_orientation='left')
+    qtbot.addWidget(base_plot)
+
+    # There should be 4 axes (the x-axis, and the 3 new y-axes we have just created)
+    assert len(base_plot.plotItem.axes) == 4
+
+    # Verify the 4 axes are indeed the ones we expect
+    assert 'bottom' in base_plot.plotItem.axes
+    assert 'Test Axis 1' in base_plot.plotItem.axes
+    assert 'Test Axis 2' in base_plot.plotItem.axes
+    assert 'Test Axis 3' in base_plot.plotItem.axes
+
+    # Verify their orientations were set correctly
+    assert base_plot.plotItem.axes['Test Axis 1']['item'].orientation == 'left'
+    assert base_plot.plotItem.axes['Test Axis 2']['item'].orientation == 'left'
+    assert base_plot.plotItem.axes['Test Axis 3']['item'].orientation == 'right'
+
+    # Verify the curves got assigned to the correct axes
+    assert base_plot.plotItem.curvesPerAxis['Test Axis 1'] == 2
+    assert base_plot.plotItem.curvesPerAxis['Test Axis 2'] == 1
+    assert base_plot.plotItem.curvesPerAxis['Test Axis 3'] == 1
+
+
+def test_baseplot_no_added_y_axes(qtbot):
+    """ Confirm that if the user does not name or create any new y-axes, the plot will still work just fine """
+    base_plot = BasePlot()
+    base_plot.clear()
+
+    # Add 3 curves to our plot, but don't bother to use any of the y-axis parameters
+    # in addCurve() leaving them to their default of None
+    plot_curve_item_1 = WaveformCurveItem()
+    plot_curve_item_2 = WaveformCurveItem()
+    plot_curve_item_3 = WaveformCurveItem()
+    base_plot.addCurve(plot_curve_item_1)
+    base_plot.addCurve(plot_curve_item_2)
+    base_plot.addCurve(plot_curve_item_3)
+    qtbot.addWidget(base_plot)
+
+    # There should be 4 axes, the default ones for PyQtGraph (left, bottom, and the mirrored top and right)
+    assert len(base_plot.plotItem.axes) == 4
+
+    # Verify their names were not changed in any way
+    assert 'bottom' in base_plot.plotItem.axes
+    assert 'left' in base_plot.plotItem.axes
+    assert 'top' in base_plot.plotItem.axes
+    assert 'right' in base_plot.plotItem.axes
+
+    # Verify their orientations were not changed in any way
+    assert base_plot.plotItem.axes['bottom']['item'].orientation == 'bottom'
+    assert base_plot.plotItem.axes['left']['item'].orientation == 'left'
+    assert base_plot.plotItem.axes['top']['item'].orientation == 'top'
+    assert base_plot.plotItem.axes['right']['item'].orientation == 'right'
+
