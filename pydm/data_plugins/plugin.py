@@ -10,7 +10,7 @@ from .. import config
 
 
 class PyDMConnection(QObject):
-    new_value_signal = Signal([float], [int], [str], [ndarray])
+    new_value_signal = Signal([float], [int], [str], [ndarray], [bool])
     connection_state_signal = Signal(bool)
     new_severity_signal = Signal(int)
     write_access_signal = Signal(bool)
@@ -49,6 +49,10 @@ class PyDMConnection(QObject):
                 pass
             try:
                 self.new_value_signal[ndarray].connect(channel.value_slot, Qt.QueuedConnection)
+            except TypeError:
+                pass
+            try:
+                self.new_value_signal[bool].connect(channel.value_slot, Qt.QueuedConnection)
             except TypeError:
                 pass
 
@@ -96,6 +100,10 @@ class PyDMConnection(QObject):
                     pass
                 try:
                     self.new_value_signal[ndarray].disconnect(channel.value_slot)
+                except TypeError:
+                    pass
+                try:
+                    self.new_value_signal[bool].disconnect(channel.value_slot)
                 except TypeError:
                     pass
 
@@ -148,7 +156,6 @@ class PyDMConnection(QObject):
     def close(self):
         pass
 
-
 class PyDMPlugin(object):
     protocol = None
     connection_class = PyDMConnection
@@ -163,9 +170,14 @@ class PyDMPlugin(object):
     def get_address(channel):
         return protocol_and_address(channel.address)[1]
 
+    @staticmethod
+    def get_connection_id(channel):
+        return PyDMPlugin.get_address(channel)
+
     def add_connection(self, channel):
         from pydm.utilities import is_qt_designer
         with self.lock:
+            connection_id = self.get_connection_id(channel)
             address = self.get_address(channel)
             # If this channel is already connected to this plugin lets ignore
             if channel in self.channels:
@@ -176,19 +188,19 @@ class PyDMPlugin(object):
                 return
 
             self.channels.add(channel)
-            if address in self.connections:
-                self.connections[address].add_listener(channel)
+            if connection_id in self.connections:
+                self.connections[connection_id].add_listener(channel)
             else:
-                self.connections[address] = self.connection_class(channel, address,
-                                                                  self.protocol)
+                self.connections[connection_id] = self.connection_class(
+                    channel, address, self.protocol)
 
     def remove_connection(self, channel, destroying=False):
         with self.lock:
-            address = self.get_address(channel)
-            if address in self.connections and channel in self.channels:
-                self.connections[address].remove_listener(channel,
-                                                          destroying=destroying)
+            connection_id = self.get_connection_id(channel)
+            if connection_id in self.connections and channel in self.channels:
+                self.connections[connection_id].remove_listener(
+                    channel, destroying=destroying)
                 self.channels.remove(channel)
-                if self.connections[address].listener_count < 1:
-                    self.connections[address].deleteLater()
-                    del self.connections[address]
+                if self.connections[connection_id].listener_count < 1:
+                    self.connections[connection_id].deleteLater()
+                    del self.connections[connection_id]
