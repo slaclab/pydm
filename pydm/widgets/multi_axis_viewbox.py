@@ -8,7 +8,7 @@ class MultiAxisViewBox(ViewBox):
     """
     MultiAxisViewBox is a PyQtGraph ViewBox subclass that has support for adding multiple y axes for
     PyDM's use cases. Each unique axis will be assigned its own MultiAxisViewBox for managing its
-    range and associated curves. Any events handled by the top level view box will be propagated through
+    range and associated curves. Any events handled by the any view box will be propagated through
     to all views in the stack to ensure that the plot remains consistent with user input.
 
     Parameters
@@ -17,7 +17,7 @@ class MultiAxisViewBox(ViewBox):
             The parent widget for this plot
     """
 
-    # These signals will be emitted by the top level view when it handles these events, and will be connected
+    # These signals will be emitted by the view when it handles these events, and will be connected
     # to the event handling code of the stacked views
     sigMouseDragged = Signal(object, object, object)
     sigMouseWheelZoomed = Signal(object, object, object)

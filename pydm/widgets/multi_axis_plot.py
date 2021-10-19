@@ -94,6 +94,7 @@ class MultiAxisPlot(PlotItem):
         self.rebuildLayout()
         self.updateStackedViews()
 
+        # Signals that will be emitted when mouse wheel or mouse drag events happen
         self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
         self.vb.sigMouseDragged.connect(self.handleMouseDragEvent)
 
@@ -146,6 +147,8 @@ class MultiAxisPlot(PlotItem):
 
         if plotDataItem.name() is not None and axisToLink.labelText is not None:
             if axisToLink.labelText is not None:
+                # Joins together the labels from the curves for display on their shared axis. The label
+                # text expects html, so this will set it to be, for example, "label 1  &  label 2"
                 axisToLink.setLabel(axisToLink.labelText + '&nbsp;&nbsp;&&nbsp;&nbsp;' + plotDataItem.name())
             else:
                 axisToLink.setLabel(plotDataItem.name())
@@ -190,7 +193,7 @@ class MultiAxisPlot(PlotItem):
                 oldAxis.scene().removeItem(oldAxis)
                 oldAxis.unlinkFromView()
 
-        # Retain the x axis (will need to be updated if we eventually support multiple x axes)
+        # Retain the x axis
         bottomAxis = self.axes['bottom']
         self.axes = {'bottom': bottomAxis}
 
