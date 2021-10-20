@@ -43,6 +43,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             PyDMRelatedDisplayButton.RULE_PROPERTIES.update(
                 {'Text': ['setText', str]})
 
+        if 'Filename' not in PyDMRelatedDisplayButton.RULE_PROPERTIES:
+            PyDMRelatedDisplayButton.RULE_PROPERTIES = PyDMPrimitiveWidget.RULE_PROPERTIES.copy()
+            PyDMRelatedDisplayButton.RULE_PROPERTIES.update(
+                {'Filenames': ['filenames', list]})
+
         self.mouseReleaseEvent = self.push_button_release_event
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.show_context_menu)
