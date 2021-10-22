@@ -14,7 +14,7 @@ class MultiAxisViewBox(ViewBox):
     Parameters
     ----------
     parent: QGraphicsWidget, optional
-            The parent widget for this plot
+        The parent widget for this plot
     """
 
     # These signals will be emitted by the view when it handles these events, and will be connected
@@ -36,10 +36,10 @@ class MultiAxisViewBox(ViewBox):
         ev: QEvent
             The event that was generated
         axis: int
-             Zero if the event happened on the x axis, one for any y axis, and None for no associated axis
+            Zero if the event happened on the x axis, one for any y axis, and None for no associated axis
         fromSignal: bool
-             True if this event was generated from a signal rather than a user event. Used to ensure we only propagate
-             the even once.
+            True if this event was generated from a signal rather than a user event. Used to ensure we only propagate
+            the even once.
         """
         if axis != ViewBox.YAxis and not fromSignal:
             # This event happened within the view box area itself or the x axis so propagate to any stacked view boxes
@@ -56,10 +56,10 @@ class MultiAxisViewBox(ViewBox):
         ev: QEvent
             The event that was generated
         axis: int
-             Zero if the event happened on the x axis, one for any y axis, and None for no associated axis
+            Zero if the event happened on the x axis, one for any y axis, and None for no associated axis
         fromSignal: bool
-             True if this event was generated from a signal rather than a user event. Used to ensure we only propagate
-             the even once.
+            True if this event was generated from a signal rather than a user event. Used to ensure we only propagate
+            the even once.
         """
         if axis != ViewBox.YAxis and not fromSignal:
             # This event happened within the view box area itself or the x axis so propagate to any stacked view boxes
@@ -80,8 +80,6 @@ class MultiAxisViewBox(ViewBox):
             The key press event that was generated
         """
 
-        # TODO: This is a start of a re-write of the history functionality, but more needs to be
-        # done to get it into a state where history is better preserved.
         ev.accept()
         if ev.text() == '-':
             self.scaleHistory(-1)
@@ -99,11 +97,9 @@ class MultiAxisViewBox(ViewBox):
         Parameters
         ----------
         d: int
-           1 to go forwards, -1 to go backwards, 0 to reset to the original auto-scale
+            1 to go forwards, -1 to go backwards, 0 to reset to the original auto-scale
         """
 
-        # TODO: This is a start of a re-write of the history functionality, but more needs to be
-        # done to get it into a state where history is better preserved.
         self.sigHistoryChanged.emit(d)
 
         if len(self.axHistory) != 0:

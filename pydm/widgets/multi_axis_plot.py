@@ -13,11 +13,11 @@ class MultiAxisPlot(PlotItem):
     Parameters
     ----------
     parent: QGraphicsWidget, optional
-            The parent widget for this plot
+        The parent widget for this plot
     axisItems: Dict[str, AxisItem]
-               Dictionary instructing the PlotItem to use pre-constructed items for its axes
+        Dictionary instructing the PlotItem to use pre-constructed items for its axes
     **kargs: optional
-             PlotItem keyword arguments
+        PlotItem keyword arguments
     """
 
     def __init__(self, parent=None, axisItems=None, **kargs):
@@ -47,15 +47,15 @@ class MultiAxisPlot(PlotItem):
         Parameters
         ----------
         axis: AxisItem
-              The axis to be added to this PlotItem. A new view box will be created and linked with this axis
+            The axis to be added to this PlotItem. A new view box will be created and linked with this axis
         name: str
-              The names associated with this axis item. Will be used by this PlotItem to refer to this axis
+            The names associated with this axis item. Will be used by this PlotItem to refer to this axis
         plotDataItem: PlotDataItem
-                      The plot data that will be linked with the created axis. If None, then no plot data will be linked
-                      with this axis to start with
+            The plot data that will be linked with the created axis. If None, then no plot data will be linked
+            with this axis to start with
         setXLink: bool
-                  Whether or not to link the created view to the x axis of this plot item. Linking will disable
-                  autorange on the x axis for the view, so only do this if you do not want the view to update the x axis
+            Whether or not to link the created view to the x axis of this plot item. Linking will disable
+            autorange on the x axis for the view, so only do this if you do not want the view to update the x axis
         """
 
         # Create a new view box to link this axis with
@@ -106,7 +106,7 @@ class MultiAxisPlot(PlotItem):
         Parameters
         ----------
         view: ViewBox
-              The view to be added.
+            The view to be added.
         """
 
         self.stackedViews.add(view)
@@ -131,9 +131,9 @@ class MultiAxisPlot(PlotItem):
         Parameters
         ----------
         plotDataIem: PlotDataItem
-              The data to link with the input axis
+            The data to link with the input axis
         axisName: str
-              The name of the axis to link the data with
+            The name of the axis to link the data with
         """
 
         axisToLink = self.axes.get(axisName)['item']
@@ -165,7 +165,7 @@ class MultiAxisPlot(PlotItem):
         Parameters
         ----------
         axisName: str
-                  The name of the axis that a curve is being removed from
+            The name of the axis that a curve is being removed from
         """
 
         self.curvesPerAxis[axisName] -= 1
@@ -241,11 +241,11 @@ class MultiAxisPlot(PlotItem):
         Parameters
         ----------
         view: ViewBox
-              The view which emitted the signal that went to this slot
+            The view which emitted the signal that went to this slot
         ev:   QEvent
-              The event to propagate
+            The event to propagate
         axis: int
-              The axis (or None) that the event happened on
+            The axis (or None) that the event happened on
         """
         for stackedView in self.stackedViews:
             if stackedView is not view:
@@ -258,11 +258,11 @@ class MultiAxisPlot(PlotItem):
         Parameters
         ----------
         view: ViewBox
-              The view which emitted the signal that went to this slot
+            The view which emitted the signal that went to this slot
         ev:   QEvent
-              The event to propagate
+            The event to propagate
         axis: int
-              The axis (or None) that the event happened on
+            The axis (or None) that the event happened on
         """
         for stackedView in self.stackedViews:
             if stackedView is not view:

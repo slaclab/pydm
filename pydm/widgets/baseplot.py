@@ -154,6 +154,7 @@ class BasePlotCurveItem(PlotDataItem):
     def y_axis_orientation(self):
         """
         Return the orientation of the y-axis this curve is associated with. Will be 'left' or 'right'
+        See: https://pyqtgraph.readthedocs.io/en/latest/graphicsItems/axisitem.html
         Returns
         -------
         str
@@ -164,7 +165,6 @@ class BasePlotCurveItem(PlotDataItem):
     def y_axis_orientation(self, y_axis_orientation):
         """
         Set the orientation of the y-axis this curve is associated with. Must be 'left' or 'right'
-        See: https://pyqtgraph.readthedocs.io/en/latest/graphicsItems/axisitem.html
         Parameters
         ----------
         y_axis_orientation: str
@@ -390,18 +390,18 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         Parameters
         ----------
         plot_data_item: BasePlotCurveItem
-                        The curve to add to this plot
+            The curve to add to this plot
         curve_color: QColor, optional
-                     The color to draw the curve and axis label in
+            The color to draw the curve and axis label in
         y_axis_name: str, optional
-                     The name of the axis to link the curve with. If this is the first time seeing this name,
-                     then a new axis will be created for it. Will use the default PyQtGraph name of 'left' if
-                     not supplied.
+            The name of the axis to link the curve with. If this is the first time seeing this name,
+            then a new axis will be created for it. Will use the default PyQtGraph name of 'left' if
+            not supplied.
         y_axis_orientation: str, optional
-                            The orientation for the axis. Will be one of either 'right' or 'left'. Attempting to change
-                            the orientation of an existing axis with associated data will have no effect. Create a new
-                            axis or unlink the existing data if a different orientation is required. Defaults to
-                            'left' if not supplied.
+            The orientation for the axis. Will be one of either 'right' or 'left'. Attempting to change
+            the orientation of an existing axis with associated data will have no effect. Create a new
+            axis or unlink the existing data if a different orientation is required. Defaults to
+            'left' if not supplied.
         """
 
         if curve_color is None:
@@ -432,16 +432,20 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     def addAxis(self, plot_data_item, name, orientation):
         """
-        Create an AxisItem with the input name and orientation, and add it to this plot. Raises an exception if the
-        orientation parameter is not either 'left' or 'right'.
+        Create an AxisItem with the input name and orientation, and add it to this plot.
         Parameters
         ----------
         plot_data_item: BasePlotCurveItem
-                        The curve that will be linked with this new axis
+            The curve that will be linked with this new axis
         name: str
-              The name that will be assigned to this axis
+            The name that will be assigned to this axis
         orientation: str
-                     The orientation of this axis, must be in 'left' or 'right'
+            The orientation of this axis, must be in 'left' or 'right'
+
+        Raises
+        ------
+        Exception
+            Raised by PyQtGraph if the orientation is not in 'left' or 'right'
         """
 
         axis = AxisItem(orientation)
