@@ -8,6 +8,7 @@ from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol
 
+
 class ScatterPlotCurveItem(BasePlotCurveItem):
     _channels = ('x_channel', 'y_channel')
 

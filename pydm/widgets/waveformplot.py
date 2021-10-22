@@ -64,7 +64,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         self.y_channel = None
         self.x_address = x_addr
         self.y_address = y_addr
-        #The data in x_waveform and y_waveform are what actually get plotted.
+        # The data in x_waveform and y_waveform are what actually get plotted.
         self.x_waveform = None
         self.y_waveform = None
         # Whenever the channels update, they immediately send latest_x and latest_y.
@@ -205,7 +205,6 @@ class WaveformCurveItem(BasePlotCurveItem):
         # Don't redraw unless we already have Y data.
         if self.latest_y is not None:
             self.update_waveforms_if_ready()
-            
 
     @Slot(np.ndarray)
     def receiveYWaveform(self, new_waveform):

@@ -175,9 +175,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
         if self._update_mode == PyDMTimePlot.SynchronousMode:
             self.data_buffer = np.roll(self.data_buffer, -1)
-            #The first array row is to record timestamps, when a new value arrives.
+            # The first array row is to record timestamps, when a new value arrives.
             self.data_buffer[0, self._bufferSize - 1] = time.time()
-            #The second array row is to record the actual values.
+            # The second array row is to record the actual values.
             self.data_buffer[1, self._bufferSize - 1] = new_value
 
             if self.points_accumulated < self._bufferSize:

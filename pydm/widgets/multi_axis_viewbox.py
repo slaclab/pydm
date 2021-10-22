@@ -1,5 +1,3 @@
-import weakref
-
 from pyqtgraph import GraphicsWidget, ViewBox
 from qtpy.QtCore import Qt, Signal
 
@@ -45,7 +43,6 @@ class MultiAxisViewBox(ViewBox):
             # This event happened within the view box area itself or the x axis so propagate to any stacked view boxes
             self.sigMouseWheelZoomed.emit(self, ev, axis)
         super(MultiAxisViewBox, self).wheelEvent(ev, axis)
-
 
     def mouseDragEvent(self, ev, axis=None, fromSignal=False):
         """

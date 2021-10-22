@@ -3,7 +3,7 @@ from qtpy.QtGui import QColor, QBrush
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QRect
 from qtpy.QtWidgets import QToolTip
 from .. import utilities
-from pyqtgraph import AxisItem, PlotWidget, PlotDataItem, mkPen, ViewBox, InfiniteLine, SignalProxy, CurvePoint, TextItem
+from pyqtgraph import AxisItem, PlotWidget, PlotDataItem, mkPen, ViewBox, InfiniteLine, SignalProxy
 from collections import OrderedDict
 from .base import PyDMPrimitiveWidget, widget_destroyed
 from .multi_axis_plot import MultiAxisPlot
@@ -192,7 +192,6 @@ class BasePlotCurveItem(PlotDataItem):
         """
         self._y_axis_name = axis_name
 
-
     @property
     def lineStyle(self):
         """
@@ -345,7 +344,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.redraw_timer = QTimer(self)
         self.redraw_timer.timeout.connect(self.redrawPlot)
 
-        self._redraw_rate = 30 # Redraw at 30 Hz by default.
+        self._redraw_rate = 30  # Redraw at 30 Hz by default.
         self.maxRedrawRate = self._redraw_rate
         self._curves = []
         self._x_labels = []
@@ -423,7 +422,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             self.plotItem.linkDataToAxis(plot_data_item, y_axis_name)
         else:
             # Otherwise we create a brand new axis for this data
-            self.addAxis(plot_data_item,  y_axis_name, y_axis_orientation)
+            self.addAxis(plot_data_item, y_axis_name, y_axis_orientation)
         self.redraw_timer.start()
         # Connect channels
         for chan in plot_data_item.channels():
@@ -453,7 +452,6 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         # If the x axis is just timestamps, we don't want autorange on the x axis
         setXLink = hasattr(self, '_plot_by_timestamps') and self._plot_by_timestamps
         self.plotItem.addAxis(axis, name=name, plotDataItem=plot_data_item, setXLink=setXLink)
-
 
     def removeCurve(self, plot_item):
         if plot_item.y_axis_name in self.plotItem.axes:
@@ -760,7 +758,6 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
         self._min_y = new_min_y_range
         self.plotItem.setYRange(self._min_y, self._max_y, padding=0)
-
 
     def getMaxYRange(self):
         """

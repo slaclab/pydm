@@ -39,7 +39,6 @@ class MultiAxisPlot(PlotItem):
         self.vb.sigMouseDragged.connect(self.handleMouseDragEvent)
         self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
 
-
     def addAxis(self, axis, name, plotDataItem=None, setXLink=False, **kwargs):
         """
         Add an axis to this plot by creating a new view box to link it with. Links the PlotDataItem
