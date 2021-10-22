@@ -50,7 +50,7 @@ class MultiAxisPlot(PlotItem):
             The axis to be added to this PlotItem. A new view box will be created and linked with this axis
         name: str
             The names associated with this axis item. Will be used by this PlotItem to refer to this axis
-        plotDataItem: PlotDataItem
+        plotDataItem : PlotDataItem, optional
             The plot data that will be linked with the created axis. If None, then no plot data will be linked
             with this axis to start with
         setXLink: bool
