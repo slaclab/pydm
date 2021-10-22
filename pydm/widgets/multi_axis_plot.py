@@ -21,10 +21,9 @@ class MultiAxisPlot(PlotItem):
     """
 
     def __init__(self, parent=None, axisItems=None, **kargs):
-        GraphicsWidget.__init__(self, parent)
-
         # Create a view box that will support multiple axes to pass to the PyQtGraph PlotItem
-        viewBox = MultiAxisViewBox(parent=self)
+        viewBox = MultiAxisViewBox()
+        super(MultiAxisPlot, self).__init__(viewBox=viewBox, axisItems=axisItems, **kargs)
 
         self.curvesPerAxis = Counter()  # A simple mapping of AxisName to a count of curves that using that axis
 
@@ -32,8 +31,6 @@ class MultiAxisPlot(PlotItem):
         # in order to support multiple axes on the same plot. This set will remain empty if the plot has only one set of axes
         self.stackedViews = weakref.WeakSet()
         viewBox.sigResized.connect(self.updateStackedViews)
-
-        super(MultiAxisPlot, self).__init__(viewBox=viewBox, axisItems=axisItems, **kargs)
 
         # Signals that will be emitted when mouse wheel or mouse drag events happen
         self.vb.sigMouseDragged.connect(self.handleMouseDragEvent)
