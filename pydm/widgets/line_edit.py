@@ -115,7 +115,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                     self.send_value_signal[np.ndarray].emit(arr_value)
             elif self.channeltype == bool:
                 try:
-                    val = bool(strtobool(send_value))
+                    val = bool(PyDMLineEdit.strtobool(send_value))
                     self.send_value_signal[bool].emit(val)
                     # might want to add error to application screen
                 except ValueError:
