@@ -36,7 +36,7 @@ class MultiAxisPlot(PlotItem):
         self.vb.sigMouseDragged.connect(self.handleMouseDragEvent)
         self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
 
-    def addAxis(self, axis, name, plotDataItem=None, setXLink=False, **kwargs):
+    def addAxis(self, axis, name, plotDataItem=None, setXLink=False):
         """
         Add an axis to this plot by creating a new view box to link it with. Links the PlotDataItem
         with this axis if provided
@@ -66,27 +66,7 @@ class MultiAxisPlot(PlotItem):
         axis.linkToView(view)
 
         if plotDataItem is not None:
-            # Add the item to the view, and include it in this plot item's list of data items
-            view.addItem(plotDataItem)
-            self.dataItems.append(plotDataItem)
-
-            # Maintain all configurable options set by this plot
-            (alpha, auto) = self.alphaState()
-            plotDataItem.setAlpha(alpha, auto)
-            plotDataItem.setFftMode(self.ctrl.fftCheck.isChecked())
-            plotDataItem.setDownsampling(*self.downsampleMode())
-            plotDataItem.setClipToView(self.clipToViewMode())
-            plotDataItem.setPointMode(self.pointMode())
-
-            # Add to average if needed
-            self.updateParamList()
-            if self.ctrl.averageGroup.isChecked() and 'skipAverage' not in kwargs:
-                self.addAvgCurve(plotDataItem)
-
-            if self.legend is not None and plotDataItem.name() is not None:
-                self.legend.addItem(plotDataItem, name=plotDataItem.name())
-
-            self.curvesPerAxis[name] += 1
+            self.linkDataToAxis(plotDataItem, name)
 
         self.scene().addItem(view)
         self.addStackedView(view)
@@ -130,7 +110,15 @@ class MultiAxisPlot(PlotItem):
             The data to link with the input axis
         axisName: str
             The name of the axis to link the data with
+
+        Raises
+        ------
+        KeyError
+            If the input axis name is not actually the name of an axis on this plot
         """
+
+        if plotDataItem is None:
+            return
 
         axisToLink = self.axes.get(axisName)['item']
 
@@ -141,15 +129,29 @@ class MultiAxisPlot(PlotItem):
             plotDataItem.forgetViewBox()
 
         axisToLink.linkedView().addItem(plotDataItem)
+        self.dataItems.append(plotDataItem)
+        # Maintain all configurable options set by this plot
+        (alpha, auto) = self.alphaState()
+        plotDataItem.setAlpha(alpha, auto)
+        plotDataItem.setFftMode(self.ctrl.fftCheck.isChecked())
+        plotDataItem.setDownsampling(*self.downsampleMode())
+        plotDataItem.setClipToView(self.clipToViewMode())
+        plotDataItem.setPointMode(self.pointMode())
 
-        if plotDataItem.name() is not None and axisToLink.labelText is not None:
-            if axisToLink.labelText is not None:
+        # Add to average if needed
+        self.updateParamList()
+        if self.ctrl.averageGroup.isChecked():
+            self.addAvgCurve(plotDataItem)
+
+        if plotDataItem.name():
+            if axisToLink.labelText:
                 # Joins together the labels from the curves for display on their shared axis. The label
                 # text expects html, so this will set it to be, for example, "label 1  &  label 2"
-                axisToLink.setLabel(axisToLink.labelText + '&nbsp;&nbsp;&&nbsp;&nbsp;' + plotDataItem.name())
+                axisToLink.setLabel(axisToLink.labelText + '&nbsp;&nbsp;&&nbsp;&nbsp;' + plotDataItem.name(),
+                                    color=plotDataItem.color_string)
             else:
-                axisToLink.setLabel(plotDataItem.name())
-        if self.legend is not None and plotDataItem.name() is not None:
+                axisToLink.setLabel(plotDataItem.name(), color=plotDataItem.color_string)
+        if self.legend is not None and plotDataItem.name():
             self.legend.addItem(plotDataItem, name=plotDataItem.name())
 
         self.curvesPerAxis[axisName] += 1

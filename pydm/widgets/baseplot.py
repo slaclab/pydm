@@ -448,7 +448,6 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
 
         axis = AxisItem(orientation)
-        axis.setLabel(plot_data_item.name(), color=plot_data_item.color_string)
         # If the x axis is just timestamps, we don't want autorange on the x axis
         setXLink = hasattr(self, '_plot_by_timestamps') and self._plot_by_timestamps
         self.plotItem.addAxis(axis, name=name, plotDataItem=plot_data_item, setXLink=setXLink)
