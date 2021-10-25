@@ -450,7 +450,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         axis = AxisItem(orientation)
         # If the x axis is just timestamps, we don't want autorange on the x axis
         setXLink = hasattr(self, '_plot_by_timestamps') and self._plot_by_timestamps
-        self.plotItem.addAxis(axis, name=name, plotDataItem=plot_data_item, setXLink=setXLink)
+        self.plotItem.addAxis(axis, name=name, plotDataItem=plot_data_item, setXLink=setXLink,
+                              enableAutoRangeX=self.getAutoRangeX(), enableAutoRangeY=self.getAutoRangeY())
 
     def removeCurve(self, plot_item):
         if plot_item.y_axis_name in self.plotItem.axes:

@@ -40,7 +40,7 @@ class MultiAxisPlot(PlotItem):
         self.vb.sigMouseDragged.connect(self.handleMouseDragEvent)
         self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
 
-    def addAxis(self, axis, name, plotDataItem=None, setXLink=False):
+    def addAxis(self, axis, name, plotDataItem=None, setXLink=False, enableAutoRangeX=True, enableAutoRangeY=True):
         """
         Add an axis to this plot by creating a new view box to link it with. Links the PlotDataItem
         with this axis if provided
@@ -56,11 +56,17 @@ class MultiAxisPlot(PlotItem):
         setXLink: bool
             Whether or not to link the created view to the x axis of this plot item. Linking will disable
             autorange on the x axis for the view, so only do this if you do not want the view to update the x axis
+        enableAutoRangeX: bool
+            Whether or not the new view should automatically update its x range when receiving new data
+        enableAutoRangeY: bool
+            Whether or not the new view should automatically update its y range when receiving new data
         """
 
         # Create a new view box to link this axis with
         self.axes[str(name)] = {'item': axis, 'pos': None}  # The None will become an actual position in rebuildLayout() below
         view = MultiAxisViewBox()
+        view.enableAutoRange(axis=ViewBox.XAxis, enable=enableAutoRangeX)
+        view.enableAutoRange(axis=ViewBox.YAxis, enable=enableAutoRangeY)
         if setXLink:
             view.setXLink(self)  # Link this view to the shared x-axis of this plot item
         else:
@@ -177,6 +183,46 @@ class MultiAxisPlot(PlotItem):
             oldAxis.scene().removeItem(oldAxis)
             oldAxis.unlinkFromView()
             del self.axes[axisName]
+
+    def setXRange(self, minX, maxX, padding=0, update=True):
+        """
+        Set the x axis range of this plot item's view box, as well as all view boxes in its stack.
+        Parameters
+        ----------
+        minX: float
+            The minimum value for display on the x axis
+        maxX: float
+            The maximum value for display on the x axis
+        padding: float
+            Added on to the minimum and maximum values to display a little extra
+        update: bool
+            If True, update the range of the ViewBox immediately. Otherwise, the update
+            is deferred until before the next render.
+        """
+
+        for view in self.stackedViews:
+            view.setXRange(minX, maxX, padding=padding)
+        super(MultiAxisPlot, self).setXRange(minX, maxX, padding=padding)
+
+    def setYRange(self, minY, maxY, padding=0, update=True):
+        """
+        Set the y axis range of this plot item's view box, as well as all view boxes in its stack.
+        Parameters
+        ----------
+        minY: float
+            The minimum value for display on the y axis
+        maxY: float
+            The maximum value for display on the y axis
+        padding: float
+            Added on to the minimum and maximum values to display a little extra
+        update: bool
+            If True, update the range of the ViewBox immediately. Otherwise, the update
+            is deferred until before the next render.
+        """
+
+        for view in self.stackedViews:
+            view.setYRange(minY, maxY, padding=padding)
+        super(MultiAxisPlot, self).setYRange(minY, maxY, padding=padding)
 
     def clear(self):
         """
