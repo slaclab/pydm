@@ -382,7 +382,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
         return ret
 
-    def addCurve(self, plot_data_item, curve_color=None, y_axis_name=None, y_axis_orientation=None):
+    def addCurve(self, plot_data_item, curve_color=None, y_axis_name=None, y_axis_orientation='left'):
         """
         Adds a curve to this plot. If the y axis parameters are specified, either link this curve to an existing
         axis if that axis is already part of this plot, or create a new one and link the curve to it.
