@@ -48,7 +48,7 @@ class CalcThread(QThread):
         self._names = []
         self._channels = []
         self._value = None
-        self._values = collections.defaultdict(None)
+        self._values = collections.defaultdict(lambda: None)
         self._connections = collections.defaultdict(lambda: False)
         self._expression = self.config.get('expr', '')[0]
 
