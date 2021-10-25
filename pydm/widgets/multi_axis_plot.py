@@ -1,4 +1,8 @@
 import weakref
+try:
+    from html import escape  # Python 3
+except ImportError:
+    from cgi import escape  # Can't only use this since it was removed in Python 3.8 and up
 from collections import Counter
 from pyqtgraph import GraphicsWidget, PlotItem, ViewBox
 from .multi_axis_viewbox import MultiAxisViewBox
@@ -147,7 +151,7 @@ class MultiAxisPlot(PlotItem):
             if axisToLink.labelText:
                 # Joins together the labels from the curves for display on their shared axis. The label
                 # text expects html, so this will set it to be, for example, "label 1  &  label 2"
-                axisToLink.setLabel(axisToLink.labelText + '&nbsp;&nbsp;&&nbsp;&nbsp;' + plotDataItem.name(),
+                axisToLink.setLabel(escape(axisToLink.labelText + ' & ' + plotDataItem.name()),
                                     color=plotDataItem.color_string)
             else:
                 axisToLink.setLabel(plotDataItem.name(), color=plotDataItem.color_string)
