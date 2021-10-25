@@ -121,8 +121,6 @@ class CalcThread(QThread):
 
         if self.listen_for_update is None or name in self.listen_for_update:
             self._calculate.set()
-        else:
-            return
 
     def callback_conn(self, name, value):
         """
