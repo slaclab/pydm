@@ -194,17 +194,17 @@ class Connection(PyDMConnection):
             return
 
         try:
-            url_data = UrlToPython(channel).get_info()
+            url_data = UrlToPython(channel)
         except ValueError("Not enough information"):
             logger.debug('Invalid configuration for Calc Plugin connection', exc_info=True)
             return
 
-        self._configuration['name'] = url_data[1]
-        self._configuration.update(url_data[0])
+        self._configuration['name'] = url_data.name
+        self._configuration.update(url_data.config)
         self._waiting_config = False
 
         self._calc_thread = CalcThread(self._configuration)
-        self._calc_thread.setObjectName("calc_{}".format(url_data[1]))
+        self._calc_thread.setObjectName("calc_{}".format(url_data.name))
         self._calc_thread.new_data_signal.connect(self.receive_new_data,
                                                   Qt.QueuedConnection)
         self._calc_thread.start()
@@ -239,45 +239,41 @@ class CalculationPlugin(PyDMPlugin):
     @staticmethod
     def get_connection_id(channel):
         obj = UrlToPython(channel)
-        name = obj.get_info()[1]
-        return name
+        return obj.name
 
 
 class UrlToPython:
     def __init__(self, channel):
         self.channel = channel
+        self.address = "calc://" + PyDMPlugin.get_address(self.channel)
+        self.name = None
+        self.config = None
+        self.get_info()
 
     def get_info(self):
         """
         Parses a given url into a list and a string.
 
-        Parameters
-        ----------
-
         Returns
         -------
         A tuple: (<list>, <str>)
         """
-        address = PyDMPlugin.get_address(self.channel)
-        address = "calc://" + address
-        name = None
-        config = None
 
         try:
-            config = parse.parse_qs(parse.urlsplit(address).query)
-            name = parse.urlsplit(address).netloc
+            self.config = parse.parse_qs(parse.urlsplit(self.address).query)
+            self.name = parse.urlsplit(self.address).netloc
 
-            if not name or not config:
+            if not self.name or not self.config:
                 raise
         except Exception:
             try:
-                if not name:
+                if not self.name:
                     raise
-                logger.debug('Calc Plugin  connection %s got new listener.', address)
-                return None, name, address
+                logger.debug('Calc Plugin  connection %s got new listener.', self.address)
+                return None, self.name, self.address
             except Exeption:
                 msg = "Invalid configuration for Calc Plugin  connection. %s"
-                logger.exception(msg, address, exc_info=True)
+                logger.exception(msg, self.address, exc_info=True)
                 raise ValueError("error in Calc Plugin plugin input")
 
-        return config, name, address
+        return True
