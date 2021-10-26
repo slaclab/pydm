@@ -35,6 +35,7 @@ class CalcThread(QThread):
                 'epics_string': epics_string}
 
     new_data_signal = Signal(dict)
+    RESERVED_FIELD = ["update", "expr", "name"]
 
     def __init__(self, config, *args, **kwargs):
         QThread.__init__(self, *args, **kwargs)
@@ -54,7 +55,7 @@ class CalcThread(QThread):
 
         channels = {}
         for key, channel in self.config.items():
-            if key != 'update' and key != 'expr' and key != 'name':
+            if key not in CalcThread.RESERVED_FIELD:
                 channels[key] = channel[0]
 
         update = self.config.get('update', None)
@@ -72,7 +73,7 @@ class CalcThread(QThread):
 
     @property
     def connected(self):
-        return all(v for _, v in self._connections.items())
+        return all(self._connections.values())
 
     def _connect(self):
         for ch in self._channels:
