@@ -165,12 +165,13 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.setShowGrid(True)
         self.tbl_channels.setCornerButtonEnabled(False)
         self.tbl_channels.model().dataChanged.connect(self.tbl_channels_changed)
-        headers = ["Channel", "Trigger?"]
+        headers = ["Channel", "Trigger?", "Enum?"]
         self.tbl_channels.setColumnCount(len(headers))
         self.tbl_channels.setHorizontalHeaderLabels(headers)
         header = self.tbl_channels.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
 
         frm_edit_layout.addWidget(self.tbl_channels)
 
@@ -247,17 +248,19 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.setRowCount(len(channels))
         vlabel = [str(i) for i in range(len(channels))]
         self.tbl_channels.setVerticalHeaderLabels(vlabel)
+        ch_choices = {True: QtCore.Qt.Checked, False: QtCore.Qt.Unchecked}
         for row, ch in enumerate(channels):
             ch_name = ch.get('channel', '')
             ch_tr = ch.get('trigger', False)
+            ch_use_enum = ch.get('use_enum', True)
             self.tbl_channels.setItem(row, 0,
                                       QtWidgets.QTableWidgetItem(str(ch_name)))
-            checkBoxItem = QtWidgets.QTableWidgetItem()
-            if ch_tr:
-                checkBoxItem.setCheckState(QtCore.Qt.Checked)
-            else:
-                checkBoxItem.setCheckState(QtCore.Qt.Unchecked)
-            self.tbl_channels.setItem(row, 1, checkBoxItem)
+            checkbox_trigger = QtWidgets.QTableWidgetItem()
+            checkbox_trigger.setCheckState(ch_choices[ch_tr])
+            self.tbl_channels.setItem(row, 1, checkbox_trigger)
+            checkbox_use_enum = QtWidgets.QTableWidgetItem()
+            checkbox_use_enum.setCheckState(ch_choices[ch_use_enum])
+            self.tbl_channels.setItem(row, 2, checkbox_use_enum)
         self.frm_edit.setEnabled(True)
         self.loading_data = False
 
@@ -344,10 +347,14 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.insertRow(self.tbl_channels.rowCount())
         row = self.tbl_channels.rowCount() - 1
         self.tbl_channels.setItem(row, 0, QtWidgets.QTableWidgetItem(""))
-        checkBoxItem = QtWidgets.QTableWidgetItem()
-        checkBoxItem.setCheckState(state)
-        checkBoxItem.setFlags(QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable)
-        self.tbl_channels.setItem(row, 1, checkBoxItem)
+        checkbox_trigger = QtWidgets.QTableWidgetItem()
+        checkbox_trigger.setCheckState(state)
+        checkbox_trigger.setFlags(QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable)
+        self.tbl_channels.setItem(row, 1, checkbox_trigger)
+        checkbox_use_enum = QtWidgets.QTableWidgetItem()
+        checkbox_use_enum.setCheckState(QtCore.Qt.Checked)
+        checkbox_use_enum.setFlags(QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable)
+        self.tbl_channels.setItem(row, 2, checkbox_use_enum)
         vlabel = [str(i) for i in range(self.tbl_channels.rowCount())]
         self.tbl_channels.setVerticalHeaderLabels(vlabel)
         self.loading_data = False
@@ -423,7 +430,9 @@ class RulesEditor(QtWidgets.QDialog):
             ch = self.tbl_channels.item(row, 0).text()
             tr = self.tbl_channels.item(row,
                                         1).checkState() == QtCore.Qt.Checked
-            new_channels.append({"channel": ch, "trigger": tr})
+            en = self.tbl_channels.item(row,
+                                        2).checkState() == QtCore.Qt.Checked
+            new_channels.append({"channel": ch, "trigger": tr, "use_enum": en})
 
         self.change_entry("channels", new_channels)
 
