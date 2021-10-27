@@ -1,6 +1,7 @@
 import os
 import json
 import copy
+import pytest
 import webbrowser
 
 from qtpy import QtCore
@@ -31,7 +32,15 @@ class DummyWidget:
             self._rules = new_rules
 
 
-def test_rules_editor(qtbot, monkeypatch):
+@pytest.mark.parametrize(
+    "use_enum, visible",
+    [
+        (None, True),
+        (True, True),
+        (False, False)
+    ]
+)
+def test_rules_editor(use_enum, visible, qtbot, monkeypatch):
     """
     Test the rules editor in general.
 
@@ -66,6 +75,8 @@ def test_rules_editor(qtbot, monkeypatch):
                    'expression': 'ch[0] > 1',
                    'channels': [
                        {'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+    if use_enum is not None:
+        rules_list[0]["channels"][0]["use_enum"] = use_enum
 
     # Add the rules to the widget
     widget.rules = json.dumps(rules_list)
@@ -80,6 +91,8 @@ def test_rules_editor(qtbot, monkeypatch):
     assert re.lst_rules.count() == 1
     assert not re.frm_edit.isEnabled()
 
+    ch_choices = {True: QtCore.Qt.Checked, False: QtCore.Qt.Unchecked}
+
     re.lst_rules.setCurrentRow(0)
     re.load_from_list()
     assert re.frm_edit.isEnabled()
@@ -88,6 +101,7 @@ def test_rules_editor(qtbot, monkeypatch):
     assert re.tbl_channels.rowCount() == 1
     assert re.tbl_channels.item(0, 0).text() == 'ca://MTEST:Float'
     assert re.tbl_channels.item(0, 1).checkState() == QtCore.Qt.Checked
+    assert re.tbl_channels.item(0, 2).checkState() == ch_choices[visible]
     assert re.lbl_expected_type.text() == 'bool'
     assert re.txt_expression.text() == 'ch[0] > 1'
     assert re.txt_initial_value.text() == 'False'
@@ -101,6 +115,7 @@ def test_rules_editor(qtbot, monkeypatch):
     re.tbl_channels.item(1, 0).setText("ca://TEST")
     assert re.rules[0]['channels'][1]['channel'] == 'ca://TEST'
     assert re.rules[0]['channels'][1]['trigger'] is False
+    assert re.rules[0]['channels'][1]['use_enum'] is True
 
     re.txt_expression.clear()
     qtbot.keyClicks(re.txt_expression, 'ch[0] < 1')
@@ -146,10 +161,12 @@ def test_rules_editor(qtbot, monkeypatch):
     qtbot.mouseClick(re.btn_add_channel, QtCore.Qt.LeftButton)
     assert re.tbl_channels.item(0, 0).text() == ''
     assert re.tbl_channels.item(0, 1).checkState() == QtCore.Qt.Checked
+    assert re.tbl_channels.item(0, 2).checkState() == QtCore.Qt.Checked
 
     qtbot.mouseClick(re.btn_add_channel, QtCore.Qt.LeftButton)
     assert re.tbl_channels.item(1, 0).text() == ''
     assert re.tbl_channels.item(1, 1).checkState() == QtCore.Qt.Unchecked
+    assert re.tbl_channels.item(1, 2).checkState() == QtCore.Qt.Checked
 
     # Switch between the rules
     re.lst_rules.setCurrentRow(0)
