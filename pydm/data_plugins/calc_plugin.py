@@ -34,6 +34,7 @@ class CalcThread(QThread):
                 'numpy': np,
                 'epics_string': epics_string}
 
+    eval_env.update({k: v for k, v in math.__dict__.items() if k[0] != '_'})
     new_data_signal = Signal(dict)
     RESERVED_FIELD = ["update", "expr", "name"]
 
@@ -149,10 +150,8 @@ class CalcThread(QThread):
             return
 
         env = dict(CalcThread.eval_env)
-        env.update({k: v
-                    for k, v in math.__dict__.items()
-                    if k[0] != '_'})
         env.update(**vals)
+        env.update({'prev_res': self._value})
 
         try:
             ret = eval(self._expression, env)
