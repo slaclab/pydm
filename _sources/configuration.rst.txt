@@ -27,8 +27,10 @@ PYDM_EPICS_LIB                  | Which library to use for Channel Access (ca://
 PYDM_PATH                       | Path to `pydm` executable for child processes, such as new windows.
                                 | It will only be used if `pydm` is not found in the standard `$PATH`.
                                 | **Default:** None
-PYDM_DISPLAYS_PATH              | Path in which PyDM should look for ``.ui`` and ``.py`` files when
-                                | they are not found. **Note: This is not a recursive search.**
+PYDM_DISPLAYS_PATH              | Path(s) in which PyDM should look for ``.ui``, ``.py``, and ``.adl`` files when
+                                | they are not found. If more than one path is specified, separate with
+                                | ``:`` on linux or ``;`` on Windows.
+                                | **Note: This is not a recursive search.**
                                 | **Default:** None
 PYDM_DATA_PLUGINS_PATH          | Path in which PyDM should look for Data Plugins to be loaded.
                                 | **Default:** None
