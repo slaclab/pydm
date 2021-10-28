@@ -147,6 +147,30 @@ def _extensions(fname):
         name = new_name
     return exts
 
+
+def _screen_file_extensions(preferred_extension):
+    """
+    Return a prioritized list of screen file extensions.
+
+    Include .ui & .py files (also .adl files if adl2pydm installed).
+    Prefer extension as described by fname.
+    """
+    extensions = [".ui", ".py"]  # search for screens with these extensions
+    try:
+        import adl2pydm  # proceed only if package is importable
+        extensions.append(".adl")
+    except ImportError:
+        pass
+
+    # don't search twice for preferred extension
+    if preferred_extension in extensions:
+        extensions.remove(preferred_extension)
+
+    # search first for preferred extension
+    extensions.insert(0, preferred_extension)
+    return extensions
+
+
 def find_file(fname, base_path=None, mode=None, extra_path=None):
     """
     Look for files at the search paths common to PyDM.
@@ -204,12 +228,19 @@ def find_file(fname, base_path=None, mode=None, extra_path=None):
     if pydm_search_path:
         x_path.extend(pydm_search_path.split(os.pathsep))
 
-    f_ext = ''.join(_extensions(fname))
+    # f_ext = ''.join(_extensions(fname))
 
     for idx, path in enumerate(x_path):
         x_path[idx] = os.path.expanduser(os.path.expandvars(path))
 
-    file_path = which(fname, mode=mode, pathext=f_ext, extra_path=x_path)
+    root, ext = os.path.splitext(fname)
+
+    # loop through the possible screen file extensions
+    for e in _screen_file_extensions(ext):
+        # file_path = which(f"{root}{e}", mode=mode, pathext=f_ext, extra_path=x_path)
+        file_path = which(f"{root}{e}", mode=mode, extra_path=x_path)
+        if file_path is not None:
+            break  # pick the first screen file found
 
     return file_path
 
