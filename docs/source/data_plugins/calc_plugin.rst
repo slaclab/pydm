@@ -73,7 +73,7 @@ The table below explains the optional attributes that can go in the *extras*:
 =========== ================================================== ========================
 Attributes      Description                         Type         Format Example
 =========== ================================================== ========================
-**update**  | The calc function will update when one of the    `update=[var, var_two]`
+**update**  | The calc function will update when one of the    `update=var, var_two`
             | variables in the update list receives a new
             | value optional. If nothing is given, the calc
             | function will run anytime one of the variables
