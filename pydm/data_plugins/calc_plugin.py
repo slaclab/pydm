@@ -62,7 +62,8 @@ class CalcThread(QThread):
         update = self.config.get('update', None)
 
         if update is not None:
-            self.listen_for_update = update[0].replace("[", "").replace("]", "").split(',')
+            self.listen_for_update = update[0].split(',')
+            self.listen_for_update = list(map(str.strip, self.listen_for_update))
 
         for name, channel in channels.items():
             conn_cb = functools.partial(self.callback_conn, name)
