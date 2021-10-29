@@ -3,7 +3,12 @@ import decimal
 import logging
 import ast
 import numpy as np
-from urllib import parse
+
+try:
+    from urllib import parse  # Python 3
+except ImportError:
+    import urlparse as parse
+
 from qtpy.QtCore import Slot, Qt
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
@@ -441,7 +446,7 @@ class UrlToPython:
                     raise
                 logger.debug('LocalPlugin connection %s got new listener.', address)
                 return None, name, address
-            except Exeption:
+            except Exception:
                 msg = "Invalid configuration for LocalPlugin connection. %s"
                 logger.exception(msg, address, exc_info=True)
                 raise ValueError("error in local data plugin input")
