@@ -155,7 +155,7 @@ def _screen_file_extensions(preferred_extension):
     Include .ui & .py files (also .adl files if adl2pydm installed).
     Prefer extension as described by fname.
     """
-    extensions = [".ui", ".py"]  # search for screens with these extensions
+    extensions = [".py", ".ui"]  # search for screens with these extensions
     try:
         import adl2pydm  # proceed only if package is importable
         extensions.append(".adl")
