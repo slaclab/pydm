@@ -1,11 +1,12 @@
 from qtpy.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QTableView,
                             QAbstractItemView, QSpacerItem, QSizePolicy,
-                            QDialogButtonBox, QPushButton,
+                            QDialogButtonBox, QPushButton, QTabWidget,
                             QComboBox, QStyledItemDelegate, QColorDialog)
 from qtpy.QtCore import Qt, Slot, QModelIndex, QItemSelection
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .baseplot import BasePlotCurveItem
 from .baseplot_table_model import BasePlotCurvesModel
+from .axis_table_model import BasePlotAxesModel
 from collections import OrderedDict
 
 
@@ -17,14 +18,19 @@ class BasePlotCurveEditorDialog(QDialog):
     This thing is mostly just a wrapper for a table view, with a couple
     buttons to add and remove curves, and a button to save the changes."""
     TABLE_MODEL_CLASS = BasePlotCurvesModel
+    AXIS_MODEL_CLASS = BasePlotAxesModel
 
     def __init__(self, plot, parent=None):
         super(BasePlotCurveEditorDialog, self).__init__(parent)
+        self.tab_widget = QTabWidget()
         self.plot = plot
         self.setup_ui()
         self.table_model = self.TABLE_MODEL_CLASS(self.plot)
         self.table_view.setModel(self.table_model)
         self.table_model.plot = plot
+        self.axis_model = self.AXIS_MODEL_CLASS(self.plot)
+        self.axis_view.setModel(self.axis_model)
+        self.axis_model.plot = plot
         # self.table_view.resizeColumnsToContents()
         self.add_button.clicked.connect(self.addCurve)
         self.remove_button.clicked.connect(self.removeSelectedCurve)
@@ -48,7 +54,24 @@ class BasePlotCurveEditorDialog(QDialog):
         self.table_view.setColumnWidth(0, 160)
         self.table_view.setColumnWidth(1, 160)
         self.table_view.setColumnWidth(2, 160)
-        self.vertical_layout.addWidget(self.table_view)
+        #self.vertical_layout.addWidget(self.table_view)
+        self.vertical_layout.addWidget(self.tab_widget)
+        self.tab_widget.addTab(self.table_view, "Curve")
+
+        self.axis_view = QTableView(self)
+        self.axis_view.setEditTriggers(QAbstractItemView.DoubleClicked)
+        self.axis_view.setProperty("showDropIndicator", False)
+        self.axis_view.setDragDropOverwriteMode(False)
+        self.axis_view.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.axis_view.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.axis_view.setSortingEnabled(False)
+        self.axis_view.horizontalHeader().setStretchLastSection(True)
+        self.axis_view.verticalHeader().setVisible(False)
+        self.axis_view.setColumnWidth(0, 160)
+        self.axis_view.setColumnWidth(1, 160)
+        self.axis_view.setColumnWidth(2, 160)
+        self.tab_widget.addTab(self.axis_view, "Axes")
+
         self.add_remove_layout = QHBoxLayout()
         spacer = QSpacerItem(40, 20, QSizePolicy.Expanding,
                              QSizePolicy.Minimum)
@@ -75,6 +98,7 @@ class BasePlotCurveEditorDialog(QDialog):
         self.table_view.setItemDelegateForColumn(index, color_delegate)
         axis_delegate = AxisColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(index+2, axis_delegate)
+        #self.table_view.hideColumn(1)
 
     @Slot()
     def addCurve(self):
@@ -103,6 +127,7 @@ class BasePlotCurveEditorDialog(QDialog):
     def saveChanges(self):
         formWindow = QDesignerFormWindowInterface.findFormWindow(self.plot)
         if formWindow:
+            formWindow.cursor().setProperty("axes", self.plot.axes)
             formWindow.cursor().setProperty("curves", self.plot.curves)
         self.accept()
 
