@@ -118,8 +118,11 @@ class BasePlotAxesModel(QAbstractTableModel):
             return section
     # End QAbstractItemModel implementation.
 
-    def append(self, name=None, color=None):
-        pass
+    def append(self, name):
+        print('we are appending 1 row for axis table')
+        self.beginInsertRows(QModelIndex(), len(self._plot._axes), len(self._plot._axes))
+        self._plot.addAxis(plot_data_item=None, name=name, orientation='left')
+        self.endInsertRows()
 
     def removeAtIndex(self, index):
         pass

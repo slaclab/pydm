@@ -392,7 +392,7 @@ class PyDMTimePlot(BasePlot):
 
     def addYChannel(self, y_channel=None, name=None, color=None,
                     lineStyle=None, lineWidth=None, symbol=None,
-                    symbolSize=None, yAxisName=None, yAxisOrientation=None):
+                    symbolSize=None, yAxisName=None):
         """
         Adds a new curve to the current plot
 
@@ -416,8 +416,6 @@ class PyDMTimePlot(BasePlot):
         yAxisName : str
             The name of the y axis to associate with this curve. Will be created if it
             doesn't yet exist
-        yAxisOrientation : str
-            The orientation for the y axis, either 'left' or 'right'
 
         Returns
         -------
@@ -435,12 +433,12 @@ class PyDMTimePlot(BasePlot):
 
         # Add curve
         new_curve = TimePlotCurveItem(y_channel, plot_by_timestamps=self._plot_by_timestamps, name=name, color=color,
-                                      yAxisName=yAxisName, yAxisOrientation=yAxisOrientation, **plot_opts)
+                                      yAxisName=yAxisName, **plot_opts)
         new_curve.setUpdatesAsynchronously(self.updatesAsynchronously)
         new_curve.setBufferSize(self._bufferSize)
 
         self.update_timer.timeout.connect(new_curve.asyncUpdate)
-        self.addCurve(new_curve, curve_color=color, y_axis_name=yAxisName, y_axis_orientation=yAxisOrientation)
+        self.addCurve(new_curve, curve_color=color, y_axis_name=yAxisName)
 
         new_curve.data_changed.connect(self.set_needs_redraw)
         self.redraw_timer.start()
@@ -537,6 +535,7 @@ class PyDMTimePlot(BasePlot):
             A list of JSON-formatted strings, each containing a curve's
             settings
         """
+        print('Get curves called')
         return [json.dumps(curve.to_dict()) for curve in self._curves]
 
     def setCurves(self, new_list):
@@ -566,8 +565,7 @@ class PyDMTimePlot(BasePlot):
                              lineWidth=d.get('lineWidth'),
                              symbol=d.get('symbol'),
                              symbolSize=d.get('symbolSize'),
-                             yAxisName=d.get('yAxisName'),
-                             yAxisOrientation=d.get('yAxisOrientation'))
+                             yAxisName=d.get('yAxisName'))
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
 
@@ -606,8 +604,7 @@ class PyDMTimePlot(BasePlot):
             self.addYChannel(y_channel=curve.address, color=curve.color,
                              name=curve.address, lineStyle=curve.lineStyle,
                              lineWidth=curve.lineWidth, symbol=curve.symbol,
-                             symbolSize=curve.symbolSize, yAxisName=curve.y_axis_name,
-                             yAxisOrientation=curve.y_axis_orientation)
+                             symbolSize=curve.symbolSize, yAxisName=curve.y_axis_name)
 
     def addLegendItem(self, item, pv_name, force_show_legend=False):
         """

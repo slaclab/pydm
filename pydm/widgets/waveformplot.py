@@ -336,7 +336,7 @@ class PyDMWaveformPlot(BasePlot):
     def addChannel(self, y_channel=None, x_channel=None, name=None,
                    color=None, lineStyle=None, lineWidth=None,
                    symbol=None, symbolSize=None, redraw_mode=None,
-                   yAxisName=None, yAxisOrientation=None):
+                   yAxisName=None):
         """
         Add a new curve to the plot.  In addition to the arguments below,
         all other keyword arguments are passed to the underlying
@@ -374,8 +374,6 @@ class PyDMWaveformPlot(BasePlot):
         yAxisName : str, optional
             The name of the y axis to associate with this curve. Will be created if it
             doesn't yet exist
-        yAxisOrientation : str, optional
-            The orientation for the y axis, either 'left' or 'right'
         """
         plot_opts = {}
         plot_opts['symbol'] = symbol
@@ -393,10 +391,9 @@ class PyDMWaveformPlot(BasePlot):
                                   name=name,
                                   color=color,
                                   yAxisName=yAxisName,
-                                  yAxisOrientation=yAxisOrientation,
                                   **plot_opts)
         self.channel_pairs[(y_channel, x_channel)] = curve
-        self.addCurve(curve, curve_color=color, y_axis_name=yAxisName, y_axis_orientation=yAxisOrientation)
+        self.addCurve(curve, curve_color=color, y_axis_name=yAxisName)
         curve.data_changed.connect(self.set_needs_redraw)
 
     def removeChannel(self, curve):
@@ -480,8 +477,7 @@ class PyDMWaveformPlot(BasePlot):
                             symbol=d.get('symbol'),
                             symbolSize=d.get('symbolSize'),
                             redraw_mode=d.get('redraw_mode'),
-                            yAxisName=d.get('yAxisName'),
-                            yAxisOrientation=d.get('yAxisOrientation')
+                            yAxisName=d.get('yAxisName')
                             )
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)

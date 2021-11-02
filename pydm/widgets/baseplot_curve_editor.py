@@ -19,6 +19,7 @@ class BasePlotCurveEditorDialog(QDialog):
     buttons to add and remove curves, and a button to save the changes."""
     TABLE_MODEL_CLASS = BasePlotCurvesModel
     AXIS_MODEL_CLASS = BasePlotAxesModel
+    AXIS_MODEL_TAB_INDEX = 1
 
     def __init__(self, plot, parent=None):
         super(BasePlotCurveEditorDialog, self).__init__(parent)
@@ -35,7 +36,11 @@ class BasePlotCurveEditorDialog(QDialog):
         self.add_button.clicked.connect(self.addCurve)
         self.remove_button.clicked.connect(self.removeSelectedCurve)
         self.remove_button.setEnabled(False)
+        self.remove_axis_button.clicked.connect(self.removeSelectedAxis)
+        self.remove_axis_button.setEnabled(False)
         self.table_view.selectionModel().selectionChanged.connect(
+            self.handleSelectionChange)
+        self.axis_view.selectionModel().selectionChanged.connect(
             self.handleSelectionChange)
         self.table_view.doubleClicked.connect(self.handleDoubleClick)
         self.resize(800, 300)
@@ -56,7 +61,7 @@ class BasePlotCurveEditorDialog(QDialog):
         self.table_view.setColumnWidth(2, 160)
         #self.vertical_layout.addWidget(self.table_view)
         self.vertical_layout.addWidget(self.tab_widget)
-        self.tab_widget.addTab(self.table_view, "Curve")
+        self.tab_widget.addTab(self.table_view, "Curves")
 
         self.axis_view = QTableView(self)
         self.axis_view.setEditTriggers(QAbstractItemView.DoubleClicked)
@@ -67,10 +72,9 @@ class BasePlotCurveEditorDialog(QDialog):
         self.axis_view.setSortingEnabled(False)
         self.axis_view.horizontalHeader().setStretchLastSection(True)
         self.axis_view.verticalHeader().setVisible(False)
-        self.axis_view.setColumnWidth(0, 160)
-        self.axis_view.setColumnWidth(1, 160)
-        self.axis_view.setColumnWidth(2, 160)
         self.tab_widget.addTab(self.axis_view, "Axes")
+
+        self.tab_widget.currentChanged.connect(self.fillAxisData)
 
         self.add_remove_layout = QHBoxLayout()
         spacer = QSpacerItem(40, 20, QSizePolicy.Expanding,
@@ -80,6 +84,8 @@ class BasePlotCurveEditorDialog(QDialog):
         self.add_remove_layout.addWidget(self.add_button)
         self.remove_button = QPushButton("Remove Curve", self)
         self.add_remove_layout.addWidget(self.remove_button)
+        self.remove_axis_button = QPushButton("Remove Axis", self)
+        self.add_remove_layout.addWidget(self.remove_axis_button)
         self.vertical_layout.addLayout(self.add_remove_layout)
         self.button_box = QDialogButtonBox(self)
         self.button_box.setOrientation(Qt.Horizontal)
@@ -91,13 +97,13 @@ class BasePlotCurveEditorDialog(QDialog):
 
     def setup_delegate_columns(self, index=2):
         symbol_delegate = SymbolColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(index+5, symbol_delegate)
+        self.table_view.setItemDelegateForColumn(index+4, symbol_delegate)
         line_delegate = LineColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(index+3, line_delegate)
+        self.table_view.setItemDelegateForColumn(index+2, line_delegate)
         color_delegate = ColorColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(index, color_delegate)
         axis_delegate = AxisColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(index+2, axis_delegate)
+        self.axis_view.setItemDelegateForColumn(1, axis_delegate)
         #self.table_view.hideColumn(1)
 
     @Slot()
@@ -108,10 +114,17 @@ class BasePlotCurveEditorDialog(QDialog):
     def removeSelectedCurve(self):
         self.table_model.removeAtIndex(self.table_view.currentIndex())
 
+    @Slot()
+    def removeSelectedAxis(self):
+        print(f'Attempting to remove axis row at index: {self.axis_view.currentIndex()}')
+        self.axis_model.removeAtIndex(self.axis_view.currentIndex())
+
     @Slot(QItemSelection, QItemSelection)
     def handleSelectionChange(self, selected, deselected):
         self.remove_button.setEnabled(
             self.table_view.selectionModel().hasSelection())
+        self.remove_axis_button.setEnabled(
+            self.axis_view.selectionModel().hasSelection())
 
     @Slot(QModelIndex)
     def handleDoubleClick(self, index):
@@ -127,9 +140,39 @@ class BasePlotCurveEditorDialog(QDialog):
     def saveChanges(self):
         formWindow = QDesignerFormWindowInterface.findFormWindow(self.plot)
         if formWindow:
-            formWindow.cursor().setProperty("axes", self.plot.axes)
+            print(f'About to set axes with? {self.plot.yAxes}')
+            formWindow.cursor().setProperty("yAxes", self.plot.yAxes)
             formWindow.cursor().setProperty("curves", self.plot.curves)
         self.accept()
+
+    #def fillAxisData(self, tab_index):
+    @Slot(int)
+    def fillAxisData(self, tab_index, axis_name_col_index=4):
+        """ When the user clicks on the axis tab, prefill it with rows based on the curves they have created """
+        print(f'tab changed to tab with index: {tab_index} and we will look for axis name at index: {axis_name_col_index}')
+        if tab_index != self.AXIS_MODEL_TAB_INDEX:
+            return
+
+        self.plot.plotItem.hideAxis('left')
+
+        curve_axis_names = set(str(self.table_model.index(i, axis_name_col_index).data())
+                               for i in range(self.table_model.rowCount()))
+
+        existing_axis_names = set(str(self.axis_model.index(i, 0).data())
+                                  for i in range(self.axis_model.rowCount()))
+
+        names_to_add = curve_axis_names - existing_axis_names
+
+        print(f'Set difference was: {names_to_add}')
+
+        for name in names_to_add:
+            print(f'Considering name: {name}')
+            if name:
+                print(f'Adding axis: {name}')
+                self.axis_model.append(name)
+
+        print("End fillAxisData")
+
 
 
 class ColorColumnDelegate(QStyledItemDelegate):

@@ -43,9 +43,6 @@ class BasePlotCurveItem(PlotDataItem):
     yAxisName: str, optional
         The name of the axis to link this curve with. Leaving it None will result in the default
         name of 'Axis 1' which may still be modified later if needed.
-    yAxisOrientation: str, optional
-        The orientation of this axis. Leaving it None will result in a default of 'left'. Must be set to either 'right'
-        or 'left' or an exception will be raised. See: https://pyqtgraph.readthedocs.io/en/latest/graphicsItems/axisitem.html
     **kargs: optional
         PlotDataItem keyword arguments, such as symbol and symbolSize.
     """
@@ -72,7 +69,7 @@ class BasePlotCurveItem(PlotDataItem):
 
     data_changed = Signal()
 
-    def __init__(self, color=None, lineStyle=None, lineWidth=None, yAxisName=None, yAxisOrientation=None, **kws):
+    def __init__(self, color=None, lineStyle=None, lineWidth=None, yAxisName=None, **kws):
         self._color = QColor('white')
         self._pen = mkPen(self._color)
 
@@ -90,7 +87,6 @@ class BasePlotCurveItem(PlotDataItem):
             self._y_axis_name = 'Axis 1'
         else:
             self._y_axis_name = yAxisName
-        self._y_axis_orientation = yAxisOrientation
 
         if hasattr(self, "channels"):
             self.destroyed.connect(functools.partial(widget_destroyed,
@@ -153,27 +149,6 @@ class BasePlotCurveItem(PlotDataItem):
         self._pen.setColor(self._color)
         self.setPen(self._pen)
         self.setSymbolPen(self._color)
-
-    @property
-    def y_axis_orientation(self):
-        """
-        Return the orientation of the y-axis this curve is associated with. Will be 'left' or 'right'
-        See: https://pyqtgraph.readthedocs.io/en/latest/graphicsItems/axisitem.html
-        Returns
-        -------
-        str
-        """
-        return self._y_axis_orientation
-
-    @y_axis_orientation.setter
-    def y_axis_orientation(self, y_axis_orientation):
-        """
-        Set the orientation of the y-axis this curve is associated with. Must be 'left' or 'right'
-        Parameters
-        ----------
-        y_axis_orientation: str
-        """
-        self._y_axis_orientation = y_axis_orientation
 
     @property
     def y_axis_name(self):
@@ -312,7 +287,6 @@ class BasePlotCurveItem(PlotDataItem):
                             ("lineWidth", self.lineWidth),
                             ("symbol", self.symbol),
                             ("symbolSize", self.symbolSize),
-                            ("yAxisOrientation", self.y_axis_orientation),
                             ("yAxisName", self.y_axis_name)])
 
     def close(self):
@@ -359,14 +333,11 @@ class BasePlotAxisItem(AxisItem):
 
     data_changed = Signal()
 
-    def __init__(self, yAxisName=None, yAxisOrientation=None, yAxisMinRange=-1.0,
+    def __init__(self, yAxisName, yAxisOrientation=None, yAxisMinRange=-1.0,
                  yAxisMaxRange=1.0, yAxisAutoRange=True, **kws):
         super(BasePlotAxisItem, self).__init__(yAxisOrientation, **kws)
 
-        if yAxisName is None:
-            self._y_axis_name = 'Axis 1'
-        else:
-            self._y_axis_name = yAxisName
+        self._y_axis_name = yAxisName
         self._y_axis_orientation = yAxisOrientation
         self._y_axis_min_range = yAxisMinRange
         self._y_axis_max_range = yAxisMaxRange
@@ -466,9 +437,8 @@ class BasePlotAxisItem(AxisItem):
         -------
         OrderedDict
         """
-        return OrderedDict([("name", self.y_axis_name()),
+        return OrderedDict([("name", self.y_axis_name),
                             ("yAxisOrientation", self.y_axis_orientation),
-                            ("yAxisName", self.y_axis_name),
                             ("yAxisMinRange", self.y_axis_min_range),
                             ("yAxisMaxRange", self.y_axis_max_range),
                             ("yAxisAutoRange", self.y_axis_auto_range)])
@@ -579,14 +549,17 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             y_axis_orientation = 'left'  # Default behavior is a left axis if the user doesn't specify an orientation
 
         if y_axis_name is None:
+            print('Axis not set, backwards compat flow')
             # If the user did not name the axis, use the default ones. Note: multiple calls to setAxisItems() are ok
             self.plotItem.setAxisItems()
             self.addItem(plot_data_item)
         elif y_axis_name in self.plotItem.axes:
+            print(f'Located axis: {y_axis_name} and linking data to it')
             # If the user has chosen an axis that already exists for this curve, simply link the data to that axis
             self.plotItem.linkDataToAxis(plot_data_item, y_axis_name)
         else:
             # Otherwise we create a brand new axis for this data
+            print(f'\n\nUNABLE TO LOCATE AXIS TO ADD DATA TO: {y_axis_name}\n\n')
             self.addAxis(plot_data_item, y_axis_name, y_axis_orientation)
         self.redraw_timer.start()
         # Connect channels
@@ -594,7 +567,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             if chan:
                 chan.connect()
 
-    def addAxis(self, plot_data_item, name, orientation):
+    def addAxis(self, plot_data_item, name, orientation, min_range=-1.0, max_range=1.0, enable_auto_range=True):
         """
         Create an AxisItem with the input name and orientation, and add it to this plot.
         Parameters
@@ -605,6 +578,13 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             The name that will be assigned to this axis
         orientation: str
             The orientation of this axis, must be in 'left' or 'right'
+        min_range: float
+            The minimum range to display on the axis
+        max_range: float
+            The maximum range to display on the axis
+        enable_auto_range: bool
+            Whether or not to use autorange for this axis. Min and max range will not be respected
+            when data goes out of range if this is set to True
 
         Raises
         ------
@@ -612,12 +592,17 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             Raised by PyQtGraph if the orientation is not in 'left' or 'right'
         """
         print(f'Adding axis with name: {name} and orientation: {orientation}')
-        axis = BasePlotAxisItem(yAxisOrientation=orientation)
+        if name in self.plotItem.axes:
+            print('Attempting to add axis that already exists, returning')
+            return
+
+        axis = BasePlotAxisItem(yAxisName=name, yAxisOrientation=orientation)
         self._axes.append(axis)
         # If the x axis is just timestamps, we don't want autorange on the x axis
         setXLink = hasattr(self, '_plot_by_timestamps') and self._plot_by_timestamps
         self.plotItem.addAxis(axis, name=name, plotDataItem=plot_data_item, setXLink=setXLink,
-                              enableAutoRangeX=self.getAutoRangeX(), enableAutoRangeY=self.getAutoRangeY())
+                              enableAutoRangeX=self.getAutoRangeX(), enableAutoRangeY=enable_auto_range,
+                              minRange=min_range, maxRange=max_range)
 
     def removeCurve(self, plot_item):
         if plot_item.y_axis_name in self.plotItem.axes:
@@ -631,6 +616,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         for chan in plot_item.channels():
             if chan:
                 chan.disconnect()
+
+    def removeAxis(self, axis_name):
+        # TODO HIGH Implement
+        pass
 
     def removeCurveWithName(self, name):
         for curve in self._curves:
@@ -658,9 +647,17 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         for item in legend_items:
             self._legend.removeItem(item)
         for curve in self._curves:
-            curve.deleteLater()
+            pass  # TODO: Just remove this
+            #curve.deleteLater()
         self.plotItem.clear()
         self._curves = []
+
+    def clearAxes(self):
+        """ Clear out any added axes on this plot """
+        for axis in self._axes:
+            axis.deleteLater()
+        self.plotItem.clearAxes()
+        self._axes = []
 
     @Slot()
     def redrawPlot(self):
@@ -711,7 +708,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     axisColor = Property(QColor, getAxisColor, setAxisColor)
 
-    def getAxes(self):
+    def getYAxes(self):
         """
         Dump the current list of axes and each axis' settings into a list
         of JSON-formatted strings.
@@ -722,9 +719,14 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             A list of JSON-formatted strings, each containing a curve's
             settings
         """
-        return [json.dumps(curve.to_dict()) for curve in self._curves]
+        print(f'trying to get axis as a dict, size of axes is {len(self._axes)}')
+        if len(self._axes) > 0:
+            print(f'The first axis we have is: {self._axes[0]}')
+        a = [json.dumps(axis.to_dict()) for axis in self._axes]
+        print(f'a is: {a}')
+        return [json.dumps(axis.to_dict()) for axis in self._axes]
 
-    def setAxes(self, new_list):
+    def setYAxes(self, new_list):
         """
         Add a list of axes into the graph.
 
@@ -734,14 +736,23 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             A list of JSON-formatted strings, each contains an axis and its
             settings
         """
+        print(f'setAxes called with list: {new_list}')
         try:
             new_list = [json.loads(str(i)) for i in new_list]
         except ValueError as e:
+            print('Hit a value error')
+            print("Error parsing curve json data: {}".format(e))
             logger.exception("Error parsing curve json data: {}".format(e))
             return
-#        self.clearCurves()
+        self.clearAxes()
+        print(f'The list after parsing is: {new_list}')
         for d in new_list:
-            print(d)
+            #pass
+            print(f'd is: {d}')
+            # TODO HIGH: Enable line below
+            self.addAxis(plot_data_item=None, name=d.get('name'), orientation=d.get('yAxisOrientation'),
+                         min_range=d.get('yAxisMinRange'), max_range=d.get('yAxisMaxRange'),
+                         enable_auto_range=d.get('yAxisAutoRange'))
 #            self.addYChannel(d['channel'],
 #                             name=d.get('name'), color=color,
 #                             lineStyle=d.get('lineStyle'),
@@ -754,7 +765,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 #                             yAxisMaxRange=d.get('yAxisMaxRange'),
 #                             yAxisAutoRange=d.get('yAxisAutoRange'))
 
-    axes = Property("QStringList", getAxes, setAxes, designable=False)
+    yAxes = Property("QStringList", getYAxes, setYAxes, designable=False)
 
     def getBottomAxisLabel(self):
         return self.getAxis('bottom').labelText

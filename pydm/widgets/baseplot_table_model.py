@@ -6,7 +6,6 @@ from .baseplot import BasePlotCurveItem
 class BasePlotCurvesModel(QAbstractTableModel):
     name_for_symbol = {v: k for k, v in BasePlotCurveItem.symbols.items()}
     name_for_line = {v: k for k, v in BasePlotCurveItem.lines.items()}
-    name_for_orientations = {v: k for k, v in BasePlotCurveItem.axis_orientations.items()}
     """ This is the data model used by the waveform plot curve editor.
     It basically acts as a go-between for the curves in a plot, and
     QTableView items.
@@ -15,7 +14,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
     def __init__(self, plot, parent=None):
         super(BasePlotCurvesModel, self).__init__(parent=parent)
         self._plot = plot
-        self._column_names = ("Label", "Color", "Y-Axis Name", "Y-Axis Location", "Line Style",
+        self._column_names = ("Label", "Color", "Y-Axis Name", "Line Style",
                               "Line Width", "Symbol", "Symbol Size")
 
     @property
@@ -69,8 +68,6 @@ class BasePlotCurvesModel(QAbstractTableModel):
             return str(curve.name())
         elif column_name == "Y-Axis Name":
             return curve.y_axis_name
-        elif column_name == "Y-Axis Location":
-            return self.name_for_orientations.get(curve.y_axis_orientation, 'Left')
         elif column_name == "Color":
             return curve.color_string
         elif column_name == "Line Style":
@@ -108,11 +105,6 @@ class BasePlotCurvesModel(QAbstractTableModel):
             curve.color = value
         elif column_name == "Y-Axis Name":
             curve.y_axis_name = str(value)
-        elif column_name == "Y-Axis Location":
-            if value is None:
-                curve.y_axis_orientation = 'left'  # The PyQtGraph default is the left axis
-            else:
-                curve.y_axis_orientation = str(value)
         elif column_name == "Line Style":
             curve.lineStyle = int(value)
         elif column_name == "Line Width":

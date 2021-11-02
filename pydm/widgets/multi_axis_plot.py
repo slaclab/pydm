@@ -40,7 +40,8 @@ class MultiAxisPlot(PlotItem):
         self.vb.sigMouseDragged.connect(self.handleMouseDragEvent)
         self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
 
-    def addAxis(self, axis, name, plotDataItem=None, setXLink=False, enableAutoRangeX=True, enableAutoRangeY=True):
+    def addAxis(self, axis, name, plotDataItem=None, setXLink=False, enableAutoRangeX=True, enableAutoRangeY=True,
+                minRange=-1.0, maxRange=1.0):
         """
         Add an axis to this plot by creating a new view box to link it with. Links the PlotDataItem
         with this axis if provided
@@ -60,11 +61,16 @@ class MultiAxisPlot(PlotItem):
             Whether or not the new view should automatically update its x range when receiving new data
         enableAutoRangeY: bool
             Whether or not the new view should automatically update its y range when receiving new data
+        minRange: float
+            The minimum range to display on this axis if not using autorange
+        maxRange: float
+            The maximum range to display on this axis if not using autorange
         """
 
         # Create a new view box to link this axis with
         self.axes[str(name)] = {'item': axis, 'pos': None}  # The None will become an actual position in rebuildLayout() below
         view = MultiAxisViewBox()
+        view.setYRange(minRange, maxRange)
         view.enableAutoRange(axis=ViewBox.XAxis, enable=enableAutoRangeX)
         view.enableAutoRange(axis=ViewBox.YAxis, enable=enableAutoRangeY)
         if setXLink:
@@ -167,6 +173,19 @@ class MultiAxisPlot(PlotItem):
 
         self.curvesPerAxis[axisName] += 1
 
+    def removeAxis(self, axisName):
+        if axisName not in self.axes:
+            return
+
+        self.curvesPerAxis[axisName] = 0
+
+        oldAxis = self.axes[axisName]['item']
+        self.layout.removeItem(oldAxis)
+        oldAxis.scene().removeItem(oldAxis)
+        oldAxis.unlinkFromView()
+        del self.axes[axisName]
+
+
     def unlinkDataFromAxis(self, axisName):
         """
         Lets the plot know that this axis is now associated with one less curve. If there are no
@@ -179,11 +198,7 @@ class MultiAxisPlot(PlotItem):
 
         self.curvesPerAxis[axisName] -= 1
         if self.curvesPerAxis[axisName] == 0:
-            oldAxis = self.axes[axisName]['item']
-            self.layout.removeItem(oldAxis)
-            oldAxis.scene().removeItem(oldAxis)
-            oldAxis.unlinkFromView()
-            del self.axes[axisName]
+            self.removeAxis(axisName)
 
     def setXRange(self, minX, maxX, padding=0, update=True):
         """
@@ -230,13 +245,23 @@ class MultiAxisPlot(PlotItem):
         Cleans up all curve related data from this plot. To be invoked as part of the flow of clearing out
         all curves from the plot.
         """
-        print(f'Clearing all data from plot!')
+        print(f'Clearing all curve data from plot!')
+
+        # TODO: Remove this and just call the super only
+        super(MultiAxisPlot, self).clear()
+
+    def clearAxes(self):
+        """
+        Cleans up all axis related data from this plot.
+        """
+
+        print('Clearing all axis data from plot!')
         for view in self.stackedViews:
             self.removeItem(view)
             self.scene().removeItem(view)
         self.stackedViews.clear()
 
-        # Also reset the axes associated with all y axis curves
+        # Reset the axes associated with all y axis curves
         allAxes = [val['item'] for val in self.axes.values()]
         for oldAxis in allAxes:
             if oldAxis.orientation != 'bottom':   # Currently only multiple y axes are supported
@@ -247,8 +272,6 @@ class MultiAxisPlot(PlotItem):
         # Retain the x axis
         bottomAxis = self.axes['bottom']
         self.axes = {'bottom': bottomAxis}
-
-        super(MultiAxisPlot, self).clear()
 
     def clearLayout(self):
         """
