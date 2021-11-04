@@ -9,9 +9,6 @@ from collections import OrderedDict
 from .base import PyDMPrimitiveWidget, widget_destroyed
 from .multi_axis_plot import MultiAxisPlot
 
-import logging
-logger = logging.getLogger(__name__)
-
 
 class NoDataError(Exception):
     """NoDataError is raised when a curve tries to perform an operation,
@@ -64,15 +61,12 @@ class BasePlotCurveItem(PlotDataItem):
                          ('Dot', Qt.DotLine),
                          ('DashDot', Qt.DashDotLine),
                          ('DashDotDot', Qt.DashDotDotLine)])
-    axis_orientations = OrderedDict([('Left', 'left'),
-                                     ('Right', 'right')])
 
     data_changed = Signal()
 
     def __init__(self, color=None, lineStyle=None, lineWidth=None, yAxisName=None, **kws):
         self._color = QColor('white')
         self._pen = mkPen(self._color)
-
         if lineWidth is not None:
             self._pen.setWidth(lineWidth)
         if lineStyle is not None:
@@ -317,8 +311,6 @@ class BasePlotAxisItem(AxisItem):
     axis_orientations = OrderedDict([('Left', 'left'),
                                      ('Right', 'right')])
 
-    data_changed = Signal()
-
     def __init__(self, name, orientation='left', minRange=-1.0,
                  maxRange=1.0, autoRange=True, **kws):
         super(BasePlotAxisItem, self).__init__(orientation, **kws)
@@ -450,10 +442,10 @@ class BasePlotAxisItem(AxisItem):
         OrderedDict
         """
         return OrderedDict([("name", self._name),
-                            ("yAxisOrientation", self._orientation),
-                            ("yAxisMinRange", self._min_range),
-                            ("yAxisMaxRange", self._max_range),
-                            ("yAxisAutoRange", self._auto_range)])
+                            ("orientation", self._orientation),
+                            ("minRange", self._min_range),
+                            ("maxRange", self._max_range),
+                            ("autoRange", self._auto_range)])
 
 
 class BasePlot(PlotWidget, PyDMPrimitiveWidget):
@@ -536,8 +528,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             The color to draw the curve and axis label in
         y_axis_name: str, optional
             The name of the axis to link the curve with. If this is the first time seeing this name,
-            then a new axis will be created for it. Will use the default PyQtGraph name of 'left' if
-            not supplied.
+            then a new axis will be created for it.
         """
 
         if curve_color is None:
@@ -704,7 +695,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     def getYAxes(self):
         """
-        Dump the current list of axes and each axis' settings into a list
+        Dump the current list of axes and each axis's settings into a list
         of JSON-formatted strings.
 
         Returns
@@ -728,13 +719,13 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         try:
             new_list = [json.loads(str(i)) for i in new_list]
         except ValueError as e:
-            logger.exception("Error parsing curve json data: {}".format(e))
+            print("Error parsing curve json data: {}".format(e))
             return
         self.clearAxes()
         for d in new_list:
-            self.addAxis(plot_data_item=None, name=d.get('name'), orientation=d.get('yAxisOrientation'),
-                         min_range=d.get('yAxisMinRange'), max_range=d.get('yAxisMaxRange'),
-                         enable_auto_range=d.get('yAxisAutoRange'))
+            self.addAxis(plot_data_item=None, name=d.get('name'), orientation=d.get('orientation'),
+                         min_range=d.get('minRange'), max_range=d.get('maxRange'),
+                         enable_auto_range=d.get('autoRange'))
 
     yAxes = Property("QStringList", getYAxes, setYAxes, designable=False)
 

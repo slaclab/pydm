@@ -24,8 +24,8 @@
      </property>
      <property name="yAxes">
       <stringlist>
-       <string>{&quot;name&quot;: &quot;Axis 1&quot;, &quot;yAxisOrientation&quot;: &quot;left&quot;, &quot;yAxisMinRange&quot;: -1.0, &quot;yAxisMaxRange&quot;: 1.0, &quot;yAxisAutoRange&quot;: true}</string>
-       <string>{&quot;name&quot;: &quot;Axis 2&quot;, &quot;yAxisOrientation&quot;: &quot;right&quot;, &quot;yAxisMinRange&quot;: -1.0, &quot;yAxisMaxRange&quot;: 1.0, &quot;yAxisAutoRange&quot;: true}</string>
+       <string>{&quot;name&quot;: &quot;Axis 1&quot;, &quot;orientation&quot;: &quot;left&quot;, &quot;minRange&quot;: -1.0, &quot;maxRange&quot;: 1.0, &quot;autoRange&quot;: true}</string>
+       <string>{&quot;name&quot;: &quot;Axis 2&quot;, &quot;orientation&quot;: &quot;right&quot;, &quot;minRange&quot;: -1.0, &quot;maxRange&quot;: 1.0, &quot;autoRange&quot;: true}</string>
       </stringlist>
      </property>
      <property name="xLabels">

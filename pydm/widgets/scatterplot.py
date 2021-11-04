@@ -368,7 +368,7 @@ class PyDMScatterPlot(BasePlot):
                                      x_addr=x_channel,
                                      name=name,
                                      color=color,
-                                     yAxisName=yAxisName
+                                     yAxisName=yAxisName,
                                      **plot_opts)
         if buffer_size is not None:
             curve.setBufferSize(buffer_size)

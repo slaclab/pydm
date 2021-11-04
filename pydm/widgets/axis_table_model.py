@@ -1,17 +1,17 @@
 from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant
-from .baseplot import BasePlotCurveItem
+from .baseplot import BasePlotAxisItem
 
 
 class BasePlotAxesModel(QAbstractTableModel):
     """ The data model for the axes tab in the plot curve editor.
-        Acts as a go-between for the curves in a plot, and QTableView items. """
+        Acts as a go-between for the axes in a plot, and QTableView items. """
 
-    name_for_orientations = {v: k for k, v in BasePlotCurveItem.axis_orientations.items()}
+    name_for_orientations = {v: k for k, v in BasePlotAxisItem.axis_orientations.items()}
 
     def __init__(self, plot, parent=None):
         super(BasePlotAxesModel, self).__init__(parent=parent)
         self._plot = plot
-        self._column_names = ("Y-Axis Name", "Y-Axis Location", "Min Y Range",
+        self._column_names = ("Y-Axis Name", "Y-Axis Orientation", "Min Y Range",
                               "Max Y Range", "Enable Auto Range")
 
     @property
@@ -50,7 +50,7 @@ class BasePlotAxesModel(QAbstractTableModel):
     def get_data(self, column_name, axis):
         if column_name == "Y-Axis Name":
             return axis.name
-        elif column_name == "Y-Axis Location":
+        elif column_name == "Y-Axis Orientation":
             return self.name_for_orientations.get(axis.orientation, 'Left')
         elif column_name == "Min Y Range":
             return axis.min_range
@@ -81,7 +81,7 @@ class BasePlotAxesModel(QAbstractTableModel):
     def set_data(self, column_name, axis, value):
         if column_name == "Y-Axis Name":
             axis.name = str(value)
-        elif column_name == "Y-Axis Location":
+        elif column_name == "Y-Axis Orientation":
             if value is None:
                 axis.orientation = 'left'  # The PyQtGraph default is the left axis
             else:

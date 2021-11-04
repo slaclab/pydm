@@ -1,10 +1,10 @@
 from qtpy.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QTableView,
                             QAbstractItemView, QSpacerItem, QSizePolicy,
                             QDialogButtonBox, QPushButton, QTabWidget,
-                            QComboBox, QStyledItemDelegate, QColorDialog)
+                            QComboBox, QStyledItemDelegate, QColorDialog, QHeaderView)
 from qtpy.QtCore import Qt, Slot, QModelIndex, QItemSelection
 from qtpy.QtDesigner import QDesignerFormWindowInterface
-from .baseplot import BasePlotCurveItem
+from .baseplot import BasePlotAxisItem, BasePlotCurveItem
 from .baseplot_table_model import BasePlotCurvesModel
 from .axis_table_model import BasePlotAxesModel
 from collections import OrderedDict
@@ -19,7 +19,6 @@ class BasePlotCurveEditorDialog(QDialog):
     buttons to add and remove curves, and a button to save the changes."""
     TABLE_MODEL_CLASS = BasePlotCurvesModel
     AXIS_MODEL_CLASS = BasePlotAxesModel
-    CURVE_MODEL_TAB_INDEX = 0
     AXIS_MODEL_TAB_INDEX = 1
 
     def __init__(self, plot, parent=None):
@@ -72,7 +71,7 @@ class BasePlotCurveEditorDialog(QDialog):
         self.axis_view.setSelectionMode(QAbstractItemView.SingleSelection)
         self.axis_view.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.axis_view.setSortingEnabled(False)
-        self.axis_view.horizontalHeader().setStretchLastSection(True)
+        self.axis_view.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.axis_view.verticalHeader().setVisible(False)
         self.tab_widget.addTab(self.axis_view, "Axes")
 
@@ -90,6 +89,9 @@ class BasePlotCurveEditorDialog(QDialog):
         self.add_remove_layout.addWidget(self.add_axis_button)
         self.remove_axis_button = QPushButton("Remove Axis", self)
         self.add_remove_layout.addWidget(self.remove_axis_button)
+
+        # These buttons start out hidden as they are only useful on the axis tab, will be
+        # displayed when the user clicks on that tab
         self.add_axis_button.hide()
         self.remove_axis_button.hide()
         self.vertical_layout.addLayout(self.add_remove_layout)
@@ -123,6 +125,8 @@ class BasePlotCurveEditorDialog(QDialog):
     def addAxis(self):
         self.add_axis_count += 1
         default_axis_name = 'New Axis ' + str(self.add_axis_count)
+        # Just a quick way to ensure that the default named axes are always unique, even when the user closes
+        # out a plot widget and re-opens it later
         while default_axis_name in self.plot.plotItem.axes:
             self.add_axis_count += 1
             default_axis_name = 'New Axis ' + str(self.add_axis_count)
@@ -170,6 +174,7 @@ class BasePlotCurveEditorDialog(QDialog):
         if tab_index != self.AXIS_MODEL_TAB_INDEX:
             return  # Nothing else to do if this is just the original "curves" tab
 
+        # Fix a display issue on the left axis when editing plots
         if 'left' in self.plot.plotItem.axes:
             self.plot.plotItem.hideAxis('left')
 
@@ -208,7 +213,7 @@ class AxisColumnDelegate(QStyledItemDelegate):
     """
     def createEditor(self, parent, option, index):
         editor = QComboBox(parent)
-        editor.addItems(BasePlotCurveItem.axis_orientations.keys())
+        editor.addItems(BasePlotAxisItem.axis_orientations.keys())
         return editor
 
     def setEditorData(self, editor, index):
@@ -216,7 +221,7 @@ class AxisColumnDelegate(QStyledItemDelegate):
         editor.setCurrentText(val)
 
     def setModelData(self, editor, model, index):
-        val = BasePlotCurveItem.axis_orientations[editor.currentText()]
+        val = BasePlotAxisItem.axis_orientations[editor.currentText()]
         model.setData(index, val, Qt.EditRole)
 
     def updateEditorGeometry(self, editor, option, index):
