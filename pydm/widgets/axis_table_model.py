@@ -1,14 +1,12 @@
 from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant
-from qtpy.QtGui import QBrush
 from .baseplot import BasePlotCurveItem
 
 
 class BasePlotAxesModel(QAbstractTableModel):
+    """ The data model for the axes tab in the plot curve editor.
+        Acts as a go-between for the curves in a plot, and QTableView items. """
+
     name_for_orientations = {v: k for k, v in BasePlotCurveItem.axis_orientations.items()}
-    """ This is the data model used by the waveform plot curve editor.
-    It basically acts as a go-between for the curves in a plot, and
-    QTableView items.
-    """
 
     def __init__(self, plot, parent=None):
         super(BasePlotAxesModel, self).__init__(parent=parent)
@@ -22,19 +20,9 @@ class BasePlotAxesModel(QAbstractTableModel):
 
     @plot.setter
     def plot(self, new_plot):
-        #self.beginResetModel()  # TODO: Remove?
         self._plot = new_plot
-        #self.endResetModel()
-
-    # QAbstractItemModel Implementation
-    def clear(self):  # TODO: Remove?
-        print("A call to clear was ingored")
-        #self.plot.clearCurves()
 
     def flags(self, index):
-        column_name = self._column_names[index.column()]
-        if column_name == "Color":
-            return Qt.ItemIsSelectable | Qt.ItemIsEnabled
         return Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsEditable
 
     def rowCount(self, parent=None):
@@ -61,15 +49,15 @@ class BasePlotAxesModel(QAbstractTableModel):
 
     def get_data(self, column_name, axis):
         if column_name == "Y-Axis Name":
-            return axis.y_axis_name
+            return axis.name
         elif column_name == "Y-Axis Location":
-            return self.name_for_orientations.get(axis.y_axis_orientation, 'Left')
+            return self.name_for_orientations.get(axis.orientation, 'Left')
         elif column_name == "Min Y Range":
-            return axis.y_axis_min_range
+            return axis.min_range
         elif column_name == "Max Y Range":
-            return axis.y_axis_max_range
+            return axis.max_range
         elif column_name == "Enable Auto Range":
-            return axis.y_axis_auto_range
+            return axis.auto_range
 
     def setData(self, index, value, role=Qt.EditRole):
         if not index.isValid():
@@ -90,20 +78,20 @@ class BasePlotAxesModel(QAbstractTableModel):
         self.dataChanged.emit(index, index)
         return True
 
-    def set_data(self, column_name, curve, value):
+    def set_data(self, column_name, axis, value):
         if column_name == "Y-Axis Name":
-            curve.y_axis_name = str(value)
+            axis.name = str(value)
         elif column_name == "Y-Axis Location":
             if value is None:
-                curve.y_axis_orientation = 'left'  # The PyQtGraph default is the left axis
+                axis.orientation = 'left'  # The PyQtGraph default is the left axis
             else:
-                curve.y_axis_orientation = str(value)
+                axis.orientation = str(value)
         elif column_name == "Min Y Range":
-            curve.y_axis_min_range = float(value)
+            axis.min_range = float(value)
         elif column_name == "Max Y Range":
-            curve.y_axis_max_range = float(value)
+            axis.max_range = float(value)
         elif column_name == "Enable Auto Range":
-            curve.y_axis_auto_range = bool(value)  # TODO HIGH: This cannot be correct
+            axis.auto_range = bool(value)
         else:
             return False
         return True
@@ -119,18 +107,13 @@ class BasePlotAxesModel(QAbstractTableModel):
     # End QAbstractItemModel implementation.
 
     def append(self, name):
-        print('we are appending 1 row for axis table')
+        """ Append a row to the table """
         self.beginInsertRows(QModelIndex(), len(self._plot._axes), len(self._plot._axes))
         self._plot.addAxis(plot_data_item=None, name=name, orientation='left')
         self.endInsertRows()
 
     def removeAtIndex(self, index):
-        pass
-
-
-    # TODO HIGH: Remove
-    def needsColorDialog(self, index):
-        column_name = self._column_names[index.column()]
-        if column_name == "Color":
-            return True
-        return False
+        """ Removes the axis at the given index on the plot, along with its row in the view """
+        self.beginRemoveRows(QModelIndex(), index.row(), index.row())
+        self._plot.removeAxisAtIndex(index.row())
+        self.endRemoveRows()

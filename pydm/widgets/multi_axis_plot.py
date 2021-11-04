@@ -90,7 +90,6 @@ class MultiAxisPlot(PlotItem):
         # Rebuilding the layout of the plot item will put the new axis in the correct place
         self.rebuildLayout()
         self.updateStackedViews()
-        print(f"We made it through MAP.addAxis ok with axis: {axis} and name: {name}")
 
     def addStackedView(self, view):
         """
@@ -240,22 +239,11 @@ class MultiAxisPlot(PlotItem):
             view.setYRange(minY, maxY, padding=padding)
         super(MultiAxisPlot, self).setYRange(minY, maxY, padding=padding)
 
-    def clear(self):
-        """
-        Cleans up all curve related data from this plot. To be invoked as part of the flow of clearing out
-        all curves from the plot.
-        """
-        print(f'Clearing all curve data from plot!')
-
-        # TODO: Remove this and just call the super only
-        super(MultiAxisPlot, self).clear()
-
     def clearAxes(self):
         """
         Cleans up all axis related data from this plot.
         """
 
-        print('Clearing all axis data from plot!')
         for view in self.stackedViews:
             self.removeItem(view)
             self.scene().removeItem(view)

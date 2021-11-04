@@ -105,6 +105,7 @@ def test_baseplot_multiple_y_axes(qtbot):
         added to the plot correctly. Also confirm that adding a curve to an existing axis works properly. """
     base_plot = BasePlot()
     base_plot.clear()
+    base_plot.clearAxes()
 
     # Here we add 4 curves to our plot. Because we use 3 unique axis names, we should see that 3 axes are created. The
     # 4th curve is added with an axis name that already exists, so it should get assigned to that axis rather than
@@ -113,10 +114,10 @@ def test_baseplot_multiple_y_axes(qtbot):
     plot_curve_item_2 = WaveformCurveItem()
     plot_curve_item_3 = WaveformCurveItem()
     plot_curve_item_4 = WaveformCurveItem()
-    base_plot.addCurve(plot_curve_item_1, y_axis_name='Test Axis 1', y_axis_orientation='left')
-    base_plot.addCurve(plot_curve_item_2, y_axis_name='Test Axis 2', y_axis_orientation='left')
-    base_plot.addCurve(plot_curve_item_3, y_axis_name='Test Axis 3', y_axis_orientation='right')
-    base_plot.addCurve(plot_curve_item_4, y_axis_name='Test Axis 1', y_axis_orientation='left')
+    base_plot.addCurve(plot_curve_item_1, y_axis_name='Test Axis 1')
+    base_plot.addCurve(plot_curve_item_2, y_axis_name='Test Axis 2')
+    base_plot.addCurve(plot_curve_item_3, y_axis_name='Test Axis 3')
+    base_plot.addCurve(plot_curve_item_4, y_axis_name='Test Axis 1')
     qtbot.addWidget(base_plot)
 
     # There should be 4 axes (the x-axis, and the 3 new y-axes we have just created)
@@ -131,7 +132,7 @@ def test_baseplot_multiple_y_axes(qtbot):
     # Verify their orientations were set correctly
     assert base_plot.plotItem.axes['Test Axis 1']['item'].orientation == 'left'
     assert base_plot.plotItem.axes['Test Axis 2']['item'].orientation == 'left'
-    assert base_plot.plotItem.axes['Test Axis 3']['item'].orientation == 'right'
+    assert base_plot.plotItem.axes['Test Axis 3']['item'].orientation == 'left'
 
     # Verify the curves got assigned to the correct axes
     assert base_plot.plotItem.curvesPerAxis['Test Axis 1'] == 2
@@ -143,6 +144,7 @@ def test_baseplot_no_added_y_axes(qtbot):
     """ Confirm that if the user does not name or create any new y-axes, the plot will still work just fine """
     base_plot = BasePlot()
     base_plot.clear()
+    base_plot.clearAxes()
 
     # Add 3 curves to our plot, but don't bother to use any of the y-axis parameters
     # in addCurve() leaving them to their default of None

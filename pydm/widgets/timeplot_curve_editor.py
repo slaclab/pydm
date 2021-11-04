@@ -26,7 +26,6 @@ class PyDMTimePlotCurvesModel(BasePlotCurvesModel):
         return True
 
     def append(self, address=None, name=None, color=None):
-        print(f'we are appending 1 row and were called with addr: {address} name: {name} color: {color} ')
         self.beginInsertRows(QModelIndex(), len(self._plot._curves),
                              len(self._plot._curves))
         self._plot.addYChannel(address, name, color)
@@ -54,5 +53,4 @@ class TimePlotCurveEditorDialog(BasePlotCurveEditorDialog):
 
     @Slot(int)
     def fillAxisData(self, tab_index, axis_name_col_index=3):
-        print(f'Timeplot fill data called and passing with tab_index: {tab_index} and axis index: {axis_name_col_index}')
         super(TimePlotCurveEditorDialog, self).fillAxisData(tab_index, axis_name_col_index=axis_name_col_index)

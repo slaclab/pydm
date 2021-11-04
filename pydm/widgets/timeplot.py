@@ -535,7 +535,6 @@ class PyDMTimePlot(BasePlot):
             A list of JSON-formatted strings, each containing a curve's
             settings
         """
-        print('Get curves called')
         return [json.dumps(curve.to_dict()) for curve in self._curves]
 
     def setCurves(self, new_list):
@@ -548,7 +547,6 @@ class PyDMTimePlot(BasePlot):
             A list of JSON-formatted strings, each contains a curve and its
             settings
         """
-        print(f'Set curves called with: {new_list}')
         try:
             new_list = [json.loads(str(i)) for i in new_list]
         except ValueError as e:
