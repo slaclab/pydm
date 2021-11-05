@@ -86,7 +86,7 @@ Attributes      Description                         Type         Format Example
 Here is a simple example of a channel address format with some optional attributes:
 ::
 
-    calc://circ?var=ca://DEMO:ANGLE&var_two=loc://int_var&expr=var_two*var&update=[var_two]
+    calc://circ?var=ca://DEMO:ANGLE&var_two=loc://int_var&expr=var_two*var&update=var_two
 
 -------------
 
@@ -119,3 +119,4 @@ Miscellaneous
 * See https://docs.python.org/3/library/math.html for mathematical operations which can be used in the given expression.
 * NumPy is a valid library for the mathematical expression
 * Already established local variables can be used in a calc variable attribute, but it is not possible to create a local plugin variable inside a calc variable attribute.
+* The calc plugin is intended to be only one level deep and will break if a calc channel is set as a variable of another calc channel.
