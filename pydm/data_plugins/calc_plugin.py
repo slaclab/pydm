@@ -17,15 +17,14 @@ logger = logging.getLogger(__name__)
 
 
 def epics_string(value, string_encoding="utf-8"):
-    # Stop at the first zero (EPICS convention)
+    # Stop at the first zero
     # Assume the ndarray is one-dimensional
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        zeros = np.where(value == 0)[0]
-    if zeros.size > 0:
-        value = value[:zeros[0]]
-    r = value.tobytes().decode(string_encoding)
-    return r
+    value = value.tobytes()
+    try:
+        value = value[:value.index(0)]
+    except IndexError:
+        pass
+    return value.decode(string_encoding, "replace")  # <-- ignore decoding errors, just in case
 
 
 class CalcThread(QThread):
