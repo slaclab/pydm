@@ -59,9 +59,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self._slider = QSlider(parent=self)
         self._slider.setOrientation(Qt.Horizontal)
 
-        # For anyone interested in returning the mouse wheel property.
-        # Remove the comment string around ignoreMouseWheel getter/setter methods.
-
         self._orig_wheel_event = self._slider.wheelEvent
         self._slider.wheelEvent = self.wheelEvent
 
@@ -404,7 +401,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         self.tracking = checked
 
-    '''
     @Property(bool)
     def ignoreMouseWheel(self):
         """
@@ -421,7 +417,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             self._slider.wheelEvent = self.wheelEvent
         else:
             self._slider.wheelEvent = self._orig_wheel_event
-    '''
 
     @Property(bool)
     def showLimitLabels(self):
