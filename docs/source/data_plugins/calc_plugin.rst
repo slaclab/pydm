@@ -117,6 +117,6 @@ Miscellaneous
 -------------
 
 * See https://docs.python.org/3/library/math.html for mathematical operations which can be used in the given expression.
-* NumPy is a valid library for the mathematical expression and can be accessed via 'numpy.xyz' or 'np.xyz'
+* NumPy is a valid library for the mathematical expression and can be accessed via 'numpy.xyz' or 'np.xyz'.
 * Already established local variables can be used in a calc variable attribute, but it is not possible to create a local plugin variable inside a calc variable attribute.
 * The calc plugin is intended to be only one level deep and will break if a calc channel is set as a variable of another calc channel.
