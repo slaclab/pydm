@@ -64,7 +64,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         self.y_channel = None
         self.x_address = x_addr
         self.y_address = y_addr
-        #The data in x_waveform and y_waveform are what actually get plotted.
+        # The data in x_waveform and y_waveform are what actually get plotted.
         self.x_waveform = None
         self.y_waveform = None
         # Whenever the channels update, they immediately send latest_x and latest_y.
@@ -205,7 +205,6 @@ class WaveformCurveItem(BasePlotCurveItem):
         # Don't redraw unless we already have Y data.
         if self.latest_y is not None:
             self.update_waveforms_if_ready()
-            
 
     @Slot(np.ndarray)
     def receiveYWaveform(self, new_waveform):
@@ -336,7 +335,8 @@ class PyDMWaveformPlot(BasePlot):
 
     def addChannel(self, y_channel=None, x_channel=None, name=None,
                    color=None, lineStyle=None, lineWidth=None,
-                   symbol=None, symbolSize=None, redraw_mode=None):
+                   symbol=None, symbolSize=None, redraw_mode=None,
+                   yAxisName=None):
         """
         Add a new curve to the plot.  In addition to the arguments below,
         all other keyword arguments are passed to the underlying
@@ -371,6 +371,9 @@ class PyDMWaveformPlot(BasePlot):
             Which symbol to use to represent the data.
         symbol: int, optional
             Size of the symbol.
+        yAxisName : str, optional
+            The name of the y axis to associate with this curve. Will be created if it
+            doesn't yet exist
         """
         plot_opts = {}
         plot_opts['symbol'] = symbol
@@ -387,9 +390,10 @@ class PyDMWaveformPlot(BasePlot):
                                   x_addr=x_channel,
                                   name=name,
                                   color=color,
+                                  yAxisName=yAxisName,
                                   **plot_opts)
         self.channel_pairs[(y_channel, x_channel)] = curve
-        self.addCurve(curve, curve_color=color)
+        self.addCurve(curve, curve_color=color, y_axis_name=yAxisName)
         curve.data_changed.connect(self.set_needs_redraw)
 
     def removeChannel(self, curve):
@@ -472,7 +476,9 @@ class PyDMWaveformPlot(BasePlot):
                             lineWidth=d.get('lineWidth'),
                             symbol=d.get('symbol'),
                             symbolSize=d.get('symbolSize'),
-                            redraw_mode=d.get('redraw_mode'))
+                            redraw_mode=d.get('redraw_mode'),
+                            yAxisName=d.get('yAxisName')
+                            )
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
 

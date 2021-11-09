@@ -19,8 +19,49 @@ that pops-up.
    This animation demonstrates how to use the Curve Editor that is common to
    all the PyDM plot widgets.
 
+The following is a description of some of the columns available in the editor, first for the curves tab:
+
+* Channel
+
+  The channel on which to access the PV to plot, usually in the format::
+
+   <protocol>://<channel address>
+   Channel Access Example: ca://MTEST:CosVal
+
+
+* Label
+   The label that will be applied to this curve, both in the  legend and on the y-axis
+
+* Y-Axis Name
+   The name of the y-axis that will be assigned to this curve. It may be named anything you
+   would like and will not show up anywhere in the plot. If you use the same name for multiple
+   curves, then each curve will be associated with that same axis. To have a separate axis for
+   each curve, simply use two different names. This name will also be displayed on a row in the
+   axes tab in order to edit the properties of the axis itself.
+
+And for the axes tab:
+
+* Y-Axis Name
+   The name of the axis to set properties for. It must match the name used in the curves tab to be
+   linked to that associated curve. Upon clicking on the axes tab, any axis names you have created for
+   your curves will be automatically pre-filled here so that you do not have to type them again.
+
+* Y-Axis Orientation
+   A simple option for placing the y-axis either on the left or the right of the plot.
+
+* Min Y Range
+   The minimum value that will be displayed on the axis. Can be left to its default if using auto range.
+
+* Max Y Range
+   The maximum value that will be displayed on the axis. Can be left to its default if using auto range.
+
+* Enable Auto Range
+   When set to true, this axis will automatically update its display range if the curve it is linked to
+   receives data that falls outside its current range. If this is set to true, then the min and
+   max values specified will not be respected, so set this to false if you wish to only view data falling
+   within those values.
 
 .. Note::
   This is not applicable for users interacting with widgets via Python code.
   In this case you will need to serialize the list of JSON strings and use the
-  ``setCurves`` property to configure the plot properly.
+  ``setAxes`` and  ``setCurves`` property to configure the plot properly.

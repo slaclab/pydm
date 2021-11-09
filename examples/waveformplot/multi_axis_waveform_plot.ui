@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>626</width>
+    <height>533</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="PyDMWaveformPlot" name="PyDMWaveformPlot">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="yAxes">
+      <stringlist>
+       <string>{&quot;name&quot;: &quot;Axis 1&quot;, &quot;orientation&quot;: &quot;left&quot;, &quot;minRange&quot;: -1.0, &quot;maxRange&quot;: 1.0, &quot;autoRange&quot;: true}</string>
+       <string>{&quot;name&quot;: &quot;Axis 2&quot;, &quot;orientation&quot;: &quot;right&quot;, &quot;minRange&quot;: -1.0, &quot;maxRange&quot;: 1.0, &quot;autoRange&quot;: true}</string>
+      </stringlist>
+     </property>
+     <property name="xLabels">
+      <stringlist>
+       <string>Point #</string>
+      </stringlist>
+     </property>
+     <property name="yLabels">
+      <stringlist/>
+     </property>
+     <property name="showLegend">
+      <bool>true</bool>
+     </property>
+     <property name="curves">
+      <stringlist>
+       <string>{&quot;y_channel&quot;: &quot;ca://MTEST:Waveform&quot;, &quot;x_channel&quot;: &quot;ca://MTEST:TimeBase&quot;, &quot;name&quot;: &quot;Sine&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;redraw_mode&quot;: 2}</string>
+       <string>{&quot;y_channel&quot;: &quot;ca://MTEST:Cosine&quot;, &quot;x_channel&quot;: &quot;ca://MTEST:TimeBase&quot;, &quot;name&quot;: &quot;Cosine&quot;, &quot;color&quot;: &quot;red&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 2&quot;, &quot;redraw_mode&quot;: 2}</string>
+      </stringlist>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMWaveformPlot</class>
+   <extends>QGraphicsView</extends>
+   <header>pydm.widgets.waveformplot</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

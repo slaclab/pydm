@@ -8,6 +8,7 @@ from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol
 
+
 class ScatterPlotCurveItem(BasePlotCurveItem):
     _channels = ('x_channel', 'y_channel')
 
@@ -312,7 +313,7 @@ class PyDMScatterPlot(BasePlot):
     def addChannel(self, y_channel=None, x_channel=None, name=None,
                    color=None, lineStyle=None, lineWidth=None,
                    symbol=None, symbolSize=None, redraw_mode=None,
-                   buffer_size=None):
+                   buffer_size=None, yAxisName=None):
         """
         Add a new curve to the plot.  In addition to the arguments below,
         all other keyword arguments are passed to the underlying
@@ -349,6 +350,9 @@ class PyDMScatterPlot(BasePlot):
             Which symbol to use to represent the data.
         symbol: int, optional
             Size of the symbol.
+        yAxisName : str, optional
+            The name of the y axis to associate with this curve. Will be created if it
+            doesn't yet exist
         """
         plot_opts = {}
         plot_opts['symbol'] = symbol
@@ -364,11 +368,12 @@ class PyDMScatterPlot(BasePlot):
                                      x_addr=x_channel,
                                      name=name,
                                      color=color,
+                                     yAxisName=yAxisName,
                                      **plot_opts)
         if buffer_size is not None:
             curve.setBufferSize(buffer_size)
         self.channel_pairs[(x_channel, y_channel)] = curve
-        self.addCurve(curve, curve_color=color)
+        self.addCurve(curve, curve_color=color, y_axis_name=yAxisName)
         curve.data_changed.connect(self.set_needs_redraw)
 
     def removeChannel(self, curve):
@@ -452,7 +457,8 @@ class PyDMScatterPlot(BasePlot):
                             symbol=d.get('symbol'),
                             symbolSize=d.get('symbolSize'),
                             redraw_mode=d.get('redraw_mode'),
-                            buffer_size=d.get('buffer_size'))
+                            buffer_size=d.get('buffer_size'),
+                            yAxisName=d.get('yAxisName'))
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
 

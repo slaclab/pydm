@@ -1,4 +1,4 @@
-from qtpy.QtCore import QModelIndex, QVariant
+from qtpy.QtCore import QModelIndex, QVariant, Slot
 from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import BasePlotCurveEditorDialog
 
@@ -50,3 +50,7 @@ class TimePlotCurveEditorDialog(BasePlotCurveEditorDialog):
     def __init__(self, plot, parent=None):
         super(TimePlotCurveEditorDialog, self).__init__(plot, parent)
         self.setup_delegate_columns(index=2)
+
+    @Slot(int)
+    def fillAxisData(self, tab_index, axis_name_col_index=3):
+        super(TimePlotCurveEditorDialog, self).fillAxisData(tab_index, axis_name_col_index=axis_name_col_index)

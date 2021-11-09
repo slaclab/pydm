@@ -14,8 +14,8 @@ class BasePlotCurvesModel(QAbstractTableModel):
     def __init__(self, plot, parent=None):
         super(BasePlotCurvesModel, self).__init__(parent=parent)
         self._plot = plot
-        self._column_names = ("Label", "Color", "Line Style", "Line Width",
-                              "Symbol", "Symbol Size")
+        self._column_names = ("Label", "Color", "Y-Axis Name", "Line Style",
+                              "Line Width", "Symbol", "Symbol Size")
 
     @property
     def plot(self):
@@ -66,6 +66,8 @@ class BasePlotCurvesModel(QAbstractTableModel):
             if curve.name() is None:
                 return QVariant()
             return str(curve.name())
+        elif column_name == "Y-Axis Name":
+            return curve.y_axis_name
         elif column_name == "Color":
             return curve.color_string
         elif column_name == "Line Style":
@@ -101,6 +103,8 @@ class BasePlotCurvesModel(QAbstractTableModel):
             curve.setData(name=str(value))
         elif column_name == "Color":
             curve.color = value
+        elif column_name == "Y-Axis Name":
+            curve.y_axis_name = str(value)
         elif column_name == "Line Style":
             curve.lineStyle = int(value)
         elif column_name == "Line Width":
