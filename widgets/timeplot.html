@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMTimePlot &mdash; PyDM v1.11.1+89.g819f4fae documentation</title>
+  <title>PyDMTimePlot &mdash; PyDM v1.11.1+120.g01c5326d documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.11.1+89.g819f4fae
+                v1.11.1+120.g01c5326d
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -1202,6 +1202,48 @@ is raised.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.addAxis">
+<span class="sig-name descname"><span class="pre">addAxis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_data_item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_auto_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.addAxis" title="Permalink to this definition"></a></dt>
+<dd><p>Create an AxisItem with the input name and orientation, and add it to this plot.
+:param plot_data_item: The curve that will be linked with this new axis
+:type plot_data_item: BasePlotCurveItem
+:param name: The name that will be assigned to this axis
+:type name: str
+:param orientation: The orientation of this axis, must be in ‘left’ or ‘right’
+:type orientation: str
+:param min_range: The minimum range to display on the axis
+:type min_range: float
+:param max_range: The maximum range to display on the axis
+:type max_range: float
+:param enable_auto_range: Whether or not to use autorange for this axis. Min and max range will not be respected</p>
+<blockquote>
+<div><p>when data goes out of range if this is set to True</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>Exception</strong> – Raised by PyQtGraph if the orientation is not in ‘left’ or ‘right’</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.addCurve">
+<span class="sig-name descname"><span class="pre">addCurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_data_item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_axis_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.addCurve" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a curve to this plot. If the y axis parameters are specified, either link this curve to an existing
+axis if that axis is already part of this plot, or create a new one and link the curve to it.
+:param plot_data_item: The curve to add to this plot
+:type plot_data_item: BasePlotCurveItem
+:param curve_color: The color to draw the curve and axis label in
+:type curve_color: QColor, optional
+:param y_axis_name: The name of the axis to link the curve with. If this is the first time seeing this name,</p>
+<blockquote>
+<div><p>then a new axis will be created for it.</p>
+</div></blockquote>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.addLegendItem">
 <span class="sig-name descname"><span class="pre">addLegendItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pv_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_show_legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.addLegendItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.addLegendItem" title="Permalink to this definition"></a></dt>
 <dd><p>Add an item into the graph’s legend.</p>
@@ -1224,7 +1266,7 @@ item, but do not display the legend.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.addYChannel">
-<span class="sig-name descname"><span class="pre">addYChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineStyle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineWidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbolSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.addYChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.addYChannel" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">addYChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineStyle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineWidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbolSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yAxisName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.addYChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.addYChannel" title="Permalink to this definition"></a></dt>
 <dd><p>Adds a new curve to the current plot</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1237,6 +1279,8 @@ item, but do not display the legend.</p></li>
 <li><p><strong>symbol</strong> (<em>str</em>) – The symbols as markers along the curve, i.e. circle, square,
 triangle, star, etc.</p></li>
 <li><p><strong>symbolSize</strong> (<em>int</em>) – How big the symbols should be</p></li>
+<li><p><strong>yAxisName</strong> (<em>str</em>) – The name of the y axis to associate with this curve. Will be created if it
+doesn’t yet exist</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1349,6 +1393,12 @@ If true, the values in minYRange and maxYRange are ignored.</p>
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.childrenRegion">
 <span class="sig-name descname"><span class="pre">childrenRegion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QRegion</span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.childrenRegion" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.clearAxes">
+<span class="sig-name descname"><span class="pre">clearAxes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.clearAxes" title="Permalink to this definition"></a></dt>
+<dd><p>Clear out any added axes on this plot</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.clearCurves">
@@ -1909,6 +1959,22 @@ edge.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.getYAxes">
+<span class="sig-name descname"><span class="pre">getYAxes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.getYAxes" title="Permalink to this definition"></a></dt>
+<dd><p>Dump the current list of axes and each axis’s settings into a list
+of JSON-formatted strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>settings</strong> – A list of JSON-formatted strings, each containing a curve’s
+settings</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3520,6 +3586,18 @@ collect data for, before rotating the buffer.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.setYAxes">
+<span class="sig-name descname"><span class="pre">setYAxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.setYAxes" title="Permalink to this definition"></a></dt>
+<dd><p>Add a list of axes into the graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_list</strong> (<em>list</em>) – A list of JSON-formatted strings, each contains an axis and its
+settings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.set_opacity">
 <span class="sig-name descname"><span class="pre">set_opacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.set_opacity" title="Permalink to this definition"></a></dt>
 <dd><p>Float value between 0 and 1 representing the opacity of the widget
@@ -3972,6 +4050,22 @@ next rendering.</p>
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.y">
 <span class="sig-name descname"><span class="pre">y</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.y" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.yAxes">
+<span class="sig-name descname"><span class="pre">yAxes</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.yAxes" title="Permalink to this definition"></a></dt>
+<dd><p>Dump the current list of axes and each axis’s settings into a list
+of JSON-formatted strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>settings</strong> – A list of JSON-formatted strings, each containing a curve’s
+settings</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -5990,6 +6084,15 @@ Invalidates the viewRect cache.</p>
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.yChanged">
 <span class="sig-name descname"><span class="pre">yChanged</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.yChanged" title="Permalink to this definition"></a></dt>
 <dd><p>yChanged(self) [signal]</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.y_axis_name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">y_axis_name</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.y_axis_name" title="Permalink to this definition"></a></dt>
+<dd><p>Return the name of the y-axis that this curve should be associated with. This allows us to have plots that
+contain multiple y-axes, with each curve assigned to either a unique or shared axis as needed.
+:returns:
+:rtype: str</p>
 </dd></dl>
 
 <dl class="py attribute">

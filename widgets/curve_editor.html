@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plot Curve Editor &mdash; PyDM v1.11.1+89.g819f4fae documentation</title>
+  <title>Plot Curve Editor &mdash; PyDM v1.11.1+120.g01c5326d documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.11.1+89.g819f4fae
+                v1.11.1+120.g01c5326d
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -135,11 +135,68 @@ that pops-up.</p>
 all the PyDM plot widgets.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
+<p>The following is a description of some of the columns available in the editor, first for the curves tab:</p>
+<ul>
+<li><p>Channel</p>
+<p>The channel on which to access the PV to plot, usually in the format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">protocol</span><span class="o">&gt;</span><span class="p">:</span><span class="o">//&lt;</span><span class="n">channel</span> <span class="n">address</span><span class="o">&gt;</span>
+<span class="n">Channel</span> <span class="n">Access</span> <span class="n">Example</span><span class="p">:</span> <span class="n">ca</span><span class="p">:</span><span class="o">//</span><span class="n">MTEST</span><span class="p">:</span><span class="n">CosVal</span>
+</pre></div>
+</div>
+</li>
+<li><dl class="simple">
+<dt>Label</dt><dd><p>The label that will be applied to this curve, both in the  legend and on the y-axis</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Y-Axis Name</dt><dd><p>The name of the y-axis that will be assigned to this curve. It may be named anything you
+would like and will not show up anywhere in the plot. If you use the same name for multiple
+curves, then each curve will be associated with that same axis. To have a separate axis for
+each curve, simply use two different names. This name will also be displayed on a row in the
+axes tab in order to edit the properties of the axis itself.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>And for the axes tab:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Y-Axis Name</dt><dd><p>The name of the axis to set properties for. It must match the name used in the curves tab to be
+linked to that associated curve. Upon clicking on the axes tab, any axis names you have created for
+your curves will be automatically pre-filled here so that you do not have to type them again.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Y-Axis Orientation</dt><dd><p>A simple option for placing the y-axis either on the left or the right of the plot.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Min Y Range</dt><dd><p>The minimum value that will be displayed on the axis. Can be left to its default if using auto range.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Max Y Range</dt><dd><p>The maximum value that will be displayed on the axis. Can be left to its default if using auto range.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Enable Auto Range</dt><dd><p>When set to true, this axis will automatically update its display range if the curve it is linked to
+receives data that falls outside its current range. If this is set to true, then the min and
+max values specified will not be respected, so set this to false if you wish to only view data falling
+within those values.</p>
+</dd>
+</dl>
+</li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is not applicable for users interacting with widgets via Python code.
 In this case you will need to serialize the list of JSON strings and use the
-<code class="docutils literal notranslate"><span class="pre">setCurves</span></code> property to configure the plot properly.</p>
+<code class="docutils literal notranslate"><span class="pre">setAxes</span></code> and  <code class="docutils literal notranslate"><span class="pre">setCurves</span></code> property to configure the plot properly.</p>
 </div>
 </section>
 

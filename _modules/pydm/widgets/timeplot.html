@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.timeplot &mdash; PyDM v1.11.1+89.g819f4fae documentation</title>
+  <title>pydm.widgets.timeplot &mdash; PyDM v1.11.1+120.g01c5326d documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.11.1+89.g819f4fae
+                v1.11.1+120.g01c5326d
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -277,9 +277,9 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_mode</span> <span class="o">==</span> <span class="n">PyDMTimePlot</span><span class="o">.</span><span class="n">SynchronousMode</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="c1">#The first array row is to record timestamps, when a new value arrives.</span>
+            <span class="c1"># The first array row is to record timestamps, when a new value arrives.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="c1">#The second array row is to record the actual values.</span>
+            <span class="c1"># The second array row is to record the actual values.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_value</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">:</span>
@@ -494,7 +494,7 @@
 
 <div class="viewcode-block" id="PyDMTimePlot.addYChannel"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.addYChannel">[docs]</a>    <span class="k">def</span> <span class="nf">addYChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">lineStyle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineWidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="n">symbolSize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                    <span class="n">symbolSize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">yAxisName</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds a new curve to the current plot</span>
 
@@ -515,6 +515,9 @@
 <span class="sd">            triangle, star, etc.</span>
 <span class="sd">        symbolSize : int</span>
 <span class="sd">            How big the symbols should be</span>
+<span class="sd">        yAxisName : str</span>
+<span class="sd">            The name of the y axis to associate with this curve. Will be created if it</span>
+<span class="sd">            doesn&#39;t yet exist</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -532,12 +535,12 @@
 
         <span class="c1"># Add curve</span>
         <span class="n">new_curve</span> <span class="o">=</span> <span class="n">TimePlotCurveItem</span><span class="p">(</span><span class="n">y_channel</span><span class="p">,</span> <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_plot_by_timestamps</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
-                                      <span class="o">**</span><span class="n">plot_opts</span><span class="p">)</span>
+                                      <span class="n">yAxisName</span><span class="o">=</span><span class="n">yAxisName</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_opts</span><span class="p">)</span>
         <span class="n">new_curve</span><span class="o">.</span><span class="n">setUpdatesAsynchronously</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updatesAsynchronously</span><span class="p">)</span>
         <span class="n">new_curve</span><span class="o">.</span><span class="n">setBufferSize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">update_timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">new_curve</span><span class="o">.</span><span class="n">asyncUpdate</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addCurve</span><span class="p">(</span><span class="n">new_curve</span><span class="p">,</span> <span class="n">curve_color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addCurve</span><span class="p">(</span><span class="n">new_curve</span><span class="p">,</span> <span class="n">curve_color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">y_axis_name</span><span class="o">=</span><span class="n">yAxisName</span><span class="p">)</span>
 
         <span class="n">new_curve</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_needs_redraw</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -661,7 +664,8 @@
                              <span class="n">lineStyle</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lineStyle&#39;</span><span class="p">),</span>
                              <span class="n">lineWidth</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lineWidth&#39;</span><span class="p">),</span>
                              <span class="n">symbol</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbol&#39;</span><span class="p">),</span>
-                             <span class="n">symbolSize</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbolSize&#39;</span><span class="p">))</span></div>
+                             <span class="n">symbolSize</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbolSize&#39;</span><span class="p">),</span>
+                             <span class="n">yAxisName</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;yAxisName&#39;</span><span class="p">))</span></div>
 
     <span class="n">curves</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getCurves</span><span class="p">,</span> <span class="n">setCurves</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
@@ -700,7 +704,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">addYChannel</span><span class="p">(</span><span class="n">y_channel</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
                              <span class="n">name</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">lineStyle</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">lineStyle</span><span class="p">,</span>
                              <span class="n">lineWidth</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">lineWidth</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span>
-                             <span class="n">symbolSize</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">symbolSize</span><span class="p">)</span></div>
+                             <span class="n">symbolSize</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">symbolSize</span><span class="p">,</span> <span class="n">yAxisName</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">y_axis_name</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMTimePlot.addLegendItem"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.addLegendItem">[docs]</a>    <span class="k">def</span> <span class="nf">addLegendItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">pv_name</span><span class="p">,</span> <span class="n">force_show_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

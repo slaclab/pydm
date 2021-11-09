@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.scatterplot &mdash; PyDM v1.11.1+89.g819f4fae documentation</title>
+  <title>pydm.widgets.scatterplot &mdash; PyDM v1.11.1+120.g01c5326d documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.11.1+89.g819f4fae
+                v1.11.1+120.g01c5326d
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -109,6 +109,7 @@
 <span class="kn">from</span> <span class="nn">.baseplot</span> <span class="kn">import</span> <span class="n">BasePlot</span><span class="p">,</span> <span class="n">NoDataError</span><span class="p">,</span> <span class="n">BasePlotCurveItem</span>
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">PyDMChannel</span>
 <span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="n">remove_protocol</span>
+
 
 <div class="viewcode-block" id="ScatterPlotCurveItem"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.ScatterPlotCurveItem">[docs]</a><span class="k">class</span> <span class="nc">ScatterPlotCurveItem</span><span class="p">(</span><span class="n">BasePlotCurveItem</span><span class="p">):</span>
     <span class="n">_channels</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;x_channel&#39;</span><span class="p">,</span> <span class="s1">&#39;y_channel&#39;</span><span class="p">)</span>
@@ -414,7 +415,7 @@
 <div class="viewcode-block" id="PyDMScatterPlot.addChannel"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.PyDMScatterPlot.addChannel">[docs]</a>    <span class="k">def</span> <span class="nf">addChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineStyle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineWidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">symbol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">symbolSize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">redraw_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">buffer_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                   <span class="n">buffer_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">yAxisName</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a new curve to the plot.  In addition to the arguments below,</span>
 <span class="sd">        all other keyword arguments are passed to the underlying</span>
@@ -451,6 +452,9 @@
 <span class="sd">            Which symbol to use to represent the data.</span>
 <span class="sd">        symbol: int, optional</span>
 <span class="sd">            Size of the symbol.</span>
+<span class="sd">        yAxisName : str, optional</span>
+<span class="sd">            The name of the y axis to associate with this curve. Will be created if it</span>
+<span class="sd">            doesn&#39;t yet exist</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">plot_opts</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">plot_opts</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span>
@@ -466,11 +470,12 @@
                                      <span class="n">x_addr</span><span class="o">=</span><span class="n">x_channel</span><span class="p">,</span>
                                      <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                                      <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                                     <span class="n">yAxisName</span><span class="o">=</span><span class="n">yAxisName</span><span class="p">,</span>
                                      <span class="o">**</span><span class="n">plot_opts</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">buffer_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">curve</span><span class="o">.</span><span class="n">setBufferSize</span><span class="p">(</span><span class="n">buffer_size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel_pairs</span><span class="p">[(</span><span class="n">x_channel</span><span class="p">,</span> <span class="n">y_channel</span><span class="p">)]</span> <span class="o">=</span> <span class="n">curve</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addCurve</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">curve_color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addCurve</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">curve_color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">y_axis_name</span><span class="o">=</span><span class="n">yAxisName</span><span class="p">)</span>
         <span class="n">curve</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_needs_redraw</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMScatterPlot.removeChannel"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.PyDMScatterPlot.removeChannel">[docs]</a>    <span class="k">def</span> <span class="nf">removeChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
@@ -554,7 +559,8 @@
                             <span class="n">symbol</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbol&#39;</span><span class="p">),</span>
                             <span class="n">symbolSize</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbolSize&#39;</span><span class="p">),</span>
                             <span class="n">redraw_mode</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;redraw_mode&#39;</span><span class="p">),</span>
-                            <span class="n">buffer_size</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;buffer_size&#39;</span><span class="p">))</span></div>
+                            <span class="n">buffer_size</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;buffer_size&#39;</span><span class="p">),</span>
+                            <span class="n">yAxisName</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;yAxisName&#39;</span><span class="p">))</span></div>
 
     <span class="n">curves</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getCurves</span><span class="p">,</span> <span class="n">setCurves</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
