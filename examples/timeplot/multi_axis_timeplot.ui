@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>873</width>
+    <height>570</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="PyDMTimePlot" name="PyDMTimePlot">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>30</y>
+     <width>611</width>
+     <height>521</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="yAxes">
+    <stringlist>
+     <string>{&quot;name&quot;: &quot;Axis 1&quot;, &quot;orientation&quot;: &quot;left&quot;, &quot;minRange&quot;: -1.0, &quot;maxRange&quot;: 1.0, &quot;autoRange&quot;: true}</string>
+     <string>{&quot;name&quot;: &quot;Axis 2&quot;, &quot;orientation&quot;: &quot;right&quot;, &quot;minRange&quot;: -1.0, &quot;maxRange&quot;: 1.0, &quot;autoRange&quot;: true}</string>
+     <string>{&quot;name&quot;: &quot;Axis 3&quot;, &quot;orientation&quot;: &quot;right&quot;, &quot;minRange&quot;: -1.0, &quot;maxRange&quot;: 1.0, &quot;autoRange&quot;: true}</string>
+     <string>{&quot;name&quot;: &quot;Axis 4&quot;, &quot;orientation&quot;: &quot;left&quot;, &quot;minRange&quot;: -1.0, &quot;maxRange&quot;: 1.0, &quot;autoRange&quot;: true}</string>
+    </stringlist>
+   </property>
+   <property name="curves">
+    <stringlist>
+     <string>{&quot;channel&quot;: &quot;ca://MTEST:SinVal&quot;, &quot;name&quot;: &quot;Loc1:Current&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;}</string>
+     <string>{&quot;channel&quot;: &quot;ca://MTEST:CosVal&quot;, &quot;name&quot;: &quot;Loc2:Current&quot;, &quot;color&quot;: &quot;red&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;}</string>
+     <string>{&quot;channel&quot;: &quot;ca://MTEST:MeanValue&quot;, &quot;name&quot;: &quot;Blue Value&quot;, &quot;color&quot;: &quot;dodgerblue&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 2&quot;}</string>
+     <string>{&quot;channel&quot;: &quot;ca://MTEST:MaxValue&quot;, &quot;name&quot;: &quot;Green Value&quot;, &quot;color&quot;: &quot;forestgreen&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 3&quot;}</string>
+     <string>{&quot;channel&quot;: &quot;ca://MTEST:MinValue&quot;, &quot;name&quot;: &quot;Yellow Value&quot;, &quot;color&quot;: &quot;yellow&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 4&quot;}</string>
+    </stringlist>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel">
+   <property name="geometry">
+    <rect>
+     <x>660</x>
+     <y>40</y>
+     <width>131</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Separate the traces!</string>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_2">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>80</y>
+     <width>211</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="text">
+    <string>1. Use the mouse wheel within
+    the plot to zoom out (or in)
+    Alternatively, hold down the
+    right mouse button and drag
+    up or down to zoom as well.</string>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_3">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>160</y>
+     <width>271</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="text">
+    <string>2. Hold left click on a y axis and 
+    drag it up  or down to pan the 
+    trace(s) associated with that axis</string>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_4">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>230</y>
+     <width>221</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="text">
+    <string>3. Using the mouse wheel on an
+    axis will zoom in or out on the
+    specific trace(s) on that axis</string>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_5">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>300</y>
+     <width>211</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="text">
+    <string>4. Hold left click on the plot and
+    drag the mouse to draw a 
+    rectangle around all the traces
+    that will zoom in on everything 
+    within the rectangle</string>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_6">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>450</y>
+     <width>231</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="text">
+    <string>6. Press the '-' key repeatedly to
+    return to the previous zoom level.
+    Pressing the '+' or '=' key will 
+    go forward in the zoom history.</string>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_7">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>390</y>
+     <width>211</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="text">
+    <string>5. Draw a rectangle around an 
+    individual trace to zoom in
+    on that trace only.</string>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMLabel</class>
+   <extends>QLabel</extends>
+   <header>pydm.widgets.label</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMTimePlot</class>
+   <extends>QGraphicsView</extends>
+   <header>pydm.widgets.timeplot</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
