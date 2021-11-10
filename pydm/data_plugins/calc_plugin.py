@@ -6,7 +6,12 @@ import threading
 import warnings
 
 import numpy as np
-from urllib import parse
+
+try:
+    from urllib import parse  # Python 3
+except ImportError:
+    import urlparse as parse
+
 from qtpy.QtCore import Slot, QThread, Signal, Qt
 from qtpy.QtWidgets import QApplication
 
