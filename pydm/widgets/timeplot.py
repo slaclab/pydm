@@ -175,9 +175,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
         if self._update_mode == PyDMTimePlot.SynchronousMode:
             self.data_buffer = np.roll(self.data_buffer, -1)
-            #The first array row is to record timestamps, when a new value arrives.
+            # The first array row is to record timestamps, when a new value arrives.
             self.data_buffer[0, self._bufferSize - 1] = time.time()
-            #The second array row is to record the actual values.
+            # The second array row is to record the actual values.
             self.data_buffer[1, self._bufferSize - 1] = new_value
 
             if self.points_accumulated < self._bufferSize:
@@ -392,7 +392,7 @@ class PyDMTimePlot(BasePlot):
 
     def addYChannel(self, y_channel=None, name=None, color=None,
                     lineStyle=None, lineWidth=None, symbol=None,
-                    symbolSize=None):
+                    symbolSize=None, yAxisName=None):
         """
         Adds a new curve to the current plot
 
@@ -413,6 +413,9 @@ class PyDMTimePlot(BasePlot):
             triangle, star, etc.
         symbolSize : int
             How big the symbols should be
+        yAxisName : str
+            The name of the y axis to associate with this curve. Will be created if it
+            doesn't yet exist
 
         Returns
         -------
@@ -430,12 +433,12 @@ class PyDMTimePlot(BasePlot):
 
         # Add curve
         new_curve = TimePlotCurveItem(y_channel, plot_by_timestamps=self._plot_by_timestamps, name=name, color=color,
-                                      **plot_opts)
+                                      yAxisName=yAxisName, **plot_opts)
         new_curve.setUpdatesAsynchronously(self.updatesAsynchronously)
         new_curve.setBufferSize(self._bufferSize)
 
         self.update_timer.timeout.connect(new_curve.asyncUpdate)
-        self.addCurve(new_curve, curve_color=color)
+        self.addCurve(new_curve, curve_color=color, y_axis_name=yAxisName)
 
         new_curve.data_changed.connect(self.set_needs_redraw)
         self.redraw_timer.start()
@@ -559,7 +562,8 @@ class PyDMTimePlot(BasePlot):
                              lineStyle=d.get('lineStyle'),
                              lineWidth=d.get('lineWidth'),
                              symbol=d.get('symbol'),
-                             symbolSize=d.get('symbolSize'))
+                             symbolSize=d.get('symbolSize'),
+                             yAxisName=d.get('yAxisName'))
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
 
@@ -598,7 +602,7 @@ class PyDMTimePlot(BasePlot):
             self.addYChannel(y_channel=curve.address, color=curve.color,
                              name=curve.address, lineStyle=curve.lineStyle,
                              lineWidth=curve.lineWidth, symbol=curve.symbol,
-                             symbolSize=curve.symbolSize)
+                             symbolSize=curve.symbolSize, yAxisName=curve.y_axis_name)
 
     def addLegendItem(self, item, pv_name, force_show_legend=False):
         """

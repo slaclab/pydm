@@ -72,4 +72,4 @@ class ScatterPlotCurveEditorDialog(BasePlotCurveEditorDialog):
 
         self.setup_delegate_columns(index=3)
         redraw_mode_delegate = RedrawModeColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(8, redraw_mode_delegate)
+        self.table_view.setItemDelegateForColumn(10, redraw_mode_delegate)
