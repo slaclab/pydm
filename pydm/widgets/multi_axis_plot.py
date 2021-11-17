@@ -6,6 +6,7 @@ except ImportError:
 from collections import Counter
 from pyqtgraph import GraphicsWidget, PlotItem, ViewBox
 from .multi_axis_viewbox import MultiAxisViewBox
+from .multi_axis_viewbox_menu import MultiAxisViewBoxMenu
 
 
 class MultiAxisPlot(PlotItem):
@@ -27,6 +28,7 @@ class MultiAxisPlot(PlotItem):
     def __init__(self, parent=None, axisItems=None, **kargs):
         # Create a view box that will support multiple axes to pass to the PyQtGraph PlotItem
         viewBox = MultiAxisViewBox()
+        viewBox.menu = MultiAxisViewBoxMenu(viewBox)
         super(MultiAxisPlot, self).__init__(viewBox=viewBox, axisItems=axisItems, **kargs)
 
         self.curvesPerAxis = Counter()  # A simple mapping of AxisName to a count of curves that using that axis
@@ -39,6 +41,8 @@ class MultiAxisPlot(PlotItem):
         # Signals that will be emitted when mouse wheel or mouse drag events happen
         self.vb.sigMouseDragged.connect(self.handleMouseDragEvent)
         self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
+        if self.vb.menuEnabled():
+            self.vb.menu.sigMouseModeChanged.connect(self.changeMouseMode)
 
     def addAxis(self, axis, name, plotDataItem=None, setXLink=False, enableAutoRangeX=True, enableAutoRangeY=True,
                 minRange=-1.0, maxRange=1.0):
@@ -107,6 +111,7 @@ class MultiAxisPlot(PlotItem):
         # to the event handling code of the stacked views
         view.sigMouseDragged.connect(self.handleMouseDragEvent)
         view.sigMouseWheelZoomed.connect(self.handleWheelEvent)
+
         self.vb.sigHistoryChanged.connect(view.scaleHistory)
 
     def updateStackedViews(self):
@@ -328,3 +333,19 @@ class MultiAxisPlot(PlotItem):
         for stackedView in self.stackedViews:
             if stackedView is not view:
                 stackedView.mouseDragEvent(ev, axis, fromSignal=True)
+
+    def changeMouseMode(self, mode):
+        """
+        Propagate a change of mouse mode through each stacked view box
+        Parameters
+        ----------
+        mode: str
+            Either "pan" or "rect". Pan makes the left click pan the plot, rect makes it draw a zooming box.
+
+        Raises
+        ------
+        Exception
+            Raised by PyQtGraph if the mode is not "pan" or "rect"
+        """
+        for stackedView in self.stackedViews:
+            stackedView.setLeftButtonAction(mode)
