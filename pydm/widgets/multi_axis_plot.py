@@ -111,7 +111,6 @@ class MultiAxisPlot(PlotItem):
         # to the event handling code of the stacked views
         view.sigMouseDragged.connect(self.handleMouseDragEvent)
         view.sigMouseWheelZoomed.connect(self.handleWheelEvent)
-
         self.vb.sigHistoryChanged.connect(view.scaleHistory)
 
     def updateStackedViews(self):
