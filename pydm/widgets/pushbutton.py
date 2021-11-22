@@ -70,6 +70,8 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         self._protected_password = ""
         self._write_when_release = False
         self._released = False
+        self._pressText=""
+        self._releaseText=""
         self.clicked.connect(self.sendValue)
 
 
@@ -295,6 +297,44 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if self._relative != choice:
             self._relative = choice
 
+    @Property(str)
+    def pressText(self):
+        """
+        The text displayed when pressing the button.
+
+        Returns
+        -------
+        str
+        """
+        return self._pressText
+
+    @pressText.setter
+    def pressText(self, value):
+        if self._pressText!= value:
+            self._pressText = value
+        self.clicked.connect(self.updateText)
+
+        #self.setText(self._pressText)
+
+    @Property(str)
+    def releaseText(self):
+        """
+        The text displayed when release the button.
+
+        Returns
+        -------
+        str
+        """
+        return self._releaseText
+
+    @releaseText.setter
+    def releaseText(self, value):
+        if self._releaseText!= value:
+            self._releaseText = value
+        self.clicked.connect(self.updateText)
+
+
+
     def confirm_dialog(self, is_release=False):
         """
         Show the confirmation dialog with the proper message in case
@@ -393,8 +433,14 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             2. The value sent to the channel is the sum of the existing value and the pressValue
                if the relative flag is True, and the channel type is not a str
         """
-        self._released = False
-        val = self.__execute_send(self._pressValue)
+        if self.isCheckable():
+            if self.isChecked():
+                val=self.__execute_send(self._pressValue)
+            else:
+                val = self.__execute_send(self._releaseValue)
+        else:
+            self._released = False
+            val = self.__execute_send(self._pressValue)
 
         if self._show_confirm_dialog or self._password_protected:
             self.__execute_send(self._releaseValue, is_release=True)
@@ -546,3 +592,22 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             self.releaseValue = self.channeltype(value)
         except(ValueError, TypeError):
             logger.error("'{0}' is not a valid releaseValue for '{1}'.".format(value, self.channel))
+
+    @Slot()
+    def updateText(self):
+         """
+        Update the button text by passing a signal to the
+        PyDMPushButton.
+
+        Parameters
+        ----------
+        value : int, float or str
+        """
+         if self.isCheckable():
+             if self.isChecked():
+                 self.setText(self._pressText)
+             else:
+                 self.setText(self._releaseText)
+
+
+
