@@ -5,8 +5,9 @@ from functools import partial
 import sys
 import logging
 import warnings
+import hashlib
 
-from qtpy.QtWidgets import QPushButton, QMenu
+from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit
 from qtpy.QtGui import QCursor, QIcon, QColor
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from .base import PyDMPrimitiveWidget
@@ -45,6 +46,10 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         self.process = None
         self._show_icon = True
         self._redirect_output = False
+
+        self._password_protected = False
+        self._password = ""
+        self._protected_password = ""
 
     @Property(bool)
     def showIcon(self):
@@ -184,6 +189,78 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
             else:
                 self.commands = []
 
+
+    @Property(bool)
+    def passwordProtected(self):
+        """
+        Whether or not this button is password protected.
+        Returns
+        -------
+        bool
+        -------
+        """
+        return self._password_protected
+
+    @passwordProtected.setter
+    def passwordProtected(self, value):
+        """
+        Whether or not this button is password protected.
+        Parameters
+        ----------
+        value : bool
+        """
+        if self._password_protected != value:
+            self._password_protected = value
+
+    @Property(str)
+    def password(self):
+        """
+    	Password to be encrypted using SHA256.
+
+    	.. warning::
+    		To avoid issues exposing the password this method
+    		always returns an empty string.
+
+    	Returns
+    	-------
+    	str
+    	"""
+        return ""
+
+    @password.setter
+    def password(self, value):
+        """
+    	Password to be encrypted using SHA256.
+
+    	Parameters
+    	----------
+    	value : str
+    		The password to be encrypted
+    	"""
+        if value is not None and value != "":
+            sha = hashlib.sha256()
+            sha.update(value.encode())
+            # Use the setter as it also checks whether the existing password is the same with the
+            # new one, and only updates if the new password is different
+            self.protectedPassword = sha.hexdigest()
+
+    @Property(str)
+    def protectedPassword(self):
+        """
+    	The encrypted password.
+
+    	Returns
+    	-------
+    	str
+    	"""
+        return self._protected_password
+
+    @protectedPassword.setter
+    def protectedPassword(self, value):
+        if self._protected_password != value:
+            self._protected_password = value
+
+
     def _rebuild_menu(self):
         if not any(self._commands):
             self._commands = []
@@ -244,6 +321,41 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         else:
             self.setIcon(QIcon())
 
+    def validate_password(self):
+        """
+        If the widget is ```passwordProtected```, this method will propmt
+        the user for the correct password.
+
+        Returns
+        -------
+        bool
+            True in case the password was correct of if the widget is not
+            password protected.
+        """
+        if not self._password_protected:
+            return True
+
+        pwd, ok = QInputDialog().getText(None, "Authentication", "Please enter your password:",
+                                         QLineEdit.Password, "")
+        pwd = str(pwd)
+        if not ok or pwd == "":
+            return False
+
+        sha = hashlib.sha256()
+        sha.update(pwd.encode())
+        pwd_encrypted = sha.hexdigest()
+        if pwd_encrypted != self._protected_password:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Invalid password.")
+            msg.setWindowTitle("Error")
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.setDefaultButton(QMessageBox.Ok)
+            msg.setEscapeButton(QMessageBox.Ok)
+            msg.exec_()
+            return False
+        return True
+
     def execute_command(self, command):
         """
         Execute the shell command given by ```command```.
@@ -252,6 +364,9 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         if not command:
             logger.info("The command is not set, so no command was executed.")
             return
+
+        if not self.validate_password():
+            return None
 
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
             cmd = os.path.expanduser(os.path.expandvars(command))
