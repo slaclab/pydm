@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calc Plugin &mdash; PyDM v1.11.1+187.g5930ae21 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyDM
+          </a>
+              <div class="version">
+                v1.11.1+187.g5930ae21
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stylesheets.html">Customizing the Look and Feel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Plugins</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="local_plugin.html">Local Plugin</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyDM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Calc Plugin</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/data_plugins/calc_plugin.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="calc-plugin">
+<h1>Calc Plugin<a class="headerlink" href="#calc-plugin" title="Permalink to this headline"></a></h1>
+<p>PyDM uses Data Plugins as sources of information to be displayed at the widgets.
+Calc Plugin allows users to create and use mathematical expressions.</p>
+<p>The Calc Plugin takes in data from given channels and then applies a mathematical expression, the result is broadcast to all the listeners connected to this particular calc channel.</p>
+<p>By default, as soon as any widgets gets connected to the same channel variable, they will get the results from the mathematical expression defined in the channel’s address. These widgets can receive any updates when the calc channel’s output changes.
+For example, if the user has added a calc channel to a PyDMLabel, then the PyDMLabel will update whenever a new value from one of the channels listed by the calc plugin is pushed to the calc plugin.</p>
+<p>General Calc Plugin channel syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>calc://my_variable_name?expr_var_name=channel://address&amp;expr_var_name_two=channel://address&amp;expr=math expression
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Once a calc channel is created, multiple widgets can be connected to the same channel by providing the name of the variable, like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">calc</span><span class="p">:</span><span class="o">//</span><span class="n">my_variable_name</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The calc functions uses url formatting. Where the name attribute is separated by the ? symbol and all other attributes are separated by the &amp; symbol.</p>
+</div>
+<hr class="docutils" />
+<section id="required-attributes">
+<h2>Required Attributes<a class="headerlink" href="#required-attributes" title="Permalink to this headline"></a></h2>
+<p>In order to be able to properly create a calc channel, all the <a class="reference internal" href="local_plugin.html#required-attributes-table"><span class="std std-ref">required attributes</span></a> must be provided in the channel’s address.</p>
+<p id="required-attributes-table">The table below explains the attributes that are required to create a local plugin channel:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 59%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Attributes</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Format Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>calc</strong></p></td>
+<td><p>protocol name for Calc Plugin</p></td>
+<td><p><cite>calc://</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>name</strong></p></td>
+<td><div class="line-block">
+<div class="line">the identifier for the mathematical expression</div>
+<div class="line">user’s choice</div>
+</div>
+</td>
+<td><p><cite>my_expr_name</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>var</strong></p></td>
+<td><div class="line-block">
+<div class="line">variable mapped to an address for the expr</div>
+<div class="line">attribute.</div>
+</div>
+</td>
+<td><p><cite>var=channel://address</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>expr</strong></p></td>
+<td><div class="line-block">
+<div class="line">mathematical expression</div>
+</div>
+</td>
+<td><p><cite>expr=math expression</cite></p></td>
+</tr>
+</tbody>
+</table>
+<p>Here is a simple example of a channel address format with the required attributes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>calc://circ?var=ca://DEMO:ANGLE&amp;expr=math.sin(math.radians(var))
+</pre></div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="extra-attributes">
+<span id="id1"></span><h2>Extra Attributes<a class="headerlink" href="#extra-attributes" title="Permalink to this headline"></a></h2>
+<p>Along with the <a class="reference internal" href="local_plugin.html#required-attributes"><span class="std std-ref">required attributes</span></a>, the Local Data Plugin can also accept some optional attributes to configure the Local Variables with. These attributes should be provided in the <cite>“extras”</cite> dictionary.
+The optional attributes are described in the <a class="reference internal" href="local_plugin.html#extra-attributes-table"><span class="std std-ref">extra attributes</span></a> table below:</p>
+<p id="extra-attributes-table">The table below explains the optional attributes that can go in the <em>extras</em>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 59%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Attributes</p></th>
+<th class="head"><p>Description                         Type</p></th>
+<th class="head"><p>Format Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>update</strong></p></td>
+<td><div class="line-block">
+<div class="line">The calc function will update when one of the</div>
+<div class="line">variables in the update list receives a new</div>
+<div class="line">value optional. If nothing is given, the calc</div>
+<div class="line">function will run anytime one of the variables</div>
+<div class="line">updates.</div>
+</div>
+</td>
+<td><p><cite>update=var, var_two</cite></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The “extras” Attributes are all optional, any number of desired attributes can be specified, or none.</p>
+</div>
+<p>Here is a simple example of a channel address format with some optional attributes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>calc://circ?var=ca://DEMO:ANGLE&amp;var_two=loc://int_var&amp;expr=var_two*var&amp;update=var_two
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="simple-calc-plugin-example">
+<h2>Simple Calc Plugin Example<a class="headerlink" href="#simple-calc-plugin-example" title="Permalink to this headline"></a></h2>
+<p>The picture below represents an example of using the Calc Plugin.
+Calc addresses given in the channels of the Wavefrom Curve Editor of a PYDMWavefromPlot:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>calc://circleX?angle=ca://DEMO:ANGLE&amp;expr=-1*math.cos(math.radians(180-angle))
+calc://circley?angle=ca://DEMO:ANGLE&amp;expr=math.sin(math.radians(180-angle))
+</pre></div>
+</div>
+<p>Calc address given in the channels of the Wavefrom Curve Editor of a PYDMWavefromPlot to get the Tangent:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>calc://tanval?angle=ca://DEMO:ANGLE&amp;expr=tan(radians(angle)) if angle not in [90, 270] else None
+</pre></div>
+</div>
+<p><em>Values for TAN</em></p>
+<a class="reference internal image-reference" href="../_images/calc_example.gif"><img alt="../_images/calc_example.gif" class="align-center" src="../_images/calc_example.gif" style="width: 600pt;" /></a>
+</section>
+<hr class="docutils" />
+<section id="miscellaneous">
+<h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>See <a class="reference external" href="https://docs.python.org/3/library/math.html">https://docs.python.org/3/library/math.html</a> for mathematical operations which can be used in the given expression.</p></li>
+<li><p>NumPy is a valid library for the mathematical expression and can be accessed via ‘numpy.xyz’ or ‘np.xyz’.</p></li>
+<li><p>Already established local variables can be used in a calc variable attribute, but it is not possible to create a local plugin variable inside a calc variable attribute.</p></li>
+<li><p>The calc plugin is intended to be only one level deep and will break if a calc channel is set as a variable of another calc channel.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
