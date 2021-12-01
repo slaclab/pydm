@@ -263,7 +263,7 @@ class UrlToPython:
         """
 
         try:
-            self.config = parse.parse_qs(parse.urlsplit(self.address).query)
+            self.config = parse.parse_qs(parse.urlsplit(self.address).query.replace("+", "%2B"))
             self.name = parse.urlsplit(self.address).netloc
 
             if not self.name or not self.config:
