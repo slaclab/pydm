@@ -204,7 +204,10 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
                 for i in range(self._num_bits)]
         for bit, indicator in zip(bits, self._indicators):
             if self._connected:
-                c = self._on_color if bit else self._off_color
+                if self._alarm_state == 3:
+                    c = self._invalid_color
+                else:
+                    c = self._on_color if bit else self._off_color
             else:
                 c = self._disconnected_color
             indicator.setColor(c)
