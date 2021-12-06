@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.byte &mdash; PyDM v1.11.1+192.ge570bdf0 documentation</title>
+  <title>pydm.widgets.byte &mdash; PyDM v1.11.1+195.gc84e13b7 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.11.1+192.ge570bdf0
+                v1.11.1+195.gc84e13b7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -306,7 +306,10 @@
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_bits</span><span class="p">)]</span>
         <span class="k">for</span> <span class="n">bit</span><span class="p">,</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indicators</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span><span class="p">:</span>
-                <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_color</span> <span class="k">if</span> <span class="n">bit</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_off_color</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_color</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_color</span> <span class="k">if</span> <span class="n">bit</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_off_color</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnected_color</span>
             <span class="n">indicator</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
