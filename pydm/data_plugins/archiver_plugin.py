@@ -82,8 +82,7 @@ class Connection(PyDMConnection):
             url_string = url_string.replace("pv=", "pv=" + processing_command + "(", 1)
             url_string = url_string.replace("&from=", ")&from=", 1)
 
-        request = QNetworkRequest()
-        request.setUrl(QUrl(url_string))
+        request = QNetworkRequest(QUrl(url_string))
         # This get call is non-blocking, can be made in parallel with others, and when the results are ready they
         # will be delivered to the data_request_finished method below via the "finished" signal
         self.network_manager.get(request)
