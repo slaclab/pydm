@@ -1,7 +1,7 @@
 import time
 import json
 from collections import OrderedDict
-from pyqtgraph import ViewBox, AxisItem
+from pyqtgraph import ViewBox, AxisItem, DateAxisItem
 import numpy as np
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Signal, Slot, Property, QTimer
@@ -204,7 +204,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     def update_min_max_y_values(self, new_value):
         """
-        Updte the min and max y-value as a new value is available. This is
+        Update the min and max y-value as a new value is available. This is
         useful for auto-scaling to a specific curve.
 
         Parameters
@@ -392,7 +392,7 @@ class PyDMTimePlot(BasePlot):
 
     def addYChannel(self, y_channel=None, name=None, color=None,
                     lineStyle=None, lineWidth=None, symbol=None,
-                    symbolSize=None, yAxisName=None):
+                    symbolSize=None, yAxisName=None, useArchiveData=False):
         """
         Adds a new curve to the current plot
 
@@ -432,8 +432,8 @@ class PyDMTimePlot(BasePlot):
             plot_opts['lineWidth'] = lineWidth
 
         # Add curve
-        new_curve = TimePlotCurveItem(y_channel, plot_by_timestamps=self._plot_by_timestamps, name=name, color=color,
-                                      yAxisName=yAxisName, **plot_opts)
+        new_curve = self.createCurveItem(y_channel, self._plot_by_timestamps, name, color=color,
+                                         yAxisName=yAxisName, useArchiveData=useArchiveData, **plot_opts)
         new_curve.setUpdatesAsynchronously(self.updatesAsynchronously)
         new_curve.setBufferSize(self._bufferSize)
 
@@ -444,6 +444,10 @@ class PyDMTimePlot(BasePlot):
         self.redraw_timer.start()
 
         return new_curve
+
+    def createCurveItem(self, y_channel, plot_by_timestamps, name, color, yAxisName, useArchiveData, **plot_opts):
+        return TimePlotCurveItem(y_channel, plot_by_timestamps=plot_by_timestamps,
+                                 name=name, color=color, yAxisName=yAxisName, **plot_opts)
 
     def removeYChannel(self, curve):
         """

@@ -77,10 +77,7 @@ class MultiAxisPlot(PlotItem):
         view.setYRange(minRange, maxRange)
         view.enableAutoRange(axis=ViewBox.XAxis, enable=enableAutoRangeX)
         view.enableAutoRange(axis=ViewBox.YAxis, enable=enableAutoRangeY)
-        if setXLink:
-            view.setXLink(self)  # Link this view to the shared x-axis of this plot item
-        else:
-            self.axes['bottom']['item'].linkToView(view)  # Ensure the x axis will update when the view does
+        self.axes['bottom']['item'].linkToView(view)
 
         view.setMouseMode(self.vb.state['mouseMode'])  # Ensure that mouse behavior is consistent between stacked views
         axis.linkToView(view)
@@ -93,7 +90,6 @@ class MultiAxisPlot(PlotItem):
 
         # Rebuilding the layout of the plot item will put the new axis in the correct place
         self.rebuildLayout()
-        self.updateStackedViews()
 
     def addStackedView(self, view):
         """
@@ -242,6 +238,10 @@ class MultiAxisPlot(PlotItem):
         for view in self.stackedViews:
             view.setYRange(minY, maxY, padding=padding)
         super(MultiAxisPlot, self).setYRange(minY, maxY, padding=padding)
+
+    def disableXAutoRange(self):
+        for view in self.stackedViews:
+            view.enableAutoRange(x=False)
 
     def clearAxes(self):
         """
