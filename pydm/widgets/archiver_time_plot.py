@@ -1,18 +1,13 @@
 import json
+import time
 from collections import OrderedDict
-
-from pyqtgraph import ErrorBarItem
-
+import numpy as np
+from pyqtgraph import DateAxisItem, ErrorBarItem
 from pydm.widgets.channel import PyDMChannel
-
 from pydm.widgets.timeplot import TimePlotCurveItem
-
 from pydm.widgets import PyDMTimePlot
 from qtpy.QtCore import Property, Signal, Slot
 from qtpy.QtGui import QColor
-
-import numpy as np
-import time
 
 import logging
 logger = logging.getLogger(__name__)
@@ -193,6 +188,8 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                                                    plot_by_timestamps=True, background=background)
         self._min_x = None
         self._to_timestamp = None
+        self._bottom_axis = DateAxisItem('bottom')
+        self.plotItem.setAxisItems({'bottom': self._bottom_axis})
         self.plotItem.getViewBox().sigMouseDraggedDone.connect(self.handleZoomEvent)
 
     def addYChannel(self, y_channel=None, name=None, color=None,
@@ -203,36 +200,33 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
 
     def updateXAxis(self, update_immediately=False):
         if len(self._curves) == 0:
-            return  # No need to call super() either
+            return
 
-        self.plotItem.disableXAutoRange()
-
-        minX = self.plotItem.getAxis('bottom').range[0]
-        if minX == 0:
-            minX = time.time()
-            self._min_x = minX
-            self._most_recent_x = minX
-            self._to_timestamp = minX
+        min_x = self.plotItem.getAxis('bottom').range[0]
+        max_range = max([curve.max_x() for curve in self._curves])
+        if min_x == 0:
+            min_x = time.time()
+            self._min_x = min_x
+            self._most_recent_x = min_x
+            self._to_timestamp = min_x
             self._to_timestamp -= 60
-        elif minX < self._min_x:
-            time_requested = self._to_timestamp - minX
+        elif min_x < self._min_x:
+            time_requested = self._to_timestamp - min_x
             if time_requested >= 180:
-                self.requestDataFromArchiver(minX, self._to_timestamp)
-                self._most_recent_x = minX
-                self._min_x = minX
+                self.requestDataFromArchiver(min_x, self._to_timestamp)
+                self._most_recent_x = min_x
+                self._min_x = min_x
 
-        if self.plotItem.getViewBox().state['autoRange'][1]:
-            super(PyDMArchiverTimePlot, self).updateXAxis(update_immediately)
+        if self.plotItem.getViewBox().state['autoRange'][1]:  # The way to check the pyqtgraph autorange setting
+            self.plotItem.setXRange(min_x, max_range, padding=0.0, update=update_immediately)
 
     def requestDataFromArchiver(self, from_time, to_time):
         processing_command = ''
         requested_seconds = to_time - from_time
         max_data_request = int(0.10 * self.getArchiveBufferSize())  # Max amount of raw data to return before using optimized data
-        print(f'Requested seconds: {requested_seconds} and max data request: {max_data_request}')
         if requested_seconds > max_data_request:
             processing_command = 'optimized_' + str(max_data_request)
         for curve in self._curves:
-            print(f'Emitting the signal for data from: {from_time} to: {to_time} and command: {processing_command}')
             curve.archive_data_request_signal.emit(from_time, to_time - 1, processing_command)
 
     def handleZoomEvent(self):
