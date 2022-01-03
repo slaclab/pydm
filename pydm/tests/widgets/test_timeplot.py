@@ -182,12 +182,11 @@ def test_insert_archive_data(qtbot, signals):
     curve_item.archive_points_accumulated = 6
     curve_item.zoomed = True
 
-    signals.new_value_signal[np.ndarray].connect(curve_item.receiveArchiveData)
-
     # Receive raw data that is more detailed than the two values it will be replacing
     mock_archive_data = np.array([[104, 106, 108, 111],
                                   [2.8, 3.1, 3.7, 3.95]])
-    signals.new_value_signal[np.ndarray].emit(mock_archive_data)
+
+    curve_item.insert_archive_data(mock_archive_data)
 
     # The original average values for timestamps 105 and 106 should now be replace with the actual PV data
     expected_data = np.array([[0, 0, 100, 104, 106, 108, 111, 115, 120, 125],
@@ -212,13 +211,11 @@ def test_archive_buffer_full(qtbot, signals):
     curve_item.archive_points_accumulated = 6
     curve_item.zoomed = True
 
-    signals.new_value_signal[np.ndarray].connect(curve_item.receiveArchiveData)
-
     # Receive data that will cause that will not fit in the buffer without deleting other data points
     mock_archive_data = np.array([[104, 106, 108],
                                   [2.8, 3.1, 3.7]])
 
-    signals.new_value_signal[np.ndarray].emit(mock_archive_data)
+    curve_item.insert_archive_data(mock_archive_data)
 
     # This is what is left over after the oldest data points have been trimmed
     expected_data = np.array([[104, 106, 108, 115, 120, 125],
