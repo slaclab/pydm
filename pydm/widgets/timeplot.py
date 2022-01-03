@@ -1,7 +1,7 @@
 import time
 import json
 from collections import OrderedDict
-from pyqtgraph import ViewBox, AxisItem, DateAxisItem
+from pyqtgraph import ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Signal, Slot, Property, QTimer
