@@ -46,7 +46,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order='f', dtype=float)
         self.error_bar_item = ErrorBarItem()
         self.error_bar_needs_set = True
-        self.zoomed = False
 
         if channel_address is not None:
             self.setArchiveChannel(channel_address)
@@ -84,44 +83,46 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             archive_data_length -= 1
             max_x = data[0][archive_data_length-1]
 
-        if self.zoomed and self.archive_points_accumulated != 0 and data.shape[0] == 2:
-            # Zoomed means we drew a zoom box and shape of 2 means we got back raw data
-            # Get the indices between which we want to insert the data
-            min_insertion_index = np.searchsorted(self.archive_data_buffer[0], min_x)
-            max_insertion_index = np.searchsorted(self.archive_data_buffer[0], max_x)
-            print(f'Min insert is: {min_insertion_index} and max insert is: {max_insertion_index}')
-            # Delete any non-raw data between the indices so we don't have multiple data points for the same timestamp
-            self.archive_data_buffer = np.delete(self.archive_data_buffer, slice(min_insertion_index, max_insertion_index), axis=1)
-            num_points_deleted = max_insertion_index - min_insertion_index
-            delta_points = archive_data_length - num_points_deleted
-            if archive_data_length > num_points_deleted:
-                # If the insertion will overflow the data buffer, need to delete the oldest points
-                self.archive_data_buffer = np.delete(self.archive_data_buffer, slice(0, delta_points), axis=1)
-            else:
-                self.archive_data_buffer = np.insert(self.archive_data_buffer, [0], np.zeros((2, delta_points)), axis=1)
-            min_insertion_index = np.searchsorted(self.archive_data_buffer[0], min_x)
-            self.archive_data_buffer = np.insert(self.archive_data_buffer, [min_insertion_index], data[0:2], axis=1)
+        self.archive_data_buffer[0, len(self.archive_data_buffer[0]) - archive_data_length:] = data[0]
+        self.archive_data_buffer[1, len(self.archive_data_buffer[0]) - archive_data_length:] = data[1]
+        self.archive_points_accumulated = archive_data_length
 
-            self.archive_points_accumulated += archive_data_length - num_points_deleted
-            self.zoomed = False
-        else:
-            self.archive_data_buffer[0, len(self.archive_data_buffer[0]) - archive_data_length:] = data[0]
-            self.archive_data_buffer[1, len(self.archive_data_buffer[0]) - archive_data_length:] = data[1]
-            self.archive_points_accumulated = archive_data_length
-
-            # Error bars
-            if data.shape[0] == 5:  # 5 indicates optimized data was requested from the archiver
-                self.error_bar_item.setData(x=self.archive_data_buffer[0, -self.archive_points_accumulated:],
-                                            y=self.archive_data_buffer[1, -self.archive_points_accumulated:],
-                                            top=data[4] - data[1],
-                                            bottom=data[1] - data[3],
-                                            beam=0.5,
-                                            pen={'color': self.color})
-                if self.error_bar_needs_set:
-                    self.getViewBox().addItem(self.error_bar_item)
-                    self.error_bar_needs_set = False
+        # Error bars
+        if data.shape[0] == 5:  # 5 indicates optimized data was requested from the archiver
+            self.error_bar_item.setData(x=self.archive_data_buffer[0, -self.archive_points_accumulated:],
+                                        y=self.archive_data_buffer[1, -self.archive_points_accumulated:],
+                                        top=data[4] - data[1],
+                                        bottom=data[1] - data[3],
+                                        beam=0.5,
+                                        pen={'color': self.color})
+            if self.error_bar_needs_set:
+                self.getViewBox().addItem(self.error_bar_item)
+                self.error_bar_needs_set = False
 
         self.data_changed.emit()
+
+    def insert_archive_data(self, data):
+        """ Inserts data directly into the archive buffer """
+        archive_data_length = len(data[0])
+        min_x = data[0][0]
+        max_x = data[0][archive_data_length-1]
+        # Get the indices between which we want to insert the data
+        min_insertion_index = np.searchsorted(self.archive_data_buffer[0], min_x)
+        max_insertion_index = np.searchsorted(self.archive_data_buffer[0], max_x)
+        # Delete any non-raw data between the indices so we don't have multiple data points for the same timestamp
+        self.archive_data_buffer = np.delete(self.archive_data_buffer, slice(min_insertion_index, max_insertion_index),
+                                             axis=1)
+        num_points_deleted = max_insertion_index - min_insertion_index
+        delta_points = archive_data_length - num_points_deleted
+        if archive_data_length > num_points_deleted:
+            # If the insertion will overflow the data buffer, need to delete the oldest points
+            self.archive_data_buffer = np.delete(self.archive_data_buffer, slice(0, delta_points), axis=1)
+        else:
+            self.archive_data_buffer = np.insert(self.archive_data_buffer, [0], np.zeros((2, delta_points)), axis=1)
+        min_insertion_index = np.searchsorted(self.archive_data_buffer[0], min_x)
+        self.archive_data_buffer = np.insert(self.archive_data_buffer, [min_insertion_index], data[0:2], axis=1)
+
+        self.archive_points_accumulated += archive_data_length - num_points_deleted
 
     @Slot()
     def redrawCurve(self):
@@ -191,7 +192,6 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         self._archive_request_queued = False
         self._bottom_axis = DateAxisItem('bottom')
         self.plotItem.setAxisItems({'bottom': self._bottom_axis})
-        self.plotItem.getViewBox().sigMouseDraggedDone.connect(self.handleZoomEvent)
 
     def addYChannel(self, y_channel=None, name=None, color=None,
                     lineStyle=None, lineWidth=None, symbol=None,
@@ -236,19 +236,6 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         for curve in self._curves:
             curve.archive_data_request_signal.emit(min_x, max_x - 1, processing_command)
         self._archive_request_queued = False
-
-    def handleZoomEvent(self):
-        min_x = self.plotItem.getAxis('bottom').range[0]
-        max_x = self.plotItem.getAxis('bottom').range[1]
-
-        if self._to_timestamp < max_x:
-            return  # Don't fetch archive data when zooming in on live data
-
-        for curve in self._curves:
-            curve.zoomed = True
-
-        if max_x - min_x < 86400:  # Only fetch raw data if not too many points were asked for
-            self.requestDataFromArchiver(min_x, max_x)
 
     def getArchiveBufferSize(self):
         if len(self._curves) == 0:
