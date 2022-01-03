@@ -6,7 +6,7 @@ from pyqtgraph import DateAxisItem, ErrorBarItem
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
-from qtpy.QtCore import Property, Signal, Slot
+from qtpy.QtCore import QTimer, Property, Signal, Slot
 from qtpy.QtGui import QColor
 
 import logging
@@ -188,6 +188,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                                                    plot_by_timestamps=True, background=background)
         self._min_x = None
         self._to_timestamp = None
+        self._archive_request_queued = False
         self._bottom_axis = DateAxisItem('bottom')
         self.plotItem.setAxisItems({'bottom': self._bottom_axis})
         self.plotItem.getViewBox().sigMouseDraggedDone.connect(self.handleZoomEvent)
@@ -207,27 +208,34 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         if min_x == 0:
             min_x = time.time()
             self._min_x = min_x
-            self._most_recent_x = min_x
             self._to_timestamp = min_x
             self._to_timestamp -= 60
         elif min_x < self._min_x:
             time_requested = self._to_timestamp - min_x
-            if time_requested >= 180:
-                self.requestDataFromArchiver(min_x, self._to_timestamp)
-                self._most_recent_x = min_x
-                self._min_x = min_x
+            self._min_x = min_x
+            if time_requested >= 180 and not self._archive_request_queued:
+                # Letting the user pan or scroll the plot is convenient, but can generate a lot of events in under
+                # a second that would trigger a request for data. By using a timer, we avoid this burst of events
+                # and consolidate what would be many requests to archiver into just one.
+                self._archive_request_queued = True
+                QTimer.singleShot(1000, self.requestDataFromArchiver)
 
         if self.plotItem.getViewBox().state['autoRange'][1]:  # The way to check the pyqtgraph autorange setting
             self.plotItem.setXRange(min_x, max_range, padding=0.0, update=update_immediately)
 
-    def requestDataFromArchiver(self, from_time, to_time):
+    def requestDataFromArchiver(self, min_x=None, max_x=None):
         processing_command = ''
-        requested_seconds = to_time - from_time
+        if min_x is None:
+            min_x = self._min_x
+        if max_x is None:
+            max_x = self._to_timestamp
+        requested_seconds = max_x - min_x
         max_data_request = int(0.10 * self.getArchiveBufferSize())  # Max amount of raw data to return before using optimized data
         if requested_seconds > max_data_request:
             processing_command = 'optimized_' + str(max_data_request)
         for curve in self._curves:
-            curve.archive_data_request_signal.emit(from_time, to_time - 1, processing_command)
+            curve.archive_data_request_signal.emit(min_x, max_x - 1, processing_command)
+        self._archive_request_queued = False
 
     def handleZoomEvent(self):
         min_x = self.plotItem.getAxis('bottom').range[0]
