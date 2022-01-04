@@ -240,6 +240,7 @@ class MultiAxisPlot(PlotItem):
         super(MultiAxisPlot, self).setYRange(minY, maxY, padding=padding)
 
     def disableXAutoRange(self):
+        """ Disable x-axis autorange for all views in the plot. """
         for view in self.stackedViews:
             view.enableAutoRange(x=False)
 

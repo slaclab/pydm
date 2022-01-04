@@ -1,7 +1,7 @@
 import json
 import time
-from collections import OrderedDict
 import numpy as np
+from collections import OrderedDict
 from pyqtgraph import DateAxisItem, ErrorBarItem
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
@@ -23,11 +23,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     Parameters
     ----------
     channel_address : str
-        The address to of the scalar data to plot.
-    plot_by_timestamps : bool
-        If True, the x-axis shows timestamps as ticks, and those timestamps
-        scroll to the left as time progresses.  If False, the x-axis tick marks
-        show time relative to the current time.
+        The address to of the scalar data to plot. Will also be used to retrieve data
+        from archiver appliance if requested.
     use_archive_data : bool
         If True, requests will be made to archiver appliance for archived data when
         the plot is zoomed or scrolled to the left.
@@ -37,17 +34,20 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
     archive_data_request_signal = Signal(object, object, object)
 
-    def __init__(self, channel_address=None, plot_by_timestamps=False, use_archive_data=True, **kws):
-        super(ArchivePlotCurveItem, self).__init__(channel_address, plot_by_timestamps, **kws)
+    def __init__(self, channel_address=None, use_archive_data=True, **kws):
+        super(ArchivePlotCurveItem, self).__init__(channel_address, **kws)
         self.use_archive_data = use_archive_data
         self.archive_channel = None
         self.archive_points_accumulated = 0
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order='f', dtype=float)
+
+        # When optimized or mean value data is requested, we can display error bars representing
+        # the full range of values retrieved
         self.error_bar_item = ErrorBarItem()
         self.error_bar_needs_set = True
 
-        if channel_address is not None:
+        if channel_address is not None and use_archive_data:
             self.setArchiveChannel(channel_address)
 
     def to_dict(self):
@@ -74,7 +74,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     def receiveArchiveData(self, data):
         """ Receive data from archiver appliance and place it into the archive data buffer. """
         archive_data_length = len(data[0])
-        min_x = data[0][0]
         max_x = data[0][archive_data_length-1]
 
         while max_x > self.data_buffer[0][-self.points_accumulated]:
@@ -102,7 +101,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self.data_changed.emit()
 
     def insert_archive_data(self, data):
-        """ Inserts data directly into the archive buffer """
+        """ Inserts data directly into the archive buffer. An example use case would be
+            zooming into optimized mean-value data and replacing it with the raw data """
         archive_data_length = len(data[0])
         min_x = data[0][0]
         max_x = data[0][archive_data_length-1]
@@ -190,16 +190,12 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         self._min_x = None
         self._to_timestamp = None
         self._archive_request_queued = False
-        self._bottom_axis = DateAxisItem('bottom')
+        self._bottom_axis = DateAxisItem('bottom')  # Nice for displaying data across long periods of time
         self.plotItem.setAxisItems({'bottom': self._bottom_axis})
 
-    def addYChannel(self, y_channel=None, name=None, color=None,
-                    lineStyle=None, lineWidth=None, symbol=None,
-                    symbolSize=None, yAxisName=None, useArchiveData=False):
-        super(PyDMArchiverTimePlot, self).addYChannel(y_channel, name, color, lineStyle, lineWidth, symbol,
-                                                      symbolSize, yAxisName, useArchiveData)
-
     def updateXAxis(self, update_immediately=False):
+        """ Manages the requests to archiver appliance. When the user pans or zooms the x axis to the left,
+            a request will be made for backfill data """
         if len(self._curves) == 0:
             return
 
@@ -224,17 +220,31 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             self.plotItem.setXRange(min_x, max_range, padding=0.0, update=update_immediately)
 
     def requestDataFromArchiver(self, min_x=None, max_x=None):
+        """ Make the request to the archiver appliance data plugin for archived data.
+
+         Parameters
+         ----------
+         min_x : float, optional
+            Timestamp representing the start of the time period to fetch archive data from. Defaults
+            to the minimum value visible on the plot when omitted.
+         max_x : float, optional
+            Timestamp representing the end of the time period to fetch archive data from. Defaults
+            to the time the plot started acquiring data when omitted.
+
+         """
         processing_command = ''
         if min_x is None:
             min_x = self._min_x
         if max_x is None:
             max_x = self._to_timestamp
         requested_seconds = max_x - min_x
-        max_data_request = int(0.10 * self.getArchiveBufferSize())  # Max amount of raw data to return before using optimized data
+        # Max amount of raw data to return before using optimized data
+        max_data_request = int(0.80 * self.getArchiveBufferSize())
         if requested_seconds > max_data_request:
-            processing_command = 'optimized_' + str(max_data_request)
+            processing_command = 'optimized_2000'
         for curve in self._curves:
-            curve.archive_data_request_signal.emit(min_x, max_x - 1, processing_command)
+            if curve.use_archive_data:
+                curve.archive_data_request_signal.emit(min_x, max_x - 1, processing_command)
         self._archive_request_queued = False
 
     def getArchiveBufferSize(self):
@@ -269,14 +279,12 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             A list of JSON-formatted strings, each contains a curve and its
             settings
         """
-        print(f'Setting curves the new way\n\n')
         try:
             new_list = [json.loads(str(i)) for i in new_list]
         except ValueError as e:
             logger.exception("Error parsing curve json data: {}".format(e))
             return
         self.clearCurves()
-        print(f'new list is: {new_list}')
         for d in new_list:
             color = d.get('color')
             if color:
