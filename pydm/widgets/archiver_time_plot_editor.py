@@ -4,6 +4,7 @@ from .baseplot_curve_editor import BasePlotCurveEditorDialog
 
 
 class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
+    """ Model used in designer for editing archiver time plot curves. """
 
     def __init__(self, plot, parent=None):
         super(PyDMArchiverTimePlotCurvesModel, self).__init__(plot, parent=parent)
@@ -15,7 +16,6 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
                 return QVariant()
             return str(curve.address)
         elif column_name == "Archive Data":
-            print(f'Get with ad: {curve.use_archive_data}')
             return bool(curve.use_archive_data)
         return super(PyDMArchiverTimePlotCurvesModel, self).get_data(column_name, curve)
 
@@ -23,7 +23,6 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
         if column_name == "Channel":
             curve.address = str(value)
         elif column_name == "Archive Data":
-            print(f'Set with ad: {value}')
             curve.use_archive_data = bool(value)
         else:
             return super(PyDMArchiverTimePlotCurvesModel, self).set_data(
@@ -31,8 +30,7 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
         return True
 
     def append(self, address=None, name=None, color=None):
-        self.beginInsertRows(QModelIndex(), len(self._plot._curves),
-                             len(self._plot._curves))
+        self.beginInsertRows(QModelIndex(), len(self._plot._curves), len(self._plot._curves))
         self._plot.addYChannel(address, name, color)
         self.endInsertRows()
 
@@ -43,7 +41,7 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
 
 
 class ArchiverTimePlotCurveEditorDialog(BasePlotCurveEditorDialog):
-    """TimePlotCurveEditorDialog is a QDialog that is used in Qt Designer
+    """ ArchiverTimePlotCurveEditorDialog is a QDialog that is used in Qt Designer
     to edit the properties of the curves in a waveform plot.  This dialog is
     shown when you double-click the plot, or when you right click it and
     choose 'edit curves'.
