@@ -66,7 +66,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
     def __init__(self, parent=None, init_channel=None):
         self._rotation = 0.0
         self._brush = QBrush(Qt.SolidPattern)
-        self._original_brush = None
+        self._original_brush = self._brush
         self._painter = QPainter()
         self._pen = QPen(Qt.NoPen)
         self._pen_style = Qt.NoPen
