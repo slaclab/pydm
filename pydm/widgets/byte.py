@@ -531,3 +531,25 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         opt.initFrom(self)
         self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
         painter.setRenderHint(QPainter.Antialiasing)
+
+    def alarm_severity_changed(self, new_alarm_severity):
+        """
+                Callback invoked when the Channel alarm severity is changed.
+
+                Parameters
+                ----------
+                new_alarm_severity : int
+                    The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
+                    and 3 = INVALID
+        """
+
+        if new_alarm_severity == self._alarm_state:
+            return
+        else:
+            super(PyDMByteIndicator, self).alarm_severity_changed(new_alarm_severity)
+
+            # Checks if _shift attribute exits because base class can call method
+            # before the object constructor is complete
+            if hasattr(self, '_shift'):
+                self.update_indicators()
+
