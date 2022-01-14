@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.byte &mdash; PyDM v1.11.1+195.gc84e13b7 documentation</title>
+  <title>pydm.widgets.byte &mdash; PyDM v1.12.0+1.geb4645e1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.11.1+195.gc84e13b7
+                v1.12.0+1.geb4645e1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -632,7 +632,29 @@
         <span class="n">opt</span> <span class="o">=</span> <span class="n">QStyleOption</span><span class="p">()</span>
         <span class="n">opt</span><span class="o">.</span><span class="n">initFrom</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">drawPrimitive</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">PE_Widget</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">painter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="n">painter</span><span class="o">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span></div></div>
+        <span class="n">painter</span><span class="o">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMByteIndicator.alarm_severity_changed"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.alarm_severity_changed">[docs]</a>    <span class="k">def</span> <span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Callback invoked when the Channel alarm severity is changed.</span>
+
+<span class="sd">                Parameters</span>
+<span class="sd">                ----------</span>
+<span class="sd">                new_alarm_severity : int</span>
+<span class="sd">                    The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR</span>
+<span class="sd">                    and 3 = INVALID</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">new_alarm_severity</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">PyDMByteIndicator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">alarm_severity_changed</span><span class="p">(</span><span class="n">new_alarm_severity</span><span class="p">)</span>
+
+            <span class="c1"># Checks if _shift attribute exits because base class can call method</span>
+            <span class="c1"># before the object constructor is complete</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_shift&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div></div>
+
 </pre></div>
 
            </div>
