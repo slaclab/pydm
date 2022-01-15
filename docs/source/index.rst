@@ -42,6 +42,7 @@ as well as a straightforward python framework to build complex applications.
    :caption: Data Plugins
    
    data_plugins/local_plugin.rst
+   data_plugins/calc_plugin.rst
 
 .. toctree::
    :maxdepth: 1
