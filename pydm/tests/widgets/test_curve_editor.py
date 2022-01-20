@@ -27,10 +27,10 @@ def test_waveform_curve_editor(qtbot):
     # Verify that the drop downs for columns with non built-in types are all put in the correct place
     # Note: We do need to check these on each individual type of curve editor (see below tests) and not just
     # in the base plot editor since each plot type can have varying numbers of columns
-    color_index = table_model._column_names.index('Color')
-    line_style_index = table_model._column_names.index('Line Style')
-    symbol_index = table_model._column_names.index('Symbol')
-    redraw_mode_index = table_model._column_names.index('Redraw Mode')
+    color_index = table_model.getColumnIndex('Color')
+    line_style_index = table_model.getColumnIndex('Line Style')
+    symbol_index = table_model.getColumnIndex('Symbol')
+    redraw_mode_index = table_model.getColumnIndex('Redraw Mode')
 
     assert type(table_view.itemDelegateForColumn(color_index)) is ColorColumnDelegate
     assert type(table_view.itemDelegateForColumn(line_style_index)) is LineColumnDelegate
@@ -57,9 +57,9 @@ def test_timeplot_curve_editor(qtbot):
     assert table_model.columnCount() == 8
 
     # Verify that the drop downs for columns with non built-in types are all put in the correct place
-    color_index = table_model._column_names.index('Color')
-    line_style_index = table_model._column_names.index('Line Style')
-    symbol_index = table_model._column_names.index('Symbol')
+    color_index = table_model.getColumnIndex('Color')
+    line_style_index = table_model.getColumnIndex('Line Style')
+    symbol_index = table_model.getColumnIndex('Symbol')
 
     assert type(table_view.itemDelegateForColumn(color_index)) is ColorColumnDelegate
     assert type(table_view.itemDelegateForColumn(line_style_index)) is LineColumnDelegate
@@ -85,10 +85,10 @@ def test_scatterplot_editor(qtbot):
     assert table_model.columnCount() == 11
 
     # Verify that the drop downs for columns with non built-in types are all put in the correct place
-    color_index = table_model._column_names.index('Color')
-    line_style_index = table_model._column_names.index('Line Style')
-    symbol_index = table_model._column_names.index('Symbol')
-    redraw_mode_index = table_model._column_names.index('Redraw Mode')
+    color_index = table_model.getColumnIndex('Color')
+    line_style_index = table_model.getColumnIndex('Line Style')
+    symbol_index = table_model.getColumnIndex('Symbol')
+    redraw_mode_index = table_model.getColumnIndex('Redraw Mode')
 
     assert type(table_view.itemDelegateForColumn(color_index)) is ColorColumnDelegate
     assert type(table_view.itemDelegateForColumn(line_style_index)) is LineColumnDelegate
