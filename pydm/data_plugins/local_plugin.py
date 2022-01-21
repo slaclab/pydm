@@ -29,6 +29,7 @@ class Connection(PyDMConnection):
         ]
 
         self._extra_config_keys = [
+            "extras",
             "precision",
             "unit",
             "upper_limit",
