@@ -22,8 +22,6 @@ def test_waveform_curve_editor(qtbot):
     table_model = curve_editor.table_model
     table_view = curve_editor.table_view
 
-    assert table_model.columnCount() == 10
-
     # Verify that the drop downs for columns with non built-in types are all put in the correct place
     # Note: We do need to check these on each individual type of curve editor (see below tests) and not just
     # in the base plot editor since each plot type can have varying numbers of columns
@@ -54,8 +52,6 @@ def test_timeplot_curve_editor(qtbot):
     table_model = curve_editor.table_model
     table_view = curve_editor.table_view
 
-    assert table_model.columnCount() == 8
-
     # Verify that the drop downs for columns with non built-in types are all put in the correct place
     color_index = table_model.getColumnIndex('Color')
     line_style_index = table_model.getColumnIndex('Line Style')
@@ -82,8 +78,6 @@ def test_scatterplot_editor(qtbot):
     table_model = curve_editor.table_model
     table_view = curve_editor.table_view
 
-    assert table_model.columnCount() == 11
-
     # Verify that the drop downs for columns with non built-in types are all put in the correct place
     color_index = table_model.getColumnIndex('Color')
     line_style_index = table_model.getColumnIndex('Line Style')
@@ -109,6 +103,5 @@ def test_axis_editor(qtbot):
     axis_view = curve_editor.axis_view
 
     # Verify the column count is correct, and the axis column delegate is placed correctly
-    assert axis_model.columnCount() == 5
     axis_orientation_index = axis_model._column_names.index('Y-Axis Orientation')
     assert type(axis_view.itemDelegateForColumn(axis_orientation_index)) is AxisColumnDelegate
