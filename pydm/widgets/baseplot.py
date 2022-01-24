@@ -84,6 +84,13 @@ class BasePlotCurveItem(PlotDataItem):
         else:
             self._y_axis_name = yAxisName
 
+        # Value above or below these thresholds will be drawn in the threshold color on bar graphs
+        self.bar_width = None
+        self.upper_threshold = None
+        self.lower_threshold = None
+        self.threshold_color = None
+        self.bar_graph_item = None
+
         if hasattr(self, "channels"):
             self.destroyed.connect(functools.partial(widget_destroyed,
                                                      self.channels))
@@ -268,6 +275,12 @@ class BasePlotCurveItem(PlotDataItem):
         """
         self.setSymbolSize(int(new_size))
 
+    def setThresholdInfo(self, upper_threshold: float, lower_threshold: float, color: QColor):
+        self.upper_threshold = upper_threshold
+        self.lower_threshold = lower_threshold
+        self.threshold_color = color
+
+
     def to_dict(self):
         """
         Returns an OrderedDict representation with values for all properties
@@ -283,7 +296,11 @@ class BasePlotCurveItem(PlotDataItem):
                             ("lineWidth", self.lineWidth),
                             ("symbol", self.symbol),
                             ("symbolSize", self.symbolSize),
-                            ("yAxisName", self.y_axis_name)])
+                            ("yAxisName", self.y_axis_name),
+                            ("barWidth", self.bar_width),
+                            ("upperThreshold", self.upper_threshold),
+                            ("lowerThreshold", self.lower_threshold),
+                            ("thresholdColor", self.threshold_color)])
 
     def close(self):
         pass
@@ -659,6 +676,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         return self._curves[index]
 
     def curves(self):
+        print("???")
         return self._curves
 
     def clear(self):
@@ -747,6 +765,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             A list of JSON-formatted strings, each contains an axis and its
             settings
         """
+        print('hi')
         try:
             new_list = [json.loads(str(i)) for i in new_list]
         except ValueError as e:
