@@ -1,5 +1,6 @@
 import functools
 import json
+import warnings
 from qtpy.QtGui import QColor, QBrush
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QRect
 from qtpy.QtWidgets import QToolTip
@@ -796,9 +797,17 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     xLabels = Property("QStringList", getXLabels, setXLabels, resetXLabels)
 
     def getYLabels(self):
+        warnings.warn("Y Labels should be retrieved from the AxisItem. See: AxisItem.label or AxisItem.labelText"
+                      "Example: self.getAxis('Axis Name').labelText",
+                      DeprecationWarning,
+                      stacklevel=2)
         return self._y_labels
 
     def setYLabels(self, labels):
+        warnings.warn("Y Labels should now be set on the AxisItem itself. See: AxisItem.setLabel() "
+                      "Example: self.getAxis('Axis Name').setLabel('Label Name')",
+                      DeprecationWarning,
+                      stacklevel=2)
         if self._y_labels != labels:
             self._y_labels = labels
             label = ""
@@ -808,10 +817,12 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             self.setLabel("left", text=label)
 
     def resetYLabels(self):
+        warnings.warn("Y Labels should now be set on the AxisItem itself. See: AxisItem.setLabel() "
+                      "Example: self.getAxis('Axis Name').setLabel('')",
+                      DeprecationWarning,
+                      stacklevel=2)
         self._y_labels = []
         self.setLabel("left", text="")
-
-    yLabels = Property("QStringList", getYLabels, setYLabels, resetYLabels)
 
     def getShowLegend(self):
         """
