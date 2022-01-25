@@ -188,7 +188,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         super(PyDMArchiverTimePlot, self).__init__(parent=parent, init_y_channels=init_y_channels,
                                                    plot_by_timestamps=True, background=background)
         self._min_x = None
-        self._to_timestamp = None
+        self._starting_timestamp = None
         self._archive_request_queued = False
         self._bottom_axis = DateAxisItem('bottom')  # Nice for displaying data across long periods of time
         self.plotItem.setAxisItems({'bottom': self._bottom_axis})
@@ -204,12 +204,10 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         if min_x == 0:
             min_x = time.time()
             self._min_x = min_x
-            self._to_timestamp = min_x
-            self._to_timestamp -= 60
+            self._starting_timestamp = min_x - 60
         elif min_x < self._min_x:
-            time_requested = self._to_timestamp - min_x
             self._min_x = min_x
-            if time_requested >= 180 and not self._archive_request_queued:
+            if not self._archive_request_queued:
                 # Letting the user pan or scroll the plot is convenient, but can generate a lot of events in under
                 # a second that would trigger a request for data. By using a timer, we avoid this burst of events
                 # and consolidate what would be many requests to archiver into just one.
@@ -235,15 +233,20 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         processing_command = ''
         if min_x is None:
             min_x = self._min_x
-        if max_x is None:
-            max_x = self._to_timestamp
-        requested_seconds = max_x - min_x
-        # Max amount of raw data to return before using optimized data
-        max_data_request = int(0.80 * self.getArchiveBufferSize())
-        if requested_seconds > max_data_request:
-            processing_command = 'optimized_2000'
         for curve in self._curves:
             if curve.use_archive_data:
+                if max_x is None:
+                    if curve.points_accumulated > 0:
+                        max_x = curve.data_buffer[0][curve.getBufferSize() - curve.points_accumulated]
+                    else:
+                        max_x = self._starting_timestamp
+                requested_seconds = max_x - min_x
+                if requested_seconds <= 10:
+                    continue
+                # Max amount of raw data to return before using optimized data
+                max_data_request = int(0.80 * self.getArchiveBufferSize())
+                if requested_seconds > max_data_request:
+                    processing_command = 'optimized_2000'
                 curve.archive_data_request_signal.emit(min_x, max_x - 1, processing_command)
         self._archive_request_queued = False
 
