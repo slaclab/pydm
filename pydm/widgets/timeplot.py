@@ -5,7 +5,6 @@ from pyqtgraph import ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Signal, Slot, Property, QTimer
-from qtpy.QtWidgets import QAction
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from .. utilities import remove_protocol
@@ -162,7 +161,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         For Asynchronous, write the new value into a temporary (buffered)
         variable, which will be written to the data buffer when asyncUpdate
         is called.
-        
+
         This method is usually called by a PyDMChannel when it updates.  You
         can call it yourself to inject data into the curve.
 

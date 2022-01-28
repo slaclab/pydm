@@ -33,6 +33,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         Additional parameters supported by pyqtgraph.PlotDataItem.
     """
 
+    # Used to request data from archiver appliance (starting timestamp, ending timestamp, processing command)
     archive_data_request_signal = Signal(float, float, str)
 
     def __init__(self, channel_address: Optional[str] = None, use_archive_data: bool = True, **kws):
