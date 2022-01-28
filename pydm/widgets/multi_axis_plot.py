@@ -4,7 +4,7 @@ try:
 except ImportError:
     from cgi import escape  # Can't only use this since it was removed in Python 3.8 and up
 from collections import Counter
-from pyqtgraph import GraphicsWidget, PlotItem, ViewBox
+from pyqtgraph import PlotItem, ViewBox
 from .multi_axis_viewbox import MultiAxisViewBox
 from .multi_axis_viewbox_menu import MultiAxisViewBoxMenu
 
@@ -183,7 +183,6 @@ class MultiAxisPlot(PlotItem):
         oldAxis.scene().removeItem(oldAxis)
         oldAxis.unlinkFromView()
         del self.axes[axisName]
-
 
     def unlinkDataFromAxis(self, axisName):
         """
