@@ -1,11 +1,10 @@
 import os
-
 import numpy as np
-import pytest
 from unittest import mock
 from qtpy.QtCore import QUrl
 from qtpy.QtNetwork import QNetworkRequest, QNetworkReply
 from pydm.data_plugins.archiver_plugin import Connection
+from pydm.tests.conftest import ConnectionSignals
 from pydm.widgets.channel import PyDMChannel
 
 import logging
@@ -28,7 +27,7 @@ class MockNetworkReply:
     """ A mock of a reply made from the archiver. Setup here rather than in a unit test to keep the
         test clean as the response is rather long-winded. """
 
-    def __init__(self, is_optimized):
+    def __init__(self, is_optimized: bool):
         self.data = None
         if is_optimized:
             self.response = b'[ \n{ "meta": { "name": "ROOM:TEMP" , "EGU": "DegF" , "PREC": "1" },\n"data": ' \
@@ -86,7 +85,7 @@ def test_fetch_data():
     assert archiver_connection.network_manager.request_url == expected_url
 
 
-def test_data_request_finished(signals):
+def test_data_request_finished(signals: ConnectionSignals):
     """ Verify that an archiver response is parsed correctly and sends the data out in the right format, using
         both the raw data and optimized data formats """
     mock_channel = PyDMChannel()
@@ -97,16 +96,16 @@ def test_data_request_finished(signals):
 
     # Create a slot for receiving the data
     archiver_connection.new_value_signal[np.ndarray].connect(signals.receiveValue)
-    archiver_connection.data_request_finished(mock_reply)
+    archiver_connection.data_request_finished(mock_reply)  # type: ignore
 
     # Verify the data was sent in the expected format
     expected_data_sent = np.array([[100, 101, 102],
                                   [53, 54.1, 53.9]])
-    assert np.array_equal(signals._value, expected_data_sent)
+    assert np.array_equal(signals.value, expected_data_sent)
 
     # Now repeat the process, except this time as if we requested optimized data
     mock_reply = MockNetworkReply(is_optimized=True)
-    archiver_connection.data_request_finished(mock_reply)
+    archiver_connection.data_request_finished(mock_reply)  # type: ignore
 
     # Verify the data was sent as expected (timestamps, values, standard deviations, minimums, maximums)
     expected_data_sent = np.array([[100, 101, 102],
