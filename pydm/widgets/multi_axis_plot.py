@@ -77,7 +77,7 @@ class MultiAxisPlot(PlotItem):
         view.setYRange(minRange, maxRange)
         view.enableAutoRange(axis=ViewBox.XAxis, enable=enableAutoRangeX)
         view.enableAutoRange(axis=ViewBox.YAxis, enable=enableAutoRangeY)
-        self.axes['bottom']['item'].linkToView(view)
+        self.axes['bottom']['item'].linkToView(view)  # Ensure the x axis will update when the view does
 
         view.setMouseMode(self.vb.state['mouseMode'])  # Ensure that mouse behavior is consistent between stacked views
         axis.linkToView(view)
