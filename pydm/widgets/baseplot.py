@@ -497,6 +497,11 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         # Mouse mode to 1 button (left button draw rectangle for zoom)
         self.plotItem.getViewBox().setMouseMode(ViewBox.RectMode)
 
+        if self.getAxis('bottom') is not None:
+            # Disables unexpected axis tick behavior described here:
+            # https://pyqtgraph.readthedocs.io/en/latest/graphicsItems/axisitem.html
+            self.getAxis('bottom').enableAutoSIPrefix(False)
+
         if utilities.is_qt_designer():
             self.installEventFilter(self)
 
@@ -585,6 +590,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
         axis = BasePlotAxisItem(name=name, orientation=orientation, minRange=min_range,
                                 maxRange=max_range, autoRange=enable_auto_range)
+        axis.enableAutoSIPrefix(False)
         self._axes.append(axis)
         # If the x axis is just timestamps, we don't want autorange on the x axis
         setXLink = hasattr(self, '_plot_by_timestamps') and self._plot_by_timestamps
