@@ -286,6 +286,7 @@ class MultiAxisPlot(PlotItem):
         if len(self.axes) == 0 or len(self.axesOriginalRanges) == 0:
             return
 
+        # First restore the range for all y-axis items added to this plot
         for axisName, axisValue in self.axes.items():
             axisItem = axisValue['item']
             linkedView = axisItem.linkedView()
@@ -299,6 +300,7 @@ class MultiAxisPlot(PlotItem):
                 print(f'about to call y range set for axis: {axisName}')
                 linkedView.setYRange(original_ranges[0], original_ranges[1])
 
+        # Now restore the x-axis range as well if needed
         if 'bottom' in self.axesOriginalRanges:
             original_x_range = self.axesOriginalRanges['bottom']
             if original_x_range[0] is not None:
