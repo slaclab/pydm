@@ -297,7 +297,6 @@ class MultiAxisPlot(PlotItem):
             if original_ranges[0] is None:  # If set to None, then autorange was enabled
                 linkedView.enableAutoRange(axis=ViewBox.YAxis, enable=True)
             else:
-                print(f'about to call y range set for axis: {axisName}')
                 linkedView.setYRange(original_ranges[0], original_ranges[1])
 
         # Now restore the x-axis range as well if needed
