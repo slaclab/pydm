@@ -300,12 +300,10 @@ class MultiAxisPlot(PlotItem):
                 linkedView.setYRange(original_ranges[0], original_ranges[1])
 
         # Now restore the x-axis range as well if needed
-        if 'bottom' in self.axesOriginalRanges:
-            original_x_range = self.axesOriginalRanges['bottom']
-            if original_x_range[0] is not None:
-                self.setXRange(original_x_range[0], original_x_range[1])
-            else:
-                self.setPlotAutoRange(x=True)
+        if 'bottom' in self.axesOriginalRanges and self.axesOriginalRanges['bottom'][0] is not None:
+            self.setXRange(self.axesOriginalRanges['bottom'][0], self.axesOriginalRanges['bottom'][1])
+        else:
+            self.setPlotAutoRange(x=True)
 
     def setPlotAutoRange(self, x=None, y=None):
         """
