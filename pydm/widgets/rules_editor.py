@@ -252,7 +252,7 @@ class RulesEditor(QtWidgets.QDialog):
         for row, ch in enumerate(channels):
             ch_name = ch.get('channel', '')
             ch_tr = ch.get('trigger', False)
-            ch_use_enum = ch.get('use_enum', True)
+            ch_use_enum = ch.get('use_enum', False)
             self.tbl_channels.setItem(row, 0,
                                       QtWidgets.QTableWidgetItem(str(ch_name)))
             checkbox_trigger = QtWidgets.QTableWidgetItem()
