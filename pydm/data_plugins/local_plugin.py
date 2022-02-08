@@ -157,9 +157,9 @@ class Connection(PyDMConnection):
 
         info = "The following entries are not valid config keys:"
         for items in unused:
-            info = info + " " + unused + ","
+            info = info + " " + items + ","
 
-        print(info)
+        logger.debug(info)
 
     @Slot(int)
     @Slot(float)
