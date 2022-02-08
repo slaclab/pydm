@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMRelatedDisplayButton &mdash; PyDM v1.12.0+2.g7af41e80 documentation</title>
+  <title>PyDMRelatedDisplayButton &mdash; PyDM v1.12.0+6.gfd998b53 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.12.0+2.g7af41e80
+                v1.12.0+6.gfd998b53
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -605,14 +605,11 @@ This property simply returns the first filename from the ‘filenames’
 property.
 The filename to open</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
-</dd>
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>DEPRECATED</p>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>DEPRECATED</p>
 </dd>
 </dl>
 </dd></dl>
@@ -831,11 +828,8 @@ The filename to open</p>
 <span class="sig-name descname"><span class="pre">handle_open_new_window_action</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.handle_open_new_window_action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.handle_open_new_window_action" title="Permalink to this definition"></a></dt>
 <dd><p>Handle the “Open in New Window” action.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None.</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1120,11 +1114,8 @@ The filename to open</p>
 <span class="sig-name descname"><span class="pre">macros</span></span><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.macros" title="Permalink to this definition"></a></dt>
 <dd><p>The macro substitutions to use when launching the display, in JSON object format.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list of str</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1312,11 +1303,8 @@ where 0 means transparent.</p>
 <span class="sig-name descname"><span class="pre">openInNewWindow</span></span><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.openInNewWindow" title="Permalink to this definition"></a></dt>
 <dd><p>If true, the button will open the display in a new window, rather than in the existing window.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>bool</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1480,9 +1468,9 @@ callable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.render" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.render" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1522,11 +1510,8 @@ callable.</p>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1536,11 +1521,8 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2026,11 +2008,8 @@ where 0 means transparent.</p>
 <span class="sig-name descname"><span class="pre">showIcon</span></span><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.showIcon" title="Permalink to this definition"></a></dt>
 <dd><p>Whether or not we should show the selected Icon.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>bool</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>

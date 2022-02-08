@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMDrawing Widgets &mdash; PyDM v1.12.0+2.g7af41e80 documentation</title>
+  <title>PyDMDrawing Widgets &mdash; PyDM v1.12.0+6.gfd998b53 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.12.0+2.g7af41e80
+                v1.12.0+6.gfd998b53
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -432,11 +432,8 @@ and 3 = INVALID</p>
 <span class="sig-name descname"><span class="pre">arrowEndPoint</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.arrowEndPoint" title="Permalink to this definition"></a></dt>
 <dd><p>If True, an arrow will be drawn at the end of the line.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>bool</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -446,11 +443,8 @@ and 3 = INVALID</p>
 <span class="sig-name descname"><span class="pre">arrowStartPoint</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.arrowStartPoint" title="Permalink to this definition"></a></dt>
 <dd><p>If True, an arrow will be drawn at the start of the line.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>bool</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -481,11 +475,8 @@ and 3 = INVALID</p>
 <dd><p>PyQT Property for the brush object to be used when coloring the
 drawing</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QBrush</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QBrush</p>
 </dd>
 </dl>
 </dd></dl>
@@ -544,11 +535,8 @@ self.channels(), but some widgets will want to re-implement
 this, especially if they have multiple channels, but only
 one real ‘signal’ channel.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -959,11 +947,8 @@ new enum values to be broadcasted</p>
 tools that have been loaded.  PyDMWidget subclasses should override
 this method (after calling superclass implementation) to add the menu.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QMenu</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QMenu</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1610,11 +1595,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penColor</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.penColor" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen color to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QColor</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1652,11 +1634,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penWidth</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.penWidth" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen width to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1738,9 +1717,9 @@ callable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingLine.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.render" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.render" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1777,11 +1756,8 @@ callable.</p>
 <dd><p>PyQT Property for the counter-clockwise rotation in degrees
 to be applied to the drawing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1795,11 +1771,8 @@ to be applied to the drawing.</p>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1809,11 +1782,8 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2190,11 +2160,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2207,11 +2174,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2929,11 +2893,8 @@ the image</p>
 <dd><p>PyQT Property for the brush object to be used when coloring the
 drawing</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QBrush</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QBrush</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2992,11 +2953,8 @@ self.channels(), but some widgets will want to re-implement
 this, especially if they have multiple channels, but only
 one real ‘signal’ channel.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3422,11 +3380,8 @@ This can be an absolute or relative path to the display file.</p>
 tools that have been loaded.  PyDMWidget subclasses should override
 this method (after calling superclass implementation) to add the menu.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QMenu</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QMenu</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3951,11 +3906,8 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">movie_finished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingImage.movie_finished"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.movie_finished" title="Permalink to this definition"></a></dt>
 <dd><p>Callback executed when the movie is finished.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3968,11 +3920,8 @@ This slot sends the new limit value to the
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>frame_no</strong> (<em>int</em>) – The new frame index</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4104,11 +4053,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penColor</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.penColor" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen color to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QColor</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4146,11 +4092,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penWidth</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.penWidth" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen width to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4232,9 +4175,9 @@ callable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingImage.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.render" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.render" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -4271,11 +4214,8 @@ callable.</p>
 <dd><p>PyQT Property for the counter-clockwise rotation in degrees
 to be applied to the drawing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4289,11 +4229,8 @@ to be applied to the drawing.</p>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4303,11 +4240,8 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4684,11 +4618,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4701,11 +4632,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5397,11 +5325,8 @@ and 3 = INVALID</p>
 <dd><p>PyQT Property for the brush object to be used when coloring the
 drawing</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QBrush</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QBrush</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5460,11 +5385,8 @@ self.channels(), but some widgets will want to re-implement
 this, especially if they have multiple channels, but only
 one real ‘signal’ channel.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5875,11 +5797,8 @@ new enum values to be broadcasted</p>
 tools that have been loaded.  PyDMWidget subclasses should override
 this method (after calling superclass implementation) to add the menu.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QMenu</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QMenu</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6526,11 +6445,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penColor</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingRectangle.penColor" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen color to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QColor</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6568,11 +6484,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penWidth</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingRectangle.penWidth" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen width to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6654,9 +6567,9 @@ callable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingRectangle.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingRectangle.render" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingRectangle.render" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -6693,11 +6606,8 @@ callable.</p>
 <dd><p>PyQT Property for the counter-clockwise rotation in degrees
 to be applied to the drawing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6711,11 +6621,8 @@ to be applied to the drawing.</p>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6725,11 +6632,8 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingRectangle.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -7106,11 +7010,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -7123,11 +7024,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -7819,11 +7717,8 @@ and 3 = INVALID</p>
 <dd><p>PyQT Property for the brush object to be used when coloring the
 drawing</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QBrush</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QBrush</p>
 </dd>
 </dl>
 </dd></dl>
@@ -7882,11 +7777,8 @@ self.channels(), but some widgets will want to re-implement
 this, especially if they have multiple channels, but only
 one real ‘signal’ channel.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -8297,11 +8189,8 @@ new enum values to be broadcasted</p>
 tools that have been loaded.  PyDMWidget subclasses should override
 this method (after calling superclass implementation) to add the menu.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QMenu</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QMenu</p>
 </dd>
 </dl>
 </dd></dl>
@@ -8948,11 +8837,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penColor</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingTriangle.penColor" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen color to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QColor</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -8990,11 +8876,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penWidth</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingTriangle.penWidth" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen width to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -9076,9 +8959,9 @@ callable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingTriangle.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingTriangle.render" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingTriangle.render" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -9115,11 +8998,8 @@ callable.</p>
 <dd><p>PyQT Property for the counter-clockwise rotation in degrees
 to be applied to the drawing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -9133,11 +9013,8 @@ to be applied to the drawing.</p>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -9147,11 +9024,8 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingTriangle.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -9528,11 +9402,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -9545,11 +9416,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -10241,11 +10109,8 @@ and 3 = INVALID</p>
 <dd><p>PyQT Property for the brush object to be used when coloring the
 drawing</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QBrush</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QBrush</p>
 </dd>
 </dl>
 </dd></dl>
@@ -10304,11 +10169,8 @@ self.channels(), but some widgets will want to re-implement
 this, especially if they have multiple channels, but only
 one real ‘signal’ channel.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -10719,11 +10581,8 @@ new enum values to be broadcasted</p>
 tools that have been loaded.  PyDMWidget subclasses should override
 this method (after calling superclass implementation) to add the menu.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QMenu</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QMenu</p>
 </dd>
 </dl>
 </dd></dl>
@@ -11370,11 +11229,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penColor</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingEllipse.penColor" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen color to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QColor</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -11412,11 +11268,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penWidth</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingEllipse.penWidth" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen width to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -11498,9 +11351,9 @@ callable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingEllipse.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingEllipse.render" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingEllipse.render" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -11537,11 +11390,8 @@ callable.</p>
 <dd><p>PyQT Property for the counter-clockwise rotation in degrees
 to be applied to the drawing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -11555,11 +11405,8 @@ to be applied to the drawing.</p>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -11569,11 +11416,8 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingEllipse.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -11950,11 +11794,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -11967,11 +11808,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -12663,11 +12501,8 @@ and 3 = INVALID</p>
 <dd><p>PyQT Property for the brush object to be used when coloring the
 drawing</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QBrush</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QBrush</p>
 </dd>
 </dl>
 </dd></dl>
@@ -12726,11 +12561,8 @@ self.channels(), but some widgets will want to re-implement
 this, especially if they have multiple channels, but only
 one real ‘signal’ channel.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -13141,11 +12973,8 @@ new enum values to be broadcasted</p>
 tools that have been loaded.  PyDMWidget subclasses should override
 this method (after calling superclass implementation) to add the menu.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QMenu</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QMenu</p>
 </dd>
 </dl>
 </dd></dl>
@@ -13792,11 +13621,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penColor</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingCircle.penColor" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen color to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QColor</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -13834,11 +13660,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penWidth</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingCircle.penWidth" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen width to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -13920,9 +13743,9 @@ callable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingCircle.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingCircle.render" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingCircle.render" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -13959,11 +13782,8 @@ callable.</p>
 <dd><p>PyQT Property for the counter-clockwise rotation in degrees
 to be applied to the drawing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -13977,11 +13797,8 @@ to be applied to the drawing.</p>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -13991,11 +13808,8 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingCircle.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -14372,11 +14186,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -14389,11 +14200,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -15085,11 +14893,8 @@ and 3 = INVALID</p>
 <dd><p>PyQT Property for the brush object to be used when coloring the
 drawing</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QBrush</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QBrush</p>
 </dd>
 </dl>
 </dd></dl>
@@ -15148,11 +14953,8 @@ self.channels(), but some widgets will want to re-implement
 this, especially if they have multiple channels, but only
 one real ‘signal’ channel.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -15563,11 +15365,8 @@ new enum values to be broadcasted</p>
 tools that have been loaded.  PyDMWidget subclasses should override
 this method (after calling superclass implementation) to add the menu.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QMenu</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QMenu</p>
 </dd>
 </dl>
 </dd></dl>
@@ -16214,11 +16013,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penColor</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc.penColor" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen color to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QColor</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -16256,11 +16052,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penWidth</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc.penWidth" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen width to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -16342,9 +16135,9 @@ callable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingArc.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc.render" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc.render" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -16381,11 +16174,8 @@ callable.</p>
 <dd><p>PyQT Property for the counter-clockwise rotation in degrees
 to be applied to the drawing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -16399,11 +16189,8 @@ to be applied to the drawing.</p>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -16413,11 +16200,8 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -16794,11 +16578,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -16811,11 +16592,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -17535,11 +17313,8 @@ and 3 = INVALID</p>
 <dd><p>PyQT Property for the brush object to be used when coloring the
 drawing</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QBrush</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QBrush</p>
 </dd>
 </dl>
 </dd></dl>
@@ -17598,11 +17373,8 @@ self.channels(), but some widgets will want to re-implement
 this, especially if they have multiple channels, but only
 one real ‘signal’ channel.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -18013,11 +17785,8 @@ new enum values to be broadcasted</p>
 tools that have been loaded.  PyDMWidget subclasses should override
 this method (after calling superclass implementation) to add the menu.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QMenu</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QMenu</p>
 </dd>
 </dl>
 </dd></dl>
@@ -18664,11 +18433,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penColor</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPie.penColor" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen color to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QColor</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -18706,11 +18472,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penWidth</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPie.penWidth" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen width to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -18792,9 +18555,9 @@ callable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPie.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPie.render" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPie.render" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -18831,11 +18594,8 @@ callable.</p>
 <dd><p>PyQT Property for the counter-clockwise rotation in degrees
 to be applied to the drawing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -18849,11 +18609,8 @@ to be applied to the drawing.</p>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -18863,11 +18620,8 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPie.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -19244,11 +18998,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -19261,11 +19012,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -19985,11 +19733,8 @@ and 3 = INVALID</p>
 <dd><p>PyQT Property for the brush object to be used when coloring the
 drawing</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QBrush</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QBrush</p>
 </dd>
 </dl>
 </dd></dl>
@@ -20048,11 +19793,8 @@ self.channels(), but some widgets will want to re-implement
 this, especially if they have multiple channels, but only
 one real ‘signal’ channel.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -20463,11 +20205,8 @@ new enum values to be broadcasted</p>
 tools that have been loaded.  PyDMWidget subclasses should override
 this method (after calling superclass implementation) to add the menu.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QMenu</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QMenu</p>
 </dd>
 </dl>
 </dd></dl>
@@ -21114,11 +20853,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penColor</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingChord.penColor" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen color to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QColor</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -21156,11 +20892,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penWidth</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingChord.penWidth" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen width to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -21242,9 +20975,9 @@ callable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingChord.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingChord.render" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingChord.render" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -21281,11 +21014,8 @@ callable.</p>
 <dd><p>PyQT Property for the counter-clockwise rotation in degrees
 to be applied to the drawing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -21299,11 +21029,8 @@ to be applied to the drawing.</p>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -21313,11 +21040,8 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingChord.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -21694,11 +21418,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -21711,11 +21432,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -22435,11 +22153,8 @@ and 3 = INVALID</p>
 <dd><p>PyQT Property for the brush object to be used when coloring the
 drawing</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QBrush</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QBrush</p>
 </dd>
 </dl>
 </dd></dl>
@@ -22498,11 +22213,8 @@ self.channels(), but some widgets will want to re-implement
 this, especially if they have multiple channels, but only
 one real ‘signal’ channel.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -22913,11 +22625,8 @@ new enum values to be broadcasted</p>
 tools that have been loaded.  PyDMWidget subclasses should override
 this method (after calling superclass implementation) to add the menu.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QMenu</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QMenu</p>
 </dd>
 </dl>
 </dd></dl>
@@ -23578,11 +23287,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penColor</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolygon.penColor" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen color to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QColor</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -23620,11 +23326,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penWidth</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolygon.penWidth" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen width to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -23706,9 +23409,9 @@ callable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolygon.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolygon.render" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolygon.render" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -23745,11 +23448,8 @@ callable.</p>
 <dd><p>PyQT Property for the counter-clockwise rotation in degrees
 to be applied to the drawing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -23763,11 +23463,8 @@ to be applied to the drawing.</p>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -23777,11 +23474,8 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolygon.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -24158,11 +23852,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -24175,11 +23866,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -24871,11 +24559,8 @@ and 3 = INVALID</p>
 <dd><p>PyQT Property for the brush object to be used when coloring the
 drawing</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QBrush</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QBrush</p>
 </dd>
 </dl>
 </dd></dl>
@@ -24934,11 +24619,8 @@ self.channels(), but some widgets will want to re-implement
 this, especially if they have multiple channels, but only
 one real ‘signal’ channel.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -25349,11 +25031,8 @@ new enum values to be broadcasted</p>
 tools that have been loaded.  PyDMWidget subclasses should override
 this method (after calling superclass implementation) to add the menu.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QMenu</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QMenu</p>
 </dd>
 </dl>
 </dd></dl>
@@ -26000,11 +25679,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penColor</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.penColor" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen color to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QColor</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -26042,11 +25718,8 @@ so the specifics can be performed for each of the drawing classes.</p>
 <span class="sig-name descname"><span class="pre">penWidth</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.penWidth" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Property for the pen width to be used when drawing the border</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -26128,9 +25801,9 @@ callable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.render" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.render" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">QWidget.RenderFlag</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -26167,11 +25840,8 @@ callable.</p>
 <dd><p>PyQT Property for the counter-clockwise rotation in degrees
 to be applied to the drawing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -26185,11 +25855,8 @@ to be applied to the drawing.</p>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -26199,11 +25866,8 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -26580,11 +26244,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -26597,11 +26258,8 @@ new value.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
