@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Widget Rules &mdash; PyDM v1.12.0+8.gc157c740 documentation</title>
+  <title>Widget Rules &mdash; PyDM v1.12.0+24.gd6036caf documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.12.0+8.gc157c740
+                v1.12.0+24.gd6036caf
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -170,7 +170,12 @@ as trigger and value for the expression.</p>
 the channel address.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">Trigger</span></code> option defines if the expression will be evaluated or not when
 this channel’s value is changed. At least one channel must be marked as <code class="docutils literal notranslate"><span class="pre">Trigger</span></code>.</p>
-<p>With the channel(s) added it is time to create the expression.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Enum?</span></code> option defines if the channel’s value will be converted to its
+enumeration string value (when possible). When checked and a conversion is
+possible, the expression should work with a text comparison. (NOTE: Uncheck
+this when using MEDM calculation expressions, which always use the default
+data type from the channel, to prevent automatic conversion to a text value.)</p>
+<p>With the channel(s) added, it is time to create the expression.</p>
 </dd>
 </dl>
 </li>
@@ -193,7 +198,8 @@ rule start being evaluated.</p>
 <dt><strong>Expression</strong></dt><dd><p>When the user selects a property, the <code class="docutils literal notranslate"><span class="pre">Expected</span> <span class="pre">Type</span></code> label is updated with
 the expected data type for the given property.</p>
 <p>It is the user responsibility to cast the data properly and ensure that the
-proper data type or equivalent is the result of the evaluation.</p>
+proper data type or equivalent is the result of the evaluation.  (See the
+<code class="docutils literal notranslate"><span class="pre">Enum?</span></code> option above.)</p>
 <p>In order to get data from the <code class="docutils literal notranslate"><span class="pre">channels</span></code> configured before, one must use the
 special function <code class="docutils literal notranslate"><span class="pre">ch[...]</span></code> and specify the <code class="docutils literal notranslate"><span class="pre">channel</span> <span class="pre">index</span></code> according to the
 table, <strong>starting from 0</strong>. E.g. <code class="docutils literal notranslate"><span class="pre">ch[0]</span></code> will fetch the value from the first
