@@ -29,12 +29,19 @@ class Connection(PyDMConnection):
         ]
 
         self._extra_config_keys = [
-            "extras",
             "precision",
             "unit",
             "upper_limit",
             "lower_limit",
             "enum_string"
+        ]
+
+        self._extra_numpy_config_keys = [
+            "dtype",
+            "copy",
+            "order",
+            "subok",
+            "ndmin"
         ]
 
         self._data_types = {
@@ -135,10 +142,24 @@ class Connection(PyDMConnection):
             self.send_enum_string(enum_string[0])
 
         type_kwargs = {k: v for k, v in extras.items()
-                       if k not in self._extra_config_keys and k not in self._required_config_keys}
+                       if k in self._extra_numpy_config_keys}
 
         if type_kwargs:
             self.format_type_params(type_kwargs)
+
+        unused = {k: v for k, v in extras.items()
+                       if k not in self._extra_config_keys
+                       and k not in self._required_config_keys
+                       and k not in self._extra_numpy_config_keys}
+
+        if len(unused) == 0:
+            return
+
+        info = "The following entries are not valid config keys:"
+        for items in unused:
+            info = info + " " + unused + ","
+
+        print(info)
 
     @Slot(int)
     @Slot(float)
