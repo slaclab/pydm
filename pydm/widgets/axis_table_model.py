@@ -117,3 +117,7 @@ class BasePlotAxesModel(QAbstractTableModel):
         self.beginRemoveRows(QModelIndex(), index.row(), index.row())
         self._plot.removeAxisAtIndex(index.row())
         self.endRemoveRows()
+
+    def getColumnIndex(self, column_name):
+        """ Returns the column index of the name. Raises a ValueError if it's not a valid column name """
+        return self._column_names.index(column_name)
