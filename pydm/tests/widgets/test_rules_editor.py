@@ -35,7 +35,7 @@ class DummyWidget:
 @pytest.mark.parametrize(
     "use_enum, visible",
     [
-        (None, True),
+        (None, False),
         (True, True),
         (False, False)
     ]
