@@ -1,4 +1,5 @@
 import logging
+import pytest
 import time
 import weakref
 
@@ -129,7 +130,15 @@ def test_rules_ok(qtbot, caplog):
     assert not widget.isVisible()
 
 
-def test_rules_enums(qtbot, caplog):
+@pytest.mark.parametrize(
+    "use_enum, visible",
+    [
+        (None, True),
+        (True, True),
+        (False, False)
+    ]
+)
+def test_rules_enums(use_enum, visible, qtbot, caplog):
     """
     Test the rules mechanism with enums.
 
@@ -148,6 +157,8 @@ def test_rules_enums(qtbot, caplog):
     rules = [{'name': 'Rule #1', 'property': 'Visible',
                 'expression': 'ch[0] == "RUN"',
                 'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+    if use_enum is not None:
+        rules[0]["channels"][0]["use_enum"] = use_enum
 
     dispatcher = RulesDispatcher()
     dispatcher.register(widget, rules)
@@ -171,14 +182,14 @@ def test_rules_enums(qtbot, caplog):
     blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
 
     # Now receive enums and check that it was evaluated again and proper
-    # value was sent making the widget visible
+    # value was sent making the widget visible on condition of use_enum
     re.callback_conn(weakref.ref(widget), 0, 0, value=True)
     re.callback_enum(weakref.ref(widget), 0, 0, enums=["STOP", "RUN"])
     assert re.widget_map[weakref.ref(widget)][0]['calculate'] is True
 
     blocker.wait()
     assert re.widget_map[weakref.ref(widget)][0]['calculate'] is False
-    assert widget.isVisible()
+    assert widget.isVisible() == visible
 
 
 def test_rules_invalid_expr(qtbot, caplog):
