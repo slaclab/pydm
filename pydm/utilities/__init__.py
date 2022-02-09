@@ -228,8 +228,6 @@ def find_file(fname, base_path=None, mode=None, extra_path=None):
     if pydm_search_path:
         x_path.extend(pydm_search_path.split(os.pathsep))
 
-    # f_ext = ''.join(_extensions(fname))
-
     for idx, path in enumerate(x_path):
         x_path[idx] = os.path.expanduser(os.path.expandvars(path))
 
@@ -237,8 +235,7 @@ def find_file(fname, base_path=None, mode=None, extra_path=None):
 
     # loop through the possible screen file extensions
     for e in _screen_file_extensions(ext):
-        # file_path = which(f"{root}{e}", mode=mode, pathext=f_ext, extra_path=x_path)
-        file_path = which(f"{root}{e}", mode=mode, extra_path=x_path)
+        file_path = which(str(root) + str(e), mode=mode, pathext=e, extra_path=x_path)
         if file_path is not None:
             break  # pick the first screen file found
 
