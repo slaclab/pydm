@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.utilities &mdash; PyDM v1.12.0+28.g1696af69 documentation</title>
+  <title>pydm.utilities &mdash; PyDM v1.12.0+30.ge323f986 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.12.0+28.g1696af69
+                v1.12.0+30.ge323f986
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -331,8 +331,6 @@
     <span class="k">if</span> <span class="n">pydm_search_path</span><span class="p">:</span>
         <span class="n">x_path</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">pydm_search_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">))</span>
 
-    <span class="c1"># f_ext = &#39;&#39;.join(_extensions(fname))</span>
-
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">path</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x_path</span><span class="p">):</span>
         <span class="n">x_path</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expandvars</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
 
@@ -340,8 +338,7 @@
 
     <span class="c1"># loop through the possible screen file extensions</span>
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">_screen_file_extensions</span><span class="p">(</span><span class="n">ext</span><span class="p">):</span>
-        <span class="c1"># file_path = which(f&quot;{root}{e}&quot;, mode=mode, pathext=f_ext, extra_path=x_path)</span>
-        <span class="n">file_path</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">extra_path</span><span class="o">=</span><span class="n">x_path</span><span class="p">)</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">root</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">pathext</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">extra_path</span><span class="o">=</span><span class="n">x_path</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">break</span>  <span class="c1"># pick the first screen file found</span>
 
