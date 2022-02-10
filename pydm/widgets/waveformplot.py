@@ -275,8 +275,8 @@ class WaveformCurveItem(BasePlotCurveItem):
             #brushes = [self.color] * len(self.y_waveform)
             if self.upper_threshold is not None:
                 brushes[np.argwhere(self.y_waveform > self.upper_threshold)] = self.threshold_color
-            if self.lowed_threshold is not None:
-                brushes[np.argwhere(self.y_waveform < self.lowed_threshold)] = self.threshold_color
+            if self.lower_threshold is not None:
+                brushes[np.argwhere(self.y_waveform < self.lower_threshold)] = self.threshold_color
 
         if self.x_waveform is None:
             self.bar_graph_item.setOpts(x=np.arange(len(self.y_waveform)), height=self.y_waveform.astype(np.float), brushes=brushes)
@@ -437,11 +437,15 @@ class PyDMWaveformPlot(BasePlot):
                                   yAxisName=yAxisName,
                                   **plot_opts)
         self.channel_pairs[(y_channel, x_channel)] = curve
-        self.addCurve(curve, curve_color=color, y_axis_name=yAxisName)
         if plot_style == 'Bar':
-            curve.bar_graph_item = BarGraphItem(x=[], height=[], width=1, brush=color)
+            if barWidth is None:
+                barWidth = 1
+            curve.bar_graph_item = BarGraphItem(x=[], height=[], width=barWidth, brush=color)
+            print(f'Setting threshold color to: {thresholdColor} prior to add curve')
+            curve.setBarGraphInfo(barWidth, upperThreshold, lowerThreshold, thresholdColor)
+        self.addCurve(curve, curve_color=color, y_axis_name=yAxisName)
+        if curve.bar_graph_item is not None:
             curve.getViewBox().addItem(curve.bar_graph_item)
-            curve.setThresholdInfo(upperThreshold, lowerThreshold, thresholdColor)
         curve.data_changed.connect(self.set_needs_redraw)
 
     def removeChannel(self, curve):

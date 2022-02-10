@@ -1,8 +1,7 @@
-from qtpy.QtCore import QModelIndex, Qt, QVariant, Slot
+from qtpy.QtCore import QModelIndex, Qt, QVariant
 from qtpy.QtWidgets import QComboBox, QStyledItemDelegate
 from .baseplot_table_model import BasePlotCurvesModel
-from .baseplot_curve_editor import (BasePlotCurveEditorDialog,
-                                    RedrawModeColumnDelegate)
+from .baseplot_curve_editor import BasePlotCurveEditorDialog, ColorColumnDelegate, RedrawModeColumnDelegate
 
 
 class PyDMWaveformPlotCurvesModel(BasePlotCurvesModel):
@@ -33,8 +32,6 @@ class PyDMWaveformPlotCurvesModel(BasePlotCurvesModel):
             return curve.upper_threshold
         elif column_name == "Lower Threshold":
             return curve.lower_threshold
-        elif column_name == "Threshold Color":
-            return curve.threshold_color
         elif column_name == "Redraw Mode":
             return curve.redraw_mode
         return super(PyDMWaveformPlotCurvesModel, self).get_data(
@@ -54,7 +51,8 @@ class PyDMWaveformPlotCurvesModel(BasePlotCurvesModel):
         elif column_name == "Lower Threshold":
             curve.lower_threshold = float(value)
         elif column_name == "Threshold Color":
-            curve.threshold_color = str(value)
+            print(f'setting threshold color to: {value} and: {value.name()}')
+            curve.threshold_color = value
         elif column_name == "Redraw Mode":
             curve.redraw_mode = int(value)
         else:
@@ -84,32 +82,44 @@ class WaveformPlotCurveEditorDialog(BasePlotCurveEditorDialog):
     buttons to add and remove curves, and a button to save the changes."""
     TABLE_MODEL_CLASS = PyDMWaveformPlotCurvesModel
 
+    line_columns_to_toggle = ('Line Style', 'Line Width', 'Symbol', 'Symbol Size')
+    bar_columns_to_toggle = ('Bar Width', 'Upper Threshold', 'Lower Threshold', 'Threshold Color')
+
     def __init__(self, plot, parent=None):
         super(WaveformPlotCurveEditorDialog, self).__init__(plot, parent)
-
 
         redraw_mode_delegate = RedrawModeColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Redraw Mode"), redraw_mode_delegate)
 
-        plot_style_delegate = WavformPlotStyleColumnDelegate(self, self.table_view)
+        threshold_color_delegate = ColorColumnDelegate(self)
+        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex('Threshold Color'),
+                                                 threshold_color_delegate)
+
+        plot_style_delegate = WavformPlotStyleColumnDelegate(self, self.table_model, self.table_view,
+                                                             self.line_columns_to_toggle, self.bar_columns_to_toggle)
         self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Style"), plot_style_delegate)
 
         if len(plot.curves) > 0:
             plot_style = self.table_model.get_data("Style", plot.curveAtIndex(0))
-            if plot_style == "Bar":
-                for i in range(6, 10):
-                    self.table_view.setColumnHidden(i, True)
-
-    @Slot(int)
-    def fillAxisData(self, tab_index, axis_name_col_index=5):
-        super(WaveformPlotCurveEditorDialog, self).fillAxisData(tab_index, axis_name_col_index=axis_name_col_index)
+            hide_line_columns = plot_style is not None and plot_style != 'Line'
+            hide_bar_columns = plot_style != 'Bar'
+            for column in self.line_columns_to_toggle:
+                self.table_view.setColumnHidden(self.table_model.getColumnIndex(column), hide_line_columns)
+            for column in self.bar_columns_to_toggle:
+                self.table_view.setColumnHidden(self.table_model.getColumnIndex(column), hide_bar_columns)
+        else:
+            for column in self.bar_columns_to_toggle:
+                self.table_view.setColumnHidden(self.table_model.getColumnIndex(column), True)
 
 
 class WavformPlotStyleColumnDelegate(QStyledItemDelegate):
 
-    def __init__(self, parent, table_view):
+    def __init__(self, parent, table_model, table_view, line_columns, bar_columns):
         super(WavformPlotStyleColumnDelegate, self).__init__(parent)
+        self.table_model = table_model
         self.table_view = table_view
+        self.line_columns_to_toggle = line_columns
+        self.bar_columns_to_toggle = bar_columns
 
     def createEditor(self, parent, option, index):
         editor = QComboBox(parent)
@@ -122,12 +132,13 @@ class WavformPlotStyleColumnDelegate(QStyledItemDelegate):
 
     def setModelData(self, editor, model, index):
         model.setData(index, editor.currentText(), Qt.EditRole)
-        if editor.currentText() == "Bar":
-            for i in range(6, 10):
-                self.table_view.setColumnHidden(i, True)
-        elif editor.currentText() == "Line":
-            for i in range(6, 10):
-                self.table_view.setColumnHidden(i, False)
+        if editor.currentText() is not None:
+            hide_line_columns = editor.currentText() != 'Line'
+            hide_bar_columns = editor.currentText() != 'Bar'
+            for column in self.line_columns_to_toggle:
+                self.table_view.setColumnHidden(self.table_model.getColumnIndex(column), hide_line_columns)
+            for column in self.bar_columns_to_toggle:
+                self.table_view.setColumnHidden(self.table_model.getColumnIndex(column), hide_bar_columns)
 
     def updateEditorGeometry(self, editor, option, index):
         editor.setGeometry(option.rect)

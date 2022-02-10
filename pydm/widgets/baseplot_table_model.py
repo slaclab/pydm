@@ -1,5 +1,5 @@
 from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant
-from qtpy.QtGui import QBrush
+from qtpy.QtGui import QBrush, QColor
 from .baseplot import BasePlotCurveItem
 
 
@@ -33,7 +33,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
 
     def flags(self, index):
         column_name = self._column_names[index.column()]
-        if column_name == "Color":
+        if column_name == "Color" or column_name == "Threshold Color":
             return Qt.ItemIsSelectable | Qt.ItemIsEnabled
         return Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsEditable
 
@@ -58,6 +58,11 @@ class BasePlotCurvesModel(QAbstractTableModel):
             return self.get_data(column_name, curve)
         elif role == Qt.BackgroundRole and column_name == "Color":
             return QBrush(curve.color)
+        elif role == Qt.BackgroundRole and column_name == "Threshold Color":
+            if curve.threshold_color is not None:
+                return QBrush(curve.threshold_color)
+            else:
+                return QBrush(QColor('white'))
         else:
             return QVariant()
 
@@ -69,7 +74,11 @@ class BasePlotCurvesModel(QAbstractTableModel):
         elif column_name == "Y-Axis Name":
             return curve.y_axis_name
         elif column_name == "Color":
+            print(f'returning color: {curve.color_string}')
             return curve.color_string
+        elif column_name == "Threshold Color":
+            #print(f'curve is: {curve} with dict: {dir(curve)}')
+            return curve.threshold_color_string
         elif column_name == "Line Style":
             return self.name_for_line[curve.lineStyle]
         elif column_name == "Line Width":
@@ -102,6 +111,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
         if column_name == "Label":
             curve.setData(name=str(value))
         elif column_name == "Color":
+            print(f'setting color to: {value} and: {value.name()}')
             curve.color = value
         elif column_name == "Y-Axis Name":
             curve.y_axis_name = str(value)
@@ -142,6 +152,6 @@ class BasePlotCurvesModel(QAbstractTableModel):
 
     def needsColorDialog(self, index):
         column_name = self._column_names[index.column()]
-        if column_name == "Color":
+        if column_name == "Color" or column_name == "Threshold Color":
             return True
         return False

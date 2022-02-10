@@ -68,6 +68,10 @@ class BasePlotCurveItem(PlotDataItem):
 
     def __init__(self, color=None, lineStyle=None, lineWidth=None, yAxisName=None, **kws):
         self._color = QColor('white')
+        self._thresholdColor = QColor('white')
+        print('setting threshold color string to white')
+        #self.threshold_color_string = 'white'
+        #print(f'it is now: {self.threshold_color_string}')
         self._pen = mkPen(self._color)
         if lineWidth is not None:
             self._pen.setWidth(lineWidth)
@@ -88,7 +92,7 @@ class BasePlotCurveItem(PlotDataItem):
         self.bar_width = None
         self.upper_threshold = None
         self.lower_threshold = None
-        self.threshold_color = None
+        #self.threshold_color = None
         self.bar_graph_item = None
 
         if hasattr(self, "channels"):
@@ -121,7 +125,9 @@ class BasePlotCurveItem(PlotDataItem):
         new_color_string: int
             The new string to use for the curve color.
         """
+        print(f'color string is curr: {self.color_string}')
         self.color = QColor(str(new_color_string))
+        print(f'Color string is now: {self.color_string}')
 
     @property
     def color(self):
@@ -146,12 +152,73 @@ class BasePlotCurveItem(PlotDataItem):
             Strings are passed to WaveformCurveItem.color_string.
         """
         if isinstance(new_color, str):
+            print(f'Setting color to (A STRING??): {new_color}')
             self.color_string = new_color
             return
+        print('just setting a color great')
         self._color = new_color
         self._pen.setColor(self._color)
         self.setPen(self._pen)
         self.setSymbolPen(self._color)
+
+    def get_threshold_color_string(self):
+        return str(utilities.colors.svg_color_from_hex(self.threshold_color.name(),
+                                                       hex_on_fail=True))
+
+## START
+    @property
+    def threshold_color_string(self):
+        """
+        A string representation of the color used for the curve.  This string
+        will be a hex color code, like #FF00FF, or an SVG spec color name, if
+        a name exists for the color.#
+
+        Returns
+        -------
+        str
+        """
+        return str(utilities.colors.svg_color_from_hex(self.threshold_color.name(),
+                                                       hex_on_fail=True))
+
+#    @threshold_color_string.setter
+#    def threshold_color_string(self, new_color_string):
+#        """
+#        A string representation of the color used for the curve.  This string
+#        will be a hex color code, like #FF00FF, or an SVG spec color name, if
+#        a name exists for the color.#
+
+#        Parameters
+#        -------
+#        new_color_string: int
+#            The new string to use for the curve color.
+#        """
+#        self.threshold_color = QColor(str(new_color_string))
+#
+    @property
+    def threshold_color(self):
+        """
+        The color used for the curve.
+
+        Returns
+        -------
+        QColor
+        """
+        return self._thresholdColor
+
+    @threshold_color.setter
+    def threshold_color(self, new_color):
+        """
+        The color used for the curve.
+
+        Parameters
+        -------
+        new_color: QColor
+        """
+        print(f'Setting threshold color in setter to: {new_color}')
+        print(f'The name of that color is: {new_color.value()}')
+        self._thresholdColor = new_color
+
+### STOP
 
     @property
     def y_axis_name(self):
@@ -275,7 +342,8 @@ class BasePlotCurveItem(PlotDataItem):
         """
         self.setSymbolSize(int(new_size))
 
-    def setThresholdInfo(self, upper_threshold: float, lower_threshold: float, color: QColor):
+    def setBarGraphInfo(self, bar_width: float, upper_threshold: float, lower_threshold: float, color: QColor):
+        self.bar_width = bar_width
         self.upper_threshold = upper_threshold
         self.lower_threshold = lower_threshold
         self.threshold_color = color
@@ -300,7 +368,7 @@ class BasePlotCurveItem(PlotDataItem):
                             ("barWidth", self.bar_width),
                             ("upperThreshold", self.upper_threshold),
                             ("lowerThreshold", self.lower_threshold),
-                            ("thresholdColor", self.threshold_color)])
+                            ("thresholdColor", self.threshold_color_string)])
 
     def close(self):
         pass
@@ -573,6 +641,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             then a new axis will be created for it.
         """
 
+        print(f'Adding curve: {plot_data_item}')
+
         if curve_color is None:
             curve_color = utilities.colors.default_colors[
                     len(self._curves) % len(utilities.colors.default_colors)]
@@ -676,7 +746,6 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         return self._curves[index]
 
     def curves(self):
-        print("???")
         return self._curves
 
     def clear(self):
@@ -765,7 +834,6 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             A list of JSON-formatted strings, each contains an axis and its
             settings
         """
-        print('hi')
         try:
             new_list = [json.loads(str(i)) for i in new_list]
         except ValueError as e:
