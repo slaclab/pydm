@@ -150,14 +150,6 @@ class BasicSettingsEditor(QtWidgets.QDialog):
             )
             settings_form.addRow("&Channel", self.channel_widget)
 
-        if not hasattr(self.widget, "channel"):
-            self.channel_widget = None
-        else:
-            self.channel_widget = QtWidgets.QLineEdit(
-                self.widget.channel or ""
-            )
-            settings_form.addRow("&Channel", self.channel_widget)
-
         if not hasattr(self.widget, "filename"):
             self.filename_widget = None
         else:
