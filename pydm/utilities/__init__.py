@@ -386,15 +386,15 @@ def get_clipboard():
     return QtWidgets.QApplication.clipboard()
 
 
-def get_clipboard_mode():
+def get_clipboard_modes():
     clipboard = get_clipboard()
     if clipboard is None:
         return None
 
     if platform.system() == 'Linux':
         # Mode Selection is only valid for X11.
-        return clipboard.Selection
-    return clipboard.Clipboard
+        return [clipboard.Selection, clipboard.Clipboard]
+    return [clipboard.Clipboard]
 
 
 def copy_to_clipboard(text, quiet=False):
@@ -403,11 +403,14 @@ def copy_to_clipboard(text, quiet=False):
     if clipboard is None:
         return None
 
-    clipboard.setText(text, mode=get_clipboard_mode())
-    event = QtCore.QEvent(QtCore.QEvent.Clipboard)
-    QtWidgets.QApplication.instance().sendEvent(clipboard, event)
+    for mode in get_clipboard_modes():
+        clipboard.setText(text, mode=mode)
+        event = QtCore.QEvent(QtCore.QEvent.Clipboard)
+        QtWidgets.QApplication.instance().sendEvent(clipboard, event)
 
     if not quiet:
+        # TODO: warning to ensure we get this to the user: logging not
+        # configured in designer?
         logger.warning("Copied text to clipboard:\n%s", text)
 
 
@@ -416,4 +419,8 @@ def get_clipboard_text():
     clipboard = get_clipboard()
     if clipboard is None:
         return None
-    return clipboard.text(mode=get_clipboard_mode())
+    for mode in get_clipboard_modes():
+        text = clipboard.text(mode=mode)
+        if text:
+            return text
+    return ""
