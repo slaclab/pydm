@@ -1,7 +1,8 @@
 import logging
 
 from .qtplugin_base import qtplugin_factory, WidgetCategory
-from .qtplugin_extensions import (RulesExtension, WaveformCurveEditorExtension,
+from .qtplugin_extensions import (BasicSettingsExtension, RulesExtension,
+                                  WaveformCurveEditorExtension,
                                   TimeCurveEditorExtension,
                                   ScatterCurveEditorExtension, SymbolExtension)
 from .tab_bar_qtplugin import TabWidgetPlugin
@@ -43,7 +44,7 @@ logger = logging.getLogger(__name__)
 
 ifont = IconFont()
 
-BASE_EXTENSIONS = [RulesExtension]
+BASE_EXTENSIONS = [BasicSettingsExtension, RulesExtension]
 
 # Label plugin
 PyDMLabelPlugin = qtplugin_factory(PyDMLabel, group=WidgetCategory.DISPLAY,

@@ -376,3 +376,44 @@ def only_main_thread(func):
         raise ValueError("Parameter must be a callable.")
 
     return wrapper
+
+
+def get_clipboard():
+    app = QtWidgets.QApplication.instance()
+    if app is None:
+        return None
+
+    return QtWidgets.QApplication.clipboard()
+
+
+def get_clipboard_mode():
+    clipboard = get_clipboard()
+    if clipboard is None:
+        return None
+
+    if platform.system() == 'Linux':
+        # Mode Selection is only valid for X11.
+        return clipboard.Selection
+    return clipboard.Clipboard
+
+
+def copy_to_clipboard(text, quiet=False):
+    """Copy ``text`` to the clipboard."""
+    clipboard = get_clipboard()
+    if clipboard is None:
+        return None
+
+    clipboard.setText(text, mode=get_clipboard_mode())
+    event = QtCore.QEvent(QtCore.QEvent.Clipboard)
+    QtWidgets.QApplication.instance().sendEvent(clipboard, event)
+
+    if not quiet:
+        logger.warning("Copied text to clipboard:\n%s", text)
+
+
+def get_clipboard_text():
+    """Copy ``text`` from the clipboard."""
+    clipboard = get_clipboard()
+    if clipboard is None:
+        return None
+    return clipboard.text(mode=get_clipboard_mode())
