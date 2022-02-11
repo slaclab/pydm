@@ -85,14 +85,15 @@ class BasicSettingsExtension(PyDMExtension):
         if not hasattr(widget, "channel"):
             self.channel_menu_action = None
         else:
-            self.channel_menu_action = QtWidgets.QAction("PyDM C&hannel...", self.widget)
+            self.channel_menu_action = QtWidgets.QAction("PyDM C&hannel", self.widget)
             # self.channel_menu_action.triggered.connect(self.open_channel_menu)
+            clipboard_text = get_clipboard_text()
             self.channel_menu = QtWidgets.QMenu()
-            copy_channel = self.channel_menu.addAction("&Copy")
+            copy_channel = self.channel_menu.addAction(f"&Copy to clipboard: {widget.channel}")
             copy_channel.triggered.connect(self.copy_channel)
-            paste_channel = self.channel_menu.addAction("&Paste")
+            paste_channel = self.channel_menu.addAction(f"&Paste from clipboard: {clipboard_text}")
             paste_channel.triggered.connect(self.paste_channel)
-            edit_channel = self.channel_menu.addAction("&Edit")
+            edit_channel = self.channel_menu.addAction("&Edit channel...")
             edit_channel.triggered.connect(self.open_dialog)
             copy_channel_value = self.channel_menu.addAction("C&opy current value")
             copy_channel_value.triggered.connect(self.copy_channel_value)
