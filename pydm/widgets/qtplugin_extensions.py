@@ -87,11 +87,15 @@ class BasicSettingsExtension(PyDMExtension):
         else:
             self.channel_menu_action = QtWidgets.QAction("PyDM C&hannel", self.widget)
             # self.channel_menu_action.triggered.connect(self.open_channel_menu)
-            clipboard_text = get_clipboard_text()
+            clipboard_text = get_clipboard_text() or ""
             self.channel_menu = QtWidgets.QMenu()
-            copy_channel = self.channel_menu.addAction(f"&Copy to clipboard: {widget.channel}")
+            copy_channel = self.channel_menu.addAction(
+                f"&Copy to clipboard: {widget.channel}"
+            )
             copy_channel.triggered.connect(self.copy_channel)
-            paste_channel = self.channel_menu.addAction(f"&Paste from clipboard: {clipboard_text}")
+            paste_channel = self.channel_menu.addAction(
+                f"&Paste from clipboard: {clipboard_text[:100]}"
+            )
             paste_channel.triggered.connect(self.paste_channel)
             edit_channel = self.channel_menu.addAction("&Edit channel...")
             edit_channel.triggered.connect(self.open_dialog)
@@ -123,7 +127,7 @@ class BasicSettingsExtension(PyDMExtension):
             self.edit_settings_action, 
             self.channel_menu_action, 
         ]
-        return [action for action in actions if action is not None ]
+        return [action for action in actions if action is not None]
 
 
 class RulesExtension(PyDMExtension):
