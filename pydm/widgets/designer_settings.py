@@ -1,7 +1,7 @@
 import json
 import logging
 import re
-from typing import Any, Optional
+from typing import Any, List, Optional
 
 from qtpy import QtCore, QtDesigner, QtWidgets
 
@@ -26,7 +26,7 @@ class DictionaryTable(QtWidgets.QTableWidget):
         super().__init__(*args, parent=parent, **kwargs)
 
         self.setColumnCount(2)
-        self.setMinimumSize(300, 200)
+        self.setMinimumSize(300, 150)
         self.setHorizontalHeaderLabels(["Key", "Value"])
 
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -91,6 +91,73 @@ class DictionaryTable(QtWidgets.QTableWidget):
         for row, (key, value) in enumerate(dct.items()):
             self.setItem(row, 0, QtWidgets.QTableWidgetItem(key))
             self.setItem(row, 1, QtWidgets.QTableWidgetItem(value))
+
+        self.resizeColumnsToContents()
+        self.resizeRowsToContents()
+
+
+class StringListTable(QtWidgets.QTableWidget):
+    def __init__(self, values=None, *args, parent=None, **kwargs):
+        super().__init__(*args, parent=parent, **kwargs)
+
+        self.setColumnCount(1)
+        self.setMinimumSize(300, 150)
+        self.setHorizontalHeaderLabels(["Value"])
+
+        self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self._context_menu)
+        self.values
+
+    def _context_menu(self, pos):
+        self.menu = QtWidgets.QMenu(self)
+        item = self.itemAt(pos)
+        if item is not None:
+            def copy(*_):
+                copy_to_clipboard(item.text())
+
+            copy_action = self.menu.addAction(f"&Copy: {item.text()}")
+            copy_action.triggered.connect(copy)
+
+            clipboard_text = get_clipboard_text()
+
+            def paste(*_):
+                item.setText(clipboard_text)
+
+            paste_action = self.menu.addAction(f"&Paste: {clipboard_text}")
+            paste_action.triggered.connect(paste)
+
+            def delete_row(*_):
+                self.removeRow(item.row())
+
+            delete_row_action = self.menu.addAction("&Delete row...")
+            delete_row_action.triggered.connect(delete_row)
+
+        self.menu.addSeparator()
+
+        def add_row(*_):
+            row = self.rowCount()
+            self.setRowCount(row + 1)
+            self.setItem(row, 0, QtWidgets.QTableWidgetItem(""))
+
+        add_row_action = self.menu.addAction("&Add row...")
+        add_row_action.triggered.connect(add_row)
+        self.menu.exec_(self.mapToGlobal(pos))
+
+    @property
+    def values(self) -> list:
+        items = [self.item(row, 0) for row in range(self.rowCount())]
+        return [
+            item.text().strip()
+            for item in items
+            if item is not None
+        ]
+
+    @values.setter
+    def values(self, values):
+        values = values or []
+        self.setRowCount(len(values))
+        for row, value in enumerate(values):
+            self.setItem(row, 0, QtWidgets.QTableWidgetItem(str(value)))
 
         self.resizeColumnsToContents()
         self.resizeRowsToContents()
@@ -176,6 +243,15 @@ class PropertyLineEdit(_PropertyHelper, QtWidgets.QLineEdit):
         return self.text().strip()
 
 
+class PropertyIntSpinBox(_PropertyHelper, QtWidgets.QSpinBox):
+    def set_value_from_widget(self, widget, attr, value):
+        self.setValue(value)
+
+    @property
+    def saved_value(self) -> int:
+        return self.value()
+
+
 class PropertyMacroTable(_PropertyHelper, DictionaryTable):
     def set_value_from_widget(self, widget, attr, value):
         try:
@@ -190,12 +266,21 @@ class PropertyMacroTable(_PropertyHelper, DictionaryTable):
         return json.dumps(self.dictionary)
 
 
+class PropertyStringList(_PropertyHelper, StringListTable):
+    def set_value_from_widget(self, widget, attr, value):
+        self.values = value
+
+    @property
+    def saved_value(self) -> Optional[List[str]]:
+        return self.values
+
+
 def get_qt_properties(cls):
     """Yields all QMetaProperty instances from a given class."""
     meta_obj = cls.staticMetaObject
     for prop_idx in range(meta_obj.propertyCount()):
         prop = meta_obj.property(prop_idx)
-        if prop is not None:
+        if prop is not None and prop.isDesignable():
             yield prop.name()
 
 
@@ -218,12 +303,15 @@ class BasicSettingsEditor(QtWidgets.QDialog):
         "channel": PropertyLineEdit,
         "display": PropertyLineEdit,
         "macros": PropertyMacroTable,
+        "filenames": PropertyStringList,
         "rules": PropertyRuleEditor,
     }
 
     _type_to_widget_ = {
         str: PropertyLineEdit,
+        int: PropertyIntSpinBox,
         bool: PropertyCheckbox,
+        "QStringList": PropertyStringList,
     }
 
     def __init__(self, widget, parent=None):
@@ -232,7 +320,7 @@ class BasicSettingsEditor(QtWidgets.QDialog):
         self.widget = widget
 
         # PV names can be pretty wide...
-        self.setMinimumSize(400, 200)
+        self.setMinimumSize(400, 150)
 
         self.setSizePolicy(
             QtWidgets.QSizePolicy.MinimumExpanding,
