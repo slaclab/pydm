@@ -1,14 +1,12 @@
-import os
 import json
 import logging
-import functools
-import webbrowser
+import re
+from typing import Any, Optional
 
-from qtpy import QtWidgets, QtCore, QtDesigner
-from ..utilities.iconfont import IconFont
-from ..utilities.macro import parse_macro_string
+from qtpy import QtCore, QtDesigner, QtWidgets
+
 from ..utilities import copy_to_clipboard, get_clipboard_text
-
+from ..utilities.macro import parse_macro_string
 
 logger = logging.getLogger(__name__)
 
@@ -24,8 +22,8 @@ def update_property_for_widget(widget: QtWidgets.QWidget, name: str, value):
 
 
 class DictionaryTable(QtWidgets.QTableWidget):
-    def __init__(self, dct=None, parent=None):
-        super().__init__(parent=parent)
+    def __init__(self, dictionary=None, *args, parent=None, **kwargs):
+        super().__init__(*args, parent=parent, **kwargs)
 
         self.setColumnCount(2)
         self.setMinimumSize(300, 200)
@@ -33,7 +31,7 @@ class DictionaryTable(QtWidgets.QTableWidget):
 
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self._context_menu)
-        self.dictionary = dct
+        self.dictionary = dictionary
 
     def _context_menu(self, pos):
         self.menu = QtWidgets.QMenu(self)
@@ -86,9 +84,9 @@ class DictionaryTable(QtWidgets.QTableWidget):
             for key, value in key_value_pairs
         }
 
-
     @dictionary.setter
     def dictionary(self, dct):
+        dct = dct or {}
         self.setRowCount(len(dct))
         for row, (key, value) in enumerate(dct.items()):
             self.setItem(row, 0, QtWidgets.QTableWidgetItem(key))
@@ -96,6 +94,114 @@ class DictionaryTable(QtWidgets.QTableWidget):
 
         self.resizeColumnsToContents()
         self.resizeRowsToContents()
+
+
+class _PropertyHelper:
+    def __init__(self, *args, property_widget, property_name, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._property_name = property_name
+        self._property_widget = property_widget
+
+        value = None
+        try:
+            value = self.value_from_widget
+            self.set_value_from_widget(
+                widget=self._property_widget,
+                attr=self._property_name,
+                value=value,
+            )
+        except Exception:
+            logger.exception(
+                "Failed to set helper widget %s state from %s=%s",
+                type(self).__name__,
+                self._property_name,
+                value,
+            )
+
+    def set_value_from_widget(self, widget, attr, value):
+        """For subclasses."""
+        ...
+
+    @property
+    def value_from_widget(self):
+        return getattr(self._property_widget, self._property_name, None)
+
+    @property
+    def saved_value(self) -> Optional[Any]:
+        raise None
+
+    def save_settings(self):
+        value = self.saved_value
+        if value is not None:
+            update_property_for_widget(
+                self._property_widget,
+                self._property_name,
+                value
+            )
+
+
+class PropertyRuleEditor(_PropertyHelper, QtWidgets.QPushButton):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setAutoDefault(False)
+        self.setDefault(False)
+        self.clicked.connect(self._open_rules_editor)
+        self.setText("&Rules...")
+
+    def _open_rules_editor(self):
+        from .rules_editor import RulesEditor
+        self._rules_editor = RulesEditor(self._property_widget, parent=self)
+        self._rules_editor.exec_()
+
+    @property
+    def saved_value(self) -> Optional[str]:
+        return None
+
+
+class PropertyCheckbox(_PropertyHelper, QtWidgets.QCheckBox):
+    def set_value_from_widget(self, widget, attr, value):
+        self.setChecked(bool(value))
+
+    @property
+    def saved_value(self) -> bool:
+        return self.isChecked()
+
+
+class PropertyLineEdit(_PropertyHelper, QtWidgets.QLineEdit):
+    def set_value_from_widget(self, widget, attr, value):
+        self.setText(value or "")
+
+    @property
+    def saved_value(self) -> Optional[str]:
+        return self.text().strip()
+
+
+class PropertyMacroTable(_PropertyHelper, DictionaryTable):
+    def set_value_from_widget(self, widget, attr, value):
+        try:
+            macros = parse_macro_string(value or "")
+        except Exception:
+            logger.exception("Failed to parse macro string: %r", value)
+        else:
+            self.dictionary = macros
+
+    @property
+    def saved_value(self) -> Optional[str]:
+        return json.dumps(self.dictionary)
+
+
+def get_qt_properties(cls):
+    """Yields all QMetaProperty instances from a given class."""
+    meta_obj = cls.staticMetaObject
+    for prop_idx in range(meta_obj.propertyCount()):
+        prop = meta_obj.property(prop_idx)
+        if prop is not None:
+            yield prop.name()
+
+
+def get_helper_label_text(attr: str) -> str:
+    spaced = re.sub("(.)([A-Z])", r"\1 \2", attr)
+    return spaced.strip().capitalize()
 
 
 class BasicSettingsEditor(QtWidgets.QDialog):
@@ -107,6 +213,18 @@ class BasicSettingsEditor(QtWidgets.QDialog):
     widget : PyDMWidget
         The widget which we want to edit.
     """
+
+    _common_attributes_ = {
+        "channel": PropertyLineEdit,
+        "display": PropertyLineEdit,
+        "macros": PropertyMacroTable,
+        "rules": PropertyRuleEditor,
+    }
+
+    _type_to_widget_ = {
+        str: PropertyLineEdit,
+        bool: PropertyCheckbox,
+    }
 
     def __init__(self, widget, parent=None):
         super(BasicSettingsEditor, self).__init__(parent)
@@ -121,6 +239,7 @@ class BasicSettingsEditor(QtWidgets.QDialog):
             QtWidgets.QSizePolicy.MinimumExpanding,
         )
 
+        self.property_widgets = []
         self.setup_ui()
 
     def setup_ui(self):
@@ -131,8 +250,6 @@ class BasicSettingsEditor(QtWidgets.QDialog):
         -------
         None
         """
-        iconfont = IconFont()
-
         self.setWindowTitle("PyDM Widget Basic Settings Editor")
         vlayout = QtWidgets.QVBoxLayout()
         vlayout.setContentsMargins(5, 5, 5, 5)
@@ -142,42 +259,8 @@ class BasicSettingsEditor(QtWidgets.QDialog):
         settings_form = QtWidgets.QFormLayout()
         vlayout.addLayout(settings_form)
 
-        if not hasattr(self.widget, "channel"):
-            self.channel_widget = None
-        else:
-            self.channel_widget = QtWidgets.QLineEdit(
-                self.widget.channel or ""
-            )
-            settings_form.addRow("&Channel", self.channel_widget)
-
-        if not hasattr(self.widget, "filename"):
-            self.filename_widget = None
-        else:
-            self.filename_widget = QtWidgets.QLineEdit(
-                self.widget.filename or ""
-            )
-            settings_form.addRow("&Filename", self.filename_widget)
-
-        if not hasattr(self.widget, "macros"):
-            self.macros_widget = None
-        else:
-            # Ideally macros wouldn't be shown as a line edit; consider a table
-            # or something easy to edit and interpret
-            self.macros_widget = DictionaryTable(
-                parse_macro_string(self.widget.macros or "")
-            )
-            settings_form.addRow("&Macros", self.macros_widget)
-
-        def open_rules_editor():
-            from .rules_editor import RulesEditor
-            self._rules_editor = RulesEditor(self.widget, parent=self)
-            self._rules_editor.exec_()
-
-        rules_button = QtWidgets.QPushButton("&Rule editor...")
-        rules_button.setAutoDefault(False)
-        rules_button.setDefault(False)
-        rules_button.clicked.connect(open_rules_editor)
-        vlayout.addWidget(rules_button)
+        for helper_widget in self._create_helper_widgets(settings_form):
+            self.property_widgets.append(helper_widget)
 
         buttons_layout = QtWidgets.QHBoxLayout()
         save_btn = QtWidgets.QPushButton("&Save", parent=self)
@@ -192,18 +275,46 @@ class BasicSettingsEditor(QtWidgets.QDialog):
 
         vlayout.addLayout(buttons_layout)
 
+    def _create_helper_widgets(self, settings_form: QtWidgets.QFormLayout):
+        other_attrs = [
+            attr
+            for attr in sorted(get_qt_properties(type(self.widget)))
+            if attr not in self._common_attributes_
+        ]
+
+        for attr in list(self._common_attributes_) + other_attrs:
+            prop = getattr(type(self.widget), attr, None)
+            if prop is None:
+                continue
+
+            prop_type = getattr(prop, "type", None)
+            helper_widget_cls = self._common_attributes_.get(
+                attr,
+                self._type_to_widget_.get(prop_type, None)
+            )
+            if helper_widget_cls is not None:
+                helper_widget = helper_widget_cls(
+                    property_widget=self.widget,
+                    property_name=attr,
+                )
+                label_text = get_helper_label_text(attr)
+                settings_form.addRow(f"&{label_text}", helper_widget)
+                yield helper_widget
+
     @QtCore.Slot()
     def save_changes(self):
         """Save the new settings on the widget properties."""
-        if self.channel_widget is not None:
-            channel = (self.channel_widget.text() or "").strip()
-            update_property_for_widget(self.widget, "channel", channel)
-        if self.macros_widget is not None:
-            macros = json.dumps(self.macros_widget.dictionary)
-            update_property_for_widget(self.widget, "macros", macros)
-        if self.filename_widget is not None:
-            filename = self.filename_widget.text().strip()
-            update_property_for_widget(self.widget, "filename", filename)
+        for helper in self.property_widgets:
+            try:
+                helper.save_settings()
+            except Exception:
+                logger.exception(
+                    "Failed to save settings for %s.%s = %r",
+                    self.widget.objectName(),
+                    helper._property_name,
+                    helper.saved_value
+                )
+
         self.accept()
 
     @QtCore.Slot()
