@@ -1,7 +1,7 @@
 import logging
 
 from qtpy.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
-from qtpy import QtWidgets, QtCore
+from qtpy import QtWidgets
 
 from ..utilities import copy_to_clipboard, get_clipboard_text
 from ..widgets.base import PyDMPrimitiveWidget
@@ -85,7 +85,9 @@ class BasicSettingsExtension(PyDMExtension):
         if not hasattr(widget, "channel"):
             self.channel_menu_action = None
         else:
-            self.channel_menu_action = QtWidgets.QAction("PyDM C&hannel", self.widget)
+            self.channel_menu_action = QtWidgets.QAction(
+                "PyDM C&hannel", self.widget
+            )
             # self.channel_menu_action.triggered.connect(self.open_channel_menu)
             clipboard_text = get_clipboard_text() or ""
             self.channel_menu = QtWidgets.QMenu()
@@ -97,9 +99,13 @@ class BasicSettingsExtension(PyDMExtension):
                 f"&Paste from clipboard: {clipboard_text[:100]}"
             )
             paste_channel.triggered.connect(self.paste_channel)
-            edit_channel = self.channel_menu.addAction("&Edit channel...")
+            edit_channel = self.channel_menu.addAction(
+                "&Edit channel..."
+            )
             edit_channel.triggered.connect(self.open_dialog)
-            copy_channel_value = self.channel_menu.addAction("C&opy current value")
+            copy_channel_value = self.channel_menu.addAction(
+                "C&opy current value"
+            )
             copy_channel_value.triggered.connect(self.copy_channel_value)
             self.channel_menu_action.setMenu(self.channel_menu)
 
@@ -109,12 +115,11 @@ class BasicSettingsExtension(PyDMExtension):
             copy_to_clipboard(channel)
 
     def copy_channel_value(self, _):
-        value = getattr(widget, "value", None)
+        value = getattr(self.widget, "value", None)
         if value:
             copy_to_clipboard(value)
 
     def paste_channel(self, _):
-        channel = self.widget.channel
         self.widget.channel = get_clipboard_text() or ""
         logger.info("Set widget channel to %r", self.widget.channel)
 
@@ -124,8 +129,8 @@ class BasicSettingsExtension(PyDMExtension):
 
     def actions(self):
         actions = [
-            self.edit_settings_action, 
-            self.channel_menu_action, 
+            self.edit_settings_action,
+            self.channel_menu_action,
         ]
         return [action for action in actions if action is not None]
 

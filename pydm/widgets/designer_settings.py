@@ -48,7 +48,9 @@ class DictionaryTable(QtWidgets.QTableWidget):
             def paste(*_):
                 item.setText(clipboard_text)
 
-            paste_action = self.menu.addAction(f"&Paste: {clipboard_text[:100]}")
+            paste_action = self.menu.addAction(
+                f"&Paste: {clipboard_text[:100]}"
+            )
             paste_action.triggered.connect(paste)
 
             def delete_row(*_):
