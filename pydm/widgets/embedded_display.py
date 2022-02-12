@@ -51,14 +51,40 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     def init_for_designer(self):
         self.setFrameShape(QFrame.Box)
 
-    def minimumSizeHint(self):
+    def sizePolicy(self):
         """
-        This property holds the recommended minimum size for the widget.
+        This holds the sizePolicy for the widget.
 
         Returns
         -------
         QSize
         """
+        if self._embedded_widget is not None:
+            return self._embedded_widget.sizePolicy()
+        return super().sizePolicy()
+
+    def sizeHint(self):
+        """
+        This holds the recommended size for the widget.
+
+        Returns
+        -------
+        QSize
+        """
+        if self._embedded_widget is not None:
+            return self._embedded_widget.sizeHint()
+        return QSize(100, 100)
+
+    def minimumSizeHint(self):
+        """
+        This holds the recommended minimum size for the widget.
+
+        Returns
+        -------
+        QSize
+        """
+        if self._embedded_widget is not None:
+            return self._embedded_widget.minimumSizeHint()
         # This is totally arbitrary, I just want *some* visible nonzero size
         return QSize(100, 100)
 
