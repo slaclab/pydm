@@ -136,6 +136,10 @@ class BasePlotCurvesModel(QAbstractTableModel):
     def removeAtIndex(self, index):
         pass
 
+    def getColumnIndex(self, column_name):
+        """ Returns the column index of the name. Raises a ValueError if it's not a valid column name """
+        return self._column_names.index(column_name)
+
     def needsColorDialog(self, index):
         column_name = self._column_names[index.column()]
         if column_name == "Color":

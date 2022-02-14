@@ -242,6 +242,9 @@ class RulesEngine(QThread):
         trigger : bool
             Whether or not this channel should trigger a calculation of the
             expression
+        use_enum : bool
+            Whether or not this channel should attempt substitution of
+            enumerated string for default value.
         value : any
             The new value for this channel.
 
@@ -339,14 +342,17 @@ class RulesEngine(QThread):
 
         vals = rule['values']
         enums = rule['enums']
+        channel_properties = rule["rule"]['channels']
 
         calc_vals = []
-        for en, val in zip(enums, vals):
-            try:
-                calc_vals.append(en[val])
-                continue
-            except:
-                calc_vals.append(val)
+        for en, val, chan in zip(enums, vals, channel_properties):
+            v = val
+            if chan.get("use_enum", True):
+                try:
+                    v = en[v]  # substitute enumeration string for v
+                except Exception:
+                    pass
+            calc_vals.append(v)
 
         eval_env = {'np': np,
                     'ch': calc_vals}

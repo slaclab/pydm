@@ -33,7 +33,7 @@ class PyDMApplication(QApplication):
     Parameters
     ----------
     ui_file : str, optional
-        The file path to a PyDM display file (.ui or .py).
+        The file path to a PyDM display file (.ui, .py, or .adl).
     command_line_args : list, optional
         A list of strings representing arguments supplied at the command
         line.  All arguments in this list are handled by QApplication,
@@ -145,7 +145,7 @@ class PyDMApplication(QApplication):
         Parameters
         ----------
         ui_file : str
-            The path to a .ui or .py file to open in the new process.
+            The path to a .ui, .py, or .adl file to open in the new process.
         macros : dict, optional
             A dictionary of macro variables to supply to the display file
             to be opened.
