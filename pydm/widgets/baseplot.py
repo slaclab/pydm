@@ -1,5 +1,6 @@
 import functools
 import json
+import warnings
 from qtpy.QtGui import QColor, QBrush
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QRect
 from qtpy.QtWidgets import QToolTip
@@ -496,6 +497,11 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         # Mouse mode to 1 button (left button draw rectangle for zoom)
         self.plotItem.getViewBox().setMouseMode(ViewBox.RectMode)
 
+        if self.getAxis('bottom') is not None:
+            # Disables unexpected axis tick behavior described here:
+            # https://pyqtgraph.readthedocs.io/en/latest/graphicsItems/axisitem.html
+            self.getAxis('bottom').enableAutoSIPrefix(False)
+
         if utilities.is_qt_designer():
             self.installEventFilter(self)
 
@@ -584,6 +590,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
         axis = BasePlotAxisItem(name=name, orientation=orientation, minRange=min_range,
                                 maxRange=max_range, autoRange=enable_auto_range)
+        axis.enableAutoSIPrefix(False)
         self._axes.append(axis)
         # If the x axis is just timestamps, we don't want autorange on the x axis
         setXLink = hasattr(self, '_plot_by_timestamps') and self._plot_by_timestamps
@@ -796,9 +803,17 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     xLabels = Property("QStringList", getXLabels, setXLabels, resetXLabels)
 
     def getYLabels(self):
+        warnings.warn("Y Labels should be retrieved from the AxisItem. See: AxisItem.label or AxisItem.labelText"
+                      "Example: self.getAxis('Axis Name').labelText",
+                      DeprecationWarning,
+                      stacklevel=2)
         return self._y_labels
 
     def setYLabels(self, labels):
+        warnings.warn("Y Labels should now be set on the AxisItem itself. See: AxisItem.setLabel() "
+                      "Example: self.getAxis('Axis Name').setLabel('Label Name')",
+                      DeprecationWarning,
+                      stacklevel=2)
         if self._y_labels != labels:
             self._y_labels = labels
             label = ""
@@ -808,10 +823,12 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             self.setLabel("left", text=label)
 
     def resetYLabels(self):
+        warnings.warn("Y Labels should now be set on the AxisItem itself. See: AxisItem.setLabel() "
+                      "Example: self.getAxis('Axis Name').setLabel('')",
+                      DeprecationWarning,
+                      stacklevel=2)
         self._y_labels = []
         self.setLabel("left", text="")
-
-    yLabels = Property("QStringList", getYLabels, setYLabels, resetYLabels)
 
     def getShowLegend(self):
         """

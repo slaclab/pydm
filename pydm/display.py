@@ -27,14 +27,14 @@ logger = logging.getLogger(__file__)
 
 def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     """
-    Load .ui or .py file, perform macro substitution, then return the resulting
-    QWidget.
+    Load .ui, .py, or .adl screen file, perform macro substitution, then return
+    the resulting QWidget.
     If target is specified, it will properly display the display file.
 
     Parameters
     ----------
     file : str
-        The path to a .ui file to load
+        The path to a screen file (.ui, .py, or .adl) to load.
     macros : dict, optional
         A dictionary of macro variables to supply to the
         loaded display subclass.
@@ -172,7 +172,7 @@ def load_py_file(pyfile, args=None, macros=None):
     Parameters
     ----------
     pyfile : str
-        The path to a .ui file to load.
+        The path to a .py file to load.
     args : list, optional
         A list of command-line arguments to pass to the
         loaded display subclass.

@@ -32,6 +32,7 @@ class BasePlotCurveEditorDialog(QDialog):
         self.axis_model = self.AXIS_MODEL_CLASS(self.plot)
         self.axis_view.setModel(self.axis_model)
         self.axis_model.plot = plot
+        self.setup_delegate_columns()
         # self.table_view.resizeColumnsToContents()
         self.add_button.clicked.connect(self.addCurve)
         self.remove_button.clicked.connect(self.removeSelectedCurve)
@@ -103,15 +104,15 @@ class BasePlotCurveEditorDialog(QDialog):
         self.button_box.rejected.connect(self.reject)
         self.setWindowTitle("Waveform Curve Editor")
 
-    def setup_delegate_columns(self, index=2):
+    def setup_delegate_columns(self):
         symbol_delegate = SymbolColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(index+4, symbol_delegate)
+        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex('Symbol'), symbol_delegate)
         line_delegate = LineColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(index+2, line_delegate)
+        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex('Line Style'), line_delegate)
         color_delegate = ColorColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(index, color_delegate)
+        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex('Color'), color_delegate)
         axis_delegate = AxisColumnDelegate(self)
-        self.axis_view.setItemDelegateForColumn(1, axis_delegate)
+        self.axis_view.setItemDelegateForColumn(self.axis_model.getColumnIndex('Y-Axis Orientation'), axis_delegate)
 
     @Slot()
     def addCurve(self):
@@ -162,7 +163,7 @@ class BasePlotCurveEditorDialog(QDialog):
         self.accept()
 
     @Slot(int)
-    def fillAxisData(self, tab_index, axis_name_col_index=4):
+    def fillAxisData(self, tab_index):
         """ When the user clicks on the axis tab, prefill it with rows based on the curves they have created """
 
         # Toggle visibility of the buttons every time the tab changes
@@ -178,6 +179,7 @@ class BasePlotCurveEditorDialog(QDialog):
         if 'left' in self.plot.plotItem.axes:
             self.plot.plotItem.hideAxis('left')
 
+        axis_name_col_index = self.table_model.getColumnIndex('Y-Axis Name')
         curve_axis_names = [str(self.table_model.index(i, axis_name_col_index).data())
                             for i in range(self.table_model.rowCount())]
 

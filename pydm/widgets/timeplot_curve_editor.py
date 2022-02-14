@@ -46,11 +46,3 @@ class TimePlotCurveEditorDialog(BasePlotCurveEditorDialog):
     This thing is mostly just a wrapper for a table view, with a couple
     buttons to add and remove curves, and a button to save the changes."""
     TABLE_MODEL_CLASS = PyDMTimePlotCurvesModel
-
-    def __init__(self, plot, parent=None):
-        super(TimePlotCurveEditorDialog, self).__init__(plot, parent)
-        self.setup_delegate_columns(index=2)
-
-    @Slot(int)
-    def fillAxisData(self, tab_index, axis_name_col_index=3):
-        super(TimePlotCurveEditorDialog, self).fillAxisData(tab_index, axis_name_col_index=axis_name_col_index)
