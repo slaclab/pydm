@@ -15,7 +15,8 @@ class BasePlotCurvesModel(QAbstractTableModel):
         super(BasePlotCurvesModel, self).__init__(parent=parent)
         self._plot = plot
         self._column_names = ("Label", "Color", "Y-Axis Name", "Line Style",
-                              "Line Width", "Symbol", "Symbol Size")
+                              "Line Width", "Symbol", "Symbol Size", "Bar Width",
+                              "Upper Threshold", "Lower Threshold", "Threshold Color")
 
     @property
     def plot(self):
@@ -74,11 +75,15 @@ class BasePlotCurvesModel(QAbstractTableModel):
         elif column_name == "Y-Axis Name":
             return curve.y_axis_name
         elif column_name == "Color":
-            print(f'returning color: {curve.color_string}')
             return curve.color_string
         elif column_name == "Threshold Color":
-            #print(f'curve is: {curve} with dict: {dir(curve)}')
             return curve.threshold_color_string
+        elif column_name == "Bar Width":
+            return curve.bar_width
+        elif column_name == "Upper Threshold":
+            return curve.upper_threshold
+        elif column_name == "Lower Threshold":
+            return curve.lower_threshold
         elif column_name == "Line Style":
             return self.name_for_line[curve.lineStyle]
         elif column_name == "Line Width":
@@ -111,7 +116,6 @@ class BasePlotCurvesModel(QAbstractTableModel):
         if column_name == "Label":
             curve.setData(name=str(value))
         elif column_name == "Color":
-            print(f'setting color to: {value} and: {value.name()}')
             curve.color = value
         elif column_name == "Y-Axis Name":
             curve.y_axis_name = str(value)
@@ -126,6 +130,14 @@ class BasePlotCurvesModel(QAbstractTableModel):
                 curve.symbol = str(value)
         elif column_name == "Symbol Size":
             curve.symbolSize = int(value)
+        elif column_name == "Bar Width":
+            curve.bar_width = float(value)
+        elif column_name == "Upper Threshold":
+            curve.upper_threshold = float(value)
+        elif column_name == "Lower Threshold":
+            curve.lower_threshold = float(value)
+        elif column_name == "Threshold Color":
+            curve.threshold_color = value
         else:
             return False
         return True
