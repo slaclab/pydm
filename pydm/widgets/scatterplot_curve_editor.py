@@ -1,7 +1,6 @@
 from qtpy.QtCore import QModelIndex, QVariant
 from .baseplot_table_model import BasePlotCurvesModel
-from .baseplot_curve_editor import (BasePlotCurveEditorDialog,
-                                    RedrawModeColumnDelegate)
+from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate, RedrawModeColumnDelegate
 
 
 class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
@@ -72,3 +71,6 @@ class ScatterPlotCurveEditorDialog(BasePlotCurveEditorDialog):
 
         redraw_mode_delegate = RedrawModeColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Redraw Mode"), redraw_mode_delegate)
+
+        plot_style_delegate = PlotStyleColumnDelegate(self, self.table_model, self.table_view)
+        plot_style_delegate.hideColumns(hide_line_columns=False, hide_bar_columns=True)

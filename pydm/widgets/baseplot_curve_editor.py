@@ -1,13 +1,14 @@
 from qtpy.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QTableView,
                             QAbstractItemView, QSpacerItem, QSizePolicy,
-                            QDialogButtonBox, QPushButton, QTabWidget,
+                            QDialogButtonBox, QPushButton, QStyleOptionViewItem, QTabWidget, QWidget,
                             QComboBox, QStyledItemDelegate, QColorDialog, QHeaderView)
-from qtpy.QtCore import Qt, Slot, QModelIndex, QItemSelection
+from qtpy.QtCore import Qt, Slot, QAbstractItemModel, QModelIndex, QObject, QItemSelection
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .baseplot import BasePlotAxisItem, BasePlotCurveItem
 from .baseplot_table_model import BasePlotCurvesModel
 from .axis_table_model import BasePlotAxesModel
 from collections import OrderedDict
+from typing import Optional
 
 
 class BasePlotCurveEditorDialog(QDialog):
@@ -300,3 +301,55 @@ class RedrawModeColumnDelegate(QStyledItemDelegate):
 
     def updateEditorGeometry(self, editor, option, index):
         editor.setGeometry(option.rect)
+
+
+class PlotStyleColumnDelegate(QStyledItemDelegate):
+    """ Allows the user to toggle between line and bar graphs. Hides/shows relevant columns based on that choice. """
+
+    line_columns_to_toggle = ('Line Style', 'Line Width', 'Symbol', 'Symbol Size')
+    bar_columns_to_toggle = ('Bar Width', 'Upper Threshold', 'Lower Threshold', 'Threshold Color')
+
+    def __init__(self, parent: QObject, table_model: BasePlotCurvesModel, table_view: QTableView):
+        super(PlotStyleColumnDelegate, self).__init__(parent)
+        self.table_model = table_model
+        self.table_view = table_view
+
+    def createEditor(self, parent: QWidget, option: QStyleOptionViewItem, index: QModelIndex) -> QWidget:
+        editor = QComboBox(parent)
+        editor.addItems(('Line', 'Bar'))
+        return editor
+
+    def setEditorData(self, editor: QWidget, index: QModelIndex) -> None:
+        val = str(index.model().data(index, Qt.EditRole))
+        editor.setCurrentText(val)
+
+    def setModelData(self, editor: QWidget, model: QAbstractItemModel, index: QModelIndex) -> None:
+        model.setData(index, editor.currentText(), Qt.EditRole)
+        self.toggleColumnVisibility()
+
+    def updateEditorGeometry(self, editor: QWidget, option: QStyleOptionViewItem, index: QModelIndex) -> None:
+        editor.setGeometry(option.rect)
+
+    def toggleColumnVisibility(self):
+        """ Toggle visibility of columns based on the current state of the associated curve editor table """
+        self.hideColumns(hide_line_columns=True, hide_bar_columns=True)
+        if len(self.table_model.plot.curves) > 0:
+            for curve in self.table_model.plot._curves:
+                plot_style = curve.plot_style
+                if plot_style is None or plot_style == 'Line':
+                    self.hideColumns(hide_line_columns=False)
+                elif plot_style == 'Bar':
+                    self.hideColumns(hide_bar_columns=False)
+        else:
+            self.hideColumns(False, True)  # Show line columns as a default
+
+    def hideColumns(self, hide_line_columns: Optional[bool] = None, hide_bar_columns: Optional[bool] = None) -> None:
+        """ Show or hide columns related to a specific plot style based on the input. If an input parameter
+            is omitted (or set to None), the associated columns will be left alone. """
+
+        if hide_line_columns is not None:
+            for column in self.line_columns_to_toggle:
+                self.table_view.setColumnHidden(self.table_model.getColumnIndex(column), hide_line_columns)
+        if hide_bar_columns is not None:
+            for column in self.bar_columns_to_toggle:
+                self.table_view.setColumnHidden(self.table_model.getColumnIndex(column), hide_bar_columns)
