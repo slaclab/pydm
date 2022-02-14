@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Local Plugin &mdash; PyDM v1.13.0+2.gf3bd74fc documentation</title>
+  <title>Local Plugin &mdash; PyDM v1.13.0+11.g90aab5d4 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.13.0+2.gf3bd74fc
+                v1.13.0+11.g90aab5d4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -238,7 +238,7 @@ The optional attributes are described in the <a class="reference internal" href=
 <p>All the additional attributes are optional, any number of desired attributes can be specified, or none.</p>
 </div>
 <p>Here is a simple example of a channel address format with some optional attributes:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loc://my.float?type=float&amp;init=1&amp;extras=True&amp;precision=3&amp;unit=V
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loc://my.float?type=float&amp;init=1&amp;precision=3&amp;unit=V
 </pre></div>
 </div>
 <hr class="docutils" />
@@ -322,7 +322,7 @@ The optional attributes are described in the <a class="reference internal" href=
 </tbody>
 </table>
 <p>Here is a simple example with array + extras:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loc://my_ndarray?type=array&amp;init=[1,2,3,2]&amp;extras=True&amp;dtype=float64&amp;copy=False&amp;order=C&amp;ndmin=0&amp;subok=true
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loc://my_ndarray?type=array&amp;init=[1,2,3,2]&amp;dtype=float64&amp;copy=False&amp;order=C&amp;ndmin=0&amp;subok=true
 </pre></div>
 </div>
 </section>
@@ -331,9 +331,9 @@ The optional attributes are described in the <a class="reference internal" href=
 <section id="simple-local-data-plugin-example">
 <h2>Simple Local Data Plugin Example<a class="headerlink" href="#simple-local-data-plugin-example" title="Permalink to this headline"></a></h2>
 <p>The picture below represents a simple example using the Local Data Plugin, where a Waveform Curve Editor has two local data plugin channels:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loc://y?type=array&amp;init=[1,2,3,4,5,6]&amp;extras=True&amp;dtype=float64
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loc://y?type=array&amp;init=[1,2,3,4,5,6]&amp;dtype=float64
 
-loc://x?type=array&amp;init=[1,2,3,4,5,6]&amp;extras=True&amp;dtype=float64
+loc://x?type=array&amp;init=[1,2,3,4,5,6]&amp;dtype=float64
 </pre></div>
 </div>
 <p>Right below the Waveform Curve Editor widget, there are two other widgets connected to the ‘x’ and ‘y’ local variable respectively:</p>
@@ -349,7 +349,7 @@ loc://x?type=array&amp;init=[1,2,3,4,5,6]&amp;extras=True&amp;dtype=float64
 <section id="miscellaneous">
 <h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline"></a></h2>
 <ul class="simple">
-<li><p>If precision is not sent through the “extras”, and it is set to receive the precision from the PV (Process Variable), the Local Data Plugin will match the precision from the values inserted by the users in the widgets.</p></li>
+<li><p>If precision is not set through the “extras”, and it is set to receive the precision from the PV (Process Variable), the Local Data Plugin will match the precision from the values inserted by the users in the widgets.</p></li>
 </ul>
 </section>
 </section>
