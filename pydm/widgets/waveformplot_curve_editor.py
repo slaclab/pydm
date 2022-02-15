@@ -27,12 +27,6 @@ class PyDMWaveformPlotCurvesModel(BasePlotCurvesModel):
             return str(curve.x_address)
         elif column_name == "Style":
             return curve.plot_style
-#        elif column_name == "Bar Width":
-#            return curve.bar_width
-#        elif column_name == "Upper Threshold":
-#            return curve.upper_threshold
-#        elif column_name == "Lower Threshold":
-#            return curve.lower_threshold
         elif column_name == "Redraw Mode":
             return curve.redraw_mode
         return super(PyDMWaveformPlotCurvesModel, self).get_data(
@@ -81,20 +75,10 @@ class WaveformPlotCurveEditorDialog(BasePlotCurveEditorDialog):
         self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Redraw Mode"), redraw_mode_delegate)
 
         threshold_color_delegate = ColorColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex('Threshold Color'),
+        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex('Limit Color'),
                                                  threshold_color_delegate)
 
         plot_style_delegate = PlotStyleColumnDelegate(self, self.table_model, self.table_view)
         self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Style"), plot_style_delegate)
 
         plot_style_delegate.toggleColumnVisibility()
-#        plot_style_delegate.hideColumns(hide_line_columns=True, hide_bar_columns=True)
-#        if len(plot.curves) > 0:
-#            for curve in plot.curves:
-#                plot_style = self.table_model.get_data("Style", curve)
-#                if plot_style is None or plot_style != 'Line':
-#                    plot_style_delegate.hideColumns(hide_line_columns=False)
-#                elif plot_style == 'Bar':
-#                    plot_style_delegate.hideColumns(hide_bar_columns=False)
-#        else:
-#            plot_style_delegate.hideColumns(False, True)  # Show line columns as a default

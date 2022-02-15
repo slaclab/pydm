@@ -307,14 +307,15 @@ class PlotStyleColumnDelegate(QStyledItemDelegate):
     """ Allows the user to toggle between line and bar graphs. Hides/shows relevant columns based on that choice. """
 
     line_columns_to_toggle = ('Line Style', 'Line Width', 'Symbol', 'Symbol Size')
-    bar_columns_to_toggle = ('Bar Width', 'Upper Threshold', 'Lower Threshold', 'Threshold Color')
+    bar_columns_to_toggle = ('Bar Width', 'Upper Limit', 'Lower Limit', 'Limit Color')
 
     def __init__(self, parent: QObject, table_model: BasePlotCurvesModel, table_view: QTableView):
-        super(PlotStyleColumnDelegate, self).__init__(parent)
+        super().__init__(parent)
         self.table_model = table_model
         self.table_view = table_view
 
     def createEditor(self, parent: QWidget, option: QStyleOptionViewItem, index: QModelIndex) -> QWidget:
+        """ Create a combo box that allows the user to choose the style of plot they want. """
         editor = QComboBox(parent)
         editor.addItems(('Line', 'Bar'))
         return editor
@@ -341,11 +342,11 @@ class PlotStyleColumnDelegate(QStyledItemDelegate):
                 elif plot_style == 'Bar':
                     self.hideColumns(hide_bar_columns=False)
         else:
-            self.hideColumns(False, True)  # Show line columns as a default
+            self.hideColumns(False, True)  # Show line columns only as a default
 
     def hideColumns(self, hide_line_columns: Optional[bool] = None, hide_bar_columns: Optional[bool] = None) -> None:
         """ Show or hide columns related to a specific plot style based on the input. If an input parameter
-            is omitted (or set to None), the associated columns will be left alone. """
+            is omitted (or explicitly set to None), the associated columns will be left alone. """
 
         if hide_line_columns is not None:
             for column in self.line_columns_to_toggle:

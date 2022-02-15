@@ -1,4 +1,5 @@
 from qtpy.QtCore import QModelIndex, QObject, QVariant
+from typing import Optional
 from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import BasePlotCurveEditorDialog, ColorColumnDelegate, PlotStyleColumnDelegate
 from .timeplot import PyDMTimePlot
@@ -52,11 +53,11 @@ class TimePlotCurveEditorDialog(BasePlotCurveEditorDialog):
     buttons to add and remove curves, and a button to save the changes."""
     TABLE_MODEL_CLASS = PyDMTimePlotCurvesModel
 
-    def __init__(self, plot: PyDMTimePlot, parent: QObject = None):
+    def __init__(self, plot: PyDMTimePlot, parent: Optional[QObject] = None):
         super().__init__(plot, parent)
 
         threshold_color_delegate = ColorColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex('Threshold Color'),
+        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex('Limit Color'),
                                                  threshold_color_delegate)
 
         plot_style_delegate = PlotStyleColumnDelegate(self, self.table_model, self.table_view)
