@@ -1,6 +1,7 @@
 import time
 import json
 from collections import OrderedDict
+from typing import Optional
 from pyqtgraph import BarGraphItem, ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
@@ -250,7 +251,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
             self.initialize_buffer()
 
     @Slot()
-    def redrawCurve(self, min_x=None, max_x=None):
+    def redrawCurve(self, min_x: Optional[float] = None, max_x: Optional[float] = None):
         """
         Redraw the curve with the new data.
 
@@ -277,6 +278,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
             if self.plot_style is None or self.plot_style == 'Line':
                 self.setData(y=y, x=x)
             elif self.plot_style == 'Bar':
+                # In cases where the buffer size is large, we don't want to render 10,000+ bars on every update
+                # if only a fraction of those are actually visible. These 2 indices represent the visible range
+                # of the plot, and we will only render bars within that range.
                 min_index = np.searchsorted(x, min_x)
                 max_index = np.searchsorted(x, max_x)
                 self._setBarGraphItem(x=x[min_index:max_index], y=y[min_index:max_index])
@@ -285,7 +289,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
             pass
 
     def _setBarGraphItem(self, x, y):
-        if self.points_accumulated == 0:
+        """ Set the plots points to render as bars. No need to call this directly so long as the plot
+         was setup correctly """
+        if self.points_accumulated == 0 or len(x) == 0 or len(y) == 0:
             return
 
         brushes = np.array([self.color] * len(x))
@@ -493,11 +499,12 @@ class PyDMTimePlot(BasePlot):
         self.update_timer.timeout.connect(new_curve.asyncUpdate)
         if plot_style == 'Bar':
             if barWidth is None:
-                barWidth = 1
+                barWidth = 1.0  # Can't use default since it can be explicitly set to None and avoided
             new_curve.bar_graph_item = BarGraphItem(x=[], height=[], width=barWidth, brush=color)
             new_curve.setBarGraphInfo(barWidth, upperThreshold, lowerThreshold, thresholdColor)
         self.addCurve(new_curve, curve_color=color, y_axis_name=yAxisName)
         if new_curve.bar_graph_item is not None:
+            # Must happen after addCurve() so that the view box has been created
             new_curve.getViewBox().addItem(new_curve.bar_graph_item)
 
         new_curve.data_changed.connect(self.set_needs_redraw)
@@ -551,6 +558,7 @@ class PyDMTimePlot(BasePlot):
             return
 
         self.updateXAxis()
+        # The minimum and maximum x-axis timestamps visible to the user
         min_x = self.plotItem.getViewBox().state['viewRange'][0][0]
         max_x = self.plotItem.getViewBox().state['viewRange'][0][1]
         for curve in self._curves:
