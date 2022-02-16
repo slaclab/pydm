@@ -3,14 +3,13 @@ import logging
 
 from pydm.widgets.timeplot import PyDMTimePlot
 from pydm.widgets.waveformplot import WaveformCurveItem
-
-logger = logging.getLogger(__name__)
-
 from qtpy.QtGui import QColor
 from qtpy.QtCore import QTimer, Qt
 
 from collections import OrderedDict
-from ...widgets.baseplot import BasePlotCurveItem, BasePlot, NoDataError
+from ...widgets.baseplot import BasePlotCurveItem, BasePlot
+
+logger = logging.getLogger(__name__)
 
 
 @pytest.mark.parametrize("color, line_style, line_width, name", [
@@ -265,3 +264,13 @@ def test_multiaxis_plot_no_designer_flow(qtbot):
     assert 'left' in plot.plotItem.axes
     assert 'right' in plot.plotItem.axes
     assert 'top' in plot.plotItem.axes
+
+
+def test_set_bar_graph_info(qtbot):
+    """ A simple and quick check to ensure bar graph options get set in the correct fields """
+    curve_item = BasePlotCurveItem()
+    curve_item.setBarGraphInfo(0.9, 9.5, 0.7, QColor('green'))
+    assert curve_item.bar_width == 0.9
+    assert curve_item.upper_threshold == 9.5
+    assert curve_item.lower_threshold == 0.7
+    assert curve_item.threshold_color == QColor('green')

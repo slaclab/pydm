@@ -282,7 +282,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
                 # if only a fraction of those are actually visible. These 2 indices represent the visible range
                 # of the plot, and we will only render bars within that range.
                 min_index = np.searchsorted(x, min_x)
-                max_index = np.searchsorted(x, max_x)
+                max_index = np.searchsorted(x, max_x) + 1
                 self._setBarGraphItem(x=x[min_index:max_index], y=y[min_index:max_index])
         except (ZeroDivisionError, OverflowError):
             # Solve an issue with pyqtgraph and initial downsampling
