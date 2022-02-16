@@ -28,7 +28,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
         if 'Index' not in PyDMSymbol.RULE_PROPERTIES:
             PyDMSymbol.RULE_PROPERTIES = PyDMWidget.RULE_PROPERTIES.copy()
             PyDMSymbol.RULE_PROPERTIES.update(
-                {'Index': ['set_current_key', object]})
+                {'Index': ['set_current_key', int]})
         self.app = QApplication.instance()
         self._current_key = 0
         self._state_images_string = ""
