@@ -9,7 +9,7 @@ from ...widgets.waveformplot import PyDMWaveformPlot, WaveformCurveItem
 def test_redraw_plot(mocked_set_opts, mocked_set_data, qtbot, monkeypatch):
     """ Test redrawing a waveform plot using both a line and a bar graph """
 
-    # Create a time plot and add two data items to it, one to be rendered as a line and one as a bar graph
+    # Create a waveform plot and add two data items to it, one to be rendered as a line and one as a bar graph
     waveform_plot = PyDMWaveformPlot()
     line_item = WaveformCurveItem()
     bar_item = WaveformCurveItem(plot_style='Bar')
@@ -28,7 +28,6 @@ def test_redraw_plot(mocked_set_opts, mocked_set_data, qtbot, monkeypatch):
     # Simulate a redraw of the plot
     waveform_plot.redrawPlot()
 
-    print(mocked_set_data.call_args_list)
     # The line item should result in a call to set data displaying all available data points as defined above
     assert np.array_equal(mocked_set_data.call_args_list[2][1]['x'], np.array([1, 5, 10]))
     assert np.array_equal(mocked_set_data.call_args_list[2][1]['y'], np.array([10, 15, 12]))
