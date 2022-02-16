@@ -134,7 +134,7 @@ def test_plot_style_column_delegate(qtbot):
     base_plot.addCurve(line_item_1)
     plot_style_column_delegate.toggleColumnVisibility()
 
-    # The four line columns should be shown
+    # With only the line style curve displayed the four line columns should be shown
     for column in plot_style_column_delegate.line_columns_to_toggle:
         assert not table_view.isColumnHidden(plot_curves_model.getColumnIndex(column))
     # And the four bar columns should be hidden

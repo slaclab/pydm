@@ -289,8 +289,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
             pass
 
     def _setBarGraphItem(self, x, y):
-        """ Set the plots points to render as bars. No need to call this directly so long as the plot
-         was setup correctly """
+        """ Set the plots points to render as bars. No need to call this directly as it will automatically
+            be handled by redrawCurve() """
         if self.points_accumulated == 0 or len(x) == 0 or len(y) == 0:
             return
 
