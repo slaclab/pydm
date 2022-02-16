@@ -11,7 +11,7 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
     """ Model used in designer for editing archiver time plot curves. """
 
     def __init__(self, plot: BasePlot, parent: Optional[QObject] = None):
-        super(PyDMArchiverTimePlotCurvesModel, self).__init__(plot, parent=parent)
+        super().__init__(plot, parent=parent)
         self._column_names = ("Channel", "Archive Data") + self._column_names
 
     def get_data(self, column_name: str, curve: ArchivePlotCurveItem) -> Any:
@@ -22,7 +22,7 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
             return str(curve.address)
         elif column_name == "Archive Data":
             return bool(curve.use_archive_data)
-        return super(PyDMArchiverTimePlotCurvesModel, self).get_data(column_name, curve)
+        return super().get_data(column_name, curve)
 
     def set_data(self, column_name: str, curve: ArchivePlotCurveItem, value: Any) -> bool:
         """ Set data on the input curve for the given name and value. Return true if successful. """
@@ -31,9 +31,7 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
         elif column_name == "Archive Data":
             curve.use_archive_data = bool(value)
         else:
-            return super(PyDMArchiverTimePlotCurvesModel, self).set_data(column_name=column_name,
-                                                                         curve=curve,
-                                                                         value=value)
+            return super().set_data(column_name=column_name, curve=curve, value=value)
         return True
 
     def append(self, address: Optional[str] = None, name: Optional[str] = None, color: Optional[QColor] = None) -> None:
@@ -58,11 +56,3 @@ class ArchiverTimePlotCurveEditorDialog(BasePlotCurveEditorDialog):
     This thing is mostly just a wrapper for a table view, with a couple
     buttons to add and remove curves, and a button to save the changes."""
     TABLE_MODEL_CLASS = PyDMArchiverTimePlotCurvesModel
-
-    def __init__(self, plot: BasePlot, parent: Optional[QObject] = None):
-        super(ArchiverTimePlotCurveEditorDialog, self).__init__(plot, parent)
-        self.setup_delegate_columns(index=3)
-
-    @Slot(int)
-    def fillAxisData(self, tab_index: int, axis_name_col_index: int = 4) -> None:
-        super(ArchiverTimePlotCurveEditorDialog, self).fillAxisData(tab_index, axis_name_col_index=axis_name_col_index)

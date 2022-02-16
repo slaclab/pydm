@@ -21,7 +21,7 @@ class Connection(PyDMConnection):
 
     def __init__(self, channel: PyDMChannel, address: str, protocol: Optional[str] = None,
                  parent: Optional[QObject] = None):
-        super(Connection, self).__init__(channel, address, protocol, parent)
+        super().__init__(channel, address, protocol, parent)
         self.add_listener(channel)
         self.address = address
         self.network_manager = QNetworkAccessManager()
@@ -37,7 +37,7 @@ class Connection(PyDMConnection):
         channel : PyDMChannel
             The channel to connect
         """
-        super(Connection, self).add_listener(channel)
+        super().add_listener(channel)
         if channel.value_signal is not None:
             channel.value_signal.connect(self.fetch_data)
 
