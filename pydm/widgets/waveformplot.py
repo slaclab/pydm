@@ -276,12 +276,12 @@ class WaveformCurveItem(BasePlotCurveItem):
 
         if self.x_waveform is None:
             self.bar_graph_item.setOpts(x=np.arange(len(self.y_waveform)),
-                                        height=self.y_waveform.astype(np.float),
+                                        height=self.y_waveform,
                                         brushes=brushes)
             return
 
-        self.bar_graph_item.setOpts(x=self.x_waveform.astype(np.float),
-                                    height=self.y_waveform.astype(np.float),
+        self.bar_graph_item.setOpts(x=self.x_waveform,
+                                    height=self.y_waveform,
                                     brushes=brushes)
 
     def limits(self):

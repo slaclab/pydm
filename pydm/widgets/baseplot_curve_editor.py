@@ -334,7 +334,7 @@ class PlotStyleColumnDelegate(QStyledItemDelegate):
     def toggleColumnVisibility(self):
         """ Toggle visibility of columns based on the current state of the associated curve editor table """
         self.hideColumns(hide_line_columns=True, hide_bar_columns=True)
-        if len(self.table_model.plot.curves) > 0:
+        if len(self.table_model.plot._curves) > 0:
             for curve in self.table_model.plot._curves:
                 plot_style = curve.plot_style
                 if plot_style is None or plot_style == 'Line':

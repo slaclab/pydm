@@ -82,7 +82,7 @@ graph for waveform and time plots. This style of plot will have four additional 
     The width of each bar rendered on the plot. Will default to 1 if not set.
 
 * Upper Limit
-    Can be set to a number. Any bar which exceeds this number will be drawn in the alternate threshold color. Useful
+    Can be set to a number. Any bar which exceeds this number will be drawn in the alternate limit color. Useful
     to draw attention to bars exceeding an expected upper limit.
 
 * Lower Limit
@@ -93,4 +93,6 @@ graph for waveform and time plots. This style of plot will have four additional 
     The color to draw any bar which exceeds either limit described above.
 
 These options will not be displayed unless at least one curve in the editor has been set to the bar
-graph style in order to reduce clutter.
+graph style in order to reduce clutter. A plot in which both styles are combined will work just fine.
+All options for both line styles and bar styles will be displayed in that case, and the options that
+do not make sense to set for each respective plot will simply be ignored.
