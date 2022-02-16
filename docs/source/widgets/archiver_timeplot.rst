@@ -10,9 +10,12 @@ the archiver appliance instance. For example:
 ::
     export PYDM_ARCHIVER_URL=http://lcls-archapp.slac.stanford.edu
 
-Archiver time plots will then be able to be created in designer through the usual drag and drop flow. The
-curve editor can be used to select which curves to plot archived data using the archive data drop-down.
-These plots can also be created via python code directly.
+Archiver time plots will then be able to be created in designer through the usual drag and drop flow. Upon
+opening designer, you will notice that the time plot is now called PyDMArchiverTimePlot indicating it can
+be used with the archiver appliance. The channel connections can be created in the same way as a regular
+time plot, no need to preface anything with "archiver://", the requests to archiver will happen
+automatically upon running the plot and panning the x-axis to the left, or zooming out.
+
 
 #######################
 PyDMArchiverTimePlot
