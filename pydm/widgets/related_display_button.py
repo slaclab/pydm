@@ -44,7 +44,6 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
                 {'Text': ['setText', str]})
 
         if 'Filename' not in PyDMRelatedDisplayButton.RULE_PROPERTIES:
-            PyDMRelatedDisplayButton.RULE_PROPERTIES = PyDMPrimitiveWidget.RULE_PROPERTIES.copy()
             PyDMRelatedDisplayButton.RULE_PROPERTIES.update(
                 {'Filenames': ['filenames', list]})
 
