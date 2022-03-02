@@ -456,6 +456,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         # First create a custom MultiAxisPlot to pass to the base PlotWidget class to support multiple y axes. Note
         # that this plot will still function just fine in the case the user doesn't need additional y axes.
         plotItem = MultiAxisPlot(axisItems=axisItems)
+        if axisItems is None or 'left' not in axisItems:
+            # The pyqtgraph PlotItem.setAxisItems() will always add an an AxisItem called left whether you asked
+            # it to or not. This will clear it if not specifically requested.
+            plotItem.removeAxis('left')
         super(BasePlot, self).__init__(parent=parent, background=background, plotItem=plotItem)
 
         self.plotItem = plotItem
@@ -820,7 +824,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             if len(self._y_labels) > 0:
                 # Hardcoded for now as we only have one axis
                 label = self._y_labels[0]
-            self.setLabel("left", text=label)
+            if 'left' in self.plotItem.axes:
+                self.setLabel("left", text=label)
 
     def resetYLabels(self):
         warnings.warn("Y Labels should now be set on the AxisItem itself. See: AxisItem.setLabel() "
