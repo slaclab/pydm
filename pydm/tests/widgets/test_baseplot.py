@@ -241,7 +241,7 @@ def test_multiaxis_plot_no_designer_flow(qtbot):
     plot.addYChannel(y_channel='ca://test_channel_2', yAxisName='Axis 1')
     plot.addYChannel(y_channel='ca://test_channel_3', yAxisName='Axis 2')
 
-    # There should be 5 axes, the 2 we definitely expect ('Axis 1' 'Axis 2', and the default 'bottom' x-axis). But
+    # There should be 5 axes, the 3 we definitely expect ('Axis 1' 'Axis 2', and the default 'bottom' x-axis). But
     # pyqtgraph also adds a mirrored 'right' axis and a mirrored 'top' axis. These do not display by
     # default so we'll keep them.
     assert len(plot.plotItem.axes) == 5
