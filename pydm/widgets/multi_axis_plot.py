@@ -180,7 +180,8 @@ class MultiAxisPlot(PlotItem):
 
         oldAxis = self.axes[axisName]['item']
         self.layout.removeItem(oldAxis)
-        oldAxis.scene().removeItem(oldAxis)
+        if oldAxis.scene() is not None:
+            oldAxis.scene().removeItem(oldAxis)
         oldAxis.unlinkFromView()
         del self.axes[axisName]
 
@@ -258,7 +259,8 @@ class MultiAxisPlot(PlotItem):
         for oldAxis in allAxes:
             if oldAxis.orientation != 'bottom':   # Currently only multiple y axes are supported
                 self.layout.removeItem(oldAxis)
-                oldAxis.scene().removeItem(oldAxis)
+                if oldAxis.scene() is not None:
+                    oldAxis.scene().removeItem(oldAxis)
                 oldAxis.unlinkFromView()
 
         # Retain the x axis

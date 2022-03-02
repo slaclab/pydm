@@ -338,7 +338,6 @@ class PyDMTimePlot(BasePlot):
         """
         self._plot_by_timestamps = plot_by_timestamps
 
-        self._left_axis = AxisItem("left")
         if plot_by_timestamps:
             self._bottom_axis = TimeAxisItem('bottom')
         else:
@@ -346,7 +345,7 @@ class PyDMTimePlot(BasePlot):
             self._bottom_axis = AxisItem('bottom')
 
         super(PyDMTimePlot, self).__init__(parent=parent, background=background,
-                                           axisItems={"bottom": self._bottom_axis, "left": self._left_axis})
+                                           axisItems={"bottom": self._bottom_axis})
 
         # Removing the downsampling while PR 763 is not merged at pyqtgraph
         # Reference: https://github.com/pyqtgraph/pyqtgraph/pull/763
