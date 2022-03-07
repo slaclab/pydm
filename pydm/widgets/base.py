@@ -261,14 +261,19 @@ class PyDMPrimitiveWidget(object):
 
         method_name, data_type = self.RULE_PROPERTIES[prop]
         try:
-            method = getattr(self, method_name)
             if data_type == bool and isinstance(value, str_types):
                 # We do this as we already import json and for Python:
                 # bool("False") -> True
                 val = json.loads(value.lower())
             else:
                 val = data_type(value)
-            method(val)
+
+            method = getattr(self, method_name)
+            if callable(method):
+                method(val)
+            else:
+                setattr(self, method_name, val)
+
         except:
             logger.error('Error at Rule: %s. Could not execute method %s with '
                          'value %s and type as %s.',
