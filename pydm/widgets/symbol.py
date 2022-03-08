@@ -51,10 +51,8 @@ class PyDMSymbol(QWidget, PyDMWidget):
 
         Parameters
         ----------
-        current_key : object
-            The current_key parameter can be of any type as long as it matches
-            the type used as key for the imageFiles dictionary.
-
+        current_key : int
+            The index corresponding to the image to be displayed by this symbol.
         """
         if self._current_key != current_key:
             self._current_key = current_key
