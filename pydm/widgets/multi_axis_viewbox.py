@@ -18,6 +18,7 @@ class MultiAxisViewBox(ViewBox):
     # These signals will be emitted by the view when it handles these events, and will be connected
     # to the event handling code of the stacked views
     sigMouseDragged = Signal(object, object, object)
+    sigMouseDraggedDone = Signal()
     sigMouseWheelZoomed = Signal(object, object, object)
     sigHistoryChanged = Signal(object)
 
@@ -61,6 +62,8 @@ class MultiAxisViewBox(ViewBox):
         if axis != ViewBox.YAxis and not fromSignal:
             # This event happened within the view box area itself or the x axis so propagate to any stacked view boxes
             self.sigMouseDragged.emit(self, ev, axis)
+            if ev.isFinish() and self.state['mouseMode'] == ViewBox.RectMode and axis is None:
+                self.sigMouseDraggedDone.emit()  # Indicates the end of a mouse drag event
         super(MultiAxisViewBox, self).mouseDragEvent(ev, axis)
 
     def keyPressEvent(self, ev):

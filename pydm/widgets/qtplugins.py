@@ -1,8 +1,9 @@
 import logging
+import os
 
 from .qtplugin_base import qtplugin_factory, WidgetCategory
 from .qtplugin_extensions import (RulesExtension, WaveformCurveEditorExtension,
-                                  TimeCurveEditorExtension,
+                                  TimeCurveEditorExtension, ArchiveTimeCurveEditorExtension,
                                   ScatterCurveEditorExtension, SymbolExtension)
 from .tab_bar_qtplugin import TabWidgetPlugin
 from .byte import PyDMByteIndicator
@@ -32,6 +33,7 @@ from .symbol import PyDMSymbol
 from .waveformtable import PyDMWaveformTable
 from .scale import PyDMScaleIndicator
 from .timeplot import PyDMTimePlot
+from .archiver_time_plot import PyDMArchiverTimePlot
 from .waveformplot import PyDMWaveformPlot
 from .scatterplot import PyDMScatterPlot
 from .template_repeater import PyDMTemplateRepeater
@@ -51,10 +53,20 @@ PyDMLabelPlugin = qtplugin_factory(PyDMLabel, group=WidgetCategory.DISPLAY,
                                    icon=ifont.icon("tag"))
 
 # Time Plot plugin
-PyDMTimePlotPlugin = qtplugin_factory(PyDMTimePlot, group=WidgetCategory.PLOT,
-                                      extensions=[TimeCurveEditorExtension,
-                                                  RulesExtension],
-                                      icon=ifont.icon("chart-line"))
+# In order to keep the archiver functionality invisible to users who do not have access to an instance of the
+# archiver appliance, choose which version of the time plot to load here based on the user's environment
+if "PYDM_ARCHIVER_URL" not in os.environ:
+    PyDMTimePlotPlugin = qtplugin_factory(PyDMTimePlot, group=WidgetCategory.PLOT,
+                                          extensions=[TimeCurveEditorExtension,
+                                                      RulesExtension],
+                                          icon=ifont.icon("chart-line"))
+else:
+    # Time Plot with archiver appliance support plugin
+    PyDMTimePlotPlugin = qtplugin_factory(PyDMArchiverTimePlot, group=WidgetCategory.PLOT,
+                                          extensions=[ArchiveTimeCurveEditorExtension,
+                                                      RulesExtension],
+                                          icon=ifont.icon("chart-line")
+                                          )
 
 # Waveform Plot plugin
 PyDMWaveformPlotPlugin = qtplugin_factory(PyDMWaveformPlot,
