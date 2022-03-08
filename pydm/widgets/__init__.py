@@ -21,6 +21,7 @@ from .symbol import PyDMSymbol
 from .waveformtable import PyDMWaveformTable
 from .scale import PyDMScaleIndicator
 from .timeplot import PyDMTimePlot
+from .archiver_time_plot import PyDMArchiverTimePlot
 from .waveformplot import PyDMWaveformPlot
 from .scatterplot import PyDMScatterPlot
 from .tab_bar import PyDMTabWidget
