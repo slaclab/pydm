@@ -53,20 +53,19 @@ PyDMLabelPlugin = qtplugin_factory(PyDMLabel, group=WidgetCategory.DISPLAY,
                                    icon=ifont.icon("tag"))
 
 # Time Plot plugin
+PyDMTimePlotPlugin = qtplugin_factory(PyDMTimePlot, group=WidgetCategory.PLOT,
+                                      extensions=[TimeCurveEditorExtension,
+                                                  RulesExtension],
+                                      icon=ifont.icon("chart-line"))
+
 # In order to keep the archiver functionality invisible to users who do not have access to an instance of the
-# archiver appliance, choose which version of the time plot to load here based on the user's environment
-if "PYDM_ARCHIVER_URL" not in os.environ:
-    PyDMTimePlotPlugin = qtplugin_factory(PyDMTimePlot, group=WidgetCategory.PLOT,
-                                          extensions=[TimeCurveEditorExtension,
-                                                      RulesExtension],
-                                          icon=ifont.icon("chart-line"))
-else:
+# archiver appliance, only load this if the user has the associated environment variable set
+if "PYDM_ARCHIVER_URL" in os.environ:
     # Time Plot with archiver appliance support plugin
-    PyDMTimePlotPlugin = qtplugin_factory(PyDMArchiverTimePlot, group=WidgetCategory.PLOT,
-                                          extensions=[ArchiveTimeCurveEditorExtension,
-                                                      RulesExtension],
-                                          icon=ifont.icon("chart-line")
-                                          )
+    PyDMArchiverTimePlotPlugin = qtplugin_factory(PyDMArchiverTimePlot, group=WidgetCategory.PLOT,
+                                                  extensions=[ArchiveTimeCurveEditorExtension,
+                                                              RulesExtension],
+                                                  icon=ifont.icon("chart-line"))
 
 # Waveform Plot plugin
 PyDMWaveformPlotPlugin = qtplugin_factory(PyDMWaveformPlot,
