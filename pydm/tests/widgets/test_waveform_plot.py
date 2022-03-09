@@ -38,3 +38,36 @@ def test_redraw_plot(mocked_set_opts, mocked_set_data, qtbot, monkeypatch):
 
     # After a call to redraw, the plot returns to this state until more data arrives
     assert not waveform_plot._needs_redraw
+
+
+def test_mismatched_shapes(qtbot):
+    """ Test that the logic around waveforms with differing lengths works as expected """
+
+    # Create a waveform plot and add data whose waveform components do not share the same length
+    waveform_plot = PyDMWaveformPlot()
+    data_item_1 = WaveformCurveItem()
+
+    # Start with the basic case, both waveforms share the same length
+    data_item_1.receiveXWaveform(np.array([1, 5, 10, 15], dtype=float))
+    data_item_1.receiveYWaveform(np.array([10, 11, 12, 13], dtype=float))
+    data_item_1.redrawCurve()
+
+    # The data should remain exactly as is, no truncation required
+    assert np.array_equal(data_item_1.x_waveform, np.array([1, 5, 10, 15]))
+    assert np.array_equal(data_item_1.y_waveform, np.array([10, 11, 12, 13]))
+
+    data_item_1.receiveXWaveform(np.array([1, 5, 10], dtype=float))
+    data_item_1.receiveYWaveform(np.array([10, 11, 12, 13], dtype=float))
+    data_item_1.redrawCurve()
+
+    # Now the y-waveform was longer than the x one, so it gets truncated to match the length of x
+    assert np.array_equal(data_item_1.x_waveform, np.array([1, 5, 10]))
+    assert np.array_equal(data_item_1.y_waveform, np.array([10, 11, 12]))
+
+    data_item_1.receiveXWaveform(np.array([1, 5, 10, 15], dtype=float))
+    data_item_1.receiveYWaveform(np.array([10, 11, 12], dtype=float))
+    data_item_1.redrawCurve()
+
+    # Opposite case: the x-waveform was longer than the y one, so it gets truncated to match the length of y
+    assert np.array_equal(data_item_1.x_waveform, np.array([1, 5, 10]))
+    assert np.array_equal(data_item_1.y_waveform, np.array([10, 11, 12]))
