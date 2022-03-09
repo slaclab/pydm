@@ -56,6 +56,7 @@ def test_timeplotcurveitem_to_dict(qtbot, channel_address, name):
         assert pydm_timeplot_curve_item.to_dict()["name"] == remove_protocol(channel_address) if channel_address else \
             not pydm_timeplot_curve_item.to_dict()["name"]
 
+
 @pytest.mark.parametrize("new_address", [
     "new_address",
     "",
@@ -153,6 +154,7 @@ def test_timeplotcurveitem_async_update(qtbot, signals, async_update, new_data):
         assert pydm_timeplot_curve_item.points_accumulated == 1
     else:
         assert pydm_timeplot_curve_item.points_accumulated == 2
+
 
 def test_timeplotcurve_initialize_buffer(qtbot):
     pydm_timeplot_curve_item = TimePlotCurveItem()

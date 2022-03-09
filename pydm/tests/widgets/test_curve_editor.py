@@ -1,5 +1,4 @@
 from qtpy.QtWidgets import QTableView
-from unittest import mock
 from ...widgets.baseplot import BasePlot
 from ...widgets.baseplot_curve_editor import (AxisColumnDelegate, ColorColumnDelegate, LineColumnDelegate,
                                               SymbolColumnDelegate, RedrawModeColumnDelegate, PlotStyleColumnDelegate)
