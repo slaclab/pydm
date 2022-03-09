@@ -17,8 +17,6 @@ logger = logging.getLogger(__name__)
     (None, Qt.DashLine, 10, ""),
     (None, None, None, None)
 ])
-
-
 def test_baseplotcurveitem_construct(qtbot, color, line_style, line_width, name):
     base_plotcurve_item = BasePlotCurveItem(color, line_style, line_width, name=name)
 

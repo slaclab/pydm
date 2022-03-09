@@ -1,5 +1,5 @@
-from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant
-from qtpy.QtGui import QBrush, QColor
+from qtpy.QtCore import QAbstractTableModel, Qt, QVariant
+from qtpy.QtGui import QBrush
 from .baseplot import BasePlotCurveItem
 
 

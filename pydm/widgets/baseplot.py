@@ -336,7 +336,6 @@ class BasePlotCurveItem(PlotDataItem):
         self.lower_threshold = lower_threshold
         self.threshold_color = color
 
-
     def to_dict(self):
         """
         Returns an OrderedDict representation with values for all properties
