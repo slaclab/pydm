@@ -147,7 +147,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self.archive_points_accumulated += archive_data_length - num_points_deleted
 
     @Slot()
-    def redrawCurve(self) -> None:
+    def redrawCurve(self, min_x=None, max_x=None) -> None:
         """
         Redraw the curve with any new data added since the last draw call.
         """
