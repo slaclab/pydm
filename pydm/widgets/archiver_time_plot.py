@@ -60,11 +60,13 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
     def setArchiveChannel(self, address: str) -> None:
         """ Creates the channel for the input address for communicating with the archiver appliance plugin. """
+        archiver_prefix = 'archiver://pv='
         if address.startswith('ca://'):
-            archive_address = address.replace('ca://', 'archiver://pv=', 1)
+            archive_address = address.replace('ca://', archiver_prefix, 1)
+        elif address.startswith('pva://'):
+            archive_address = address.replace('pva://', archiver_prefix, 1)
         else:
-            logger.error(f'Invalid address format for archiver appliance: {address}')
-            return
+            archive_address = archiver_prefix + address
 
         self.archive_channel = PyDMChannel(address=archive_address,
                                            value_slot=self.receiveArchiveData,
