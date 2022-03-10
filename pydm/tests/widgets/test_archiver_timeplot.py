@@ -1,8 +1,16 @@
 import numpy as np
+import pytest
 from qtpy.QtCore import Slot
 
 from ..conftest import ConnectionSignals
 from ...widgets.archiver_time_plot import ArchivePlotCurveItem, PyDMArchiverTimePlot
+
+
+@pytest.mark.parametrize('address', ['ca://LINAC:PV1', 'pva://LINAC:PV1', 'LINAC:PV1'])
+def test_set_archive_channel(address):
+    """ Verify the address for the archiver data plugin is set correctly for all possible EPICS address prefixes """
+    curve_item = ArchivePlotCurveItem(channel_address=address)
+    assert curve_item.archive_channel.address == 'archiver://pv=LINAC:PV1'
 
 
 def test_receive_archive_data(signals: ConnectionSignals):
