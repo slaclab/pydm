@@ -42,6 +42,7 @@ Plot Widgets
    curve_editor.rst
    scatterplot.rst
    timeplot.rst
+   archiver_timeplot.rst
    waveformplot.rst
 
 Container Widgets

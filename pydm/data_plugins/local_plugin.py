@@ -36,6 +36,14 @@ class Connection(PyDMConnection):
             "enum_string"
         ]
 
+        self._extra_numpy_config_keys = [
+            "dtype",
+            "copy",
+            "order",
+            "subok",
+            "ndmin"
+        ]
+
         self._data_types = {
             'int': int,
             'float': float,
@@ -71,26 +79,28 @@ class Connection(PyDMConnection):
         self._configuration['name'] = url_data[1]
         address = url_data[2]
 
-        if url_data[0] is not None:
-            self._configuration.update(url_data[0])
-            self.address = address
+        if url_data[0] is None:
+            return
 
-            # set the object's attributes
-            init_value = self._configuration.get('init')[0]
-            self._value_type = self._configuration.get('type')[0]
-            self.name = self._configuration.get('name')
+        self._configuration.update(url_data[0])
+        self.address = address
 
-            # get the extra info if any
-            self.parse_channel_extras(self._configuration)
+        # set the object's attributes
+        init_value = self._configuration.get('init')[0]
+        self._value_type = self._configuration.get('type')[0]
+        self.name = self._configuration.get('name')
 
-            # send initial values
-            self.value = self.convert_value(init_value, self._value_type)
-            self.connected = True
-            self.send_connection_state(True)
-            self.send_new_value(self.value)
+        # get the extra info if any
+        self.parse_channel_extras(self._configuration)
 
-            # set connection configured to true
-            self._is_connection_configured = True
+        # send initial values
+        self.value = self.convert_value(init_value, self._value_type)
+        self.connected = True
+        self.send_connection_state(True)
+        self.send_new_value(self.value)
+
+        # set connection configured to true
+        self._is_connection_configured = True
 
     def parse_channel_extras(self, extras):
         """
@@ -132,10 +142,24 @@ class Connection(PyDMConnection):
             self.send_enum_string(enum_string[0])
 
         type_kwargs = {k: v for k, v in extras.items()
-                       if k not in self._extra_config_keys and k not in self._required_config_keys}
+                       if k in self._extra_numpy_config_keys}
 
         if type_kwargs:
             self.format_type_params(type_kwargs)
+
+        unused = {k: v for k, v in extras.items()
+                       if k not in self._extra_config_keys
+                       and k not in self._required_config_keys
+                       and k not in self._extra_numpy_config_keys}
+
+        if len(unused) == 0:
+            return
+
+        info = "The following entries are not valid config keys:"
+        for items in unused:
+            info = info + " " + items + ","
+
+        logger.debug(info)
 
     @Slot(int)
     @Slot(float)

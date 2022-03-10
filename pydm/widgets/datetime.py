@@ -86,7 +86,7 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget, TimeBase):
         if self.relative:
             new_value = now.msecsTo(val)
         else:
-            new_value = val.currentMSecsSinceEpoch()
+            new_value = val.toMSecsSinceEpoch()
 
         if self.timeBase == TimeBase.Seconds:
             new_value /= 1000.0

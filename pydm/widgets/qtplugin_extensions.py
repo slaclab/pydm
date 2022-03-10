@@ -8,6 +8,7 @@ from ..widgets.base import PyDMPrimitiveWidget
 
 from ..widgets.rules_editor import RulesEditor
 from ..widgets.designer_settings import BasicSettingsEditor
+from ..widgets.archiver_time_plot_editor import ArchiverTimePlotCurveEditorDialog
 from ..widgets.waveformplot_curve_editor import WaveformPlotCurveEditorDialog
 from ..widgets.timeplot_curve_editor import TimePlotCurveEditorDialog
 from ..widgets.scatterplot_curve_editor import ScatterPlotCurveEditorDialog
@@ -184,6 +185,11 @@ class BasePlotExtension(PyDMExtension):
 class WaveformCurveEditorExtension(BasePlotExtension):
     def __init__(self, widget):
         super(WaveformCurveEditorExtension, self).__init__(widget, WaveformPlotCurveEditorDialog)
+
+
+class ArchiveTimeCurveEditorExtension(BasePlotExtension):
+    def __init__(self, widget):
+        super(ArchiveTimeCurveEditorExtension, self).__init__(widget, ArchiverTimePlotCurveEditorDialog)
 
 
 class TimeCurveEditorExtension(BasePlotExtension):

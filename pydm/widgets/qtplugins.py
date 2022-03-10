@@ -1,10 +1,16 @@
 import logging
+import os
 
 from .qtplugin_base import qtplugin_factory, WidgetCategory
-from .qtplugin_extensions import (BasicSettingsExtension, RulesExtension,
-                                  WaveformCurveEditorExtension,
-                                  TimeCurveEditorExtension,
-                                  ScatterCurveEditorExtension, SymbolExtension)
+from .qtplugin_extensions import (
+    ArchiveTimeCurveEditorExtension,
+    BasicSettingsExtension,
+    RulesExtension,
+    ScatterCurveEditorExtension,
+    SymbolExtension,
+    TimeCurveEditorExtension,
+    WaveformCurveEditorExtension,
+)
 from .tab_bar_qtplugin import TabWidgetPlugin
 from .byte import PyDMByteIndicator
 
@@ -33,6 +39,7 @@ from .symbol import PyDMSymbol
 from .waveformtable import PyDMWaveformTable
 from .scale import PyDMScaleIndicator
 from .timeplot import PyDMTimePlot
+from .archiver_time_plot import PyDMArchiverTimePlot
 from .waveformplot import PyDMWaveformPlot
 from .scatterplot import PyDMScatterPlot
 from .template_repeater import PyDMTemplateRepeater
@@ -56,6 +63,15 @@ PyDMTimePlotPlugin = qtplugin_factory(PyDMTimePlot, group=WidgetCategory.PLOT,
                                       extensions=[TimeCurveEditorExtension,
                                                   RulesExtension],
                                       icon=ifont.icon("chart-line"))
+
+# In order to keep the archiver functionality invisible to users who do not have access to an instance of the
+# archiver appliance, only load this if the user has the associated environment variable set
+if "PYDM_ARCHIVER_URL" in os.environ:
+    # Time Plot with archiver appliance support plugin
+    PyDMArchiverTimePlotPlugin = qtplugin_factory(PyDMArchiverTimePlot, group=WidgetCategory.PLOT,
+                                                  extensions=[ArchiveTimeCurveEditorExtension,
+                                                              RulesExtension],
+                                                  icon=ifont.icon("chart-line"))
 
 # Waveform Plot plugin
 PyDMWaveformPlotPlugin = qtplugin_factory(PyDMWaveformPlot,
