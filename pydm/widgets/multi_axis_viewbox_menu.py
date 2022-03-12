@@ -16,6 +16,9 @@ class MultiAxisViewBoxMenu(ViewBoxMenu):
     # A signal indicating that the user has changed the mouse mode (left click panning vs. zooming)
     sigMouseModeChanged = Signal(object)
 
+    # A signal for updating the x autorange value
+    sigXAutoRangeChanged = Signal(object)
+
     def __init__(self, view):
         super(MultiAxisViewBoxMenu, self).__init__(view)
 
@@ -28,3 +31,9 @@ class MultiAxisViewBoxMenu(ViewBoxMenu):
         """ Change the mouse left-click functionality to zoom in on the plot """
         super(MultiAxisViewBoxMenu, self).set1ButtonMode()
         self.sigMouseModeChanged.emit('rect')
+
+    def xAutoClicked(self):
+        """ Update the auto-range value for each view box """
+        super().xAutoClicked()
+        val = self.ctrl[0].autoPercentSpin.value() * 0.01
+        self.sigXAutoRangeChanged.emit(val)

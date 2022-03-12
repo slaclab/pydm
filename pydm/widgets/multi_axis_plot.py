@@ -43,6 +43,7 @@ class MultiAxisPlot(PlotItem):
         self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
         if self.vb.menuEnabled():
             self.vb.menu.sigMouseModeChanged.connect(self.changeMouseMode)
+            self.vb.menu.sigXAutoRangeChanged.connect(self.updateXAutoRange)
 
     def addAxis(self, axis, name, plotDataItem=None, setXLink=False, enableAutoRangeX=True, enableAutoRangeY=True,
                 minRange=-1.0, maxRange=1.0):
@@ -74,12 +75,14 @@ class MultiAxisPlot(PlotItem):
         # Create a new view box to link this axis with
         self.axes[str(name)] = {'item': axis, 'pos': None}  # The None will become an actual position in rebuildLayout() below
         view = MultiAxisViewBox()
+        view.menu = MultiAxisViewBoxMenu(view)
         view.setYRange(minRange, maxRange)
         view.enableAutoRange(axis=ViewBox.XAxis, enable=enableAutoRangeX)
         view.enableAutoRange(axis=ViewBox.YAxis, enable=enableAutoRangeY)
         self.axes['bottom']['item'].linkToView(view)  # Ensure the x axis will update when the view does
 
         view.setMouseMode(self.vb.state['mouseMode'])  # Ensure that mouse behavior is consistent between stacked views
+        view.menu.sigXAutoRangeChanged.connect(self.updateXAutoRange)
         axis.linkToView(view)
 
         if plotDataItem is not None:
@@ -238,6 +241,13 @@ class MultiAxisPlot(PlotItem):
             view.setYRange(minY, maxY, padding=padding)
         super(MultiAxisPlot, self).setYRange(minY, maxY, padding=padding)
 
+    def isAnyXAutoRange(self) -> bool:
+        """ Return true if any view boxes are set to autorange on the x-axis, false otherwise """
+        for view in self.stackedViews:
+            if view.state['autoRange'][0]:
+                return True
+        return False
+
     def disableXAutoRange(self):
         """ Disable x-axis autorange for all views in the plot. """
         for view in self.stackedViews:
@@ -348,3 +358,9 @@ class MultiAxisPlot(PlotItem):
         """
         for stackedView in self.stackedViews:
             stackedView.setLeftButtonAction(mode)
+
+    def updateXAutoRange(self, val):
+        """ Update the autorange values for the x-axis on all view boxes """
+        self.vb.enableAutoRange(ViewBox.XAxis, val)
+        for stackedView in self.stackedViews:
+            stackedView.enableAutoRange(ViewBox.XAxis, val)
