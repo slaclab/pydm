@@ -1,6 +1,7 @@
 import functools
 import json
 import warnings
+from typing import Optional
 from qtpy.QtGui import QColor, QBrush
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QRect
 from qtpy.QtWidgets import QToolTip
@@ -299,6 +300,8 @@ class BasePlotAxisItem(AxisItem):
     axisOrientation: str, optional
         The orientation of this axis. The default for this value is 'left'. Must be set to either 'right', 'top',
         'bottom', or 'left'. See: https://pyqtgraph.readthedocs.io/en/latest/graphicsItems/axisitem.html
+    label: str, optional
+        The label to be displayed along the axis
     axisMinRange: float, optional
         The minimum value to be displayed on this axis
     axisMaxRange: float, optional
@@ -312,12 +315,13 @@ class BasePlotAxisItem(AxisItem):
     axis_orientations = OrderedDict([('Left', 'left'),
                                      ('Right', 'right')])
 
-    def __init__(self, name, orientation='left', minRange=-1.0,
+    def __init__(self, name, orientation='left', label=None, minRange=-1.0,
                  maxRange=1.0, autoRange=True, **kws):
         super(BasePlotAxisItem, self).__init__(orientation, **kws)
 
         self._name = name
         self._orientation = orientation
+        self._label = label
         self._min_range = minRange
         self._max_range = maxRange
         self._auto_range = autoRange
@@ -366,6 +370,16 @@ class BasePlotAxisItem(AxisItem):
         orientation: str
         """
         self._orientation = orientation
+
+    @property
+    def label_text(self) -> str:
+        """ Return the label to be displayed along this axis. """
+        return self._label
+
+    @label_text.setter
+    def label_text(self, label: str):
+        """ Set the label to be displayed along this axis """
+        self._label = label
 
     @property
     def min_range(self):
@@ -444,6 +458,7 @@ class BasePlotAxisItem(AxisItem):
         """
         return OrderedDict([("name", self._name),
                             ("orientation", self._orientation),
+                            ("label", self._label),
                             ("minRange", self._min_range),
                             ("maxRange", self._max_range),
                             ("autoRange", self._auto_range)])
@@ -564,7 +579,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             if chan:
                 chan.connect()
 
-    def addAxis(self, plot_data_item, name, orientation, min_range=-1.0, max_range=1.0, enable_auto_range=True):
+    def addAxis(self, plot_data_item: BasePlotCurveItem, name: str, orientation: str,
+                label: Optional[str] = None, min_range: Optional[float] = -1.0,
+                max_range: Optional[float] = 1.0, enable_auto_range: Optional[bool] = True):
         """
         Create an AxisItem with the input name and orientation, and add it to this plot.
         Parameters
@@ -575,6 +592,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             The name that will be assigned to this axis
         orientation: str
             The orientation of this axis, must be in 'left' or 'right'
+        label: str, optional
+            The label to be displayed along this axis
         min_range: float
             The minimum range to display on the axis
         max_range: float
@@ -592,8 +611,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if name in self.plotItem.axes:
             return
 
-        axis = BasePlotAxisItem(name=name, orientation=orientation, minRange=min_range,
+        axis = BasePlotAxisItem(name=name, orientation=orientation, label=label, minRange=min_range,
                                 maxRange=max_range, autoRange=enable_auto_range)
+        axis.setLabel(text=label)
         axis.enableAutoSIPrefix(False)
         self._axes.append(axis)
         # If the x axis is just timestamps, we don't want autorange on the x axis
@@ -735,7 +755,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.clearAxes()
         for d in new_list:
             self.addAxis(plot_data_item=None, name=d.get('name'), orientation=d.get('orientation'),
-                         min_range=d.get('minRange'), max_range=d.get('maxRange'),
+                         label=d.get('label'), min_range=d.get('minRange'), max_range=d.get('maxRange'),
                          enable_auto_range=d.get('autoRange'))
 
     yAxes = Property("QStringList", getYAxes, setYAxes, designable=False)
