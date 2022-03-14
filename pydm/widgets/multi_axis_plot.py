@@ -1,8 +1,4 @@
 import weakref
-try:
-    from html import escape  # Python 3
-except ImportError:
-    from cgi import escape  # Can't only use this since it was removed in Python 3.8 and up
 from collections import Counter
 from pyqtgraph import PlotItem, ViewBox
 from .multi_axis_viewbox import MultiAxisViewBox
