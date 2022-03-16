@@ -37,3 +37,8 @@ class MultiAxisViewBoxMenu(ViewBoxMenu):
         super().xAutoClicked()
         val = self.ctrl[0].autoPercentSpin.value() * 0.01
         self.sigXAutoRangeChanged.emit(val)
+
+    def xManualClicked(self):
+        """ Disable x auto-range for each view box """
+        super().xManualClicked()
+        self.sigXAutoRangeChanged.emit(False)

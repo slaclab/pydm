@@ -216,6 +216,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                                                    plot_by_timestamps=True, background=background)
         self.optimized_data_bins = optimized_data_bins
         self._min_x = None
+        self._prev_x = None  # Holds the minimum x-value of the previous update of the plot
         self._starting_timestamp = time.time()  # The timestamp at which the plot was first rendered
         self._archive_request_queued = False
         self._bottom_axis = DateAxisItem('bottom')  # Nice for displaying data across long periods of time
@@ -228,6 +229,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             return
 
         min_x = self.plotItem.getAxis('bottom').range[0]  # Gets the leftmost timestamp displayed on the x-axis
+        max_x = max([curve.max_x() for curve in self._curves])
         if min_x == 0:  # This is zero when the plot first renders
             min_x = time.time()
             self._min_x = min_x
@@ -237,16 +239,24 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 self._min_x = self._min_x - self.getTimeSpan()
                 self.requestDataFromArchiver()
             self.plotItem.setXRange(self._min_x, time.time(), padding=0.0, update=update_immediately)
-            self.plotItem.updateXAutoRange(True)
         elif min_x < self._min_x and not self.plotItem.isAnyXAutoRange():
             # This means the user has manually scrolled to the left, so request archived data
             self._min_x = min_x
+            self.setTimeSpan(max_x - min_x)
             if not self._archive_request_queued:
                 # Letting the user pan or scroll the plot is convenient, but can generate a lot of events in under
                 # a second that would trigger a request for data. By using a timer, we avoid this burst of events
                 # and consolidate what would be many requests to archiver into just one.
                 self._archive_request_queued = True
                 QTimer.singleShot(1000, self.requestDataFromArchiver)
+        elif not self.plotItem.isAnyXAutoRange():  # Only update the x-axis if the user hasn't asked for autorange
+            if min_x > (self._prev_x + 15) or min_x < (self._prev_x - 15):
+                # The plus/minus 15 just makes sure we don't do this on every update tick of the graph
+                self.setTimeSpan(max_x - min_x)
+            else:
+                # Keep the plot moving with a rolling window based on the current timestamp
+                self.plotItem.setXRange(max_x - self.getTimeSpan(), max_x, padding=0.0, update=update_immediately)
+        self._prev_x = min_x
 
     def requestDataFromArchiver(self, min_x: Optional[float] = None, max_x: Optional[float] = None) -> None:
         """
@@ -291,16 +301,12 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
     def createCurveItem(self, y_channel: str, plot_by_timestamps: bool, name: str, color: Union[QColor, str],
                         yAxisName: str, useArchiveData: bool, **plot_opts) -> ArchivePlotCurveItem:
         """ Create and return a curve item to be plotted """
-        curve_item = ArchivePlotCurveItem(y_channel, use_archive_data=useArchiveData,
-                                          plot_by_timestamps=plot_by_timestamps, name=name,
-                                          color=color, yAxisName=yAxisName, **plot_opts)
-        curve_item.archive_data_received_signal.connect(self.archiveDataReceived)
-        return curve_item
+        return ArchivePlotCurveItem(y_channel, use_archive_data=useArchiveData, plot_by_timestamps=plot_by_timestamps,
+                                    name=name, color=color, yAxisName=yAxisName, **plot_opts)
 
-    @Slot()
-    def archiveDataReceived(self):
-        """ All useful actions to be taken upon successfully receiving a new batch of data from the archiver """
-        self.plotItem.updateXAutoRange(True)
+    def setTimeSpan(self, value):
+        """ Set the value of the plot's timespan """
+        self._time_span = value
 
     def getCurves(self) -> List[str]:
         """
