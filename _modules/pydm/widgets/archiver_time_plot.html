@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.archiver_time_plot &mdash; PyDM v1.14.0+16.g190439eb documentation</title>
+  <title>pydm.widgets.archiver_time_plot &mdash; PyDM v1.14.0+19.g33f1c78f documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.14.0+16.g190439eb
+                v1.14.0+19.g33f1c78f
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -106,7 +106,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="kn">import</span> <span class="n">DateAxisItem</span><span class="p">,</span> <span class="n">ErrorBarItem</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="kn">import</span> <span class="n">DateAxisItem</span><span class="p">,</span> <span class="n">ErrorBarItem</span><span class="p">,</span> <span class="n">ViewBox</span>
 <span class="kn">from</span> <span class="nn">pydm.widgets.channel</span> <span class="kn">import</span> <span class="n">PyDMChannel</span>
 <span class="kn">from</span> <span class="nn">pydm.widgets.timeplot</span> <span class="kn">import</span> <span class="n">TimePlotCurveItem</span>
 <span class="kn">from</span> <span class="nn">pydm.widgets</span> <span class="kn">import</span> <span class="n">PyDMTimePlot</span>
@@ -117,7 +117,7 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">DEFAULT_ARCHIVE_BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">18000</span>
-
+<span class="n">DEFAULT_TIME_SPAN</span> <span class="o">=</span> <span class="mf">5.0</span>
 
 <div class="viewcode-block" id="ArchivePlotCurveItem"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem">[docs]</a><span class="k">class</span> <span class="nc">ArchivePlotCurveItem</span><span class="p">(</span><span class="n">TimePlotCurveItem</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -138,6 +138,7 @@
 
     <span class="c1"># Used to request data from archiver appliance (starting timestamp, ending timestamp, processing command)</span>
     <span class="n">archive_data_request_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="n">archive_data_received_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel_address</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_archive_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ArchivePlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">channel_address</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">)</span>
@@ -213,7 +214,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_bar_item</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_needs_set</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_received_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ArchivePlotCurveItem.insert_archive_data"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.insert_archive_data">[docs]</a>    <span class="k">def</span> <span class="nf">insert_archive_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; Inserts data directly into the archive buffer. An example use case would be</span>
@@ -319,7 +321,8 @@
                                                    <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimized_data_bins</span> <span class="o">=</span> <span class="n">optimized_data_bins</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_starting_timestamp</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># The timestamp at which the plot was first rendered</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prev_x</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Holds the minimum x-value of the previous update of the plot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_starting_timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>  <span class="c1"># The timestamp at which the plot was first rendered</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_archive_request_queued</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bottom_axis</span> <span class="o">=</span> <span class="n">DateAxisItem</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>  <span class="c1"># Nice for displaying data across long periods of time</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setAxisItems</span><span class="p">({</span><span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bottom_axis</span><span class="p">})</span>
@@ -331,23 +334,34 @@
             <span class="k">return</span>
 
         <span class="n">min_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Gets the leftmost timestamp displayed on the x-axis</span>
-        <span class="n">max_range</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">curve</span><span class="o">.</span><span class="n">max_x</span><span class="p">()</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">])</span>
+        <span class="n">max_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">curve</span><span class="o">.</span><span class="n">max_x</span><span class="p">()</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">min_x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># This is zero when the plot first renders</span>
             <span class="n">min_x</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="o">=</span> <span class="n">min_x</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_starting_timestamp</span> <span class="o">=</span> <span class="n">min_x</span> <span class="o">-</span> <span class="mi">60</span>
-        <span class="k">elif</span> <span class="n">min_x</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span><span class="p">:</span>  <span class="c1"># This means the user has scrolled to the left, so request archived data</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTimeSpan</span><span class="p">()</span> <span class="o">!=</span> <span class="n">DEFAULT_TIME_SPAN</span><span class="p">:</span>
+                <span class="c1"># Initialize x-axis based on the time span as well as trigger a call to the archiver below</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTimeSpan</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">requestDataFromArchiver</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setXRange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="n">padding</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="n">update_immediately</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">min_x</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">isAnyXAutoRange</span><span class="p">():</span>
+            <span class="c1"># This means the user has manually scrolled to the left, so request archived data</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="o">=</span> <span class="n">min_x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setTimeSpan</span><span class="p">(</span><span class="n">max_x</span> <span class="o">-</span> <span class="n">min_x</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archive_request_queued</span><span class="p">:</span>
                 <span class="c1"># Letting the user pan or scroll the plot is convenient, but can generate a lot of events in under</span>
                 <span class="c1"># a second that would trigger a request for data. By using a timer, we avoid this burst of events</span>
                 <span class="c1"># and consolidate what would be many requests to archiver into just one.</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_archive_request_queued</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">QTimer</span><span class="o">.</span><span class="n">singleShot</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">requestDataFromArchiver</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="s1">&#39;autoRange&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="c1"># Autorange is true, so update the x-axis to display all available data</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setXRange</span><span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">max_range</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="n">update_immediately</span><span class="p">)</span></div>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">isAnyXAutoRange</span><span class="p">():</span>  <span class="c1"># Only update the x-axis if the user hasn&#39;t asked for autorange</span>
+            <span class="k">if</span> <span class="n">min_x</span> <span class="o">&gt;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prev_x</span> <span class="o">+</span> <span class="mi">15</span><span class="p">)</span> <span class="ow">or</span> <span class="n">min_x</span> <span class="o">&lt;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prev_x</span> <span class="o">-</span> <span class="mi">15</span><span class="p">):</span>
+                <span class="c1"># The plus/minus 15 just makes sure we don&#39;t do this on every update tick of the graph</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setTimeSpan</span><span class="p">(</span><span class="n">max_x</span> <span class="o">-</span> <span class="n">min_x</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Keep the plot moving with a rolling window based on the current timestamp</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setXRange</span><span class="p">(</span><span class="n">max_x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTimeSpan</span><span class="p">(),</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="n">update_immediately</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prev_x</span> <span class="o">=</span> <span class="n">min_x</span></div>
 
 <div class="viewcode-block" id="PyDMArchiverTimePlot.requestDataFromArchiver"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.requestDataFromArchiver">[docs]</a>    <span class="k">def</span> <span class="nf">requestDataFromArchiver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_x</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_x</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -394,6 +408,10 @@
         <span class="sd">&quot;&quot;&quot; Create and return a curve item to be plotted &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">ArchivePlotCurveItem</span><span class="p">(</span><span class="n">y_channel</span><span class="p">,</span> <span class="n">use_archive_data</span><span class="o">=</span><span class="n">useArchiveData</span><span class="p">,</span> <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="n">plot_by_timestamps</span><span class="p">,</span>
                                     <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">yAxisName</span><span class="o">=</span><span class="n">yAxisName</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_opts</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMArchiverTimePlot.setTimeSpan"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setTimeSpan">[docs]</a>    <span class="k">def</span> <span class="nf">setTimeSpan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set the value of the plot&#39;s timespan &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_time_span</span> <span class="o">=</span> <span class="n">value</span></div>
 
 <div class="viewcode-block" id="PyDMArchiverTimePlot.getCurves"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getCurves">[docs]</a>    <span class="k">def</span> <span class="nf">getCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
