@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.archiver_time_plot &mdash; PyDM v1.14.0+3.g0aada217 documentation</title>
+  <title>pydm.widgets.archiver_time_plot &mdash; PyDM v1.14.0+16.g190439eb documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.14.0+3.g0aada217
+                v1.14.0+16.g190439eb
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -163,11 +163,13 @@
 
 <div class="viewcode-block" id="ArchivePlotCurveItem.setArchiveChannel"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setArchiveChannel">[docs]</a>    <span class="k">def</span> <span class="nf">setArchiveChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; Creates the channel for the input address for communicating with the archiver appliance plugin. &quot;&quot;&quot;</span>
+        <span class="n">archiver_prefix</span> <span class="o">=</span> <span class="s1">&#39;archiver://pv=&#39;</span>
         <span class="k">if</span> <span class="n">address</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;ca://&#39;</span><span class="p">):</span>
-            <span class="n">archive_address</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;ca://&#39;</span><span class="p">,</span> <span class="s1">&#39;archiver://pv=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">archive_address</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;ca://&#39;</span><span class="p">,</span> <span class="n">archiver_prefix</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">address</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;pva://&#39;</span><span class="p">):</span>
+            <span class="n">archive_address</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;pva://&#39;</span><span class="p">,</span> <span class="n">archiver_prefix</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid address format for archiver appliance: </span><span class="si">{</span><span class="n">address</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="k">return</span>
+            <span class="n">archive_address</span> <span class="o">=</span> <span class="n">archiver_prefix</span> <span class="o">+</span> <span class="n">address</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_channel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">archive_address</span><span class="p">,</span>
                                            <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiveArchiveData</span><span class="p">,</span>
