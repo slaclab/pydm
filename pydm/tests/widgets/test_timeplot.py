@@ -206,4 +206,3 @@ def test_pydmtimeplot_construct(qtbot):
 
     assert isinstance(pydm_timeplot._bottom_axis, AxisItem)
     assert pydm_timeplot._bottom_axis.orientation == "bottom"
-    assert pydm_timeplot._left_axis.orientation == "left"
