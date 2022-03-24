@@ -1,8 +1,4 @@
 import weakref
-try:
-    from html import escape  # Python 3
-except ImportError:
-    from cgi import escape  # Can't only use this since it was removed in Python 3.8 and up
 from collections import Counter
 from pyqtgraph import PlotItem, ViewBox
 from .multi_axis_viewbox import MultiAxisViewBox
@@ -159,14 +155,12 @@ class MultiAxisPlot(PlotItem):
         if self.ctrl.averageGroup.isChecked():
             self.addAvgCurve(plotDataItem)
 
-        if plotDataItem.name():
-            if axisToLink.labelText:
-                # Joins together the labels from the curves for display on their shared axis. The label
-                # text expects html, so this will set it to be, for example, "label 1  &  label 2"
-                axisToLink.setLabel(escape(axisToLink.labelText + ' & ' + plotDataItem.name()),
-                                    color=plotDataItem.color_string)
-            else:
-                axisToLink.setLabel(plotDataItem.name(), color=plotDataItem.color_string)
+        if plotDataItem.name() and not axisToLink.labelText:
+            axisToLink.setLabel(plotDataItem.name(), color=plotDataItem.color_string)
+        elif axisToLink.labelText and plotDataItem.color_string and axisToLink.labelStyle['color'] == '#969696':
+            # The color for the axis was not specified by the user (#969696 is default) so set it appropriately
+            axisToLink.labelStyle['color'] = plotDataItem.color_string
+            axisToLink._updateLabel()
         if self.legend is not None and plotDataItem.name():
             self.legend.addItem(plotDataItem, name=plotDataItem.name())
 

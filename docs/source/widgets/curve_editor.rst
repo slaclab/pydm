@@ -30,7 +30,7 @@ The following is a description of some of the columns available in the editor, f
 
 
 * Label
-   The label that will be applied to this curve, both in the  legend and on the y-axis
+   The label that will be applied to this curve shown in the legend.
 
 * Y-Axis Name
    The name of the y-axis that will be assigned to this curve. It may be named anything you
@@ -48,6 +48,9 @@ And for the axes tab:
 
 * Y-Axis Orientation
    A simple option for placing the y-axis either on the left or the right of the plot.
+
+* Y-Axis Label
+   The label that will be displayed along this axis.
 
 * Min Y Range
    The minimum value that will be displayed on the axis. Can be left to its default if using auto range.
