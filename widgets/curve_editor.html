@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plot Curve Editor &mdash; PyDM v1.14.0+24.gae1ba5f1 documentation</title>
+  <title>Plot Curve Editor &mdash; PyDM v1.14.0+34.g4cbc0b0b documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.14.0+24.gae1ba5f1
+                v1.14.0+34.g4cbc0b0b
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -59,7 +59,10 @@
 <li class="toctree-l2"><a class="reference internal" href="index.html#display-widgets">Display Widgets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#input-widgets">Input Widgets</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#plot-widgets">Plot Widgets</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Plot Curve Editor</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Plot Curve Editor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bar-graphs">Bar Graphs</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="scatterplot.html">PyDMScatterPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scatterplot.html#scatterplotcurveitem">ScatterPlotCurveItem</a></li>
 <li class="toctree-l3"><a class="reference internal" href="timeplot.html">PyDMTimePlot</a></li>
@@ -133,7 +136,7 @@ error prone, PyDM offers the Plot Curve Editor extension which can be invoked
 via a Right-click and selecting the “Edit Curves…” item in the context menu
 that pops-up.</p>
 <figure class="align-center" id="id1">
-<a class="reference internal image-reference" href="../_images/curve_editor.gif"><img alt="Curve Editor in Action" src="../_images/curve_editor.gif" style="width: 844.0px; height: 560.0px;" /></a>
+<a class="reference internal image-reference" href="../_images/curve_editor.gif"><img alt="Curve Editor in Action" src="../_images/curve_editor.gif" style="width: 831.0px; height: 497.0px;" /></a>
 <figcaption>
 <p><span class="caption-text">This animation demonstrates how to use the Curve Editor that is common to
 all the PyDM plot widgets.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
@@ -147,6 +150,12 @@ all the PyDM plot widgets.</span><a class="headerlink" href="#id1" title="Permal
 <span class="n">Channel</span> <span class="n">Access</span> <span class="n">Example</span><span class="p">:</span> <span class="n">ca</span><span class="p">:</span><span class="o">//</span><span class="n">MTEST</span><span class="p">:</span><span class="n">CosVal</span>
 </pre></div>
 </div>
+</li>
+<li><dl class="simple">
+<dt>Style</dt><dd><p>Whether to render the curve as points/lines or bars. Only applicable to waveform and time plots,
+see the section on bar graphs below for more details.</p>
+</dd>
+</dl>
 </li>
 <li><dl class="simple">
 <dt>Label</dt><dd><p>The label that will be applied to this curve shown in the legend.</p>
@@ -207,6 +216,40 @@ within those values.</p>
 In this case you will need to serialize the list of JSON strings and use the
 <code class="docutils literal notranslate"><span class="pre">setAxes</span></code> and  <code class="docutils literal notranslate"><span class="pre">setCurves</span></code> property to configure the plot properly.</p>
 </div>
+<section id="bar-graphs">
+<h2>Bar Graphs<a class="headerlink" href="#bar-graphs" title="Permalink to this headline"></a></h2>
+<p>By selecting “Bar” from the style drop-down as described above, a curve can be plotted as a bar
+graph for waveform and time plots. This style of plot will have four additional options that may be set:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Bar Width</dt><dd><p>The width of each bar rendered on the plot. Will default to 1 if not set.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Upper Limit</dt><dd><p>An optional column, set to a number. Any bar which exceeds this number will be drawn in the alternate limit color. Useful
+to draw attention to bars exceeding an expected upper limit. Simply leave it blank if this functionality
+is not needed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Lower Limit</dt><dd><p>Same as the upper limit, except on the lower side. Any bar below this limit will be drawn
+in the alternate limit color. May also be left blank if not needed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Limit Color</dt><dd><p>The color to draw any bar which exceeds either limit described above.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>These options will not be displayed unless at least one curve in the editor has been set to the bar
+graph style in order to reduce clutter. A plot in which both styles are combined will work just fine.
+All options for both line styles and bar styles will be displayed in that case, and options that make
+sense for only a specific style of plot will only be applied to curves matching that style.</p>
+</section>
 </section>
 
 

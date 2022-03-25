@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.archiver_time_plot &mdash; PyDM v1.14.0+24.gae1ba5f1 documentation</title>
+  <title>pydm.widgets.archiver_time_plot &mdash; PyDM v1.14.0+34.g4cbc0b0b documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.14.0+24.gae1ba5f1
+                v1.14.0+34.g4cbc0b0b
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -250,7 +250,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">+=</span> <span class="n">archive_data_length</span> <span class="o">-</span> <span class="n">num_points_deleted</span></div>
 
 <div class="viewcode-block" id="ArchivePlotCurveItem.redrawCurve"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.redrawCurve">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
-    <span class="k">def</span> <span class="nf">redrawCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">redrawCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_x</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Redraw the curve with any new data added since the last draw call.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
