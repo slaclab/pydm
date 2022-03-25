@@ -3,14 +3,13 @@ import logging
 
 from pydm.widgets.timeplot import PyDMTimePlot
 from pydm.widgets.waveformplot import WaveformCurveItem
-
-logger = logging.getLogger(__name__)
-
 from qtpy.QtGui import QColor
 from qtpy.QtCore import QTimer, Qt
 
 from collections import OrderedDict
-from ...widgets.baseplot import BasePlotCurveItem, BasePlot, NoDataError
+from ...widgets.baseplot import BasePlotCurveItem, BasePlot
+
+logger = logging.getLogger(__name__)
 
 
 @pytest.mark.parametrize("color, line_style, line_width, name", [
@@ -18,8 +17,6 @@ from ...widgets.baseplot import BasePlotCurveItem, BasePlot, NoDataError
     (None, Qt.DashLine, 10, ""),
     (None, None, None, None)
 ])
-
-
 def test_baseplotcurveitem_construct(qtbot, color, line_style, line_width, name):
     base_plotcurve_item = BasePlotCurveItem(color, line_style, line_width, name=name)
 

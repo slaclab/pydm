@@ -1,7 +1,8 @@
 import time
 import json
 from collections import OrderedDict
-from pyqtgraph import ViewBox, AxisItem
+from typing import Optional
+from pyqtgraph import BarGraphItem, ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Signal, Slot, Property, QTimer
@@ -38,6 +39,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
         If True, the x-axis shows timestamps as ticks, and those timestamps
         scroll to the left as time progresses.  If False, the x-axis tick marks
         show time relative to the current time.
+    plot_style: str, optional
+        Currently one of either 'Line' or 'Bar'. Determines how data points for this
+        curve will be plotted. Defaults to a line based plot if not set
     color : QColor, optional
         The color used to draw the curve line and the symbols.
     lineStyle: int, optional
@@ -52,7 +56,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
     """
     _channels = ('channel',)
 
-    def __init__(self, channel_address=None, plot_by_timestamps=True, **kws):
+    def __init__(self, channel_address=None, plot_by_timestamps=True, plot_style='Line', **kws):
         """
         Parameters
         ----------
@@ -74,6 +78,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
         # Keep the x-axis moving with latest timestamps as ticks
         self._plot_by_timestamps = plot_by_timestamps
 
+        self.plot_style = plot_style
+
         self._bufferSize = MINIMUM_BUFFER_SIZE
         self._update_mode = PyDMTimePlot.SynchronousMode
 
@@ -89,7 +95,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
         super(TimePlotCurveItem, self).__init__(**kws)
 
     def to_dict(self):
-        dic_ = OrderedDict([("channel", self.address), ])
+        dic_ = OrderedDict([("channel", self.address),
+                            ("plot_style", self.plot_style)])
         dic_.update(super(TimePlotCurveItem, self).to_dict())
         return dic_
 
@@ -244,7 +251,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
             self.initialize_buffer()
 
     @Slot()
-    def redrawCurve(self):
+    def redrawCurve(self, min_x: Optional[float] = None, max_x: Optional[float] = None):
         """
         Redraw the curve with the new data.
 
@@ -253,6 +260,13 @@ class TimePlotCurveItem(BasePlotCurveItem):
         On the other hand, if plot by relative time, take the time diff from
         the starting time of the curve, and plot the data to the time diff
         position on the x-axis.
+
+        Parameters
+        ----------
+        min_x: float, optional
+            The minimum timestamp to render when plotting as a bar graph.
+        max_x: float, optional
+            The maximum timestamp to render when plotting as a bar graph.
         """
         try:
             x = self.data_buffer[0, -self.points_accumulated:].astype(np.float)
@@ -261,10 +275,34 @@ class TimePlotCurveItem(BasePlotCurveItem):
             if not self._plot_by_timestamps:
                 x -= time.time()
 
-            self.setData(y=y, x=x)
+            if self.plot_style is None or self.plot_style == 'Line':
+                self.setData(y=y, x=x)
+            elif self.plot_style == 'Bar':
+                # In cases where the buffer size is large, we don't want to render 10,000+ bars on every update
+                # if only a fraction of those are actually visible. These 2 indices represent the visible range
+                # of the plot, and we will only render bars within that range.
+                min_index = np.searchsorted(x, min_x)
+                max_index = np.searchsorted(x, max_x) + 1
+                self._setBarGraphItem(x=x[min_index:max_index], y=y[min_index:max_index])
         except (ZeroDivisionError, OverflowError):
             # Solve an issue with pyqtgraph and initial downsampling
             pass
+
+    def _setBarGraphItem(self, x, y):
+        """ Set the plots points to render as bars. No need to call this directly as it will automatically
+            be handled by redrawCurve() """
+        if self.points_accumulated == 0 or len(x) == 0 or len(y) == 0:
+            return
+
+        brushes = np.array([self.color] * len(x))
+
+        if self.threshold_color is not None:
+            if self.upper_threshold is not None:
+                brushes[np.argwhere(y > self.upper_threshold)] = self.threshold_color
+            if self.lower_threshold is not None:
+                brushes[np.argwhere(y < self.lower_threshold)] = self.threshold_color
+
+        self.bar_graph_item.setOpts(x=x, height=y, brushes=brushes)
 
     def setUpdatesAsynchronously(self, value):
         if value is True:
@@ -276,6 +314,17 @@ class TimePlotCurveItem(BasePlotCurveItem):
     def resetUpdatesAsynchronously(self):
         self._update_mode = PyDMTimePlot.SynchronousMode
         self.initialize_buffer()
+
+    def min_x(self):
+        """
+        Provide the the oldest valid timestamp from the data buffer.
+
+        Returns
+        -------
+        float
+            The timestamp of the most recent data point recorded into the data buffer.
+        """
+        return self.data_buffer[0, -self.points_accumulated]
 
     def max_x(self):
         """
@@ -388,9 +437,10 @@ class PyDMTimePlot(BasePlot):
         # This function gets called by PyDMTimePlot's designer plugin.
         self.redraw_timer.setSingleShot(True)
 
-    def addYChannel(self, y_channel=None, name=None, color=None,
-                    lineStyle=None, lineWidth=None, symbol=None,
-                    symbolSize=None, yAxisName=None, useArchiveData=False):
+    def addYChannel(self, y_channel=None, plot_style=None, name=None, color=None,
+                    lineStyle=None, lineWidth=None, symbol=None, symbolSize=None,
+                    barWidth=None, upperThreshold=None, lowerThreshold=None, thresholdColor=None,
+                    yAxisName=None, useArchiveData=False):
         """
         Adds a new curve to the current plot
 
@@ -398,6 +448,8 @@ class PyDMTimePlot(BasePlot):
         ----------
         y_channel : str
             The PV address
+        plot_style : str, optional
+            The style in which to render the data, either 'Line' or 'Bar'
         name : str
             The name of the curve (usually made the same as the PV address)
         color : QColor
@@ -411,6 +463,14 @@ class PyDMTimePlot(BasePlot):
             triangle, star, etc.
         symbolSize : int
             How big the symbols should be
+        barWidth: float, optional
+            Width of any bars drawn on the plot
+        upperThreshold: float, optional
+            Bars that are above this value will be drawn in the threshold color
+        lowerThreshold: float, optional
+            Bars that are below this value will be drawn in the threshold color
+        thresholdColor: QColor, optional
+            Color to draw bars that exceed either threshold
         yAxisName : str
             The name of the y axis to associate with this curve. Will be created if it
             doesn't yet exist
@@ -430,21 +490,31 @@ class PyDMTimePlot(BasePlot):
             plot_opts['lineWidth'] = lineWidth
 
         # Add curve
-        new_curve = self.createCurveItem(y_channel, self._plot_by_timestamps, name, color=color,
-                                         yAxisName=yAxisName, useArchiveData=useArchiveData, **plot_opts)
+        new_curve = self.createCurveItem(y_channel=y_channel, plot_by_timestamps=self._plot_by_timestamps,
+                                         plot_style=plot_style, name=name, color=color, yAxisName=yAxisName,
+                                         useArchiveData=useArchiveData, **plot_opts)
         new_curve.setUpdatesAsynchronously(self.updatesAsynchronously)
         new_curve.setBufferSize(self._bufferSize)
 
         self.update_timer.timeout.connect(new_curve.asyncUpdate)
+        if plot_style == 'Bar':
+            if barWidth is None:
+                barWidth = 1.0  # Can't use default since it can be explicitly set to None and avoided
+            new_curve.bar_graph_item = BarGraphItem(x=[], height=[], width=barWidth, brush=color)
+            new_curve.setBarGraphInfo(barWidth, upperThreshold, lowerThreshold, thresholdColor)
         self.addCurve(new_curve, curve_color=color, y_axis_name=yAxisName)
+        if new_curve.bar_graph_item is not None:
+            # Must happen after addCurve() so that the view box has been created
+            new_curve.getViewBox().addItem(new_curve.bar_graph_item)
 
         new_curve.data_changed.connect(self.set_needs_redraw)
         self.redraw_timer.start()
 
         return new_curve
 
-    def createCurveItem(self, y_channel, plot_by_timestamps, name, color, yAxisName, useArchiveData, **plot_opts):
-        return TimePlotCurveItem(y_channel, plot_by_timestamps=plot_by_timestamps,
+    def createCurveItem(self, y_channel, plot_by_timestamps, plot_style, name,
+                        color, yAxisName, useArchiveData, **plot_opts):
+        return TimePlotCurveItem(y_channel, plot_by_timestamps=plot_by_timestamps, plot_style=plot_style,
                                  name=name, color=color, yAxisName=yAxisName, **plot_opts)
 
     def removeYChannel(self, curve):
@@ -488,9 +558,11 @@ class PyDMTimePlot(BasePlot):
             return
 
         self.updateXAxis()
-
+        # The minimum and maximum x-axis timestamps visible to the user
+        min_x = self.plotItem.getViewBox().state['viewRange'][0][0]
+        max_x = self.plotItem.getViewBox().state['viewRange'][0][1]
         for curve in self._curves:
-            curve.redrawCurve()
+            curve.redrawCurve(min_x=min_x, max_x=max_x)
             self.plot_redrawn_signal.emit(curve)
         self._needs_redraw = False
 
@@ -557,14 +629,23 @@ class PyDMTimePlot(BasePlot):
         self.clearCurves()
         for d in new_list:
             color = d.get('color')
+            thresholdColor = d.get('thresholdColor')
             if color:
                 color = QColor(color)
+            if thresholdColor:
+                thresholdColor = QColor(thresholdColor)
             self.addYChannel(d['channel'],
-                             name=d.get('name'), color=color,
+                             plot_style=d.get('plot_style'),
+                             name=d.get('name'),
+                             color=color,
                              lineStyle=d.get('lineStyle'),
                              lineWidth=d.get('lineWidth'),
                              symbol=d.get('symbol'),
                              symbolSize=d.get('symbolSize'),
+                             barWidth=d.get('barWidth'),
+                             upperThreshold=d.get('upperThreshold'),
+                             lowerThreshold=d.get('lowerThreshold'),
+                             thresholdColor=thresholdColor,
                              yAxisName=d.get('yAxisName'))
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
@@ -601,10 +682,12 @@ class PyDMTimePlot(BasePlot):
         curve = self.findCurve(curve.channel)
         if curve:
             self.removeYChannel(curve)
-            self.addYChannel(y_channel=curve.address, color=curve.color,
+            self.addYChannel(y_channel=curve.address, plot_style=curve.plot_style, color=curve.color,
                              name=curve.address, lineStyle=curve.lineStyle,
                              lineWidth=curve.lineWidth, symbol=curve.symbol,
-                             symbolSize=curve.symbolSize, yAxisName=curve.y_axis_name)
+                             symbolSize=curve.symbolSize, barWidth=curve.bar_width,
+                             upperThreshold=curve.upper_threshold, lowerThreshold=curve.lower_threshold,
+                             thresholdColor=curve.threshold_color, yAxisName=curve.y_axis_name)
 
     def addLegendItem(self, item, pv_name, force_show_legend=False):
         """

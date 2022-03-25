@@ -8,6 +8,7 @@ from qtpy.QtWidgets import QToolTip
 from .. import utilities
 from pyqtgraph import AxisItem, PlotWidget, PlotDataItem, mkPen, ViewBox, InfiniteLine, SignalProxy
 from collections import OrderedDict
+from typing import Optional
 from .base import PyDMPrimitiveWidget, widget_destroyed
 from .multi_axis_plot import MultiAxisPlot
 
@@ -68,6 +69,7 @@ class BasePlotCurveItem(PlotDataItem):
 
     def __init__(self, color=None, lineStyle=None, lineWidth=None, yAxisName=None, **kws):
         self._color = QColor('white')
+        self._thresholdColor = QColor('white')
         self._pen = mkPen(self._color)
         if lineWidth is not None:
             self._pen.setWidth(lineWidth)
@@ -83,6 +85,13 @@ class BasePlotCurveItem(PlotDataItem):
             self._y_axis_name = 'Axis 1'
         else:
             self._y_axis_name = yAxisName
+
+        # Bar related items will only be set if the user wants to render the plot as a bar graph
+        self.bar_width = None
+        # Value above or below these thresholds will be drawn in the threshold color on bar graphs
+        self.upper_threshold = None
+        self.lower_threshold = None
+        self.bar_graph_item = None
 
         if hasattr(self, "channels"):
             self.destroyed.connect(functools.partial(widget_destroyed,
@@ -145,6 +154,42 @@ class BasePlotCurveItem(PlotDataItem):
         self._pen.setColor(self._color)
         self.setPen(self._pen)
         self.setSymbolPen(self._color)
+
+    @property
+    def threshold_color_string(self) -> str:
+        """
+        A string representation of the threshold color used for the bar graph.  This string
+        will be a hex color code, like #FF00FF, or an SVG spec color name, if
+        a name exists for the color.
+
+        Returns
+        -------
+        str
+        """
+        return str(utilities.colors.svg_color_from_hex(self.threshold_color.name(),
+                                                       hex_on_fail=True))
+
+    @property
+    def threshold_color(self) -> QColor:
+        """
+        The color used for bars exceeding either the upper or lower thresholds.
+
+        Returns
+        -------
+        QColor
+        """
+        return self._thresholdColor
+
+    @threshold_color.setter
+    def threshold_color(self, new_color: QColor):
+        """
+        Set the color used for bars exceeding either the upper or lower thresholds.
+
+        Parameters
+        -------
+        new_color: QColor
+        """
+        self._thresholdColor = new_color
 
     @property
     def y_axis_name(self):
@@ -268,6 +313,29 @@ class BasePlotCurveItem(PlotDataItem):
         """
         self.setSymbolSize(int(new_size))
 
+    def setBarGraphInfo(self, bar_width: Optional[float] = 1.0, upper_threshold: Optional[float] = None,
+                        lower_threshold: Optional[float] = None, color: Optional[QColor] = None) -> None:
+        """
+        Set the attributes associated with displaying a plot as a bar graph. These will only be set
+        if the plot is to be rendered as a bar graph. And any or all of them may be omitted even if it
+        is a bar graph. Omitting color parameters will result in the plot displaying a uniform color.
+
+        Parameters
+        ----------
+        bar_width: float, optional
+            The width of all bars displayed on the plot
+        upper_threshold: float, optional
+            Any bar above this value will be drawn in the threshold color
+        lower_threshold: float, optional
+            Any bar below this value will be drawn in the threshold color.
+        color: QColor, optional
+            The color to draw bars exceeding either threshold in.
+        """
+        self.bar_width = bar_width
+        self.upper_threshold = upper_threshold
+        self.lower_threshold = lower_threshold
+        self.threshold_color = color
+
     def to_dict(self):
         """
         Returns an OrderedDict representation with values for all properties
@@ -283,7 +351,11 @@ class BasePlotCurveItem(PlotDataItem):
                             ("lineWidth", self.lineWidth),
                             ("symbol", self.symbol),
                             ("symbolSize", self.symbolSize),
-                            ("yAxisName", self.y_axis_name)])
+                            ("yAxisName", self.y_axis_name),
+                            ("barWidth", self.bar_width),
+                            ("upperThreshold", self.upper_threshold),
+                            ("lowerThreshold", self.lower_threshold),
+                            ("thresholdColor", self.threshold_color_string)])
 
     def close(self):
         pass
