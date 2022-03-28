@@ -1,9 +1,10 @@
 import logging
 
+from .archiverplot import ArchiverPlot
 from .qtplugin_base import qtplugin_factory, WidgetCategory
 from .qtplugin_extensions import (RulesExtension, WaveformCurveEditorExtension,
                                   TimeCurveEditorExtension,
-                                  ScatterCurveEditorExtension, SymbolExtension)
+                                  ScatterCurveEditorExtension, SymbolExtension, ArchiverCurveEditorExtension)
 from .tab_bar_qtplugin import TabWidgetPlugin
 from .byte import PyDMByteIndicator
 
@@ -244,3 +245,10 @@ PyDMTemplateRepeaterPlugin = qtplugin_factory(PyDMTemplateRepeater,
 PyDMTerminatorPlugin = qtplugin_factory(PyDMTerminator,
                                         group=WidgetCategory.MISC,
                                         extensions=BASE_EXTENSIONS)
+
+# Archiver Plot Plugin
+ArchiverPlotPlugin = qtplugin_factory(ArchiverPlot,
+                                      group=WidgetCategory.PLOT,
+                                      extensions=[ArchiverCurveEditorExtension,
+                                                  RulesExtension],
+                                      icon=ifont.icon("chart-line"))
