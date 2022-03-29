@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.embedded_display &mdash; PyDM v1.14.0+34.g4cbc0b0b documentation</title>
+  <title>pydm.widgets.embedded_display &mdash; PyDM v1.14.0+36.g536d72d5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.14.0+34.g4cbc0b0b
+                v1.14.0+36.g536d72d5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -154,14 +154,40 @@
     <span class="k">def</span> <span class="nf">init_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">Box</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMEmbeddedDisplay.minimumSizeHint"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.minimumSizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">minimumSizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.sizePolicy"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.sizePolicy">[docs]</a>    <span class="k">def</span> <span class="nf">sizePolicy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This property holds the recommended minimum size for the widget.</span>
+<span class="sd">        This holds the sizePolicy for the widget.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QSize</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="o">.</span><span class="n">sizePolicy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">sizePolicy</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.sizeHint"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.sizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This holds the recommended size for the widget.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        QSize</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="o">.</span><span class="n">sizeHint</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.minimumSizeHint"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.minimumSizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">minimumSizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This holds the recommended minimum size for the widget.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        QSize</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span><span class="o">.</span><span class="n">minimumSizeHint</span><span class="p">()</span>
         <span class="c1"># This is totally arbitrary, I just want *some* visible nonzero size</span>
         <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></div>
 
