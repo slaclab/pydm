@@ -1,7 +1,6 @@
 from qtpy.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
 from qtpy import QtWidgets, QtCore
 
-from .archiverplot_curve_editor import ArchiverPlotCurveEditorDialog
 from ..widgets.base import PyDMPrimitiveWidget
 
 from ..widgets.rules_editor import RulesEditor
@@ -128,6 +127,3 @@ class ScatterCurveEditorExtension(BasePlotExtension):
         super(ScatterCurveEditorExtension, self).__init__(widget, ScatterPlotCurveEditorDialog)
 
 
-class ArchiverCurveEditorExtension(BasePlotExtension):
-    def __init__(self, widget):
-        super(ArchiverCurveEditorExtension, self).__init__(widget, ArchiverPlotCurveEditorDialog)
