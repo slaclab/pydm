@@ -5,7 +5,7 @@ import weakref
 
 from qtpy.QtCore import QThread, QMutex, Signal, QMutexLocker
 from qtpy.QtWidgets import QWidget, QApplication
-
+from ..utilities import is_pydm_app, is_qt_designer
 from .channel import PyDMChannel
 
 import pydm.data_plugins
@@ -219,6 +219,9 @@ class RulesEngine(QThread):
         del w_data
 
     def run(self):
+        if is_qt_designer():
+            return
+
         while not self.isInterruptionRequested():
             w_map = self.widget_map.copy()
             for widget_ref, rules in w_map.items():
