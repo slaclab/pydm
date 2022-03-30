@@ -67,7 +67,13 @@ clicking on the **Remove Rule** sign.
    The ``Trigger`` option defines if the expression will be evaluated or not when
    this channel's value is changed. At least one channel must be marked as ``Trigger``.
 
-   With the channel(s) added it is time to create the expression.
+   The ``Enum?`` option defines if the channel's value will be converted to its
+   enumeration string value (when possible). When checked and a conversion is
+   possible, the expression should work with a text comparison. (NOTE: Uncheck
+   this when using MEDM calculation expressions, which always use the default
+   data type from the channel, to prevent automatic conversion to a text value.)
+
+   With the channel(s) added, it is time to create the expression.
 
 - **Initial Value**
    The value set here will be sent to the widget upon instantiation of the Rule.
@@ -86,7 +92,8 @@ clicking on the **Remove Rule** sign.
    the expected data type for the given property.
 
    It is the user responsibility to cast the data properly and ensure that the
-   proper data type or equivalent is the result of the evaluation.
+   proper data type or equivalent is the result of the evaluation.  (See the
+   ``Enum?`` option above.)
 
    In order to get data from the ``channels`` configured before, one must use the
    special function ``ch[...]`` and specify the ``channel index`` according to the

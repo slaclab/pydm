@@ -1,14 +1,14 @@
 import pytest
-from pyqtgraph import AxisItem
-from ...widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem, MINIMUM_BUFFER_SIZE, DEFAULT_BUFFER_SIZE
-
 import logging
-logger = logging.getLogger(__name__)
-
 import numpy as np
 from collections import OrderedDict
+from pyqtgraph import AxisItem, BarGraphItem
+from unittest import mock
 from ...widgets.channel import PyDMChannel
+from ...widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem, MINIMUM_BUFFER_SIZE, DEFAULT_BUFFER_SIZE
 from ...utilities import remove_protocol
+
+logger = logging.getLogger(__name__)
 
 
 @pytest.mark.parametrize("channel_address, name", [
@@ -55,6 +55,7 @@ def test_timeplotcurveitem_to_dict(qtbot, channel_address, name):
     else:
         assert pydm_timeplot_curve_item.to_dict()["name"] == remove_protocol(channel_address) if channel_address else \
             not pydm_timeplot_curve_item.to_dict()["name"]
+
 
 @pytest.mark.parametrize("new_address", [
     "new_address",
@@ -154,6 +155,7 @@ def test_timeplotcurveitem_async_update(qtbot, signals, async_update, new_data):
     else:
         assert pydm_timeplot_curve_item.points_accumulated == 2
 
+
 def test_timeplotcurve_initialize_buffer(qtbot):
     pydm_timeplot_curve_item = TimePlotCurveItem()
 
@@ -206,4 +208,44 @@ def test_pydmtimeplot_construct(qtbot):
 
     assert isinstance(pydm_timeplot._bottom_axis, AxisItem)
     assert pydm_timeplot._bottom_axis.orientation == "bottom"
-    assert pydm_timeplot._left_axis.orientation == "left"
+
+
+@mock.patch('pydm.widgets.timeplot.TimePlotCurveItem.setData')
+@mock.patch('pyqtgraph.BarGraphItem.setOpts')
+def test_redraw_plot(mocked_set_opts, mocked_set_data, qtbot, monkeypatch):
+    """ Test redrawing a time plot using both a line and a bar graph """
+
+    # Create a time plot and add two data items to it, one to be rendered as a line and one as a bar graph
+    time_plot = PyDMTimePlot()
+    line_item = TimePlotCurveItem()
+    bar_item = TimePlotCurveItem(plot_style='Bar')
+    bar_item.bar_graph_item = BarGraphItem(x=[], height=[], width=1.0)
+    time_plot.addCurve(line_item)
+    time_plot.addCurve(bar_item)
+
+    # Setup some mock data for our data items
+    line_item.data_buffer = np.array([[1, 5, 10], [10, 15, 12]], dtype=float)
+    line_item.points_accumulated = 3
+    bar_item.data_buffer = np.array([[0.5, 1, 1.5, 2, 10, 11], [45, 50, 52, 40, 24, 30]], dtype=float)
+    bar_item.points_accumulated = 6
+
+    time_plot.set_needs_redraw()
+    time_plot.plotItem.setXRange(1, 10)  # Sets the visible x-range of this time plot
+
+    monkeypatch.setattr(time_plot, 'updateXAxis', lambda: None)  # Ensure the view box range is deterministic
+
+    # Simulate a redraw of the plot
+    time_plot.redrawPlot()
+
+    # The line item should result in a call to set data displaying all available data points as defined above
+    assert np.array_equal(mocked_set_data.call_args_list[2][1]['x'], np.array([1, 5, 10]))
+    assert np.array_equal(mocked_set_data.call_args_list[2][1]['y'], np.array([10, 15, 12]))
+
+    # Because we want to limit rendering of bar graphs to only those data points which are visible, we should
+    # see a call made with only 4 of the 6 data points. The data points associated with the x values 0.5 and 11
+    # were omitted since they fell outside the viewable range of 1 to 10.
+    assert np.array_equal(mocked_set_opts.call_args_list[1][1]['x'], np.array([1, 1.5, 2, 10]))
+    assert np.array_equal(mocked_set_opts.call_args_list[1][1]['height'], np.array([50, 52, 40, 24]))
+
+    # After a call to redraw, the plot returns to this state until more data arrives
+    assert not time_plot._needs_redraw

@@ -88,7 +88,7 @@ Attributes      Description                         Type         Format Example
 Here is a simple example of a channel address format with some optional attributes:
 ::
 	
-	loc://my.float?type=float&init=1&extras=True&precision=3&unit=V
+	loc://my.float?type=float&init=1&precision=3&unit=V
 
 -------------
 
@@ -137,7 +137,7 @@ Attributes      Description                         Type          Format Example
 Here is a simple example with array + extras:
 ::
 
-	 loc://my_ndarray?type=array&init=[1,2,3,2]&extras=True&dtype=float64&copy=False&order=C&ndmin=0&subok=true
+	 loc://my_ndarray?type=array&init=[1,2,3,2]&dtype=float64&copy=False&order=C&ndmin=0&subok=true
 
 
 ------------
@@ -149,9 +149,9 @@ Simple Local Data Plugin Example
 
 The picture below represents a simple example using the Local Data Plugin, where a Waveform Curve Editor has two local data plugin channels::
 
-	loc://y?type=array&init=[1,2,3,4,5,6]&extras=True&dtype=float64
+	loc://y?type=array&init=[1,2,3,4,5,6]&dtype=float64
 
-	loc://x?type=array&init=[1,2,3,4,5,6]&extras=True&dtype=float64
+	loc://x?type=array&init=[1,2,3,4,5,6]&dtype=float64
 
 Right below the Waveform Curve Editor widget, there are two other widgets connected to the 'x' and 'y' local variable respectively::
 
@@ -175,7 +175,7 @@ Data can be updated in the two X and Y-values widgets and the Waveform Curve Edi
 Miscellaneous
 -------------
 
-* If precision is not sent through the "extras", and it is set to receive the precision from the PV (Process Variable), the Local Data Plugin will match the precision from the values inserted by the users in the widgets.
+* If precision is not set through the "extras", and it is set to receive the precision from the PV (Process Variable), the Local Data Plugin will match the precision from the values inserted by the users in the widgets.
 
 
 

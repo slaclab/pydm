@@ -204,3 +204,4 @@ class PyDMPlugin(object):
                 if self.connections[connection_id].listener_count < 1:
                     self.connections[connection_id].deleteLater()
                     del self.connections[connection_id]
+

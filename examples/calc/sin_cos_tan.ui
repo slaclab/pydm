@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>303</width>
+    <height>806</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,1,1,1">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Angle:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="PyDMLabel" name="PyDMLabel">
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="channel" stdset="0">
+        <string>ca://DEMO:ANGLE</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="PyDMScatterPlot" name="PyDMScatterPlot">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="showXGrid">
+      <bool>true</bool>
+     </property>
+     <property name="showYGrid">
+      <bool>true</bool>
+     </property>
+     <property name="showRightAxis">
+      <bool>false</bool>
+     </property>
+     <property name="title" stdset="0">
+      <string>Angle</string>
+     </property>
+     <property name="curves">
+      <stringlist>
+       <string>{&quot;y_channel&quot;: &quot;calc://circley?angle=ca://DEMO:ANGLE&amp;expr=math.sin(math.radians(180-angle))&quot;, &quot;x_channel&quot;: &quot;calc://circleX?angle=ca://DEMO:ANGLE&amp;expr=-1*math.cos(math.radians(180-angle))&quot;, &quot;name&quot;: &quot;Angle&quot;, &quot;color&quot;: &quot;#ffd509&quot;, &quot;lineStyle&quot;: 0, &quot;lineWidth&quot;: 5, &quot;symbol&quot;: &quot;o&quot;, &quot;symbolSize&quot;: 5, &quot;redraw_mode&quot;: 3, &quot;buffer_size&quot;: 1}</string>
+      </stringlist>
+     </property>
+     <property name="autoRangeX">
+      <bool>false</bool>
+     </property>
+     <property name="minXRange">
+      <double>-1.100000000000000</double>
+     </property>
+     <property name="maxXRange">
+      <double>1.100000000000000</double>
+     </property>
+     <property name="autoRangeY">
+      <bool>false</bool>
+     </property>
+     <property name="minYRange">
+      <double>-1.100000000000000</double>
+     </property>
+     <property name="maxYRange">
+      <double>1.100000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMTimePlot" name="PyDMTimePlot">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="title" stdset="0">
+      <string>Sin &amp; Cos - IOC</string>
+     </property>
+     <property name="showLegend">
+      <bool>true</bool>
+     </property>
+     <property name="curves">
+      <stringlist>
+       <string>{&quot;channel&quot;: &quot;ca://DEMO:SIN&quot;, &quot;name&quot;: &quot;Sine&quot;, &quot;color&quot;: &quot;#23ff07&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: &quot;o&quot;, &quot;symbolSize&quot;: 3}</string>
+       <string>{&quot;channel&quot;: &quot;ca://DEMO:COS&quot;, &quot;name&quot;: &quot;Cosine&quot;, &quot;color&quot;: &quot;#1ff4ff&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: &quot;o&quot;, &quot;symbolSize&quot;: 3}</string>
+      </stringlist>
+     </property>
+     <property name="bufferSize">
+      <number>1000</number>
+     </property>
+     <property name="updatesAsynchronously">
+      <bool>false</bool>
+     </property>
+     <property name="timeSpan">
+      <double>40.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMTimePlot" name="PyDMTimePlot_3">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="title" stdset="0">
+      <string>Tan - IOC</string>
+     </property>
+     <property name="showLegend">
+      <bool>true</bool>
+     </property>
+     <property name="curves">
+      <stringlist>
+       <string>{&quot;channel&quot;: &quot;ca://DEMO:TAN&quot;, &quot;name&quot;: &quot;Tan&quot;, &quot;color&quot;: &quot;#f68608&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: &quot;o&quot;, &quot;symbolSize&quot;: 3}</string>
+      </stringlist>
+     </property>
+     <property name="bufferSize">
+      <number>1000</number>
+     </property>
+     <property name="updatesAsynchronously">
+      <bool>false</bool>
+     </property>
+     <property name="timeSpan">
+      <double>40.000000000000000</double>
+     </property>
+     <property name="autoRangeY">
+      <bool>false</bool>
+     </property>
+     <property name="minYRange">
+      <double>-10.000000000000000</double>
+     </property>
+     <property name="maxYRange">
+      <double>10.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMTimePlot" name="PyDMTimePlot_2">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="title" stdset="0">
+      <string>Tan - CalcPlugin</string>
+     </property>
+     <property name="showLegend">
+      <bool>true</bool>
+     </property>
+     <property name="curves">
+      <stringlist>
+       <string>{&quot;channel&quot;: &quot;calc://tanval?angle=ca://DEMO:ANGLE&amp;expr=tan(radians(angle)) if angle not in [90, 270] else None&quot;, &quot;name&quot;: &quot;Calc Tan&quot;, &quot;color&quot;: &quot;#fc0006&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: &quot;o&quot;, &quot;symbolSize&quot;: 3}</string>
+      </stringlist>
+     </property>
+     <property name="bufferSize">
+      <number>1000</number>
+     </property>
+     <property name="updatesAsynchronously">
+      <bool>false</bool>
+     </property>
+     <property name="timeSpan">
+      <double>40.000000000000000</double>
+     </property>
+     <property name="autoRangeY">
+      <bool>false</bool>
+     </property>
+     <property name="minYRange">
+      <double>-10.000000000000000</double>
+     </property>
+     <property name="maxYRange">
+      <double>10.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMLabel</class>
+   <extends>QLabel</extends>
+   <header>pydm.widgets.label</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMTimePlot</class>
+   <extends>QGraphicsView</extends>
+   <header>pydm.widgets.timeplot</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMScatterPlot</class>
+   <extends>QGraphicsView</extends>
+   <header>pydm.widgets.scatterplot</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

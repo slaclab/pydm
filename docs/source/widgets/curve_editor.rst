@@ -29,8 +29,12 @@ The following is a description of some of the columns available in the editor, f
    Channel Access Example: ca://MTEST:CosVal
 
 
+* Style
+   Whether to render the curve as points/lines or bars. Only applicable to waveform and time plots,
+   see the section on bar graphs below for more details.
+
 * Label
-   The label that will be applied to this curve, both in the  legend and on the y-axis
+   The label that will be applied to this curve shown in the legend.
 
 * Y-Axis Name
    The name of the y-axis that will be assigned to this curve. It may be named anything you
@@ -49,6 +53,9 @@ And for the axes tab:
 * Y-Axis Orientation
    A simple option for placing the y-axis either on the left or the right of the plot.
 
+* Y-Axis Label
+   The label that will be displayed along this axis.
+
 * Min Y Range
    The minimum value that will be displayed on the axis. Can be left to its default if using auto range.
 
@@ -65,3 +72,28 @@ And for the axes tab:
   This is not applicable for users interacting with widgets via Python code.
   In this case you will need to serialize the list of JSON strings and use the
   ``setAxes`` and  ``setCurves`` property to configure the plot properly.
+
+Bar Graphs
+++++
+By selecting "Bar" from the style drop-down as described above, a curve can be plotted as a bar
+graph for waveform and time plots. This style of plot will have four additional options that may be set:
+
+* Bar Width
+    The width of each bar rendered on the plot. Will default to 1 if not set.
+
+* Upper Limit
+    An optional column, set to a number. Any bar which exceeds this number will be drawn in the alternate limit color. Useful
+    to draw attention to bars exceeding an expected upper limit. Simply leave it blank if this functionality
+    is not needed.
+
+* Lower Limit
+    Same as the upper limit, except on the lower side. Any bar below this limit will be drawn
+    in the alternate limit color. May also be left blank if not needed.
+
+* Limit Color
+    The color to draw any bar which exceeds either limit described above.
+
+These options will not be displayed unless at least one curve in the editor has been set to the bar
+graph style in order to reduce clutter. A plot in which both styles are combined will work just fine.
+All options for both line styles and bar styles will be displayed in that case, and options that make
+sense for only a specific style of plot will only be applied to curves matching that style.
