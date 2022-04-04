@@ -41,8 +41,17 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         self.create_unit_options()
         self._display_format_type = self.DisplayFormat.Default
         self._string_encoding = "utf_8"
+        self._require_return = True
         if utilities.is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
+
+    @property(requireReturn)
+    def requireReturn(self):
+        return self._require_return
+
+    @requireReturn.setter
+    def set_requireReturn(self, bvalue):
+        self._require_return = bvalue
 
     @Property(DisplayFormat)
     def displayFormat(self):
@@ -272,7 +281,10 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         current channel value.
         """
         if self._display is not None:
-            self.setText(self._display)
+            if self._require_return:
+                self.setText(self._display)
+            else:
+                self.send_value()
         super(PyDMLineEdit, self).focusOutEvent(event)
 
     @staticmethod
