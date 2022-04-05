@@ -45,7 +45,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         if utilities.is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
 
-    @property
+    @Property(bool)
     def requireReturn(self):
         return self._require_return
 
