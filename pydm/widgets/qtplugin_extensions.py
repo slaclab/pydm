@@ -131,5 +131,3 @@ class TimeCurveEditorExtension(BasePlotExtension):
 class ScatterCurveEditorExtension(BasePlotExtension):
     def __init__(self, widget):
         super(ScatterCurveEditorExtension, self).__init__(widget, ScatterPlotCurveEditorDialog)
-
-
