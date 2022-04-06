@@ -2,8 +2,8 @@ import logging
 
 from .qtplugin_base import qtplugin_factory, WidgetCategory
 from .qtplugin_extensions import (RulesExtension, WaveformCurveEditorExtension,
-                                  TimeCurveEditorExtension,
-                                  ScatterCurveEditorExtension, SymbolExtension, ArchiverCurveEditorExtension)
+                                  TimeCurveEditorExtension, ArchiveTimeCurveEditorExtension, 
+                                  ScatterCurveEditorExtension, SymbolExtension)
 from .tab_bar_qtplugin import TabWidgetPlugin
 from .byte import PyDMByteIndicator
 
