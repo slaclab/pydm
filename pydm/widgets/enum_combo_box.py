@@ -38,6 +38,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         self.activated[int].connect(self.internal_combo_box_activated_int)
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.contextMenuEvent = self.open_context_menu
+
         # Because of the way PyQt5 UI parser enumerates combobox items (first adding an item with an empty title
         # and then resetting that title to the actual text), we can't distinguish it from the regular title change.
         # This flag helps tracking title change followed immediately after adding a new item.
