@@ -4,6 +4,7 @@ from qtpy.QtCore import Qt, Property, Q_ENUMS
 from .display_format import DisplayFormat, parse_value_for_display
 from pydm.utilities import is_pydm_app, is_qt_designer
 from pydm import config
+from pydm.widgets.base import only_if_channel_set
 
 
 class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
@@ -35,7 +36,7 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
         self.app = QApplication.instance()
         self.setTextFormat(Qt.PlainText)
         self.setTextInteractionFlags(Qt.NoTextInteraction)
-        self.setText("PyDMLabel")
+        self.setText("######")
         self._display_format_type = self.DisplayFormat.Default
         self._string_encoding = "utf_8"
         if is_pydm_app():
@@ -92,3 +93,10 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
         # If you made it this far, just turn whatever the heck the value
         # is into a string and display it.
         self.setText(str(new_value))
+
+    @only_if_channel_set
+    def check_enable_state(self):
+        """ If the channel this label is connected to becomes disconnected, display only the name of the channel. """
+        if not self._connected:
+            self.setText(self.channel)
+        super().check_enable_state()

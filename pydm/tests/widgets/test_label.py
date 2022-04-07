@@ -337,7 +337,8 @@ def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensi
     5. The tooltip will change when the channel is disconnected, having additional text, i.e. "PV is disconnected"
        appended to the existing text, to inform the user about the channel disconnection status. This tooltip will be
        reverted to the original content when the data channel is re-connected.
-    6. The widget will be disabled during the disconnection, and become enabled again at the reconnection.
+    6. The text of the label will also change when the channel is disconnected to display the address of the PV.
+    7. The widget will be disabled during the disconnection, and become enabled again at the reconnection.
 
     Parameters
     ----------
@@ -353,6 +354,7 @@ def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensi
         The tooltip for the widget. This can be an empty string
     """
     pydm_label = PyDMLabel()
+    pydm_label.setText('Custom Text')
     qtbot.addWidget(pydm_label)
 
     pydm_label.alarmSensitiveContent = alarm_sensitive_content
@@ -375,8 +377,9 @@ def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensi
     assert pydm_label._connected == True
     assert pydm_label.toolTip() == tooltip
     assert pydm_label.isEnabled() == True
+    assert pydm_label.text() == 'Custom Text'
 
-    # Next, disconnect the alarm, and check for the alarm severity, style, connection state, enabling state, and
+    # Next, disconnect the alarm, and check for the alarm severity, style, text, connection state, enabling state, and
     # tooltip
     alarm_severity = PyDMWidget.ALARM_DISCONNECTED
 
@@ -385,6 +388,7 @@ def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensi
     assert pydm_label._connected == False
     assert all(i in pydm_label.toolTip() for i in (tooltip, "PV is disconnected."))
     assert pydm_label.isEnabled() == False
+    assert pydm_label.text() == 'CA://MTEST'
 
     # Finally, reconnect the alarm, and check for the same attributes
     signals.connection_state_signal.emit(True)
