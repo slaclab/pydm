@@ -362,13 +362,16 @@ class PyDMTimePlot(BasePlot):
     background: optional
         The background color for the plot.  Accepts any arguments that
         pyqtgraph.mkColor will accept.
+    bottom_axis: AxisItem, optional
+        Will set the bottom axis of this plot to the input axis. If not set, will default
+        to either a TimeAxisItem if plot_by_timestamps is true, or a regular AxisItem otherwise
     """
     SynchronousMode = 1
     AsynchronousMode = 2
 
     plot_redrawn_signal = Signal(TimePlotCurveItem)
 
-    def __init__(self, parent=None, init_y_channels=[], plot_by_timestamps=True, background='default'):
+    def __init__(self, parent=None, init_y_channels=[], plot_by_timestamps=True, background='default', bottom_axis=None):
         """
         Parameters
         ----------
@@ -387,7 +390,9 @@ class PyDMTimePlot(BasePlot):
         """
         self._plot_by_timestamps = plot_by_timestamps
 
-        if plot_by_timestamps:
+        if bottom_axis is not None:
+            self._bottom_axis = bottom_axis
+        elif plot_by_timestamps:
             self._bottom_axis = TimeAxisItem('bottom')
         else:
             self.starting_epoch_time = time.time()
