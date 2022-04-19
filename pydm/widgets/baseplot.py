@@ -636,9 +636,11 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._curves.append(plot_data_item)
 
         if y_axis_name is None:
-            # If the user did not name the axis, use the default ones. Note: multiple calls to setAxisItems() are ok
-            self.plotItem.setAxisItems()
-            self.addItem(plot_data_item)
+            # If the user did not name the axis, use the pyqtgraph default one named left
+            if 'left' not in self.plotItem.axes:
+                self.addAxis(plot_data_item=plot_data_item, name='left', orientation='left')
+            else:
+                self.plotItem.linkDataToAxis(plot_data_item, 'left')
         elif y_axis_name in self.plotItem.axes:
             # If the user has chosen an axis that already exists for this curve, simply link the data to that axis
             self.plotItem.linkDataToAxis(plot_data_item, y_axis_name)
