@@ -142,7 +142,6 @@ def test_baseplot_no_added_y_axes(qtbot):
     """ Confirm that if the user does not name or create any new y-axes, the plot will still work just fine """
     base_plot = BasePlot()
     base_plot.clear()
-    base_plot.clearAxes()
 
     # Add 3 curves to our plot, but don't bother to use any of the y-axis parameters
     # in addCurve() leaving them to their default of None
