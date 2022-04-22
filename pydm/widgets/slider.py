@@ -1,7 +1,7 @@
 import logging
 logger = logging.getLogger(__name__)
 
-from qtpy.QtWidgets import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
+from qtpy.QtWidgets import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget, QLineEdit
 from qtpy.QtCore import Qt, Signal, Slot, Property
 from .base import PyDMWritableWidget, TextFormatter
 import numpy as np
@@ -80,6 +80,25 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         else:
             super(PyDMSlider, self).wheelEvent(e)
         return
+
+    def mousePressEvent(self, mouse_event):
+        if mouse_event.button() == Qt.RightButton:
+            self.step_size_menu()
+            print("Right Button Clicked")
+
+    def step_size_menu(self):
+        self.setWindowTitle("PyDM Silder Step Editor")
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+
+        step_layout = QHBoxLayout()
+        self.step_label = QLabel()
+        self.step_input = QLineEdit()
+
+        step_layout.addWidget(self.step_label)
+        step_layout.addWidget(self.step_input)
+
+        layout.addLayout(step_layout)
 
     def init_for_designer(self):
         """
