@@ -6,7 +6,6 @@ from p4p.wrapper import Value
 from qtpy.QtCore import Slot, Qt
 from pydm.data_plugins import is_read_only
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
-from typing import Set
 from .pva_codec import decompress
 
 
@@ -21,7 +20,7 @@ class PVAContext(object):
         if self.__initialized:
             return
         self.__initialized = True
-        self.context = Context('pva', maxsize=2, nt=False)
+        self.context = Context('pva', nt=False)
 
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
@@ -56,15 +55,8 @@ class Connection(PyDMConnection):
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
 
-#{'valueAlarm.active', 'valueAlarm.highWarningLimit', 'control.limitHigh', 'value', 'valueAlarm.lowAlarmSeverity', 'valueAlarm.lowWarningSeverity', 'alarm.message',
-    # 'display.limitLow', 'display.limitHigh', 'valueAlarm.hysteresis', 'valueAlarm.highAlarmSeverity', 'alarm', 'alarm.severity', 'timeStamp.nanoseconds', 'control.limitLow',
-    # 'timeStamp.secondsPastEpoch', 'display.form.choices', 'valueAlarm.highWarningSeverity', 'control', 'timeStamp.userTag', 'timeStamp', 'display.form', 'control.minStep',
-    # 'display', 'display.form.index', 'alarm.status', 'valueAlarm.highAlarmLimit', 'display.precision', 'valueAlarm.lowAlarmLimit', 'valueAlarm.lowWarningLimit', 'display.description',
-    # 'display.units', 'valueAlarm'}
-
-
-
     def send_new_value(self, value: Value):
+        """ Callback invoked whenever a new value is received by our monitor """
         if isinstance(value, Disconnected):
             self._connected = False
             self.clear_cache()
@@ -79,7 +71,7 @@ class Connection(PyDMConnection):
             for changed_value in value.changedSet():
                 if changed_value == 'value' and not np.array_equal(value.value, self._value):
                     if 'NTNDArray' in value.getID():
-                        self.preprocess_array(value)
+                        decompress(value)  # Performs decompression if the codec field is set
                     new_value = value.value
                     if new_value is not None and not np.array_equal(new_value, self._value):
                         self._value = new_value
@@ -100,9 +92,9 @@ class Connection(PyDMConnection):
                 elif changed_value == 'display.precision' and value.display.precision != self._precision:
                     self._precision = value.display.precision
                     self.prec_signal.emit(value.display.precision)
- #               elif changed_value == 'display.form.choices' and value.display.form.choices != self._enum_strs: # TODO: Is this actually the same thing?
- #                   self._enum_strs = value.display.form.choices
- #                   self.enum_strings_signal.emit(value.display.form.choices)
+#                elif changed_value == 'display.form.choices' and value.display.form.choices != self._enum_strs: # TODO: Figure out where enum strings are (it is not this)
+#                    self._enum_strs = value.display.form.choices
+#                    self.enum_strings_signal.emit(value.display.form.choices)
                 elif changed_value == 'display.units' and value.display.units != self._units:
                     self._units = value.display.units
                     self.unit_signal.emit(value.display.units)
@@ -113,26 +105,17 @@ class Connection(PyDMConnection):
                     self._upper_ctrl_limit = value.control.limitHigh
                     self.upper_ctrl_limit_signal.emit(value.control.limitHigh)
 
-    def preprocess_array(self, value):
-        decompress(value)
-#        try:
-#            decompress(value)
-#        except Exception as e:
-#            print(f'Could not decompress data: exception: {e}')
-
-
     def put_value(self, value):
         if is_read_only():
             return
 
-        # Check write access?
+        # TODO: How to check write access?
         try:
             PVAContext().context.put(self.monitor.name, value)
         except Exception as e:
             logger.exception(f"Unable to put value: {value} to channel: {self.monitor.name}  Exception: {e}")
 
     def add_listener(self, channel):
-        print(f'Adding listener for channel: {channel}')
         super().add_listener(channel)
 
         if channel.value_signal is not None:
@@ -155,7 +138,6 @@ class Connection(PyDMConnection):
 
     def close(self):
         self.monitor.close()
-        # TODO: Anything else?
         super().close()
 
 
