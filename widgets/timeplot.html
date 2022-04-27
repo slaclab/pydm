@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMTimePlot &mdash; PyDM v1.15.0 documentation</title>
+  <title>PyDMTimePlot &mdash; PyDM v1.15.0+13.g5e7553cc documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.0
+                v1.15.0+13.g5e7553cc
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -127,7 +127,7 @@
 <h1>PyDMTimePlot<a class="headerlink" href="#pydmtimeplot" title="Permalink to this headline"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.timeplot.</span></span><span class="sig-name descname"><span class="pre">PyDMTimePlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_y_channels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_by_timestamps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.timeplot.</span></span><span class="sig-name descname"><span class="pre">PyDMTimePlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_y_channels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_by_timestamps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.baseplot.BasePlot</span></code></p>
 <p>PyDMWaveformPlot is a widget to plot one or more waveforms.</p>
 <p>Each curve can plot either a Y-axis waveform vs. its indices,
@@ -142,6 +142,8 @@ scroll to the left as time progresses.  If False, the x-axis tick marks
 show time relative to the current time.</p></li>
 <li><p><strong>background</strong> (<em>optional</em>) – The background color for the plot.  Accepts any arguments that
 pyqtgraph.mkColor will accept.</p></li>
+<li><p><strong>bottom_axis</strong> (<em>AxisItem</em><em>, </em><em>optional</em>) – Will set the bottom axis of this plot to the input axis. If not set, will default
+to either a TimeAxisItem if plot_by_timestamps is true, or a regular AxisItem otherwise</p></li>
 </ul>
 </dd>
 </dl>

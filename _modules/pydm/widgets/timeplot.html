@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.timeplot &mdash; PyDM v1.15.0 documentation</title>
+  <title>pydm.widgets.timeplot &mdash; PyDM v1.15.0+13.g5e7553cc documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.0
+                v1.15.0+13.g5e7553cc
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -465,13 +465,16 @@
 <span class="sd">    background: optional</span>
 <span class="sd">        The background color for the plot.  Accepts any arguments that</span>
 <span class="sd">        pyqtgraph.mkColor will accept.</span>
+<span class="sd">    bottom_axis: AxisItem, optional</span>
+<span class="sd">        Will set the bottom axis of this plot to the input axis. If not set, will default</span>
+<span class="sd">        to either a TimeAxisItem if plot_by_timestamps is true, or a regular AxisItem otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">SynchronousMode</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">AsynchronousMode</span> <span class="o">=</span> <span class="mi">2</span>
 
     <span class="n">plot_redrawn_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="n">TimePlotCurveItem</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_y_channels</span><span class="o">=</span><span class="p">[],</span> <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_y_channels</span><span class="o">=</span><span class="p">[],</span> <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">bottom_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -490,7 +493,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_plot_by_timestamps</span> <span class="o">=</span> <span class="n">plot_by_timestamps</span>
 
-        <span class="k">if</span> <span class="n">plot_by_timestamps</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">bottom_axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bottom_axis</span> <span class="o">=</span> <span class="n">bottom_axis</span>
+        <span class="k">elif</span> <span class="n">plot_by_timestamps</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_bottom_axis</span> <span class="o">=</span> <span class="n">TimeAxisItem</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">starting_epoch_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.15.0 documentation</title>
+  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.15.0+13.g5e7553cc documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.0
+                v1.15.0+13.g5e7553cc
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -146,6 +146,11 @@
         <span class="c1"># and then resetting that title to the actual text), we can&#39;t distinguish it from the regular title change.</span>
         <span class="c1"># This flag helps tracking title change followed immediately after adding a new item.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_new_item_added</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="PyDMEnumComboBox.wheelEvent"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.wheelEvent">[docs]</a>    <span class="k">def</span> <span class="nf">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="c1">#To ignore mouse wheel events</span>
+        <span class="n">e</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
+        <span class="k">return</span></div>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.addItem"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.addItem">[docs]</a>    <span class="k">def</span> <span class="nf">addItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">userData</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

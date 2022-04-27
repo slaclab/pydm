@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.archiver_time_plot &mdash; PyDM v1.15.0 documentation</title>
+  <title>pydm.widgets.archiver_time_plot &mdash; PyDM v1.15.0+13.g5e7553cc documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.0
+                v1.15.0+13.g5e7553cc
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -319,14 +319,13 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QObject</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">init_y_channels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
                  <span class="n">background</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">optimized_data_bins</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMArchiverTimePlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_y_channels</span><span class="o">=</span><span class="n">init_y_channels</span><span class="p">,</span>
-                                                   <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">)</span>
+                                                   <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span>
+                                                   <span class="n">bottom_axis</span><span class="o">=</span><span class="n">DateAxisItem</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimized_data_bins</span> <span class="o">=</span> <span class="n">optimized_data_bins</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_prev_x</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Holds the minimum x-value of the previous update of the plot</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_starting_timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>  <span class="c1"># The timestamp at which the plot was first rendered</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_archive_request_queued</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bottom_axis</span> <span class="o">=</span> <span class="n">DateAxisItem</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>  <span class="c1"># Nice for displaying data across long periods of time</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setAxisItems</span><span class="p">({</span><span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bottom_axis</span><span class="p">})</span>
 
 <div class="viewcode-block" id="PyDMArchiverTimePlot.updateXAxis"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.updateXAxis">[docs]</a>    <span class="k">def</span> <span class="nf">updateXAxis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">update_immediately</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; Manages the requests to archiver appliance. When the user pans or zooms the x axis to the left,</span>
