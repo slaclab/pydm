@@ -788,11 +788,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         return self.getAxis('bottom')._pen.color()
 
     def setAxisColor(self, color):
-        if self.getAxis('bottom')._pen.color() != color:
-            self.getAxis('bottom').setPen(color)
-            self.getAxis('left').setPen(color)
-            self.getAxis('top').setPen(color)
-            self.getAxis('right').setPen(color)
+        for axis in self.plotItem.axes.values():
+            axis['item'].setPen(color)
 
     axisColor = Property(QColor, getAxisColor, setAxisColor)
 
@@ -829,6 +826,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             self.addAxis(plot_data_item=None, name=d.get('name'), orientation=d.get('orientation'),
                          label=d.get('label'), min_range=d.get('minRange'), max_range=d.get('maxRange'),
                          enable_auto_range=d.get('autoRange'))
+        if 'bottom' in self.plotItem.axes:
+            # Ensure the added y axes get the color that was set
+            self.setAxisColor(self.getAxis('bottom')._pen.color())
 
     yAxes = Property("QStringList", getYAxes, setYAxes, designable=False)
 
