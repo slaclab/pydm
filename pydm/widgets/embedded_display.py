@@ -1,5 +1,5 @@
 from qtpy.QtWidgets import QAction, QFrame, QApplication, QLabel, QMenu, QVBoxLayout, QWidget
-from qtpy.QtCore import Qt, QSize, Property, QTimer
+from qtpy.QtCore import QPoint, Qt, QSize, Property, QTimer
 
 import copy
 import os.path
@@ -362,8 +362,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         if self._load_error:
             self.display_error_text(self._load_error)
 
-    def open_display_in_new_window(self):
-        """ Open the file at the input filename in a new window """
+    def open_display_in_new_window(self) -> None:
+        """ Open the embedded display in a new window """
         if not self.filename:
             return
         file_path = find_file(self.filename, base_path='')
@@ -374,25 +374,37 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         else:
             w = load_file(file_path, macros=macros, target=ScreenTarget.DIALOG)
 
-    def context_menu(self, pos):
+    def create_context_menu(self, pos: QPoint) -> QMenu:
+        """ Create the right-click context menu for this embedded widget based on the location of the mouse click """
         if self._embedded_widget is None:
             return
+
         menu = None
-        children = self.findChildren(BasePlot)
-        for child in children:
-            if child.geometry().contains(pos):
-                menu = child.getViewBox().getMenu(None)
+        # Plot widgets use their own custom event handling, so we check to see if they were
+        # clicked on here. If so, just re-use the context menu they already have built. (Not
+        # specifically checking for these would clobber their context menus)
+        plot_widgets = self.findChildren(BasePlot)
+        for plot in plot_widgets:
+            try:
+                if plot.geometry().contains(pos):
+                    menu = plot.getViewBox().getMenu(None)
+            except AttributeError:
+                pass
+
+        # Otherwise check if a menu already exists, and create a new one if not
         if menu is None:
             try:
                 menu = self._embedded_widget.context_menu()
             except AttributeError:
                 menu = QMenu(self)
+
         if len(menu.findChildren(QAction)) > 0:
             menu.addSeparator()
         menu.addAction(self.open_in_new_window_action)
         return menu
 
-    def show_context_menu(self, pos):
-        menu = self.context_menu(pos)
+    def show_context_menu(self, pos: QPoint) -> None:
+        """ Display the right-click context menu for this embedded widget at the location of the mouse click """
+        menu = self.create_context_menu(pos)
         if menu is not None:
             menu.exec_(self.mapToGlobal(pos))
