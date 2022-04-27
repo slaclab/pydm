@@ -122,7 +122,7 @@ stages:
             rm -rf $(Build.Repository.LocalPath)/artifacts
             git add *
             git commit -m "Updating Docs with latest build"
-            git push https://$(GITHUB_PAT)@github.com/$(Build.Repository.Name).git gh-pages
+            git push https://$(GIT_PAT)@github.com/$(Build.Repository.Name).git gh-pages
           displayName: Documentation - Upload
 
       - job: 'Publish_PyPI'
