@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMEmbeddedDisplay &mdash; PyDM v1.15.1 documentation</title>
+  <title>PyDMEmbeddedDisplay &mdash; PyDM v1.15.1+3.g4f6810fe documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1
+                v1.15.1+3.g4f6810fe
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -752,6 +752,12 @@ the channels associated with it.</p>
 <dt class="sig sig-object py" id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.createWindowContainer">
 <span class="sig-name descname"><span class="pre">createWindowContainer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWindow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QWidget</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Qt.WindowFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Qt.WindowType</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QWidget</span></span></span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.createWindowContainer" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.create_context_menu">
+<span class="sig-name descname"><span class="pre">create_context_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyQt5.QtCore.QPoint</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PyQt5.QtWidgets.QMenu</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/embedded_display.html#PyDMEmbeddedDisplay.create_context_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.create_context_menu" title="Permalink to this definition"></a></dt>
+<dd><p>Create the right-click context menu for this embedded widget based on the location of the mouse click</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.cursor">
@@ -1543,6 +1549,12 @@ where 0 means transparent.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.open_display_in_new_window">
+<span class="sig-name descname"><span class="pre">open_display_in_new_window</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/embedded_display.html#PyDMEmbeddedDisplay.open_display_in_new_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.open_display_in_new_window" title="Permalink to this definition"></a></dt>
+<dd><p>Open the embedded display in a new window</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.open_file">
 <span class="sig-name descname"><span class="pre">open_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/embedded_display.html#PyDMEmbeddedDisplay.open_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.open_file" title="Permalink to this definition"></a></dt>
 <dd><p>Opens the widget specified in the widget’s filename property.</p>
@@ -2197,6 +2209,12 @@ where 0 means transparent.</p>
 <p>This is intended to replicate the behavior of the “middle click” from
 EDM. If the QWidget does not have a valid PyDMChannel nothing will be
 displayed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.show_context_menu">
+<span class="sig-name descname"><span class="pre">show_context_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyQt5.QtCore.QPoint</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/embedded_display.html#PyDMEmbeddedDisplay.show_context_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.show_context_menu" title="Permalink to this definition"></a></dt>
+<dd><p>Display the right-click context menu for this embedded widget at the location of the mouse click</p>
 </dd></dl>
 
 <dl class="py method">
