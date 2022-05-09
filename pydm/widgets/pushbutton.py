@@ -320,15 +320,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
                 val = self._releaseValue
                 op = "Release"
 
-            message = os.linesep.join(
-                [
-                    self._confirm_message,
-                    "Value: {}".format(val),
-                    "Relative Change: {}".format(relative)
-                ]
-            )
-
-            msg.setText(message)
+            msg.setText(self._confirm_message)
 
             msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
             msg.setDefaultButton(QMessageBox.No)
