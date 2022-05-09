@@ -9,6 +9,10 @@ from .channel import PyDMChannel
 from ..utilities import remove_protocol
 
 
+DEFAULT_BUFFER_SIZE = 1200
+MINIMUM_BUFFER_SIZE = 2
+
+
 class ScatterPlotCurveItem(BasePlotCurveItem):
     _channels = ('x_channel', 'y_channel')
 
@@ -29,7 +33,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
                 kws['name'] = "{y} vs. {x}".format(y=y_name, x=x_name)
         self.redraw_mode = (redraw_mode if redraw_mode is not None
                             else self.REDRAW_ON_EITHER)
-        self._bufferSize = 1200
+        self._bufferSize = DEFAULT_BUFFER_SIZE
         self.data_buffer = np.zeros((2, self._bufferSize),
                                     order='f', dtype=float)
         self.points_accumulated = 0
@@ -213,12 +217,12 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
 
     def setBufferSize(self, value):
         if self._bufferSize != int(value):
-            self._bufferSize = max(int(value), 1)
+            self._bufferSize = max(int(value), MINIMUM_BUFFER_SIZE)
             self.initialize_buffer()
 
     def resetBufferSize(self):
-        if self._bufferSize != 1200:
-            self._bufferSize = 1200
+        if self._bufferSize != DEFAULT_BUFFER_SIZE:
+            self._bufferSize = DEFAULT_BUFFER_SIZE
             self.initialize_buffer()
 
     def redrawCurve(self):
