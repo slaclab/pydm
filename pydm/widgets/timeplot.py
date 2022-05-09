@@ -879,8 +879,7 @@ class PyDMTimePlot(BasePlot):
     def getAutoRangeX(self):
         if self._plot_by_timestamps:
             return False
-        else:
-            super(PyDMTimePlot, self).getAutoRangeX()
+        return super(PyDMTimePlot, self).getAutoRangeX()
 
     def setAutoRangeX(self, value):
         if self._plot_by_timestamps:
