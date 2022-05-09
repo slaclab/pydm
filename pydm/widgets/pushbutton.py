@@ -1,7 +1,7 @@
 import os
 import hashlib
 
-from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit
+from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit, QDialogButtonBox
 from qtpy.QtCore import Slot, Property
 from .base import PyDMWritableWidget
 
@@ -321,6 +321,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
                 op = "Release"
 
             msg.setText(self._confirm_message)
+
+            # Force "Yes" button to be on the right (as on macOS) to follow common design practice
+            msg.setStyleSheet("button-layout: 1")    # MacLayout
 
             msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
             msg.setDefaultButton(QMessageBox.No)
