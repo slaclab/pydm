@@ -2,7 +2,7 @@ from typing import Any
 import pytest
 
 from pytestqt.qtbot import QtBot
-from qtpy.QtCore import Signal
+from qtpy.QtCore import Signal, QObject
 import numpy as np
 
 from pydm.application import PyDMApplication
@@ -55,12 +55,15 @@ def test_calc_plugin(
     input2: Any,
     expected2: Any,
 ):
-    sig = Signal(type(input1))
+    class SigHolder(QObject):
+        sig = Signal(type(input1))
+
+    sig_holder = SigHolder()
     type_str = str(type(input1))
     local_addr = f'loc://test_calc_plugin_local_{calc}'
     local_ch = PyDMChannel(
         address=f'{local_addr}?type={type_str}&init={input1}',
-        value_signal=sig,
+        value_signal=sig_holder.sig,
     )
     local_ch.connect()
     calc_values = []
@@ -79,7 +82,7 @@ def test_calc_plugin(
         assert len(calc_values) == 1
 
     qtbot.wait_until(has_first_value)
-    sig.emit(input2)
+    sig_holder.sig.emit(input2)
 
     def has_second_value():
         assert len(calc_values) == 2
