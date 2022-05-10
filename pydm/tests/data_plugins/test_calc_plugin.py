@@ -3,6 +3,7 @@ import pytest
 
 from pytestqt.qtbot import QtBot
 from qtpy.QtCore import Signal
+import numpy as np
 
 from pydm.application import PyDMApplication
 from pydm.data_plugins.calc_plugin import epics_string, epics_unsigned
@@ -12,9 +13,9 @@ from pydm.widgets.channel import PyDMChannel
 @pytest.mark.parametrize(
     "input_string,expected",
     [
-        ("okay\x00garbageinmemorysomewhere", "okay"),
-        ("normal_string", "normal_string"),
-        ("\x00nullgivesempty", ""),
+        (np.array((0x6f, 0x6b, 0x61, 0x79, 0, 42), dtype=np.int8), "okay"),
+        (np.array((0x6f, 0x6b, 0x61, 0x79), dtype=np.int8), "okay"),
+        (np.array((0, 0x6f, 0x6b, 0x61, 0x79, 0, 42, 42), dtype=np.int8), ""),
     ],
 )
 def test_epics_string(input_string: str, expected: str):
@@ -39,7 +40,9 @@ def test_epics_unsigned(input_int: int, bits: int, expected: int):
         ('val + 3', 0, 3, 1, 4),
         ('np.abs(val)', -5, 5, -10, 10),
         ('math.floor(val)', 3.4, 3, 5.7, 5),
-        ('epics_string(val)', 'data\x00asdf', 'data', 'calc', 'calc'),
+        ('epics_string(val)',
+         np.array((0x61, 0), dtype=np.int8), 'a',
+         np.array((0x62, 0), dtype=np.int8), 'b'),
         ('epics_unsigned(val, 8)', -1, 256, -2, 255),
     ]
 )
