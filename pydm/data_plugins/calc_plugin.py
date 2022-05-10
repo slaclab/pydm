@@ -1,16 +1,11 @@
+from urllib import parse
 import collections
 import functools
 import logging
 import math
 import threading
-import warnings
 
 import numpy as np
-
-try:
-    from urllib import parse  # Python 3
-except ImportError:
-    import urlparse as parse
 
 from qtpy.QtCore import Slot, QThread, Signal, Qt
 from qtpy.QtWidgets import QApplication
@@ -21,7 +16,14 @@ from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 logger = logging.getLogger(__name__)
 
 
-def epics_string(value, string_encoding="utf-8"):
+def epics_string(value: str, string_encoding: str = "utf-8") -> str:
+    """
+    Interpret as a null-terminated string.
+
+    Certain strings can come through corrupted with junk values after
+    the null termination. This helper function makes them readable
+    by terminating them at the null terminator.
+    """
     # Stop at the first zero
     # Assume the ndarray is one-dimensional
     value = value.tobytes()
@@ -32,11 +34,26 @@ def epics_string(value, string_encoding="utf-8"):
     return value.decode(string_encoding, "replace")  # <-- ignore decoding errors, just in case
 
 
+def epics_unsigned(value: int, bits: int = 32) -> int:
+    """
+    Interpret signed integer value as unsigned.
+
+    EPICS channel access is limited to signed types. This helper function
+    can be used to succinctly change these to unsigned types for situations
+    where the IOC designer is intending for the data type to be unsigned
+    but is unable to.
+    """
+    if value < 0:
+        return 2**bits + value
+    return value
+
+
 class CalcThread(QThread):
     eval_env = {'math': math,
                 'np': np,
                 'numpy': np,
-                'epics_string': epics_string}
+                'epics_string': epics_string,
+                'epics_unsigned': epics_unsigned}
 
     eval_env.update({k: v for k, v in math.__dict__.items() if k[0] != '_'})
     new_data_signal = Signal(dict)
