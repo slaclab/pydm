@@ -57,7 +57,7 @@ def test_calc_plugin(
 ):
     sig = Signal(type(input1))
     type_str = str(type(input1))
-    local_addr = f'local://test_calc_plugin_local_{calc}'
+    local_addr = f'loc://test_calc_plugin_local_{calc}'
     local_ch = PyDMChannel(
         address=f'{local_addr}?type={type_str}&init={input1}',
         value_signal=sig,
