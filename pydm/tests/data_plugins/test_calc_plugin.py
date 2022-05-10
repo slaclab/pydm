@@ -38,7 +38,7 @@ def test_epics_unsigned(input_int: int, bits: int, expected: int):
     "calc,input1,expected1,input2,expected2",
     [
         ('val + 3', 0, 3, 1, 4),
-        ('np.abs(val)', -5, 5, -10, 10),
+        ('int(np.abs(val))', -5, 5, -10, 10),
         ('math.floor(val)', 3.4, 3, 5.7, 5),
         ('epics_string(val)',
          np.array((0x61, 0), dtype=np.int8), 'a',
