@@ -29,6 +29,7 @@ requirements:
     - pyqt >=5
     - pyqtgraph
     - qtpy
+    - entrypoints
 
 test:
   imports:
