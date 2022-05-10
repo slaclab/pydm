@@ -762,17 +762,17 @@ def test_pydmdrawingtriangle_draw_item(qapp, qtbot, monkeypatch, width, height,
     pydm_drawingtriangle.show()
 
 # # -------------------
-# # PyDMDrawingEclipse
+# # PyDMDrawingEllipse
 # # -------------------
 @pytest.mark.parametrize("width, height, pen_width", [
     (5.0, 5.0, 0),
     (10.25, 10.25, 1.5),
     (10.25, 100.0, 5.125),
 ])
-def test_pydmdrawingeclipse_draw_item(qapp, qtbot, monkeypatch, width, height,
+def test_pydmdrawingellipse_draw_item(qapp, qtbot, monkeypatch, width, height,
                                       pen_width):
     """
-    Test the rendering of a PyDMDrawingEclipse object.
+    Test the rendering of a PyDMDrawingEllipse object.
 
     Expectations:
     The drawing of the object takes place without any problems.
@@ -790,15 +790,15 @@ def test_pydmdrawingeclipse_draw_item(qapp, qtbot, monkeypatch, width, height,
     pen_width : int
         The width of the pen stroke
     """
-    pydm_dymdrawingeclipse = PyDMDrawingEllipse()
-    qtbot.addWidget(pydm_dymdrawingeclipse)
+    pydm_dymdrawingellipse = PyDMDrawingEllipse()
+    qtbot.addWidget(pydm_dymdrawingellipse)
 
-    pydm_dymdrawingeclipse.penWidth = pen_width
+    pydm_dymdrawingellipse.penWidth = pen_width
 
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    pydm_dymdrawingeclipse.show()
+    pydm_dymdrawingellipse.show()
 
 
 # # ------------------
