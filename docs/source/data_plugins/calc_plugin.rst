@@ -90,8 +90,30 @@ Here is a simple example of a channel address format with some optional attribut
 
 -------------
 
+
+Built-in Calc Helpers
+---------------------
+
+Certain helper functions are built in to PyDM because they get semi-frequent use in
+the context of EPICS values.
+
+================== ================================================== ====================================================================
+Helpers            Description                                        Usage Example
+================== ================================================== ====================================================================
+**epics_string**   Force a string to end at the null-terminator.      `calc://my_string?var=ca://STRING:PV&expr=epics_string(var)`
+**epics_unsigned** Force a signed integer to be unsigned.             `calc://my_int?var=ca://SOME:16BIT:INT&expr=epics_unsigned(var, 16)`
+================== ================================================== ====================================================================
+
+You should use epics_string when you have a string PV that looks like a normal string
+up until some corrupted segment.
+
+You should use epics_unsigned when you are dealing with a PV that is supposed to be
+interpreted as a positive integer but is instead a negative integer because channel
+access does not support any unsigned types and we have overflowed to negative values.
+
+
 Simple Calc Plugin Example
----------------------------------
+--------------------------
 
 
 The picture below represents an example of using the Calc Plugin.
