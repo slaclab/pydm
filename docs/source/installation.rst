@@ -30,6 +30,13 @@ Now, you can use 'open' to open Designer.app::
 
   $ open <your anaconda directory>/base/envs/pydm-environment/bin/Designer.app
 
+
+.. note::
+  Depending on the version of your MacOS, launching designer (or many other Qt apps) may not work initially.
+  If the designer process seems stuck and will not open, run the following command which should fix it, and then relaunch designer:
+
+    $ export QT_MAC_WANTS_LAYER=1
+
 Installing Manually, Without Anaconda
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This alternate installation method is only recommended for large 'site' installations that want to avoid using Anaconda.
