@@ -291,7 +291,7 @@ class UrlToPython:
                     raise
                 logger.debug('Calc Plugin  connection %s got new listener.', self.address)
                 return None, self.name, self.address
-            except Exeption:
+            except Exception:
                 msg = "Invalid configuration for Calc Plugin  connection. %s"
                 logger.exception(msg, self.address, exc_info=True)
                 raise ValueError("error in Calc Plugin plugin input")
