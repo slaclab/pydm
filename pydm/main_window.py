@@ -1,7 +1,8 @@
 import os
 from os import path
+
 from qtpy.QtWidgets import (QApplication, QMainWindow, QFileDialog,
-                            QWidget, QAction, QMessageBox)
+                            QAction, QMessageBox, QMenu)
 from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
 from .utilities import (IconFont, find_file, establish_widget_connections,
                         close_widget_connections)
@@ -9,6 +10,7 @@ from .pydm_ui import Ui_MainWindow
 from .display import Display, ScreenTarget, load_file
 from .connection_inspector import ConnectionInspector
 from .about_pydm import AboutWindow
+from .show_macros import MacroWindow
 from . import data_plugins
 from . import tools
 from .widgets.rules import register_widget_rules, unregister_widget_rules
@@ -478,3 +480,14 @@ class PyDMMainWindow(QMainWindow):
                 QMessageBox.Yes | QMessageBox.No)
             if quit_message == QMessageBox.Yes:
                 callback()
+
+    def contextMenuEvent(self, event):
+        menu = QMenu()
+        show_macro_action = menu.addAction("Show Macros...")
+        action = menu.exec_(event.globalPos())
+        if action == show_macro_action:
+            self.show_macro_window()
+
+    def show_macro_window(self):
+        macro_window = MacroWindow(self)
+        macro_window.show()
