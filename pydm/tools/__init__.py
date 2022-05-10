@@ -4,11 +4,11 @@ import imp
 import inspect
 import logging
 import os
-import platform
 import sys
 import uuid
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Generator, List, Optional, Union
 
+import entrypoints
 from qtpy.QtWidgets import QMenu, QWidget
 
 from ..config import ENTRYPOINT_EXTERNAL_TOOL, EXTERNAL_TOOL_SUFFIX
@@ -164,7 +164,12 @@ def assemble_tools_menu(
                     if not t.use_with_widgets:
                         continue
                     if widget is not None and not t.is_compatible_with(widget):
-                        logger.debug('Skipping tool {} as it is incompatible with widget {}.'.format(t.name, widget))
+                        logger.debug(
+                            "Skipping tool %s as it is incompatible with "
+                            "widget %s.",
+                            t.name,
+                            widget,
+                        )
                         continue
                 elif not t.use_without_widget:
                     continue
@@ -178,22 +183,37 @@ def assemble_tools_menu(
             assemble_action(parent_menu, v)
 
 
-def _load_external_tools_from_entrypoints():
+def get_entrypoint_tools() -> Generator[ExternalTool, None, None]:
     """
-    Loads all the external tools from entrypoints.
+    Yield all external tool classes specified by entrypoints.
 
     Uses ``entrypoints`` to find packaged external tools in packages that
     configure the ``pydm.external_tool`` entrypoint.
     """
+    for entry in entrypoints.get_group_all(ENTRYPOINT_EXTERNAL_TOOL):
+        logger.debug("Found external tool entrypoint: %s", entry.name)
+        try:
+            tool_cls = entry.load()
+        except Exception:
+            logger.exception(
+                "Failed to load %s entry: %s",
+                ENTRYPOINT_EXTERNAL_TOOL, entry.name
+            )
+            continue
+
+        if not _is_valid_external_tool_class(tool_cls):
+            logger.warning(
+                "Invalid external tool class specified in entrypoint "
+                "%s: %",
+                entry.name, tool_cls
+            )
+            continue
+
+        yield tool_cls
 
 
-def _load_external_tools_from_tools_path():
-    """
-    Loads all the external tools available at the given
-    `PYDM_TOOLS_PATH` environment variable and subfolders that
-    follows the `*_tool.py` and have classes that inherits from
-    the `pydm.tools.ExternalTool` class.
-    """
+def get_tools_from_path() -> Generator[ExternalTool, None, None]:
+    """Yield all external tool classes specified by PYDM_TOOLS_PATH."""
     tools_path = os.getenv("PYDM_TOOLS_PATH", None)
 
     if not tools_path:
@@ -210,7 +230,7 @@ def _load_external_tools_from_tools_path():
                 if name.endswith(EXTERNAL_TOOL_SUFFIX):
                     tool_path = os.path.join(root, name)
                     logger.debug("Found tool in %s", tool_path)
-                    install_external_tool(tool_path)
+                    yield from _get_tools_from_source(tool_path)
 
 
 def load_external_tools():
@@ -233,5 +253,8 @@ def load_external_tools():
 
     _ext_tools_loaded = True
 
-    _load_external_tools_from_entrypoints()
-    _load_external_tools_from_tools_path()
+    for tool in get_tools_from_path():
+        install_external_tool(tool)
+
+    for tool in get_entrypoint_tools():
+        install_external_tool(tool)
