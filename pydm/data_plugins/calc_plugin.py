@@ -16,20 +16,19 @@ from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 logger = logging.getLogger(__name__)
 
 
-def epics_string(value: str, string_encoding: str = "utf-8") -> str:
+def epics_string(value: np.ndarray, string_encoding: str = "utf-8") -> str:
     """
-    Interpret as a null-terminated string.
+    Interpret numpy array as a null-terminated string.
 
-    Certain strings can come through corrupted with junk values after
-    the null termination. This helper function makes them readable
-    by terminating them at the null terminator.
+    Certain PVs give us char waveforms instead of strings.
+    This calculation utility lets us convert these to strings.
     """
     # Stop at the first zero
     # Assume the ndarray is one-dimensional
     value = value.tobytes()
     try:
         value = value[:value.index(0)]
-    except IndexError:
+    except (IndexError, ValueError):
         pass
     return value.decode(string_encoding, "replace")  # <-- ignore decoding errors, just in case
 
