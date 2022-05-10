@@ -77,6 +77,7 @@ def test_calc_plugin(
         value_slot=new_calc_value,
     )
     calc_ch.connect()
+    sig_holder.sig.emit(input1)
 
     def has_first_value():
         assert len(calc_values) == 1
