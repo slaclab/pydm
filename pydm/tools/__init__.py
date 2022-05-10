@@ -194,22 +194,22 @@ def get_entrypoint_tools() -> Generator[ExternalTool, None, None]:
         logger.debug("Found external tool entrypoint: %s", entry.name)
         try:
             tool_cls = entry.load()
-        except Exception:
+        except Exception as ex:
             logger.exception(
-                "Failed to load %s entry: %s",
-                ENTRYPOINT_EXTERNAL_TOOL, entry.name
+                "Failed to load %s entry %s: %s",
+                ENTRYPOINT_EXTERNAL_TOOL, entry.name, ex
             )
             continue
 
         if not _is_valid_external_tool_class(tool_cls):
             logger.warning(
                 "Invalid external tool class specified in entrypoint "
-                "%s: %",
+                "%s: %s",
                 entry.name, tool_cls
             )
             continue
 
-        yield tool_cls
+        yield tool_cls()
 
 
 def get_tools_from_path() -> Generator[ExternalTool, None, None]:
