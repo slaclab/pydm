@@ -100,12 +100,12 @@ the context of EPICS values.
 ================== ================================================== ====================================================================
 Helpers            Description                                        Usage Example
 ================== ================================================== ====================================================================
-**epics_string**   Force a string to end at the null-terminator.      `calc://my_string?var=ca://STRING:PV&expr=epics_string(var)`
+**epics_string**   Convert a char waveform to a string.               `calc://my_string?var=ca://WAVEFORM:PV&expr=epics_string(var)`
 **epics_unsigned** Force a signed integer to be unsigned.             `calc://my_int?var=ca://SOME:16BIT:INT&expr=epics_unsigned(var, 16)`
 ================== ================================================== ====================================================================
 
-You should use epics_string when you have a string PV that looks like a normal string
-up until some corrupted segment.
+You should use epics_string when you have a string PV that is expressed as a char
+waveform, but you need to use the corresponding string value internally.
 
 You should use epics_unsigned when you are dealing with a PV that is supposed to be
 interpreted as a positive integer but is instead a negative integer because channel
