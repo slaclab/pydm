@@ -73,7 +73,7 @@ def test_calc_plugin(
 
     calc_addr = f'calc://test_calc_plugin_calc_{calc}'
     calc_ch = PyDMChannel(
-        address=f'{calc_addr}?var={local_addr}&expr={calc}',
+        address=f'{calc_addr}?val={local_addr}&expr={calc}',
         value_slot=new_calc_value,
     )
     calc_ch.connect()
