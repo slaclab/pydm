@@ -366,11 +366,10 @@ class BasicSettingsEditor(QtWidgets.QDialog):
         vlayout.addLayout(buttons_layout)
 
     def _create_helper_widgets(self, settings_form: QtWidgets.QFormLayout):
-        other_attrs = [
-            attr
-            for attr in sorted(get_qt_properties(type(self.widget)))
-            if attr not in self._common_attributes_
-        ]
+        other_attrs = []
+        for attr in sorted(get_qt_properties(type(self.widget))):
+            if attr not in self._common_attributes_ and attr not in other_attrs:
+                other_attrs.append(attr)
 
         for attr in list(self._common_attributes_) + other_attrs:
             prop = getattr(type(self.widget), attr, None)
