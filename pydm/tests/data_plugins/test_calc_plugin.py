@@ -31,7 +31,7 @@ def test_epics_string(input_string: str, expected: str):
     ],
 )
 def test_epics_unsigned(input_int: int, bits: int, expected: int):
-    assert epics_unsigned(input_int, bits, expected)
+    assert epics_unsigned(input_int, bits) == expected
 
 
 @pytest.mark.parametrize(
