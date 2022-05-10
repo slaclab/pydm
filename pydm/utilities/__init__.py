@@ -8,7 +8,6 @@ import sys
 
 from qtpy import QtCore, QtWidgets
 
-from ..qtdesigner import DesignerHooks
 from . import colors, macro, shortcuts
 from .connection import close_widget_connections, establish_widget_connections
 from .iconfont import IconFont
@@ -78,6 +77,7 @@ def is_qt_designer():
     bool
         True if inside Designer, False otherwise.
     """
+    from ..qtdesigner import DesignerHooks
     return DesignerHooks().form_editor is not None
 
 
@@ -93,6 +93,8 @@ def get_designer_current_path():
     """
     if not is_qt_designer():
         return None
+
+    from ..qtdesigner import DesignerHooks
     form_editor = DesignerHooks().form_editor
     win_manager = form_editor.formWindowManager()
     form_window = win_manager.activeFormWindow()
