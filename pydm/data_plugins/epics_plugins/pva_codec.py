@@ -16,11 +16,9 @@ codecs = {}
 def decompress(structure):
     if structure is None:
         return
+
     data = structure.get('value')
     if data is None:
-        return
-    codec = structure.get('codec', {})
-    if len(codec) == 0 or not codec.name:
         return
     shape = []
     for dim in structure.get('dimension', []):
@@ -32,14 +30,22 @@ def decompress(structure):
         dtype = data.dtype
     else:
         dtype = ScalarType[data_type]
+
     codec_name = codec.get('name')
     uncompressed_size = structure.get('uncompressedSize')
 
+    if not codec_name:
+        return none_decompress(data, shape, dtype, uncompressed_size)
+
     try:
-        structure['value'] = codecs[codec_name](data, shape, dtype,
-                                                uncompressed_size)
+        return codecs[codec_name](data, shape, dtype, uncompressed_size)
     except Exception:
         logging.exception('Could not run codec decompress for %s', codec_name)
+        return data
+
+
+def none_decompress(data, shape, dtype, uncompressed_size):
+    return np.frombuffer(data, dtype=dtype).reshape(shape)
 
 
 def jpeg_decompress(data, shape, dtype, uncompressed_size):

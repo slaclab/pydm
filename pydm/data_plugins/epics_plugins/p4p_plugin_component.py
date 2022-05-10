@@ -70,12 +70,12 @@ class Connection(PyDMConnection):
 
             for changed_value in value.changedSet():
                 if changed_value == 'value' and not np.array_equal(value.value, self._value):
-                    if 'NTNDArray' in value.getID():
-                        decompress(value)  # Performs decompression if the codec field is set
                     new_value = value.value
                     if new_value is not None and not np.array_equal(new_value, self._value):
                         self._value = new_value
                         if isinstance(new_value, np.ndarray):
+                            if 'NTNDArray' in value.getID():
+                                new_value = decompress(value)  # Performs decompression if the codec field is set
                             self.new_value_signal[np.ndarray].emit(new_value)
                         elif isinstance(new_value, float):
                             self.new_value_signal[float].emit(new_value)
@@ -87,7 +87,6 @@ class Connection(PyDMConnection):
                             raise ValueError(f'No matching signal for value: {value} with type: {type(value)}')
                 elif changed_value == 'alarm.severity' and value.alarm.severity != self._severity:
                     self._severity = value.alarm.severity
-                    print(f'sending new severity: {value.alarm.severity}')
                     self.new_severity_signal.emit(value.alarm.severity)
                 elif changed_value == 'display.precision' and value.display.precision != self._precision:
                     self._precision = value.display.precision
