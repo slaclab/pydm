@@ -26,8 +26,8 @@ def test_epics_string(input_string: str, expected: str):
     "input_int,bits,expected",
     [
         (100, 32, 100),
-        (-1, 8, 129),
-        (-0b111, 4, 0b1111),
+        (-1, 8, 255),
+        (-2, 4, 0b1110),
     ],
 )
 def test_epics_unsigned(input_int: int, bits: int, expected: int):
