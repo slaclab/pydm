@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installation &mdash; PyDM v1.15.1+5.g77f2ad84 documentation</title>
+  <title>Installation &mdash; PyDM v1.15.1+7.g247cbf55 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+5.g77f2ad84
+                v1.15.1+7.g247cbf55
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -144,6 +144,14 @@ First, use ‘which pydm’ to figure out where the conda environment’s ‘bin
 <p>Now, you can use ‘open’ to open Designer.app:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ open &lt;your anaconda directory&gt;/base/envs/pydm-environment/bin/Designer.app
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Depending on the version of your MacOS, launching designer (or many other Qt apps) may not work initially.
+If the designer process seems stuck and will not open, run the following command which should fix it, and then relaunch designer:</p>
+<blockquote>
+<div><p>$ export QT_MAC_WANTS_LAYER=1</p>
+</div></blockquote>
 </div>
 </section>
 <section id="installing-manually-without-anaconda">
