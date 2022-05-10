@@ -43,7 +43,7 @@ def test_epics_unsigned(input_int: int, bits: int, expected: int):
         ('epics_string(val)',
          np.array((0x61, 0), dtype=np.int8), 'a',
          np.array((0x62, 0), dtype=np.int8), 'b'),
-        ('epics_unsigned(val, 8)', -1, 256, -2, 255),
+        ('epics_unsigned(val, 8)', -1, 255, -2, 254),
     ]
 )
 def test_calc_plugin(
@@ -79,15 +79,12 @@ def test_calc_plugin(
     calc_ch.connect()
     sig_holder.sig.emit(input1)
 
-    def has_first_value():
-        assert len(calc_values) == 1
+    def has_value():
+        assert len(calc_values) >= 1
 
-    qtbot.wait_until(has_first_value)
-    sig_holder.sig.emit(input2)
-
-    def has_second_value():
-        assert len(calc_values) == 2
-
-    qtbot.wait_until(has_second_value)
+    qtbot.wait_until(has_value)
     assert calc_values[0] == expected1
-    assert calc_values[1] == expected2
+    calc_values.clear()
+    sig_holder.sig.emit(input2)
+    qtbot.wait_until(has_value)
+    assert calc_values[0] == expected2
