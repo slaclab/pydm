@@ -9,7 +9,7 @@ class DummyTool(ExternalTool):
         name = "Dummy Tool"
         group = "Example"
         use_with_widgets = False
-        ExternalTool.__init__(self, icon=icon, name=name, group=group, use_with_widgets=use_with_widgets)
+        super(DummyTool, self).__init__(icon=icon, name=name, group=group, use_with_widgets=use_with_widgets)
 
     def call(self, channels, sender):
         print("Called Dummy Tool from: {} with:".format(sender))
@@ -35,7 +35,7 @@ class DummyTool3(ExternalTool):
         name = "Dummy Tool 3"
         group = ""
         use_with_widgets = False
-        ExternalTool.__init__(self, icon=icon, name=name, group=group, use_with_widgets=use_with_widgets)
+        super(DummyTool3, self).__init__(icon=icon, name=name, group=group, use_with_widgets=use_with_widgets)
 
     def call(self, channels, sender):
         print("Called Dummy Tool 3 from: {} with:".format(sender))

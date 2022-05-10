@@ -1,21 +1,19 @@
-import os
-import sys
+import functools
 import logging
-import platform
 import ntpath
+import os
+import platform
 import shlex
+import sys
 
-from qtpy import QtWidgets, QtCore
+from qtpy import QtCore, QtWidgets
 
-from .units import find_unittype, convert, find_unit_options
-from . import macro
-from . import colors
-from .remove_protocol import remove_protocol, protocol_and_address
-from .connection import establish_widget_connections, close_widget_connections
-from .iconfont import IconFont
 from ..qtdesigner import DesignerHooks
-
-from . import shortcuts
+from . import colors, macro, shortcuts
+from .connection import close_widget_connections, establish_widget_connections
+from .iconfont import IconFont
+from .remove_protocol import protocol_and_address, remove_protocol
+from .units import convert, find_unit_options, find_unittype
 
 logger = logging.getLogger(__name__)
 
@@ -60,8 +58,9 @@ def is_pydm_app(app=None):
     bool
         True if it is a PyDMApplication, False otherwise.
     """
-    from ..application import PyDMApplication
     from qtpy.QtWidgets import QApplication
+
+    from ..application import PyDMApplication
     if app is None:
         app = QApplication.instance()
     if isinstance(app, PyDMApplication):
@@ -361,6 +360,7 @@ def only_main_thread(func):
     -------
     wrapper
     """
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         main_t = QtWidgets.QApplication.instance().thread()
         curr_t = QtCore.QThread.currentThread()
@@ -374,5 +374,47 @@ def only_main_thread(func):
 
     if not callable(func):
         raise ValueError("Parameter must be a callable.")
+
+    return wrapper
+
+
+def log_failures(
+    logger: logging.Logger,
+    explanation: str = "Failed to run {func.__name__}",
+    include_traceback: bool = False,
+    level: int = logging.WARNING,
+):
+    """
+    Decorator that wraps a function to be run.
+
+    Exceptions raised while executing that function will be logged.
+    In case of an exception, the wrapper will return ``None``.
+
+    Parameters
+    ----------
+    logger : logging.Logger
+        The logger instance to log messages to.
+    explanation : str, optional
+        The explanation message to include.  Format arguments include:
+            ``func``, ``args``, and ``kwargs``
+    include_traceback : bool, optional
+        Include traceback information in the log message.
+    level : int, optional
+        Logging level to use.
+    """
+    def wrapper(func: callable):
+        @functools.wraps(func)
+        def wrapped(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as ex:
+                msg = explanation.format(func=func, args=args, kwargs=kwargs)
+                if include_traceback:
+                    logger.log(level, msg, exc_info=ex)
+                else:
+                    logger.log(level, msg)
+                return None
+
+        return wrapped
 
     return wrapper
