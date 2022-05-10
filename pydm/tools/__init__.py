@@ -54,11 +54,13 @@ def _get_tools_from_source(source_filename: str) -> List[ExternalTool]:
         sys.path.append(base_dir)
     temp_name = str(uuid.uuid4())
     module = imp.load_source(temp_name, source_filename)
-    classes = [
-        obj
-        for _, obj in inspect.getmembers(module)
-        if _is_valid_external_tool_class(obj)
-    ]
+    classes = list(
+        set(
+            obj
+            for _, obj in inspect.getmembers(module)
+            if _is_valid_external_tool_class(obj)
+        )
+    )
 
     if not classes:
         raise ValueError(

@@ -398,7 +398,7 @@ def log_failures(
         The logger instance to log messages to.
     explanation : str, optional
         The explanation message to include.  Format arguments include:
-            ``func``, ``args``, and ``kwargs``
+            ``func``, ``args``, ``kwargs``, and the exception ``ex``.
     include_traceback : bool, optional
         Include traceback information in the log message.
     level : int, optional
@@ -410,7 +410,9 @@ def log_failures(
             try:
                 return func(*args, **kwargs)
             except Exception as ex:
-                msg = explanation.format(func=func, args=args, kwargs=kwargs)
+                msg = explanation.format(
+                    func=func, args=args, kwargs=kwargs, ex=ex
+                )
                 if include_traceback:
                     logger.log(level, msg, exc_info=ex)
                 else:
