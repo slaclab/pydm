@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.scatterplot &mdash; PyDM v1.15.1+7.g247cbf55 documentation</title>
+  <title>pydm.widgets.scatterplot &mdash; PyDM v1.15.1+15.g6054ffa3 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+7.g247cbf55
+                v1.15.1+15.g6054ffa3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -112,10 +112,14 @@
 <span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="n">remove_protocol</span>
 
 
+<span class="n">DEFAULT_BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">1200</span>
+<span class="n">MINIMUM_BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">2</span>
+
+
 <div class="viewcode-block" id="ScatterPlotCurveItem"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.ScatterPlotCurveItem">[docs]</a><span class="k">class</span> <span class="nc">ScatterPlotCurveItem</span><span class="p">(</span><span class="n">BasePlotCurveItem</span><span class="p">):</span>
     <span class="n">_channels</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;x_channel&#39;</span><span class="p">,</span> <span class="s1">&#39;y_channel&#39;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_addr</span><span class="p">,</span> <span class="n">x_addr</span><span class="p">,</span> <span class="n">redraw_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_addr</span><span class="p">,</span> <span class="n">x_addr</span><span class="p">,</span> <span class="n">redraw_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bufferSizeChannelAddress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x_channel</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_channel</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x_address</span> <span class="o">=</span> <span class="n">x_addr</span>
@@ -132,7 +136,9 @@
                 <span class="n">kws</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{y}</span><span class="s2"> vs. </span><span class="si">{x}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y_name</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_mode</span> <span class="o">=</span> <span class="p">(</span><span class="n">redraw_mode</span> <span class="k">if</span> <span class="n">redraw_mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                             <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">REDRAW_ON_EITHER</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">=</span> <span class="mi">1200</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannel</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannel_connected</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">=</span> <span class="n">DEFAULT_BUFFER_SIZE</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">),</span>
                                     <span class="n">order</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">=</span> <span class="mi">0</span>
@@ -145,6 +151,7 @@
         <span class="k">if</span> <span class="s1">&#39;lineStyle&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kws</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">kws</span><span class="p">[</span><span class="s1">&#39;lineStyle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">NoPen</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ScatterPlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannelAddress</span> <span class="o">=</span> <span class="n">bufferSizeChannelAddress</span>
 
 <div class="viewcode-block" id="ScatterPlotCurveItem.to_dict"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.ScatterPlotCurveItem.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -161,6 +168,7 @@
         <span class="n">dic_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">ScatterPlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
         <span class="n">dic_</span><span class="p">[</span><span class="s2">&quot;redraw_mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_mode</span>
         <span class="n">dic_</span><span class="p">[</span><span class="s1">&#39;buffer_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getBufferSize</span><span class="p">()</span>
+        <span class="n">dic_</span><span class="p">[</span><span class="s2">&quot;bufferSizeChannelAddress&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannelAddress</span>
         <span class="k">return</span> <span class="n">dic_</span></div>
 
     <span class="nd">@property</span>
@@ -239,7 +247,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handler for new x data.  This method is usually called by a PyDMChannel</span>
 <span class="sd">        when it updates.  You can call this yourself to inject data into the curve.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        new_x: numpy.ndarray</span>
@@ -257,7 +265,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handler for new y data.  This method is usually called by a PyDMChannel</span>
 <span class="sd">        when it updates.  You can call this yourself to inject data into the curve.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        new_y: numpy.ndarray</span>
@@ -316,13 +324,67 @@
 
     <span class="k">def</span> <span class="nf">setBufferSize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">MINIMUM_BUFFER_SIZE</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">initialize_buffer</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">resetBufferSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">!=</span> <span class="mi">1200</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">=</span> <span class="mi">1200</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">!=</span> <span class="n">DEFAULT_BUFFER_SIZE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">=</span> <span class="n">DEFAULT_BUFFER_SIZE</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">initialize_buffer</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bufferSizeChannelAddress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The address of the channel used to get the buffer size.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The address of the channel used to get the buffer size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannel</span><span class="o">.</span><span class="n">address</span>
+
+    <span class="nd">@bufferSizeChannelAddress</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">bufferSizeChannelAddress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_address</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The address of the channel used to get the buffer size.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_address: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_address</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">new_address</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannel</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannel</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">new_address</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span>
+            <span class="n">address</span><span class="o">=</span><span class="n">new_address</span><span class="p">,</span>
+            <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeConnectionStateChanged</span><span class="p">,</span>
+            <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannelValueReceiver</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannel</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+
+    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">bufferSizeConnectionStateChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannel_connected</span> <span class="o">=</span> <span class="n">connected</span>
+
+<div class="viewcode-block" id="ScatterPlotCurveItem.bufferSizeChannelValueReceiver"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.ScatterPlotCurveItem.bufferSizeChannelValueReceiver">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">bufferSizeChannelValueReceiver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handler for change in buffer size.  This method is usually called by a PyDMChannel</span>
+<span class="sd">        when it updates.  You can call this yourself to set or change the buffer size.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value: int</span>
+<span class="sd">            A new value for the buffer size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setBufferSize</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_buffer</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ScatterPlotCurveItem.redrawCurve"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.ScatterPlotCurveItem.redrawCurve">[docs]</a>    <span class="k">def</span> <span class="nf">redrawCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -416,7 +478,7 @@
 <div class="viewcode-block" id="PyDMScatterPlot.addChannel"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.PyDMScatterPlot.addChannel">[docs]</a>    <span class="k">def</span> <span class="nf">addChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineStyle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineWidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">symbol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">symbolSize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">redraw_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">buffer_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">yAxisName</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                   <span class="n">buffer_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">yAxisName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bufferSizeChannelAddress</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a new curve to the plot.  In addition to the arguments below,</span>
 <span class="sd">        all other keyword arguments are passed to the underlying</span>
@@ -449,6 +511,8 @@
 <span class="sd">                Redraw after both X and Y receive new data.</span>
 <span class="sd">        buffer_size: int, optional</span>
 <span class="sd">            number of points to keep in the buffer.</span>
+<span class="sd">        bufferSizeChannelAddress : str, optional</span>
+<span class="sd">            The name of a channel that defines the buffer size (int).</span>
 <span class="sd">        symbol: str or None, optional</span>
 <span class="sd">            Which symbol to use to represent the data.</span>
 <span class="sd">        symbol: int, optional</span>
@@ -472,6 +536,7 @@
                                      <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                                      <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
                                      <span class="n">yAxisName</span><span class="o">=</span><span class="n">yAxisName</span><span class="p">,</span>
+                                     <span class="n">bufferSizeChannelAddress</span><span class="o">=</span><span class="n">bufferSizeChannelAddress</span><span class="p">,</span>
                                      <span class="o">**</span><span class="n">plot_opts</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">buffer_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">curve</span><span class="o">.</span><span class="n">setBufferSize</span><span class="p">(</span><span class="n">buffer_size</span><span class="p">)</span>
@@ -561,6 +626,7 @@
                             <span class="n">symbolSize</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbolSize&#39;</span><span class="p">),</span>
                             <span class="n">redraw_mode</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;redraw_mode&#39;</span><span class="p">),</span>
                             <span class="n">buffer_size</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;buffer_size&#39;</span><span class="p">),</span>
+                            <span class="n">bufferSizeChannelAddress</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bufferSizeChannelAddress&#39;</span><span class="p">),</span>
                             <span class="n">yAxisName</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;yAxisName&#39;</span><span class="p">))</span></div>
 
     <span class="n">curves</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getCurves</span><span class="p">,</span> <span class="n">setCurves</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -576,6 +642,9 @@
         <span class="n">chans</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">chans</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">curve</span><span class="o">.</span><span class="n">y_channel</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">])</span>
         <span class="n">chans</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">curve</span><span class="o">.</span><span class="n">x_channel</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">])</span>
+        <span class="n">chans</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">curve</span><span class="o">.</span><span class="n">bufferSizeChannel</span>
+                      <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span>
+                      <span class="k">if</span> <span class="n">curve</span><span class="o">.</span><span class="n">bufferSizeChannel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">chans</span></div>
 
     <span class="c1"># The methods for autoRangeX, minXRange, maxXRange, autoRangeY, minYRange,</span>
