@@ -1,14 +1,15 @@
-from qtpy.QtWidgets import QFrame, QApplication, QLabel, QVBoxLayout, QWidget
-from qtpy.QtCore import Qt, QSize, Property, QTimer
+from qtpy.QtWidgets import QAction, QFrame, QApplication, QLabel, QMenu, QVBoxLayout, QWidget
+from qtpy.QtCore import QPoint, Qt, QSize, Property, QTimer
 
 import copy
 import os.path
 import logging
 from .base import PyDMPrimitiveWidget
+from .baseplot import BasePlot
 from ..utilities import (is_pydm_app, establish_widget_connections,
                          close_widget_connections, macro, is_qt_designer,
                          find_file)
-from ..display import (load_file)
+from ..display import (load_file, ScreenTarget)
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +42,11 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         self._needs_load = True
         self._load_error_timer = None
         self._load_error = None
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.show_context_menu)
+        self.open_in_new_window_action = QAction('Open in New Window', self)
+        self.open_in_new_window_action.triggered.connect(self.open_display_in_new_window)
+
         self.layout = QVBoxLayout(self)
         self.err_label = QLabel(self)
         self.err_label.setAlignment(Qt.AlignHCenter)
@@ -51,14 +57,40 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     def init_for_designer(self):
         self.setFrameShape(QFrame.Box)
 
-    def minimumSizeHint(self):
+    def sizePolicy(self):
         """
-        This property holds the recommended minimum size for the widget.
+        This holds the sizePolicy for the widget.
 
         Returns
         -------
         QSize
         """
+        if self._embedded_widget is not None:
+            return self._embedded_widget.sizePolicy()
+        return super().sizePolicy()
+
+    def sizeHint(self):
+        """
+        This holds the recommended size for the widget.
+
+        Returns
+        -------
+        QSize
+        """
+        if self._embedded_widget is not None:
+            return self._embedded_widget.sizeHint()
+        return QSize(100, 100)
+
+    def minimumSizeHint(self):
+        """
+        This holds the recommended minimum size for the widget.
+
+        Returns
+        -------
+        QSize
+        """
+        if self._embedded_widget is not None:
+            return self._embedded_widget.minimumSizeHint()
         # This is totally arbitrary, I just want *some* visible nonzero size
         return QSize(100, 100)
 
@@ -329,3 +361,50 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         logger.exception("Exception while opening embedded display file.", exc_info=self._load_error)
         if self._load_error:
             self.display_error_text(self._load_error)
+
+    def open_display_in_new_window(self) -> None:
+        """ Open the embedded display in a new window """
+        if not self.filename:
+            return
+        file_path = find_file(self.filename, base_path='')
+        macros = self.parsed_macros()
+
+        if is_pydm_app():
+            load_file(file_path, macros=macros)
+        else:
+            w = load_file(file_path, macros=macros, target=ScreenTarget.DIALOG)
+
+    def create_context_menu(self, pos: QPoint) -> QMenu:
+        """ Create the right-click context menu for this embedded widget based on the location of the mouse click """
+        if self._embedded_widget is None:
+            return
+
+        menu = None
+        # Plot widgets use their own custom event handling, so we check to see if they were
+        # clicked on here. If so, just re-use the context menu they already have built. (Not
+        # specifically checking for these would clobber their context menus)
+        plot_widgets = self.findChildren(BasePlot)
+        for plot in plot_widgets:
+            try:
+                if plot.geometry().contains(pos):
+                    menu = plot.getViewBox().getMenu(None)
+            except AttributeError:
+                pass
+
+        # Otherwise check if a menu already exists, and create a new one if not
+        if menu is None:
+            try:
+                menu = self._embedded_widget.context_menu()
+            except AttributeError:
+                menu = QMenu(self)
+
+        if len(menu.findChildren(QAction)) > 0:
+            menu.addSeparator()
+        menu.addAction(self.open_in_new_window_action)
+        return menu
+
+    def show_context_menu(self, pos: QPoint) -> None:
+        """ Display the right-click context menu for this embedded widget at the location of the mouse click """
+        menu = self.create_context_menu(pos)
+        if menu is not None:
+            menu.exec_(self.mapToGlobal(pos))

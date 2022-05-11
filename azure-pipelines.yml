@@ -14,13 +14,13 @@
 #  - After the tests pass 3 Publish jobs go into action:
 #      - Documentation
 #        This job is executed on commits to master and tags.
-#        It deployes the new docs to the gh-pages branch at GitHub.
+#        It deploys the new docs to the gh-pages branch at GitHub.
 #      - PyPI
 #        This job is executed on tags only.
-#        It deploy the package to the Python Package Index.
+#        It deploys the package to the Python Package Index.
 #      - Anaconda
 #        This job is executed on commits to master and tags.
-#        It deploy the package to the DEV or TAG channels at Anaconda Cloud.
+#        It deploys the package to the DEV or TAG channels at Anaconda Cloud.
 ############################################################################################
 
 trigger:
@@ -58,7 +58,7 @@ stages:
         - script: pip install flake8
           displayName: 'Python - Install flake8'
         - bash: |
-            flake8 pydm
+            flake8 --max-line-length=120 --exit-zero pydm
           displayName: 'Flake8'
   - stage: "Build"
     dependsOn: []
@@ -122,7 +122,7 @@ stages:
             rm -rf $(Build.Repository.LocalPath)/artifacts
             git add *
             git commit -m "Updating Docs with latest build"
-            git push https://$(GITHUB_PAT)@github.com/$(Build.Repository.Name).git gh-pages
+            git push https://$(GIT_PAT)@github.com/$(Build.Repository.Name).git gh-pages
           displayName: Documentation - Upload
 
       - job: 'Publish_PyPI'

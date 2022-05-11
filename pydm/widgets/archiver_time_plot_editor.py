@@ -1,10 +1,10 @@
 from typing import Any, Optional
-from qtpy.QtCore import QModelIndex, QObject, QVariant, Slot
+from qtpy.QtCore import QModelIndex, QObject, QVariant
 from qtpy.QtGui import QColor
 from .archiver_time_plot import ArchivePlotCurveItem
 from .baseplot import BasePlot
 from .baseplot_table_model import BasePlotCurvesModel
-from .baseplot_curve_editor import BasePlotCurveEditorDialog
+from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate
 
 
 class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
@@ -56,3 +56,9 @@ class ArchiverTimePlotCurveEditorDialog(BasePlotCurveEditorDialog):
     This thing is mostly just a wrapper for a table view, with a couple
     buttons to add and remove curves, and a button to save the changes."""
     TABLE_MODEL_CLASS = PyDMArchiverTimePlotCurvesModel
+
+    def __init__(self, plot, parent=None):
+        super().__init__(plot, parent)
+
+        plot_style_delegate = PlotStyleColumnDelegate(self, self.table_model, self.table_view)
+        plot_style_delegate.hideColumns(hide_line_columns=False, hide_bar_columns=True)

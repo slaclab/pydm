@@ -3,14 +3,13 @@ import logging
 
 from pydm.widgets.timeplot import PyDMTimePlot
 from pydm.widgets.waveformplot import WaveformCurveItem
-
-logger = logging.getLogger(__name__)
-
 from qtpy.QtGui import QColor
 from qtpy.QtCore import QTimer, Qt
 
 from collections import OrderedDict
-from ...widgets.baseplot import BasePlotCurveItem, BasePlot, NoDataError
+from ...widgets.baseplot import BasePlotCurveItem, BasePlot
+
+logger = logging.getLogger(__name__)
 
 
 @pytest.mark.parametrize("color, line_style, line_width, name", [
@@ -18,8 +17,6 @@ from ...widgets.baseplot import BasePlotCurveItem, BasePlot, NoDataError
     (None, Qt.DashLine, 10, ""),
     (None, None, None, None)
 ])
-
-
 def test_baseplotcurveitem_construct(qtbot, color, line_style, line_width, name):
     base_plotcurve_item = BasePlotCurveItem(color, line_style, line_width, name=name)
 
@@ -145,7 +142,6 @@ def test_baseplot_no_added_y_axes(qtbot):
     """ Confirm that if the user does not name or create any new y-axes, the plot will still work just fine """
     base_plot = BasePlot()
     base_plot.clear()
-    base_plot.clearAxes()
 
     # Add 3 curves to our plot, but don't bother to use any of the y-axis parameters
     # in addCurve() leaving them to their default of None
@@ -229,3 +225,39 @@ def test_timeplot_add_multiple_axes(qtbot):
     assert time_plot.plotItem.curvesPerAxis['Axis 2'] == 1
     assert time_plot.plotItem.curvesPerAxis['Axis 3'] == 1
     assert time_plot.plotItem.curvesPerAxis['Axis 4'] == 1
+
+
+def test_multiaxis_plot_no_designer_flow(qtbot):
+    """ Similar to the tests above except don't use the qt designer flow at all. Verify the correct axes get
+        added to the plot in this case as well. """
+
+    # Setup a plot with three test data channels, 2 assigned to the same axis, the third to its own
+    plot = PyDMTimePlot()
+    plot.addYChannel(y_channel='ca://test_channel', yAxisName='Axis 1')
+    plot.addYChannel(y_channel='ca://test_channel_2', yAxisName='Axis 1')
+    plot.addYChannel(y_channel='ca://test_channel_3', yAxisName='Axis 2')
+
+    # There should be 5 axes, the 3 we definitely expect ('Axis 1' 'Axis 2', and the default 'bottom' x-axis). But
+    # pyqtgraph also adds a mirrored 'right' axis and a mirrored 'top' axis. These do not display by
+    # default so we'll keep them.
+    assert len(plot.plotItem.axes) == 5
+    assert 'bottom' in plot.plotItem.axes
+    assert 'Axis 1' in plot.plotItem.axes
+    assert 'Axis 2' in plot.plotItem.axes
+    assert 'right' in plot.plotItem.axes
+    assert 'top' in plot.plotItem.axes
+    assert plot.plotItem.curvesPerAxis['Axis 1'] == 2
+    assert plot.plotItem.curvesPerAxis['Axis 2'] == 1
+
+    # Now check the case where no new y-axis name is specified for any of the new channels.
+    plot = PyDMTimePlot()
+    plot.addYChannel(y_channel='ca://test_channel')
+    plot.addYChannel(y_channel='ca://test_channel_2')
+    plot.addYChannel(y_channel='ca://test_channel_3')
+
+    # Since no new axes were created, we just have the default ones provided by pyqtgraph
+    assert len(plot.plotItem.axes) == 4
+    assert 'bottom' in plot.plotItem.axes
+    assert 'left' in plot.plotItem.axes
+    assert 'right' in plot.plotItem.axes
+    assert 'top' in plot.plotItem.axes

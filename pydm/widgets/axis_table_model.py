@@ -11,8 +11,8 @@ class BasePlotAxesModel(QAbstractTableModel):
     def __init__(self, plot, parent=None):
         super(BasePlotAxesModel, self).__init__(parent=parent)
         self._plot = plot
-        self._column_names = ("Y-Axis Name", "Y-Axis Orientation", "Min Y Range",
-                              "Max Y Range", "Enable Auto Range")
+        self._column_names = ("Y-Axis Name", "Y-Axis Orientation", "Y-Axis Label",
+                              "Min Y Range", "Max Y Range", "Enable Auto Range")
 
     @property
     def plot(self):
@@ -52,6 +52,8 @@ class BasePlotAxesModel(QAbstractTableModel):
             return axis.name
         elif column_name == "Y-Axis Orientation":
             return self.name_for_orientations.get(axis.orientation, 'Left')
+        elif column_name == "Y-Axis Label":
+            return axis.label_text
         elif column_name == "Min Y Range":
             return axis.min_range
         elif column_name == "Max Y Range":
@@ -86,6 +88,8 @@ class BasePlotAxesModel(QAbstractTableModel):
                 axis.orientation = 'left'  # The PyQtGraph default is the left axis
             else:
                 axis.orientation = str(value)
+        elif column_name == "Y-Axis Label":
+            axis.label_text = str(value)
         elif column_name == "Min Y Range":
             axis.min_range = float(value)
         elif column_name == "Max Y Range":

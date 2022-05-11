@@ -205,4 +205,5 @@ PyDMTabWidget {
     qproperty-majorAlarmIconColor: #FF0000;
     qproperty-invalidAlarmIconColor: #EB00EB;
     qproperty-disconnectedAlarmIconColor: #FFFFFF;
+    qproperty-currentIndex: 0;
 }

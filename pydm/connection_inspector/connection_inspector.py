@@ -1,7 +1,8 @@
+import platform
 from qtpy.QtWidgets import (QWidget, QTableView, QAbstractItemView, QHBoxLayout,
                             QVBoxLayout, QAbstractScrollArea, QPushButton,
-                            QFileDialog, QMessageBox, QLabel)
-from qtpy.QtCore import Qt, QSize, Slot, QTimer
+                            QApplication, QFileDialog, QMessageBox, QLabel)
+from qtpy.QtCore import Qt, Slot, QTimer
 from .connection_table_model import ConnectionTableModel
 from .. import data_plugins
 
@@ -17,11 +18,16 @@ class ConnectionInspector(QWidget):
         self.layout().addItem(button_layout)
         self.save_status_label = QLabel(self)
         button_layout.addWidget(self.save_status_label)
-        button_layout.addStretch()
+        button_layout.setSpacing(10)
         self.save_button = QPushButton(self)
         self.save_button.setText("Save list to file...")
         self.save_button.clicked.connect(self.save_list_to_file)
+        self.copy_button = QPushButton(self)
+        self.copy_button.setText("Copy PVs to clipboard")
+        self.copy_button.clicked.connect(self.copy_pv_list_to_clipboard)
+
         button_layout.addWidget(self.save_button)
+        button_layout.addWidget(self.copy_button)
         self.update_timer = QTimer(parent=self)
         self.update_timer.setInterval(1500)
         self.update_timer.timeout.connect(self.update_data)
@@ -55,6 +61,20 @@ class ConnectionInspector(QWidget):
             msgBox.setInformativeText("Error: {}".format(str(e)))
             msgBox.setStandardButtons(QMessageBox.Ok)
             msgBox.exec_()
+
+    @Slot()
+    def copy_pv_list_to_clipboard(self):
+        """ Copy the list of PVs from the table to the clipboard """
+        pv_list = [connection.address for connection in self.table_view.model().connections]
+        if len(pv_list) == 0:
+            return
+
+        pvs_to_copy = " ".join(pv_list)
+        clipboard = QApplication.clipboard()
+        if platform.system() == 'Linux':
+            # Mode Selection is only valid for X11.
+            clipboard.setText(pvs_to_copy, clipboard.Selection)
+        clipboard.setText(pvs_to_copy, clipboard.Clipboard)
 
 
 class ConnectionTableView(QTableView):

@@ -1,8 +1,4 @@
 import weakref
-try:
-    from html import escape  # Python 3
-except ImportError:
-    from cgi import escape  # Can't only use this since it was removed in Python 3.8 and up
 from collections import Counter
 from pyqtgraph import PlotItem, ViewBox
 from .multi_axis_viewbox import MultiAxisViewBox
@@ -32,6 +28,7 @@ class MultiAxisPlot(PlotItem):
         super(MultiAxisPlot, self).__init__(viewBox=viewBox, axisItems=axisItems, **kargs)
 
         self.curvesPerAxis = Counter()  # A simple mapping of AxisName to a count of curves that using that axis
+        self.axesOriginalRanges = {}  # Dict from axis name to floats (x, y) representing original range of the axis
 
         # A set containing view boxes which are stacked underneath the top level view. These views will be needed
         # in order to support multiple axes on the same plot. This set will remain empty if the plot has only one set of axes
@@ -43,6 +40,9 @@ class MultiAxisPlot(PlotItem):
         self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
         if self.vb.menuEnabled():
             self.vb.menu.sigMouseModeChanged.connect(self.changeMouseMode)
+            self.vb.menu.sigXAutoRangeChanged.connect(self.updateXAutoRange)
+            self.vb.menu.sigRestoreRanges.connect(self.restoreAxisRanges)
+            self.vb.menu.sigSetAutorange.connect(self.setPlotAutoRange)
 
     def addAxis(self, axis, name, plotDataItem=None, setXLink=False, enableAutoRangeX=True, enableAutoRangeY=True,
                 minRange=-1.0, maxRange=1.0):
@@ -74,16 +74,23 @@ class MultiAxisPlot(PlotItem):
         # Create a new view box to link this axis with
         self.axes[str(name)] = {'item': axis, 'pos': None}  # The None will become an actual position in rebuildLayout() below
         view = MultiAxisViewBox()
+        view.menu = MultiAxisViewBoxMenu(view)
         view.setYRange(minRange, maxRange)
         view.enableAutoRange(axis=ViewBox.XAxis, enable=enableAutoRangeX)
         view.enableAutoRange(axis=ViewBox.YAxis, enable=enableAutoRangeY)
         self.axes['bottom']['item'].linkToView(view)  # Ensure the x axis will update when the view does
 
         view.setMouseMode(self.vb.state['mouseMode'])  # Ensure that mouse behavior is consistent between stacked views
+        view.menu.sigXAutoRangeChanged.connect(self.updateXAutoRange)
         axis.linkToView(view)
 
         if plotDataItem is not None:
             self.linkDataToAxis(plotDataItem, name)
+
+        if enableAutoRangeY:
+            self.axesOriginalRanges[name] = (None, None)
+        else:
+            self.axesOriginalRanges[name] = (minRange, maxRange)
 
         self.scene().addItem(view)
         self.addStackedView(view)
@@ -159,14 +166,12 @@ class MultiAxisPlot(PlotItem):
         if self.ctrl.averageGroup.isChecked():
             self.addAvgCurve(plotDataItem)
 
-        if plotDataItem.name():
-            if axisToLink.labelText:
-                # Joins together the labels from the curves for display on their shared axis. The label
-                # text expects html, so this will set it to be, for example, "label 1  &  label 2"
-                axisToLink.setLabel(escape(axisToLink.labelText + ' & ' + plotDataItem.name()),
-                                    color=plotDataItem.color_string)
-            else:
-                axisToLink.setLabel(plotDataItem.name(), color=plotDataItem.color_string)
+        if plotDataItem.name() and not axisToLink.labelText:
+            axisToLink.setLabel(plotDataItem.name(), color=plotDataItem.color_string)
+        elif axisToLink.labelText and plotDataItem.color_string and axisToLink.labelStyle['color'] == '#969696':
+            # The color for the axis was not specified by the user (#969696 is default) so set it appropriately
+            axisToLink.labelStyle['color'] = plotDataItem.color_string
+            axisToLink._updateLabel()
         if self.legend is not None and plotDataItem.name():
             self.legend.addItem(plotDataItem, name=plotDataItem.name())
 
@@ -180,7 +185,8 @@ class MultiAxisPlot(PlotItem):
 
         oldAxis = self.axes[axisName]['item']
         self.layout.removeItem(oldAxis)
-        oldAxis.scene().removeItem(oldAxis)
+        if oldAxis.scene() is not None:
+            oldAxis.scene().removeItem(oldAxis)
         oldAxis.unlinkFromView()
         del self.axes[axisName]
 
@@ -216,6 +222,8 @@ class MultiAxisPlot(PlotItem):
 
         for view in self.stackedViews:
             view.setXRange(minX, maxX, padding=padding)
+        if 'bottom' not in self.axesOriginalRanges:
+            self.axesOriginalRanges['bottom'] = (minX, maxX)
         super(MultiAxisPlot, self).setXRange(minX, maxX, padding=padding)
 
     def setYRange(self, minY, maxY, padding=0, update=True):
@@ -238,6 +246,13 @@ class MultiAxisPlot(PlotItem):
             view.setYRange(minY, maxY, padding=padding)
         super(MultiAxisPlot, self).setYRange(minY, maxY, padding=padding)
 
+    def isAnyXAutoRange(self) -> bool:
+        """ Return true if any view boxes are set to autorange on the x-axis, false otherwise """
+        for view in self.stackedViews:
+            if view.state['autoRange'][0]:
+                return True
+        return False
+
     def disableXAutoRange(self):
         """ Disable x-axis autorange for all views in the plot. """
         for view in self.stackedViews:
@@ -258,12 +273,53 @@ class MultiAxisPlot(PlotItem):
         for oldAxis in allAxes:
             if oldAxis.orientation != 'bottom':   # Currently only multiple y axes are supported
                 self.layout.removeItem(oldAxis)
-                oldAxis.scene().removeItem(oldAxis)
+                if oldAxis.scene() is not None:
+                    oldAxis.scene().removeItem(oldAxis)
                 oldAxis.unlinkFromView()
 
         # Retain the x axis
         bottomAxis = self.axes['bottom']
         self.axes = {'bottom': bottomAxis}
+
+    def restoreAxisRanges(self):
+        """ Restore the min and max range of all axes on the plot to their original values """
+        if len(self.axes) == 0 or len(self.axesOriginalRanges) == 0:
+            return
+
+        # First restore the range for all y-axis items added to this plot
+        for axisName, axisValue in self.axes.items():
+            axisItem = axisValue['item']
+            linkedView = axisItem.linkedView()
+            if linkedView is None or axisItem.orientation not in ('left', 'right') or axisName not in self.axesOriginalRanges:
+                continue
+
+            original_ranges = self.axesOriginalRanges[axisName]
+            if original_ranges[0] is None:  # If set to None, then autorange was enabled
+                linkedView.enableAutoRange(axis=ViewBox.YAxis, enable=True)
+            else:
+                linkedView.setYRange(original_ranges[0], original_ranges[1])
+
+        # Now restore the x-axis range as well if needed
+        if 'bottom' in self.axesOriginalRanges and self.axesOriginalRanges['bottom'][0] is not None:
+            self.setXRange(self.axesOriginalRanges['bottom'][0], self.axesOriginalRanges['bottom'][1])
+        else:
+            self.setPlotAutoRange(x=True)
+
+    def setPlotAutoRange(self, x=None, y=None):
+        """
+        Set autorange for all views on the plot
+        Parameters
+        ----------
+        x: bool, optional
+            Set to true to enable x autorange or false to disable it. Defaults to None which will result in no change
+        y: bool, optional
+            Set to true to enable y autorange or false to disable it. Defaults to None which will result in no change
+        """
+        if len(self.stackedViews) > 0:
+            for stackedView in self.stackedViews:
+                stackedView.enableAutoRange(x=x, y=y)
+        else:
+            self.getViewBox().enableAutoRange(x=x, y=y)
 
     def clearLayout(self):
         """
@@ -348,3 +404,9 @@ class MultiAxisPlot(PlotItem):
         """
         for stackedView in self.stackedViews:
             stackedView.setLeftButtonAction(mode)
+
+    def updateXAutoRange(self, val):
+        """ Update the autorange values for the x-axis on all view boxes """
+        self.vb.enableAutoRange(ViewBox.XAxis, val)
+        for stackedView in self.stackedViews:
+            stackedView.enableAutoRange(ViewBox.XAxis, val)

@@ -3,12 +3,10 @@ import logging
 import functools
 import weakref
 
-from qtpy.QtCore import QThread, QMutex, Signal, QMutexLocker
+from qtpy.QtCore import QThread, QMutex, Signal
 from qtpy.QtWidgets import QWidget, QApplication
-
+from ..utilities import is_qt_designer
 from .channel import PyDMChannel
-
-import pydm.data_plugins
 
 import numpy as np
 import math
@@ -190,7 +188,8 @@ class RulesEngine(QThread):
                                 value_slot=value_cb, enum_strings_slot=enums_cb)
                 item['channels'].append(c)
             rules_db.append(item)
-            if initial_val:
+
+            if initial_val and not is_qt_designer():
                 self.emit_value(widget_ref, name, prop, initial_val)
 
         if rules_db:
@@ -219,6 +218,9 @@ class RulesEngine(QThread):
         del w_data
 
     def run(self):
+        if is_qt_designer():
+            return
+
         while not self.isInterruptionRequested():
             w_map = self.widget_map.copy()
             for widget_ref, rules in w_map.items():

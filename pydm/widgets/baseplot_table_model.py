@@ -1,4 +1,4 @@
-from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant
+from qtpy.QtCore import QAbstractTableModel, Qt, QVariant
 from qtpy.QtGui import QBrush
 from .baseplot import BasePlotCurveItem
 
@@ -15,7 +15,8 @@ class BasePlotCurvesModel(QAbstractTableModel):
         super(BasePlotCurvesModel, self).__init__(parent=parent)
         self._plot = plot
         self._column_names = ("Label", "Color", "Y-Axis Name", "Line Style",
-                              "Line Width", "Symbol", "Symbol Size")
+                              "Line Width", "Symbol", "Symbol Size", "Bar Width",
+                              "Upper Limit", "Lower Limit", "Limit Color")
 
     @property
     def plot(self):
@@ -33,7 +34,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
 
     def flags(self, index):
         column_name = self._column_names[index.column()]
-        if column_name == "Color":
+        if column_name == "Color" or column_name == "Limit Color":
             return Qt.ItemIsSelectable | Qt.ItemIsEnabled
         return Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsEditable
 
@@ -58,6 +59,8 @@ class BasePlotCurvesModel(QAbstractTableModel):
             return self.get_data(column_name, curve)
         elif role == Qt.BackgroundRole and column_name == "Color":
             return QBrush(curve.color)
+        elif role == Qt.BackgroundRole and column_name == "Limit Color":
+            return QBrush(curve.threshold_color)
         else:
             return QVariant()
 
@@ -70,6 +73,14 @@ class BasePlotCurvesModel(QAbstractTableModel):
             return curve.y_axis_name
         elif column_name == "Color":
             return curve.color_string
+        elif column_name == "Limit Color":
+            return curve.threshold_color_string
+        elif column_name == "Bar Width":
+            return curve.bar_width
+        elif column_name == "Upper Limit":
+            return curve.upper_threshold
+        elif column_name == "Lower Limit":
+            return curve.lower_threshold
         elif column_name == "Line Style":
             return self.name_for_line[curve.lineStyle]
         elif column_name == "Line Width":
@@ -116,6 +127,14 @@ class BasePlotCurvesModel(QAbstractTableModel):
                 curve.symbol = str(value)
         elif column_name == "Symbol Size":
             curve.symbolSize = int(value)
+        elif column_name == "Bar Width":
+            curve.bar_width = float(value)
+        elif column_name == "Upper Limit":
+            curve.upper_threshold = float(value)
+        elif column_name == "Lower Limit":
+            curve.lower_threshold = float(value)
+        elif column_name == "Limit Color":
+            curve.threshold_color = value
         else:
             return False
         return True
@@ -142,6 +161,6 @@ class BasePlotCurvesModel(QAbstractTableModel):
 
     def needsColorDialog(self, index):
         column_name = self._column_names[index.column()]
-        if column_name == "Color":
+        if column_name == "Color" or column_name == "Limit Color":
             return True
         return False

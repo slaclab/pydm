@@ -9,10 +9,14 @@ from .channel import PyDMChannel
 from ..utilities import remove_protocol
 
 
+DEFAULT_BUFFER_SIZE = 1200
+MINIMUM_BUFFER_SIZE = 2
+
+
 class ScatterPlotCurveItem(BasePlotCurveItem):
     _channels = ('x_channel', 'y_channel')
 
-    def __init__(self, y_addr, x_addr, redraw_mode=None, **kws):
+    def __init__(self, y_addr, x_addr, redraw_mode=None, bufferSizeChannelAddress=None, **kws):
         self.x_channel = None
         self.y_channel = None
         self.x_address = x_addr
@@ -29,7 +33,9 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
                 kws['name'] = "{y} vs. {x}".format(y=y_name, x=x_name)
         self.redraw_mode = (redraw_mode if redraw_mode is not None
                             else self.REDRAW_ON_EITHER)
-        self._bufferSize = 1200
+        self.bufferSizeChannel = None
+        self.bufferSizeChannel_connected = False
+        self._bufferSize = DEFAULT_BUFFER_SIZE
         self.data_buffer = np.zeros((2, self._bufferSize),
                                     order='f', dtype=float)
         self.points_accumulated = 0
@@ -42,6 +48,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         if 'lineStyle' not in kws.keys():
             kws['lineStyle'] = Qt.NoPen
         super(ScatterPlotCurveItem, self).__init__(**kws)
+        self.bufferSizeChannelAddress = bufferSizeChannelAddress
 
     def to_dict(self):
         """
@@ -58,6 +65,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         dic_.update(super(ScatterPlotCurveItem, self).to_dict())
         dic_["redraw_mode"] = self.redraw_mode
         dic_['buffer_size'] = self.getBufferSize()
+        dic_["bufferSizeChannelAddress"] = self.bufferSizeChannelAddress
         return dic_
 
     @property
@@ -136,7 +144,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         """
         Handler for new x data.  This method is usually called by a PyDMChannel
         when it updates.  You can call this yourself to inject data into the curve.
-        
+
         Parameters
         ----------
         new_x: numpy.ndarray
@@ -154,7 +162,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         """
         Handler for new y data.  This method is usually called by a PyDMChannel
         when it updates.  You can call this yourself to inject data into the curve.
-        
+
         Parameters
         ----------
         new_y: numpy.ndarray
@@ -213,13 +221,67 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
 
     def setBufferSize(self, value):
         if self._bufferSize != int(value):
-            self._bufferSize = max(int(value), 1)
+            self._bufferSize = max(int(value), MINIMUM_BUFFER_SIZE)
             self.initialize_buffer()
 
     def resetBufferSize(self):
-        if self._bufferSize != 1200:
-            self._bufferSize = 1200
+        if self._bufferSize != DEFAULT_BUFFER_SIZE:
+            self._bufferSize = DEFAULT_BUFFER_SIZE
             self.initialize_buffer()
+
+    @property
+    def bufferSizeChannelAddress(self):
+        """
+        The address of the channel used to get the buffer size.
+
+        Returns
+        -------
+        str
+            The address of the channel used to get the buffer size.
+        """
+        if self.bufferSizeChannel is None:
+            return None
+        return self.bufferSizeChannel.address
+
+    @bufferSizeChannelAddress.setter
+    def bufferSizeChannelAddress(self, new_address):
+        """
+        The address of the channel used to get the buffer size.
+
+        Parameters
+        ----------
+        new_address: str
+        """
+        if new_address is None or len(str(new_address)) < 1:
+            self.bufferSizeChannel = None
+            return
+        if self.bufferSizeChannel is not None and self.bufferSizeChannel.address == new_address:
+            return
+        self.bufferSizeChannel = PyDMChannel(
+            address=new_address,
+            connection_slot=self.bufferSizeConnectionStateChanged,
+            value_slot=self.bufferSizeChannelValueReceiver)
+        self.bufferSizeChannel.connect()
+
+    @Slot(bool)
+    def bufferSizeConnectionStateChanged(self, connected):
+        self.bufferSizeChannel_connected = connected
+
+    @Slot(int)
+    def bufferSizeChannelValueReceiver(self, value):
+        """
+        Handler for change in buffer size.  This method is usually called by a PyDMChannel
+        when it updates.  You can call this yourself to set or change the buffer size.
+
+        Parameters
+        ----------
+        value: int
+            A new value for the buffer size.
+        """
+        if value is None:
+            return
+        self.setBufferSize(value)
+        self.update_buffer()
 
     def redrawCurve(self):
         """
@@ -313,7 +375,7 @@ class PyDMScatterPlot(BasePlot):
     def addChannel(self, y_channel=None, x_channel=None, name=None,
                    color=None, lineStyle=None, lineWidth=None,
                    symbol=None, symbolSize=None, redraw_mode=None,
-                   buffer_size=None, yAxisName=None):
+                   buffer_size=None, yAxisName=None, bufferSizeChannelAddress=None):
         """
         Add a new curve to the plot.  In addition to the arguments below,
         all other keyword arguments are passed to the underlying
@@ -346,6 +408,8 @@ class PyDMScatterPlot(BasePlot):
                 Redraw after both X and Y receive new data.
         buffer_size: int, optional
             number of points to keep in the buffer.
+        bufferSizeChannelAddress : str, optional
+            The name of a channel that defines the buffer size (int).
         symbol: str or None, optional
             Which symbol to use to represent the data.
         symbol: int, optional
@@ -369,6 +433,7 @@ class PyDMScatterPlot(BasePlot):
                                      name=name,
                                      color=color,
                                      yAxisName=yAxisName,
+                                     bufferSizeChannelAddress=bufferSizeChannelAddress,
                                      **plot_opts)
         if buffer_size is not None:
             curve.setBufferSize(buffer_size)
@@ -458,6 +523,7 @@ class PyDMScatterPlot(BasePlot):
                             symbolSize=d.get('symbolSize'),
                             redraw_mode=d.get('redraw_mode'),
                             buffer_size=d.get('buffer_size'),
+                            bufferSizeChannelAddress=d.get('bufferSizeChannelAddress'),
                             yAxisName=d.get('yAxisName'))
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
@@ -473,6 +539,9 @@ class PyDMScatterPlot(BasePlot):
         chans = []
         chans.extend([curve.y_channel for curve in self._curves])
         chans.extend([curve.x_channel for curve in self._curves])
+        chans.extend([curve.bufferSizeChannel
+                      for curve in self._curves
+                      if curve.bufferSizeChannel is not None])
         return chans
 
     # The methods for autoRangeX, minXRange, maxXRange, autoRangeY, minYRange,

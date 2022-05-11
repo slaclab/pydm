@@ -1,16 +1,11 @@
+from urllib import parse
 import collections
 import functools
 import logging
 import math
 import threading
-import warnings
 
 import numpy as np
-
-try:
-    from urllib import parse  # Python 3
-except ImportError:
-    import urlparse as parse
 
 from qtpy.QtCore import Slot, QThread, Signal, Qt
 from qtpy.QtWidgets import QApplication
@@ -21,22 +16,43 @@ from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 logger = logging.getLogger(__name__)
 
 
-def epics_string(value, string_encoding="utf-8"):
+def epics_string(value: np.ndarray, string_encoding: str = "utf-8") -> str:
+    """
+    Interpret numpy array as a null-terminated string.
+
+    Certain PVs give us char waveforms instead of strings.
+    This calculation utility lets us convert these to strings.
+    """
     # Stop at the first zero
     # Assume the ndarray is one-dimensional
     value = value.tobytes()
     try:
         value = value[:value.index(0)]
-    except IndexError:
+    except (IndexError, ValueError):
         pass
     return value.decode(string_encoding, "replace")  # <-- ignore decoding errors, just in case
+
+
+def epics_unsigned(value: int, bits: int = 32) -> int:
+    """
+    Interpret signed integer value as unsigned.
+
+    EPICS channel access is limited to signed types. This helper function
+    can be used to succinctly change these to unsigned types for situations
+    where the IOC designer is intending for the data type to be unsigned
+    but is unable to.
+    """
+    if value < 0:
+        return 2**bits + value
+    return value
 
 
 class CalcThread(QThread):
     eval_env = {'math': math,
                 'np': np,
                 'numpy': np,
-                'epics_string': epics_string}
+                'epics_string': epics_string,
+                'epics_unsigned': epics_unsigned}
 
     eval_env.update({k: v for k, v in math.__dict__.items() if k[0] != '_'})
     new_data_signal = Signal(dict)
@@ -274,7 +290,7 @@ class UrlToPython:
                     raise
                 logger.debug('Calc Plugin  connection %s got new listener.', self.address)
                 return None, self.name, self.address
-            except Exeption:
+            except Exception:
                 msg = "Invalid configuration for Calc Plugin  connection. %s"
                 logger.exception(msg, self.address, exc_info=True)
                 raise ValueError("error in Calc Plugin plugin input")

@@ -1,8 +1,16 @@
 import numpy as np
+import pytest
 from qtpy.QtCore import Slot
 
 from ..conftest import ConnectionSignals
 from ...widgets.archiver_time_plot import ArchivePlotCurveItem, PyDMArchiverTimePlot
+
+
+@pytest.mark.parametrize('address', ['ca://LINAC:PV1', 'pva://LINAC:PV1', 'LINAC:PV1'])
+def test_set_archive_channel(address):
+    """ Verify the address for the archiver data plugin is set correctly for all possible EPICS address prefixes """
+    curve_item = ArchivePlotCurveItem(channel_address=address)
+    assert curve_item.archive_channel.address == 'archiver://pv=LINAC:PV1'
 
 
 def test_receive_archive_data(signals: ConnectionSignals):
@@ -121,7 +129,6 @@ def test_request_data_from_archiver(qtbot):
     plot.requestDataFromArchiver(100, 200)
 
     # Verify that the data is requested for the time period specified, and since it is only 100 seconds, it is raw data
-    assert not plot._archive_request_queued  # Request is completed, so this should be false now
     assert inspect_data_request.min_x == 100
     assert inspect_data_request.max_x == 199
     assert inspect_data_request.processing_command == ''
@@ -130,7 +137,6 @@ def test_request_data_from_archiver(qtbot):
     # returned in 10 bins as specified by the "optimized_data_bins" param above
     plot._archive_request_queued = True
     plot.requestDataFromArchiver(100, 100000)
-    assert not plot._archive_request_queued
     assert inspect_data_request.min_x == 100
     assert inspect_data_request.max_x == 99999
     assert inspect_data_request.processing_command == 'optimized_10'
@@ -147,7 +153,6 @@ def test_request_data_from_archiver(qtbot):
     plot._min_x = 50  # This is the minimum timestamp visible on the x-axis, representing what the user panned to
     plot._archive_request_queued = True
     plot.requestDataFromArchiver()
-    assert not plot._archive_request_queued
     # The min_x requested should have defaulted to 50 since that is what the user requested as mentioned above
     assert inspect_data_request.min_x == 50
     # Because the oldest live timestamp in the data buffer was 300, the ending timestamp for the request should

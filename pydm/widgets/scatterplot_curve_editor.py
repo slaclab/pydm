@@ -1,7 +1,6 @@
 from qtpy.QtCore import QModelIndex, QVariant
 from .baseplot_table_model import BasePlotCurvesModel
-from .baseplot_curve_editor import (BasePlotCurveEditorDialog,
-                                    RedrawModeColumnDelegate)
+from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate, RedrawModeColumnDelegate
 
 
 class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
@@ -13,7 +12,7 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
     def __init__(self, plot, parent=None):
         super(PyDMScatterPlotCurvesModel, self).__init__(plot, parent=parent)
         self._column_names = ('Y Channel', 'X Channel') + self._column_names
-        self._column_names += ('Redraw Mode', 'Buffer Size')
+        self._column_names += ('Redraw Mode', 'Buffer Size', 'Buffer Size Channel')
 
     def get_data(self, column_name, curve):
         if column_name == "Y Channel":
@@ -28,6 +27,8 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
             return curve.redraw_mode
         elif column_name == "Buffer Size":
             return curve.getBufferSize()
+        elif column_name == "Buffer Size Channel":
+            return curve.bufferSizeChannelAddress or ""
         return super(PyDMScatterPlotCurvesModel, self).get_data(
             column_name, curve)
 
@@ -40,6 +41,10 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
             curve.redraw_mode = int(value)
         elif column_name == "Buffer Size":
             curve.setBufferSize(int(value))
+        elif column_name == "Buffer Size Channel":
+            if len(str(value).strip()) < 1:
+                value = None
+            curve.bufferSizeChannelAddress = str(value)
         else:
             return super(PyDMScatterPlotCurvesModel, self).set_data(
                 column_name=column_name, curve=curve, value=value)
@@ -72,3 +77,6 @@ class ScatterPlotCurveEditorDialog(BasePlotCurveEditorDialog):
 
         redraw_mode_delegate = RedrawModeColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Redraw Mode"), redraw_mode_delegate)
+
+        plot_style_delegate = PlotStyleColumnDelegate(self, self.table_model, self.table_view)
+        plot_style_delegate.hideColumns(hide_line_columns=False, hide_bar_columns=True)
