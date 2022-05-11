@@ -5,7 +5,7 @@ from .checkbox import PyDMCheckbox
 from .drawing import (PyDMDrawingLine, PyDMDrawingRectangle, PyDMDrawingTriangle,
                       PyDMDrawingEllipse, PyDMDrawingCircle, PyDMDrawingArc,
                       PyDMDrawingPie, PyDMDrawingChord, PyDMDrawingImage,
-                      PyDMDrawingPolyline, PyDMDrawingPolygon)
+                      PyDMDrawingPolyline, PyDMDrawingPolygon, PyDMDrawingIrregularPolygon)
 
 from .embedded_display import PyDMEmbeddedDisplay
 from .enum_combo_box import PyDMEnumComboBox

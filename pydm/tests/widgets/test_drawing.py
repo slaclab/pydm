@@ -16,7 +16,8 @@ from ...widgets.drawing import (deg_to_qt, qt_to_deg, PyDMDrawing,
                                 PyDMDrawingEllipse,
                                 PyDMDrawingCircle, PyDMDrawingArc,
                                 PyDMDrawingPie, PyDMDrawingChord,
-                                PyDMDrawingPolygon, PyDMDrawingPolyline)
+                                PyDMDrawingPolygon, PyDMDrawingPolyline,
+                                PyDMDrawingIrregularPolygon)
 
 from ...utilities.stylesheet import apply_stylesheet
 
@@ -1113,7 +1114,7 @@ def test_pydmdrawingpolygon_calculate_drawing_points(qapp, qtbot, x, y, width,
     (-1, 27, 389, 3,  2, [(-2, -2),(384, -2)]),
     (301, 230, 99, 20,  3, [(-1, 18),(-1, -1),(97, -1)])
 ])
-def test_pydmdrawingpolyline_getPoints(qapp, qtbot, x, y, width,
+def test_pydmdrawingpolyline_getpoints(qapp, qtbot, x, y, width,
                                                       height, num_points,
                                                       expected_points):
     """
@@ -1155,10 +1156,15 @@ def test_pydmdrawingpolyline_getPoints(qapp, qtbot, x, y, width,
     drawing.show()
 
 
-@pytest.mark.parametrize("width, height", [
-    (99, 20)
+@pytest.mark.parametrize("width, height, points, num_points", [
+    (99, 20, ["-1, 18", "-1, -1", "97, -1"], 3),
+    (99, 20, [[-1, 18], (-1, -1), [97, -1]], 3),
+    (99, 20, [[-1, 18], (-1, -1)], 2),
+    (99, 20, [[-1, 18], (-1, -1.1)], 2),
+    (99, 20, [[-1, 18], "-1, -1.1"], 2),
+    (99, 20, [[-1, 18],], 0),
 ])
-def test_pydmdrawingpolyline_setPoints(qapp, qtbot, monkeypatch, width, height):
+def test_pydmdrawingpolyline_setpoints(qapp, qtbot, monkeypatch, width, height, points, num_points):
     """
     Test the rendering of a PyDMDrawingPolyline widget.
 
@@ -1175,6 +1181,10 @@ def test_pydmdrawingpolyline_setPoints(qapp, qtbot, monkeypatch, width, height):
         The width to the widget
     height : int, float
         The height of the widget
+    points : [(float, float)]
+        Requested vertices of the polygon.
+    num_points :int
+        The actual number of vertices of the polygon.
     """
     drawing = PyDMDrawingPolyline()
     qtbot.addWidget(drawing)
@@ -1182,7 +1192,52 @@ def test_pydmdrawingpolyline_setPoints(qapp, qtbot, monkeypatch, width, height):
     monkeypatch.setattr(PyDMDrawing, "width", lambda *args: width)
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
-    drawing.setPoints(["-1, 18","-1, -1","97, -1"])
+    drawing.setPoints(points)
+    assert len(drawing.getPoints()) == num_points
+
+    drawing.show()
+
+
+# # ---------------------------
+# # PyDMDrawingIrregularPolygon
+# # ---------------------------
+@pytest.mark.parametrize("num_points, points", [
+    (3, [(-2, -2), (384, -2)]),
+    (3, [(-2, -2), (384, -2), (-2, -2)]),
+    (4, [(-1, 18), (-1, -1), (97, -1)]),
+    (None, [(-2, -2), ]),
+])
+def test_pydmdrawingpolyline_get_set_resetpoints(qapp, qtbot, num_points, points):
+    """
+    Test the calculations of the point coordinates of a PyDMDrawingPolyline widget.
+
+    Expectations:
+    The number of points is correct for a closed polygon..
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    num_points : int
+        The number of points in the polygon
+    points : tuple
+        The collection of the x and y coordinate sets
+    """
+    drawing = PyDMDrawingIrregularPolygon()
+    qtbot.addWidget(drawing)
+
+    assert drawing.getPoints() == []
+
+    drawing.setPoints(points)
+    vertices = drawing.getPoints()
+    if num_points is None:
+        assert vertices == []
+    else:
+        assert len(vertices) == num_points, f"{points=}"
+        assert vertices[0] == vertices[-1]  # closed polygon
+
+    drawing.resetPoints()
+    assert drawing.getPoints() == []
 
     drawing.show()
 

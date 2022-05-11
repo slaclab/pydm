@@ -14,7 +14,7 @@ from .drawing import (PyDMDrawingLine, PyDMDrawingRectangle,
                       PyDMDrawingTriangle,
                       PyDMDrawingEllipse, PyDMDrawingCircle, PyDMDrawingArc,
                       PyDMDrawingPie, PyDMDrawingChord, PyDMDrawingImage,
-                      PyDMDrawingPolygon, PyDMDrawingPolyline)
+                      PyDMDrawingPolygon, PyDMDrawingPolyline, PyDMDrawingIrregularPolygon)
 
 from .embedded_display import PyDMEmbeddedDisplay
 from .enum_button import PyDMEnumButton
@@ -152,6 +152,11 @@ PyDMDrawingPolylinePlugin = qtplugin_factory(PyDMDrawingPolyline,
                                             group=WidgetCategory.DRAWING,
                                             extensions=BASE_EXTENSIONS,
                                             icon=ifont.icon("share-alt"))
+
+PyDMDrawingIrregularPolygonPlugin = qtplugin_factory(PyDMDrawingIrregularPolygon,
+                                            group=WidgetCategory.DRAWING,
+                                            extensions=BASE_EXTENSIONS,
+                                            icon=ifont.icon("draw-polygon"))
 
 # Embedded Display plugin
 PyDMEmbeddedDisplayPlugin = qtplugin_factory(PyDMEmbeddedDisplay,
