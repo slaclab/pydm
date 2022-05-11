@@ -344,7 +344,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
 class PyDMTimePlot(BasePlot):
     """
-    PyDMWaveformPlot is a widget to plot one or more waveforms.
+    PyDMTimePlot is a widget to plot one or more channels vs. time.
 
     Each curve can plot either a Y-axis waveform vs. its indices,
     or a Y-axis waveform against an X-axis waveform.
