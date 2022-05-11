@@ -5,7 +5,9 @@ import platform
 import ntpath
 import shlex
 
-from qtpy import QtWidgets, QtCore
+from typing import List, Optional
+
+from qtpy import QtCore, QtGui, QtWidgets
 
 from .units import find_unittype, convert, find_unit_options
 from . import macro
@@ -378,7 +380,8 @@ def only_main_thread(func):
     return wrapper
 
 
-def get_clipboard():
+def get_clipboard() -> Optional[QtGui.QClipboard]:
+    """Get the clipboard instance. Requires a QApplication."""
     app = QtWidgets.QApplication.instance()
     if app is None:
         return None
@@ -386,19 +389,41 @@ def get_clipboard():
     return QtWidgets.QApplication.clipboard()
 
 
-def get_clipboard_modes():
+def get_clipboard_modes() -> List[int]:
+    """
+    Get the clipboard modes for the current platform.
+
+    Returns
+    -------
+    list of int
+        Qt-specific modes to try for interacting with the clipboard.
+    """
     clipboard = get_clipboard()
     if clipboard is None:
-        return None
+        return []
 
-    if platform.system() == 'Linux':
-        # Mode Selection is only valid for X11.
-        return [clipboard.Selection, clipboard.Clipboard]
-    return [clipboard.Clipboard]
+    if platform.system() == "Linux":
+        # Mode selection is only valid for X11.
+        return [
+            QtGui.QClipboard.Selection,
+            QtGui.QClipboard.Clipboard
+        ]
+
+    return [QtGui.QClipboard.Clipboard]
 
 
-def copy_to_clipboard(text, quiet=False):
-    """Copy ``text`` to the clipboard."""
+def copy_to_clipboard(text: str, *, quiet: bool = False):
+    """
+    Copy ``text`` to the clipboard.
+
+    Parameters
+    ----------
+    text : str
+        The text to copy to the clipboard.
+
+    quiet : bool, optional, keyword-only
+        If quiet is set, do not log the copied text.  Defaults to False.
+    """
     clipboard = get_clipboard()
     if clipboard is None:
         return None
@@ -406,19 +431,34 @@ def copy_to_clipboard(text, quiet=False):
     for mode in get_clipboard_modes():
         clipboard.setText(text, mode=mode)
         event = QtCore.QEvent(QtCore.QEvent.Clipboard)
-        QtWidgets.QApplication.instance().sendEvent(clipboard, event)
+        app = QtWidgets.QApplication.instance()
+        if app is not None:
+            app.sendEvent(clipboard, event)
 
     if not quiet:
-        # TODO: warning to ensure we get this to the user: logging not
-        # configured in designer?
-        logger.warning("Copied text to clipboard:\n%s", text)
+        logger.warning(
+            (
+                "Copied text to clipboard:\n"
+                "-------------------------\n"
+                "%s\n"
+                "-------------------------\n"
+            ),
+            text
+        )
 
 
-def get_clipboard_text():
-    """Copy ``text`` from the clipboard."""
+def get_clipboard_text() -> str:
+    """
+    Get ``text`` from the clipboard. If unavailable or unset, empty string.
+
+    Returns
+    -------
+    str
+        The clipboard text, if available.
+    """
     clipboard = get_clipboard()
     if clipboard is None:
-        return None
+        return ""
     for mode in get_clipboard_modes():
         text = clipboard.text(mode=mode)
         if text:
