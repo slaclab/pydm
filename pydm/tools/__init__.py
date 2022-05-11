@@ -190,7 +190,7 @@ def get_entrypoint_tools() -> Generator[ExternalTool, None, None]:
     Yield all external tool classes specified by entrypoints.
 
     Uses ``entrypoints`` to find packaged external tools in packages that
-    configure the ``pydm.external_tool`` entrypoint.
+    configure the ``pydm.tool`` entrypoint.
     """
     for entry in entrypoints.get_group_all(ENTRYPOINT_EXTERNAL_TOOL):
         logger.debug("Found external tool entrypoint: %s", entry.name)
@@ -244,7 +244,7 @@ def load_external_tools():
        ``*_tool.py`` which contain classes that inherit from
        :class:`pydm.tools.ExternalTool`.
     2. Uses ``entrypoints`` to find packaged external tools in packages that
-       configure the ``pydm.external_tool`` entrypoint.
+       configure the ``pydm.tool`` entrypoint.
 
     If called previously, this function is a no-operation.
     """

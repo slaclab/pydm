@@ -13,6 +13,7 @@ from collections import deque
 from contextlib import contextmanager
 from typing import Any, Dict, Generator, List, Type
 
+import entrypoints
 from qtpy.QtWidgets import QApplication
 
 from .. import config
@@ -189,6 +190,42 @@ def find_plugins_from_path(
                 yield from _get_plugins_from_source(os.path.join(root, name))
 
 
+def find_plugins_from_entrypoints(
+    key: str = config.ENTRYPOINT_DATA_PLUGIN,
+) -> Generator[Type[PyDMPlugin], None, None]:
+    """
+    Yield all PyDMPlugin classes specified by entrypoints.
+
+    Uses ``entrypoints`` to find packaged external tools in packages that
+    configure the ``pydm.data_plugin`` entrypoint.
+
+    Parameters
+    ----------
+    key : str, optional
+        The entrypoint key.
+    """
+    for entry in entrypoints.get_group_all(key):
+        logger.debug("Found data plugin entrypoint: %s", entry.name)
+        try:
+            plugin_cls = entry.load()
+        except Exception as ex:
+            logger.exception(
+                "Failed to load %s entry %s: %s",
+                key, entry.name, ex
+            )
+            continue
+
+        if not _is_valid_plugin_class(plugin_cls):
+            logger.warning(
+                "Invalid plugin class specified in entrypoint "
+                "%s: %s",
+                entry.name, plugin_cls
+            )
+            continue
+
+        yield plugin_cls
+
+
 def _is_valid_plugin_class(obj: Any) -> bool:
     """Is the object a data plugin class?"""
     return (
@@ -196,6 +233,29 @@ def _is_valid_plugin_class(obj: Any) -> bool:
         and issubclass(obj, PyDMPlugin)
         and obj is not PyDMPlugin
     )
+
+
+def load_plugins_from_entrypoints(
+    key: str = config.ENTRYPOINT_DATA_PLUGIN
+) -> Dict[str, PyDMPlugin]:
+    """
+    Load plugins from file locations that match a specific token
+
+    Parameters
+    ----------
+    key : str, optional
+        The entrypoint key.
+
+    Returns
+    -------
+    plugins : dict
+        Dictionary of plugins add from this folder
+    """
+    added_plugins = dict()
+    for plugin in find_plugins_from_entrypoints(key):
+        if plugin.protocol is not None:
+            added_plugins[plugin.protocol] = add_plugin(plugin)
+    return added_plugins
 
 
 def load_plugins_from_path(
@@ -277,4 +337,4 @@ def initialize_plugins_if_needed():
     locations.insert(0, plugin_dir)
 
     load_plugins_from_path(locations)
-    # load_plugins_from_entrypoints(config.ENTRYPOINT_DATA_PLUGIN)
+    load_plugins_from_entrypoints(config.ENTRYPOINT_DATA_PLUGIN)
