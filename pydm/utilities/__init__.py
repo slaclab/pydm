@@ -1,10 +1,14 @@
 import functools
+import importlib
+import importlib.util
 import logging
 import ntpath
 import os
 import platform
 import shlex
 import sys
+import types
+import uuid
 
 from qtpy import QtCore, QtWidgets
 
@@ -158,7 +162,7 @@ def _screen_file_extensions(preferred_extension):
     """
     extensions = [".py", ".ui"]  # search for screens with these extensions
     try:
-        import adl2pydm  # proceed only if package is importable
+        import adl2pydm  # proceed only if package is importable  # noqa: F401
         extensions.append(".adl")
     except ImportError:
         pass
@@ -422,3 +426,32 @@ def log_failures(
         return wrapped
 
     return wrapper
+
+
+def import_module_by_filename(
+    source_filename: str, *,
+    add_to_modules: bool = True
+) -> types.ModuleType:
+    """
+    For a given source filename, import it and search for objects.
+
+    Parameters
+    ----------
+    source_filename : str
+        The source code filename.
+
+    add_to_modules : bool, optional, keyword-only
+        Add the imported module to ``sys.modules``.  Defaults to ``True``.
+
+    Returns
+    -------
+    module : types.ModuleType
+        The imported module.
+    """
+    module_name = str(uuid.uuid4())
+    spec = importlib.util.spec_from_file_location(module_name, source_filename)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    if add_to_modules:
+        sys.modules[module_name] = module
+    return module

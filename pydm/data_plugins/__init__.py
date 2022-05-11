@@ -3,21 +3,19 @@ Loads all the data plugins available at the given PYDM_DATA_PLUGINS_PATH
 environment variable and subfolders that follows the *_plugin.py and have
 classes that inherits from the pydm.data_plugins.PyDMPlugin class.
 """
-import imp
 import inspect
 import logging
 import os
-import sys
-import uuid
 from collections import deque
 from contextlib import contextmanager
-from typing import Any, Dict, Generator, List, Type
+from typing import Any, Dict, Generator, List, Optional, Type
 
 import entrypoints
 from qtpy.QtWidgets import QApplication
 
 from .. import config
-from ..utilities import log_failures, path_info, protocol_and_address
+from ..utilities import (import_module_by_filename, log_failures,
+                         protocol_and_address)
 from .plugin import PyDMPlugin
 
 logger = logging.getLogger(__name__)
@@ -74,7 +72,7 @@ def establish_connection_immediately(channel):
     plugin.add_connection(channel)
 
 
-def plugin_for_address(address: str) -> PyDMPlugin:
+def plugin_for_address(address: str) -> Optional[PyDMPlugin]:
     """
     Find the correct PyDMPlugin for a channel
     """
@@ -152,11 +150,7 @@ def _get_plugins_from_source(source_filename: str) -> List[Type[PyDMPlugin]]:
     plugins : list of PyDMPlugin classes
         The plugin classes.
     """
-    base_dir, _, _ = path_info(source_filename)
-    if base_dir not in sys.path:
-        sys.path.append(base_dir)
-    temp_name = str(uuid.uuid4())
-    module = imp.load_source(temp_name, source_filename)
+    module = import_module_by_filename(source_filename)
     return list(
         set(
             obj

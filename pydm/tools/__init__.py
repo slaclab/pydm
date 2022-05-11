@@ -1,18 +1,15 @@
 import collections
 import functools
-import imp
 import inspect
 import logging
 import os
-import sys
-import uuid
 from typing import Any, Dict, Generator, List, Optional, Union
 
 import entrypoints
 from qtpy.QtWidgets import QMenu, QWidget
 
 from ..config import ENTRYPOINT_EXTERNAL_TOOL, EXTERNAL_TOOL_SUFFIX
-from ..utilities import log_failures, path_info
+from ..utilities import import_module_by_filename, log_failures
 from .tools import ExternalTool
 
 logger = logging.getLogger(__name__)
@@ -49,11 +46,7 @@ def _get_tools_from_source(source_filename: str) -> List[ExternalTool]:
     ValueError
         If no subclassed external tools are found.
     """
-    base_dir, _, _ = path_info(source_filename)
-    if base_dir not in sys.path:
-        sys.path.append(base_dir)
-    temp_name = str(uuid.uuid4())
-    module = imp.load_source(temp_name, source_filename)
+    module = import_module_by_filename(source_filename)
     classes = list(
         set(
             obj
@@ -96,7 +89,6 @@ def install_external_tool(tool: Union[str, ExternalTool]) -> None:
                 f"expected."
             )
 
-            # The actual tool to be installed...
         if tool_obj.group is not None and tool_obj.group:
             if tool_obj.group not in ext_tools:
                 ext_tools[tool_obj.group] = {}
