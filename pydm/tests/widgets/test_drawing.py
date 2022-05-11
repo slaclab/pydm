@@ -1233,7 +1233,7 @@ def test_pydmdrawingpolyline_get_set_resetpoints(qapp, qtbot, num_points, points
     if num_points is None:
         assert vertices == []
     else:
-        assert len(vertices) == num_points, f"{points=}"
+        assert len(vertices) == num_points, f"points={points}"
         assert vertices[0] == vertices[-1]  # closed polygon
 
     drawing.resetPoints()
