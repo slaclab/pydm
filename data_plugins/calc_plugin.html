@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calc Plugin &mdash; PyDM v1.15.1+12.g549fee98 documentation</title>
+  <title>Calc Plugin &mdash; PyDM v1.15.1+34.gf60a7ac2 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+12.g549fee98
+                v1.15.1+34.gf60a7ac2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -68,6 +68,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Calc Plugin</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#required-attributes">Required Attributes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#extra-attributes">Extra Attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#built-in-calc-helpers">Built-in Calc Helpers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#simple-calc-plugin-example">Simple Calc Plugin Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
 </ul>
@@ -225,6 +226,39 @@ The optional attributes are described in the <a class="reference internal" href=
 </div>
 </section>
 <hr class="docutils" />
+<section id="built-in-calc-helpers">
+<h2>Built-in Calc Helpers<a class="headerlink" href="#built-in-calc-helpers" title="Permalink to this headline"></a></h2>
+<p>Certain helper functions are built in to PyDM because they get semi-frequent use in
+the context of EPICS values.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 37%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Helpers</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Usage Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>epics_string</strong></p></td>
+<td><p>Convert a char waveform to a string.</p></td>
+<td><p><cite>calc://my_string?var=ca://WAVEFORM:PV&amp;expr=epics_string(var)</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>epics_unsigned</strong></p></td>
+<td><p>Force a signed integer to be unsigned.</p></td>
+<td><p><cite>calc://my_int?var=ca://SOME:16BIT:INT&amp;expr=epics_unsigned(var, 16)</cite></p></td>
+</tr>
+</tbody>
+</table>
+<p>You should use epics_string when you have a string PV that is expressed as a char
+waveform, but you need to use the corresponding string value internally.</p>
+<p>You should use epics_unsigned when you are dealing with a PV that is supposed to be
+interpreted as a positive integer but is instead a negative integer because channel
+access does not support any unsigned types and we have overflowed to negative values.</p>
+</section>
 <section id="simple-calc-plugin-example">
 <h2>Simple Calc Plugin Example<a class="headerlink" href="#simple-calc-plugin-example" title="Permalink to this headline"></a></h2>
 <p>The picture below represents an example of using the Calc Plugin.
