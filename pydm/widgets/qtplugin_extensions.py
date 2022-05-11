@@ -90,16 +90,12 @@ class BasicSettingsExtension(PyDMExtension):
                 "PyDM C&hannel", self.widget
             )
             # self.channel_menu_action.triggered.connect(self.open_channel_menu)
-            clipboard_text = get_clipboard_text() or ""
             self.channel_menu = QtWidgets.QMenu()
-            copy_channel = self.channel_menu.addAction(
-                f"&Copy to clipboard: {widget.channel}"
-            )
-            copy_channel.triggered.connect(self.copy_channel)
-            paste_channel = self.channel_menu.addAction(
-                f"&Paste from clipboard: {clipboard_text[:100]}"
-            )
-            paste_channel.triggered.connect(self.paste_channel)
+            self.copy_channel_action = self.channel_menu.addAction("")
+            self.copy_channel_action.triggered.connect(self.copy_channel)
+            self.paste_channel_action = self.channel_menu.addAction("")
+            self.paste_channel_action.triggered.connect(self.paste_channel)
+            self.channel_menu.aboutToShow.connect(self.update_action_clipboard_text)
             edit_channel = self.channel_menu.addAction(
                 "&Edit channel..."
             )
@@ -109,6 +105,15 @@ class BasicSettingsExtension(PyDMExtension):
             )
             copy_channel_value.triggered.connect(self.copy_channel_value)
             self.channel_menu_action.setMenu(self.channel_menu)
+
+    def update_action_clipboard_text(self):
+        self.copy_channel_action.setText(
+            f"&Copy to clipboard: {self.widget.channel}"
+        )
+        clipboard_text = get_clipboard_text() or ""
+        self.paste_channel_action.setText(
+            f"&Paste from clipboard: {clipboard_text[:100]}"
+        )
 
     def copy_channel(self, _):
         channel = self.widget.channel
