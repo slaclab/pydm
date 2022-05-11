@@ -36,6 +36,10 @@ def test_construct(qtbot):
         pydm_channel.prec_slot is None and \
         pydm_channel.upper_ctrl_limit_slot is None and \
         pydm_channel.lower_ctrl_limit_slot is None and \
+        pydm_channel.upper_alarm_limit_slot is None and \
+        pydm_channel.lower_alarm_limit_slot is None and \
+        pydm_channel.upper_warning_limit_slot is None and \
+        pydm_channel.lower_warning_limit_slot is None and \
         pydm_channel.write_access_slot is None and \
         pydm_channel.value_signal is None
 

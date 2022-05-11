@@ -21,6 +21,10 @@ class PyDMConnection(QObject):
     prec_signal = Signal(int)
     upper_ctrl_limit_signal = Signal([float], [int])
     lower_ctrl_limit_signal = Signal([float], [int])
+    upper_alarm_limit_signal = Signal([float], [int])
+    lower_alarm_limit_signal = Signal([float], [int])
+    upper_warning_limit_signal = Signal([float], [int])
+    lower_warning_limit_signal = Signal([float], [int])
 
     def __init__(self, channel, address, protocol=None, parent=None):
         super(PyDMConnection, self).__init__(parent)
@@ -75,6 +79,18 @@ class PyDMConnection(QObject):
 
         if channel.lower_ctrl_limit_slot is not None:
             self.lower_ctrl_limit_signal.connect(channel.lower_ctrl_limit_slot, Qt.QueuedConnection)
+
+        if channel.upper_alarm_limit_slot is not None:
+            self.upper_alarm_limit_signal.connect(channel.upper_alarm_limit_slot, Qt.QueuedConnection)
+
+        if channel.lower_alarm_limit_slot is not None:
+            self.lower_alarm_limit_signal.connect(channel.lower_alarm_limit_slot, Qt.QueuedConnection)
+
+        if channel.upper_warning_limit_slot is not None:
+            self.upper_warning_limit_signal.connect(channel.upper_warning_limit_slot, Qt.QueuedConnection)
+
+        if channel.lower_warning_limit_slot is not None:
+            self.lower_warning_limit_signal.connect(channel.lower_warning_limit_slot, Qt.QueuedConnection)
 
         if channel.prec_slot is not None:
             self.prec_signal.connect(channel.prec_slot, Qt.QueuedConnection)
@@ -155,6 +171,30 @@ class PyDMConnection(QObject):
         if self._should_disconnect(channel.lower_ctrl_limit_slot, destroying):
             try:
                 self.lower_ctrl_limit_signal.disconnect(channel.lower_ctrl_limit_slot)
+            except (KeyError, TypeError):
+                pass
+
+        if self._should_disconnect(channel.upper_alarm_limit_slot, destroying):
+            try:
+                self.upper_alarm_limit_signal.disconnect(channel.upper_alarm_limit_slot)
+            except (KeyError, TypeError):
+                pass
+
+        if self._should_disconnect(channel.lower_alarm_limit_slot, destroying):
+            try:
+                self.lower_alarm_limit_signal.disconnect(channel.lower_alarm_limit_slot)
+            except (KeyError, TypeError):
+                pass
+
+        if self._should_disconnect(channel.upper_warning_limit_slot, destroying):
+            try:
+                self.upper_warning_limit_signal.disconnect(channel.upper_warning_limit_slot)
+            except (KeyError, TypeError):
+                pass
+
+        if self._should_disconnect(channel.lower_warning_limit_slot, destroying):
+            try:
+                self.lower_warning_limit_signal.disconnect(channel.lower_warning_limit_slot)
             except (KeyError, TypeError):
                 pass
 
