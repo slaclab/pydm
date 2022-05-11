@@ -1,7 +1,10 @@
 import os
 
+import entrypoints
+
 from pydm import config
-from pydm.data_plugins import (initialize_plugins_if_needed,
+from pydm.data_plugins import (PyDMPlugin, initialize_plugins_if_needed,
+                               load_plugins_from_entrypoints,
                                load_plugins_from_path, plugin_for_address,
                                plugin_modules)
 
@@ -51,3 +54,23 @@ class TestPlugin1(PyDMPlugin):
 class TestPlugin2(PyDMPlugin):
     protocol = 'tst2'
 """
+
+
+def test_entrypoint_import(monkeypatch):
+    class MyTestPlugin(PyDMPlugin):
+        protocol = "__test_suite_protocol__"
+
+    class Entrypoint:
+        name = "MyTestPlugin"
+
+        def load(self):
+            return MyTestPlugin
+
+    def get_group_all(key):
+        yield Entrypoint()
+
+    monkeypatch.setattr(entrypoints, "get_group_all", get_group_all)
+    loaded = load_plugins_from_entrypoints()
+
+    assert "__test_suite_protocol__" in loaded
+    assert isinstance(loaded["__test_suite_protocol__"], MyTestPlugin)
