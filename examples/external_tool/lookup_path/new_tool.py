@@ -10,9 +10,13 @@ class DummyTool2(ExternalTool):
         group = "Example"
         use_with_widgets = True
         use_without_widget = False
-        ExternalTool.__init__(self, icon=icon, name=name, group=group,
-                              use_with_widgets=use_with_widgets,
-                              use_without_widget=use_without_widget)
+        super().__init__(
+            icon=icon,
+            name=name,
+            group=group,
+            use_with_widgets=use_with_widgets,
+            use_without_widget=use_without_widget,
+        )
 
     def call(self, channels, sender):
         print("Called Dummy Tool 2 from: {} with:".format(sender))
