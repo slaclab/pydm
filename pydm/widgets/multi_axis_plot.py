@@ -315,9 +315,8 @@ class MultiAxisPlot(PlotItem):
         y: bool, optional
             Set to true to enable y autorange or false to disable it. Defaults to None which will result in no change
         """
-        if len(self.stackedViews) > 0:
-            for stackedView in self.stackedViews:
-                stackedView.enableAutoRange(x=x, y=y)
+        for stackedView in self.stackedViews:
+            stackedView.enableAutoRange(x=x, y=y)
         self.getViewBox().enableAutoRange(x=x, y=y)
 
     def clearLayout(self):
