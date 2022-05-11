@@ -318,8 +318,7 @@ class MultiAxisPlot(PlotItem):
         if len(self.stackedViews) > 0:
             for stackedView in self.stackedViews:
                 stackedView.enableAutoRange(x=x, y=y)
-        else:
-            self.getViewBox().enableAutoRange(x=x, y=y)
+        self.getViewBox().enableAutoRange(x=x, y=y)
 
     def clearLayout(self):
         """
