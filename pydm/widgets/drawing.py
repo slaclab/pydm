@@ -655,8 +655,7 @@ class PyDMDrawingImage(PyDMDrawing):
                 base_path = os.path.dirname(parent_display.loaded_file())
             abs_path = find_file(abs_path, base_path=base_path)
             if not abs_path:
-                logger.exception("Unable to find full filepath for %s",
-                                 self._file, exc_info=False)
+                logger.error("Unable to find full filepath for %s", self._file)
                 return
 
         # Check that the path exists
@@ -1157,13 +1156,11 @@ class PyDMDrawingPolyline(PyDMDrawing):
             point = pt
             if isinstance(point, str):
                 point = list(map(float, point.split(",")))
-                # logger.exception("polyline point %d must be list of (number, number) pairs, received '%s'", i, pt, exc_info=False)
-                # return
             if len(point) != 2:
-                logger.exception("polyline point %d must be two numbers, comma-separated, received '%s'", i, pt, exc_info=False)
+                logger.error("polyline point %d must be two numbers, comma-separated, received '%s'", i, pt)
                 return
             if not isfloat(point[0]) or not isfloat(point[1]):
-                logger.exception("polyline point %d content must be numeric, received '%s'", i, pt, exc_info=False)
+                logger.error("polyline point %d content must be numeric, received '%s'", i, pt)
                 return
             # verified.append(str(point))  # the OLD internal representation, up to v1.15.1
             verified.append(point)
@@ -1172,7 +1169,7 @@ class PyDMDrawingPolyline(PyDMDrawing):
 
     def setPoints(self, value):
         if len(value) < 2:
-            logger.exception("Must have two or more points", exc_info=False)
+            logger.error("Must have two or more points")
             return
 
         verified = self._validator(value)
@@ -1209,7 +1206,7 @@ class PyDMDrawingIrregularPolygon(PyDMDrawingPolyline):
             points.append(points[0])  # close the polygon
 
         if len(points) < 3:
-            logger.exception("Must have three or more points", exc_info=False)
+            logger.error("Must have three or more points")
             return
 
         verified = self._validator(points)
