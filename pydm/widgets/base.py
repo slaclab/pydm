@@ -5,7 +5,6 @@ import logging
 import functools
 import json
 import numpy as np
-from typing import Tuple
 from qtpy.QtWidgets import (QApplication, QMenu, QGraphicsOpacityEffect,
                             QToolTip, QWidget)
 from qtpy.QtGui import QCursor, QIcon
