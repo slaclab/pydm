@@ -2,6 +2,9 @@ import io
 import six
 from string import Template
 import json
+from typing import Tuple
+
+from qtpy.QtWidgets import QWidget
 
 # Macro parsing states
 PRE_NAME = 0
@@ -46,6 +49,69 @@ def template_for_file(file_path):
     with open(file_path) as orig_file:
         text = Template(orig_file.read())
     return text
+
+
+def substitute_in_widget(
+    widget: QWidget,
+    macros: dict[str, str],
+    source_file: str
+) -> QWidget:
+    """
+    Performs substitution on a created widget with un-substituted strings.
+
+    This mutates the widget in place and also returns it.
+
+    In cases where all macros are in string properties and we are re-using
+    the same template many times, this is a much faster way to apply macros.
+
+    Parameters
+    ----------
+    widget : QWidget
+        Any widget with macros in string properties.
+    properties : list of str
+        The exact properties to replace in.
+    macros : dict from str to str
+        Mapping from macro string to replacement value.
+
+    Returns
+    -------
+    widget : QWidget
+        The same widget back again, with templates filled.
+    """
+    for child_name, prop in _get_macro_targets(widget, source_file):
+        child_widget = getattr(widget, child_name)
+        child_widget.setProperty(
+            prop,
+            Template(child_widget.property(prop)).safe_substitute(macros)
+        )
+    return widget
+
+
+_macro_target_cache = {}
+
+
+def _get_macro_targets(
+    widget: QWidget,
+    source_file: str,
+) -> Tuple[Tuple[str, str]]:
+    try:
+        return _macro_target_cache[source_file]
+    except KeyError:
+        ...
+    targets = []
+    for obj_name, obj in widget.__dict__.items():
+        if not isinstance(obj, QWidget):
+            continue
+        meta_obj = obj.metaObject()
+        for index in range(meta_obj.propertyCount()):
+            meta_property = meta_obj.property(index)
+            if meta_property.typeName() == 'QString':
+                prop_name = meta_property.name()
+                if "${" in obj.property(prop_name):
+                    targets.append((obj_name, prop_name))
+    targets = tuple(targets)
+    _macro_target_cache[source_file] = targets
+    return targets
 
 
 def parse_macro_string(macro_string):
