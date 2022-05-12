@@ -132,7 +132,7 @@ def test_pydmdrawing_paintEvent(qtbot, signals, alarm_sensitive_content):
 
     Expectations:
     The paintEvent will be triggered, and the widget's brush color is correctly set.
-    
+
     NOTE: This test depends on the default stylesheet having different values for 'qproperty-brush' for different alarm states of PyDMDrawing.
 
     Parameters
@@ -1206,6 +1206,10 @@ def test_pydmdrawingpolyline_setpoints(qapp, qtbot, monkeypatch, width, height, 
     (3, [(-2, -2), (384, -2)]),
     (3, [(-2, -2), (384, -2), (-2, -2)]),
     (4, [(-1, 18), (-1, -1), (97, -1)]),
+    (4, [(-1, 18), (-1, -1), "97, -1"]),
+    (4, [(-1, 18), (-1, -1), "97, -1", "-1, 18"]),
+    (4, [(-1, 18), (-1, -1), "97, -1", "-1    18"]),
+    (4, [(-1, 18), (-1, -1), "97, -1", "-1    18", (-1, 18)]),
     (None, [(-2, -2), ]),
 ])
 def test_pydmdrawingirregularpolygon_get_set_resetpoints(qapp, qtbot, num_points, points):
