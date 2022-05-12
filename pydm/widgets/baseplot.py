@@ -615,8 +615,12 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     def addCurve(self, plot_data_item, curve_color=None, y_axis_name=None):
         """
-        Adds a curve to this plot. If the y axis parameters are specified, either link this curve to an existing
-        axis if that axis is already part of this plot, or create a new one and link the curve to it.
+        Adds a curve to this plot. 
+
+        If the y axis parameters are specified, either link this curve to an
+        existing axis if that axis is already part of this plot, or create a
+        new one and link the curve to it.
+
         Parameters
         ----------
         plot_data_item: BasePlotCurveItem
@@ -624,8 +628,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         curve_color: QColor, optional
             The color to draw the curve and axis label in
         y_axis_name: str, optional
-            The name of the axis to link the curve with. If this is the first time seeing this name,
-            then a new axis will be created for it.
+            The name of the axis to link the curve with. If this is the first
+            time seeing this name, then a new axis will be created for it.
         """
 
         if curve_color is None:
@@ -657,7 +661,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                 label: Optional[str] = None, min_range: Optional[float] = -1.0,
                 max_range: Optional[float] = 1.0, enable_auto_range: Optional[bool] = True):
         """
-        Create an AxisItem with the input name and orientation, and add it to this plot.
+        Create an AxisItem with the input name and orientation, and add it to
+        this plot.
+
         Parameters
         ----------
         plot_data_item: BasePlotCurveItem
@@ -673,8 +679,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         max_range: float
             The maximum range to display on the axis
         enable_auto_range: bool
-            Whether or not to use autorange for this axis. Min and max range will not be respected
-            when data goes out of range if this is set to True
+            Whether or not to use autorange for this axis. Min and max range
+            will not be respected when data goes out of range if this is set to
+            True.
 
         Raises
         ------
@@ -841,10 +848,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         Provide whether the right y-axis is being shown.
 
-        Returns : bool
+        Returns
         -------
-        True if the graph shows the right y-axis. False if not.
-
+        bool
+            True if the graph shows the right y-axis. False if not.
         """
         return self._show_right_axis
 
@@ -933,8 +940,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         Check if the legend is being shown.
 
-        Returns : bool
+        Returns
         -------
+        bool
             True if the legend is displayed on the graph; False if not.
         """
         return self._show_legend

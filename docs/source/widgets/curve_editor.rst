@@ -74,7 +74,8 @@ And for the axes tab:
   ``setAxes`` and  ``setCurves`` property to configure the plot properly.
 
 Bar Graphs
-++++
+++++++++++
+
 By selecting "Bar" from the style drop-down as described above, a curve can be plotted as a bar
 graph for waveform and time plots. This style of plot will have four additional options that may be set:
 

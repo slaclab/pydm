@@ -2,7 +2,7 @@
 Local Plugin
 ========================
 
-PyDM uses Data Plugins as sources of information to be displayed at the widgets. 
+PyDM uses Data Plugins as sources of information to be displayed at the widgets.
 Local Data Plugin allows users to create and use local variables.
 
 The Local Data Plugin stores the data that is sent by the widgets through a channel, and broadcasts it to all the listeners connected to this particular local variable channel.
@@ -39,7 +39,7 @@ Attributes  Description                                        Format Example
 =========== ================================================== ========================
 **loc**     protocol name for Local Data Plugin                `loc://`
 **name**    | the identifier for a local variable              `my_ndarray_var`
-            | user's choice 
+            | user's choice
 **type**    | data-type for this variable                      `type=array`
   	    | refer to :ref:`Variable Types<Variable Types>`
             | for more info of acceptable type
@@ -49,7 +49,7 @@ Attributes  Description                                        Format Example
 
 Here is a simple example of a channel address format with the required attributes:
 ::
-	
+
 	loc://my_np.array?type=array&init=[1,2,3,4]
 
 
@@ -58,20 +58,20 @@ Here is a simple example of a channel address format with the required attribute
 
 -------------
 
-.. _Extra Attributes:
+.. _Local Plugin Extra Attributes:
 
 Extra Attributes
 ----------------
 
 Along with the :ref:`required attributes<Required Attributes>`, the Local Data Plugin can also accept some optional attributes to configure the Local Variables with.
-The optional attributes are described in the :ref:`extra attributes<extra attributes table>` table below: 
+The optional attributes are described in the :ref:`extra attributes<extra attributes table>` table below:
 
 
 
-.. _extra attributes table: 
+.. _extra attributes table:
 
 The table below explains the optional attributes that can go in the *extras*:
-                                                             
+
 
 =============== =================================== ============ =================================
 Attributes      Description                         Type         Format Example
@@ -87,7 +87,7 @@ Attributes      Description                         Type         Format Example
 
 Here is a simple example of a channel address format with some optional attributes:
 ::
-	
+
 	loc://my.float?type=float&init=1&precision=3&unit=V
 
 -------------
@@ -130,7 +130,7 @@ Attributes      Description                         Type          Format Example
 **order**       memory layout of the array          string        | `order=K` (*default*)
                                                                   | others {'A', 'C', 'F'}
 **subok**       | if *True* then sub-classes        bool          `subok=false` (*default*)
-                | will be passed-through               
+                | will be passed-through
 **ndmin**       minimum number of dimensions        int           `ndmin=0` (*default*)
 =============== =================================== ============= =============================
 
@@ -155,11 +155,11 @@ The picture below represents a simple example using the Local Data Plugin, where
 
 Right below the Waveform Curve Editor widget, there are two other widgets connected to the 'x' and 'y' local variable respectively::
 
-	
+
 	X-values: loc://x
 	Y-values: loc://y
 
-Data can be updated in the two X and Y-values widgets and the Waveform Curve Editor will receive the new data and change the curve accordingly, like seen in the picture below: 
+Data can be updated in the two X and Y-values widgets and the Waveform Curve Editor will receive the new data and change the curve accordingly, like seen in the picture below:
 
 
 
@@ -176,7 +176,3 @@ Miscellaneous
 -------------
 
 * If precision is not set through the "extras", and it is set to receive the precision from the PV (Process Variable), the Local Data Plugin will match the precision from the values inserted by the users in the widgets.
-
-
-
-
