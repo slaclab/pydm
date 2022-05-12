@@ -1155,7 +1155,11 @@ class PyDMDrawingPolyline(PyDMDrawing):
         for i, pt in enumerate(value, start=1):
             point = pt
             if isinstance(point, str):
-                point = list(map(float, point.split(",")))
+                try:
+                    point = list(map(float, point.split(",")))
+                except ValueError:
+                    logger.exception("polyline point %d must be two numbers, comma-separated, received '%s'", i, pt)
+                    continue
             if len(point) != 2:
                 logger.error("polyline point %d must be two numbers, comma-separated, received '%s'", i, pt)
                 return
