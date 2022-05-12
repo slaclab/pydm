@@ -5,7 +5,7 @@ from typing import Optional
 from pyqtgraph import BarGraphItem, ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
-from qtpy.QtCore import Signal, Slot, Property, QTimer
+from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from .. utilities import remove_protocol
@@ -21,6 +21,13 @@ DEFAULT_Y_MIN = 0
 
 DEFAULT_TIME_SPAN = 5.0
 DEFAULT_UPDATE_INTERVAL = 100
+
+class updateMode(object):
+    '''
+    updateMode as new type for plot update
+    '''
+    AtFixedRate = 0
+    OnValueChange = 1
 
 
 class TimePlotCurveItem(BasePlotCurveItem):
@@ -305,12 +312,14 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.bar_graph_item.setOpts(x=x, height=y, brushes=brushes)
 
     def setUpdatesAsynchronously(self, value):
-        if value is True:
+        """
+        Check if value is from updatesAsynchronously(bool) or updateMode(int)
+        """
+        if type(value)==int and value == 0 or type(value)==bool and value is True:
             self._update_mode = PyDMTimePlot.AsynchronousMode
         else:
             self._update_mode = PyDMTimePlot.SynchronousMode
         self.initialize_buffer()
-
     def resetUpdatesAsynchronously(self):
         self._update_mode = PyDMTimePlot.SynchronousMode
         self.initialize_buffer()
@@ -342,7 +351,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         return [self.channel]
 
 
-class PyDMTimePlot(BasePlot):
+class PyDMTimePlot(BasePlot,updateMode):
     """
     PyDMWaveformPlot is a widget to plot one or more waveforms.
 
@@ -369,6 +378,9 @@ class PyDMTimePlot(BasePlot):
     SynchronousMode = 1
     AsynchronousMode = 2
 
+    Q_ENUMS(updateMode)
+    updateMode = updateMode
+
     plot_redrawn_signal = Signal(TimePlotCurveItem)
 
     def __init__(self, parent=None, init_y_channels=[], plot_by_timestamps=True, background='default', bottom_axis=None):
@@ -388,6 +400,7 @@ class PyDMTimePlot(BasePlot):
             The background color for the plot.  Accepts any arguments that
             pyqtgraph.mkColor will accept.
         """
+        self._updateMode = updateMode.OnValueChange
         self._plot_by_timestamps = plot_by_timestamps
 
         if bottom_axis is not None:
@@ -498,7 +511,7 @@ class PyDMTimePlot(BasePlot):
         new_curve = self.createCurveItem(y_channel=y_channel, plot_by_timestamps=self._plot_by_timestamps,
                                          plot_style=plot_style, name=name, color=color, yAxisName=yAxisName,
                                          useArchiveData=useArchiveData, **plot_opts)
-        new_curve.setUpdatesAsynchronously(self.updatesAsynchronously)
+        new_curve.setUpdatesAsynchronously(self.updateMode)
         new_curve.setBufferSize(self._bufferSize)
 
         self.update_timer.timeout.connect(new_curve.asyncUpdate)
@@ -768,10 +781,13 @@ class PyDMTimePlot(BasePlot):
     def getUpdatesAsynchronously(self):
         return self._update_mode == PyDMTimePlot.AsynchronousMode
 
-    def setUpdatesAsynchronously(self, value):
+    def setUpdatesAsynchronously(self, value): 
         for curve in self._curves:
             curve.setUpdatesAsynchronously(value)
-        if value is True:
+        """
+        Check if value is from updatesAsynchronously(bool) or updateMode(int)
+        """
+        if type(value)==int and value == 0 or type(value)==bool and value is True: 
             self._update_mode = PyDMTimePlot.AsynchronousMode
             self.update_timer.start()
         else:
@@ -787,7 +803,33 @@ class PyDMTimePlot(BasePlot):
     updatesAsynchronously = Property("bool",
                                      getUpdatesAsynchronously,
                                      setUpdatesAsynchronously,
-                                     resetUpdatesAsynchronously)
+                                     resetUpdatesAsynchronously, designable=False)
+
+    @Property(updateMode)
+    def updateMode(self):
+        """
+        The updateMode to be used as property to set plot update mode.
+
+        Returns
+        -------
+        updateMode
+        """
+        return self._updateMode
+
+    @updateMode.setter
+    def updateMode(self, new_type):
+        """
+        The updateMode to be used as property to set plot update mode.
+
+        Parameters
+        ----------
+        new_type : updateMode
+        """
+        if new_type != self._updateMode:
+            self._updateMode = new_type
+            self.getUpdatesAsynchronously
+            self.setUpdatesAsynchronously(self._updateMode)
+            self.resetUpdatesAsynchronously
 
     def getTimeSpan(self):
         """
