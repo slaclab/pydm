@@ -1191,7 +1191,7 @@ class PyDMDrawingIrregularPolygon(PyDMDrawingPolyline):
     """
     A widget contains an irregular polygon (arbitrary number of vertices, arbitrary lengths).
 
-    This is a special case of the PyDMDrawingIrregularPolygon, adding the requirement that 
+    This is a special case of the PyDMDrawingPolyline, adding the requirement that 
     the last point is always identical to the first point.
 
     This widget is created for compatibility with MEDM's *polygon* widget.
