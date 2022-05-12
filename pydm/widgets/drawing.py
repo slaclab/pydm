@@ -1172,12 +1172,12 @@ class PyDMDrawingPolyline(PyDMDrawing):
         return verified
 
     def setPoints(self, value):
-        if len(value) < 2:
-            logger.error("Must have two or more points")
-            return
-
         verified = self._validator(value)
         if verified is not None:
+            if len(verified) < 2:
+                logger.error("Must have two or more points")
+                return
+
             self._points = verified
             self.update()
 
@@ -1206,14 +1206,15 @@ class PyDMDrawingIrregularPolygon(PyDMDrawingPolyline):
     """
 
     def setPoints(self, points):
-        if points[0] != points[-1]:
-            points.append(points[0])  # close the polygon
-
-        if len(points) < 3:
-            logger.error("Must have three or more points")
-            return
-
         verified = self._validator(points)
         if verified is not None:
+            if len(verified) > 1:
+                if verified[0] != verified[-1]:
+                    verified.append(verified[0])  # close the polygon
+
+            if len(verified) < 3:
+                logger.error("Must have three or more points")
+                return
+
             self._points = verified
             self.update()
