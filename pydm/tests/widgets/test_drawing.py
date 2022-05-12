@@ -1158,6 +1158,7 @@ def test_pydmdrawingpolyline_getpoints(qapp, qtbot, x, y, width,
 
 @pytest.mark.parametrize("width, height, points, num_points", [
     (99, 20, ["-1, 18", "-1, -1", "97, -1"], 3),
+    (99, 20, ["-1, 18", "-1, -1", "97, -1", "", " ", "a b"], 3),
     (99, 20, [[-1, 18], (-1, -1), [97, -1]], 3),
     (99, 20, [[-1, 18], (-1, -1)], 2),
     (99, 20, [[-1, 18], (-1, -1.1)], 2),
