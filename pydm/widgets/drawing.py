@@ -1123,6 +1123,7 @@ class PyDMDrawingPolyline(PyDMDrawing):
                 painter.drawLine(p2d(p1), p2d(self._points[i+1]))
 
     def getPoints(self):
+        print(f"DIAGNOSTIC ({__name__},getPoints): {self._points=}")
         return self._points
 
     def _validator(self, value):
@@ -1151,23 +1152,28 @@ class PyDMDrawingPolyline(PyDMDrawing):
             except:
                 return False
 
-        verified = []
-        for i, pt in enumerate(value, start=1):
-            point = pt
+        def validate_point(i, point):
+            """Ignore (instead of fail on) any of these pathologies."""
             if isinstance(point, str):
                 try:
                     point = list(map(float, point.split(",")))
                 except ValueError:
-                    logger.exception("polyline point %d must be two numbers, comma-separated, received '%s'", i, pt)
-                    continue
+                    logger.exception("point %d must be two numbers, comma-separated, received '%s'", i, pt)
+                    return
             if len(point) != 2:
-                logger.error("polyline point %d must be two numbers, comma-separated, received '%s'", i, pt)
+                logger.error("point %d must be two numbers, comma-separated, received '%s'", i, pt)
                 return
             if not isfloat(point[0]) or not isfloat(point[1]):
-                logger.error("polyline point %d content must be numeric, received '%s'", i, pt)
+                logger.error("point %d content must be numeric, received '%s'", i, pt)
                 return
-            # verified.append(str(point))  # the OLD internal representation, up to v1.15.1
-            verified.append(point)
+
+            return point
+
+        verified = []
+        for i, pt in enumerate(value, start=1):
+            point = validate_point(i, pt)
+            if point is not None:
+                verified.append(point)
 
         return verified
 
@@ -1192,7 +1198,7 @@ class PyDMDrawingIrregularPolygon(PyDMDrawingPolyline):
     """
     A widget contains an irregular polygon (arbitrary number of vertices, arbitrary lengths).
 
-    This is a special case of the PyDMDrawingPolyline, adding the requirement that 
+    This is a special case of the PyDMDrawingPolyline, adding the requirement that
     the last point is always identical to the first point.
 
     This widget is created for compatibility with MEDM's *polygon* widget.
@@ -1206,6 +1212,7 @@ class PyDMDrawingIrregularPolygon(PyDMDrawingPolyline):
     """
 
     def setPoints(self, points):
+        print(f"DIAGNOSTIC ({__name__},setPoints): {points=}")
         verified = self._validator(points)
         if verified is not None:
             if len(verified) > 1:
