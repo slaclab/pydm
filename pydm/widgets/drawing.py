@@ -1123,8 +1123,12 @@ class PyDMDrawingPolyline(PyDMDrawing):
                 painter.drawLine(p2d(p1), p2d(self._points[i+1]))
 
     def getPoints(self):
-        print(f"DIAGNOSTIC ({__name__},getPoints): {self._points=}")
-        return self._points
+        """Convert internal points representation for use as QStringList."""
+        points = [
+            f"{pt[0]}, {pt[1]}"
+            for pt in self._points
+        ]
+        return points
 
     def _validator(self, value):
         """
@@ -1158,7 +1162,7 @@ class PyDMDrawingPolyline(PyDMDrawing):
                 try:
                     point = list(map(float, point.split(",")))
                 except ValueError:
-                    logger.exception("point %d must be two numbers, comma-separated, received '%s'", i, pt)
+                    logger.error("point %d must be two numbers, comma-separated, received '%s'", i, pt)
                     return
             if len(point) != 2:
                 logger.error("point %d must be two numbers, comma-separated, received '%s'", i, pt)
@@ -1167,7 +1171,7 @@ class PyDMDrawingPolyline(PyDMDrawing):
                 logger.error("point %d content must be numeric, received '%s'", i, pt)
                 return
 
-            return point
+            return list(map(float, point))  # ensure all values are float
 
         verified = []
         for i, pt in enumerate(value, start=1):
@@ -1211,8 +1215,13 @@ class PyDMDrawingIrregularPolygon(PyDMDrawingPolyline):
         The channel to be used by the widget.
     """
 
+    def getPoints(self):
+        return super(PyDMDrawingIrregularPolygon, self).getPoints()
+
+    def resetPoints(self):
+        super(PyDMDrawingIrregularPolygon, self).resetPoints()
+
     def setPoints(self, points):
-        print(f"DIAGNOSTIC ({__name__},setPoints): {points=}")
         verified = self._validator(points)
         if verified is not None:
             if len(verified) > 1:
@@ -1223,5 +1232,8 @@ class PyDMDrawingIrregularPolygon(PyDMDrawingPolyline):
                 logger.error("Must have three or more points")
                 return
 
+            print(f"DIAGNOSTIC ({__class__}),setPoints: {verified=}")
             self._points = verified
             self.update()
+
+    points = Property("QStringList", getPoints, setPoints, resetPoints)
