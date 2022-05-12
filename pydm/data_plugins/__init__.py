@@ -247,8 +247,14 @@ def load_plugins_from_entrypoints(
     """
     added_plugins = dict()
     for plugin in find_plugins_from_entrypoints(key):
-        if plugin.protocol is not None:
-            added_plugins[plugin.protocol] = add_plugin(plugin)
+        if not plugin.protocol:
+            logger.warning(
+                "No protocol specified for data plugin: %s.%s",
+                plugin.__module__,
+                plugin,
+            )
+            continue
+        added_plugins[plugin.protocol] = add_plugin(plugin)
     return added_plugins
 
 
@@ -276,8 +282,16 @@ def load_plugins_from_path(
     added_plugins = dict()
     for loc in locations:
         for plugin in find_plugins_from_path(loc, token=token):
-            if plugin.protocol is not None:
-                added_plugins[plugin.protocol] = add_plugin(plugin)
+            if not plugin.protocol:
+                logger.warning(
+                    "No protocol specified for data plugin: %s.%s",
+                    plugin.__module__,
+                    plugin,
+                )
+                continue
+
+            added_plugins[plugin.protocol] = add_plugin(plugin)
+
     return added_plugins
 
 
