@@ -1207,12 +1207,12 @@ def test_pydmdrawingpolyline_setpoints(qapp, qtbot, monkeypatch, width, height, 
     (4, [(-1, 18), (-1, -1), (97, -1)]),
     (None, [(-2, -2), ]),
 ])
-def test_pydmdrawingpolyline_get_set_resetpoints(qapp, qtbot, num_points, points):
+def test_pydmdrawingirregularpolygon_get_set_resetpoints(qapp, qtbot, num_points, points):
     """
-    Test the calculations of the point coordinates of a PyDMDrawingPolyline widget.
+    Test the calculations of the point coordinates of a PyDMDrawingIrregularPolygon widget.
 
     Expectations:
-    The number of points is correct for a closed polygon..
+    The number of points is correct for a closed polygon.
 
     Parameters
     ----------
