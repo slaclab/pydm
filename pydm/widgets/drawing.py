@@ -1232,7 +1232,6 @@ class PyDMDrawingIrregularPolygon(PyDMDrawingPolyline):
                 logger.error("Must have three or more points")
                 return
 
-            print(f"DIAGNOSTIC ({__class__}),setPoints: {verified=}")
             self._points = verified
             self.update()
 
