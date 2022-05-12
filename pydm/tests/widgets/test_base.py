@@ -8,6 +8,7 @@ logger = logging.getLogger(__name__)
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QMenu
 from qtpy.QtGui import QColor, QMouseEvent
+from ..conftest import ConnectionSignals
 from ...utilities import is_pydm_app
 from ... import data_plugins
 from ...widgets.base import is_channel_valid, PyDMWidget
@@ -292,6 +293,36 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
         assert pydm_label.get_ctrl_limits()[0] == new_limit
 
 
+@pytest.mark.parametrize("which_limit, new_limit", [
+    ("HIHI", 100.10),
+    ("HIGH", 90),
+    ("LOW", 20.5),
+    ("LOLO", 7)
+])
+def test_alarm_limits_changed(qtbot, signals: ConnectionSignals, which_limit: str, new_limit: float):
+    """ Ensure that changes to the alarm limits of a PV get sent to the right place """
+    pydm_label = PyDMLabel(init_channel="CA://MA_TEST")
+    qtbot.addWidget(pydm_label)
+
+    signals.upper_alarm_limit_signal.connect(pydm_label.upper_alarm_limit_changed)
+    signals.lower_alarm_limit_signal.connect(pydm_label.lower_alarm_limit_changed)
+    signals.upper_warning_limit_signal.connect(pydm_label.upper_warning_limit_changed)
+    signals.lower_warning_limit_signal.connect(pydm_label.lower_warning_limit_changed)
+
+    if which_limit == "HIHI":
+        signals.upper_alarm_limit_signal.emit(new_limit)
+        assert pydm_label.upper_alarm_limit == new_limit
+    elif which_limit == "HIGH":
+        signals.upper_warning_limit_signal.emit(new_limit)
+        assert pydm_label.upper_warning_limit == new_limit
+    elif which_limit == "LOW":
+        signals.lower_warning_limit_signal.emit(new_limit)
+        assert pydm_label.lower_warning_limit == new_limit
+    elif which_limit == "LOLO":
+        signals.lower_alarm_limit_signal.emit(new_limit)
+        assert pydm_label.lower_alarm_limit == new_limit
+
+
 def test_force_redraw(qtbot, signals):
     """
     Test the forced redraw of a PyDMWidget object to ensure no exception will be raised.
@@ -433,6 +464,10 @@ def test_pydmwidget_channels(qtbot):
                                         prec_slot=pydm_label.precisionChanged,
                                         upper_ctrl_limit_slot=pydm_label.upperCtrlLimitChanged,
                                         lower_ctrl_limit_slot=pydm_label.lowerCtrlLimitChanged,
+                                        upper_alarm_limit_slot=pydm_label.upper_alarm_limit_changed,
+                                        upper_warning_limit_slot=pydm_label.upper_warning_limit_changed,
+                                        lower_alarm_limit_slot=pydm_label.lower_alarm_limit_changed,
+                                        lower_warning_limit_slot=pydm_label.lower_warning_limit_changed,
                                         value_signal=None,
                                         write_access_slot=None)
     assert pydm_channels == default_pydm_channels
@@ -471,6 +506,10 @@ def test_pydmwritablewidget_channels(qtbot):
                                         prec_slot=pydm_lineedit.precisionChanged,
                                         upper_ctrl_limit_slot=pydm_lineedit.upperCtrlLimitChanged,
                                         lower_ctrl_limit_slot=pydm_lineedit.lowerCtrlLimitChanged,
+                                        upper_alarm_limit_slot=pydm_lineedit.upper_alarm_limit_changed,
+                                        lower_alarm_limit_slot=pydm_lineedit.lower_alarm_limit_changed,
+                                        upper_warning_limit_slot=pydm_lineedit.upper_warning_limit_changed,
+                                        lower_warning_limit_slot=pydm_lineedit.lower_warning_limit_changed,
                                         value_signal=pydm_lineedit.send_value_signal,
                                         write_access_slot=pydm_lineedit.writeAccessChanged)
     assert pydm_channels == default_pydm_channels
