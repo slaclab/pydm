@@ -14,17 +14,23 @@ General Calc Plugin channel syntax::
 
     calc://my_variable_name?expr_var_name=channel://address&expr_var_name_two=channel://address&expr=math expression
 
-.. note:: Once a calc channel is created, multiple widgets can be connected to the same channel by providing the name of the variable, like so:
-    ::
+.. note:: 
+
+   Once a calc channel is created, multiple widgets can be connected to the
+   same channel by providing the name of the variable, like so:
+
+   ::
 
         calc://my_variable_name
 
-.. note:: The calc functions uses url formatting. Where the name attribute is separated by the ? symbol and all other attributes are separated by the & symbol.
-    ::
+.. note:: 
 
--------------
+   The calc functions uses url formatting. Where the name attribute is
+   separated by the ? symbol and all other attributes are separated by the &
+   symbol.
 
 
+-------------------
 Required Attributes
 -------------------
 

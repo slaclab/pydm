@@ -1,12 +1,13 @@
-#######################
+#####################################
 Archiver Appliance Enabled Time Plots
-#######################
+#####################################
 
 Time plots can be augmented with the ability to automatically request archived data from an instance
 of the EPICS archiver appliance if such an instance is available to the user.
 
 In order to use this functionality, the environment variable PYDM_ARCHIVER_URL must be set to point to
 the archiver appliance instance. For example:
+
 ::
     export PYDM_ARCHIVER_URL=http://lcls-archapp.slac.stanford.edu
 
