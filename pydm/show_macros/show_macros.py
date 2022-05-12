@@ -1,3 +1,4 @@
+import json
 from qtpy.QtWidgets import QWidget, QPlainTextEdit, QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QApplication, QLabel
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QFont
@@ -60,5 +61,5 @@ class MacroWindow(QWidget):
             self.text_box.appendPlainText(line)
 
     def copy_macros(self):
-        self.clipboard.setText(str(self.macros))
+        self.clipboard.setText(json.dumps(self.macros))
         self.label.setText('Macros copied to clipboard!')

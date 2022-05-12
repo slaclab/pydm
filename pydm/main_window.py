@@ -46,6 +46,8 @@ class PyDMMainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        self.showMacros = QAction("Show Macros...", self)
+
         self.ui.navbar.setIconSize(QSize(24, 24))
         self.ui.navbar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.ui.actionHome.triggered.connect(self.home_triggered)
@@ -69,6 +71,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionAbout_PyDM.triggered.connect(self.show_about_window)
         self.ui.actionLoadTool.triggered.connect(self.load_tool)
         self.ui.actionLoadTool.setIcon(self.iconFont.icon("rocket"))
+        self.showMacros.triggered.connect(self.show_macro_window)
         self.ui.actionQuit.triggered.connect(self.quit_main_window)
 
         if hide_nav_bar:
@@ -382,6 +385,7 @@ class PyDMMainWindow(QMainWindow):
 
         self.ui.menuTools.addSeparator()
         self.ui.menuTools.addAction(self.ui.actionLoadTool)
+        self.ui.menuTools.addAction(self.showMacros)
 
     @Slot(bool)
     def reload_display(self, checked):
@@ -480,13 +484,6 @@ class PyDMMainWindow(QMainWindow):
                 QMessageBox.Yes | QMessageBox.No)
             if quit_message == QMessageBox.Yes:
                 callback()
-
-    def contextMenuEvent(self, event):
-        menu = QMenu()
-        show_macro_action = menu.addAction("Show Macros...")
-        action = menu.exec_(event.globalPos())
-        if action == show_macro_action:
-            self.show_macro_window()
 
     def show_macro_window(self):
         macro_window = MacroWindow(self)
