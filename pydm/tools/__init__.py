@@ -232,7 +232,7 @@ def load_external_tools():
     Loads all the external tools available.
 
     1. Uses ``PYDM_TOOLS_PATH`` environment variable. Searches all directories
-       and subdirectories for Python source code that matches the the pattern
+       and subdirectories for Python source code that matches the pattern
        ``*_tool.py`` which contain classes that inherit from
        :class:`pydm.tools.ExternalTool`.
     2. Uses ``entrypoints`` to find packaged external tools in packages that
