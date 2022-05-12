@@ -1165,7 +1165,7 @@ class PyDMDrawingPolyline(PyDMDrawing):
                 except SyntaxError:
                     logger.error("point %d must be two numbers, comma-separated, received '%s'", i, pt)
                     return
-            if len(point) != 2:
+            if not isinstance(point, (list, tuple)) or len(point) != 2:
                 logger.error("point %d must be two numbers, comma-separated, received '%s'", i, pt)
                 return
             try:
