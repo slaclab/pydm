@@ -1,3 +1,4 @@
+import ast
 import math
 import os
 import logging
@@ -1160,18 +1161,20 @@ class PyDMDrawingPolyline(PyDMDrawing):
             """Ignore (instead of fail on) any of these pathologies."""
             if isinstance(point, str):
                 try:
-                    point = list(map(float, point.split(",")))
-                except ValueError:
+                    point = ast.literal_eval(point)
+                except SyntaxError:
                     logger.error("point %d must be two numbers, comma-separated, received '%s'", i, pt)
                     return
             if len(point) != 2:
                 logger.error("point %d must be two numbers, comma-separated, received '%s'", i, pt)
                 return
-            if not isfloat(point[0]) or not isfloat(point[1]):
+            try:
+                point = list(map(float, point))  # ensure all values are float
+            except ValueError:
                 logger.error("point %d content must be numeric, received '%s'", i, pt)
                 return
 
-            return list(map(float, point))  # ensure all values are float
+            return point
 
         verified = []
         for i, pt in enumerate(value, start=1):
