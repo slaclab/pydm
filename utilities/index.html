@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Utilities &mdash; PyDM v1.15.1+34.gf60a7ac2 documentation</title>
+  <title>Utilities &mdash; PyDM v1.15.1+49.g7945c246 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+34.gf60a7ac2
+                v1.15.1+49.g7945c246
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -117,6 +117,20 @@ of protocol in a string, handling macro substitution in files, etc.</p>
 <section id="module-pydm.utilities">
 <span id="general"></span><h2>General<a class="headerlink" href="#module-pydm.utilities" title="Permalink to this headline"></a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="pydm.utilities.copy_to_clipboard">
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">copy_to_clipboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#copy_to_clipboard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.copy_to_clipboard" title="Permalink to this definition"></a></dt>
+<dd><p>Copy <code class="docutils literal notranslate"><span class="pre">text</span></code> to the clipboard.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>str</em>) – The text to copy to the clipboard.</p></li>
+<li><p><strong>quiet</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>keyword-only</em>) – If quiet is set, do not log the copied text.  Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pydm.utilities.find_display_in_path">
 <span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">find_display_in_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pathext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#find_display_in_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.find_display_in_path" title="Permalink to this definition"></a></dt>
 <dd><p>Look for a display file in a given path.
@@ -168,6 +182,40 @@ Which ensure that the file exists and we can read it.</p></li>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydm.utilities.get_clipboard">
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">get_clipboard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">PyQt5.QtGui.QClipboard</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/utilities.html#get_clipboard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.get_clipboard" title="Permalink to this definition"></a></dt>
+<dd><p>Get the clipboard instance. Requires a QApplication.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydm.utilities.get_clipboard_modes">
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">get_clipboard_modes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/utilities.html#get_clipboard_modes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.get_clipboard_modes" title="Permalink to this definition"></a></dt>
+<dd><p>Get the clipboard modes for the current platform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Qt-specific modes to try for interacting with the clipboard.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list of int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydm.utilities.get_clipboard_text">
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">get_clipboard_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/utilities.html#get_clipboard_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.get_clipboard_text" title="Permalink to this definition"></a></dt>
+<dd><p>Get <code class="docutils literal notranslate"><span class="pre">text</span></code> from the clipboard. If unavailable or unset, empty string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The clipboard text, if available.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>

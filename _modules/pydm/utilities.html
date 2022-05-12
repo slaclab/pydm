@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.utilities &mdash; PyDM v1.15.1+34.gf60a7ac2 documentation</title>
+  <title>pydm.utilities &mdash; PyDM v1.15.1+49.g7945c246 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+34.gf60a7ac2
+                v1.15.1+49.g7945c246
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -108,7 +108,9 @@
 <span class="kn">import</span> <span class="nn">ntpath</span>
 <span class="kn">import</span> <span class="nn">shlex</span>
 
-<span class="kn">from</span> <span class="nn">qtpy</span> <span class="kn">import</span> <span class="n">QtWidgets</span><span class="p">,</span> <span class="n">QtCore</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">qtpy</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
 
 <span class="kn">from</span> <span class="nn">.units</span> <span class="kn">import</span> <span class="n">find_unittype</span><span class="p">,</span> <span class="n">convert</span><span class="p">,</span> <span class="n">find_unit_options</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">macro</span>
@@ -479,6 +481,92 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameter must be a callable.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">wrapper</span></div>
+
+
+<div class="viewcode-block" id="get_clipboard"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.get_clipboard">[docs]</a><span class="k">def</span> <span class="nf">get_clipboard</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QClipboard</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Get the clipboard instance. Requires a QApplication.&quot;&quot;&quot;</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">app</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">clipboard</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="get_clipboard_modes"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.get_clipboard_modes">[docs]</a><span class="k">def</span> <span class="nf">get_clipboard_modes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the clipboard modes for the current platform.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of int</span>
+<span class="sd">        Qt-specific modes to try for interacting with the clipboard.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">clipboard</span> <span class="o">=</span> <span class="n">get_clipboard</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">clipboard</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Linux&quot;</span><span class="p">:</span>
+        <span class="c1"># Mode selection is only valid for X11.</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">QtGui</span><span class="o">.</span><span class="n">QClipboard</span><span class="o">.</span><span class="n">Selection</span><span class="p">,</span>
+            <span class="n">QtGui</span><span class="o">.</span><span class="n">QClipboard</span><span class="o">.</span><span class="n">Clipboard</span>
+        <span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QClipboard</span><span class="o">.</span><span class="n">Clipboard</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="copy_to_clipboard"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.copy_to_clipboard">[docs]</a><span class="k">def</span> <span class="nf">copy_to_clipboard</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Copy ``text`` to the clipboard.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    text : str</span>
+<span class="sd">        The text to copy to the clipboard.</span>
+
+<span class="sd">    quiet : bool, optional, keyword-only</span>
+<span class="sd">        If quiet is set, do not log the copied text.  Defaults to False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">clipboard</span> <span class="o">=</span> <span class="n">get_clipboard</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">clipboard</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">get_clipboard_modes</span><span class="p">():</span>
+        <span class="n">clipboard</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QEvent</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QEvent</span><span class="o">.</span><span class="n">Clipboard</span><span class="p">)</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">app</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">sendEvent</span><span class="p">(</span><span class="n">clipboard</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">quiet</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="s2">&quot;Copied text to clipboard:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;-------------------------</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;-------------------------</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">),</span>
+            <span class="n">text</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_clipboard_text"><a class="viewcode-back" href="../../utilities/index.html#pydm.utilities.get_clipboard_text">[docs]</a><span class="k">def</span> <span class="nf">get_clipboard_text</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get ``text`` from the clipboard. If unavailable or unset, empty string.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        The clipboard text, if available.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">clipboard</span> <span class="o">=</span> <span class="n">get_clipboard</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">clipboard</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">get_clipboard_modes</span><span class="p">():</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">clipboard</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">text</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
 </pre></div>
 
            </div>
