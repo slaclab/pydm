@@ -78,12 +78,13 @@ def substitute_in_widget(
     widget : QWidget
         The same widget back again, with templates filled.
     """
-    for child_name, prop in _get_macro_targets(widget, source_file):
+    for child_name, prop, template in _get_macro_targets(widget, source_file):
         child_widget = getattr(widget, child_name)
         child_widget.setProperty(
             prop,
-            Template(child_widget.property(prop)).safe_substitute(macros)
+            template.safe_substitute(macros)
         )
+    print(f'did macro subs for {widget}')
     return widget
 
 
@@ -93,7 +94,7 @@ _macro_target_cache = {}
 def _get_macro_targets(
     widget: QWidget,
     source_file: str,
-) -> Tuple[Tuple[str, str]]:
+) -> Tuple[Tuple[str, str, Template]]:
     try:
         return _macro_target_cache[source_file]
     except KeyError:
@@ -107,8 +108,9 @@ def _get_macro_targets(
             meta_property = meta_obj.property(index)
             if meta_property.typeName() == 'QString':
                 prop_name = meta_property.name()
+                value = obj.property(prop_name)
                 if "${" in obj.property(prop_name):
-                    targets.append((obj_name, prop_name))
+                    targets.append((obj_name, prop_name, Template(value)))
     targets = tuple(targets)
     _macro_target_cache[source_file] = targets
     return targets

@@ -90,6 +90,7 @@ def _load_ui_into_display(uifile, display):
 @lru_cache
 def _get_qt_class(uifile):
     klass, _ = uic.loadUiType(uifile)
+    print(f'loaded class from {uifile}')
     return klass
 
 
