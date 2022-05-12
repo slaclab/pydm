@@ -1163,6 +1163,9 @@ def test_pydmdrawingpolyline_getpoints(qapp, qtbot, x, y, width,
     (99, 20, [[-1, 18], (-1, -1)], 2),
     (99, 20, [[-1, 18], (-1, -1.1)], 2),
     (99, 20, [[-1, 18], "-1, -1.1"], 2),
+    (99, 20, [[-1, 18], "-1, -1.1", "5"], 2),
+    (99, 20, [[-1, 18], "-1, -1.1", ""], 2),
+    (99, 20, [[-1, 18], "-1, -1.1", " "], 2),
     (99, 20, [[-1, 18],], 0),
 ])
 def test_pydmdrawingpolyline_setpoints(qapp, qtbot, monkeypatch, width, height, points, num_points):
@@ -1210,6 +1213,9 @@ def test_pydmdrawingpolyline_setpoints(qapp, qtbot, monkeypatch, width, height, 
     (4, [(-1, 18), (-1, -1), "97, -1", "-1, 18"]),
     (4, [(-1, 18), (-1, -1), "97, -1", "-1    18"]),
     (4, [(-1, 18), (-1, -1), "97, -1", "-1    18", (-1, 18)]),
+    (4, [(-1, 18), (-1, -1), "97, -1", "5"]),
+    (4, [(-1, 18), (-1, -1), "97, -1", ""]),
+    (4, [(-1, 18), (-1, -1), "97, -1", " "]),
     (None, [(-2, -2), ]),
 ])
 def test_pydmdrawingirregularpolygon_get_set_resetpoints(qapp, qtbot, num_points, points):
