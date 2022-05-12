@@ -8,6 +8,7 @@ from typing import Any, Set
 import pytest
 
 from .. import tools
+from ..application import PyDMApplication
 
 EXAMPLE_PATH = pathlib.Path(__file__).parents[2] / "examples"
 EXAMPLE_EXT_TOOL_PATH = EXAMPLE_PATH / "external_tool"
@@ -62,7 +63,7 @@ def test_valid_external_tool(cls: Any, valid: bool):
 def test_tools_from_source(
     source_file: pathlib.Path,
     expected_tools: Set[str],
-    qapp
+    qapp: PyDMApplication
 ):
     assert source_file.exists()
     loaded_tools = [
