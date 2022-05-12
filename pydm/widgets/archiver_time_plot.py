@@ -116,14 +116,17 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self.archive_data_received_signal.emit()
 
     def insert_archive_data(self, data: np.ndarray) -> None:
-        """ Inserts data directly into the archive buffer. An example use case would be
-            zooming into optimized mean-value data and replacing it with the raw data
+        """
+        Inserts data directly into the archive buffer.
 
-             Parameters
-             ----------
-             data : np.ndarray
-                A numpy array of shape (2, length_of_data). Index 0 contains timestamps and index 1 contains
-                the data observations.
+        An example use case would be zooming into optimized mean-value data and
+        replacing it with the raw data.
+
+        Parameters
+        ----------
+        data : np.ndarray
+           A numpy array of shape (2, length_of_data). Index 0 contains
+           timestamps and index 1 contains the data observations.
         """
         archive_data_length = len(data[0])
         min_x = data[0][0]

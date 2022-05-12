@@ -177,13 +177,14 @@ def find_file(fname, base_path=None, mode=None, extra_path=None):
     """
     Look for files at the search paths common to PyDM.
 
-    Search Order
-    ------------
-    - base_path
-    - Qt Designer Path
-    - Current Dir
-    - Dirs in extra_path
-    - Dirs in PYDM_DISPLAYS_PATH
+    The search order is as follows:
+
+    * The ``base_path`` argument
+    * Qt Designer Path - the path for the current form as reported by the
+      designer
+    * The current working directory
+    * Directories listed in ``extra_path``
+    * Directories listed in the environment variable ``PYDM_DISPLAYS_PATH``
 
     Parameters
     ----------

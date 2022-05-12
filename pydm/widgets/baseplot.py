@@ -841,10 +841,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         Provide whether the right y-axis is being shown.
 
-        Returns : bool
+        Returns
         -------
-        True if the graph shows the right y-axis. False if not.
-
+        bool
+            True if the graph shows the right y-axis. False if not.
         """
         return self._show_right_axis
 
@@ -933,8 +933,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         Check if the legend is being shown.
 
-        Returns : bool
+        Returns
         -------
+        bool
             True if the legend is displayed on the graph; False if not.
         """
         return self._show_legend
