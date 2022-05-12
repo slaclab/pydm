@@ -1,5 +1,6 @@
 import math
 import numpy as np
+from typing import Any
 
 import logging
 import warnings
@@ -8,15 +9,49 @@ logger = logging.getLogger(__name__)
 
 
 class DisplayFormat(object):
+    """Display format for showing data in a PyDM widget."""
+    #: The default display format.
     Default = 0
+    #: Show the data as a string.
     String = 1
+    #: Show numerical values as floating point (base 10, decimal) values.
     Decimal = 2
+    #: Show numerical values in scientific / exponential notation.
     Exponential = 3
+    #: Show numerical values in base 16 (hexadecimal) notation.
     Hex = 4
+    #: Show numerical values in base 2 (binary) notation.
     Binary = 5
 
 
-def parse_value_for_display(value, precision, display_format_type=DisplayFormat.Default, string_encoding="utf_8", widget=None):
+def parse_value_for_display(
+    value: Any,
+    precision: int,
+    display_format_type: int = DisplayFormat.Default,
+    string_encoding: str = "utf_8",
+    widget=None,
+):
+    """
+    Format a value to show it in a widget, based on the display format type.
+
+    Parameters
+    ----------
+    value : Any
+        The value to convert to a string.
+    precision : int
+        Precision of floating point values to use.
+    display_format_type : int, optional
+        Display format type to use.
+    string_encoding : str, optional
+        Encoding to use for strings.
+    widget : QtWidgets.QWidget, optional
+        Widget to get a name from for conversion errors.
+
+    Returns
+    -------
+    str
+        Formatted version of ``value``.
+    """
     if value is None:
         return ""
     try:
@@ -37,7 +72,7 @@ def parse_value_for_display(value, precision, display_format_type=DisplayFormat.
                 if zeros.size > 0:
                     value = value[:zeros[0]]
                 r = value.tobytes().decode(string_encoding)
-            except:
+            except Exception:
                 logger.error("Could not decode {0} using {1} at widget named '{2}'.".format(
                     value, string_encoding, widget_name))
                 return value
