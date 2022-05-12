@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Customizing the Look and Feel &mdash; PyDM v1.15.1+49.g7945c246 documentation</title>
+  <title>Customizing the Look and Feel &mdash; PyDM v1.15.1+54.g5740b1a5 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+49.g7945c246
+                v1.15.1+54.g5740b1a5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -121,18 +121,16 @@ environment variable.</p>
 <p>To help users extend this feature, PyDM offers two main configurations that can
 be used:</p>
 <ul class="simple">
-<li><p><strong>PYDM_STYLESHEET</strong></p></li>
+<li><p><strong>PYDM_STYLESHEET</strong>
+Path to the QSS files defining the global stylesheets for the PyDM
+application. When used, it will override the default look. If using multiple
+files they must be separated by the path separator.
+For example: <code class="docutils literal notranslate"><span class="pre">/path_to/my_style_1.qss:/path_to/other/my_other_style.qss</span></code></p></li>
+<li><p><strong>PYDM_STYLESHEET_INCLUDE_DEFAULT</strong>
+Whether or not to include the PyDM Default stylesheet along with customized
+files. Note that the PyDM default stylesheet will have lower precedence
+compared to files specified at <code class="docutils literal notranslate"><span class="pre">PYDM_STYLESHEET</span></code>.</p></li>
 </ul>
-<p>Path to the QSS files defining the global stylesheets for the PyDM application.
-When used, it will override the default look. If using multiple files they
-must be separated by the path separator.
-E.g.: <code class="docutils literal notranslate"><span class="pre">/path_to/my_style_1.qss:/path_to/other/my_other_style.qss</span></code></p>
-<ul class="simple">
-<li><p><strong>PYDM_STYLESHEET_INCLUDE_DEFAULT</strong></p></li>
-</ul>
-<p>Whether or not to include the PyDM Default stylesheet along with customized
-files. Note that the PyDM default stylesheet will have lower precedence compared
-to files specified at <code class="docutils literal notranslate"><span class="pre">PYDM_STYLESHEET</span></code></p>
 <section id="processing-order-of-style-sheets">
 <h2>Processing Order of Style Sheets<a class="headerlink" href="#processing-order-of-style-sheets" title="Permalink to this headline"></a></h2>
 <p>The file will be processed from top to bottom and the bottom-most rules will

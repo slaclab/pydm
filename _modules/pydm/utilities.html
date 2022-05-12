@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.utilities &mdash; PyDM v1.15.1+49.g7945c246 documentation</title>
+  <title>pydm.utilities &mdash; PyDM v1.15.1+54.g5740b1a5 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+49.g7945c246
+                v1.15.1+54.g5740b1a5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -280,13 +280,14 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Look for files at the search paths common to PyDM.</span>
 
-<span class="sd">    Search Order</span>
-<span class="sd">    ------------</span>
-<span class="sd">    - base_path</span>
-<span class="sd">    - Qt Designer Path</span>
-<span class="sd">    - Current Dir</span>
-<span class="sd">    - Dirs in extra_path</span>
-<span class="sd">    - Dirs in PYDM_DISPLAYS_PATH</span>
+<span class="sd">    The search order is as follows:</span>
+
+<span class="sd">    * The ``base_path`` argument</span>
+<span class="sd">    * Qt Designer Path - the path for the current form as reported by the</span>
+<span class="sd">      designer</span>
+<span class="sd">    * The current working directory</span>
+<span class="sd">    * Directories listed in ``extra_path``</span>
+<span class="sd">    * Directories listed in the environment variable ``PYDM_DISPLAYS_PATH``</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>

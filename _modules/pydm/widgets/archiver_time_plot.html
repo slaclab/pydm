@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.archiver_time_plot &mdash; PyDM v1.15.1+49.g7945c246 documentation</title>
+  <title>pydm.widgets.archiver_time_plot &mdash; PyDM v1.15.1+54.g5740b1a5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+49.g7945c246
+                v1.15.1+54.g5740b1a5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -219,14 +219,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_received_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ArchivePlotCurveItem.insert_archive_data"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.insert_archive_data">[docs]</a>    <span class="k">def</span> <span class="nf">insert_archive_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; Inserts data directly into the archive buffer. An example use case would be</span>
-<span class="sd">            zooming into optimized mean-value data and replacing it with the raw data</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inserts data directly into the archive buffer.</span>
 
-<span class="sd">             Parameters</span>
-<span class="sd">             ----------</span>
-<span class="sd">             data : np.ndarray</span>
-<span class="sd">                A numpy array of shape (2, length_of_data). Index 0 contains timestamps and index 1 contains</span>
-<span class="sd">                the data observations.</span>
+<span class="sd">        An example use case would be zooming into optimized mean-value data and</span>
+<span class="sd">        replacing it with the raw data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : np.ndarray</span>
+<span class="sd">           A numpy array of shape (2, length_of_data). Index 0 contains</span>
+<span class="sd">           timestamps and index 1 contains the data observations.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">archive_data_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">min_x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Utilities &mdash; PyDM v1.15.1+49.g7945c246 documentation</title>
+  <title>Utilities &mdash; PyDM v1.15.1+54.g5740b1a5 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+49.g7945c246
+                v1.15.1+54.g5740b1a5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -159,12 +159,14 @@ Which ensure that the file exists and we can read it.</p></li>
 <dt class="sig sig-object py" id="pydm.utilities.find_file">
 <span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">find_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#find_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.find_file" title="Permalink to this definition"></a></dt>
 <dd><p>Look for files at the search paths common to PyDM.</p>
+<p>The search order is as follows:</p>
 <ul class="simple">
-<li><p>base_path</p></li>
-<li><p>Qt Designer Path</p></li>
-<li><p>Current Dir</p></li>
-<li><p>Dirs in extra_path</p></li>
-<li><p>Dirs in PYDM_DISPLAYS_PATH</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">base_path</span></code> argument</p></li>
+<li><p>Qt Designer Path - the path for the current form as reported by the
+designer</p></li>
+<li><p>The current working directory</p></li>
+<li><p>Directories listed in <code class="docutils literal notranslate"><span class="pre">extra_path</span></code></p></li>
+<li><p>Directories listed in the environment variable <code class="docutils literal notranslate"><span class="pre">PYDM_DISPLAYS_PATH</span></code></p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

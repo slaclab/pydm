@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMScatterPlot &mdash; PyDM v1.15.1+49.g7945c246 documentation</title>
+  <title>PyDMScatterPlot &mdash; PyDM v1.15.1+54.g5740b1a5 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+49.g7945c246
+                v1.15.1+54.g5740b1a5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -73,6 +73,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#container-widgets">Container Widgets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#drawing-widgets">Drawing Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#utilities">Utilities</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="widget_rules/index.html">Widget Rules</a></li>
@@ -1218,26 +1219,24 @@ is raised.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.scatterplot.PyDMScatterPlot.addAxis">
 <span class="sig-name descname"><span class="pre">addAxis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_data_item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.baseplot.BasePlotCurveItem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_auto_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.addAxis" title="Permalink to this definition"></a></dt>
-<dd><p>Create an AxisItem with the input name and orientation, and add it to this plot.
-:param plot_data_item: The curve that will be linked with this new axis
-:type plot_data_item: BasePlotCurveItem
-:param name: The name that will be assigned to this axis
-:type name: str
-:param orientation: The orientation of this axis, must be in ‘left’ or ‘right’
-:type orientation: str
-:param label: The label to be displayed along this axis
-:type label: str, optional
-:param min_range: The minimum range to display on the axis
-:type min_range: float
-:param max_range: The maximum range to display on the axis
-:type max_range: float
-:param enable_auto_range: Whether or not to use autorange for this axis. Min and max range will not be respected</p>
-<blockquote>
-<div><p>when data goes out of range if this is set to True</p>
-</div></blockquote>
+<dd><p>Create an AxisItem with the input name and orientation, and add it to
+this plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>Exception</strong> – Raised by PyQtGraph if the orientation is not in ‘left’ or ‘right’</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>plot_data_item</strong> (<em>BasePlotCurveItem</em>) – The curve that will be linked with this new axis</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name that will be assigned to this axis</p></li>
+<li><p><strong>orientation</strong> (<em>str</em>) – The orientation of this axis, must be in ‘left’ or ‘right’</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – The label to be displayed along this axis</p></li>
+<li><p><strong>min_range</strong> (<em>float</em>) – The minimum range to display on the axis</p></li>
+<li><p><strong>max_range</strong> (<em>float</em>) – The maximum range to display on the axis</p></li>
+<li><p><strong>enable_auto_range</strong> (<em>bool</em>) – Whether or not to use autorange for this axis. Min and max range
+will not be respected when data goes out of range if this is set to
+True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>Exception</strong> – Raised by PyQtGraph if the orientation is not in ‘left’ or ‘right’</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1284,17 +1283,19 @@ doesn’t yet exist</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.scatterplot.PyDMScatterPlot.addCurve">
 <span class="sig-name descname"><span class="pre">addCurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_data_item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_axis_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.addCurve" title="Permalink to this definition"></a></dt>
-<dd><p>Adds a curve to this plot. If the y axis parameters are specified, either link this curve to an existing
-axis if that axis is already part of this plot, or create a new one and link the curve to it.
-:param plot_data_item: The curve to add to this plot
-:type plot_data_item: BasePlotCurveItem
-:param curve_color: The color to draw the curve and axis label in
-:type curve_color: QColor, optional
-:param y_axis_name: The name of the axis to link the curve with. If this is the first time seeing this name,</p>
-<blockquote>
-<div><p>then a new axis will be created for it.</p>
-</div></blockquote>
+<dd><p>Adds a curve to this plot.</p>
+<p>If the y axis parameters are specified, either link this curve to an
+existing axis if that axis is already part of this plot, or create a
+new one and link the curve to it.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>plot_data_item</strong> (<em>BasePlotCurveItem</em>) – The curve to add to this plot</p></li>
+<li><p><strong>curve_color</strong> (<em>QColor</em><em>, </em><em>optional</em>) – The color to draw the curve and axis label in</p></li>
+<li><p><strong>y_axis_name</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the axis to link the curve with. If this is the first
+time seeing this name, then a new axis will be created for it.</p></li>
+</ul>
+</dd>
 </dl>
 </dd></dl>
 
@@ -1873,16 +1874,28 @@ If true, the values in minYRange and maxYRange are ignored.</p>
 <dt class="sig sig-object py" id="pydm.widgets.scatterplot.PyDMScatterPlot.getShowLegend">
 <span class="sig-name descname"><span class="pre">getShowLegend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.getShowLegend" title="Permalink to this definition"></a></dt>
 <dd><p>Check if the legend is being shown.</p>
-<blockquote>
-<div><p>True if the legend is displayed on the graph; False if not.</p>
-</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the legend is displayed on the graph; False if not.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.scatterplot.PyDMScatterPlot.getShowRightAxis">
 <span class="sig-name descname"><span class="pre">getShowRightAxis</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.getShowRightAxis" title="Permalink to this definition"></a></dt>
 <dd><p>Provide whether the right y-axis is being shown.</p>
-<p>True if the graph shows the right y-axis. False if not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the graph shows the right y-axis. False if not.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -3482,9 +3495,14 @@ where 0 means transparent.</p>
 <dt class="sig sig-object py" id="pydm.widgets.scatterplot.PyDMScatterPlot.showLegend">
 <span class="sig-name descname"><span class="pre">showLegend</span></span><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.showLegend" title="Permalink to this definition"></a></dt>
 <dd><p>Check if the legend is being shown.</p>
-<blockquote>
-<div><p>True if the legend is displayed on the graph; False if not.</p>
-</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the legend is displayed on the graph; False if not.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -3506,7 +3524,14 @@ where 0 means transparent.</p>
 <dt class="sig sig-object py" id="pydm.widgets.scatterplot.PyDMScatterPlot.showRightAxis">
 <span class="sig-name descname"><span class="pre">showRightAxis</span></span><a class="headerlink" href="#pydm.widgets.scatterplot.PyDMScatterPlot.showRightAxis" title="Permalink to this definition"></a></dt>
 <dd><p>Provide whether the right y-axis is being shown.</p>
-<p>True if the graph shows the right y-axis. False if not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the graph shows the right y-axis. False if not.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
