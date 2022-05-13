@@ -320,6 +320,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         else:
             self._update_mode = PyDMTimePlot.SynchronousMode
         self.initialize_buffer()
+        
     def resetUpdatesAsynchronously(self):
         self._update_mode = PyDMTimePlot.SynchronousMode
         self.initialize_buffer()
