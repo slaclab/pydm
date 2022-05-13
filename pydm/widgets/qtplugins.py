@@ -31,6 +31,7 @@ from .label import PyDMLabel
 from .line_edit import PyDMLineEdit
 from .logdisplay import PyDMLogDisplay
 from .pushbutton import PyDMPushButton
+from .readbackbutton import PyDMReadbackButton
 from .related_display_button import PyDMRelatedDisplayButton
 from .shell_command import PyDMShellCommand
 from .slider import PyDMSlider
@@ -266,3 +267,10 @@ PyDMTemplateRepeaterPlugin = qtplugin_factory(PyDMTemplateRepeater,
 PyDMTerminatorPlugin = qtplugin_factory(PyDMTerminator,
                                         group=WidgetCategory.MISC,
                                         extensions=BASE_EXTENSIONS)
+
+
+# Readback Button plugin
+PyDMReadbackButtonPlugin = qtplugin_factory(PyDMReadbackButton,
+                                        group=WidgetCategory.INPUT,
+                                        extensions=BASE_EXTENSIONS,
+                                        icon=ifont.icon("mouse"))
