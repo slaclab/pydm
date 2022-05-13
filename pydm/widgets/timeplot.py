@@ -26,8 +26,8 @@ class updateMode(object):
     '''
     updateMode as new type for plot update
     '''
-    AtFixedRate = 0
     OnValueChange = 1
+    AtFixedRate = 2
 
 
 class TimePlotCurveItem(BasePlotCurveItem):
@@ -88,7 +88,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.plot_style = plot_style
 
         self._bufferSize = MINIMUM_BUFFER_SIZE
-        self._update_mode = PyDMTimePlot.SynchronousMode
+        self._update_mode = PyDMTimePlot.OnValueChange
 
         self._min_y_value = None
         self._max_y_value = None
@@ -186,7 +186,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         """
         self.update_min_max_y_values(new_value)
 
-        if self._update_mode == PyDMTimePlot.SynchronousMode:
+        if self._update_mode == PyDMTimePlot.OnValueChange:
             self.data_buffer = np.roll(self.data_buffer, -1)
             # The first array row is to record timestamps, when a new value arrives.
             self.data_buffer[0, self._bufferSize - 1] = time.time()
@@ -196,7 +196,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
             if self.points_accumulated < self._bufferSize:
                 self.points_accumulated += 1
             self.data_changed.emit()
-        elif self._update_mode == PyDMTimePlot.AsynchronousMode:
+        elif self._update_mode == PyDMTimePlot.AtFixedRated:
             self.latest_value = new_value
 
     @Slot()
@@ -206,7 +206,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         buffer, together with the timestamp when this happens. Also increments
         the accumulated point counter.
         """
-        if self._update_mode != PyDMTimePlot.AsynchronousMode:
+        if self._update_mode != PyDMTimePlot.AtFixedRated:
             return
         self.data_buffer = np.roll(self.data_buffer, -1)
         self.data_buffer[0, self._bufferSize - 1] = time.time()
@@ -315,14 +315,14 @@ class TimePlotCurveItem(BasePlotCurveItem):
         """
         Check if value is from updatesAsynchronously(bool) or updateMode(int)
         """
-        if type(value)==int and value == 0 or type(value)==bool and value is True:
-            self._update_mode = PyDMTimePlot.AsynchronousMode
+        if type(value)==int and value == updateMode.AtFixedRate or type(value)==bool and value is True:
+            self._update_mode = PyDMTimePlot.AtFixedRate
         else:
-            self._update_mode = PyDMTimePlot.SynchronousMode
+            self._update_mode = PyDMTimePlot.OnValueChange
         self.initialize_buffer()
         
     def resetUpdatesAsynchronously(self):
-        self._update_mode = PyDMTimePlot.SynchronousMode
+        self._update_mode = PyDMTimePlot.OnValueChange
         self.initialize_buffer()
 
     def min_x(self):
@@ -376,8 +376,11 @@ class PyDMTimePlot(BasePlot,updateMode):
         Will set the bottom axis of this plot to the input axis. If not set, will default
         to either a TimeAxisItem if plot_by_timestamps is true, or a regular AxisItem otherwise
     """
-    SynchronousMode = 1
-    AsynchronousMode = 2
+    #SynchronousMode = 1
+    #AsynchronousMode = 2
+
+    OnValueChange = 1
+    AtFixedRated = 2
 
     Q_ENUMS(updateMode)
     updateMode = updateMode
@@ -433,7 +436,7 @@ class PyDMTimePlot(BasePlot,updateMode):
 
         self.update_timer = QTimer(self)
         self.update_timer.setInterval(self._update_interval)
-        self._update_mode = PyDMTimePlot.SynchronousMode
+        self._update_mode = PyDMTimePlot.OnValueChange
         self._needs_redraw = True
 
         self.labels = {
@@ -599,7 +602,7 @@ class PyDMTimePlot(BasePlot,updateMode):
             return
 
         if self._plot_by_timestamps:
-            if self._update_mode == PyDMTimePlot.SynchronousMode:
+            if self._update_mode == PyDMTimePlot.OnValueChange:
                 maxrange = max([curve.max_x() for curve in self._curves])
             else:
                 maxrange = time.time()
@@ -780,7 +783,7 @@ class PyDMTimePlot(BasePlot,updateMode):
     bufferSize = Property("int", getBufferSize, setBufferSize, resetBufferSize)
 
     def getUpdatesAsynchronously(self):
-        return self._update_mode == PyDMTimePlot.AsynchronousMode
+        return self._update_mode == PyDMTimePlot.AtFixedRated
 
     def setUpdatesAsynchronously(self, value): 
         for curve in self._curves:
@@ -788,15 +791,15 @@ class PyDMTimePlot(BasePlot,updateMode):
         """
         Check if value is from updatesAsynchronously(bool) or updateMode(int)
         """
-        if type(value)==int and value == 0 or type(value)==bool and value is True: 
-            self._update_mode = PyDMTimePlot.AsynchronousMode
+        if type(value)==int and value == updateMode.AtFixedRate or type(value)==bool and value is True: 
+            self._update_mode = PyDMTimePlot.AtFixedRate
             self.update_timer.start()
         else:
-            self._update_mode = PyDMTimePlot.SynchronousMode
+            self._update_mode = PyDMTimePlot.OnValueChange
             self.update_timer.stop()
 
     def resetUpdatesAsynchronously(self):
-        self._update_mode = PyDMTimePlot.SynchronousMode
+        self._update_mode = PyDMTimePlot.OnValueChange
         self.update_timer.stop()
         for curve in self._curves:
             curve.resetUpdatesAsynchronously()
