@@ -1,6 +1,6 @@
 import atexit
 import logging
-from multiprocessing.pool import ThreadPool
+from concurrent.futures import ThreadPoolExecutor
 
 import epics
 import numpy as np
@@ -28,8 +28,8 @@ float_types = set((epics.dbr.CTRL_FLOAT, epics.dbr.FLOAT, epics.dbr.TIME_FLOAT,
                    epics.dbr.CTRL_DOUBLE, epics.dbr.DOUBLE, epics.dbr.TIME_DOUBLE))
 
 
-thread_pool = ThreadPool(4)
-atexit.register(thread_pool.terminate)
+thread_pool = ThreadPoolExecutor()
+atexit.register(thread_pool.shutdown, wait=False, cancel_futures=True)
 
 
 class Connection(PyDMConnection):
@@ -52,7 +52,7 @@ class Connection(PyDMConnection):
         self._upper_warning_limit = None
         self._lower_warning_limit = None
 
-        thread_pool.apply_async(self.setup_callbacks, args=(channel,))
+        thread_pool.submit(self.setup_callbacks, channel)
 
     def setup_callbacks(self, channel):
         use_initial_context()
