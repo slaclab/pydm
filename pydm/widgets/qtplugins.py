@@ -12,6 +12,7 @@ from .qtplugin_extensions import (
     WaveformCurveEditorExtension,
 )
 from .tab_bar_qtplugin import TabWidgetPlugin
+from .absolute_geometry import PyDMAbsoluteGeometry
 from .byte import PyDMByteIndicator
 
 from .checkbox import PyDMCheckbox
@@ -45,7 +46,6 @@ from .scatterplot import PyDMScatterPlot
 from .template_repeater import PyDMTemplateRepeater
 from .terminator import PyDMTerminator
 
-from ..layouts.absolute_geometry_layout import AbsoluteGeometryLayout
 from ..utilities.iconfont import IconFont
 
 logger = logging.getLogger(__name__)
@@ -263,9 +263,9 @@ PyDMTerminatorPlugin = qtplugin_factory(PyDMTerminator,
                                         group=WidgetCategory.MISC,
                                         extensions=BASE_EXTENSIONS)
 
-# ------ layouts (may be replaced by a custom widget that uses this layout)
+# Absolute Geometry widget plugin
 
-AbsoluteGeometryLayoutPlugin = qtplugin_factory(AbsoluteGeometryLayout,
-                                                group='PyDM Layouts',
-                                                is_container=True,
-                                                extensions=BASE_EXTENSIONS)
+PyDMAbsoluteGeometryPlugin = qtplugin_factory(PyDMAbsoluteGeometry,
+                                              group=WidgetCategory.CONTAINER,
+                                              is_container=True,
+                                              extensions=BASE_EXTENSIONS)
