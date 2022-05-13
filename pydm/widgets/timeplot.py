@@ -827,9 +827,7 @@ class PyDMTimePlot(BasePlot,updateMode):
         """
         if new_type != self._updateMode:
             self._updateMode = new_type
-            self.getUpdatesAsynchronously
             self.setUpdatesAsynchronously(self._updateMode)
-            self.resetUpdatesAsynchronously
 
     def getTimeSpan(self):
         """
