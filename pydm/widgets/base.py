@@ -856,6 +856,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self.enum_strings_changed(new_enum_strings)
 
+    @Slot(int)
     @Slot(float)
     def upperCtrlLimitChanged(self, new_limit):
         """
@@ -869,6 +870,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self.ctrl_limit_changed("UPPER", new_limit)
 
+    @Slot(int)
     @Slot(float)
     def lowerCtrlLimitChanged(self, new_limit):
         """
@@ -882,6 +884,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self.ctrl_limit_changed("LOWER", new_limit)
 
+    @Slot(int)
     @Slot(float)
     def upper_alarm_limit_changed(self, new_limit: float):
         """
@@ -894,6 +897,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self.alarm_limit_changed(AlarmLimit.HIHI, new_limit)
 
+    @Slot(int)
     @Slot(float)
     def lower_alarm_limit_changed(self, new_limit: float):
         """
@@ -906,6 +910,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self.alarm_limit_changed(AlarmLimit.LOLO, new_limit)
 
+    @Slot(int)
     @Slot(float)
     def upper_warning_limit_changed(self, new_limit: float):
         """
@@ -918,6 +923,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self.alarm_limit_changed(AlarmLimit.HIGH, new_limit)
 
+    @Slot(int)
     @Slot(float)
     def lower_warning_limit_changed(self, new_limit: float):
         """
