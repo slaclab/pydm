@@ -262,6 +262,9 @@ PyDMTerminatorPlugin = qtplugin_factory(PyDMTerminator,
                                         group=WidgetCategory.MISC,
                                         extensions=BASE_EXTENSIONS)
 
+# **********************************************
+# NOTE: Add in new PyDM widgets above this line.
+# **********************************************
 
 # Add in designer widget plugins from other classes via entrypoints:
 globals().update(**get_widgets_from_entrypoints())

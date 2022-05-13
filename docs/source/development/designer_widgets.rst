@@ -1,11 +1,53 @@
 Designer Widgets
 ================
 
+Widgets in PyDM itself
+----------------------
+
+If you are developing a new widget for PyDM, please make it compatible with
+Qt designer by editing ``pydm/widgets/qtplugins.py``.
+
+For example, if you create a widget called ``MyWidget`` and have it in
+``pydm.widgets.my_widget``, you should add the following lines in
+``qtplugins.py``.
+
+.. code:: python
+
+    from .my_widget import MyWidget
+
+    # And further down in the file where the "NOTE" is:
+
+    MyWidgetPlugin = qtplugin_factory(
+        MyWidget,
+        group=WidgetCategory.MISC,
+        extensions=BASE_EXTENSIONS,
+        icon=ifont.icon("calendar-alt"),
+    )
+
+
+The ``group`` parameter may be one of the following attributes from
+``WidgetCategory``.
+
+.. autoclass:: pydm.widgets.qtplugin_base.WidgetCategory
+   :members:
+
+For most widgets, ``extensions`` should remain as the suggested
+``BASE_EXTENSIONS``.  Advanced users who wish to further customize the Qt
+Designer experience will need to poke around in the PyDM internals to figure it
+out.
+
+The ``icon`` can be customized using the PyDM-vendored fontawesome library.
+The available options can be found in ``fontawesome-charmap.json``, and a quick
+Google search should help you find an icon that will fit your scenario.
+
+.. autofunction:: pydm.widgets.qtplugin_base.qtplugin_factory
+
+
+Widgets in external packages
+----------------------------
+
 If you develop a package which has Qt Designer-compatible widgets, you can use
 PyDM's built-in support for adding widgets to the designer via entrypoints.
-
-Configuration
--------------
 
 Here is an example ``setup.py`` that could be used to locate a designable
 widget in your own Python package:
@@ -50,3 +92,6 @@ The class may specify additional settings by way of this mechanism:
             "extensions": [],
             "icon": None,  # QtGui.QIcon(...)
         }
+
+
+The ``_qt_designer_`` dictionary is passed directly to ``qtplugin_factory``.

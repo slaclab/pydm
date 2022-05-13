@@ -35,11 +35,17 @@ logger = logging.getLogger(__name__)
 
 class WidgetCategory(str, enum.Enum):
     """Categories for PyDM Widgets in the Qt Designer."""
+    #: Widgets which can contain other widgets.
     CONTAINER = "PyDM Container Widgets"
+    #: Widgets which contain displays.
     DISPLAY = "PyDM Display Widgets"
+    #: Widgets which take user input.
     INPUT = "PyDM Input Widgets"
+    #: Widgets which plot data.
     PLOT = "PyDM Plot Widgets"
+    #: Widgets which draw things.
     DRAWING = "PyDM Drawing Widgets"
+    #: Widgets which don't fit into any other category.
     MISC = "PyDM Misc. Widgets"
 
 
@@ -53,8 +59,22 @@ def qtplugin_factory(
     """
     Helper function to create a generic PyDMDesignerPlugin class.
 
-    :param cls: Widget class
-    :type cls:  QWidget
+    Parameters
+    ----------
+    cls : QWidget subclass
+        The widget class.
+
+    is_container : bool, optional
+        True if this widget can contain other widgets (as in a Frame).
+        This will also affect whether or not the widget can be used as the
+        top-level widget of a display. Defaults to False.
+
+    extensions : list of extension classes, optional
+        Extension classes to use with the widget.
+
+    icon : QtGui.QIcon, optional
+        An icon to use with the widget in the designer.  Consider using
+        the PyDM-provided fontawesome ``ifont`` here for simplicity.
     """
 
     class Plugin(PyDMDesignerPlugin):
