@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Utilities &mdash; PyDM v1.15.1+57.g8ec55995 documentation</title>
+  <title>Utilities &mdash; PyDM v1.15.1+77.g7a8327ba documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+57.g8ec55995
+                v1.15.1+77.g7a8327ba
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -73,10 +73,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../data_plugins/local_plugin.html">Local Plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_plugins/calc_plugin.html">Calc Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/external_plugins.html">External Data Plugins</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/external_tools.html">External Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../development/resources.html">Recommended Resources</a></li>
 </ul>
@@ -238,6 +240,26 @@ available</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pydm.utilities.import_module_by_filename">
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">import_module_by_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_to_modules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">module</span></span></span><a class="reference internal" href="../_modules/pydm/utilities.html#import_module_by_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.import_module_by_filename" title="Permalink to this definition"></a></dt>
+<dd><p>For a given source filename, import it and search for objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_filename</strong> (<em>str</em>) – The source code filename.</p></li>
+<li><p><strong>add_to_modules</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>keyword-only</em>) – Add the imported module to <code class="docutils literal notranslate"><span class="pre">sys.modules</span></code>.  Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>module</strong> – The imported module.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>types.ModuleType</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pydm.utilities.is_pydm_app">
 <span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">is_pydm_app</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#is_pydm_app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.is_pydm_app" title="Permalink to this definition"></a></dt>
 <dd><p>Check whether or not <cite>QApplication.instance()</cite> is a PyDMApplication.</p>
@@ -278,6 +300,28 @@ available</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydm.utilities.log_failures">
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">log_failures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explanation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Failed</span> <span class="pre">to</span> <span class="pre">run</span> <span class="pre">{func.__name__}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_traceback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#log_failures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.log_failures" title="Permalink to this definition"></a></dt>
+<dd><p>Decorator that wraps a function to be run.</p>
+<p>Exceptions raised while executing that function will be logged.
+In case of an exception, the wrapper will return <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>logger</strong> (<em>logging.Logger</em>) – The logger instance to log messages to.</p></li>
+<li><p><strong>explanation</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl class="simple">
+<dt>The explanation message to include.  Format arguments include:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">func</span></code>, <code class="docutils literal notranslate"><span class="pre">args</span></code>, <code class="docutils literal notranslate"><span class="pre">kwargs</span></code>, and the exception <code class="docutils literal notranslate"><span class="pre">ex</span></code>.</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>include_traceback</strong> (<em>bool</em><em>, </em><em>optional</em>) – Include traceback information in the log message.</p></li>
+<li><p><strong>level</strong> (<em>int</em><em>, </em><em>optional</em>) – Logging level to use.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

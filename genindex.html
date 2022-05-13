@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; PyDM v1.15.1+57.g8ec55995 documentation</title>
+  <title>Index &mdash; PyDM v1.15.1+77.g7a8327ba documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+57.g8ec55995
+                v1.15.1+77.g7a8327ba
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -63,10 +63,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="data_plugins/local_plugin.html">Local Plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_plugins/calc_plugin.html">Calc Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_plugins/external_plugins.html">External Data Plugins</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development/external_tools.html">External Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development/resources.html">Recommended Resources</a></li>
 </ul>
@@ -1918,9 +1920,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/datetime_edit.html#pydm.widgets.datetime.PyDMDateTimeEdit.blockPastDate">blockPastDate (pydm.widgets.datetime.PyDMDateTimeEdit attribute)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.blockSignals">blockSignals() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.blockSignals">blockSignals() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.blockSignals">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.blockSignals">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.blockSignals">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -2105,6 +2109,8 @@
       <li><a href="widgets/datetime_edit.html#pydm.widgets.datetime.PyDMDateTimeEdit.calendarPopup">calendarPopup() (pydm.widgets.datetime.PyDMDateTimeEdit method)</a>
 </li>
       <li><a href="widgets/datetime_edit.html#pydm.widgets.datetime.PyDMDateTimeEdit.calendarWidget">calendarWidget() (pydm.widgets.datetime.PyDMDateTimeEdit method)</a>
+</li>
+      <li><a href="development/external_tools.html#pydm.tools.ExternalTool.call">call() (pydm.tools.ExternalTool method)</a>
 </li>
       <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.cellActivated">cellActivated (pydm.widgets.waveformtable.PyDMWaveformTable attribute)</a>
 </li>
@@ -2582,9 +2588,11 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.childAt">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.childEvent">childEvent() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.childEvent">childEvent() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.childEvent">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.childEvent">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.childEvent">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -2676,9 +2684,11 @@
         <li><a href="widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.childItems">(pydm.widgets.waveformplot.WaveformCurveItem method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.children">children() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.children">children() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.children">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.children">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.children">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -3932,6 +3942,8 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.connection_changed">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.PyDMPlugin.connection_class">connection_class (pydm.data_plugins.PyDMPlugin attribute)</a>
+</li>
       <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.connectionStateChanged">connectionStateChanged() (pydm.widgets.byte.PyDMByteIndicator method)</a>
 
       <ul>
@@ -3988,9 +4000,11 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.connectionStateChanged">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.connectNotify">connectNotify() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.connectNotify">connectNotify() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.connectNotify">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.connectNotify">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.connectNotify">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -4868,9 +4882,11 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.customContextMenuRequested">(pydm.widgets.waveformtable.PyDMWaveformTable attribute)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.customEvent">customEvent() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.customEvent">customEvent() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.customEvent">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.customEvent">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.customEvent">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -5016,9 +5032,11 @@
 </li>
       <li><a href="widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.del_">del_() (pydm.widgets.line_edit.PyDMLineEdit method)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.deleteLater">deleteLater() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.deleteLater">deleteLater() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.deleteLater">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.deleteLater">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.deleteLater">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -5602,9 +5620,11 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.destroy">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.destroyed">destroyed (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem attribute)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.destroyed">destroyed (pydm.data_plugins.plugin.PyDMConnection attribute)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.destroyed">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem attribute)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.destroyed">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot attribute)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.destroyed">(pydm.widgets.byte.PyDMByteIndicator attribute)</a>
@@ -5914,8 +5934,6 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.devicePixelRatioFScale">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.deviceTransform">deviceTransform() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
 
       <ul>
@@ -5926,6 +5944,8 @@
         <li><a href="widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.deviceTransform">(pydm.widgets.waveformplot.WaveformCurveItem method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.devType">devType() (pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 
       <ul>
@@ -6009,6 +6029,8 @@
       <li><a href="channel.html#channel.PyDMChannel.disconnect">disconnect() (channel.PyDMChannel method)</a>
 
       <ul>
+        <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.disconnect">(pydm.data_plugins.plugin.PyDMConnection method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.disconnect">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
 </li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.disconnect">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
@@ -6094,9 +6116,11 @@
       </ul></li>
       <li><a href="widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.disconnectedAlarmIconColor">disconnectedAlarmIconColor (pydm.widgets.tab_bar.PyDMTabWidget attribute)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.disconnectNotify">disconnectNotify() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.disconnectNotify">disconnectNotify() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.disconnectNotify">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.disconnectNotify">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.disconnectNotify">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -6624,9 +6648,11 @@
 </li>
       <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.dropMimeData">dropMimeData() (pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.dumpObjectInfo">dumpObjectInfo() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.dumpObjectInfo">dumpObjectInfo() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.dumpObjectInfo">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.dumpObjectInfo">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.dumpObjectInfo">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -6708,9 +6734,11 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.dumpObjectInfo">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.dumpObjectTree">dumpObjectTree() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.dumpObjectTree">dumpObjectTree() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.dumpObjectTree">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.dumpObjectTree">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.dumpObjectTree">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -6794,9 +6822,11 @@
       </ul></li>
       <li><a href="widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.duplicatesEnabled">duplicatesEnabled() (pydm.widgets.enum_combo_box.PyDMEnumComboBox method)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.dynamicPropertyNames">dynamicPropertyNames() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.dynamicPropertyNames">dynamicPropertyNames() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.dynamicPropertyNames">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.dynamicPropertyNames">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.dynamicPropertyNames">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -7188,8 +7218,6 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.enterEvent">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.enum_strings_changed">enum_strings_changed() (pydm.widgets.byte.PyDMByteIndicator method)</a>
 
       <ul>
@@ -7246,6 +7274,8 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.enum_strings_changed">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.enumStringsChanged">enumStringsChanged() (pydm.widgets.byte.PyDMByteIndicator method)</a>
 
       <ul>
@@ -7304,9 +7334,11 @@
       </ul></li>
       <li><a href="application.html#pydm.PyDMApplication.establish_widget_connections">establish_widget_connections() (pydm.PyDMApplication method)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.event">event() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.event">event() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.event">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.event">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.event">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -7388,9 +7420,11 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.event">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-      <li><a href="application.html#pydm.PyDMApplication.eventFilter">eventFilter() (pydm.PyDMApplication method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.eventFilter">eventFilter() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="application.html#pydm.PyDMApplication.eventFilter">(pydm.PyDMApplication method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.eventFilter">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
 </li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.eventFilter">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
@@ -7483,6 +7517,8 @@
       <li><a href="widgets/utilities.html#pydm.widgets.display_format.DisplayFormat.Exponential">Exponential (pydm.widgets.display_format.DisplayFormat attribute)</a>
 </li>
       <li><a href="widgets/image.html#pydm.widgets.image.PyDMImageView.export">export() (pydm.widgets.image.PyDMImageView method)</a>
+</li>
+      <li><a href="development/external_tools.html#pydm.tools.ExternalTool">ExternalTool (class in pydm.tools)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -7594,9 +7630,11 @@
 </li>
       <li><a href="utilities/index.html#pydm.utilities.units.find_unittype">find_unittype() (in module pydm.utilities.units)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.findChild">findChild() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.findChild">findChild() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.findChild">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.findChild">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.findChild">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -7678,9 +7716,11 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.findChild">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.findChildren">findChildren() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.findChildren">findChildren() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.findChildren">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.findChildren">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.findChildren">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -9446,6 +9486,8 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.from_bytes">(pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask method)</a>
 </li>
       </ul></li>
+      <li><a href="development/external_tools.html#pydm.tools.ExternalTool.from_json">from_json() (pydm.tools.ExternalTool method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -9697,6 +9739,8 @@
 </li>
       </ul></li>
       <li><a href="utilities/index.html#pydm.utilities.get_designer_current_path">get_designer_current_path() (in module pydm.utilities)</a>
+</li>
+      <li><a href="development/external_tools.html#pydm.tools.ExternalTool.get_info">get_info() (pydm.tools.ExternalTool method)</a>
 </li>
       <li><a href="widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingArc.get_inner_max">get_inner_max() (pydm.widgets.drawing.PyDMDrawingArc method)</a>
 
@@ -11818,6 +11862,8 @@
 </li>
       <li><a href="widgets/image.html#pydm.widgets.image.PyDMImageView.imageWidth">imageWidth (pydm.widgets.image.PyDMImageView attribute)</a>
 </li>
+      <li><a href="utilities/index.html#pydm.utilities.import_module_by_filename">import_module_by_filename() (in module pydm.utilities)</a>
+</li>
       <li><a href="widgets/datetime_label.html#pydm.widgets.datetime.PyDMDateTimeLabel.indent">indent() (pydm.widgets.datetime.PyDMDateTimeLabel method)</a>
 
       <ul>
@@ -11844,9 +11890,11 @@
         <li><a href="widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.informViewBoundsChanged">(pydm.widgets.waveformplot.WaveformCurveItem method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.inherits">inherits() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.inherits">inherits() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.inherits">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.inherits">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.inherits">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -12460,9 +12508,11 @@
 </li>
       <li><a href="widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.insertTab">insertTab() (pydm.widgets.tab_bar.PyDMTabWidget method)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.installEventFilter">installEventFilter() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.installEventFilter">installEventFilter() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.installEventFilter">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.installEventFilter">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.installEventFilter">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -12585,6 +12635,8 @@
       <li><a href="widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.invertedAppearance">invertedAppearance (pydm.widgets.scale.PyDMScaleIndicator attribute)</a>
 </li>
       <li><a href="widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.invertOrder">invertOrder (pydm.widgets.enum_button.PyDMEnumButton attribute)</a>
+</li>
+      <li><a href="development/external_tools.html#pydm.tools.ExternalTool.is_compatible_with">is_compatible_with() (pydm.tools.ExternalTool method)</a>
 </li>
       <li><a href="utilities/index.html#pydm.utilities.is_pydm_app">is_pydm_app() (in module pydm.utilities)</a>
 </li>
@@ -13634,9 +13686,11 @@
         <li><a href="widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.isSelected">(pydm.widgets.waveformplot.WaveformCurveItem method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.isSignalConnected">isSignalConnected() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.isSignalConnected">isSignalConnected() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.isSignalConnected">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.isSignalConnected">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.isSignalConnected">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -13924,9 +13978,11 @@
         <li><a href="widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.isWidget">(pydm.widgets.waveformplot.WaveformCurveItem method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.isWidgetType">isWidgetType() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.isWidgetType">isWidgetType() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.isWidgetType">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.isWidgetType">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.isWidgetType">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -14168,9 +14224,11 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.isWindowModified">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.isWindowType">isWindowType() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.isWindowType">isWindowType() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.isWindowType">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.isWindowType">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.isWindowType">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -14514,8 +14572,6 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.keyPressEvent">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.keyReleaseEvent">keyReleaseEvent() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
 
       <ul>
@@ -14600,9 +14656,13 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.keyReleaseEvent">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.killTimer">killTimer() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.killTimer">killTimer() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.killTimer">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.killTimer">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.killTimer">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -15080,6 +15140,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="utilities/index.html#pydm.utilities.log_failures">log_failures() (in module pydm.utilities)</a>
+</li>
       <li><a href="widgets/log.html#pydm.widgets.logdisplay.PyDMLogDisplay.logFormat">logFormat (pydm.widgets.logdisplay.PyDMLogDisplay attribute)</a>
 </li>
       <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.logicalDpiX">logicalDpiX() (pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
@@ -16406,9 +16468,11 @@
         <li><a href="widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.menu">(pydm.widgets.shell_command.PyDMShellCommand method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.metaObject">metaObject() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.metaObject">metaObject() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.metaObject">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.metaObject">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.metaObject">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -17563,9 +17627,11 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.moveEvent">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.moveToThread">moveToThread() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.moveToThread">moveToThread() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.moveToThread">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.moveToThread">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.moveToThread">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -18349,9 +18415,11 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.objectName">objectName() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.objectName">objectName() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.objectName">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.objectName">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.objectName">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -18433,9 +18501,11 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.objectName">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.objectNameChanged">objectNameChanged (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem attribute)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.objectNameChanged">objectNameChanged (pydm.data_plugins.plugin.PyDMConnection attribute)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.objectNameChanged">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem attribute)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.objectNameChanged">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot attribute)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.objectNameChanged">(pydm.widgets.byte.PyDMByteIndicator attribute)</a>
@@ -18603,6 +18673,8 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.opacity">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.opacityChanged">opacityChanged (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem attribute)</a>
 
       <ul>
@@ -18613,8 +18685,6 @@
         <li><a href="widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.opacityChanged">(pydm.widgets.waveformplot.WaveformCurveItem attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.opaqueArea">opaqueArea() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
 
       <ul>
@@ -19213,9 +19283,11 @@
         <li><a href="widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.panelModality">(pydm.widgets.waveformplot.WaveformCurveItem method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.parent">parent() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.parent">parent() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.parent">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.parent">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.parent">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -19993,9 +20065,11 @@
       </ul></li>
       <li><a href="widgets/image.html#pydm.widgets.image.PyDMImageView.process_image">process_image() (pydm.widgets.image.PyDMImageView method)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.property">property() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.property">property() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.property">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.property">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.property">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -20167,6 +20241,8 @@
       <li><a href="widgets/checkbox.html#pydm.widgets.checkbox.PyDMCheckbox.RenderFlag">PyDMCheckbox.RenderFlag (class in pydm.widgets.checkbox)</a>
 </li>
       <li><a href="widgets/checkbox.html#pydm.widgets.checkbox.PyDMCheckbox.RenderFlags">PyDMCheckbox.RenderFlags (class in pydm.widgets.checkbox)</a>
+</li>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection">PyDMConnection (class in pydm.data_plugins.plugin)</a>
 </li>
       <li><a href="widgets/datetime_edit.html#pydm.widgets.datetime.PyDMDateTimeEdit">PyDMDateTimeEdit (class in pydm.widgets.datetime)</a>
 </li>
@@ -20385,6 +20461,8 @@
       <li><a href="widgets/log.html#pydm.widgets.logdisplay.PyDMLogDisplay.RenderFlag">PyDMLogDisplay.RenderFlag (class in pydm.widgets.logdisplay)</a>
 </li>
       <li><a href="widgets/log.html#pydm.widgets.logdisplay.PyDMLogDisplay.RenderFlags">PyDMLogDisplay.RenderFlags (class in pydm.widgets.logdisplay)</a>
+</li>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.PyDMPlugin">PyDMPlugin (class in pydm.data_plugins)</a>
 </li>
       <li><a href="widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton">PyDMPushButton (class in pydm.widgets.pushbutton)</a>
 </li>
@@ -20614,9 +20692,11 @@
 </li>
       <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask">PyDMWaveformTable.StyleMask (class in pydm.widgets.waveformtable)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.pyqtConfigure">pyqtConfigure() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.pyqtConfigure">pyqtConfigure() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.pyqtConfigure">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.pyqtConfigure">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.pyqtConfigure">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -21156,9 +21236,11 @@
         <li><a href="widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem.receiveNewValue">(pydm.widgets.timeplot.TimePlotCurveItem method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.receivers">receivers() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.receivers">receivers() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.receivers">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.receivers">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.receivers">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -21606,8 +21688,12 @@
 </li>
       <li><a href="application.html#pydm.PyDMApplication.remove_connection">remove_connection() (pydm.PyDMApplication method)</a>
 </li>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.remove_listener">remove_listener() (pydm.data_plugins.plugin.PyDMConnection method)</a>
+</li>
       <li><a href="utilities/index.html#pydm.utilities.remove_protocol.remove_protocol">remove_protocol() (in module pydm.utilities.remove_protocol)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.removeAction">removeAction() (pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 
       <ul>
@@ -21684,8 +21770,6 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.removeAction">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="widgets/scatterplot.html#pydm.widgets.scatterplot.PyDMScatterPlot.removeChannel">removeChannel() (pydm.widgets.scatterplot.PyDMScatterPlot method)</a>
 
       <ul>
@@ -21700,9 +21784,11 @@
       </ul></li>
       <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.removeColumn">removeColumn() (pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.removeEventFilter">removeEventFilter() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.removeEventFilter">removeEventFilter() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.removeEventFilter">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.removeEventFilter">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.removeEventFilter">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -22826,9 +22912,11 @@
       </ul></li>
       <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.send_waveform">send_waveform() (pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.sender">sender() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.sender">sender() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.sender">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.sender">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.sender">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -22910,9 +22998,11 @@
         <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.sender">(pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.senderSignalIndex">senderSignalIndex() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.senderSignalIndex">senderSignalIndex() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.senderSignalIndex">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.senderSignalIndex">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.senderSignalIndex">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -26682,9 +26772,11 @@
         <li><a href="widgets/label.html#pydm.widgets.label.PyDMLabel.setNum">(pydm.widgets.label.PyDMLabel method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setObjectName">setObjectName() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.setObjectName">setObjectName() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setObjectName">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setObjectName">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setObjectName">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -26890,9 +26982,11 @@
         <li><a href="widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.setPanelModality">(pydm.widgets.waveformplot.WaveformCurveItem method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setParent">setParent() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.setParent">setParent() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setParent">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setParent">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setParent">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -27022,9 +27116,11 @@
 </li>
       <li><a href="widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.setPrefix">setPrefix() (pydm.widgets.spinbox.PyDMSpinbox method)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setProperty">setProperty() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.setProperty">setProperty() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setProperty">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setProperty">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setProperty">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -30236,9 +30332,11 @@
 </li>
       <li><a href="widgets/slider.html#pydm.widgets.slider.PyDMSlider.showValueLabel">showValueLabel (pydm.widgets.slider.PyDMSlider attribute)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.signalsBlocked">signalsBlocked() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.signalsBlocked">signalsBlocked() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.signalsBlocked">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.signalsBlocked">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.signalsBlocked">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -30760,9 +30858,11 @@
       </ul></li>
       <li><a href="widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.startDrag">startDrag() (pydm.widgets.waveformtable.PyDMWaveformTable method)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.startTimer">startTimer() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.startTimer">startTimer() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.startTimer">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.startTimer">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.startTimer">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -31366,9 +31466,11 @@
       </ul></li>
       <li><a href="widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.textMargins">textMargins() (pydm.widgets.line_edit.PyDMLineEdit method)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.thread">thread() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.thread">thread() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.thread">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.thread">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.thread">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -31498,9 +31600,11 @@
 </li>
       <li><a href="widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem.PanelModality">TimePlotCurveItem.PanelModality (class in pydm.widgets.timeplot)</a>
 </li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.timerEvent">timerEvent() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.timerEvent">timerEvent() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.timerEvent">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.timerEvent">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.timerEvent">(pydm.widgets.byte.PyDMByteIndicator method)</a>
@@ -31950,6 +32054,8 @@
         <li><a href="widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.to_dict">(pydm.widgets.waveformplot.WaveformCurveItem method)</a>
 </li>
       </ul></li>
+      <li><a href="development/external_tools.html#pydm.tools.ExternalTool.to_json">to_json() (pydm.tools.ExternalTool method)</a>
+</li>
       <li><a href="widgets/checkbox.html#pydm.widgets.checkbox.PyDMCheckbox.toggle">toggle() (pydm.widgets.checkbox.PyDMCheckbox method)</a>
 
       <ul>
@@ -32160,9 +32266,11 @@
         <li><a href="widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.topLevelWidget">(pydm.widgets.waveformplot.WaveformCurveItem method)</a>
 </li>
       </ul></li>
-      <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.tr">tr() (pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+      <li><a href="data_plugins/external_plugins.html#pydm.data_plugins.plugin.PyDMConnection.tr">tr() (pydm.data_plugins.plugin.PyDMConnection method)</a>
 
       <ul>
+        <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.tr">(pydm.widgets.archiver_time_plot.ArchivePlotCurveItem method)</a>
+</li>
         <li><a href="widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.tr">(pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot method)</a>
 </li>
         <li><a href="widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.tr">(pydm.widgets.byte.PyDMByteIndicator method)</a>

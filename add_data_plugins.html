@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Including Data Plugins &mdash; PyDM v1.15.1+57.g8ec55995 documentation</title>
+  <title>Including Data Plugins &mdash; PyDM v1.15.1+77.g7a8327ba documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+57.g8ec55995
+                v1.15.1+77.g7a8327ba
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -66,10 +66,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="data_plugins/local_plugin.html">Local Plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_plugins/calc_plugin.html">Calc Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_plugins/external_plugins.html">External Data Plugins</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development/external_tools.html">External Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development/resources.html">Recommended Resources</a></li>
 </ul>
@@ -124,23 +126,29 @@ plugins should be registered before the <code class="docutils literal notranslat
 otherwise they will not be registered in time for connections to be made.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pydm.data_plugins.add_plugin">
-<span class="sig-prename descclassname"><span class="pre">pydm.data_plugins.</span></span><span class="sig-name descname"><span class="pre">add_plugin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plugin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/data_plugins.html#add_plugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.data_plugins.add_plugin" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pydm.data_plugins.</span></span><span class="sig-name descname"><span class="pre">add_plugin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plugin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_plugins/external_plugins.html#pydm.data_plugins.PyDMPlugin" title="pydm.data_plugins.plugin.PyDMPlugin"><span class="pre">pydm.data_plugins.plugin.PyDMPlugin</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="data_plugins/external_plugins.html#pydm.data_plugins.PyDMPlugin" title="pydm.data_plugins.plugin.PyDMPlugin"><span class="pre">pydm.data_plugins.plugin.PyDMPlugin</span></a></span></span><a class="reference internal" href="_modules/pydm/data_plugins.html#add_plugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.data_plugins.add_plugin" title="Permalink to this definition"></a></dt>
 <dd><p>Add a PyDM plugin to the global registry of protocol vs. plugins</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>plugin</strong> (<em>PyDMPlugin</em>) – The class of plugin to instantiate</p>
+<dd class="field-odd"><p><strong>plugin</strong> (<em>PyDMPlugin type</em>) – The class of plugin to instantiate</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>plugin</strong> – The instantiated PyDMPlugin.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="data_plugins/external_plugins.html#pydm.data_plugins.PyDMPlugin" title="pydm.data_plugins.PyDMPlugin">PyDMPlugin</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pydm.data_plugins.load_plugins_from_path">
-<span class="sig-prename descclassname"><span class="pre">pydm.data_plugins.</span></span><span class="sig-name descname"><span class="pre">load_plugins_from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/data_plugins.html#load_plugins_from_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.data_plugins.load_plugins_from_path" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pydm.data_plugins.</span></span><span class="sig-name descname"><span class="pre">load_plugins_from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'_plugin.py'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="data_plugins/external_plugins.html#pydm.data_plugins.PyDMPlugin" title="pydm.data_plugins.plugin.PyDMPlugin"><span class="pre">pydm.data_plugins.plugin.PyDMPlugin</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pydm/data_plugins.html#load_plugins_from_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.data_plugins.load_plugins_from_path" title="Permalink to this definition"></a></dt>
 <dd><p>Load plugins from file locations that match a specific token</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>locations</strong> (<em>list</em>) – List of file locations</p></li>
+<li><p><strong>locations</strong> (<em>list of str</em>) – List of file locations</p></li>
 <li><p><strong>token</strong> (<em>str</em>) – Phrase that must match the end of the filename for it to be checked for
 PyDMPlugins</p></li>
 </ul>
