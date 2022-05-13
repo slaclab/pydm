@@ -24,11 +24,10 @@ import logging
 from typing import Dict, List, Optional, Type
 
 import entrypoints
-from qtpy import QtCore, QtDesigner, QtGui
+from qtpy import QtCore, QtDesigner, QtGui, QtWidgets
 
 from .. import config
 from ..qtdesigner import DesignerHooks
-from ..widgets.base import PyDMWidget
 from .qtplugin_extensions import PyDMExtensionFactory
 
 logger = logging.getLogger(__name__)
@@ -45,7 +44,7 @@ class WidgetCategory(str, enum.Enum):
 
 
 def qtplugin_factory(
-    cls: Type[PyDMWidget],
+    cls: Type[QtWidgets.QWidget],
     is_container: bool = False,
     group: str = "PyDM Widgets",
     extensions: Optional[List[Type]] = None,
@@ -76,7 +75,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
 
     def __init__(
         self,
-        cls: Type[PyDMWidget],
+        cls: Type[QtWidgets.QWidget],
         is_container: bool = False,
         group: str = "PyDM Widgets",
         extensions: Optional[List[Type]] = None,
@@ -205,15 +204,15 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
 
 
 def create_designer_widget_from_widget(
-    widget_cls: Type[PyDMWidget],
+    widget_cls: Type[QtWidgets.QWidget],
 ) -> Type[PyDMDesignerPlugin]:
     """
     Get a designable widget class.
 
     Accepts either user-provided :class:`PyDMDesignerPlugin` subclasses or
-    :class:`PyDMWidget` subclasses.
+    :class:`QWidget` subclasses.
 
-    In the case of :class:`PyDMWidget` subclasses, designer-specific settings
+    In the case of :class:`QWidget` subclasses, designer-specific settings
     may be specified on a class attribute.  These arguments should match
     what :func:`qtplugin_factory` expects.
     """
@@ -223,14 +222,14 @@ def create_designer_widget_from_widget(
         )
     if issubclass(widget_cls, PyDMDesignerPlugin):
         return widget_cls
-    if issubclass(widget_cls, PyDMWidget):
+    if issubclass(widget_cls, QtWidgets.QWidget):
         designer_kwargs = getattr(
             widget_cls, "_qt_designer_", None
         ) or {}
         return qtplugin_factory(widget_cls, **designer_kwargs)
 
     raise ValueError(
-        f"Expected a PyDMDesignerPlugin or a PyDMWidget subclass, "
+        f"Expected a PyDMDesignerPlugin or a QWidget subclass, "
         f"got a {type(widget_cls).__name__}"
     )
 

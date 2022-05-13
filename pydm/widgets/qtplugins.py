@@ -5,12 +5,12 @@ from ..utilities.iconfont import IconFont
 from .archiver_time_plot import PyDMArchiverTimePlot
 from .byte import PyDMByteIndicator
 from .checkbox import PyDMCheckbox
-from .datetime import (PyDMDateTimeEdit, PyDMDateTimeLabel)
-from .drawing import (PyDMDrawingLine, PyDMDrawingRectangle,
-                      PyDMDrawingTriangle,
-                      PyDMDrawingEllipse, PyDMDrawingCircle, PyDMDrawingArc,
-                      PyDMDrawingPie, PyDMDrawingChord, PyDMDrawingImage,
-                      PyDMDrawingPolygon, PyDMDrawingPolyline, PyDMDrawingIrregularPolygon)
+from .datetime import PyDMDateTimeEdit, PyDMDateTimeLabel
+from .drawing import (PyDMDrawingArc, PyDMDrawingChord, PyDMDrawingCircle,
+                      PyDMDrawingEllipse, PyDMDrawingImage,
+                      PyDMDrawingIrregularPolygon, PyDMDrawingLine,
+                      PyDMDrawingPie, PyDMDrawingPolygon, PyDMDrawingPolyline,
+                      PyDMDrawingRectangle, PyDMDrawingTriangle)
 from .embedded_display import PyDMEmbeddedDisplay
 from .enum_button import PyDMEnumButton
 from .enum_combo_box import PyDMEnumComboBox
@@ -263,4 +263,5 @@ PyDMTerminatorPlugin = qtplugin_factory(PyDMTerminator,
                                         extensions=BASE_EXTENSIONS)
 
 
+# Add in designer widget plugins from other classes via entrypoints:
 globals().update(**get_widgets_from_entrypoints())
