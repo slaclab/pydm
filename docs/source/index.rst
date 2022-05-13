@@ -36,6 +36,7 @@ as well as a straightforward python framework to build complex applications.
    application.rst
    channel.rst
    utilities/index.rst
+   performance.rst
 
 .. toctree::
    :maxdepth: 1
