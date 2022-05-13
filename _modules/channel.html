@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>channel &mdash; PyDM v1.15.1+101.gf4cf0516 documentation</title>
+  <title>channel &mdash; PyDM v1.15.1+108.g25ad437e documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+101.gf4cf0516
+                v1.15.1+108.g25ad437e
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -176,6 +176,18 @@
 <span class="sd">    prec_slot : Slot, optional</span>
 <span class="sd">        A function to be run when the precision value changes</span>
 
+<span class="sd">    upper_alarm_limit_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the upper alarm limit changes</span>
+
+<span class="sd">    lower_alarm_limit_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the lower alarm limit changes</span>
+
+<span class="sd">    upper_warning_limit_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the upper warning limit changes</span>
+
+<span class="sd">    lower_warning_limit_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the lower warning limit changes</span>
+
 <span class="sd">    value_signal : Signal, optional</span>
 <span class="sd">        Attach a signal here that emits a desired value to be sent</span>
 <span class="sd">        through the plugin</span>
@@ -185,6 +197,8 @@
                  <span class="n">severity_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">write_access_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">enum_strings_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prec_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">upper_ctrl_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lower_ctrl_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">upper_alarm_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lower_alarm_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">upper_warning_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lower_warning_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">value_signal</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_address</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
@@ -199,6 +213,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">upper_ctrl_limit_slot</span> <span class="o">=</span> <span class="n">upper_ctrl_limit_slot</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lower_ctrl_limit_slot</span> <span class="o">=</span> <span class="n">lower_ctrl_limit_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upper_alarm_limit_slot</span> <span class="o">=</span> <span class="n">upper_alarm_limit_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lower_alarm_limit_slot</span> <span class="o">=</span> <span class="n">lower_alarm_limit_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upper_warning_limit_slot</span> <span class="o">=</span> <span class="n">upper_warning_limit_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lower_warning_limit_slot</span> <span class="o">=</span> <span class="n">lower_warning_limit_slot</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span> <span class="o">=</span> <span class="n">value_signal</span>
 
@@ -248,6 +266,10 @@
             <span class="n">prec_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">prec_slot</span>
             <span class="n">upper_ctrl_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_ctrl_limit_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">upper_ctrl_limit_slot</span>
             <span class="n">lower_ctrl_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_ctrl_limit_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">lower_ctrl_limit_slot</span>
+            <span class="n">upper_alarm_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_alarm_limit_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">upper_alarm_limit_slot</span>
+            <span class="n">lower_alarm_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_alarm_limit_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">lower_alarm_limit_slot</span>
+            <span class="n">upper_warning_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_warning_limit_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">upper_warning_limit_slot</span>
+            <span class="n">lower_warning_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_warning_limit_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">lower_warning_limit_slot</span>
             <span class="n">write_access_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_access_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">write_access_slot</span>
 
             <span class="n">value_signal_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">value_signal</span> <span class="ow">is</span> <span class="kc">None</span>
@@ -263,6 +285,10 @@
                     <span class="n">prec_slot_matched</span> <span class="ow">and</span>
                     <span class="n">upper_ctrl_slot_matched</span> <span class="ow">and</span>
                     <span class="n">lower_ctrl_slot_matched</span> <span class="ow">and</span>
+                    <span class="n">upper_alarm_slot_matched</span> <span class="ow">and</span>
+                    <span class="n">lower_alarm_slot_matched</span> <span class="ow">and</span>
+                    <span class="n">upper_warning_slot_matched</span> <span class="ow">and</span>
+                    <span class="n">lower_warning_slot_matched</span> <span class="ow">and</span>
                     <span class="n">write_access_slot_matched</span> <span class="ow">and</span>
                     <span class="n">value_signal_matched</span><span class="p">)</span>
 

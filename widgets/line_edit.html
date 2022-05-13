@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMLineEdit &mdash; PyDM v1.15.1+101.gf4cf0516 documentation</title>
+  <title>PyDMLineEdit &mdash; PyDM v1.15.1+108.g25ad437e documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+101.gf4cf0516
+                v1.15.1+108.g25ad437e
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -598,6 +598,20 @@ This slot sends the severity value to the
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_alarm_severity</strong> (<em>int</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit.alarm_limit_changed">
+<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.base.AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<dd><p>Callback invoked when the channel receives new alarm limit values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which</strong> (<em>AlarmLimit</em>) – Which alarm limit was changed. “HIHI”, “HIGH”, “LOW”, “LOLO”</p></li>
+<li><p><strong>new_limit</strong> (<em>float</em>) – New value for the alarm limit</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -1624,6 +1638,28 @@ This slot sends the new limit value to the
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit.lower_alarm_limit_changed">
+<span class="sig-name descname"><span class="pre">lower_alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.lower_alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<dd><p>PyQT slot for changes to the LOLO alarm limit of a PV</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – The new value for the LOLO limit</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit.lower_warning_limit_changed">
+<span class="sig-name descname"><span class="pre">lower_warning_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.lower_warning_limit_changed" title="Permalink to this definition"></a></dt>
+<dd><p>PyQT slot for changes to the LOW alarm limit of a PV</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – The new value for the LOW limit</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2876,6 +2912,28 @@ This slot sends the new limit value to the
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit.upper_alarm_limit_changed">
+<span class="sig-name descname"><span class="pre">upper_alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.upper_alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<dd><p>PyQT slot for changes to the HIHI alarm limit of a PV</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – The new value for the HIHI limit</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit.upper_warning_limit_changed">
+<span class="sig-name descname"><span class="pre">upper_warning_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.upper_warning_limit_changed" title="Permalink to this definition"></a></dt>
+<dd><p>PyQT slot for changes to the HIGH alarm limit of a PV</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – The new value for the HIGH limit</p>
 </dd>
 </dl>
 </dd></dl>
