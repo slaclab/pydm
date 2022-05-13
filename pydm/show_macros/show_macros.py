@@ -2,9 +2,6 @@ import json
 from qtpy.QtWidgets import QWidget, QPlainTextEdit, QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QApplication, QLabel
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QFont
-#from qtpy.QtGui
-
-#clipboard = QGuiApplication.clipboard()
 
 class MacroWindow(QWidget):
     """
