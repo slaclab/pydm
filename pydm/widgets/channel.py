@@ -71,6 +71,18 @@ class PyDMChannel(object):
     prec_slot : Slot, optional
         A function to be run when the precision value changes
 
+    upper_alarm_limit_slot : Slot, optional
+        A function to be run when the upper alarm limit changes
+
+    lower_alarm_limit_slot : Slot, optional
+        A function to be run when the lower alarm limit changes
+
+    upper_warning_limit_slot : Slot, optional
+        A function to be run when the upper warning limit changes
+
+    lower_warning_limit_slot : Slot, optional
+        A function to be run when the lower warning limit changes
+
     value_signal : Signal, optional
         Attach a signal here that emits a desired value to be sent
         through the plugin
@@ -80,6 +92,8 @@ class PyDMChannel(object):
                  severity_slot=None, write_access_slot=None,
                  enum_strings_slot=None, unit_slot=None, prec_slot=None,
                  upper_ctrl_limit_slot=None, lower_ctrl_limit_slot=None,
+                 upper_alarm_limit_slot=None, lower_alarm_limit_slot=None,
+                 upper_warning_limit_slot=None, lower_warning_limit_slot=None,
                  value_signal=None):
         self._address = None
         self.address = address
@@ -94,6 +108,10 @@ class PyDMChannel(object):
 
         self.upper_ctrl_limit_slot = upper_ctrl_limit_slot
         self.lower_ctrl_limit_slot = lower_ctrl_limit_slot
+        self.upper_alarm_limit_slot = upper_alarm_limit_slot
+        self.lower_alarm_limit_slot = lower_alarm_limit_slot
+        self.upper_warning_limit_slot = upper_warning_limit_slot
+        self.lower_warning_limit_slot = lower_warning_limit_slot
 
         self.value_signal = value_signal
 
@@ -143,6 +161,10 @@ class PyDMChannel(object):
             prec_slot_matched = self.prec_slot == other.prec_slot
             upper_ctrl_slot_matched = self.upper_ctrl_limit_slot == other.upper_ctrl_limit_slot
             lower_ctrl_slot_matched = self.lower_ctrl_limit_slot == other.lower_ctrl_limit_slot
+            upper_alarm_slot_matched = self.upper_alarm_limit_slot == other.upper_alarm_limit_slot
+            lower_alarm_slot_matched = self.lower_alarm_limit_slot == other.lower_alarm_limit_slot
+            upper_warning_slot_matched = self.upper_warning_limit_slot == other.upper_warning_limit_slot
+            lower_warning_slot_matched = self.lower_warning_limit_slot == other.lower_warning_limit_slot
             write_access_slot_matched = self.write_access_slot == other.write_access_slot
 
             value_signal_matched = self.value_signal is None and other.value_signal is None
@@ -158,6 +180,10 @@ class PyDMChannel(object):
                     prec_slot_matched and
                     upper_ctrl_slot_matched and
                     lower_ctrl_slot_matched and
+                    upper_alarm_slot_matched and
+                    lower_alarm_slot_matched and
+                    upper_warning_slot_matched and
+                    lower_warning_slot_matched and
                     write_access_slot_matched and
                     value_signal_matched)
 

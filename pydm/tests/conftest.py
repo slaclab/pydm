@@ -43,6 +43,10 @@ class ConnectionSignals(QObject):
     prec_signal = Signal(int)
     upper_ctrl_limit_signal = Signal([float])
     lower_ctrl_limit_signal = Signal([float])
+    upper_alarm_limit_signal = Signal([float])
+    lower_alarm_limit_signal = Signal([float])
+    upper_warning_limit_signal = Signal([float])
+    lower_warning_limit_signal = Signal([float])
 
     def __init__(self):
         super(ConnectionSignals, self).__init__()
