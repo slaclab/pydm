@@ -57,3 +57,8 @@ PyDMDrawing Widgets
    :inherited-members:
    :show-inheritance:
 
+.. autoclass:: pydm.widgets.drawing.PyDMDrawingIrregularPolygon
+   :members:
+   :inherited-members:
+   :show-inheritance:
+
