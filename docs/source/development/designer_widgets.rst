@@ -83,7 +83,7 @@ The class may specify additional settings by way of this mechanism:
 
 .. code:: python
 
-    class MyWidgetDesigner(QtWidgets.QWidget):
+    class MyWidgetClass(QtWidgets.QWidget):
         """This is your custom widget."""
         # Add this to customize where/how the widget shows up in the designer:
         _qt_designer_ = {
