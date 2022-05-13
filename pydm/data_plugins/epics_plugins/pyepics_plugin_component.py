@@ -33,9 +33,6 @@ class Connection(PyDMConnection):
         self.pv = epics.PV(pv, connection_callback=self.send_connection_state,
                            form='ctrl', auto_monitor=epics.dbr.DBE_VALUE|epics.dbr.DBE_ALARM|epics.dbr.DBE_PROPERTY,
                            access_callback=self.send_access_state)
-        thread = CAThread(target=self.setup_callbacks, args=(channel,))
-        thread.start()
-
         self._value = None
         self._severity = None
         self._precision = None
@@ -47,6 +44,9 @@ class Connection(PyDMConnection):
         self._lower_alarm_limit = None
         self._upper_warning_limit = None
         self._lower_warning_limit = None
+
+        thread = CAThread(target=self.setup_callbacks, args=(channel,))
+        thread.start()
 
     def setup_callbacks(self, channel):
         self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
