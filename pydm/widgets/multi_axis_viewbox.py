@@ -8,11 +8,6 @@ class MultiAxisViewBox(ViewBox):
     PyDM's use cases. Each unique axis will be assigned its own MultiAxisViewBox for managing its
     range and associated curves. Any events handled by the any view box will be propagated through
     to all views in the stack to ensure that the plot remains consistent with user input.
-
-    Parameters
-    ----------
-    parent: QGraphicsWidget, optional
-        The parent widget for this plot
     """
 
     # These signals will be emitted by the view when it handles these events, and will be connected
@@ -21,10 +16,6 @@ class MultiAxisViewBox(ViewBox):
     sigMouseDraggedDone = Signal()
     sigMouseWheelZoomed = Signal(object, object, object)
     sigHistoryChanged = Signal(object)
-
-    def __init__(self, parent=None):
-        GraphicsWidget.__init__(self, parent)
-        super(MultiAxisViewBox, self).__init__(parent=parent)
 
     def wheelEvent(self, ev, axis=None, fromSignal=False):
         """
