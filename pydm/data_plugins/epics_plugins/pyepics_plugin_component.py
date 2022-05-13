@@ -1,4 +1,5 @@
 import epics
+from epics.ca import CAThread
 import logging
 import numpy as np
 from pydm.data_plugins import is_read_only
@@ -32,8 +33,8 @@ class Connection(PyDMConnection):
         self.pv = epics.PV(pv, connection_callback=self.send_connection_state,
                            form='ctrl', auto_monitor=epics.dbr.DBE_VALUE|epics.dbr.DBE_ALARM|epics.dbr.DBE_PROPERTY,
                            access_callback=self.send_access_state)
-        self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
-        self.add_listener(channel)
+        thread = CAThread(target=self.setup_callbacks, args=(channel,))
+        thread.start()
 
         self._value = None
         self._severity = None
@@ -46,6 +47,10 @@ class Connection(PyDMConnection):
         self._lower_alarm_limit = None
         self._upper_warning_limit = None
         self._lower_warning_limit = None
+
+    def setup_callbacks(self, channel):
+        self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
+        self.add_listener(channel)
 
     def clear_cache(self):
         self._value = None
