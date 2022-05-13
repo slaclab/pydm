@@ -1,10 +1,13 @@
-import epics
-from epics.ca import CAThread
+import atexit
 import logging
+from multiprocessing.pool import ThreadPool
+
+import epics
 import numpy as np
+from epics.ca import use_initial_context
 from pydm.data_plugins import is_read_only
-from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
-from qtpy.QtCore import Slot, Qt
+from pydm.data_plugins.plugin import PyDMConnection, PyDMPlugin
+from qtpy.QtCore import Qt, Slot
 from qtpy.QtWidgets import QApplication
 
 try:
@@ -23,6 +26,10 @@ int_types = set((epics.dbr.INT, epics.dbr.CTRL_INT, epics.dbr.TIME_INT,
 
 float_types = set((epics.dbr.CTRL_FLOAT, epics.dbr.FLOAT, epics.dbr.TIME_FLOAT,
                    epics.dbr.CTRL_DOUBLE, epics.dbr.DOUBLE, epics.dbr.TIME_DOUBLE))
+
+
+thread_pool = ThreadPool(4)
+atexit.register(thread_pool.terminate)
 
 
 class Connection(PyDMConnection):
@@ -45,10 +52,10 @@ class Connection(PyDMConnection):
         self._upper_warning_limit = None
         self._lower_warning_limit = None
 
-        thread = CAThread(target=self.setup_callbacks, args=(channel,))
-        thread.start()
+        thread_pool.apply_async(self.setup_callbacks, args=(channel,))
 
     def setup_callbacks(self, channel):
+        use_initial_context()
         self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
         self.add_listener(channel)
 
