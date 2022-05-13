@@ -11,7 +11,7 @@ from qtpy.QtGui import QColor, QMouseEvent
 from ..conftest import ConnectionSignals
 from ...utilities import is_pydm_app
 from ... import data_plugins
-from ...widgets.base import is_channel_valid, PyDMWidget
+from ...widgets.base import AlarmLimit, is_channel_valid, PyDMWidget
 from ...widgets.label import PyDMLabel
 from ...widgets.line_edit import PyDMLineEdit
 from ...widgets.channel import PyDMChannel
@@ -294,10 +294,10 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
 
 
 @pytest.mark.parametrize("which_limit, new_limit", [
-    ("HIHI", 100.10),
-    ("HIGH", 90),
-    ("LOW", 20.5),
-    ("LOLO", 7)
+    (AlarmLimit.HIHI, 100.10),
+    (AlarmLimit.HIGH, 90),
+    (AlarmLimit.LOW, 20.5),
+    (AlarmLimit.LOLO, 7)
 ])
 def test_alarm_limits_changed(qtbot, signals: ConnectionSignals, which_limit: str, new_limit: float):
     """ Ensure that changes to the alarm limits of a PV get sent to the right place """
@@ -309,16 +309,16 @@ def test_alarm_limits_changed(qtbot, signals: ConnectionSignals, which_limit: st
     signals.upper_warning_limit_signal.connect(pydm_label.upper_warning_limit_changed)
     signals.lower_warning_limit_signal.connect(pydm_label.lower_warning_limit_changed)
 
-    if which_limit == "HIHI":
+    if which_limit is AlarmLimit.HIHI:
         signals.upper_alarm_limit_signal.emit(new_limit)
         assert pydm_label.upper_alarm_limit == new_limit
-    elif which_limit == "HIGH":
+    elif which_limit is AlarmLimit.HIGH:
         signals.upper_warning_limit_signal.emit(new_limit)
         assert pydm_label.upper_warning_limit == new_limit
-    elif which_limit == "LOW":
+    elif which_limit is AlarmLimit.LOW:
         signals.lower_warning_limit_signal.emit(new_limit)
         assert pydm_label.lower_warning_limit == new_limit
-    elif which_limit == "LOLO":
+    elif which_limit is AlarmLimit.LOLO:
         signals.lower_alarm_limit_signal.emit(new_limit)
         assert pydm_label.lower_alarm_limit == new_limit
 
