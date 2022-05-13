@@ -1,8 +1,12 @@
 import os
 
-from pydm.data_plugins import (initialize_plugins_if_needed, plugin_modules,
-                               load_plugins_from_path, plugin_for_address)
+import entrypoints
+
 from pydm import config
+from pydm.data_plugins import (PyDMPlugin, initialize_plugins_if_needed,
+                               load_plugins_from_entrypoints,
+                               load_plugins_from_path, plugin_for_address,
+                               plugin_modules)
 
 
 def test_data_plugin_add(qapp, test_plugin):
@@ -18,11 +22,14 @@ def test_plugin_directory_loading(qapp):
     with open(os.path.join(cur_dir, 'plugin_foo.py'), 'w+') as handle:
         handle.write(fake_file)
         handle.flush()
-    # Load plugins
-    load_plugins_from_path([cur_dir], 'foo.py')
-    assert 'tst1' in plugin_modules
-    assert 'tst2' in plugin_modules
-    os.remove(os.path.join(cur_dir, 'plugin_foo.py'))
+
+    try:
+        # Load plugins
+        load_plugins_from_path([cur_dir], 'foo.py')
+        assert 'tst1' in plugin_modules
+        assert 'tst2' in plugin_modules
+    finally:
+        os.remove(os.path.join(cur_dir, 'plugin_foo.py'))
 
 
 def test_plugin_for_address(test_plugin):
@@ -47,3 +54,23 @@ class TestPlugin1(PyDMPlugin):
 class TestPlugin2(PyDMPlugin):
     protocol = 'tst2'
 """
+
+
+def test_entrypoint_import(monkeypatch):
+    class MyTestPlugin(PyDMPlugin):
+        protocol = "__test_suite_protocol__"
+
+    class Entrypoint:
+        name = "MyTestPlugin"
+
+        def load(self):
+            return MyTestPlugin
+
+    def get_group_all(key):
+        yield Entrypoint()
+
+    monkeypatch.setattr(entrypoints, "get_group_all", get_group_all)
+    loaded = load_plugins_from_entrypoints()
+
+    assert "__test_suite_protocol__" in loaded
+    assert isinstance(loaded["__test_suite_protocol__"], MyTestPlugin)
