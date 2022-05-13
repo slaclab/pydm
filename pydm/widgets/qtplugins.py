@@ -45,6 +45,7 @@ from .scatterplot import PyDMScatterPlot
 from .template_repeater import PyDMTemplateRepeater
 from .terminator import PyDMTerminator
 
+from ..layouts.absolute_geometry_layout import AbsoluteGeometryLayout
 from ..utilities.iconfont import IconFont
 
 logger = logging.getLogger(__name__)
@@ -261,3 +262,10 @@ PyDMTemplateRepeaterPlugin = qtplugin_factory(PyDMTemplateRepeater,
 PyDMTerminatorPlugin = qtplugin_factory(PyDMTerminator,
                                         group=WidgetCategory.MISC,
                                         extensions=BASE_EXTENSIONS)
+
+# ------ layouts (may be replaced by a custom widget that uses this layout)
+
+AbsoluteGeometryLayoutPlugin = qtplugin_factory(AbsoluteGeometryLayout,
+                                                group='PyDM Layouts',
+                                                is_container=True,
+                                                extensions=BASE_EXTENSIONS)
