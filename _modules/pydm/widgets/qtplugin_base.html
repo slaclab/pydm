@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pydm.widgets.qtplugin_base &mdash; PyDM v1.15.1+118.g67905dba documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PyDM
+          </a>
+              <div class="version">
+                v1.15.1+118.g67905dba
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../stylesheets.html">Customizing the Look and Feel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Plugins</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_plugins/local_plugin.html">Local Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_plugins/calc_plugin.html">Calc Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_plugins/external_plugins.html">External Data Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/external_tools.html">External Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/designer_widgets.html">Designer Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyDM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pydm.widgets.qtplugin_base</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pydm.widgets.qtplugin_base</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Module to define a parent qtdesigner plugin class.</span>
+
+<span class="sd">Please continue to name your qtdesigner plugin modules using the convention</span>
+<span class="sd">modulename.py          &lt;--- defines the widget</span>
+<span class="sd">modulename_qtplugin.py &lt;--- imports this module + the widget</span>
+
+<span class="sd">However, a majority of the builtin plugins are defined in qtplugins.py</span>
+<span class="sd">adjacent to this module.</span>
+
+<span class="sd">NOTE: PyDMDesignerPlugin is a valid plugin, so designer will try to pick it up</span>
+<span class="sd">      and instantiate it if you import it into another module&#39;s namespace. You</span>
+<span class="sd">      will need to avoid having it present in the global namespace of any</span>
+<span class="sd">      module that defines a qtplugin.</span>
+
+<span class="sd">If you do not heed this warning, you will get a one-line traceback:</span>
+<span class="sd">TypeError: __init__() takes exactly 3 arguments (1 given)</span>
+<span class="sd">for each PyDMDesignerPlugin that Qt Designer tries to use. This will not</span>
+<span class="sd">affect any of your widgets, but it will be annoying.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span>
+
+<span class="kn">import</span> <span class="nn">entrypoints</span>
+<span class="kn">from</span> <span class="nn">qtpy</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtDesigner</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">..qtdesigner</span> <span class="kn">import</span> <span class="n">DesignerHooks</span>
+<span class="kn">from</span> <span class="nn">.qtplugin_extensions</span> <span class="kn">import</span> <span class="n">PyDMExtensionFactory</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="WidgetCategory"><a class="viewcode-back" href="../../../development/designer_widgets.html#pydm.widgets.qtplugin_base.WidgetCategory">[docs]</a><span class="k">class</span> <span class="nc">WidgetCategory</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Categories for PyDM Widgets in the Qt Designer.&quot;&quot;&quot;</span>
+    <span class="c1">#: Widgets which can contain other widgets.</span>
+    <span class="n">CONTAINER</span> <span class="o">=</span> <span class="s2">&quot;PyDM Container Widgets&quot;</span>
+    <span class="c1">#: Widgets which contain displays.</span>
+    <span class="n">DISPLAY</span> <span class="o">=</span> <span class="s2">&quot;PyDM Display Widgets&quot;</span>
+    <span class="c1">#: Widgets which take user input.</span>
+    <span class="n">INPUT</span> <span class="o">=</span> <span class="s2">&quot;PyDM Input Widgets&quot;</span>
+    <span class="c1">#: Widgets which plot data.</span>
+    <span class="n">PLOT</span> <span class="o">=</span> <span class="s2">&quot;PyDM Plot Widgets&quot;</span>
+    <span class="c1">#: Widgets which draw things.</span>
+    <span class="n">DRAWING</span> <span class="o">=</span> <span class="s2">&quot;PyDM Drawing Widgets&quot;</span>
+    <span class="c1">#: Widgets which don&#39;t fit into any other category.</span>
+    <span class="n">MISC</span> <span class="o">=</span> <span class="s2">&quot;PyDM Misc. Widgets&quot;</span></div>
+
+
+<div class="viewcode-block" id="qtplugin_factory"><a class="viewcode-back" href="../../../development/designer_widgets.html#pydm.widgets.qtplugin_base.qtplugin_factory">[docs]</a><span class="k">def</span> <span class="nf">qtplugin_factory</span><span class="p">(</span>
+    <span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">],</span>
+    <span class="n">is_container</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;PyDM Widgets&quot;</span><span class="p">,</span>
+    <span class="n">extensions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Type</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">icon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;PyDMDesignerPlugin&quot;</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function to create a generic PyDMDesignerPlugin class.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cls : QWidget subclass</span>
+<span class="sd">        The widget class.</span>
+
+<span class="sd">    is_container : bool, optional</span>
+<span class="sd">        True if this widget can contain other widgets (as in a Frame).</span>
+<span class="sd">        This will also affect whether or not the widget can be used as the</span>
+<span class="sd">        top-level widget of a display. Defaults to False.</span>
+
+<span class="sd">    extensions : list of extension classes, optional</span>
+<span class="sd">        Extension classes to use with the widget.</span>
+
+<span class="sd">    icon : QtGui.QIcon, optional</span>
+<span class="sd">        An icon to use with the widget in the designer.  Consider using</span>
+<span class="sd">        the PyDM-provided fontawesome ``ifont`` here for simplicity.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">Plugin</span><span class="p">(</span><span class="n">PyDMDesignerPlugin</span><span class="p">):</span>
+        <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;PyDMDesigner Plugin for </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">Plugin</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">is_container</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">extensions</span><span class="p">,</span>
+                                         <span class="n">icon</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Plugin</span></div>
+
+
+<span class="k">class</span> <span class="nc">PyDMDesignerPlugin</span><span class="p">(</span><span class="n">QtDesigner</span><span class="o">.</span><span class="n">QPyDesignerCustomWidgetPlugin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parent class to standardize how pydm plugins are accessed in qt designer.</span>
+<span class="sd">    All functions have default returns that can be overriden as necessary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">],</span>
+        <span class="n">is_container</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;PyDM Widgets&quot;</span><span class="p">,</span>
+        <span class="n">extensions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Type</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">icon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set up the plugin using the class info in cls</span>
+
+<span class="sd">        :param cls: Class of the widget to use</span>
+<span class="sd">        :type cls:  QWidget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">QtDesigner</span><span class="o">.</span><span class="n">QPyDesignerCustomWidgetPlugin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_container</span> <span class="o">=</span> <span class="n">is_container</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cls</span> <span class="o">=</span> <span class="bp">cls</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_group</span> <span class="o">=</span> <span class="n">group</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">icon</span><span class="p">:</span>
+            <span class="n">icon</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;designer_icon&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_icon</span> <span class="o">=</span> <span class="n">icon</span> <span class="ow">or</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extensions</span> <span class="o">=</span> <span class="n">extensions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manager</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Override this function if you need special initialization instructions.</span>
+<span class="sd">        Make sure you don&#39;t neglect to set the self.initialized flag to True</span>
+<span class="sd">        after a successful initialization.</span>
+
+<span class="sd">        :param core: form editor interface to use in the initialization</span>
+<span class="sd">        :type core:  QDesignerFormEditorInterface</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">designer_hooks</span> <span class="o">=</span> <span class="n">DesignerHooks</span><span class="p">()</span>
+        <span class="n">designer_hooks</span><span class="o">.</span><span class="n">form_editor</span> <span class="o">=</span> <span class="n">core</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extensions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extensions</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">manager</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">extensionManager</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="p">:</span>
+                <span class="n">factory</span> <span class="o">=</span> <span class="n">PyDMExtensionFactory</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">registerExtensions</span><span class="p">(</span>
+                    <span class="n">factory</span><span class="p">,</span>
+                    <span class="s1">&#39;org.qt-project.Qt.Designer.TaskMenu&#39;</span><span class="p">)</span>  <span class="c1"># Qt5</span>
+
+    <span class="k">def</span> <span class="nf">isInitialized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return True if initialize function has been called successfully.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span>
+
+    <span class="k">def</span> <span class="nf">createWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Instantiate a widget with the given parent.</span>
+
+<span class="sd">        :param parent: Parent widget of instantiated widget</span>
+<span class="sd">        :type parent:  QWidget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;extensions&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extensions</span><span class="p">)</span>
+            <span class="n">w</span><span class="o">.</span><span class="n">init_for_designer</span><span class="p">()</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">NameError</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">w</span>
+
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the class name of the widget.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls</span><span class="o">.</span><span class="vm">__name__</span>
+
+    <span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a common group name so all PyDM Widgets are together in</span>
+<span class="sd">        Qt Designer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_group</span>
+
+    <span class="k">def</span> <span class="nf">toolTip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A short description to pop up on mouseover. If we leave this as an</span>
+<span class="sd">        empty string, we&#39;ll have no tooltip by default and can override this</span>
+<span class="sd">        on a case-by-case basis.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">whatsThis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A longer description of the widget for Qt Designer. By default, this</span>
+<span class="sd">        is the entire class docstring.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">isContainer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return True if this widget can contain other widgets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_container</span>
+
+    <span class="k">def</span> <span class="nf">icon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a QIcon to represent this widget in Qt Designer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_icon</span><span class="o">.</span><span class="n">pixmap</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">domXml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        XML Description of the widget&#39;s properties.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="s2">&quot;&lt;widget class=</span><span class="se">\&quot;</span><span class="si">{0}</span><span class="se">\&quot;</span><span class="s2"> name=</span><span class="se">\&quot;</span><span class="si">{0}</span><span class="se">\&quot;</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot; &lt;property name=</span><span class="se">\&quot;</span><span class="s2">toolTip</span><span class="se">\&quot;</span><span class="s2"> &gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;  &lt;string&gt;</span><span class="si">{1}</span><span class="s2">&lt;/string&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot; &lt;/property&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;&lt;/widget&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">toolTip</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">includeFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Include the class module for the generated qt code</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls</span><span class="o">.</span><span class="vm">__module__</span>
+
+
+<span class="k">def</span> <span class="nf">create_designer_widget_from_widget</span><span class="p">(</span>
+    <span class="n">widget_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">PyDMDesignerPlugin</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a designable widget class.</span>
+
+<span class="sd">    Accepts either user-provided :class:`PyDMDesignerPlugin` subclasses or</span>
+<span class="sd">    :class:`QWidget` subclasses.</span>
+
+<span class="sd">    In the case of :class:`QWidget` subclasses, designer-specific settings</span>
+<span class="sd">    may be specified on a class attribute.  These arguments should match</span>
+<span class="sd">    what :func:`qtplugin_factory` expects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">widget_cls</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Expected a class, got a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">widget_cls</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">widget_cls</span><span class="p">,</span> <span class="n">PyDMDesignerPlugin</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">widget_cls</span>
+    <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">widget_cls</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+        <span class="n">designer_kwargs</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+            <span class="n">widget_cls</span><span class="p">,</span> <span class="s2">&quot;_qt_designer_&quot;</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="n">qtplugin_factory</span><span class="p">(</span><span class="n">widget_cls</span><span class="p">,</span> <span class="o">**</span><span class="n">designer_kwargs</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Expected a PyDMDesignerPlugin or a QWidget subclass, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;got a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">widget_cls</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_widgets_from_entrypoints</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">ENTRYPOINT_WIDGET</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">[</span><span class="n">PyDMDesignerPlugin</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get all widgets from entrypoint definitions.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    key : str, optional</span>
+<span class="sd">        The entrypoint key.  Defaults to ``pydm.config.ENTRYPOINT_WIDGET``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    widgets : dict</span>
+<span class="sd">        Dictionary of class name to ``PyDMDesignerPlugin`` subclass.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">widgets</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entrypoints</span><span class="o">.</span><span class="n">get_group_all</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found widget from entrypoint: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">plugin_cls</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
+                <span class="s2">&quot;Failed to load </span><span class="si">%s</span><span class="s2"> entry </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">key</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ex</span>
+            <span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">designer_widget</span> <span class="o">=</span> <span class="n">create_designer_widget_from_widget</span><span class="p">(</span>
+                <span class="n">plugin_cls</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Invalid widget class specified in entrypoint &quot;</span>
+                <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">plugin_cls</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">widgets</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">designer_widget</span>
+
+    <span class="k">return</span> <span class="n">widgets</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

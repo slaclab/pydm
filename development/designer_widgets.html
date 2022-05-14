@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Designer Widgets &mdash; PyDM v1.15.1+118.g67905dba documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Recommended Resources" href="resources.html" />
+    <link rel="prev" title="Customizing Properties for Rules" href="../widgets/widget_rules/customizing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyDM
+          </a>
+              <div class="version">
+                v1.15.1+118.g67905dba
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stylesheets.html">Customizing the Look and Feel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Plugins</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/local_plugin.html">Local Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/calc_plugin.html">Calc Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/external_plugins.html">External Data Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="external_tools.html">External Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Designer Widgets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#widgets-in-pydm-itself">Widgets in PyDM itself</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#widgets-in-external-packages">Widgets in external packages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyDM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Designer Widgets</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/development/designer_widgets.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="designer-widgets">
+<h1>Designer Widgets<a class="headerlink" href="#designer-widgets" title="Permalink to this headline"></a></h1>
+<section id="widgets-in-pydm-itself">
+<h2>Widgets in PyDM itself<a class="headerlink" href="#widgets-in-pydm-itself" title="Permalink to this headline"></a></h2>
+<p>If you are developing a new widget for PyDM, please make it compatible with
+Qt designer by editing <code class="docutils literal notranslate"><span class="pre">pydm/widgets/qtplugins.py</span></code>.</p>
+<p>For example, if you create a widget called <code class="docutils literal notranslate"><span class="pre">MyWidget</span></code> and have it in
+<code class="docutils literal notranslate"><span class="pre">pydm.widgets.my_widget</span></code>, you should add the following lines in
+<code class="docutils literal notranslate"><span class="pre">qtplugins.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.my_widget</span> <span class="kn">import</span> <span class="n">MyWidget</span>
+
+<span class="c1"># And further down in the file where the &quot;NOTE&quot; is:</span>
+
+<span class="n">MyWidgetPlugin</span> <span class="o">=</span> <span class="n">qtplugin_factory</span><span class="p">(</span>
+    <span class="n">MyWidget</span><span class="p">,</span>
+    <span class="n">group</span><span class="o">=</span><span class="n">WidgetCategory</span><span class="o">.</span><span class="n">MISC</span><span class="p">,</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="n">BASE_EXTENSIONS</span><span class="p">,</span>
+    <span class="n">icon</span><span class="o">=</span><span class="n">ifont</span><span class="o">.</span><span class="n">icon</span><span class="p">(</span><span class="s2">&quot;calendar-alt&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">group</span></code> parameter may be one of the following attributes from
+<code class="docutils literal notranslate"><span class="pre">WidgetCategory</span></code>.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pydm.widgets.qtplugin_base.WidgetCategory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.qtplugin_base.</span></span><span class="sig-name descname"><span class="pre">WidgetCategory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/qtplugin_base.html#WidgetCategory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.qtplugin_base.WidgetCategory" title="Permalink to this definition"></a></dt>
+<dd><p>Categories for PyDM Widgets in the Qt Designer.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.qtplugin_base.WidgetCategory.CONTAINER">
+<span class="sig-name descname"><span class="pre">CONTAINER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PyDM</span> <span class="pre">Container</span> <span class="pre">Widgets'</span></em><a class="headerlink" href="#pydm.widgets.qtplugin_base.WidgetCategory.CONTAINER" title="Permalink to this definition"></a></dt>
+<dd><p>Widgets which can contain other widgets.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.qtplugin_base.WidgetCategory.DISPLAY">
+<span class="sig-name descname"><span class="pre">DISPLAY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PyDM</span> <span class="pre">Display</span> <span class="pre">Widgets'</span></em><a class="headerlink" href="#pydm.widgets.qtplugin_base.WidgetCategory.DISPLAY" title="Permalink to this definition"></a></dt>
+<dd><p>Widgets which contain displays.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.qtplugin_base.WidgetCategory.DRAWING">
+<span class="sig-name descname"><span class="pre">DRAWING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PyDM</span> <span class="pre">Drawing</span> <span class="pre">Widgets'</span></em><a class="headerlink" href="#pydm.widgets.qtplugin_base.WidgetCategory.DRAWING" title="Permalink to this definition"></a></dt>
+<dd><p>Widgets which draw things.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.qtplugin_base.WidgetCategory.INPUT">
+<span class="sig-name descname"><span class="pre">INPUT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PyDM</span> <span class="pre">Input</span> <span class="pre">Widgets'</span></em><a class="headerlink" href="#pydm.widgets.qtplugin_base.WidgetCategory.INPUT" title="Permalink to this definition"></a></dt>
+<dd><p>Widgets which take user input.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.qtplugin_base.WidgetCategory.MISC">
+<span class="sig-name descname"><span class="pre">MISC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PyDM</span> <span class="pre">Misc.</span> <span class="pre">Widgets'</span></em><a class="headerlink" href="#pydm.widgets.qtplugin_base.WidgetCategory.MISC" title="Permalink to this definition"></a></dt>
+<dd><p>Widgets which don’t fit into any other category.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.qtplugin_base.WidgetCategory.PLOT">
+<span class="sig-name descname"><span class="pre">PLOT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PyDM</span> <span class="pre">Plot</span> <span class="pre">Widgets'</span></em><a class="headerlink" href="#pydm.widgets.qtplugin_base.WidgetCategory.PLOT" title="Permalink to this definition"></a></dt>
+<dd><p>Widgets which plot data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>For most widgets, <code class="docutils literal notranslate"><span class="pre">extensions</span></code> should remain as the suggested
+<code class="docutils literal notranslate"><span class="pre">BASE_EXTENSIONS</span></code>.  Advanced users who wish to further customize the Qt
+Designer experience will need to poke around in the PyDM internals to figure it
+out.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">icon</span></code> can be customized using the PyDM-vendored fontawesome library.
+The available options can be found in <code class="docutils literal notranslate"><span class="pre">fontawesome-charmap.json</span></code>, and a quick
+Google search should help you find an icon that will fit your scenario.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pydm.widgets.qtplugin_base.qtplugin_factory">
+<span class="sig-prename descclassname"><span class="pre">pydm.widgets.qtplugin_base.</span></span><span class="sig-name descname"><span class="pre">qtplugin_factory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">PyQt5.QtWidgets.QWidget</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_container</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'PyDM</span> <span class="pre">Widgets'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extensions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">PyQt5.QtGui.QIcon</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">pydm.widgets.qtplugin_base.PyDMDesignerPlugin</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/widgets/qtplugin_base.html#qtplugin_factory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.qtplugin_base.qtplugin_factory" title="Permalink to this definition"></a></dt>
+<dd><p>Helper function to create a generic PyDMDesignerPlugin class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cls</strong> (<em>QWidget subclass</em>) – The widget class.</p></li>
+<li><p><strong>is_container</strong> (<em>bool</em><em>, </em><em>optional</em>) – True if this widget can contain other widgets (as in a Frame).
+This will also affect whether or not the widget can be used as the
+top-level widget of a display. Defaults to False.</p></li>
+<li><p><strong>extensions</strong> (<em>list of extension classes</em><em>, </em><em>optional</em>) – Extension classes to use with the widget.</p></li>
+<li><p><strong>icon</strong> (<em>QtGui.QIcon</em><em>, </em><em>optional</em>) – An icon to use with the widget in the designer.  Consider using
+the PyDM-provided fontawesome <code class="docutils literal notranslate"><span class="pre">ifont</span></code> here for simplicity.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="widgets-in-external-packages">
+<h2>Widgets in external packages<a class="headerlink" href="#widgets-in-external-packages" title="Permalink to this headline"></a></h2>
+<p>If you develop a package which has Qt Designer-compatible widgets, you can use
+PyDM’s built-in support for adding widgets to the designer via entrypoints.</p>
+<p>Here is an example <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> that could be used to locate a designable
+widget in your own Python package:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
+
+<span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;my_package&quot;</span><span class="p">,</span>
+    <span class="c1"># ... other settings will go here</span>
+    <span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;gui_scripts&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my_package_gui=my_package.main:main&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;pydm.widget&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;MyWidgetDesigner=my_package.tool_name:MyWidgetClass&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+    <span class="n">install_requires</span><span class="o">=</span><span class="p">[],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This would assume that you have the following:</p>
+<ol class="arabic simple">
+<li><p>A package named “my_package” with <code class="docutils literal notranslate"><span class="pre">my_package/__init__.py</span></code> and
+<code class="docutils literal notranslate"><span class="pre">my_package/widget.py</span></code>.</p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">my_package/widget.py</span></code>, a <code class="docutils literal notranslate"><span class="pre">MyWidgetClass</span></code> that inherits from
+<code class="xref py py-class docutils literal notranslate"><span class="pre">QWidget</span></code>.</p></li>
+</ol>
+<p>After running <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> on the package, it should be readily available
+in the Qt Designer.</p>
+<p>The class may specify additional settings by way of this mechanism:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyWidgetClass</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This is your custom widget.&quot;&quot;&quot;</span>
+    <span class="c1"># Add this to customize where/how the widget shows up in the designer:</span>
+    <span class="n">_qt_designer_</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="s2">&quot;My Widget Category&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;is_container&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;extensions&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;icon&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># QtGui.QIcon(...)</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">_qt_designer_</span></code> dictionary is passed directly to <code class="docutils literal notranslate"><span class="pre">qtplugin_factory</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../widgets/widget_rules/customizing.html" class="btn btn-neutral float-left" title="Customizing Properties for Rules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="resources.html" class="btn btn-neutral float-right" title="Recommended Resources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
