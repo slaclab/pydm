@@ -1,27 +1,16 @@
 import logging
 import os
 
-from .qtplugin_base import qtplugin_factory, WidgetCategory
-from .qtplugin_extensions import (
-    ArchiveTimeCurveEditorExtension,
-    BasicSettingsExtension,
-    RulesExtension,
-    ScatterCurveEditorExtension,
-    SymbolExtension,
-    TimeCurveEditorExtension,
-    WaveformCurveEditorExtension,
-)
-from .tab_bar_qtplugin import TabWidgetPlugin
+from ..utilities.iconfont import IconFont
+from .archiver_time_plot import PyDMArchiverTimePlot
 from .byte import PyDMByteIndicator
-
 from .checkbox import PyDMCheckbox
-from .datetime import (PyDMDateTimeEdit, PyDMDateTimeLabel)
-from .drawing import (PyDMDrawingLine, PyDMDrawingRectangle,
-                      PyDMDrawingTriangle,
-                      PyDMDrawingEllipse, PyDMDrawingCircle, PyDMDrawingArc,
-                      PyDMDrawingPie, PyDMDrawingChord, PyDMDrawingImage,
-                      PyDMDrawingPolygon, PyDMDrawingPolyline, PyDMDrawingIrregularPolygon)
-
+from .datetime import PyDMDateTimeEdit, PyDMDateTimeLabel
+from .drawing import (PyDMDrawingArc, PyDMDrawingChord, PyDMDrawingCircle,
+                      PyDMDrawingEllipse, PyDMDrawingImage,
+                      PyDMDrawingIrregularPolygon, PyDMDrawingLine,
+                      PyDMDrawingPie, PyDMDrawingPolygon, PyDMDrawingPolyline,
+                      PyDMDrawingRectangle, PyDMDrawingTriangle)
 from .embedded_display import PyDMEmbeddedDisplay
 from .enum_button import PyDMEnumButton
 from .enum_combo_box import PyDMEnumComboBox
@@ -31,27 +20,33 @@ from .label import PyDMLabel
 from .line_edit import PyDMLineEdit
 from .logdisplay import PyDMLogDisplay
 from .pushbutton import PyDMPushButton
+from .qtplugin_base import (WidgetCategory, get_widgets_from_entrypoints,
+                            qtplugin_factory)
+from .qtplugin_extensions import (ArchiveTimeCurveEditorExtension,
+                                  BasicSettingsExtension, RulesExtension,
+                                  ScatterCurveEditorExtension, SymbolExtension,
+                                  TimeCurveEditorExtension,
+                                  WaveformCurveEditorExtension)
 from .related_display_button import PyDMRelatedDisplayButton
+from .scale import PyDMScaleIndicator
+from .scatterplot import PyDMScatterPlot
 from .shell_command import PyDMShellCommand
 from .slider import PyDMSlider
 from .spinbox import PyDMSpinbox
 from .symbol import PyDMSymbol
-from .waveformtable import PyDMWaveformTable
-from .scale import PyDMScaleIndicator
-from .timeplot import PyDMTimePlot
-from .archiver_time_plot import PyDMArchiverTimePlot
-from .waveformplot import PyDMWaveformPlot
-from .scatterplot import PyDMScatterPlot
+from .tab_bar_qtplugin import TabWidgetPlugin
 from .template_repeater import PyDMTemplateRepeater
 from .terminator import PyDMTerminator
-
-from ..utilities.iconfont import IconFont
+from .timeplot import PyDMTimePlot
+from .waveformplot import PyDMWaveformPlot
+from .waveformtable import PyDMWaveformTable
 
 logger = logging.getLogger(__name__)
 
 ifont = IconFont()
 
 BASE_EXTENSIONS = [BasicSettingsExtension, RulesExtension]
+
 
 # Label plugin
 PyDMLabelPlugin = qtplugin_factory(PyDMLabel, group=WidgetCategory.DISPLAY,
@@ -266,3 +261,10 @@ PyDMTemplateRepeaterPlugin = qtplugin_factory(PyDMTemplateRepeater,
 PyDMTerminatorPlugin = qtplugin_factory(PyDMTerminator,
                                         group=WidgetCategory.MISC,
                                         extensions=BASE_EXTENSIONS)
+
+# **********************************************
+# NOTE: Add in new PyDM widgets above this line.
+# **********************************************
+
+# Add in designer widget plugins from other classes via entrypoints:
+globals().update(**get_widgets_from_entrypoints())
