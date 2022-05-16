@@ -29,13 +29,6 @@ float_types = set((epics.dbr.CTRL_FLOAT, epics.dbr.FLOAT, epics.dbr.TIME_FLOAT,
                    epics.dbr.CTRL_DOUBLE, epics.dbr.DOUBLE, epics.dbr.TIME_DOUBLE))
 
 
-thread_pool = ThreadPoolExecutor()
-if sys.version_info >= (3, 9):
-    atexit.register(thread_pool.shutdown, wait=False, cancel_futures=True)
-else:
-    atexit.register(thread_pool.shutdown, wait=False)
-
-
 class Connection(PyDMConnection):
 
     def __init__(self, channel, pv, protocol=None, parent=None):
@@ -56,7 +49,7 @@ class Connection(PyDMConnection):
         self._upper_warning_limit = None
         self._lower_warning_limit = None
 
-        thread_pool.submit(self.setup_callbacks, channel)
+        PyEPICSPlugin.thread_pool.submit(self.setup_callbacks, channel)
 
     def setup_callbacks(self, channel):
         use_initial_context()
@@ -223,3 +216,17 @@ class PyEPICSPlugin(PyDMPlugin):
     # be properly set before it is used.
     protocol = None
     connection_class = Connection
+    thread_pool = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Not the end of the world if this happens twice, but better not to
+        if PyEPICSPlugin.thread_pool is None:
+            thread_pool = ThreadPoolExecutor()
+            if sys.version_info >= (3, 9):
+                atexit.register(thread_pool.shutdown, wait=False, cancel_futures=True)
+            else:
+                atexit.register(thread_pool.shutdown, wait=False)
+            # Class variable for connections to use
+            # This is the easiest way to share state
+            PyEPICSPlugin.thread_pool = thread_pool
