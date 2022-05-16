@@ -1,5 +1,6 @@
 import atexit
 import logging
+import sys
 from concurrent.futures import ThreadPoolExecutor
 
 import epics
@@ -29,7 +30,10 @@ float_types = set((epics.dbr.CTRL_FLOAT, epics.dbr.FLOAT, epics.dbr.TIME_FLOAT,
 
 
 thread_pool = ThreadPoolExecutor()
-atexit.register(thread_pool.shutdown, wait=False, cancel_futures=True)
+if sys.version_info >= (3, 9):
+    atexit.register(thread_pool.shutdown, wait=False, cancel_futures=True)
+else:
+    atexit.register(thread_pool.shutdown, wait=False)
 
 
 class Connection(PyDMConnection):
