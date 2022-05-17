@@ -376,9 +376,6 @@ class PyDMTimePlot(BasePlot,updateMode):
         Will set the bottom axis of this plot to the input axis. If not set, will default
         to either a TimeAxisItem if plot_by_timestamps is true, or a regular AxisItem otherwise
     """
-    #SynchronousMode = 1
-    #AsynchronousMode = 2
-
     OnValueChange = 1
     AtFixedRated = 2
 
