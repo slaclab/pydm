@@ -3,40 +3,40 @@ import numpy as np
 
 from p4p.client.thread import Context, Disconnected
 from p4p.wrapper import Value
-from qtpy.QtCore import Slot, Qt
+from qtpy.QtCore import QObject, Qt
 from pydm.data_plugins import is_read_only
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
+from pydm.widgets.channel import PyDMChannel
 from .pva_codec import decompress
+from typing import Optional
 
 
 logger = logging.getLogger(__name__)
 
 
-class PVAContext(object):
-    """ Singleton class responsible for holding the p4p pva context. """
-    __instance = None
-
-    def __init__(self):
-        if self.__initialized:
-            return
-        self.__initialized = True
-        self.context = Context('pva', nt=False)
-
-    def __new__(cls, *args, **kwargs):
-        if cls.__instance is None:
-            cls.__instance = object.__new__(PVAContext)
-            cls.__instance.__initialized = False
-        return cls.__instance
-
-
 class Connection(PyDMConnection):
 
-    def __init__(self, channel, address, protocol=None, parent=None):
+    def __init__(self, channel: PyDMChannel, address: str,
+                 protocol: Optional[str] = None, parent: Optional[QObject] = None):
+        """
+        Manages the connection to a channel using the P4P library. A given channel can have multiple listeners.
+
+        Parameters
+        ----------
+        channel : PyDMChannel
+            The channel that this connection is connected to.
+        address : str
+             The address of the PV.
+        protocol : str, optional
+             The protocol appended to the address.
+        parent : QObject, optional
+             The parent object of this connection.
+        """
         super().__init__(channel, address, protocol, parent)
         self._connected = True
-        self.monitor = PVAContext().context.monitor(name=address,
-                                                    cb=self.send_new_value,
-                                                    notify_disconnect=True)
+        self.monitor = P4PPlugin.context.monitor(name=address,
+                                                 cb=self.send_new_value,
+                                                 notify_disconnect=True)
         self.add_listener(channel)
         self._value = None
         self._severity = None
@@ -46,7 +46,8 @@ class Connection(PyDMConnection):
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
 
-    def clear_cache(self):
+    def clear_cache(self) -> None:
+        """ Clear out all the stored values of this connection. """
         self._value = None
         self._severity = None
         self._precision = None
@@ -55,8 +56,8 @@ class Connection(PyDMConnection):
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
 
-    def send_new_value(self, value: Value):
-        """ Callback invoked whenever a new value is received by our monitor """
+    def send_new_value(self, value: Value) -> None:
+        """ Callback invoked whenever a new value is received by our monitor. Emits signals based on values changed. """
         if isinstance(value, Disconnected):
             self._connected = False
             self.clear_cache()
@@ -69,13 +70,13 @@ class Connection(PyDMConnection):
             self.write_access_signal.emit(True)  # TODO: This should probably come from somewhere?
 
             for changed_value in value.changedSet():
-                if changed_value == 'value' and not np.array_equal(value.value, self._value):
+                if changed_value == 'value':
                     new_value = value.value
                     if new_value is not None and not np.array_equal(new_value, self._value):
                         self._value = new_value
                         if isinstance(new_value, np.ndarray):
                             if 'NTNDArray' in value.getID():
-                                new_value = decompress(value)  # Performs decompression if the codec field is set
+                                new_value = decompress(value)
                             self.new_value_signal[np.ndarray].emit(new_value)
                         elif isinstance(new_value, float):
                             self.new_value_signal[float].emit(new_value)
@@ -91,9 +92,6 @@ class Connection(PyDMConnection):
                 elif changed_value == 'display.precision' and value.display.precision != self._precision:
                     self._precision = value.display.precision
                     self.prec_signal.emit(value.display.precision)
-#                elif changed_value == 'display.form.choices' and value.display.form.choices != self._enum_strs: # TODO: Figure out where enum strings are (it is not this)
-#                    self._enum_strs = value.display.form.choices
-#                    self.enum_strings_signal.emit(value.display.form.choices)
                 elif changed_value == 'display.units' and value.display.units != self._units:
                     self._units = value.display.units
                     self.unit_signal.emit(value.display.units)
@@ -105,16 +103,25 @@ class Connection(PyDMConnection):
                     self.upper_ctrl_limit_signal.emit(value.control.limitHigh)
 
     def put_value(self, value):
+        """ Write a value to the PV """
         if is_read_only():
             return
 
         # TODO: How to check write access?
         try:
-            PVAContext().context.put(self.monitor.name, value)
+            P4PPlugin.context.put(self.monitor.name, value)
         except Exception as e:
             logger.exception(f"Unable to put value: {value} to channel: {self.monitor.name}  Exception: {e}")
 
-    def add_listener(self, channel):
+    def add_listener(self, channel: PyDMChannel):
+        """
+        Adds a listener to this connection, connecting the appropriate signals/slots to the input PyDMChannel.
+
+        Parameters
+        ----------
+        channel : PyDMChannel
+            The channel that will be listening to any changes from this connection
+        """
         super().add_listener(channel)
 
         if channel.value_signal is not None:
@@ -136,6 +143,7 @@ class Connection(PyDMConnection):
                 pass
 
     def close(self):
+        """ Closes out this connection. """
         self.monitor.close()
         super().close()
 
@@ -146,3 +154,11 @@ class P4PPlugin(PyDMPlugin):
     # be properly set before it is used.
     protocol = None
     connection_class = Connection
+    context = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if P4PPlugin.context is None:
+            # Create the p4p pva context for all connections to use
+            context = Context('pva', nt=False)  # Disable automatic value unwrapping
+            P4PPlugin.context = context

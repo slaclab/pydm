@@ -1,7 +1,8 @@
+import io
 import logging
 import numpy as np
 from functools import reduce
-import io
+from p4p.wrapper import Value
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +14,16 @@ ScalarType = (np.bool, np.int8, np.int16, np.int32, np.long, np.uint8,
 codecs = {}
 
 
-def decompress(structure):
+def decompress(structure: Value):
+    """
+    Performs decompression on the input value if the codec field has been set and is valid. If the data is being sent
+    uncompressed already, will just reshape the data using the sizes specified in the dimension field.
+
+    Parameters
+    ----------
+    structure : Value
+        The value we have received from P4P
+    """
     if structure is None:
         return
 
@@ -35,7 +45,7 @@ def decompress(structure):
     uncompressed_size = structure.get('uncompressedSize')
 
     if not codec_name:
-        return none_decompress(data, shape, dtype, uncompressed_size)
+        return none_decompress(data, shape, dtype)
 
     try:
         return codecs[codec_name](data, shape, dtype, uncompressed_size)
@@ -44,25 +54,30 @@ def decompress(structure):
         return data
 
 
-def none_decompress(data, shape, dtype, uncompressed_size):
+def none_decompress(data, shape, dtype):
+    """ Perform a reshape based on the dimensions that were set """
     return np.frombuffer(data, dtype=dtype).reshape(shape)
 
 
 def jpeg_decompress(data, shape, dtype, uncompressed_size):
+    """ Decompress using Pillow's jpeg decompression """
     return np.array(Image.open(io.BytesIO(data.tobytes())))
 
 
 def blosc_decompress(data, shape, dtype, uncompressed_size):
+    """ Decompress using blosc """
     dec_data = blosc.decompress(data)
     return np.frombuffer(dec_data, dtype=dtype).reshape(shape)
 
 
 def lz4_decompress(data, shape, dtype, uncompressed_size):
+    """ Decompress using lz4 """
     dec_data = block.decompress(data, uncompressed_size)
     return np.frombuffer(dec_data, dtype=dtype).reshape(shape)
 
 
 def bslz4_decompress(data, shape, dtype, uncompressed_size):
+    """ Decompress using bslz4 """
     nelems = reduce((lambda x, y: x * y), shape)
     dec_data = bitshuffle.decompress_lz4(data, (nelems,), np.dtype(dtype))
     return dec_data.reshape(shape)

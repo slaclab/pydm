@@ -39,7 +39,7 @@ class ImageUpdateThread(QThread):
         if not needs_redraw:
             logging.debug("ImageUpdateThread - needs redraw is False. Aborting.")
             return
-        if image_dimensions == 1 and width >= 1:  # TODO: Probably something smarter for EPICS 3 PVs
+        if image_dimensions == 1:
             if width < 1:
                 # We don't have a width for this image yet, so we can't draw it
                 logging.debug(
