@@ -48,9 +48,6 @@
    <property name="toolTip">
     <string/>
    </property>
-   <property name="imageWidth" stdset="0">
-    <number>512</number>
-   </property>
    <property name="imageChannel" stdset="0">
     <string>pva://PyDM:PVA:Image</string>
    </property>
