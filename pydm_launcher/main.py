@@ -1,6 +1,8 @@
-import sys
 import argparse
+import cProfile
 import logging
+import pstats
+import sys
 
 
 def main():
@@ -43,6 +45,11 @@ def main():
         help='Enable performance monitoring,' +
              ' and print CPU usage to the terminal.'
         )
+    parser.add_argument(
+        '--profile',
+        action='store_true',
+        help='Enable cProfile function profiling, printing on exit.'
+    )
     parser.add_argument(
         '--hide-nav-bar',
         action='store_true',
@@ -105,6 +112,10 @@ def main():
         )
 
     pydm_args = parser.parse_args()
+    if pydm_args.profile:
+        profile = cProfile.Profile()
+        profile.enable()
+
     macros = None
     if pydm_args.macro is not None:
         macros = parse_macro_string(pydm_args.macro)
@@ -129,7 +140,17 @@ def main():
     pydm.utilities.shortcuts.install_connection_inspector(
         parent=app.main_window)
 
-    sys.exit(app.exec_())
+    exit_code = app.exec_()
+
+    if pydm_args.profile:
+        profile.disable()
+        stats = pstats.Stats(
+            profile,
+            stream=sys.stdout,
+        ).sort_stats(pstats.SortKey.CUMULATIVE)
+        stats.print_stats()
+
+    sys.exit(exit_code)
 
 
 if __name__ == "__main__":
