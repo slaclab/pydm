@@ -3,13 +3,12 @@ import numpy as np
 
 from p4p.client.thread import Context, Disconnected
 from p4p.wrapper import Value
-from qtpy.QtCore import QObject, Qt
+from .pva_codec import decompress
 from pydm.data_plugins import is_read_only
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from pydm.widgets.channel import PyDMChannel
-from .pva_codec import decompress
+from qtpy.QtCore import QObject, Qt
 from typing import Optional
-
 
 logger = logging.getLogger(__name__)
 
@@ -38,23 +37,29 @@ class Connection(PyDMConnection):
                                                  cb=self.send_new_value,
                                                  notify_disconnect=True)
         self.add_listener(channel)
-        self._value = None
         self._severity = None
         self._precision = None
         self._enum_strs = None
         self._units = None
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
+        self._upper_alarm_limit = None
+        self._lower_alarm_limit = None
+        self._upper_warning_limit = None
+        self._lower_warning_limit = None
 
     def clear_cache(self) -> None:
         """ Clear out all the stored values of this connection. """
-        self._value = None
         self._severity = None
         self._precision = None
         self._enum_strs = None
         self._units = None
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
+        self._upper_alarm_limit = None
+        self._lower_alarm_limit = None
+        self._upper_warning_limit = None
+        self._lower_warning_limit = None
 
     def send_new_value(self, value: Value) -> None:
         """ Callback invoked whenever a new value is received by our monitor. Emits signals based on values changed. """
@@ -66,14 +71,13 @@ class Connection(PyDMConnection):
             if not self._connected:
                 self._connected = True
                 self.connection_state_signal.emit(True)
-
-            self.write_access_signal.emit(True)  # TODO: This should probably come from somewhere?
+                # Note that there is no way to get the actual write access value from p4p, so defaulting to True for now
+                self.write_access_signal.emit(True)
 
             for changed_value in value.changedSet():
                 if changed_value == 'value':
                     new_value = value.value
-                    if new_value is not None and not np.array_equal(new_value, self._value):
-                        self._value = new_value
+                    if new_value is not None:
                         if isinstance(new_value, np.ndarray):
                             if 'NTNDArray' in value.getID():
                                 new_value = decompress(value)
@@ -86,6 +90,8 @@ class Connection(PyDMConnection):
                             self.new_value_signal[str].emit(new_value)
                         else:
                             raise ValueError(f'No matching signal for value: {value} with type: {type(value)}')
+                # Sometimes unchanged control variables appear to be returned with value changes, so checking against
+                # stored values to avoid sending misleading signals. Will revisit on data plugin changes.
                 elif changed_value == 'alarm.severity' and value.alarm.severity != self._severity:
                     self._severity = value.alarm.severity
                     self.new_severity_signal.emit(value.alarm.severity)
@@ -101,13 +107,28 @@ class Connection(PyDMConnection):
                 elif changed_value == 'control.limitHigh' and value.control.limitHigh != self._upper_ctrl_limit:
                     self._upper_ctrl_limit = value.control.limitHigh
                     self.upper_ctrl_limit_signal.emit(value.control.limitHigh)
+                elif changed_value == 'valueAlarm.highAlarmLimit' and \
+                        value.valueAlarm.highAlarmLimit != self._upper_alarm_limit:
+                    self._upper_alarm_limit = value.valueAlarm.highAlarmLimit
+                    self.upper_alarm_limit_signal.emit(value.valueAlarm.highAlarmLimit)
+                elif changed_value == 'valueAlarm.lowAlarmLimit' and \
+                        value.valueAlarm.lowAlarmLimit != self._lower_alarm_limit:
+                    self._lower_alarm_limit = value.valueAlarm.lowAlarmLimit
+                    self.lower_alarm_limit_signal.emit(value.valueAlarm.lowAlarmLimit)
+                elif changed_value == 'valueAlarm.highWarningLimit' and \
+                        value.valueAlarm.highWarningLimit != self._upper_warning_limit:
+                    self._upper_warning_limit = value.valueAlarm.highWarningLimit
+                    self.upper_warning_limit_signal.emit(value.valueAlarm.highWarningLimit)
+                elif changed_value == 'valueAlarm.lowWarningLimit' and \
+                        value.valueAlarm.lowWarningLimit != self._lower_warning_limit:
+                    self._lower_warning_limit = value.valueAlarm.lowWarningLimit
+                    self.lower_warning_limit_signal.emit(value.valueAlarm.lowWarningLimit)
 
     def put_value(self, value):
         """ Write a value to the PV """
         if is_read_only():
             return
 
-        # TODO: How to check write access?
         try:
             P4PPlugin.context.put(self.monitor.name, value)
         except Exception as e:
