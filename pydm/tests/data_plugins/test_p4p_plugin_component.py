@@ -7,12 +7,18 @@ from pydm.widgets.channel import PyDMChannel
 from pytest import MonkeyPatch
 
 
+class MockContext:
+    """ A do-nothing mock of a p4p context object """
+    def __init__(self):
+        self.monitor = None
+
+
 def test_send_new_value(monkeypatch: MonkeyPatch, signals: ConnectionSignals):
     """ Ensure that all our signals are emitted as expected based on the structured data we received from p4p """
 
     # Set up a mock p4p client
     mock_channel = PyDMChannel()
-    monkeypatch.setattr(P4PPlugin, 'context', Context('pva'))
+    monkeypatch.setattr(P4PPlugin, 'context', MockContext())
     monkeypatch.setattr(P4PPlugin.context, 'monitor', lambda **args: None)  # Don't want to actually setup a monitor
     p4p_connection = Connection(mock_channel, 'pva://TEST:ADDRESS')
 
