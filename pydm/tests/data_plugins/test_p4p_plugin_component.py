@@ -1,5 +1,4 @@
 import functools
-from p4p import Value
 from p4p.client.thread import Context
 from p4p.nt import NTScalar
 from pydm.data_plugins.epics_plugins.p4p_plugin_component import Connection, P4PPlugin
@@ -8,7 +7,7 @@ from pydm.widgets.channel import PyDMChannel
 from pytest import MonkeyPatch
 
 
-def test_send_new_value(monkeypatch: MonkeyPatch, signals: ConnectionSignals, qtbot):
+def test_send_new_value(monkeypatch: MonkeyPatch, signals: ConnectionSignals):
     """ Ensure that all our signals are emitted as expected based on the structured data we received from p4p """
 
     # Set up a mock p4p client
