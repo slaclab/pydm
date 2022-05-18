@@ -27,7 +27,7 @@ class Connection(PyDMConnection):
         address : str
              The address of the PV.
         protocol : str, optional
-             The protocol appended to the address.
+             The protocol prepended to the address.
         parent : QObject, optional
              The parent object of this connection.
         """
