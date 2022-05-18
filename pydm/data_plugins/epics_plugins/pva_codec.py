@@ -7,8 +7,8 @@ from p4p.wrapper import Value
 logger = logging.getLogger(__name__)
 
 
-ScalarType = (np.bool, np.int8, np.int16, np.int32, np.long, np.uint8,
-              np.uint16, np.uint32, np.uint64, np.float, np.double)
+ScalarType = (bool, np.int8, np.int16, np.int32, np.compat.long, np.uint8,
+              np.uint16, np.uint32, np.uint64, float, np.double)
 
 
 codecs = {}
