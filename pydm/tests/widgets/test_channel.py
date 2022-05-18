@@ -36,6 +36,10 @@ def test_construct(qtbot):
         pydm_channel.prec_slot is None and \
         pydm_channel.upper_ctrl_limit_slot is None and \
         pydm_channel.lower_ctrl_limit_slot is None and \
+        pydm_channel.upper_alarm_limit_slot is None and \
+        pydm_channel.lower_alarm_limit_slot is None and \
+        pydm_channel.upper_warning_limit_slot is None and \
+        pydm_channel.lower_warning_limit_slot is None and \
         pydm_channel.write_access_slot is None and \
         pydm_channel.value_signal is None
 
@@ -52,6 +56,10 @@ def test_construct(qtbot):
                                               prec_slot=pydm_label.precisionChanged,
                                               upper_ctrl_limit_slot=pydm_label.upperCtrlLimitChanged,
                                               lower_ctrl_limit_slot=pydm_label.lowerCtrlLimitChanged,
+                                              upper_alarm_limit_slot=pydm_label.upper_alarm_limit_changed,
+                                              lower_alarm_limit_slot=pydm_label.lower_alarm_limit_changed,
+                                              upper_warning_limit_slot=pydm_label.upper_warning_limit_changed,
+                                              lower_warning_limit_slot=pydm_label.lower_warning_limit_changed,
                                               value_signal=None,
                                               write_access_slot=None)
     assert pydm_label_channels == default_pydm_label_channels

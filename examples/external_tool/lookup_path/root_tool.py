@@ -9,7 +9,12 @@ class RootTool(ExternalTool):
         name = "Root Tool"
         group = ""
         use_with_widgets = True
-        ExternalTool.__init__(self, icon=icon, name=name, group=group, use_with_widgets=use_with_widgets)
+        super().__init__(
+            icon=icon,
+            name=name,
+            group=group,
+            use_with_widgets=use_with_widgets
+        )
 
     def call(self, channels, sender):
         print("Called Root Tool from: {} with:".format(sender))

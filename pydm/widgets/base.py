@@ -1,3 +1,4 @@
+import enum
 import os
 import platform
 import weakref
@@ -322,6 +323,14 @@ class PyDMPrimitiveWidget(object):
         return None
 
 
+class AlarmLimit(str, enum.Enum):
+    """ An enum for holding values corresponding to the EPICS alarm limits """
+    HIHI = "HIHI"
+    HIGH = "HIGH"
+    LOW = "LOW"
+    LOLO = "LOLO"
+
+
 class TextFormatter(object):
 
     default_precision_from_pv = True
@@ -588,6 +597,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
 
+        self.upper_alarm_limit = None
+        self.lower_alarm_limit = None
+        self.upper_warning_limit = None
+        self.lower_warning_limit = None
         self.enum_strings = None
 
         self.value = None
@@ -767,6 +780,26 @@ class PyDMWidget(PyDMPrimitiveWidget):
         else:
             self._lower_ctrl_limit = new_limit
 
+    def alarm_limit_changed(self, which: AlarmLimit, new_limit: float) -> None:
+        """
+        Callback invoked when the channel receives new alarm limit values.
+
+        Parameters
+        ----------
+        which : AlarmLimit
+            Which alarm limit was changed. "HIHI", "HIGH", "LOW", "LOLO"
+        new_limit : float
+            New value for the alarm limit
+        """
+        if which is AlarmLimit.HIHI:
+            self.upper_alarm_limit = new_limit
+        elif which is AlarmLimit.HIGH:
+            self.upper_warning_limit = new_limit
+        elif which is AlarmLimit.LOW:
+            self.lower_warning_limit = new_limit
+        elif which is AlarmLimit.LOLO:
+            self.lower_alarm_limit = new_limit
+
     @Slot(bool)
     def connectionStateChanged(self, connected):
         """
@@ -823,6 +856,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self.enum_strings_changed(new_enum_strings)
 
+    @Slot(int)
     @Slot(float)
     def upperCtrlLimitChanged(self, new_limit):
         """
@@ -836,6 +870,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         self.ctrl_limit_changed("UPPER", new_limit)
 
+    @Slot(int)
     @Slot(float)
     def lowerCtrlLimitChanged(self, new_limit):
         """
@@ -848,6 +883,58 @@ class PyDMWidget(PyDMPrimitiveWidget):
         new_limit : float
         """
         self.ctrl_limit_changed("LOWER", new_limit)
+
+    @Slot(int)
+    @Slot(float)
+    def upper_alarm_limit_changed(self, new_limit: float):
+        """
+        PyQT slot for changes to the HIHI alarm limit of a PV
+
+        Parameters
+        ----------
+        new_limit : float
+           The new value for the HIHI limit
+        """
+        self.alarm_limit_changed(AlarmLimit.HIHI, new_limit)
+
+    @Slot(int)
+    @Slot(float)
+    def lower_alarm_limit_changed(self, new_limit: float):
+        """
+        PyQT slot for changes to the LOLO alarm limit of a PV
+
+        Parameters
+        ----------
+        new_limit : float
+           The new value for the LOLO limit
+        """
+        self.alarm_limit_changed(AlarmLimit.LOLO, new_limit)
+
+    @Slot(int)
+    @Slot(float)
+    def upper_warning_limit_changed(self, new_limit: float):
+        """
+        PyQT slot for changes to the HIGH alarm limit of a PV
+
+        Parameters
+        ----------
+        new_limit : float
+           The new value for the HIGH limit
+        """
+        self.alarm_limit_changed(AlarmLimit.HIGH, new_limit)
+
+    @Slot(int)
+    @Slot(float)
+    def lower_warning_limit_changed(self, new_limit: float):
+        """
+        PyQT slot for changes to the LOW alarm limit of a PV
+
+        Parameters
+        ----------
+        new_limit : float
+           The new value for the LOW limit
+        """
+        self.alarm_limit_changed(AlarmLimit.LOW, new_limit)
 
     @Slot()
     def force_redraw(self):
@@ -992,6 +1079,10 @@ class PyDMWidget(PyDMPrimitiveWidget):
                                   prec_slot=None,
                                   upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
                                   lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
+                                  upper_alarm_limit_slot=self.upper_alarm_limit_changed,
+                                  lower_alarm_limit_slot=self.lower_alarm_limit_changed,
+                                  upper_warning_limit_slot=self.upper_warning_limit_changed,
+                                  lower_warning_limit_slot=self.lower_warning_limit_changed,
                                   value_signal=None,
                                   write_access_slot=None)
             # Load writeable channels if our widget requires them. These should

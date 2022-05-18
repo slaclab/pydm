@@ -1,9 +1,14 @@
-import epics
+import atexit
 import logging
+import sys
+from concurrent.futures import ThreadPoolExecutor
+
+import epics
 import numpy as np
+from epics.ca import use_initial_context
 from pydm.data_plugins import is_read_only
-from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
-from qtpy.QtCore import Slot, Qt
+from pydm.data_plugins.plugin import PyDMConnection, PyDMPlugin
+from qtpy.QtCore import Qt, Slot
 from qtpy.QtWidgets import QApplication
 
 try:
@@ -32,9 +37,6 @@ class Connection(PyDMConnection):
         self.pv = epics.PV(pv, connection_callback=self.send_connection_state,
                            form='ctrl', auto_monitor=epics.dbr.DBE_VALUE|epics.dbr.DBE_ALARM|epics.dbr.DBE_PROPERTY,
                            access_callback=self.send_access_state)
-        self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
-        self.add_listener(channel)
-
         self._value = None
         self._severity = None
         self._precision = None
@@ -42,6 +44,17 @@ class Connection(PyDMConnection):
         self._unit = None
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
+        self._upper_alarm_limit = None
+        self._lower_alarm_limit = None
+        self._upper_warning_limit = None
+        self._lower_warning_limit = None
+
+        PyEPICSPlugin.thread_pool.submit(self.setup_callbacks, channel)
+
+    def setup_callbacks(self, channel):
+        use_initial_context()
+        self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
+        self.add_listener(channel)
 
     def clear_cache(self):
         self._value = None
@@ -51,6 +64,10 @@ class Connection(PyDMConnection):
         self._unit = None
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
+        self._upper_alarm_limit = None
+        self._lower_alarm_limit = None
+        self._upper_warning_limit = None
+        self._lower_warning_limit = None
 
     def send_new_value(self, value=None, char_value=None, count=None, ftype=None, *args, **kws):
         self.update_ctrl_vars(**kws)
@@ -73,7 +90,12 @@ class Connection(PyDMConnection):
                 else:
                     self.new_value_signal[str].emit(char_value)
 
-    def update_ctrl_vars(self, units=None, enum_strs=None, severity=None, upper_ctrl_limit=None, lower_ctrl_limit=None, precision=None, *args, **kws):
+    def update_ctrl_vars(self, units=None, enum_strs=None, severity=None, upper_ctrl_limit=None, lower_ctrl_limit=None,
+                         precision=None, upper_alarm_limit=None, lower_alarm_limit=None, upper_warning_limit=None,
+                         lower_warning_limit=None, *args, **kws):
+        """ Callback invoked when there is a change any of these variables. For a full description see:
+            https://cars9.uchicago.edu/software/python/pyepics3/pv.html#user-supplied-callback-functions
+        """
         if severity is not None and self._severity != severity:
             self._severity = severity
             self.new_severity_signal.emit(int(severity))
@@ -98,6 +120,19 @@ class Connection(PyDMConnection):
         if lower_ctrl_limit is not None and self._lower_ctrl_limit != lower_ctrl_limit:
             self._lower_ctrl_limit = lower_ctrl_limit
             self.lower_ctrl_limit_signal.emit(lower_ctrl_limit)
+        if upper_alarm_limit is not None and self._upper_alarm_limit != upper_alarm_limit:
+            self._upper_alarm_limit = upper_alarm_limit
+            self.upper_alarm_limit_signal.emit(upper_alarm_limit)
+        if lower_alarm_limit is not None and self._lower_alarm_limit != lower_alarm_limit:
+            self._lower_alarm_limit = lower_alarm_limit
+            self.lower_alarm_limit_signal.emit(lower_alarm_limit)
+        if upper_warning_limit is not None and self._upper_warning_limit != upper_warning_limit:
+            self._upper_warning_limit = upper_warning_limit
+            self.upper_warning_limit_signal.emit(upper_warning_limit)
+        if lower_warning_limit is not None and self._lower_warning_limit != lower_warning_limit:
+            self._lower_warning_limit = lower_warning_limit
+            self.lower_warning_limit_signal.emit(lower_warning_limit)
+
 
     def send_access_state(self, read_access, write_access, *args, **kws):
         if is_read_only():
@@ -181,3 +216,17 @@ class PyEPICSPlugin(PyDMPlugin):
     # be properly set before it is used.
     protocol = None
     connection_class = Connection
+    thread_pool = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Not the end of the world if this happens twice, but better not to
+        if PyEPICSPlugin.thread_pool is None:
+            thread_pool = ThreadPoolExecutor()
+            if sys.version_info >= (3, 9):
+                atexit.register(thread_pool.shutdown, wait=False, cancel_futures=True)
+            else:
+                atexit.register(thread_pool.shutdown, wait=False)
+            # Class variable for connections to use
+            # This is the easiest way to share state
+            PyEPICSPlugin.thread_pool = thread_pool

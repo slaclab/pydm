@@ -1,7 +1,8 @@
 import os
 from os import path
+
 from qtpy.QtWidgets import (QApplication, QMainWindow, QFileDialog,
-                            QWidget, QAction, QMessageBox)
+                            QAction, QMessageBox, QMenu)
 from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
 from .utilities import (IconFont, find_file, establish_widget_connections,
                         close_widget_connections)
@@ -9,6 +10,7 @@ from .pydm_ui import Ui_MainWindow
 from .display import Display, ScreenTarget, load_file
 from .connection_inspector import ConnectionInspector
 from .about_pydm import AboutWindow
+from .show_macros import MacroWindow
 from . import data_plugins
 from . import tools
 from .widgets.rules import register_widget_rules, unregister_widget_rules
@@ -44,6 +46,8 @@ class PyDMMainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        self.showMacros = QAction("Show Macros...", self)
+
         self.ui.navbar.setIconSize(QSize(24, 24))
         self.ui.navbar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.ui.actionHome.triggered.connect(self.home_triggered)
@@ -67,6 +71,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionAbout_PyDM.triggered.connect(self.show_about_window)
         self.ui.actionLoadTool.triggered.connect(self.load_tool)
         self.ui.actionLoadTool.setIcon(self.iconFont.icon("rocket"))
+        self.showMacros.triggered.connect(self.show_macro_window)
         self.ui.actionQuit.triggered.connect(self.quit_main_window)
 
         if hide_nav_bar:
@@ -380,6 +385,7 @@ class PyDMMainWindow(QMainWindow):
 
         self.ui.menuTools.addSeparator()
         self.ui.menuTools.addAction(self.ui.actionLoadTool)
+        self.ui.menuTools.addAction(self.showMacros)
 
     @Slot(bool)
     def reload_display(self, checked):
@@ -478,3 +484,7 @@ class PyDMMainWindow(QMainWindow):
                 QMessageBox.Yes | QMessageBox.No)
             if quit_message == QMessageBox.Yes:
                 callback()
+
+    def show_macro_window(self):
+        macro_window = MacroWindow(self)
+        macro_window.show()
