@@ -87,22 +87,22 @@ try:
     import blosc
     codecs['blosc'] = blosc_decompress
 except ImportError:
-    logger.warning('Blosc codec not available for PVAccess data decompression')
+    logger.debug('Blosc codec not available for PVAccess data decompression')
 
 try:
     from lz4 import block
     codecs['lz4'] = lz4_decompress
 except ImportError:
-    logger.warning('LZ4 codec not available for PVAccess data decompression')
+    logger.debug('LZ4 codec not available for PVAccess data decompression')
 
 try:
     import bitshuffle
     codecs['bslz4'] = bslz4_decompress
 except ImportError:
-    logger.warning('BSLZ4 codec not available for PVAccess data decompression')
+    logger.debug('BSLZ4 codec not available for PVAccess data decompression')
 
 try:
     from PIL import Image
     codecs['jpeg'] = jpeg_decompress
 except ImportError:
-    logger.warning('JPEG codec not available for PVAccess data decompression')
+    logger.debug('JPEG codec not available for PVAccess data decompression')
