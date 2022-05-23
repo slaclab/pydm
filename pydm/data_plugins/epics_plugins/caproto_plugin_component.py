@@ -35,7 +35,9 @@ class Connection(PyDMConnection):
         self._upper_warning_limit = None
         self._lower_warning_limit = None
 
-        self.pv = epics.get_pv(pv, connection_callback=self.send_connection_state, form='ctrl', auto_monitor=SubscriptionType.DBE_VALUE|SubscriptionType.DBE_ALARM|SubscriptionType.DBE_PROPERTY, access_callback=self.send_access_state)
+        monitor_mask = SubscriptionType.DBE_VALUE | SubscriptionType.DBE_ALARM | SubscriptionType.DBE_PROPERTY
+        self.pv = epics.get_pv(pv, connection_callback=self.send_connection_state, form='ctrl',
+                               auto_monitor=monitor_mask, access_callback=self.send_access_state)
         self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
         self.add_listener(channel)
 
