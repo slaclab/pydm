@@ -51,9 +51,11 @@ class ConnectionSignals(QObject):
     def __init__(self):
         super(ConnectionSignals, self).__init__()
         self._value = None
+        self._received_values = {}
 
     def reset(self):
         self._value = None
+        self._received_values = None
 
     @property
     def value(self):
@@ -80,6 +82,23 @@ class ConnectionSignals(QObject):
             The value received from a PyDM widget
         """
         self._value = val
+
+    @Slot(object)
+    def receive_value(self, name: str, value: object) -> None:
+        """
+        Slot for receiving a value from a signal.
+
+        Parameters
+        ----------
+        name : str
+            Name to associate with the value received
+        value : object
+            The value that was sent by the signal
+        """
+        self._received_values[name] = value
+
+    def __getitem__(self, name):
+        return self._received_values[name]
 
 
 @pytest.fixture(scope="function")

@@ -84,7 +84,7 @@ def generic_mon_cb(source, signal):
     return cb
 
 
-def setup_pv(pvname, con_cb=None, mon_cb=None, rwaccess_cb=None, signal=None, mon_cb_once=False):
+def setup_pv(pvname, con_cb=None, mon_cb=None, rwaccess_cb=None, signal=None, mon_cb_once=False, control=False):
     """
     Initialize an EPICS PV using psp with proper callbacks.
 
@@ -104,9 +104,11 @@ def setup_pv(pvname, con_cb=None, mon_cb=None, rwaccess_cb=None, signal=None, mo
     :type signal:  Signal
     :param mon_cb_once: True if we only want the monitor callback to run once.
     :type mon_cb_once: bool
+    :param control: True if we want to monitor control values
+    :type control: bool
     :rtype: Pv
     """
-    pv = Pv(pvname, use_numpy=True, control=True)
+    pv = Pv(pvname, use_numpy=True, control=control)
 
     if signal is None:
         default_mon_cb = lambda e: None
@@ -143,7 +145,8 @@ class Connection(PyDMConnection):
         self.pv = setup_pv(pv,
                            con_cb=self.connected_cb,
                            mon_cb=self.monitor_cb,
-                           rwaccess_cb=self.rwaccess_cb)
+                           rwaccess_cb=self.rwaccess_cb,
+                           control=True)
         self.enums = None
         self.sevr = None
         self.ctrl_llim = None
