@@ -1,11 +1,8 @@
 # coding: utf-8
 # Fixtures for PyDM Unit Tests
 
-import pytest
-
-from pytestqt.qt_compat import qt_api
-
 import numpy as np
+import pytest
 import tempfile
 import logging
 
