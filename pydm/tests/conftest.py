@@ -52,7 +52,7 @@ class ConnectionSignals(QObject):
 
     def reset(self):
         self._value = None
-        self._received_values = None
+        self._received_values.clear()
 
     @property
     def value(self):
