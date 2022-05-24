@@ -1,6 +1,6 @@
 import weakref
 from collections import Counter
-from pyqtgraph import PlotItem, ViewBox, AxisItem
+from pyqtgraph import PlotItem, ViewBox
 from .multi_axis_viewbox import MultiAxisViewBox
 from .multi_axis_viewbox_menu import MultiAxisViewBoxMenu
 from ..utilities import is_qt_designer
@@ -32,20 +32,17 @@ class MultiAxisPlot(PlotItem):
         self.axesOriginalRanges = {}  # Dict from axis name to floats (x, y) representing original range of the axis
 
         # A set containing view boxes which are stacked underneath the top level view. These views will be needed
-        # in order to support multiple axes on the same plot. This set will remain empty if the plot has only one set of axes
+        # in order to support multiple axes on the same plot. This set will remain empty if the plot has only
+        # one set of axes
         self.stackedViews = weakref.WeakSet()
         viewBox.sigResized.connect(self.updateStackedViews)
 
         # Signals that will be emitted when mouse wheel or mouse drag events happen
         self.vb.sigMouseDragged.connect(self.handleMouseDragEvent)
         self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
-        self.vb.setZValue(100)
+        self.vb.setZValue(100)  # Keep this view box on top
         if self.vb.menuEnabled():
             self.connectMenuSignals(self.vb.menu)
-#            self.vb.menu.sigMouseModeChanged.connect(self.changeMouseMode)
-#            self.vb.menu.sigXAutoRangeChanged.connect(self.updateXAutoRange)
-#            self.vb.menu.sigRestoreRanges.connect(self.restoreAxisRanges)
-#            self.vb.menu.sigSetAutorange.connect(self.setPlotAutoRange)
         self.stackedViews.add(self.vb)
 
     def addAxis(self, axis, name, plotDataItem=None, setXLink=False, enableAutoRangeX=True, enableAutoRangeY=True,
@@ -122,12 +119,12 @@ class MultiAxisPlot(PlotItem):
 
     def connectMenuSignals(self, view_box_menu: MultiAxisViewBoxMenu) -> None:
         """
-        Connect the signals of a view box menu to the appropriate slots
+        Connect the signals of a view box menu to the appropriate slots.
 
         Parameters
         ----------
         view_box_menu : MultiAxisViewBoxMenu
-            The menu to connect actions to the correct slots
+            The menu to connect actions to the correct slots.
         """
         view_box_menu.sigMouseModeChanged.connect(self.changeMouseMode)
         view_box_menu.sigXAutoRangeChanged.connect(self.updateXAutoRange)
@@ -375,6 +372,7 @@ class MultiAxisPlot(PlotItem):
         """ Show or hide the grid on a per-axis basis """
         if is_qt_designer():
             return
+        # Get the user-set value for the alpha used to draw the grid lines
         alpha = self.ctrl.gridAlphaSlider.value()
         x = alpha if self.ctrl.xGridCheck.isChecked() else False
         y = alpha if self.ctrl.yGridCheck.isChecked() else False
