@@ -251,67 +251,75 @@ class Connection(PyDMConnection):
 
         try:
             prec = self.pv.data['precision']
+        except KeyError:
+            pass
+        else:
             if self.prec != prec:
                 self.prec = prec
                 self.prec_signal.emit(int(self.prec))
-        except KeyError:
-            pass
 
         try:
             units = self.pv.data['units']
+        except KeyError:
+            pass
+        else:
             if self.units != units:
                 self.units = units
                 self.unit_signal.emit(self.units.decode(encoding='ascii') if isinstance(self.units, bytes) else self.units)
-        except KeyError:
-            pass
 
         try:
             ctrl_llim = self.pv.data['ctrl_llim']
+        except KeyError:
+            pass
+        else:
             if self.ctrl_llim != ctrl_llim:
                 self.ctrl_llim = ctrl_llim
                 self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
-        except KeyError:
-            pass
 
         try:
             ctrl_hlim = self.pv.data['ctrl_hlim']
+        except KeyError:
+            pass
+        else:
             if self.ctrl_hlim != ctrl_hlim:
                 self.ctrl_hlim = ctrl_hlim
                 self.upper_ctrl_limit_signal.emit(self.ctrl_hlim)
-        except KeyError:
-            pass
 
         try:
             alarm_hlim = self.pv.data['alarm_hlim']
+        except KeyError:
+            pass
+        else:
             if self.alarm_hlim != alarm_hlim:
                 self.alarm_hlim = alarm_hlim
                 self.upper_alarm_limit_signal.emit(self.alarm_hlim)
-        except KeyError:
-            pass
 
         try:
             alarm_llim = self.pv.data['alarm_llim']
+        except KeyError:
+            pass
+        else:
             if self.alarm_llim != alarm_llim:
                 self.alarm_llim = alarm_llim
                 self.lower_alarm_limit_signal.emit(self.alarm_llim)
-        except KeyError:
-            pass
 
         try:
             warn_hlim = self.pv.data['warn_hlim']
+        except KeyError:
+            pass
+        else:
             if self.warn_hlim != warn_hlim:
                 self.warn_hlim = warn_hlim
                 self.upper_warning_limit_signal.emit(self.warn_hlim)
-        except KeyError:
-            pass
 
         try:
             warn_llim = self.pv.data['warn_llim']
+        except KeyError:
+            pass
+        else:
             if self.warn_llim != warn_llim:
                 self.warn_llim = warn_llim
                 self.lower_warning_limit_signal.emit(self.warn_llim)
-        except KeyError:
-            pass
 
         if self.count > 1:
             self.new_value_signal[np.ndarray].emit(value)
