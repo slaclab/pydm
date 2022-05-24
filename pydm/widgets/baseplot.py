@@ -838,6 +838,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if 'bottom' in self.plotItem.axes:
             # Ensure the added y axes get the color that was set
             self.setAxisColor(self.getAxis('bottom')._pen.color())
+        if self.getShowYGrid() or self.getShowXGrid():
+            self.plotItem.updateGrid()
 
     yAxes = Property("QStringList", getYAxes, setYAxes, designable=False)
 
