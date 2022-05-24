@@ -6,6 +6,8 @@ from pydm.widgets.channel import PyDMChannel
 from pytest import MonkeyPatch
 
 
+# Note: This test cannot be run on any Windows OS as a build of PyCA is not available there
+
 class MockPV:
     """ A simple mock of the psp Pv object """
     def __init__(self):

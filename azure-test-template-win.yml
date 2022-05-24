@@ -47,7 +47,7 @@ jobs:
 
   - script: |
       call activate test-environment-$(python_name)
-      conda install python=$(python) pytest-azurepipelines pydm --file dev-requirements.txt --update-deps
+      conda install python=$(python) pytest-azurepipelines pydm --file windows-dev-requirements.txt --update-deps
     displayName: 'Anaconda - Install Dependencies'
 
   - script: |
@@ -60,7 +60,7 @@ jobs:
 
   - script: |
       call activate test-environment-$(python_name)
-      python run_tests.py --timeout 30 --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python)" --napoleon-docstrings
+      python run_tests.py --timeout 30 --show-cov --test-run-title="Tests for $(Agent.OS) - Python $(python)" --ignore=pydm/tests/data_plugins/test_psp_plugin_component.py --napoleon-docstrings
     displayName: 'Tests - Run'
     continueOnError: false
 
