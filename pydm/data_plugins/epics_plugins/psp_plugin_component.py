@@ -336,7 +336,7 @@ class Connection(PyDMConnection):
                 self.prec = self.pv.data['precision']
             except KeyError:
                 pass
-        if self.prec:
+        if self.prec is not None:
             self.prec_signal.emit(int(self.prec))
 
         if self.units is None:
@@ -354,7 +354,7 @@ class Connection(PyDMConnection):
                 self.ctrl_llim = self.pv.data['ctrl_llim']
             except KeyError:
                 pass
-        if self.ctrl_llim:
+        if self.ctrl_llim is not None:
             self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
 
         if self.ctrl_hlim is None:
@@ -362,7 +362,7 @@ class Connection(PyDMConnection):
                 self.ctrl_hlim = self.pv.data['ctrl_hlim']
             except KeyError:
                 pass
-        if self.ctrl_hlim:
+        if self.ctrl_hlim is not None:
             self.upper_ctrl_limit_signal.emit(self.ctrl_hlim)
 
         if self.alarm_hlim is None:
@@ -370,7 +370,7 @@ class Connection(PyDMConnection):
                 self.alarm_hlim = self.pv.data['alarm_hlim']
             except KeyError:
                 pass
-        if self.alarm_hlim:
+        if self.alarm_hlim is not None:
             self.upper_alarm_limit_signal.emit(self.alarm_hlim)
 
         if self.alarm_llim is None:
@@ -378,7 +378,7 @@ class Connection(PyDMConnection):
                 self.alarm_llim = self.pv.data['alarm_llim']
             except KeyError:
                 pass
-        if self.alarm_llim:
+        if self.alarm_llim is not None:
             self.lower_alarm_limit_signal.emit(self.alarm_llim)
 
         if self.warn_hlim is None:
@@ -386,7 +386,7 @@ class Connection(PyDMConnection):
                 self.warn_hlim = self.pv.data['warn_hlim']
             except KeyError:
                 pass
-        if self.warn_hlim:
+        if self.warn_hlim is not None:
             self.upper_warning_limit_signal.emit(self.warn_hlim)
 
         if self.warn_llim is None:
@@ -394,7 +394,7 @@ class Connection(PyDMConnection):
                 self.warn_llim = self.pv.data['warn_llim']
             except KeyError:
                 pass
-        if self.warn_llim:
+        if self.warn_llim is not None:
             self.lower_warning_limit_signal.emit(self.warn_llim)
 
     def send_connection_state(self, conn=None):
