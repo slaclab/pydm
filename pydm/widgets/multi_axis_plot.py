@@ -368,7 +368,7 @@ class MultiAxisPlot(PlotItem):
             if axis is not None:
                 self.layout.addItem(axis, y, leftOffset)
 
-    def updateGrid(self, *args):
+    def updateGrid(self, *args) -> None:
         """ Show or hide the grid on a per-axis basis """
         if is_qt_designer():
             return
